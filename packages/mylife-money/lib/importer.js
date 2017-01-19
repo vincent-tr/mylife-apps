@@ -37,5 +37,4 @@ module.exports.operationsImport = (db, data, done) => {
     logger.info(`Import done, ${records.length} operations added`);
 
   }).then(() => done(), (err) => done(err));
-
-}
+};

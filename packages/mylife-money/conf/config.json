@@ -1,3 +1,4 @@
 {
-  "mongo": "mongodb://localhost:27017/mylife-money"
+  "mongo": "mongodb://localhost:27017/mylife-money",
+  "port": 8003
 }
