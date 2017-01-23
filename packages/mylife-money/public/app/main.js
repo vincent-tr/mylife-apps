@@ -1,10 +1,32 @@
+'use strict';
+
 import React from 'react';
-import {render} from 'react-dom';
+import ReactDOM from 'react-dom';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import createLogger from 'redux-logger';
+import immutableStateInvariant from 'redux-immutable-state-invariant'; // FIXME: remove immutableStateInvariant in production
+import { Provider } from 'react-redux';
 
-class App extends React.Component {
-  render () {
-    return <p> Hello React!</p>;
-  }
-}
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
-render(<App/>, document.getElementById('content'));
+import Application from './components/application';
+import reducer from './reducers/index';
+
+//Needed for onTouchTap
+//Can go away when react 1.0 release
+//Check this repo:
+//https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin();
+
+const store = createStore(
+  reducer,
+  applyMiddleware(immutableStateInvariant(), thunk, createLogger())
+);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Application/>
+  </Provider>,
+  document.getElementById('content')
+);
