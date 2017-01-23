@@ -3,6 +3,8 @@
 import React from 'react';
 import * as muiStyles from 'material-ui/styles/index';
 
+import MainTabs from './main-tabs';
+
 const styles = {
   root: {
     position: 'fixed',
@@ -17,11 +19,17 @@ const styles = {
 // class needed by dnd.DragDropContext
 class Application extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = { tab: 'management' };
+  }
+
   render() {
     return (
       <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
         <div style={styles.root}>
-          <p> Hello ! </p>
+          <MainTabs activeTab={this.state.tab} onTabChanged={(value) => this.setState({ tab: value })} />
         </div>
       </muiStyles.MuiThemeProvider>
     );
