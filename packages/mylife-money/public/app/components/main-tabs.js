@@ -44,11 +44,11 @@ const MainTabs = ({ activeTab, onTabChanged }) => (
             contentContainerStyle={styles.tabContainer}
             tabTemplate={base.TabTemplate}>
     <mui.Tab value="management"
-             label={renderTabLabel('Management', (<icons.tabs.Online />))}>
+             label={renderTabLabel('Management', (<icons.tabs.Management />))}>
       <Management />
     </mui.Tab>
     <mui.Tab value="reporting"
-             label={renderTabLabel('Reporting', (<icons.tabs.Online />))}>
+             label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))}>
       <Reporting />
     </mui.Tab>
   </mui.Tabs>
