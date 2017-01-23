@@ -10,8 +10,11 @@ TEST_FILES  = test
 lint:
 	$(ESLINT) lib/* public/app/*
 
+start-dev:
+	$(NODE) bin/server.js --dev
+
 start:
 	$(NODE) bin/server.js
 
 bundle:
-	$(JSPM) bundle app/main public/build.js
+	$(BIN)/webpack -d

@@ -3,7 +3,9 @@
 const config = require('../conf/config');
 const Server = require('../lib/server');
 
-const server = new Server(config);
+const dev = process.argv.includes('--dev');
+
+const server = new Server(config, dev);
 
 function terminate() {
   server.close(() => process.exit());
