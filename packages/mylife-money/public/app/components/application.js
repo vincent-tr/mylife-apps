@@ -16,7 +16,6 @@ const styles = {
   theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
 
-// class needed by dnd.DragDropContext
 class Application extends React.Component {
 
   constructor(props) {
