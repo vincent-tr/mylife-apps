@@ -1,5 +1,9 @@
-'use strict';
+import { combineReducers } from 'redux';
 
-export default function(state = {}, action) {
-  return state;
-}
+import management from './management';
+import reporting from './reporting';
+
+export default combineReducers({
+  management,
+  reporting
+});
