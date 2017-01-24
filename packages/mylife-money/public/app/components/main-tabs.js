@@ -10,7 +10,7 @@ import Reporting from './reporting/index';
 
 const styles = {
   tabs: {
-    height : 'calc(100% - 56px)',
+    height : '100%',
     position: 'relative',
     zIndex : -1, // need that for toolbar tooltips ?!
   },
