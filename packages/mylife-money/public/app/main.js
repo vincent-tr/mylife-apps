@@ -10,6 +10,8 @@ import { Provider } from 'react-redux';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+import dataService from './services/data-service';
+import { queryAccounts, queryGroups } from './actions/index';
 import Application from './components/application';
 import reducer from './reducers/index';
 
@@ -21,8 +23,11 @@ injectTapEventPlugin();
 
 const store = createStore(
   reducer,
-  applyMiddleware(immutableStateInvariant(), thunk, createLogger())
+  applyMiddleware(immutableStateInvariant(), thunk, createLogger(), dataService)
 );
+
+store.dispatch(queryAccounts());
+store.dispatch(queryGroups());
 
 ReactDOM.render(
   <Provider store={store}>

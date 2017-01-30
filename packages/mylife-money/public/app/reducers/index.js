@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import management from './management';
-import reporting from './reporting';
+import accounts from './accounts';
+import groups from './groups';
 
 export default combineReducers({
-  management,
-  reporting
+  accounts,
+  groups
 });
