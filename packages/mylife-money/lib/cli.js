@@ -64,4 +64,4 @@ module.exports.createAccount = (db, code, display, done) => {
     logger.info(`Account created: ${code}`);
 
   }).then(() => done(), (err) => done(err));
-}
+};
