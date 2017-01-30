@@ -10,6 +10,7 @@ const serveStatic       = require('serve-static');
 const webpack           = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackConfig     = require('../webpack.config.js');
+const createApi         = require('./api');
 
 module.exports = class {
 
@@ -38,18 +39,3 @@ module.exports = class {
     this._server.destroy();
   }
 };
-
-function createApi() {
-  const router = express.Router();
-/*
-  router.route('/:entityId').post(function(request, response) {
-    const entityId = request.params.entityId;
-    const req = request.body;
-    netResources.execute(req, (err, res) => {
-      if(err) { return response.status(500).json(err); }
-      response.json(res);
-    }, entityId);
-  });
-*/
-  return router;
-}
