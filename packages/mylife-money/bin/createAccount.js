@@ -4,7 +4,7 @@ const monk              = require('monk');
 const config            = require('../conf/config');
 const fs                = require('fs');
 const log4js            = require('log4js');
-const logger            = log4js.getLogger('mylife:money:import');
+const logger            = log4js.getLogger('mylife:money:createAccount');
 const { createAccount } = require('../lib/cli.js');
 
 const code    = process.argv[2];
