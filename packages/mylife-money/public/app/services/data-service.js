@@ -4,7 +4,7 @@ import request from 'superagent';
 import { actionTypes } from '../constants/index';
 import { getAccounts, getGroups } from '../actions/index';
 
-const dataService = store => next => action => {
+const dataService = (/*store*/) => next => action => {
   next(action);
 
   switch (action.type) {

@@ -1,7 +1,7 @@
 'use strict';
 
 import { createAction } from 'redux-actions';
-import { actionTypes } from '../constants'
+import { actionTypes } from '../constants';
 
 export const queryAccounts   = createAction(actionTypes.QUERY_ACCOUNTS);
 export const getAccounts     = createAction(actionTypes.GET_ACCOUNTS);
