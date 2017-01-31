@@ -39,7 +39,7 @@ const Management = ({ onGroupSelected, selectedGroup, onGroupCreate, onGroupEdit
         <Toolbar onGroupCreate={onGroupCreate}
                  onGroupEdit={onGroupEdit}
                  onGroupDelete={(...args) => confirmDialog(['Etes vous sur de vouloir supprimer le groupe ?'], 'Confirmation', (err, result) => result && onGroupDelete(...args))}
-                 canDelete={selectedGroup && !!selectedGroup.id}/>
+                 canDelete={!!selectedGroup && !!selectedGroup.id}/>
 
       </div>
     </mui.Paper>
