@@ -7,6 +7,7 @@ import GroupTreeContainer from '../../containers/groups/tree-container.js';
 import Toolbar from './toolbar.js';
 
 import tabStyles from '../base/tab-styles';
+import confirmDialog from '../base/confirm-dialog';
 
 const styles = {
   div:{
@@ -37,7 +38,8 @@ const Management = ({ onGroupSelected, selectedGroup, onGroupCreate, onGroupEdit
 
         <Toolbar onGroupCreate={onGroupCreate}
                  onGroupEdit={onGroupEdit}
-                 onGroupDelete={onGroupDelete}/>
+                 onGroupDelete={(...args) => confirmDialog(['Etes vous sur de vouloir supprimer le groupe ?'], 'Confirmation', (err, result) => result && onGroupDelete(...args))}
+                 canDelete={selectedGroup && !!selectedGroup.id}/>
 
       </div>
     </mui.Paper>
