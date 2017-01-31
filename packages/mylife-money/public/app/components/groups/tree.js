@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import base from './base/index';
+import base from '../base/index';
 
-import GroupNodeContainer from '../containers/group-node-container';
+import GroupNodeContainer from '../../containers/groups/node-container';
 
 const GroupTree = ({ groups, selectedValueChanged, selectedNode }) => (
   <base.SelectableList

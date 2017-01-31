@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-import GroupTreeContainer from '../../containers/group-tree-container.js';
+import GroupTreeContainer from '../../containers/groups/tree-container.js';
 
 const styles = {
   div:{

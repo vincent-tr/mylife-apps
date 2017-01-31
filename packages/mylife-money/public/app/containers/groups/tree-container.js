@@ -1,9 +1,9 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { makeGetSortedChildren } from '../selectors/groups';
+import { makeGetSortedChildren } from '../../selectors/groups';
 
-import GroupTree from '../components/group-tree';
+import GroupTree from '../../components/groups/tree';
 
 const mapStateToProps = () => {
   const getSortedChildren = makeGetSortedChildren();

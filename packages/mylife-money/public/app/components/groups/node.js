@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import base from './base/index';
+import base from '../base/index';
 
 const GroupNode = ({ group, children }) => (
   <base.SelectableListItem
