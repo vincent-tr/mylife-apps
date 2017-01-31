@@ -2,7 +2,7 @@
 
 import request from 'superagent';
 import { actionTypes } from '../constants/index';
-import { getAccounts, getGroups } from '../actions/index';
+import { getAccounts, getGroups, getOperations } from '../actions/index';
 
 const dataService = (/*store*/) => next => action => {
   next(action);
@@ -29,6 +29,18 @@ const dataService = (/*store*/) => next => action => {
           }
           const data = JSON.parse(res.text);
           return next(getGroups(data));
+        });
+      break;
+
+    case actionTypes.QUERY_OPERATIONS:
+      request
+        .get('/api/operations') // TODO: parameters
+        .end((err, res) => {
+          if (err) {
+            return next(getOperations(err));
+          }
+          const data = JSON.parse(res.text);
+          return next(getOperations(data));
         });
       break;
   }

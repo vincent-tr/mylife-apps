@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import dataService from './services/data-service';
-import { queryAccounts, queryGroups } from './actions/index';
+import { queryAccounts, queryGroups, queryOperations } from './actions/index';
 import Application from './components/application';
 import reducer from './reducers/index';
 
@@ -28,6 +28,7 @@ const store = createStore(
 
 store.dispatch(queryAccounts());
 store.dispatch(queryGroups());
+store.dispatch(queryOperations()); // TODO: parameters
 
 ReactDOM.render(
   <Provider store={store}>
