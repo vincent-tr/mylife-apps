@@ -2,7 +2,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import { confirmable, createConfirmation } from 'react-confirm';
 
-const ConfirmDialog = ({ show, proceed, dismiss, cancel, confirmation, options }) => (
+const ConfirmDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation,*/ options }) => (
   <mui.Dialog
     title={options.title}
     actions={<div>
