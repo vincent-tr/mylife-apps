@@ -23,7 +23,7 @@ injectTapEventPlugin();
 
 const store = createStore(
   reducer,
-  applyMiddleware(immutableStateInvariant(), thunk, createLogger(), dataService)
+  applyMiddleware(dataService, immutableStateInvariant(), thunk, createLogger())
 );
 
 store.dispatch(queryAccounts());
