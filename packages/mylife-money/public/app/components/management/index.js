@@ -3,6 +3,8 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
+import GroupTreeContainer from '../../containers/group-tree-container.js';
+
 const styles = {
   div:{
     display: 'flex',
@@ -22,10 +24,12 @@ const styles = {
   }
 };
 
-const Management = ({ }) => (
+const Management = ({ onGroupSelected, selectedGroup }) => (
   <div style={styles.div}>
     <mui.Paper zDepth={1} style={styles.paperLeft}>
-      <p>Tree</p>
+      <GroupTreeContainer
+        selectedValueChanged={onGroupSelected}
+        selectedNode={selectedGroup} />
     </mui.Paper>
     <mui.Paper zDepth={1} style={styles.paperRight}>
         <p>Details</p>
@@ -34,6 +38,8 @@ const Management = ({ }) => (
 );
 
 Management.propTypes = {
+  onGroupSelected : React.PropTypes.func.isRequired,
+  selectedGroup   : React.PropTypes.string
 };
 
 export default Management;
