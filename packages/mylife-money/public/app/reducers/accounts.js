@@ -1,19 +1,21 @@
 'use strict';
 
+import { handleActions } from 'redux-actions';
 import { actionTypes } from '../constants/index';
 import Immutable from 'immutable';
 
-export default function(state = Immutable.Map(), action) {
-  switch(action.type) {
-    case actionTypes.GET_ACCOUNTS:
-      console.log(action);
-      return state;
+export default handleActions({
 
-    case actionTypes.GET_GROUPS:
-      console.log(action);
-      return state;
-
-    default:
-      return state;
+  [actionTypes.GET_ACCOUNTS] : {
+    next : (state, action) => state.withMutations((map => {
+      for(const account of action.payload) {
+        map.set(account._id, {
+          id      : account._id,
+          code    : account.code,
+          display : account.display
+        });
+      }
+    }))
   }
-}
+
+}, Immutable.Map());
