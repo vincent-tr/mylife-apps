@@ -8,6 +8,7 @@ export default handleActions({
 
   [actionTypes.GET_ACCOUNTS] : {
     next : (state, action) => state.withMutations((map => {
+      map.clear();
       for(const account of action.payload) {
         map.set(account._id, {
           id      : account._id,
