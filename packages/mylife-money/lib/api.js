@@ -25,6 +25,14 @@ module.exports = () => {
     });
   });
 
+  router.route('/group').put(function(request, response) {
+    const group = request.body;
+    createGroup(group, (err, res) => {
+      if(err) { return response.status(500).json(err); }
+      response.json(res);
+    });
+  })
+
   router.route('/operations').get(function(request, response) {
     const { minDate, maxDate, accountId } = request.params;
     getOperations(minDate, maxDate, accountId, (err, res) => {
@@ -58,6 +66,14 @@ function getGroups(done) {
     const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
     return yield groups.find({});
+  }).then((value) => done(null, value), (err) => done(err));
+}
+
+function createGroup(group, done) {
+  co(function*() {
+    const db     = monk(config.mongo);
+    const groups = coMonk(db.get('groups'));
+    return yield groups.insert(group);
   }).then((value) => done(null, value), (err) => done(err));
 }
 

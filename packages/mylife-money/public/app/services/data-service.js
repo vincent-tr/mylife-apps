@@ -32,6 +32,19 @@ const dataService = (/*store*/) => next => action => {
         });
       break;
 
+    case actionTypes.QUERY_CREATE_GROUP:
+      request
+        .put('/api/group')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(getOperations(err));
+          }
+          const data = JSON.parse(res.text);
+          return next(getOperations(data));
+        });
+      break;
+
     case actionTypes.QUERY_OPERATIONS:
       request
         .get('/api/operations') // TODO: parameters
