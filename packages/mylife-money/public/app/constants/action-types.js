@@ -11,6 +11,8 @@ export default keyMirror({
   MANAGEMENT_SELECT_GROUP : null,
   QUERY_DELETE_GROUP      : null,
   DELETE_GROUP            : null,
+  QUERY_UPDATE_GROUP      : null,
+  UPDATE_GROUP            : null,
   QUERY_CREATE_GROUP      : null,
   CREATE_GROUP            : null,
 

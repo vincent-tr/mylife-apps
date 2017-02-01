@@ -2,7 +2,7 @@
 
 import request from 'superagent';
 import { actionTypes } from '../constants/index';
-import { getAccounts, getGroups, getOperations } from '../actions/index';
+import { getAccounts, getGroups, getOperations } from '../actions/service-actions';
 
 const dataService = (/*store*/) => next => action => {
   next(action);
@@ -38,10 +38,36 @@ const dataService = (/*store*/) => next => action => {
         .send(action.payload)
         .end((err, res) => {
           if (err) {
-            return next(getOperations(err));
+            return next(createGroup(err));
           }
           const data = JSON.parse(res.text);
-          return next(getOperations(data));
+          return next(createGroup(data));
+        });
+      break;
+
+    case actionTypes.QUERY_UPDATE_GROUP:
+      request
+        .put('/api/group')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(updateGroup(err));
+          }
+          const data = JSON.parse(res.text);
+          return next(updateGroup(data));
+        });
+      break;
+
+    case actionTypes.QUERY_DELETE_GROUP:
+      request
+        .put('/api/group')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(deleteGroup(err));
+          }
+          const data = JSON.parse(res.text);
+          return next(deleteGroup(data));
         });
       break;
 
