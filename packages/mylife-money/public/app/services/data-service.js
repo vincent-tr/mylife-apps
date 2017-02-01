@@ -2,7 +2,10 @@
 
 import request from 'superagent';
 import { actionTypes } from '../constants/index';
-import { getAccounts, getGroups, getOperations } from '../actions/service-actions';
+import {
+  getAccounts,
+  getGroups, createGroup, updateGroup, deleteGroup,
+  getOperations } from '../actions/service-actions';
 
 const dataService = (/*store*/) => next => action => {
   next(action);
