@@ -15,7 +15,7 @@ const styles = {
   }
 };
 
-const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canDelete }) => (
+const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
 
@@ -29,6 +29,7 @@ const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canDelete }) => (
       <mui.IconButton tooltip="Editer le groupe"
                       tooltipPosition="top-right"
                       onClick={onGroupEdit}
+                      disabled={!canChange}
                       style={styles.button}>
         <icons.actions.Edit />
       </mui.IconButton>
@@ -36,7 +37,7 @@ const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canDelete }) => (
       <mui.IconButton tooltip="Supprimer le groupe"
                       tooltipPosition="top-right"
                       onClick={onGroupDelete}
-                      disabled={!canDelete}
+                      disabled={!canChange}
                       style={styles.button}>
         <icons.actions.Delete />
       </mui.IconButton>
@@ -49,7 +50,7 @@ Toolbar.propTypes = {
   onGroupCreate : React.PropTypes.func.isRequired,
   onGroupEdit   : React.PropTypes.func.isRequired,
   onGroupDelete : React.PropTypes.func.isRequired,
-  canDelete     : React.PropTypes.bool.isRequired
+  canChange     : React.PropTypes.bool.isRequired
 };
 
 export default Toolbar;
