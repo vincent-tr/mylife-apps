@@ -12,7 +12,7 @@ export const queryGroups           = createAction(actionTypes.QUERY_GROUPS);
 export const getGroups             = createAction(actionTypes.GET_GROUPS);
 export const managementSelectGroup = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
 
-const queryCreateGroup = createAction(actionTypes.QUERY_CREATE_GROUP)
+const queryCreateGroup = createAction(actionTypes.QUERY_CREATE_GROUP);
 
 export const createGroup = () => {
   return (dispatch, getState) => {
@@ -20,7 +20,7 @@ export const createGroup = () => {
     const newGroup = {
       display: `group${++groupIdCount}`,
       parent: parentGroup
-    }
+    };
     dispatch(queryCreateGroup(newGroup));
   };
 };

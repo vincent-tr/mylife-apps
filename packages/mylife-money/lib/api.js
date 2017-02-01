@@ -13,14 +13,20 @@ module.exports = () => {
 
   router.route('/accounts').get(function(request, response) {
     getAccounts((err, res) => {
-      if(err) { return response.status(500).json(err); }
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err);
+      }
       response.json(res);
     });
   });
 
   router.route('/groups').get(function(request, response) {
     getGroups((err, res) => {
-      if(err) { return response.status(500).json(err); }
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err);
+      }
       response.json(res);
     });
   });
@@ -28,15 +34,22 @@ module.exports = () => {
   router.route('/group').put(function(request, response) {
     const group = request.body;
     createGroup(group, (err, res) => {
-      if(err) { return response.status(500).json(err); }
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err);
+      }
+      logger.info(`group created: ${JSON.stringify(res)}`);
       response.json(res);
     });
-  })
+  });
 
   router.route('/operations').get(function(request, response) {
     const { minDate, maxDate, accountId } = request.params;
     getOperations(minDate, maxDate, accountId, (err, res) => {
-      if(err) { return response.status(500).json(err); }
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err);
+      }
       response.json(res);
     });
   });
