@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 import { makeGetSortedChildren } from '../../selectors/groups';
-import { managementSelectGroup } from '../../actions/index';
+import { selectGroup } from '../../actions/index';
 
 import GroupNode from '../../components/groups/node';
 
@@ -16,7 +16,7 @@ const mapStateToProps = () => {
 
 
 const mapDispatchToProps = (dispatch, props) => ({
-  onSelect : () => dispatch(managementSelectGroup(props.group.id)),
+  onSelect : () => dispatch(selectGroup(props.group.id)),
 });
 
 const GroupNodeContainer = connect(

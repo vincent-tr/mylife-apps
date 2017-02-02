@@ -28,7 +28,7 @@ const styles = {
   }
 };
 
-const Management = ({ onGroupSelected, selectedGroup, onGroupCreate, onGroupEdit, onGroupDelete }) => (
+const Management = ({ onGroupCreate, onGroupEdit, onGroupDelete }) => (
   <div style={styles.div}>
     <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.scrollable, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
@@ -37,7 +37,7 @@ const Management = ({ onGroupSelected, selectedGroup, onGroupCreate, onGroupEdit
         <Toolbar onGroupCreate={onGroupCreate}
                  onGroupEdit={onGroupEdit}
                  onGroupDelete={(...args) => confirmDialog(['Etes vous sur de vouloir supprimer le groupe ?'], 'Confirmation', (err, result) => result && onGroupDelete(...args))}
-                 canChange={!!selectedGroup}/>
+                 canChange={true}/>
 
       </div>
     </mui.Paper>

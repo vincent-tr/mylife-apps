@@ -5,10 +5,10 @@ let groupIdCount = 0;
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
 
-export const getAccounts           = createAction(actionTypes.QUERY_ACCOUNTS);
+export const getAccounts = createAction(actionTypes.QUERY_ACCOUNTS);
 
-export const getGroups             = createAction(actionTypes.QUERY_GROUPS);
-export const managementSelectGroup = createAction(actionTypes.SELECT_GROUP);
+export const getGroups   = createAction(actionTypes.QUERY_GROUPS);
+export const selectGroup = createAction(actionTypes.SELECT_GROUP);
 
 const queryCreateGroup = createAction(actionTypes.QUERY_CREATE_GROUP);
 

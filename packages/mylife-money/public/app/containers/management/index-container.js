@@ -1,7 +1,7 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { managementSelectGroup, createGroup, deleteGroup } from '../../actions/index';
+import { createGroup, deleteGroup } from '../../actions/index';
 
 import Index from '../../components/management/index';
 
