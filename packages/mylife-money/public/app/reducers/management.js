@@ -5,7 +5,7 @@ import { actionTypes } from '../constants/index';
 
 export default handleActions({
 
-  [actionTypes.SELECT_GROUP] : {
+  [actionTypes.MANAGEMENT_SELECT_GROUP] : {
     next : (state, action) => ({ ...state, selectedGroup : action.payload })
   }
 
