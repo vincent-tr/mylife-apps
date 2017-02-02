@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-import GroupTreeContainer from '../../containers/groups/tree-container.js';
+import TreeContainer from '../../containers/groups/tree-container.js';
 import Toolbar from './toolbar.js';
 
 import tabStyles from '../base/tab-styles';
@@ -32,7 +32,7 @@ const Management = ({ onGroupCreate, onGroupEdit, onGroupDelete }) => (
   <div style={styles.div}>
     <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.scrollable, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
-        <GroupTreeContainer style={tabStyles.scrollable} />
+        <TreeContainer style={tabStyles.scrollable} />
 
         <Toolbar onGroupCreate={onGroupCreate}
                  onGroupEdit={onGroupEdit}

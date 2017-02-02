@@ -3,16 +3,16 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-import GroupNodeContainer from '../../containers/groups/node-container';
+import NodeContainer from '../../containers/groups/node-container';
 
-const GroupTree = ({ groups }) => (
+const Tree = ({ groups }) => (
   <mui.List>
-    {groups.map((group) => (<GroupNodeContainer key={group.id} group={group} />))}
+    {groups.map((group) => (<NodeContainer key={group.id} group={group} />))}
   </mui.List>
 );
 
-GroupTree.propTypes = {
+Tree.propTypes = {
   groups: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired
 };
 
-export default GroupTree;
+export default Tree;

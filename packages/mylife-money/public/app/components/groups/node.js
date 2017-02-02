@@ -5,7 +5,7 @@ import * as mui from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as muiColorManipulator from 'material-ui/utils/colorManipulator';
 
-import GroupNodeContainer from '../../containers/groups/node-container';
+import NodeContainer from '../../containers/groups/node-container';
 
 const getStyle = (muiTheme, selected) => {
   if(!selected) { return {}; }
@@ -14,15 +14,15 @@ const getStyle = (muiTheme, selected) => {
   return { backgroundColor };
 };
 
-const GroupNode = ({ muiTheme, selected, group, children, onSelect }) => (
+const Node = ({ muiTheme, selected, group, children, onSelect }) => (
   <mui.ListItem
     onTouchTap={onSelect}
     style={getStyle(muiTheme, selected)}
     primaryText={group.display}
-    nestedItems={children.map((child) => (<GroupNodeContainer key={child.id} group={child} />))} />
+    nestedItems={children.map((child) => (<NodeContainer key={child.id} group={child} />))} />
 );
 
-GroupNode.propTypes = {
+Node.propTypes = {
   muiTheme : React.PropTypes.object.isRequired,
   selected : React.PropTypes.bool.isRequired,
   group    : React.PropTypes.object.isRequired,
@@ -30,4 +30,4 @@ GroupNode.propTypes = {
   onSelect : React.PropTypes.func.isRequired
 };
 
-export default muiThemeable()(GroupNode);
+export default muiThemeable()(Node);

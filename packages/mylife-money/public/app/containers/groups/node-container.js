@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { makeGetSortedChildren, getSelectedGroupId } from '../../selectors/groups';
 import { selectGroup } from '../../actions/index';
 
-import GroupNode from '../../components/groups/node';
+import Node from '../../components/groups/node';
 
 const mapStateToProps = () => {
   const getSortedChildren = makeGetSortedChildren();
@@ -19,9 +19,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   onSelect : () => dispatch(selectGroup(props.group.id)),
 });
 
-const GroupNodeContainer = connect(
+const NodeContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(GroupNode);
+)(Node);
 
-export default GroupNodeContainer;
+export default NodeContainer;
