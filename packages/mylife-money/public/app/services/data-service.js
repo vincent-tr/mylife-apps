@@ -50,7 +50,7 @@ const dataService = (/*store*/) => next => action => {
 
     case actionTypes.QUERY_UPDATE_GROUP:
       request
-        .put('/api/group')
+        .post('/api/group')
         .send(action.payload)
         .end((err, res) => {
           if (err) {
@@ -63,7 +63,7 @@ const dataService = (/*store*/) => next => action => {
 
     case actionTypes.QUERY_DELETE_GROUP:
       request
-        .put('/api/group')
+        .delete('/api/group')
         .send(action.payload)
         .end((err, res) => {
           if (err) {
