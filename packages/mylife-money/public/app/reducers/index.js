@@ -11,5 +11,5 @@ export default combineReducers({
   accounts,
   groups,
   operations,
-  management
+  //management
 });

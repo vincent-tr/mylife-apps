@@ -7,7 +7,7 @@ import Immutable from 'immutable';
 export default handleActions({
 
   [actionTypes.GET_GROUPS] : {
-    next : (state, action) => state.withMutations((map => {
+    next : (state, action) => ({ ...state, list: state.list.withMutations((map => {
       map.clear();
 
       map.set(null, {
@@ -20,7 +20,11 @@ export default handleActions({
         const group = Object.assign({ id }, props);
         map.set(id, group);
       }
-    }))
+    }))})
+  },
+
+  [actionTypes.SELECT_GROUP] : {
+    next : (state, action) => ({ ...state, selected : action.payload })
   }
 
-}, Immutable.Map());
+}, { list: Immutable.Map(), selected: null });

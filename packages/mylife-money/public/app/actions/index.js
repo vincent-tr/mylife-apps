@@ -8,7 +8,7 @@ import { actionTypes } from '../constants';
 export const getAccounts           = createAction(actionTypes.QUERY_ACCOUNTS);
 
 export const getGroups             = createAction(actionTypes.QUERY_GROUPS);
-export const managementSelectGroup = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
+export const managementSelectGroup = createAction(actionTypes.SELECT_GROUP);
 
 const queryCreateGroup = createAction(actionTypes.QUERY_CREATE_GROUP);
 
