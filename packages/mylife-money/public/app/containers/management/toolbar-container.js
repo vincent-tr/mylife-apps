@@ -1,11 +1,13 @@
 'use strict';
 
 import { connect } from 'react-redux';
+import { getSelectedGroupId } from '../../selectors/groups';
 import { createGroup, deleteGroup } from '../../actions/index';
 
-import Index from '../../components/management/index';
+import Toolbar from '../../components/management/toolbar';
 
-const mapStateToProps = (/*state*/) => ({
+const mapStateToProps = (state) => ({
+  canChange : !!getSelectedGroupId(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -14,9 +16,9 @@ const mapDispatchToProps = (dispatch) => ({
   onGroupDelete   : (id) => dispatch(deleteGroup(id))
 });
 
-const IndexContainer = connect(
+const ToolbarContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Index);
+)(Toolbar);
 
-export default IndexContainer;
+export default ToolbarContainer;

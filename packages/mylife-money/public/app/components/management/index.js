@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 
 import TreeContainer from '../../containers/groups/tree-container.js';
-import Toolbar from './toolbar.js';
+import ToolbarContainer from '../../containers/management/toolbar-container.js';
 
 import tabStyles from '../base/tab-styles';
 import confirmDialog from '../base/confirm-dialog';
@@ -34,10 +34,7 @@ const Management = ({ onGroupCreate, onGroupEdit, onGroupDelete }) => (
       <div style={tabStyles.fullHeight}>
         <TreeContainer style={tabStyles.scrollable} />
 
-        <Toolbar onGroupCreate={onGroupCreate}
-                 onGroupEdit={onGroupEdit}
-                 onGroupDelete={(...args) => confirmDialog(['Etes vous sur de vouloir supprimer le groupe ?'], 'Confirmation', (err, result) => result && onGroupDelete(...args))}
-                 canChange={true}/>
+        <ToolbarContainer />
 
       </div>
     </mui.Paper>
@@ -48,9 +45,6 @@ const Management = ({ onGroupCreate, onGroupEdit, onGroupDelete }) => (
 );
 
 Management.propTypes = {
-  onGroupCreate   : React.PropTypes.func.isRequired,
-  onGroupEdit     : React.PropTypes.func.isRequired,
-  onGroupDelete   : React.PropTypes.func.isRequired
 };
 
 export default Management;

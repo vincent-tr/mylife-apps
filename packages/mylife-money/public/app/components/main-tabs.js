@@ -5,7 +5,7 @@ import * as mui from 'material-ui';
 import base from './base/index';
 import icons from './icons';
 
-import ManagementContainer from '../containers/management/index-container';
+import Management from './management/index';
 import Reporting from './reporting/index';
 
 const styles = {
@@ -45,7 +45,7 @@ const MainTabs = ({ activeTab, onTabChanged }) => (
             tabTemplate={base.TabTemplate}>
     <mui.Tab value="management"
              label={renderTabLabel('Management', (<icons.tabs.Management />))}>
-      <ManagementContainer />
+      <Management />
     </mui.Tab>
     <mui.Tab value="reporting"
              label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))}>
