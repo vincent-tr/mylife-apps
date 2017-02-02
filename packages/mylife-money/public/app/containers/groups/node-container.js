@@ -1,7 +1,7 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { makeGetSortedChildren } from '../../selectors/groups';
+import { makeGetSortedChildren, getSelectedGroupId } from '../../selectors/groups';
 import { selectGroup } from '../../actions/index';
 
 import GroupNode from '../../components/groups/node';
@@ -9,7 +9,7 @@ import GroupNode from '../../components/groups/node';
 const mapStateToProps = () => {
   const getSortedChildren = makeGetSortedChildren();
   return (state, props) => ({
-    selected : state.groups.selected === props.group.id,
+    selected : getSelectedGroupId(state) === props.group.id,
     children : getSortedChildren(state, props)
   });
 };
