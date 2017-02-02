@@ -32,9 +32,7 @@ const Management = ({ onGroupSelected, selectedGroup, onGroupCreate, onGroupEdit
   <div style={styles.div}>
     <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.scrollable, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
-        <GroupTreeContainer style={tabStyles.scrollable}
-                            selectedValueChanged={onGroupSelected}
-                            selectedNode={selectedGroup} />
+        <GroupTreeContainer style={tabStyles.scrollable} />
 
         <Toolbar onGroupCreate={onGroupCreate}
                  onGroupEdit={onGroupEdit}
@@ -50,8 +48,6 @@ const Management = ({ onGroupSelected, selectedGroup, onGroupCreate, onGroupEdit
 );
 
 Management.propTypes = {
-  onGroupSelected : React.PropTypes.func.isRequired,
-  selectedGroup   : React.PropTypes.string,
   onGroupCreate   : React.PropTypes.func.isRequired,
   onGroupEdit     : React.PropTypes.func.isRequired,
   onGroupDelete   : React.PropTypes.func.isRequired

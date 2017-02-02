@@ -5,12 +5,10 @@ import { managementSelectGroup, createGroup, deleteGroup } from '../../actions/i
 
 import Index from '../../components/management/index';
 
-const mapStateToProps = (state) => ({
-  selectedGroup : state.management.selectedGroup
+const mapStateToProps = (/*state*/) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onGroupSelected : (id) => dispatch(managementSelectGroup(id)),
   onGroupCreate   : () => dispatch(createGroup()),
   onGroupEdit     : () => {},
   onGroupDelete   : (id) => dispatch(deleteGroup(id))

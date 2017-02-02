@@ -1,23 +1,18 @@
 'use strict';
 
 import React from 'react';
-import base from '../base/index';
+import * as mui from 'material-ui';
 
 import GroupNodeContainer from '../../containers/groups/node-container';
 
-const GroupTree = ({ groups, selectedValueChanged, selectedNode }) => (
-  <base.SelectableList
-    selectedValueChanged={({ id }) => selectedValueChanged(id)}
-    selectedNode={{id: selectedNode}}
-  >
+const GroupTree = ({ groups }) => (
+  <mui.List>
     {groups.map((group) => (<GroupNodeContainer key={group.id} group={group} />))}
-  </base.SelectableList>
+  </mui.List>
 );
 
 GroupTree.propTypes = {
-  groups: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  selectedValueChanged: React.PropTypes.func.isRequired,
-  selectedNode: React.PropTypes.string
+  groups: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired
 };
 
 export default GroupTree;
