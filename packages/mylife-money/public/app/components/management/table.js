@@ -3,15 +3,27 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import tabStyles from '../base/tab-styles';
+import * as muiColors from 'material-ui/styles/colors';
 
 const styles = {
   tableWrapper: {
     height : 'calc(100% - 65px)',
+  },
+  amountDebit: {
+    backgroundColor: muiColors.red100
+  },
+  amountCredit: {
+    backgroundColor: muiColors.lightGreen100
+  },
+  fromChild: {
+    backgroundColor: muiColors.grey200
+  },
+  normal: {
   }
 };
 
 const Table = ({ operations }) => (
-  <mui.Table style={tabStyles.fullHeight} wrapperStyle={styles.tableWrapper}>
+  <mui.Table style={tabStyles.fullHeight} wrapperStyle={styles.tableWrapper} multiSelectable={true}>
     <mui.TableHeader>
       <mui.TableRow>
         <mui.TableHeaderColumn>Compte</mui.TableHeaderColumn>
@@ -21,14 +33,18 @@ const Table = ({ operations }) => (
       </mui.TableRow>
     </mui.TableHeader>
     <mui.TableBody>
-      {operations.map(op => (
-        <mui.TableRow key={op.id}>
-          <mui.TableRowColumn>{op.account}</mui.TableRowColumn>
-          <mui.TableRowColumn>{op.amount}</mui.TableRowColumn>
-          <mui.TableRowColumn>{op.date}</mui.TableRowColumn>
-          <mui.TableRowColumn>{op.label}</mui.TableRowColumn>
-        </mui.TableRow>
-      ))}
+      {operations.map(op => {
+        const rowStyle = op.fromChildGroup ? styles.fromChild : styles.normal;
+        const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
+        return (
+          <mui.TableRow key={op.operation.id} style={rowStyle}>
+            <mui.TableRowColumn>{op.operation.account}</mui.TableRowColumn>
+            <mui.TableRowColumn style={amountStyle}>{op.operation.amount}</mui.TableRowColumn>
+            <mui.TableRowColumn>{op.operation.date}</mui.TableRowColumn>
+            <mui.TableRowColumn>{op.operation.label}</mui.TableRowColumn>
+          </mui.TableRow>
+        );
+      })}
     </mui.TableBody>
   </mui.Table>
 );
