@@ -27,7 +27,7 @@ const styles = {
   }
 };
 
-const Management = ({ onGroupCreate, onGroupEdit, onGroupDelete }) => (
+const Management = () => (
   <div style={styles.div}>
     <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.scrollable, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
