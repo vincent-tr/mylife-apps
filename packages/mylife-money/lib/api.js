@@ -43,6 +43,30 @@ module.exports = () => {
     });
   });
 
+  router.route('/group').post(function(request, response) {
+    const group = request.body;
+    updateGroup(group, (err, res) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err);
+      }
+      logger.info(`group updated: ${JSON.stringify(res)}`);
+      response.json(res);
+    });
+  });
+
+  router.route('/group').delete(function(request, response) {
+    const { id } = request.body;
+    deleteGroup(id, (err, res) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err);
+      }
+      logger.info(`group deleted: ${id}`);
+      response.json(res);
+    });
+  });
+
   router.route('/operations').get(function(request, response) {
     const { minDate, maxDate, accountId } = request.params;
     getOperations(minDate, maxDate, accountId, (err, res) => {
@@ -78,6 +102,22 @@ function createGroup(group, done) {
     const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
     return yield groups.insert(group);
+  }).then((value) => done(null, value), (err) => done(err));
+}
+
+function updateGroup(group, done) {
+  co(function*() {
+    const db     = monk(config.mongo);
+    const groups = coMonk(db.get('groups'));
+    return yield groups.update({ _id: group._id }, group);
+  }).then((value) => done(null, value), (err) => done(err));
+}
+
+function deleteGroup(id, done) {
+  co(function*() {
+    const db     = monk(config.mongo);
+    const groups = coMonk(db.get('groups'));
+    return yield groups.remove({ _id: id });
   }).then((value) => done(null, value), (err) => done(err));
 }
 

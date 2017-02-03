@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onGroupCreate   : () => dispatch(createGroup()),
   onGroupEdit     : () => {},
-  onGroupDelete   : (id) => dispatch(deleteGroup(id))
+  onGroupDelete   : () => dispatch(deleteGroup())
 });
 
 const ToolbarContainer = connect(

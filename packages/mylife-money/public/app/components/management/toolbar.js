@@ -37,7 +37,7 @@ const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
 
       <mui.IconButton tooltip="Supprimer le groupe"
                       tooltipPosition="top-right"
-                      onClick={(id) => base.confirm({ lines: ['Supprimer le groupe ?'], proceed: () => onGroupDelete(id) })}
+                      onClick={() => base.confirm({ lines: ['Supprimer le groupe ?'], proceed: onGroupDelete })}
                       disabled={!canChange}
                       style={styles.button}>
         <icons.actions.Delete />

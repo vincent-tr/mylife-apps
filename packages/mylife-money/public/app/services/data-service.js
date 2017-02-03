@@ -64,7 +64,7 @@ const dataService = (/*store*/) => next => action => {
     case actionTypes.QUERY_DELETE_GROUP:
       request
         .delete('/api/group')
-        .send(action.payload)
+        .send({ id: action.payload })
         .end((err, res) => {
           if (err) {
             return next(deleteGroup(err));
