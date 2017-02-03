@@ -9,7 +9,7 @@ const favicon           = require('serve-favicon');
 const serveStatic       = require('serve-static');
 const webpack           = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
-const webpackConfig     = require('../webpack.config.js');
+const webpackConfig     = require('../webpack.config.dev.js');
 const createApi         = require('./api');
 
 module.exports = class {
