@@ -23,7 +23,6 @@ const Header = ({
   <mui.Toolbar>
     <mui.ToolbarGroup>
       <p>Date début</p>
-      &nbsp;
       <mui.IconButton tooltip="Pas de date de début"
                       onClick={() => onMinDateChanged(null)}
                       style={styles.button}>
@@ -34,7 +33,6 @@ const Header = ({
 
     <mui.ToolbarGroup>
       <p>Date fin</p>
-      &nbsp;
       <mui.IconButton tooltip="Pas de date de fin"
                       onClick={() => onMaxDateChanged(null)}
                       style={styles.button}>
@@ -45,7 +43,6 @@ const Header = ({
 
     <mui.ToolbarGroup>
       <p>Compte</p>
-      &nbsp;
       <mui.SelectField value={account} onChange={(event, index, value) => onAccountChanged(value)} width={200}>
         {([{ id: null, display: 'Tous' }].concat(accounts)).map(account => (<mui.MenuItem key={account.id} value={account.id} primaryText={account.display} />))}
       </mui.SelectField>
