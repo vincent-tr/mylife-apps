@@ -23,6 +23,22 @@ export default handleActions({
     }))})
   },
 
+  [actionTypes.CREATE_GROUP] : {
+    next : (state, action) => {
+        const { _id: id, ...props } = action.payload;
+        const group = Object.assign({ id }, props);
+
+      return {
+        ...state,
+        list: state.list.set(group.id, group)
+      };
+    }
+  },
+
+  [actionTypes.DELETE_GROUP] : {
+    next : (state, action) => ({ ...state, list: state.list.delete(action.payload) })
+  },
+
   [actionTypes.SELECT_GROUP] : {
     next : (state, action) => ({ ...state, selected : action.payload })
   }

@@ -65,12 +65,11 @@ const dataService = (/*store*/) => next => action => {
       request
         .delete('/api/group')
         .send({ id: action.payload })
-        .end((err, res) => {
+        .end((err/*, res*/) => {
           if (err) {
             return next(deleteGroup(err));
           }
-          const data = JSON.parse(res.text);
-          return next(deleteGroup(data));
+          return next(deleteGroup(action.payload));
         });
       break;
 
