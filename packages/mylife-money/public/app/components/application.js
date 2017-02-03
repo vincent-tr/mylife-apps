@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Theme from './theme';
+import Theme from './base/theme';
 import MainTabs from './main-tabs';
 
 const styles = {
