@@ -11,4 +11,8 @@ const Theme = (props) => (
   </muiStyles.MuiThemeProvider>
 );
 
+Theme.propTypes = {
+  children: React.PropTypes.node
+};
+
 export default Theme;
