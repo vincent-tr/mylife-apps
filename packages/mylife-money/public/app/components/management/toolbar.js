@@ -4,6 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
 import base from '../base/index';
+import groupEditor from './group-editor';
 
 const styles = {
   icon: {
@@ -16,7 +17,7 @@ const styles = {
   }
 };
 
-const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
+const Toolbar = ({ group, onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
 
@@ -29,7 +30,7 @@ const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
 
       <mui.IconButton tooltip="Editer le groupe"
                       tooltipPosition="top-right"
-                      onClick={onGroupEdit}
+                      onClick={() => groupEditor(group, (err, group) => onGroupEdit(group))}
                       disabled={!canChange}
                       style={styles.button}>
         <icons.actions.Edit />
@@ -48,6 +49,7 @@ const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
 );
 
 Toolbar.propTypes = {
+  group         : React.PropTypes.object,
   onGroupCreate : React.PropTypes.func.isRequired,
   onGroupEdit   : React.PropTypes.func.isRequired,
   onGroupDelete : React.PropTypes.func.isRequired,

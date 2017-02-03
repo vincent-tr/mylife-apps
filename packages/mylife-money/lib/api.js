@@ -106,10 +106,13 @@ function createGroup(group, done) {
 }
 
 function updateGroup(group, done) {
+  group._id = group.id;
+  delete group.id;
   co(function*() {
     const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
-    return yield groups.update({ _id: group._id }, group);
+    yield groups.update({ _id: group._id }, group);
+    return group;
   }).then((value) => done(null, value), (err) => done(err));
 }
 
