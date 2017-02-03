@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
+import base from '../base/index';
 
 const styles = {
   icon: {
@@ -36,7 +37,7 @@ const Toolbar = ({ onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
 
       <mui.IconButton tooltip="Supprimer le groupe"
                       tooltipPosition="top-right"
-                      onClick={onGroupDelete}
+                      onClick={(id) => base.confirm({ lines: ['Supprimer le groupe ?'], proceed: () => onGroupDelete(id) })}
                       disabled={!canChange}
                       style={styles.button}>
         <icons.actions.Delete />

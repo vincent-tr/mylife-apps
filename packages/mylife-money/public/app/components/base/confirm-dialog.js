@@ -1,25 +1,28 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import { confirmable, createConfirmation } from 'react-confirm';
+import Theme from './theme';
 
 const ConfirmDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation,*/ options }) => (
-  <mui.Dialog
-    title={options.title}
-    actions={<div>
-              <mui.FlatButton
-                label="Oui"
-                onTouchTap={() => proceed()} />
-              <mui.FlatButton
-                label="Non"
-                onTouchTap={() => cancel()} />
-            </div>}
-    modal={true}
-    open={show}
-    autoScrollBodyContent={true}>
-    <mui.List>
-      {options.lines.map(it => (<mui.ListItem key={it} primaryText={it} />))}
-    </mui.List>
-  </mui.Dialog>
+  <Theme>
+    <mui.Dialog
+      title={options.title}
+      actions={<div>
+                <mui.FlatButton
+                  label="Oui"
+                  onTouchTap={() => proceed()} />
+                <mui.FlatButton
+                  label="Non"
+                  onTouchTap={() => cancel()} />
+              </div>}
+      modal={true}
+      open={show}
+      autoScrollBodyContent={true}>
+      <mui.List>
+        {options.lines.map(it => (<mui.ListItem key={it} primaryText={it} />))}
+      </mui.List>
+    </mui.Dialog>
+  </Theme>
 );
 
 ConfirmDialog.propTypes = {
@@ -33,7 +36,11 @@ ConfirmDialog.propTypes = {
 
 const confirm = createConfirmation(confirmable(ConfirmDialog));
 
-export default (lines, title, done) =>
-  confirm({ options: { lines, title }}).then(
-    () => done(null, true),
-    () => done(null, false));
+export default (options) => {
+  options.title = options.title || 'Confirmation';
+  options.lines = options.lines || ['Confirmer ?'];
+
+  confirm({ options }).then(
+    () => (options.proceed && options.proceed()),
+    () => (options.cancel && options.cancel()));
+};

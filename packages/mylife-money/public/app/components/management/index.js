@@ -7,7 +7,6 @@ import TreeContainer from '../../containers/groups/tree-container.js';
 import ToolbarContainer from '../../containers/management/toolbar-container.js';
 
 import tabStyles from '../base/tab-styles';
-import confirmDialog from '../base/confirm-dialog';
 
 const styles = {
   div:{
