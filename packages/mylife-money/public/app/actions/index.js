@@ -45,7 +45,7 @@ export const getOperations = createAction(actionTypes.QUERY_OPERATIONS);
 
 export const clearError    = createAction(actionTypes.CLEAR_ERROR);
 
-const managementRefresh         = createAction(actionTypes.MANAGEMENT_REFRESH);
+const queryManagementRefresh    = createAction(actionTypes.MANAGEMENT_REFRESH);
 const queryManagementSetMinDate = createAction(actionTypes.MANAGEMENT_SET_MIN_DATE);
 const queryManagementSetMaxDate = createAction(actionTypes.MANAGEMENT_SET_MAX_DATE);
 const queryManagementSetAccount = createAction(actionTypes.MANAGEMENT_SET_ACCOUNT);
@@ -70,3 +70,15 @@ export const managementSetAccount = (value) => {
     dispatch(managementRefresh());
   };
 };
+
+export const managementRefresh    = () => {
+  return (dispatch, getState) => {
+    const management = getState().management;
+    dispatch(queryManagementRefresh({
+      minDate: management.minDate,
+      maxDate: management.maxDate,
+      account: management.account,
+      // TODO: groups
+    }));
+  };
+}

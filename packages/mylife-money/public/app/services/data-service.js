@@ -75,7 +75,8 @@ const dataService = (/*store*/) => next => action => {
 
     case actionTypes.QUERY_OPERATIONS:
       request
-        .get('/api/operations') // TODO: parameters
+        .get('/api/operations')
+        .query(action.payload)
         .end((err, res) => {
           if (err) {
             return next(getOperations(new Error(JSON.parse(res.text))));
