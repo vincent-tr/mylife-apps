@@ -14,7 +14,7 @@ const styles = {
 
 const Tree = ({ groups }) => (
   <mui.List style={Object.assign({}, styles.tree, tabStyles.scrollable)}>
-    {groups.map((group) => (<NodeContainer key={group.id} group={group} />))}
+    {groups.map((group) => (<NodeContainer key={group.id} group={group} level={0} />))}
   </mui.List>
 );
 
