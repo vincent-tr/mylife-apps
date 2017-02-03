@@ -19,4 +19,5 @@ export default keyMirror({
   QUERY_OPERATIONS   : null,
   GET_OPERATIONS     : null,
 
+  CLEAR_ERROR        : null,
 });

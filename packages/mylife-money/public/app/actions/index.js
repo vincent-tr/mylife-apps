@@ -33,3 +33,5 @@ export const deleteGroup = () => {
 };
 
 export const getOperations = createAction(actionTypes.QUERY_OPERATIONS);
+
+export const clearError = createAction(actionTypes.CLEAR_ERROR);
