@@ -1,7 +1,6 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { managementSetMinDate, managementSetMaxDate, managementSetAccount } from '../../actions/index';
 
 import Table from '../../components/management/table';
 

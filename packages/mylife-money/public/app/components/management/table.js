@@ -2,8 +2,6 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import icons from '../icons';
-import base from '../base/index';
 import tabStyles from '../base/tab-styles';
 
 const styles = {
