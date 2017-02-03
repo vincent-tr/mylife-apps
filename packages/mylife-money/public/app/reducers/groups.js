@@ -6,8 +6,8 @@ import Immutable from 'immutable';
 
 const setGroup = {
   next : (state, action) => {
-      const { _id: id, ...props } = action.payload;
-      const group = Object.assign({ id }, props);
+    const { _id: id, ...props } = action.payload;
+    const group = Object.assign({ id }, props);
 
     return {
       ...state,

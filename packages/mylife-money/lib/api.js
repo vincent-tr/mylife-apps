@@ -15,7 +15,7 @@ module.exports = () => {
     getAccounts((err, res) => {
       if(err) {
         logger.error(err);
-        return response.status(500).json(err);
+        return response.status(500).json(err.message);
       }
       response.json(res);
     });
@@ -25,7 +25,7 @@ module.exports = () => {
     getGroups((err, res) => {
       if(err) {
         logger.error(err);
-        return response.status(500).json(err);
+        return response.status(500).json(err.message);
       }
       response.json(res);
     });
@@ -36,7 +36,7 @@ module.exports = () => {
     createGroup(group, (err, res) => {
       if(err) {
         logger.error(err);
-        return response.status(500).json(err);
+        return response.status(500).json(err.message);
       }
       logger.info(`group created: ${JSON.stringify(res)}`);
       response.json(res);
@@ -48,7 +48,7 @@ module.exports = () => {
     updateGroup(group, (err, res) => {
       if(err) {
         logger.error(err);
-        return response.status(500).json(err);
+        return response.status(500).json(err.message);
       }
       logger.info(`group updated: ${JSON.stringify(res)}`);
       response.json(res);
@@ -60,7 +60,7 @@ module.exports = () => {
     deleteGroup(id, (err, res) => {
       if(err) {
         logger.error(err);
-        return response.status(500).json(err);
+        return response.status(500).json(err.message);
       }
       logger.info(`group deleted: ${id}`);
       response.json(res);
@@ -72,7 +72,7 @@ module.exports = () => {
     getOperations(minDate, maxDate, accountId, (err, res) => {
       if(err) {
         logger.error(err);
-        return response.status(500).json(err);
+        return response.status(500).json(err.message);
       }
       response.json(res);
     });
@@ -117,6 +117,14 @@ function deleteGroup(id, done) {
   co(function*() {
     const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
+    const operations = coMonk(db.get('operations'));
+
+    const child = groups.findOne({ parent: id });
+    if(child) { throw new Error(`Cannot delete group '${id}' because it has children groups`); }
+
+    const operation = operations.findOne({ group: id });
+    if(operation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
+
     return yield groups.remove({ _id: id });
   }).then((value) => done(null, value), (err) => done(err));
 }

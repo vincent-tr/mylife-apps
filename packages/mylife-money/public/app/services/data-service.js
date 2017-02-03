@@ -16,7 +16,7 @@ const dataService = (/*store*/) => next => action => {
         .get('/api/accounts')
         .end((err, res) => {
           if (err) {
-            return next(getAccounts(err));
+            return next(getAccounts(new Error(JSON.parse(res.text))));
           }
           const data = JSON.parse(res.text);
           return next(getAccounts(data));
@@ -28,7 +28,7 @@ const dataService = (/*store*/) => next => action => {
         .get('/api/groups')
         .end((err, res) => {
           if (err) {
-            return next(getGroups(err));
+            return next(getGroups(new Error(JSON.parse(res.text))));
           }
           const data = JSON.parse(res.text);
           return next(getGroups(data));
@@ -41,7 +41,7 @@ const dataService = (/*store*/) => next => action => {
         .send(action.payload)
         .end((err, res) => {
           if (err) {
-            return next(createGroup(err));
+            return next(createGroup(new Error(JSON.parse(res.text))));
           }
           const data = JSON.parse(res.text);
           return next(createGroup(data));
@@ -54,7 +54,7 @@ const dataService = (/*store*/) => next => action => {
         .send(action.payload)
         .end((err, res) => {
           if (err) {
-            return next(updateGroup(err));
+            return next(updateGroup(new Error(JSON.parse(res.text))));
           }
           const data = JSON.parse(res.text);
           return next(updateGroup(data));
@@ -65,9 +65,9 @@ const dataService = (/*store*/) => next => action => {
       request
         .delete('/api/group')
         .send({ id: action.payload })
-        .end((err/*, res*/) => {
+        .end((err, res) => {
           if (err) {
-            return next(deleteGroup(err));
+            return next(deleteGroup(new Error(JSON.parse(res.text))));
           }
           return next(deleteGroup(action.payload));
         });
@@ -78,7 +78,7 @@ const dataService = (/*store*/) => next => action => {
         .get('/api/operations') // TODO: parameters
         .end((err, res) => {
           if (err) {
-            return next(getOperations(err));
+            return next(getOperations(new Error(JSON.parse(res.text))));
           }
           const data = JSON.parse(res.text);
           return next(getOperations(data));
