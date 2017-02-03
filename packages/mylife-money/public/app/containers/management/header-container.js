@@ -6,9 +6,10 @@ import { managementSetMinDate, managementSetMaxDate, managementSetAccount } from
 import Header from '../../components/management/header';
 
 const mapStateToProps = (state) => ({
-  minDate : state.management.minDate,
-  maxDate : state.management.maxDate,
-  account : state.management.account
+  accounts : state.accounts.toArray(),
+  minDate  : state.management.minDate,
+  maxDate  : state.management.maxDate,
+  account  : state.management.account
 });
 
 const mapDispatchToProps = (dispatch) => ({

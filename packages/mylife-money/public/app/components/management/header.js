@@ -9,10 +9,14 @@ const styles = {
     height: 56,
     width: 56,
     overflow: 'inherit'
+  },
+  date: {
+    width: 100
   }
 };
 
 const Header = ({
+  accounts,
   minDate, maxDate, account,
   onMinDateChanged, onMaxDateChanged, onAccountChanged
 }) => (
@@ -25,7 +29,7 @@ const Header = ({
                       style={styles.button}>
         <icons.actions.Delete />
       </mui.IconButton>
-      <mui.DatePicker id="minDate" value={minDate} onChange={(event, date) => onMinDateChanged(date)} />
+      <mui.DatePicker id="minDate" value={minDate} onChange={(event, date) => onMinDateChanged(date)} textFieldStyle={styles.date} />
     </mui.ToolbarGroup>
 
     <mui.ToolbarGroup>
@@ -36,17 +40,21 @@ const Header = ({
                       style={styles.button}>
         <icons.actions.Delete />
       </mui.IconButton>
-      <mui.DatePicker id="maxDate" value={maxDate} onChange={(event, date) => onMaxDateChanged(date)} />
+      <mui.DatePicker id="maxDate" value={maxDate} onChange={(event, date) => onMaxDateChanged(date)} textFieldStyle={styles.date} />
     </mui.ToolbarGroup>
 
     <mui.ToolbarGroup>
       <p>Compte</p>
       &nbsp;
+      <mui.SelectField value={account} onChange={(event, index, value) => onAccountChanged(value)} width={200}>
+        {([{ id: null, display: 'Tous' }].concat(accounts)).map(account => (<mui.MenuItem key={account.id} value={account.id} primaryText={account.display} />))}
+      </mui.SelectField>
     </mui.ToolbarGroup>
   </mui.Toolbar>
 );
 
 Header.propTypes = {
+  accounts         : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   minDate          : React.PropTypes.instanceOf(Date),
   maxDate          : React.PropTypes.instanceOf(Date),
   account          : React.PropTypes.string,
