@@ -6,8 +6,8 @@ import icons from '../icons';
 
 const styles = {
   button: {
-    height: '56px',
-    width: '56px',
+    height: 56,
+    width: 56,
     overflow: 'inherit'
   }
 };
