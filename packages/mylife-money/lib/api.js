@@ -119,10 +119,10 @@ function deleteGroup(id, done) {
     const groups = coMonk(db.get('groups'));
     const operations = coMonk(db.get('operations'));
 
-    const child = groups.findOne({ parent: id });
+    const child = yield groups.findOne({ parent: id });
     if(child) { throw new Error(`Cannot delete group '${id}' because it has children groups`); }
 
-    const operation = operations.findOne({ group: id });
+    const operation = yield operations.findOne({ group: id });
     if(operation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
 
     return yield groups.remove({ _id: id });
