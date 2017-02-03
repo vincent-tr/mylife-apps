@@ -4,9 +4,16 @@ import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
 import base from '../base/index';
+import tabStyles from '../base/tab-styles';
+
+const styles = {
+  tableWrapper: {
+    height : 'calc(100% - 65px)',
+  }
+};
 
 const Table = ({ operations }) => (
-  <mui.Table>
+  <mui.Table style={tabStyles.fullHeight} wrapperStyle={styles.tableWrapper}>
     <mui.TableHeader>
       <mui.TableRow>
         <mui.TableHeaderColumn>Compte</mui.TableHeaderColumn>
