@@ -5,6 +5,7 @@ import * as mui from 'material-ui';
 
 import TreeContainer from '../../containers/groups/tree-container.js';
 import ToolbarContainer from '../../containers/management/toolbar-container.js';
+import HeaderContainer from '../../containers/management/header-container.js';
 
 import tabStyles from '../base/tab-styles';
 
@@ -36,7 +37,10 @@ const Management = () => (
       </div>
     </mui.Paper>
     <mui.Paper zDepth={1} style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
+      <div style={tabStyles.fullHeight}>
+        <HeaderContainer />
         <p>Details</p>
+      </div>
     </mui.Paper>
   </div>
 );
