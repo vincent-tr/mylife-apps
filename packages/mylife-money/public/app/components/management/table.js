@@ -66,9 +66,9 @@ const Table = ({ operations }) => {
       <mui.Toolbar>
         <mui.ToolbarGroup>
           <p>Total</p>
-          <mui.TextField id="totalDebit" value={totalDebit} style={Object.assign({}, styles.amountDebit, styles.total)} disabled={true}/>
-          <mui.TextField id="totalCredit" value={totalCredit} style={Object.assign({}, styles.amountCredit, styles.total)} disabled={true} />
-          <mui.TextField id="total" value={total} style={Object.assign({}, styles.total)} disabled={true} />
+          <p style={Object.assign({}, styles.amountDebit, styles.total)}>{totalDebit}</p>
+          <p style={Object.assign({}, styles.amountCredit, styles.total)}>{totalCredit}</p>
+          <p style={Object.assign({}, styles.total)}>{total}</p>
         </mui.ToolbarGroup>
       </mui.Toolbar>
     </div>
