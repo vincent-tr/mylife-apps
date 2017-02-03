@@ -29,15 +29,13 @@ const styles = {
 
 const Management = () => (
   <div style={styles.div}>
-    <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.scrollable, tabStyles.fullHeight)}>
+    <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
-        <TreeContainer style={tabStyles.scrollable} />
-
+        <TreeContainer />
         <ToolbarContainer />
-
       </div>
     </mui.Paper>
-    <mui.Paper zDepth={1} style={Object.assign({}, styles.paperRight, tabStyles.scrollable, tabStyles.fullHeight)}>
+    <mui.Paper zDepth={1} style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
         <p>Details</p>
     </mui.Paper>
   </div>

@@ -2,11 +2,18 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
+import tabStyles from '../base/tab-styles';
 
 import NodeContainer from '../../containers/groups/node-container';
 
+const styles = {
+  tree: {
+    height : 'calc(100% - 90px)',
+  }
+};
+
 const Tree = ({ groups }) => (
-  <mui.List>
+  <mui.List style={Object.assign({}, styles.tree, tabStyles.scrollable)}>
     {groups.map((group) => (<NodeContainer key={group.id} group={group} />))}
   </mui.List>
 );
