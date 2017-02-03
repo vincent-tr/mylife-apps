@@ -1,9 +1,8 @@
 'use strict';
 
 import React from 'react';
-import * as muiStyles from 'material-ui/styles/index';
 
-import theme from './theme';
+import Theme from './theme';
 import MainTabs from './main-tabs';
 
 const styles = {
@@ -27,11 +26,11 @@ class Application extends React.Component {
 
   render() {
     return (
-      <muiStyles.MuiThemeProvider muiTheme={theme}>
+      <Theme>
         <div style={styles.root}>
           <MainTabs activeTab={this.state.tab} onTabChanged={(value) => this.setState({ tab: value })} />
         </div>
-      </muiStyles.MuiThemeProvider>
+      </Theme>
     );
   }
 }
