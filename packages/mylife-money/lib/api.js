@@ -68,8 +68,8 @@ module.exports = () => {
   });
 
   router.route('/operations').get(function(request, response) {
-    const { minDate, maxDate, accountId } = request.params;
-    getOperations(minDate, maxDate, accountId, (err, res) => {
+    const { minDate, maxDate, account } = request.params;
+    getOperations(minDate, maxDate, account, (err, res) => {
       if(err) {
         logger.error(err);
         return response.status(500).json(err.message);
@@ -132,7 +132,7 @@ function deleteGroup(id, done) {
   }).then((value) => done(null, value), (err) => done(err));
 }
 
-function getOperations(minDate, maxDate, accountId, done) {
+function getOperations(minDate, maxDate, account, done) {
   co(function*() {
     const db     = monk(config.mongo);
     const operations = coMonk(db.get('operations'));
@@ -143,8 +143,8 @@ function getOperations(minDate, maxDate, accountId, done) {
     if(maxDate) {
       conditions.push({ date: { $lte: maxDate } });
     }
-    if(accountId) {
-      conditions.push({ account: accountId });
+    if(account) {
+      conditions.push({ account });
     }
     const criteria = {};
     if(conditions.length) {
