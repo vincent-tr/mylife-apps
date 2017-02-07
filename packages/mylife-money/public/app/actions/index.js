@@ -88,14 +88,15 @@ export const managementRefresh = () => {
 
     let currentGroupId = getSelectedGroupId(state);
     const groups = [];
+    if(!currentGroupId) {
+      groups.push(null); // unset
+    }
     while(currentGroupId) {
       groups.push(currentGroupId);
       const group = getGroup(state, { group: currentGroupId });
       currentGroupId = group.parent;
     }
 
-    dispatch(queryManagementRefresh({
-      groups
-    }));
+    dispatch(queryManagementRefresh(groups));
   };
 };
