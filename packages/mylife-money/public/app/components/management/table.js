@@ -73,7 +73,7 @@ const Table = ({ operations }) => {
       </mui.Toolbar>
     </div>
   );
-}
+};
 
 Table.propTypes = {
   operations : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired

@@ -52,7 +52,7 @@ export const getOperations = () => {
       account : management.account
     }));
   };
-}
+};
 
 export const clearError = createAction(actionTypes.CLEAR_ERROR);
 
