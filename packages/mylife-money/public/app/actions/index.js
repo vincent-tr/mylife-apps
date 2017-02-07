@@ -4,7 +4,7 @@ let groupIdCount = 0;
 
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
-import { getSelectedGroupId } from '../selectors/groups';
+import { getSelectedGroupId, getGroup } from '../selectors/groups';
 
 export const getAccounts = createAction(actionTypes.QUERY_ACCOUNTS);
 
@@ -39,11 +39,22 @@ export const deleteGroup = () => {
   };
 };
 
-export const updateGroup   = createAction(actionTypes.QUERY_UPDATE_GROUP);
+export const updateGroup = createAction(actionTypes.QUERY_UPDATE_GROUP);
 
-export const getOperations = createAction(actionTypes.QUERY_OPERATIONS);
+const queryOperations = createAction(actionTypes.QUERY_OPERATIONS);
 
-export const clearError    = createAction(actionTypes.CLEAR_ERROR);
+export const getOperations = () => {
+  return (dispatch, getState) => {
+    const management = getState().management;
+    dispatch(queryOperations({
+      minDate : management.minDate,
+      maxDate : management.maxDate,
+      account : management.account
+    }));
+  };
+}
+
+export const clearError = createAction(actionTypes.CLEAR_ERROR);
 
 const queryManagementRefresh    = createAction(actionTypes.MANAGEMENT_REFRESH);
 const queryManagementSetMinDate = createAction(actionTypes.MANAGEMENT_SET_MIN_DATE);
@@ -53,32 +64,38 @@ const queryManagementSetAccount = createAction(actionTypes.MANAGEMENT_SET_ACCOUN
 export const managementSetMinDate = (value) => {
   return (dispatch) => {
     dispatch(queryManagementSetMinDate(value));
-    dispatch(managementRefresh());
+    dispatch(getOperations());
   };
 };
 
 export const managementSetMaxDate = (value) => {
   return (dispatch) => {
     dispatch(queryManagementSetMaxDate(value));
-    dispatch(managementRefresh());
+    dispatch(getOperations());
   };
 };
 
 export const managementSetAccount = (value) => {
   return (dispatch) => {
     dispatch(queryManagementSetAccount(value));
-    dispatch(managementRefresh());
+    dispatch(getOperations());
   };
 };
 
-export const managementRefresh    = () => {
+export const managementRefresh = () => {
   return (dispatch, getState) => {
-    const management = getState().management;
+    const state = getState();
+
+    let currentGroupId = getSelectedGroupId(state);
+    const groups = [];
+    while(currentGroupId) {
+      groups.push(currentGroupId);
+      const group = getGroup(state, { group: currentGroupId });
+      currentGroupId = group.parent;
+    }
+
     dispatch(queryManagementRefresh({
-      minDate: management.minDate,
-      maxDate: management.maxDate,
-      account: management.account,
-      // TODO: groups
+      groups
     }));
   };
 };

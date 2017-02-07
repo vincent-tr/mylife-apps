@@ -2,6 +2,7 @@
 
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
+import { managementRefresh } from './index';
 
 export const getAccounts   = createAction(actionTypes.GET_ACCOUNTS);
 
@@ -10,4 +11,11 @@ export const createGroup   = createAction(actionTypes.CREATE_GROUP);
 export const updateGroup   = createAction(actionTypes.UPDATE_GROUP);
 export const deleteGroup   = createAction(actionTypes.DELETE_GROUP);
 
-export const getOperations = createAction(actionTypes.GET_OPERATIONS);
+const internalGetOperations = createAction(actionTypes.GET_OPERATIONS);
+
+export const getOperations = (value) => {
+  return (dispatch) => {
+    dispatch(internalGetOperations(value));
+    dispatch(managementRefresh());
+  };
+};
