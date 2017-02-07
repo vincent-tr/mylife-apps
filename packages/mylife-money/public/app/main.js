@@ -28,7 +28,7 @@ const store = createStore(
 
 store.dispatch(getAccounts());
 store.dispatch(getGroups());
-store.dispatch(getOperations()); // TODO: parameters
+store.dispatch(getOperations());
 
 ReactDOM.render(
   <Provider store={store}>
