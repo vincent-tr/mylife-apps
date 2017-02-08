@@ -110,4 +110,4 @@ export const importOperations = (file) => {
 
     reader.readAsText(file);
   };
-}
+};

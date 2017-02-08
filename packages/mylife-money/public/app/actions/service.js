@@ -34,4 +34,4 @@ export const managementImportOperations = (count) => {
     dispatch(getOperations());
     dispatch(showInfo(`${count} operation(s) importées`));
   };
-}
+};
