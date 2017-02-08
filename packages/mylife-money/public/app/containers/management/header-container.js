@@ -1,7 +1,7 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { managementSetMinDate, managementSetMaxDate, managementSetAccount } from '../../actions/index';
+import { setMinDate, setMaxDate, setAccount } from '../../actions/management';
 
 import Header from '../../components/management/header';
 
@@ -13,9 +13,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onMinDateChanged   : (value) => dispatch(managementSetMinDate(value)),
-  onMaxDateChanged   : (value) => dispatch(managementSetMaxDate(value)),
-  onAccountChanged   : (value) => dispatch(managementSetAccount(value))
+  onMinDateChanged   : (value) => dispatch(setMinDate(value)),
+  onMaxDateChanged   : (value) => dispatch(setMaxDate(value)),
+  onAccountChanged   : (value) => dispatch(setAccount(value))
 });
 
 const HeaderContainer = connect(

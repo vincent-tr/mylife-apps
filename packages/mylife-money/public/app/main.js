@@ -11,7 +11,8 @@ import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import dataService from './services/data-service';
-import { getAccounts, getGroups, getOperations } from './actions/index';
+import { getAccounts, getGroups } from './actions/common';
+import { getOperations } from './actions/management';
 import Application from './components/application';
 import reducer from './reducers/index';
 

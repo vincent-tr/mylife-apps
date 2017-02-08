@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 import { getGroup } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
-import { createGroup, updateGroup, deleteGroup } from '../../actions/index';
+import { createGroup, updateGroup, deleteGroup } from '../../actions/common';
 
 import Toolbar from '../../components/management/toolbar';
 

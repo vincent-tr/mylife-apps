@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 import { makeGetSortedChildren } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
-import { selectGroup } from '../../actions/index';
+import { selectGroup } from '../../actions/management';
 
 import GroupNode from '../../components/management/group-node';
 

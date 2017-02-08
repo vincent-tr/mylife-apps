@@ -6,7 +6,7 @@ import {
   getAccounts,
   getGroups, createGroup, updateGroup, deleteGroup,
   managementGetOperations
-} from '../actions/service-actions';
+} from '../actions/service';
 
 const dataService = (/*store*/) => next => action => {
   next(action);

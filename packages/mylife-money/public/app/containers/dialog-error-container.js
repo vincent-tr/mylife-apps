@@ -1,7 +1,7 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { clearError } from '../actions/index';
+import { clearError } from '../actions/common';
 
 import DialogError from '../components/dialog-error';
 
