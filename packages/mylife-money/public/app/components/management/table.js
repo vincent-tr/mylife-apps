@@ -66,7 +66,7 @@ const Table = ({ onSelect, operations }) => {
             <mui.TableHeaderColumn>Libellé</mui.TableHeaderColumn>
           </mui.TableRow>
         </mui.TableHeader>
-        <mui.TableBody>
+        <mui.TableBody deselectOnClickaway={false}>
           {operations.map(op => {
             const rowStyle = op.fromChildGroup ? styles.fromChild : styles.normal;
             const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
