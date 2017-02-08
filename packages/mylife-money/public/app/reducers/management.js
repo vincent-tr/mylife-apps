@@ -38,7 +38,7 @@ export default handleActions({
   [actionTypes.MANAGEMENT_REFRESH] : {
     next : (state, action) => ({ ...state, operations: {
       ...state.operations,
-        visible: state.operations.visible.withMutations(map => {
+      visible: state.operations.visible.withMutations(map => {
         map.clear();
         const groups = action.payload;
         for(const operation of state.operations.all.values()) {

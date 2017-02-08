@@ -74,7 +74,7 @@ const dataService = (/*store*/) => next => action => {
         });
       break;
 
-    case actionTypes.MANAGEMENT_QUERY_OPERATIONS:
+    case actionTypes.MANAGEMENT_QUERY_OPERATIONS: {
       const query = {};
       if(action.payload.minDate) {
         query.minDate = action.payload.minDate.valueOf();
@@ -90,12 +90,13 @@ const dataService = (/*store*/) => next => action => {
         .query(query)
         .end((err, res) => {
           if (err) {
-            return next(getOperations(new Error(JSON.parse(res.text))));
+            return next(managementGetOperations(new Error(JSON.parse(res.text))));
           }
           const data = JSON.parse(res.text);
           return next(managementGetOperations(data));
         });
       break;
+    }
   }
 };
 

@@ -9,7 +9,7 @@ const proxyHandler = {
     }
     throw new Error(`Invalid constant name: '${name}'`);
   }
-}
+};
 
 export default function(target) {
   target = keyMirror(target);
