@@ -2,10 +2,12 @@
 
 import { createSelector } from 'reselect';
 
-export const getAllOperations     = (state) => state.management.operations.all.toArray();
-export const getVisibleOperations = (state) => state.management.operations.visible.toArray().map(id => state.management.operations.all.get(id));
-export const getSelectedOperations = (state) => state.management.operations.selected.toArray().map(id => state.management.operations.all.get(id));
-export const getSelectedGroupId   = (state) => state.management.selectedGroup;
+export const getAllOperations        = (state) => state.management.operations.all.toArray();
+export const getVisibleOperationIds  = (state) => state.management.operations.visible.toArray();
+export const getVisibleOperations    = (state) => getVisibleOperationIds(state).map(id => state.management.operations.all.get(id));
+export const getSelectedOperationIds = (state) => state.management.operations.selected.toArray();
+export const getSelectedOperations   = (state) => getSelectedOperationIds(state).map(id => state.management.operations.all.get(id));
+export const getSelectedGroupId      = (state) => state.management.selectedGroup;
 
 export const getSortedVisibleOperations = createSelector(
   [ getVisibleOperations ],

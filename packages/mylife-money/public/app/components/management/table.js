@@ -71,7 +71,7 @@ const Table = ({ onSelect, operations }) => {
             const rowStyle = op.fromChildGroup ? styles.fromChild : styles.normal;
             const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
             return (
-              <mui.TableRow key={op.operation.id} style={rowStyle}>
+              <mui.TableRow key={op.operation.id} style={rowStyle} selected={op.selected}>
                 <mui.TableRowColumn>{op.account && op.account.display}</mui.TableRowColumn>
                 <mui.TableRowColumn style={amountStyle}>{op.operation.amount}</mui.TableRowColumn>
                 <mui.TableRowColumn>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableRowColumn>
