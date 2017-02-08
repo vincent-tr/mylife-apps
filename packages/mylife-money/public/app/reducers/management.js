@@ -63,6 +63,10 @@ export default handleActions({
     }})
   },
 
+  [actionTypes.MANAGEMENT_MOVE_OPERATIONS] : {
+    next : (state, action) => state // TODO
+  }
+
 }, {
   minDate       : new Date(new Date().getFullYear(), 0, 1),
   maxDate       : null,

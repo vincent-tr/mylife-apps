@@ -5,7 +5,7 @@ let groupIdCount = 0;
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
 import { getGroup } from '../selectors/groups';
-import { getSelectedGroupId } from '../selectors/management';
+import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
 
 const querySelectGroup   = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
 const queryCreateGroup   = createAction(actionTypes.MANAGEMENT_QUERY_CREATE_GROUP);
@@ -39,6 +39,7 @@ export const deleteGroup = () => {
 export const updateGroup = createAction(actionTypes.MANAGEMENT_QUERY_UPDATE_GROUP);
 
 const queryOperations = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS);
+const queryMoveOperations = createAction(actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS);
 
 export const getOperations = () => {
   return (dispatch, getState) => {
@@ -48,6 +49,13 @@ export const getOperations = () => {
       maxDate : management.maxDate,
       account : management.account
     }));
+  };
+};
+
+export const moveOperations = (group) => {
+  return (dispatch, getState) => {
+    const operations = getSelectedOperations(getState()).map(op => op.id);
+    dispatch(queryMoveOperations({ group, operations }));
   };
 };
 

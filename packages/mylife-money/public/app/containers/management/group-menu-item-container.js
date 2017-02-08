@@ -3,6 +3,7 @@
 import { connect } from 'react-redux';
 import { makeGetSortedChildren } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
+import { moveOperations } from '../../actions/management';
 
 import GroupMenuItem from '../../components/management/group-menu-item';
 
@@ -15,7 +16,7 @@ const mapStateToProps = () => {
 
 
 const mapDispatchToProps = (dispatch, props) => ({
-  onSelect : () => { console.log('onSelect', props); }, // TODO
+  onSelect : () => dispatch(moveOperations(props.group.id))
 });
 
 const GroupMenuItemContainer = connect(

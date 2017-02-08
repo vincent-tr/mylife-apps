@@ -5,7 +5,7 @@ import { actionTypes } from '../constants/index';
 import {
   getAccounts,
   getGroups, createGroup, updateGroup, deleteGroup,
-  managementGetOperations
+  managementGetOperations, managementMoveOperations
 } from '../actions/service';
 
 const dataService = (/*store*/) => next => action => {
@@ -94,6 +94,19 @@ const dataService = (/*store*/) => next => action => {
           }
           const data = JSON.parse(res.text);
           return next(managementGetOperations(data));
+        });
+      break;
+    }
+
+    case actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS: {
+      request
+        .put('/api/operations_move')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(managementMoveOperations(new Error(JSON.parse(res.text))));
+          }
+          return next(managementMoveOperations(action.payload));
         });
       break;
     }
