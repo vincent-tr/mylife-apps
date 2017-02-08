@@ -57,7 +57,7 @@ const Table = ({ onSelect, operations }) => {
   const { totalDebit, totalCredit, total } = summaries(operations);
   return (
     <div style={tabStyles.fullHeight}>
-      <mui.Table style={tabStyles.fullHeight} height={'calc(100% - 57px)'} wrapperStyle={styles.tableWrapper} multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}>
+      <mui.Table height={'calc(100% - 57px)'} wrapperStyle={styles.tableWrapper} multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}>
         <mui.TableHeader>
           <mui.TableRow>
             <mui.TableHeaderColumn>Compte</mui.TableHeaderColumn>
