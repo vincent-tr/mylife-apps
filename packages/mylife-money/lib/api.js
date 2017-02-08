@@ -79,6 +79,18 @@ module.exports = () => {
     });
   });
 
+  router.route('/operations_move').post(function(request, response) {
+    const { group, operations } = request.body;
+    operationsMove(group, operations, (err, status) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err.message);
+      }
+      logger.info(`Operations moved: ${JSON.stringify({ group, operations })} -> ${JSON.stringify(status)}`);
+      response.json({});
+    });
+  });
+
   return router;
 };
 
@@ -151,4 +163,16 @@ function getOperations(minDate, maxDate, account, done) {
     }
     return yield operations.find(criteria);
   }).then((value) => done(null, value), (err) => done(err));
+}
+
+function operationsMove(groupId, operationIds, done) {
+  co(function*() {
+    const db     = monk(config.mongo);
+    const operations = coMonk(db.get('operations'));
+    return yield operations.update(
+      { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
+      { $set: { group: new ObjectID(groupId) } },
+      { multi: true }
+    );
+  }).then((status) => done(null, status), (err) => done(err));
 }

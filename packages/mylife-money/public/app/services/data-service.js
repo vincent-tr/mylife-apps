@@ -100,7 +100,7 @@ const dataService = (/*store*/) => next => action => {
 
     case actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS: {
       request
-        .put('/api/operations_move')
+        .post('/api/operations_move')
         .send(action.payload)
         .end((err, res) => {
           if (err) {
