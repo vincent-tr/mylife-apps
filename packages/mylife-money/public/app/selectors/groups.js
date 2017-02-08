@@ -20,3 +20,20 @@ export const makeGetSortedChildren = () => createSelector(
   [ getChildren ],
   (groups) => groups.sortBy(it => it.display).toArray()
 );
+
+
+export const getGroupAndChildrenIds = (state, props) => {
+  if(!props.group) { return [null]; }
+
+  const groups = getGroups(state);
+  const ids    = [];
+  children(props.group);
+  return ids;
+
+  function children(id) {
+    ids.push(id);
+    for(const child of groups.filter(g => g.parent === id).map(g => g.id)) {
+      children(child);
+    }
+  }
+};

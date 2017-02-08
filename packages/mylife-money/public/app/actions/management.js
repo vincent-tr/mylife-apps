@@ -4,7 +4,7 @@ let groupIdCount = 0;
 
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
-import { getGroup } from '../selectors/groups';
+import { getGroupAndChildrenIds } from '../selectors/groups';
 import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
 
 const querySelectGroup   = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
@@ -87,19 +87,8 @@ export const setAccount = (value) => {
 
 export const refresh = () => {
   return (dispatch, getState) => {
-    const state = getState();
-
-    let currentGroupId = getSelectedGroupId(state);
-    const groups = [];
-    if(!currentGroupId) {
-      groups.push(null); // unset
-    }
-    while(currentGroupId) {
-      groups.push(currentGroupId);
-      const group = getGroup(state, { group: currentGroupId });
-      currentGroupId = group.parent;
-    }
-
+    const state  = getState();
+    const groups = getGroupAndChildrenIds(state, { group: getSelectedGroupId(state) });
     dispatch(queryRefresh(groups));
   };
 };
