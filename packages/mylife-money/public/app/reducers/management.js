@@ -64,7 +64,18 @@ export default handleActions({
   },
 
   [actionTypes.MANAGEMENT_MOVE_OPERATIONS] : {
-    next : (state, action) => state // TODO
+    next : (state, action) => ({ ...state, operations: {
+      ...state.operations,
+      all: state.operations.all.withMutations(map => {
+        for(const id of action.payload.operations) {
+          const op = map.get(id);
+          map.set(id, {
+            ...op,
+            group: action.payload.group
+          });
+        }
+      })
+    }})
   }
 
 }, {
