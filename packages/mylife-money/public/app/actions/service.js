@@ -2,7 +2,7 @@
 
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
-import { refresh, getOperations } from './management';
+import { refresh } from './management';
 
 export const getAccounts   = createAction(actionTypes.GET_ACCOUNTS);
 
@@ -26,4 +26,4 @@ export const managementMoveOperations = (value) => {
     dispatch(internalManagementMoveOperations(value));
     dispatch(refresh());
   };
-}
+};

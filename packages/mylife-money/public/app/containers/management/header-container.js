@@ -10,7 +10,7 @@ import Header from '../../components/management/header';
 
 const mapStateToProps = () => {
   const getSortedChildren = makeGetSortedChildren();
-  return (state, props) => ({
+  return (state) => ({
     canMove    : !!getSelectedOperations(state).length,
     accounts   : getAccounts(state),
     rootGroups : getSortedChildren(state, {}),

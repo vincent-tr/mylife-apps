@@ -14,7 +14,7 @@ const styles = {
   }
 };
 
-const GroupMenuItem = ({ muiTheme, level, selected, group, children, onSelect }) => (
+const GroupMenuItem = ({ group, children, onSelect }) => (
   <mui.MenuItem primaryText={group.display}
                 leftIcon={
                   <mui.IconButton tooltip="Déplacer ici"
