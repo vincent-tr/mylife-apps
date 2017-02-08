@@ -14,23 +14,24 @@ const styles = {
   }
 };
 
-const GroupMenuItem = ({ group, children, onSelect }) => (
+const GroupMenuItem = ({ group, children, onSelect, onRequestClose }) => (
   <mui.MenuItem primaryText={group.display}
                 leftIcon={
                   <mui.IconButton tooltip="Déplacer ici"
                                   tooltipPosition="top-right"
-                                  onClick={onSelect}
+                                  onClick={() => { onRequestClose(); onSelect(); } }
                                   style={styles.button}>
                     <icons.Group />
                   </mui.IconButton>
                 }
-                menuItems={children.length && children.map((child) => (<GroupMenuItemContainer key={child.id} group={child} />))} />
+                menuItems={children.length && children.map((child) => (<GroupMenuItemContainer key={child.id} group={child} onRequestClose={onRequestClose} />))} />
 );
 
 GroupMenuItem.propTypes = {
-  group    : React.PropTypes.object.isRequired,
-  children : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  onSelect : React.PropTypes.func.isRequired
+  group          : React.PropTypes.object.isRequired,
+  children       : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
+  onSelect       : React.PropTypes.func.isRequired,
+  onRequestClose : React.PropTypes.func.isRequired,
 };
 
 export default GroupMenuItem;

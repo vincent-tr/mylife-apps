@@ -17,20 +17,39 @@ const styles = {
   }
 };
 
-const Header = ({
-  enabled,
-  rootGroups
-}) => (
-  <mui.IconMenu useLayerForClickAway={true} iconButtonElement={
-    <mui.IconButton tooltip="Déplacer"
-                    style={styles.button}
-                    disabled={!enabled}>
-      <icons.actions.Move />
-    </mui.IconButton>
-  }>
-  {rootGroups.map((group) => (<GroupMenuItemContainer key={group.id} group={group} />))}
-  </mui.IconMenu>
-);
+class Header extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      open: false
+    };
+  }
+
+  handleRequestChange(value) {
+    this.setState({ open: value });
+  }
+
+  render() {
+    const { enabled, rootGroups } = this.props;
+    const { open } = this.state;
+    return (
+      <mui.IconMenu open={open}
+                    onRequestChange={(open) => this.handleRequestChange(open)}
+                    useLayerForClickAway={true}
+                    iconButtonElement={
+                      <mui.IconButton tooltip="Déplacer"
+                                      style={styles.button}
+                                      disabled={!enabled}>
+                        <icons.actions.Move />
+                      </mui.IconButton>
+                    }>
+        {rootGroups.map((group) => (<GroupMenuItemContainer key={group.id} group={group} onRequestClose={() => this.handleRequestChange(false)} />))}
+      </mui.IconMenu>
+    );
+  }
+}
 
 Header.propTypes = {
   enabled    : React.PropTypes.bool.isRequired,
