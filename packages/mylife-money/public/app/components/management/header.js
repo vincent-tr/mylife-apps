@@ -26,7 +26,7 @@ const Header = ({
 }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
-      <mui.IconMenu iconButtonElement={
+      <mui.IconMenu useLayerForClickAway={true} iconButtonElement={
         <mui.IconButton tooltip="Déplacer"
                         style={styles.button}
                         disabled={!canMove}>
