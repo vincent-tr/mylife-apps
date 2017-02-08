@@ -16,11 +16,22 @@ const styles = {
 };
 
 const Header = ({
+  canMove,
   accounts,
   minDate, maxDate, account,
   onMinDateChanged, onMaxDateChanged, onAccountChanged
 }) => (
   <mui.Toolbar>
+    <mui.ToolbarGroup>
+      <mui.IconMenu iconButtonElement={
+        <mui.IconButton tooltip="Déplacer"
+                        style={styles.button}
+                        disabled={!canMove}>
+          <icons.actions.Move />
+        </mui.IconButton>
+      }>
+      </mui.IconMenu>
+    </mui.ToolbarGroup>
     <mui.ToolbarGroup>
       <p>Date début</p>
       <mui.IconButton tooltip="Pas de date de début"
@@ -51,6 +62,7 @@ const Header = ({
 );
 
 Header.propTypes = {
+  canMove          : React.PropTypes.bool.isRequired,
   accounts         : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   minDate          : React.PropTypes.instanceOf(Date),
   maxDate          : React.PropTypes.instanceOf(Date),

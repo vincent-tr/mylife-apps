@@ -15,6 +15,7 @@ export default {
     New    : FileCreateNewFolder,
     Edit   : ActionOpenInBrowser,
     Delete : NavigationClose,
+    Move   : FileFolderOpen,
   },
 
   tabs: {

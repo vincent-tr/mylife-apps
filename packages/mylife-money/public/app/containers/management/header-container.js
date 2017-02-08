@@ -2,10 +2,12 @@
 
 import { connect } from 'react-redux';
 import { setMinDate, setMaxDate, setAccount } from '../../actions/management';
+import { getSelectedOperations } from '../../selectors/management';
 
 import Header from '../../components/management/header';
 
 const mapStateToProps = (state) => ({
+  canMove  : !!getSelectedOperations(state).length,
   accounts : state.accounts.toArray(),
   minDate  : state.management.minDate,
   maxDate  : state.management.maxDate,
