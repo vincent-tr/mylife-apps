@@ -7,6 +7,7 @@ import ActionOpenInBrowser from 'material-ui/svg-icons/action/open-in-browser';
 import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
 import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
 
+import NavigationArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 export default {
@@ -24,4 +25,8 @@ export default {
   },
 
   Group: FileFolderOpen,
+
+  utils: {
+    ArrowDropRight : NavigationArrowDropRight
+  }
 };
