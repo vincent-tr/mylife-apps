@@ -68,7 +68,7 @@ module.exports = () => {
   });
 
   router.route('/operations').get(function(request, response) {
-    const { minDate, maxDate, account } = request.params;
+    const { minDate, maxDate, account } = request.query;
     getOperations(minDate, maxDate, account, (err, res) => {
       if(err) {
         logger.error(err);

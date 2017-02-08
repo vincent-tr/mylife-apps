@@ -75,9 +75,19 @@ const dataService = (/*store*/) => next => action => {
       break;
 
     case actionTypes.MANAGEMENT_QUERY_OPERATIONS:
+      const query = {};
+      if(action.payload.minDate) {
+        query.minDate = action.payload.minDate.valueOf();
+      }
+      if(action.payload.maxDate) {
+        query.maxDate = action.payload.maxDate.valueOf();
+      }
+      if(action.payload.account) {
+        query.account = action.payload.account;
+      }
       request
         .get('/api/operations')
-        .query(action.payload)
+        .query(query)
         .end((err, res) => {
           if (err) {
             return next(getOperations(new Error(JSON.parse(res.text))));
