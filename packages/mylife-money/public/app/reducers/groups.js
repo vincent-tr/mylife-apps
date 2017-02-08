@@ -9,7 +9,7 @@ const setGroup = {
     const { _id: id, ...props } = action.payload;
     const group = Object.assign({ id }, props);
 
-    return state.list.set(group.id, group);
+    return state.set(group.id, group);
   }
 };
 
@@ -36,7 +36,7 @@ export default handleActions({
   [actionTypes.UPDATE_GROUP] : setGroup,
 
   [actionTypes.DELETE_GROUP] : {
-    next : (state, action) => ({ ...state, list: state.list.delete(action.payload) })
+    next : (state, action) => state.delete(action.payload)
   },
 
 }, Immutable.Map());
