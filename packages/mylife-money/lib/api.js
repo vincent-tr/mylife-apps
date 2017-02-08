@@ -1,12 +1,13 @@
 'use strict';
 
-const monk    = require('monk');
-const config  = require('../conf/config');
-const coMonk  = require('co-monk');
-const co      = require('co');
-const log4js  = require('log4js');
-const logger  = log4js.getLogger('mylife:money:api');
-const express = require('express');
+const { ObjectID } = require('mongodb');
+const monk         = require('monk');
+const config       = require('../conf/config');
+const coMonk       = require('co-monk');
+const co           = require('co');
+const log4js       = require('log4js');
+const logger       = log4js.getLogger('mylife:money:api');
+const express      = require('express');
 
 module.exports = () => {
   const router = express.Router();
@@ -136,19 +137,17 @@ function getOperations(minDate, maxDate, account, done) {
   co(function*() {
     const db     = monk(config.mongo);
     const operations = coMonk(db.get('operations'));
-    const conditions = [];
+    const criteria = {};
     if(minDate) {
-      conditions.push({ date: { $gte: minDate } });
+      criteria.date = criteria.date || {};
+      criteria.date.$gte = new Date(parseInt(minDate, 10));
     }
     if(maxDate) {
-      conditions.push({ date: { $lte: maxDate } });
+      criteria.date = criteria.date || {};
+      criteria.date.$lte = new Date(parseInt(maxDate, 10));
     }
     if(account) {
-      conditions.push({ account });
-    }
-    const criteria = {};
-    if(conditions.length) {
-      criteria.$and = conditions;
+      criteria.account = { $eq: new ObjectID(account) };
     }
     return yield operations.find(criteria);
   }).then((value) => done(null, value), (err) => done(err));
