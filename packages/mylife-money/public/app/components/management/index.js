@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-import TreeContainer from '../../containers/groups/tree-container.js';
+import GroupTreeContainer from '../../containers/management/group-tree-container.js';
 import ToolbarContainer from '../../containers/management/toolbar-container.js';
 import HeaderContainer from '../../containers/management/header-container.js';
 import TableContainer from '../../containers/management/table-container.js';
@@ -33,7 +33,7 @@ const Management = () => (
   <div style={styles.div}>
     <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
-        <TreeContainer />
+        <GroupTreeContainer />
         <ToolbarContainer />
       </div>
     </mui.Paper>

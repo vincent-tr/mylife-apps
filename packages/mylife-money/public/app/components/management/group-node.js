@@ -6,7 +6,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as muiColorManipulator from 'material-ui/utils/colorManipulator';
 import icons from '../icons';
 
-import NodeContainer from '../../containers/groups/node-container';
+import GroupNodeContainer from '../../containers/management/group-node-container';
 
 const getStyle = (muiTheme, selected) => {
   if(!selected) { return {}; }
@@ -15,17 +15,17 @@ const getStyle = (muiTheme, selected) => {
   return { backgroundColor };
 };
 
-const Node = ({ muiTheme, level, selected, group, children, onSelect }) => (
+const GroupNode = ({ muiTheme, level, selected, group, children, onSelect }) => (
   <mui.ListItem
     onTouchTap={onSelect}
     style={getStyle(muiTheme, selected)}
     primaryText={group.display}
     leftIcon={<icons.Group />}
-    nestedItems={children.map((child) => (<NodeContainer key={child.id} group={child} level={level+1} />))}
+    nestedItems={children.map((child) => (<GroupNodeContainer key={child.id} group={child} level={level+1} />))}
     nestedLevel={level} />
 );
 
-Node.propTypes = {
+GroupNode.propTypes = {
   muiTheme : React.PropTypes.object.isRequired,
   level    : React.PropTypes.number.isRequired,
   selected : React.PropTypes.bool.isRequired,
@@ -34,4 +34,4 @@ Node.propTypes = {
   onSelect : React.PropTypes.func.isRequired
 };
 
-export default muiThemeable()(Node);
+export default muiThemeable()(GroupNode);

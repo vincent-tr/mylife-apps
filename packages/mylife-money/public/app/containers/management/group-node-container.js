@@ -5,7 +5,7 @@ import { makeGetSortedChildren } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
 import { selectGroup } from '../../actions/index';
 
-import Node from '../../components/groups/node';
+import GroupNode from '../../components/management/group-node';
 
 const mapStateToProps = () => {
   const getSortedChildren = makeGetSortedChildren();
@@ -20,9 +20,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   onSelect : () => dispatch(selectGroup(props.group.id)),
 });
 
-const NodeContainer = connect(
+const GroupNodeContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Node);
+)(GroupNode);
 
-export default NodeContainer;
+export default GroupNodeContainer;
