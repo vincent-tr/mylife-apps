@@ -42,7 +42,7 @@ export default handleActions({
         set.clear();
         const groups = action.payload;
         for(const operation of state.operations.all.values()) {
-          if(groups.includes(operation.parent || null)) {
+          if(groups.includes(operation.group || null)) {
             set.add(operation.id);
           }
         }
