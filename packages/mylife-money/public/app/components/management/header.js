@@ -4,6 +4,8 @@ import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
 
+import GroupMenuItemContainer from '../../containers/management/group-menu-item-container';
+
 const styles = {
   button: {
     height: 56,
@@ -17,6 +19,7 @@ const styles = {
 
 const Header = ({
   canMove,
+  rootGroups,
   accounts,
   minDate, maxDate, account,
   onMinDateChanged, onMaxDateChanged, onAccountChanged
@@ -30,6 +33,7 @@ const Header = ({
           <icons.actions.Move />
         </mui.IconButton>
       }>
+      {rootGroups.map((group) => (<GroupMenuItemContainer key={group.id} group={group} />))}
       </mui.IconMenu>
     </mui.ToolbarGroup>
     <mui.ToolbarGroup>
@@ -63,6 +67,7 @@ const Header = ({
 
 Header.propTypes = {
   canMove          : React.PropTypes.bool.isRequired,
+  rootGroups       : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   accounts         : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   minDate          : React.PropTypes.instanceOf(Date),
   maxDate          : React.PropTypes.instanceOf(Date),
