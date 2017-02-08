@@ -32,10 +32,10 @@ export default handleActions({
     })
   },
 
-  [actionTypes.CREATE_GROUP] : setGroup,
-  [actionTypes.UPDATE_GROUP] : setGroup,
+  [actionTypes.MANAGEMENT_CREATE_GROUP] : setGroup,
+  [actionTypes.MANAGEMENT_UPDATE_GROUP] : setGroup,
 
-  [actionTypes.DELETE_GROUP] : {
+  [actionTypes.MANAGEMENT_DELETE_GROUP] : {
     next : (state, action) => state.delete(action.payload)
   },
 

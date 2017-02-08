@@ -36,7 +36,7 @@ const dataService = (/*store*/) => next => action => {
         });
       break;
 
-    case actionTypes.QUERY_CREATE_GROUP:
+    case actionTypes.MANAGEMENT_QUERY_CREATE_GROUP:
       request
         .put('/api/group')
         .send(action.payload)
@@ -49,7 +49,7 @@ const dataService = (/*store*/) => next => action => {
         });
       break;
 
-    case actionTypes.QUERY_UPDATE_GROUP:
+    case actionTypes.MANAGEMENT_QUERY_UPDATE_GROUP:
       request
         .post('/api/group')
         .send(action.payload)
@@ -62,7 +62,7 @@ const dataService = (/*store*/) => next => action => {
         });
       break;
 
-    case actionTypes.QUERY_DELETE_GROUP:
+    case actionTypes.MANAGEMENT_QUERY_DELETE_GROUP:
       request
         .delete('/api/group')
         .send({ id: action.payload })

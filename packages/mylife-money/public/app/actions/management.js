@@ -8,6 +8,8 @@ import { getGroup } from '../selectors/groups';
 import { getSelectedGroupId } from '../selectors/management';
 
 const querySelectGroup   = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
+const queryCreateGroup   = createAction(actionTypes.MANAGEMENT_QUERY_CREATE_GROUP);
+const queryDeleteGroup   = createAction(actionTypes.MANAGEMENT_QUERY_DELETE_GROUP);
 
 export const selectGroup = (id) => {
   return (dispatch) => {
@@ -15,6 +17,26 @@ export const selectGroup = (id) => {
     dispatch(refresh());
   };
 };
+
+export const createGroup = () => {
+  return (dispatch, getState) => {
+    const parentGroup = getSelectedGroupId(getState());
+    const newGroup = {
+      display: `group${++groupIdCount}`,
+      parent: parentGroup
+    };
+    dispatch(queryCreateGroup(newGroup));
+  };
+};
+
+export const deleteGroup = () => {
+  return (dispatch, getState) => {
+    const id = getSelectedGroupId(getState());
+    dispatch(queryDeleteGroup(id));
+  };
+};
+
+export const updateGroup = createAction(actionTypes.MANAGEMENT_QUERY_UPDATE_GROUP);
 
 const queryOperations = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS);
 
