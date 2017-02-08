@@ -17,6 +17,7 @@ export default {
     Edit   : ActionOpenInBrowser,
     Delete : NavigationClose,
     Move   : FileFolderOpen,
+    Import : ActionOpenInBrowser,
   },
 
   tabs: {

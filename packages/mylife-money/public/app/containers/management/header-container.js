@@ -1,7 +1,7 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { setMinDate, setMaxDate, setAccount } from '../../actions/management';
+import { setMinDate, setMaxDate, setAccount, importOperations } from '../../actions/management';
 import { getSelectedOperations } from '../../selectors/management';
 import { getAccounts } from '../../selectors/accounts';
 import { makeGetSortedChildren } from '../../selectors/groups';
@@ -23,7 +23,8 @@ const mapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
   onMinDateChanged   : (value) => dispatch(setMinDate(value)),
   onMaxDateChanged   : (value) => dispatch(setMaxDate(value)),
-  onAccountChanged   : (value) => dispatch(setAccount(value))
+  onAccountChanged   : (value) => dispatch(setAccount(value)),
+  onOperationsImport : (file) => dispatch(importOperations(file))
 });
 
 const HeaderContainer = connect(

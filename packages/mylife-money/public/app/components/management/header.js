@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
+import base from '../base/index';
 
 import MoveButton from './move-button';
 
@@ -22,10 +23,15 @@ const Header = ({
   rootGroups,
   accounts,
   minDate, maxDate, account,
-  onMinDateChanged, onMaxDateChanged, onAccountChanged
+  onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport
 }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
+      <base.IconFileButton tooltip="Importer des operations"
+                           style={styles.button}
+                           onFileSelected={onOperationsImport}>
+        <icons.actions.Import />
+      </base.IconFileButton>
       <MoveButton enabled={canMove} rootGroups={rootGroups} />
     </mui.ToolbarGroup>
     <mui.ToolbarGroup>
@@ -58,15 +64,16 @@ const Header = ({
 );
 
 Header.propTypes = {
-  canMove          : React.PropTypes.bool.isRequired,
-  rootGroups       : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  accounts         : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  minDate          : React.PropTypes.instanceOf(Date),
-  maxDate          : React.PropTypes.instanceOf(Date),
-  account          : React.PropTypes.string,
-  onMinDateChanged : React.PropTypes.func.isRequired,
-  onMaxDateChanged : React.PropTypes.func.isRequired,
-  onAccountChanged : React.PropTypes.func.isRequired
+  canMove            : React.PropTypes.bool.isRequired,
+  rootGroups         : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
+  accounts           : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
+  minDate            : React.PropTypes.instanceOf(Date),
+  maxDate            : React.PropTypes.instanceOf(Date),
+  account            : React.PropTypes.string,
+  onMinDateChanged   : React.PropTypes.func.isRequired,
+  onMaxDateChanged   : React.PropTypes.func.isRequired,
+  onAccountChanged   : React.PropTypes.func.isRequired,
+  onOperationsImport : React.PropTypes.func.isRequired,
 };
 
 export default Header;

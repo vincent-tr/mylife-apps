@@ -94,3 +94,20 @@ export const refresh = () => {
 };
 
 export const selectOperation = createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS);
+
+const queryImportOperations = createAction(actionTypes.MANAGEMENT_IMPORT_OPERATIONS);
+
+export const importOperations = (file) => {
+  return (dispatch) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const err = reader.error;
+      if(err) { return dispatch(queryImportOperations(err)); }
+      const content = reader.result;
+      dispatch(queryImportOperations(content));
+    };
+
+    reader.readAsText(file);
+  };
+}

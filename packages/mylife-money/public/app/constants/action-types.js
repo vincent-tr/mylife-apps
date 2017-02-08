@@ -25,6 +25,6 @@ export default wrap({
   MANAGEMENT_SELECT_OPERATIONS     : null,
   MANAGEMENT_QUERY_MOVE_OPERATIONS : null,
   MANAGEMENT_MOVE_OPERATIONS       : null,
-
+  MANAGEMENT_IMPORT_OPERATIONS     : null,
 });
 
