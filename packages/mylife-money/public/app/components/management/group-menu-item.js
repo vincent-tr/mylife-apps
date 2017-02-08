@@ -38,8 +38,7 @@ const GroupMenuItem = ({ muiTheme, group, children, onSelect, onRequestClose }) 
                   rightIcon={(children.length || null) && <icons.utils.ArrowDropRight />}
                   menuItems={(children.length || null) && children.map((child) => (<GroupMenuItemContainer key={child.id} group={child} onRequestClose={onRequestClose} />))} />
   );
-}
-
+};
 
 GroupMenuItem.propTypes = {
   muiTheme       : React.PropTypes.object.isRequired,
