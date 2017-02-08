@@ -5,7 +5,7 @@ import { actionTypes } from '../constants/index';
 import {
   getAccounts,
   getGroups, createGroup, updateGroup, deleteGroup,
-  managementGetOperations, managementMoveOperations
+  managementGetOperations, managementMoveOperations, managementImportOperations
 } from '../actions/service';
 
 const dataService = (/*store*/) => next => action => {
@@ -98,7 +98,7 @@ const dataService = (/*store*/) => next => action => {
       break;
     }
 
-    case actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS: {
+    case actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS:
       request
         .post('/api/operations_move')
         .send(action.payload)
@@ -109,7 +109,9 @@ const dataService = (/*store*/) => next => action => {
           return next(managementMoveOperations(action.payload));
         });
       break;
-    }
+
+    case actionTypes.MANAGEMENT_QUERY_IMPORT_OPERATIONS:
+      return next(managementImportOperations(42));
   }
 };
 

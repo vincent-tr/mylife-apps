@@ -95,7 +95,7 @@ export const refresh = () => {
 
 export const selectOperation = createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS);
 
-const queryImportOperations = createAction(actionTypes.MANAGEMENT_IMPORT_OPERATIONS);
+const queryImportOperations = createAction(actionTypes.MANAGEMENT_QUERY_IMPORT_OPERATIONS);
 
 export const importOperations = (file) => {
   return (dispatch) => {

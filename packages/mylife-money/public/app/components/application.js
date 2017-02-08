@@ -5,6 +5,7 @@ import React from 'react';
 import base from './base/index';
 import MainTabs from './main-tabs';
 import DialogErrorContainer from '../containers/dialog-error-container';
+import DialogInfoContainer from '../containers/dialog-info-container';
 
 const styles = {
   root: {
@@ -30,6 +31,7 @@ class Application extends React.Component {
         <div style={styles.root}>
           <MainTabs activeTab={this.state.tab} onTabChanged={(value) => this.setState({ tab: value })} />
           <DialogErrorContainer />
+          <DialogInfoContainer />
         </div>
       </base.Theme>
     );

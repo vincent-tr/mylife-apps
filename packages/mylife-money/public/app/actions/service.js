@@ -2,7 +2,8 @@
 
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
-import { refresh } from './management';
+import { refresh, getOperations } from './management';
+import { showInfo } from './common';
 
 export const getAccounts   = createAction(actionTypes.GET_ACCOUNTS);
 
@@ -27,3 +28,10 @@ export const managementMoveOperations = (value) => {
     dispatch(refresh());
   };
 };
+
+export const managementImportOperations = (count) => {
+  return (dispatch) => {
+    dispatch(getOperations());
+    dispatch(showInfo(`${count} operation(s) importées`));
+  };
+}
