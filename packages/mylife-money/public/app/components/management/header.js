@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
 
-import GroupMenuItemContainer from '../../containers/management/group-menu-item-container';
+import MoveButton from './move-button';
 
 const styles = {
   button: {
@@ -26,15 +26,7 @@ const Header = ({
 }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
-      <mui.IconMenu useLayerForClickAway={true} iconButtonElement={
-        <mui.IconButton tooltip="Déplacer"
-                        style={styles.button}
-                        disabled={!canMove}>
-          <icons.actions.Move />
-        </mui.IconButton>
-      }>
-      {rootGroups.map((group) => (<GroupMenuItemContainer key={group.id} group={group} />))}
-      </mui.IconMenu>
+      <MoveButton enabled={canMove} rootGroups={rootGroups} />
     </mui.ToolbarGroup>
     <mui.ToolbarGroup>
       <p>Date début</p>
