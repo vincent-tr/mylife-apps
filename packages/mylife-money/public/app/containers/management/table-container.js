@@ -1,7 +1,8 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { getSelectedGroupId, getVisibleOperations } from '../../selectors/management';
+import { getSelectedGroupId, getSortedVisibleOperations } from '../../selectors/management';
+import { getAccount } from '../../selectors/accounts';
 import { selectOperation } from '../../actions/management';
 
 import Table from '../../components/management/table';
@@ -9,7 +10,11 @@ import Table from '../../components/management/table';
 const mapStateToProps = (state) => {
   const selected = getSelectedGroupId(state);
   return {
-    operations: getVisibleOperations(state).map(operation => ({ operation, fromChildGroup: operation.group !== selected }))
+    operations: getSortedVisibleOperations(state).map(operation => ({
+      operation,
+      account: getAccount(state, operation),
+      fromChildGroup: operation.group !== selected
+    }))
   };
 };
 

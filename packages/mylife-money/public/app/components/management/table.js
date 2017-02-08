@@ -64,9 +64,9 @@ const Table = ({ onSelect, operations }) => {
             const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
             return (
               <mui.TableRow key={op.operation.id} style={rowStyle}>
-                <mui.TableRowColumn>{op.operation.account}</mui.TableRowColumn>
+                <mui.TableRowColumn>{op.account && op.account.display}</mui.TableRowColumn>
                 <mui.TableRowColumn style={amountStyle}>{op.operation.amount}</mui.TableRowColumn>
-                <mui.TableRowColumn>{op.operation.date}</mui.TableRowColumn>
+                <mui.TableRowColumn>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableRowColumn>
                 <mui.TableRowColumn>{op.operation.label}</mui.TableRowColumn>
               </mui.TableRow>
             );
