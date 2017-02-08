@@ -9,17 +9,14 @@ const setGroup = {
     const { _id: id, ...props } = action.payload;
     const group = Object.assign({ id }, props);
 
-    return {
-      ...state,
-      list: state.list.set(group.id, group)
-    };
+    return state.list.set(group.id, group);
   }
 };
 
 export default handleActions({
 
   [actionTypes.GET_GROUPS] : {
-    next : (state, action) => ({ ...state, list: state.list.withMutations((map => {
+    next : (state, action) => state.withMutations(map => {
       map.clear();
 
       map.set(null, {
@@ -32,7 +29,7 @@ export default handleActions({
         const group = Object.assign({ id }, props);
         map.set(id, group);
       }
-    }))})
+    })
   },
 
   [actionTypes.CREATE_GROUP] : setGroup,
@@ -42,8 +39,4 @@ export default handleActions({
     next : (state, action) => ({ ...state, list: state.list.delete(action.payload) })
   },
 
-  [actionTypes.SELECT_GROUP] : {
-    next : (state, action) => ({ ...state, selected : action.payload })
-  }
-
-}, { list: Immutable.Map(), selected: null });
+}, Immutable.Map());

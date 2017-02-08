@@ -2,6 +2,7 @@
 
 import { handleActions } from 'redux-actions';
 import { actionTypes } from '../constants/index';
+import Immutable from 'immutable';
 
 export default handleActions({
   [actionTypes.MANAGEMENT_SET_MIN_DATE] : {
@@ -16,8 +17,46 @@ export default handleActions({
     next : (state, action) => ({ ...state, account: action.payload })
   },
 
+  [actionTypes.MANAGEMENT_SELECT_GROUP] : {
+    next : (state, action) => ({ ...state, selectedGroup : action.payload })
+  },
+
+  [actionTypes.MANAGEMENT_GET_OPERATIONS] : {
+    next : (state, action) => ({ ...state, operations: {
+      ...state.operations,
+      all: state.operations.all.withMutations(map => {
+        map.clear();
+        for(const raw of action.payload) {
+          const { _id: id, date, ...props } = raw;
+          const operation = Object.assign({ id, date: Date.parse(date) }, props);
+          map.set(id, operation);
+        }
+      })
+    }})
+  },
+
+  [actionTypes.MANAGEMENT_REFRESH] : {
+    next : (state, action) => ({ ...state, operations: {
+      ...state.operations,
+        visible: state.operations.visible.withMutations(map => {
+        map.clear();
+        const groups = action.payload;
+        for(const operation of state.operations.all.values()) {
+          if(groups.includes(operation.parent || null)) {
+            map.set(operation.id, operation);
+          }
+        }
+      })
+    }})
+  },
+
 }, {
-  minDate: new Date(new Date().getFullYear(), 0, 1),
-  maxDate: null,
-  account: null
+  minDate       : new Date(new Date().getFullYear(), 0, 1),
+  maxDate       : null,
+  account       : null,
+  selectedGroup : null,
+  operations    : {
+    all     : Immutable.Map(),
+    visible : Immutable.Map()
+  }
 });

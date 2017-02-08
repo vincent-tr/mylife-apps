@@ -1,7 +1,8 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { getSelectedGroupId, getGroup } from '../../selectors/groups';
+import { getGroup } from '../../selectors/groups';
+import { getSelectedGroupId } from '../../selectors/management';
 import { createGroup, updateGroup, deleteGroup } from '../../actions/index';
 
 import Toolbar from '../../components/management/toolbar';

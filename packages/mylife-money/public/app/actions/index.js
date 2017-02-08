@@ -4,13 +4,14 @@ let groupIdCount = 0;
 
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
-import { getSelectedGroupId, getGroup } from '../selectors/groups';
+import { getGroup } from '../selectors/groups';
+import { getSelectedGroupId } from '../selectors/management';
 
 export const getAccounts = createAction(actionTypes.QUERY_ACCOUNTS);
 
 export const getGroups   = createAction(actionTypes.QUERY_GROUPS);
 
-const querySelectGroup   = createAction(actionTypes.SELECT_GROUP);
+const querySelectGroup   = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
 const queryCreateGroup   = createAction(actionTypes.QUERY_CREATE_GROUP);
 const queryDeleteGroup   = createAction(actionTypes.QUERY_DELETE_GROUP);
 
@@ -41,7 +42,7 @@ export const deleteGroup = () => {
 
 export const updateGroup = createAction(actionTypes.QUERY_UPDATE_GROUP);
 
-const queryOperations = createAction(actionTypes.QUERY_OPERATIONS);
+const queryOperations = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS);
 
 export const getOperations = () => {
   return (dispatch, getState) => {

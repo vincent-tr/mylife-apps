@@ -3,9 +3,8 @@
 import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 
-export const getGroups          = (state) => state.groups.list;
+export const getGroups          = (state) => state.groups;
 export const getGroup           = (state, { group }) => getGroups(state).get(group);
-export const getSelectedGroupId = (state) => state.groups.selected;
 
 export const getChildren = (state, props) => {
   if(!props.group) {

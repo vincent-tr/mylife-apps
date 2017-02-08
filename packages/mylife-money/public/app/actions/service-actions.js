@@ -11,11 +11,11 @@ export const createGroup   = createAction(actionTypes.CREATE_GROUP);
 export const updateGroup   = createAction(actionTypes.UPDATE_GROUP);
 export const deleteGroup   = createAction(actionTypes.DELETE_GROUP);
 
-const internalGetOperations = createAction(actionTypes.GET_OPERATIONS);
+const internalManagementGetOperations = createAction(actionTypes.MANAGEMENT_GET_OPERATIONS);
 
-export const getOperations = (value) => {
+export const managementGetOperations = (value) => {
   return (dispatch) => {
-    dispatch(internalGetOperations(value));
+    dispatch(internalManagementGetOperations(value));
     dispatch(managementRefresh());
   };
 };

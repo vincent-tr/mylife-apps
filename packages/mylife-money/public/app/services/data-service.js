@@ -5,7 +5,8 @@ import { actionTypes } from '../constants/index';
 import {
   getAccounts,
   getGroups, createGroup, updateGroup, deleteGroup,
-  getOperations } from '../actions/service-actions';
+  managementGetOperations
+} from '../actions/service-actions';
 
 const dataService = (/*store*/) => next => action => {
   next(action);
@@ -73,7 +74,7 @@ const dataService = (/*store*/) => next => action => {
         });
       break;
 
-    case actionTypes.QUERY_OPERATIONS:
+    case actionTypes.MANAGEMENT_QUERY_OPERATIONS:
       request
         .get('/api/operations')
         .query(action.payload)
@@ -82,7 +83,7 @@ const dataService = (/*store*/) => next => action => {
             return next(getOperations(new Error(JSON.parse(res.text))));
           }
           const data = JSON.parse(res.text);
-          return next(getOperations(data));
+          return next(managementGetOperations(data));
         });
       break;
   }

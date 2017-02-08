@@ -1,7 +1,8 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { makeGetSortedChildren, getSelectedGroupId } from '../../selectors/groups';
+import { makeGetSortedChildren } from '../../selectors/groups';
+import { getSelectedGroupId } from '../../selectors/management';
 import { selectGroup } from '../../actions/index';
 
 import Node from '../../components/groups/node';
