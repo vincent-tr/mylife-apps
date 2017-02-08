@@ -3,16 +3,16 @@
 import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 
-export const getGroups          = (state) => state.groups;
-export const getGroup           = (state, { group }) => getGroups(state).get(group);
+export const getGroups = (state) => state.groups.toArray();
+export const getGroup  = (state, { group }) => state.groups.get(group);
 
 export const getChildren = (state, props) => {
   if(!props.group) {
-    return getGroups(state).filter(it => !it.parent); // Root elements
+    return state.groups.filter(it => !it.parent); // Root elements
   } else if (!props.group.id) {
     return Immutable.Map(); // Non tries -> no children
   } else {
-    return getGroups(state).filter(it => it.parent === props.group.id);
+    return state.groups.filter(it => it.parent === props.group.id);
   }
 };
 
