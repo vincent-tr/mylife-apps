@@ -111,7 +111,17 @@ const dataService = (/*store*/) => next => action => {
       break;
 
     case actionTypes.MANAGEMENT_QUERY_IMPORT_OPERATIONS:
-      return next(managementImportOperations(42));
+      request
+        .post('/api/operations_import')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(managementImportOperations(new Error(JSON.parse(res.text))));
+          }
+          const count = JSON.parse(res.text);
+          return next(managementImportOperations(count));
+        });
+      break;
   }
 };
 

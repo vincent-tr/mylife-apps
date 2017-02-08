@@ -91,6 +91,18 @@ module.exports = () => {
     });
   });
 
+  router.route('/operations_import').post(function(request, response) {
+    const content = request.body;
+    operationsImport(content, (err, count) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err.message);
+      }
+      logger.info(`${count} operations imported`);
+      response.json(count);
+    });
+  });
+
   return router;
 };
 
@@ -175,4 +187,8 @@ function operationsMove(groupId, operationIds, done) {
       { multi: true }
     );
   }).then((status) => done(null, status), (err) => done(err));
+}
+
+function operationsImport(content, done) {
+  return done(null, 42);
 }
