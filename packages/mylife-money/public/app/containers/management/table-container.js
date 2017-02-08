@@ -2,6 +2,7 @@
 
 import { connect } from 'react-redux';
 import { getSelectedGroupId, getVisibleOperations } from '../../selectors/management';
+import { selectOperation } from '../../actions/management';
 
 import Table from '../../components/management/table';
 
@@ -12,9 +13,13 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  onSelect : (val) => dispatch(selectOperation(val)),
+});
+
 const TableContainer = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Table);
 
 export default TableContainer;

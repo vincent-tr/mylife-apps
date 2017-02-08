@@ -38,15 +38,28 @@ export default handleActions({
   [actionTypes.MANAGEMENT_REFRESH] : {
     next : (state, action) => ({ ...state, operations: {
       ...state.operations,
-      visible: state.operations.visible.withMutations(map => {
-        map.clear();
+      visible: state.operations.visible.withMutations(set => {
+        set.clear();
         const groups = action.payload;
         for(const operation of state.operations.all.values()) {
           if(groups.includes(operation.parent || null)) {
-            map.set(operation.id, operation);
+            set.add(operation.id);
           }
         }
-      })
+      }),
+      selected: state.operations.selected.clear()
+    }})
+  },
+
+  [actionTypes.MANAGEMENT_SELECT_OPERATIONS] : {
+    next : (state, action) => ({ ...state, operations: {
+      ...state.operations,
+      selected:
+        action.payload.all ?
+          (action.payload.selected ?
+            state.operations.selected.union(state.operations.visible) :
+            state.operations.selected.clear()) :
+          state.operations.selected.clear().union(action.payload.operations)
     }})
   },
 
@@ -56,7 +69,8 @@ export default handleActions({
   account       : null,
   selectedGroup : null,
   operations    : {
-    all     : Immutable.Map(),
-    visible : Immutable.Map()
+    all      : Immutable.Map(),
+    visible  : Immutable.Set(),
+    selected : Immutable.Set()
   }
 });

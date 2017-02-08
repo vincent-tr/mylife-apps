@@ -95,3 +95,5 @@ export const refresh = () => {
     dispatch(queryRefresh(groups));
   };
 };
+
+export const selectOperation = createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS);

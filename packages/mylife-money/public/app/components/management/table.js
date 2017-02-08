@@ -25,7 +25,17 @@ const styles = {
   }
 };
 
-const Table = ({ operations }) => {
+function rowSelectionPayload(tableSelection, operations) {
+  if(tableSelection === 'all') {
+    return { all: true, selected: true };
+  }
+  if(tableSelection === 'none') {
+    return { all: true, selected: false };
+  }
+  return { operations: tableSelection.map(index => operations[index].operation.id) };
+}
+
+const Table = ({ onSelect, operations }) => {
   let totalDebit = 0;
   let totalCredit = 0;
   let total = 0;
@@ -39,7 +49,7 @@ const Table = ({ operations }) => {
   total = Math.round(total * 100) / 100;
   return (
     <div style={tabStyles.fullHeight}>
-      <mui.Table style={tabStyles.fullHeight} wrapperStyle={styles.tableWrapper} multiSelectable={true}>
+      <mui.Table style={tabStyles.fullHeight} wrapperStyle={styles.tableWrapper} multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}>
         <mui.TableHeader>
           <mui.TableRow>
             <mui.TableHeaderColumn>Compte</mui.TableHeaderColumn>
@@ -76,6 +86,7 @@ const Table = ({ operations }) => {
 };
 
 Table.propTypes = {
+  onSelect   : React.PropTypes.func.isRequired,
   operations : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired
 };
 
