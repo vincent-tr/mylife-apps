@@ -66,7 +66,7 @@ const Table = ({ onSelect, operations }) => {
             <mui.TableHeaderColumn>Libellé</mui.TableHeaderColumn>
           </mui.TableRow>
         </mui.TableHeader>
-        <mui.TableBody deselectOnClickaway={false}>
+        <mui.TableBody deselectOnClickaway={false} key={Math.random().toString()}> {/* FIXME: because selected is not usable without this horror https://github.com/callemall/material-ui/issues/6006 */}
           {operations.map(op => {
             const rowStyle = op.fromChildGroup ? styles.fromChild : styles.normal;
             const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
