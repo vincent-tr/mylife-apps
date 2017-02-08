@@ -8,13 +8,13 @@ import { selectOperation } from '../../actions/management';
 import Table from '../../components/management/table';
 
 const mapStateToProps = (state) => {
-  const selectedGroup = getSelectedGroupId(state);
+  const selectedGroup = getSelectedGroupId(state) || null;
   const selectedOperationIds = getSelectedOperationIds(state);
   return {
     operations: getSortedVisibleOperations(state).map(operation => ({
       operation,
       account        : getAccount(state, operation),
-      fromChildGroup : operation.group !== selectedGroup,
+      fromChildGroup : (operation.group || null) !== selectedGroup,
       selected       : selectedOperationIds.includes(operation.id)
     }))
   };
