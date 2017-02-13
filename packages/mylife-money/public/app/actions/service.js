@@ -32,6 +32,6 @@ export const managementMoveOperations = (value) => {
 export const managementImportOperations = (count) => {
   return (dispatch) => {
     dispatch(getOperations());
-    dispatch(showInfo(`${count} operation(s) importées`));
+    dispatch(showInfo(`${count} operation(s) importée(s)`));
   };
 };
