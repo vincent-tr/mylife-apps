@@ -3,9 +3,9 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
-import base from '../base/index';
 
 import MoveButton from './move-button';
+import ImportButton from './import-button';
 
 const styles = {
   button: {
@@ -27,12 +27,8 @@ const Header = ({
 }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
-      <base.IconFileButton tooltip="Importer des operations"
-                           style={styles.button}
-                           onFileSelected={onOperationsImport}>
-        <icons.actions.Import />
-      </base.IconFileButton>
-      <MoveButton enabled={canMove} rootGroups={rootGroups} />
+      <ImportButton accounts={accounts} onImport={onOperationsImport} style={styles.button} />
+      <MoveButton enabled={canMove} rootGroups={rootGroups} style={styles.button} />
     </mui.ToolbarGroup>
     <mui.ToolbarGroup>
       <p>Date début</p>

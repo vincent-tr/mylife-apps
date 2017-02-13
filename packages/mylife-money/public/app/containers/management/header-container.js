@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
   onMinDateChanged   : (value) => dispatch(setMinDate(value)),
   onMaxDateChanged   : (value) => dispatch(setMaxDate(value)),
   onAccountChanged   : (value) => dispatch(setAccount(value)),
-  onOperationsImport : (file) => dispatch(importOperations(file))
+  onOperationsImport : (account, file) => dispatch(importOperations(account, file))
 });
 
 const HeaderContainer = connect(

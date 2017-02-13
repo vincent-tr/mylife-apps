@@ -25,7 +25,8 @@ export default {
     Reporting  : ActionTimeline
   },
 
-  Group: FileFolderOpen,
+  Account : ActionAccountBalance,
+  Group   : FileFolderOpen,
 
   utils: {
     ArrowDropRight : NavigationArrowDropRight

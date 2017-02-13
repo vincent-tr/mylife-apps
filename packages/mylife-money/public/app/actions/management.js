@@ -97,7 +97,7 @@ export const selectOperation = createAction(actionTypes.MANAGEMENT_SELECT_OPERAT
 
 const queryImportOperations = createAction(actionTypes.MANAGEMENT_QUERY_IMPORT_OPERATIONS);
 
-export const importOperations = (file) => {
+export const importOperations = (account, file) => {
   return (dispatch) => {
     const reader = new FileReader();
 
@@ -105,7 +105,7 @@ export const importOperations = (file) => {
       const err = reader.error;
       if(err) { return dispatch(queryImportOperations(err)); }
       const content = reader.result;
-      dispatch(queryImportOperations(content));
+      dispatch(queryImportOperations({ account, content }));
     };
 
     reader.readAsText(file);

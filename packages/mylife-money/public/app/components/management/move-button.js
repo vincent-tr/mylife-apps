@@ -6,17 +6,6 @@ import icons from '../icons';
 
 import GroupMenuItemContainer from '../../containers/management/group-menu-item-container';
 
-const styles = {
-  button: {
-    height: 56,
-    width: 56,
-    overflow: 'inherit'
-  },
-  date: {
-    width: 100
-  }
-};
-
 class MoveButton extends React.Component {
 
   constructor(props, context) {
@@ -32,7 +21,7 @@ class MoveButton extends React.Component {
   }
 
   render() {
-    const { enabled, rootGroups } = this.props;
+    const { enabled, rootGroups, style } = this.props;
     const { open } = this.state;
     return (
       <mui.IconMenu open={open}
@@ -40,7 +29,7 @@ class MoveButton extends React.Component {
                     useLayerForClickAway={true}
                     iconButtonElement={
                       <mui.IconButton tooltip="Déplacer"
-                                      style={styles.button}
+                                      style={style}
                                       disabled={!enabled}>
                         <icons.actions.Move />
                       </mui.IconButton>
@@ -52,6 +41,7 @@ class MoveButton extends React.Component {
 }
 
 MoveButton.propTypes = {
+  style      : React.PropTypes.object,
   enabled    : React.PropTypes.bool.isRequired,
   rootGroups : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired
 };
