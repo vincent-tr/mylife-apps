@@ -42,5 +42,7 @@ module.exports = (account, data, done) => {
 
     db.close();
 
-  }).then(() => done(), (err) => done(err));
+    return records.length;
+
+  }).then((res) => done(null, res), (err) => done(err));
 };

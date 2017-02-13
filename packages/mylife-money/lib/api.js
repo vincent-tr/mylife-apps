@@ -1,13 +1,14 @@
 'use strict';
 
-const { ObjectID } = require('mongodb');
-const monk         = require('monk');
-const config       = require('../conf/config');
-const coMonk       = require('co-monk');
-const co           = require('co');
-const log4js       = require('log4js');
-const logger       = log4js.getLogger('mylife:money:api');
-const express      = require('express');
+const { ObjectID }     = require('mongodb');
+const monk             = require('monk');
+const config           = require('../conf/config');
+const coMonk           = require('co-monk');
+const co               = require('co');
+const express          = require('express');
+const log4js           = require('log4js');
+const logger           = log4js.getLogger('mylife:money:api');
+const operationsImport = require('./importer');
 
 const db = monk(config.mongo);
 
@@ -94,8 +95,8 @@ module.exports = () => {
   });
 
   router.route('/operations_import').post(function(request, response) {
-    const content = request.body;
-    operationsImport(content, (err, count) => {
+    const { account, content } = request.body;
+    operationsImport(account, content, (err, count) => {
       if(err) {
         logger.error(err);
         return response.status(500).json(err.message);
@@ -182,8 +183,4 @@ function operationsMove(groupId, operationIds, done) {
       { multi: true }
     );
   }).then((status) => done(null, status), (err) => done(err));
-}
-
-function operationsImport(content, done) {
-  return done(null, 42);
 }
