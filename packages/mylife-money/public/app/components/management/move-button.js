@@ -17,7 +17,7 @@ const styles = {
   }
 };
 
-class Header extends React.Component {
+class MoveButton extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -51,9 +51,9 @@ class Header extends React.Component {
   }
 }
 
-Header.propTypes = {
+MoveButton.propTypes = {
   enabled    : React.PropTypes.bool.isRequired,
   rootGroups : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired
 };
 
-export default Header;
+export default MoveButton;
