@@ -9,6 +9,8 @@ const log4js       = require('log4js');
 const logger       = log4js.getLogger('mylife:money:api');
 const express      = require('express');
 
+const db = monk(config.mongo);
+
 module.exports = () => {
   const router = express.Router();
 
@@ -108,7 +110,6 @@ module.exports = () => {
 
 function getAccounts(done) {
   co(function*() {
-    const db       = monk(config.mongo);
     const accounts = coMonk(db.get('accounts'));
     return yield accounts.find({});
   }).then((value) => done(null, value), (err) => done(err));
@@ -116,7 +117,6 @@ function getAccounts(done) {
 
 function getGroups(done) {
   co(function*() {
-    const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
     return yield groups.find({});
   }).then((value) => done(null, value), (err) => done(err));
@@ -124,7 +124,6 @@ function getGroups(done) {
 
 function createGroup(group, done) {
   co(function*() {
-    const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
     return yield groups.insert(group);
   }).then((value) => done(null, value), (err) => done(err));
@@ -134,7 +133,6 @@ function updateGroup(group, done) {
   group._id = group.id;
   delete group.id;
   co(function*() {
-    const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
     yield groups.update({ _id: group._id }, group);
     return group;
@@ -143,7 +141,6 @@ function updateGroup(group, done) {
 
 function deleteGroup(id, done) {
   co(function*() {
-    const db     = monk(config.mongo);
     const groups = coMonk(db.get('groups'));
     const operations = coMonk(db.get('operations'));
 
@@ -159,7 +156,6 @@ function deleteGroup(id, done) {
 
 function getOperations(minDate, maxDate, account, done) {
   co(function*() {
-    const db     = monk(config.mongo);
     const operations = coMonk(db.get('operations'));
     const criteria = {};
     if(minDate) {
@@ -179,7 +175,6 @@ function getOperations(minDate, maxDate, account, done) {
 
 function operationsMove(groupId, operationIds, done) {
   co(function*() {
-    const db     = monk(config.mongo);
     const operations = coMonk(db.get('operations'));
     return yield operations.update(
       { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
