@@ -1,48 +1,23 @@
 'use strict';
 
 
-const csv    = require('csv-parse/lib/sync');
-const moment = require('moment');
-const coMonk = require('co-monk');
-const co     = require('co');
-const log4js = require('log4js');
-const logger = log4js.getLogger('mylife:money:cli');
-
-const parseDate   = (input) => moment(input, 'DD/MM/YYYY').toDate();
-const parseNumber = (input) => parseFloat(input.replace(',','.'));
+const coMonk   = require('co-monk');
+const co       = require('co');
+const log4js   = require('log4js');
+const logger   = log4js.getLogger('mylife:money:cli');
+const importer = require('./importer');
+const { asyncToPromise } = require('./utils');
 
 module.exports.operationsImport = (db, accountCode, data, done) => {
   co(function*() {
-    const raw = csv(data, {
-      delimiter : ';',
-      columns   : ['operationDate', 'valueDate', 'debit', 'credit', 'label', 'balance']
-    });
-
     const accounts   = coMonk(db.get('accounts'));
-    const operations = coMonk(db.get('operations'));
 
     const account = yield accounts.findOne({ code: accountCode }, { fields: { _id : 1 }});
     if(!account) {
       throw new Error(`Account not found: ${accountCode}`);
     }
 
-    let records = raw.map(r => ({
-      date    : parseDate(r.operationDate),
-      amount  : parseNumber(r.debit ? r.debit : r.credit),
-      label   : r.label,
-      account : account._id
-    }));
-
-    const lastOperation     = yield operations.findOne({}, { sort : { date : -1 }, fields: { date : 1 } });
-    const lastOperationDate = lastOperation ? lastOperation.date : new Date(0);
-    records = records.filter(rec => rec.date > lastOperationDate);
-
-    if(records.length) {
-      yield operations.insert(records);
-    }
-
-    logger.info(`Import done, ${records.length} operations added`);
-
+    return yield asyncToPromise(importer)(account._id, data);
   }).then(() => done(), (err) => done(err));
 };
 
