@@ -22,7 +22,7 @@ module.exports = class {
     const publicDirectory = path.resolve(path.join(__dirname, '../public'));
 
     if(dev) {
-      console.log('setup webpack dev middleware');
+      console.log('setup webpack dev middleware'); // eslint-disable-line no-console
       app.use(webpackMiddleware(webpack(webpackConfig), { publicPath: webpackConfig.output.publicPath }));
     }
     app.use(favicon(path.join(publicDirectory, 'images/favicon.ico')));
