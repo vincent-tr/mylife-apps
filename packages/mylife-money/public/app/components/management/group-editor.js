@@ -1,25 +1,111 @@
 import React from 'react';
 import * as mui from 'material-ui';
+import Immutable from 'immutable';
 import { confirmable, createConfirmation } from 'react-confirm';
 import base from '../base/index';
+import icons from '../icons';
+
+let idCounter = 0;
+
+function parseRules(raw) {
+  console.log('parseRules', raw);
+  if(!raw) {
+    return Immutable.Map();
+  }
+
+  return Immutable.Map(raw.map(rawRule => {
+    const id = ++idCounter;
+    return [ id, {
+      ... rawRule,
+      id,
+      conditions : parseConditions(rawRule.conditions)
+    }]
+  }));
+}
+
+function parseConditions(raw) {
+  if(!raw) {
+    return Immutable.Map();
+  }
+
+  return Immutable.Map(raw.map(rawCondition => {
+    const id = ++idCounter;
+    return [ id, {
+      id,
+      ... rawCondition
+    }];
+  }));
+}
+
+function serializeRules(map) {
+  console.log('parseRules', map);
+  return map.toArray().map((rule) => {
+    const { id, conditions, ...others } = rule;
+    return { conditions : serializeConditions(conditions), ...others };
+  });
+}
+
+function serializeConditions(map) {
+  return map.toArray().map(cond => {
+    const { id, ...others } = cond;
+    return { ...others };
+  });
+}
 
 class EditorDialog extends React.Component {
 
   constructor(props, context) {
     super(props, context);
 
-    this.state = { group: props && props.options && props.options.group };
+    this.state = {
+      group: props && props.options && props.options.group,
+      rules: props && props.options && props.options.rules,
+      selectedRule: null
+    };
   }
 
   componentWillReceiveProps(nextProps) {
+    const { group, rules } = nextProps.options;
     this.setState({
-      group: nextProps.options.group
+      group,
+      rules,
+      selectedRule: null
+    });
+  }
+
+  addRule() {
+    const { rules } = this.state;
+    const newRule   = {
+      id: ++idCounter,
+      conditions: Immutable.Map(),
+      name: 'newRule'
+    };
+
+    this.setState({
+      rules: rules.set(newRule.id, newRule),
+      selectedRule: newRule.id
+    });
+  }
+
+  deleteRule() {
+    const { rules, selectedRule } = this.state;
+    this.setState({
+      rules: rules.delete(selectedRule),
+      selectedRule: null
+    });
+  }
+
+  updateRuleName(value) {
+    const { rules, selectedRule } = this.state;
+    this.setState({
+      rules: rules.update(selectedRule, rule => ({ ...rule, name: value }))
     });
   }
 
   render() {
     const { show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ } = this.props;
-    const { group } = this.state;
+    const { group, rules, selectedRule } = this.state;
+    const rule = rules.get(selectedRule);
     return (
       <base.Theme>
         <mui.Dialog
@@ -27,7 +113,7 @@ class EditorDialog extends React.Component {
           actions={<div>
                     <mui.FlatButton
                       label="OK"
-                      onTouchTap={() => proceed(group)} />
+                      onTouchTap={() => proceed({ group, rules })} />
                     <mui.FlatButton
                       label="Annuler"
                       onTouchTap={() => cancel()} />
@@ -37,10 +123,40 @@ class EditorDialog extends React.Component {
           autoScrollBodyContent={true}>
           <div>
             <mui.TextField
+              floatingLabelText="Nom du groupe"
               id="display"
               value={group.display}
               onChange={(event) => this.setState({ group: { ...group, display: event.target.value }})}
             />
+            <fieldset>
+              <legend>Règles</legend>
+                <mui.SelectField
+                  floatingLabelText="Règle"
+                  id="selectedRule"
+                  value={selectedRule}
+                  onChange={(event, index, value) => this.setState({ selectedRule : value })}>
+                    {rules.toArray().map(rule => (<mui.MenuItem key={rule.id} value={rule.id} primaryText={rule.name} />))}
+                </mui.SelectField>
+                <mui.IconButton tooltip="Ajouter une règle"
+                                onClick={() => this.addRule()}>
+                  <icons.actions.New />
+                </mui.IconButton>
+                <mui.IconButton tooltip="Supprimer la règle"
+                                disabled={!rule}
+                                onClick={() => this.deleteRule()}>
+                  <icons.actions.Delete />
+                </mui.IconButton>
+                <mui.TextField
+                  floatingLabelText="Nom de la règle"
+                  id="ruleName"
+                  disabled={!rule}
+                  value={rule ? rule.name : ''}
+                  onChange={(event) => this.updateRuleName(event.target.value)}
+                />
+              <fieldset>
+                <legend>Conditions</legend>
+              </fieldset>
+            </fieldset>
           </div>
         </mui.Dialog>
       </base.Theme>
@@ -61,7 +177,7 @@ const edit = createConfirmation(confirmable(EditorDialog));
 
 export default (group, done) => {
   group = JSON.parse(JSON.stringify(group));
-  edit({ options: { group } }).then(
-    (group) => (done(null, group)),
+  edit({ options: { group, rules: parseRules(group.rules) } }).then(
+    ({ group, rules }) => (done(null, { ...group , rules: serializeRules(rules)})),
     () => {});
 };
