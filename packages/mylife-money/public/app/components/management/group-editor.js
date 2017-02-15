@@ -8,7 +8,6 @@ import icons from '../icons';
 let idCounter = 0;
 
 function parseRules(raw) {
-  console.log('parseRules', raw);
   if(!raw) {
     return Immutable.Map();
   }
@@ -19,7 +18,7 @@ function parseRules(raw) {
       ... rawRule,
       id,
       conditions : parseConditions(rawRule.conditions)
-    }]
+    }];
   }));
 }
 
@@ -38,9 +37,9 @@ function parseConditions(raw) {
 }
 
 function serializeRules(map) {
-  console.log('parseRules', map);
   return map.toArray().map((rule) => {
     const { id, conditions, ...others } = rule;
+    void id;
     return { conditions : serializeConditions(conditions), ...others };
   });
 }
@@ -48,6 +47,7 @@ function serializeRules(map) {
 function serializeConditions(map) {
   return map.toArray().map(cond => {
     const { id, ...others } = cond;
+    void id;
     return { ...others };
   });
 }
