@@ -7,9 +7,9 @@ import { actionTypes } from '../constants';
 import { getGroupAndChildrenIds } from '../selectors/groups';
 import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
 
-const querySelectGroup   = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
-const queryCreateGroup   = createAction(actionTypes.MANAGEMENT_QUERY_CREATE_GROUP);
-const queryDeleteGroup   = createAction(actionTypes.MANAGEMENT_QUERY_DELETE_GROUP);
+const querySelectGroup = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
+const queryCreateGroup = createAction(actionTypes.MANAGEMENT_QUERY_CREATE_GROUP);
+const queryDeleteGroup = createAction(actionTypes.MANAGEMENT_QUERY_DELETE_GROUP);
 
 export const selectGroup = (id) => {
   return (dispatch) => {
