@@ -1,14 +1,14 @@
 'use strict';
 
-const { ObjectID }         = require('mongodb');
-const monk                 = require('monk');
-const config               = require('../conf/config');
-const coMonk               = require('co-monk');
-const co                   = require('co');
-const express              = require('express');
-const log4js               = require('log4js');
-const logger               = log4js.getLogger('mylife:money:api');
-const { operationsImport } = require('./importer');
+const { ObjectID } = require('mongodb');
+const monk         = require('monk');
+const config       = require('../conf/config');
+const coMonk       = require('co-monk');
+const co           = require('co');
+const express      = require('express');
+const log4js       = require('log4js');
+const logger       = log4js.getLogger('mylife:money:api');
+const { operationsImport, executeRules } = require('./importer');
 
 const db = monk(config.mongo);
 
@@ -101,7 +101,25 @@ module.exports = () => {
         logger.error(err);
         return response.status(500).json(err.message);
       }
-      logger.info(`${count} operations imported`);
+
+      executeRules((err) => {
+        if(err) {
+          logger.error(err);
+          return response.status(500).json(err.message);
+        }
+
+        response.json(count);
+      });
+    });
+  });
+
+  router.route('/operations_execute_rules').post(function(request, response) {
+    executeRules((err, count) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err.message);
+      }
+
       response.json(count);
     });
   });

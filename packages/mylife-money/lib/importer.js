@@ -46,3 +46,80 @@ module.exports.operationsImport = (account, data, done) => {
 
   }).then((res) => done(null, res), (err) => done(err));
 };
+
+module.exports.executeRules = (done) => {
+  co(function*() {
+
+    logger.info('Executing rules');
+
+    const db = monk(config.mongo);
+
+    const operationCollection = coMonk(db.get('operations'));
+    const groupCollection = coMonk(db.get('groups'));
+
+    const operations = yield operationCollection.find({ group : null });
+    const groups = yield groupCollection.find({});
+
+    const ruleExecutor = buildRulesExecutor(groups);
+
+    let opCount = 0;
+    for(const operation of operations) {
+      const group = ruleExecutor(operation);
+      if(!group) { continue; }
+      logger.info(`Moving operation ${operation._id} to group ${group._id} (${group.display})`);
+      yield operationCollection.update({ _id: operation._id}, { $set: { group: group._id } });
+      ++opCount;
+    }
+
+    logger.info(`Execution done, moved ${opCount} operations`);
+
+    db.close();
+
+    return opCount;
+
+  }).then((res) => done(null, res), (err) => done(err));
+};
+
+function buildRulesExecutor(groups) {
+  const operators = {
+    $eq       : (field, value) => field === value,
+    $gt       : (field, value) => field < value,
+    $gte      : (field, value) => field <= value,
+    $lt       : (field, value) => field > value,
+    $lte      : (field, value) => field >= value,
+    $regex    : (field, value) => (new RegExp(value).test(field)),
+    $contains : (field, value) => (field && field.contains(value))
+  };
+
+  const conditionExecutorFactory = (condition) => (operation) => operators[condition.operator](operation[condition.field], condition.value);
+
+  const ruleExecutorFactory = (rule) => {
+    const conditionExecutors = rule.conditions.map(conditionExecutorFactory);
+    if(!conditionExecutors) { return () => false; }
+    return (operation) => {
+      for(const executor of conditionExecutors) {
+        if(!executor(operation)) { return false; }
+      }
+      return true;
+    };
+  };
+
+  const rules = [];
+  for(const group of groups) {
+    if(!group.rules) { continue; }
+    for(const rule of group.rules) {
+      rules.push({
+        executor: ruleExecutorFactory(rule),
+        group
+      });
+    }
+  }
+
+  return (operation) => {
+    for(const rule of rules) {
+      if(rule.executor(operation)) {
+        return rule.group;
+      }
+    }
+  };
+}

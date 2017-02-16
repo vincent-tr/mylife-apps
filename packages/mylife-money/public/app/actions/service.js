@@ -35,3 +35,10 @@ export const managementImportOperations = (count) => {
     dispatch(showInfo(`${count} operation(s) importée(s)`));
   };
 };
+
+export const managementOperationsExecuteRules = (count) => {
+  return (dispatch) => {
+    dispatch(getOperations());
+    dispatch(showInfo(`${count} operation(s) déplacée(s)`));
+  };
+};

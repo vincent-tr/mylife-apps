@@ -111,3 +111,5 @@ export const importOperations = (account, file) => {
     reader.readAsText(file);
   };
 };
+
+export const operationsExecuteRules = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS_EXECUTE_RULES);

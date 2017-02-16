@@ -5,7 +5,7 @@ import { actionTypes } from '../constants/index';
 import {
   getAccounts,
   getGroups, createGroup, updateGroup, deleteGroup,
-  managementGetOperations, managementMoveOperations, managementImportOperations
+  managementGetOperations, managementMoveOperations, managementImportOperations, managementOperationsExecuteRules
 } from '../actions/service';
 
 const dataService = (/*store*/) => next => action => {
@@ -120,6 +120,19 @@ const dataService = (/*store*/) => next => action => {
           }
           const count = JSON.parse(res.text);
           return next(managementImportOperations(count));
+        });
+      break;
+
+    case actionTypes.MANAGEMENT_QUERY_OPERATIONS_EXECUTE_RULES:
+      request
+        .post('/api/operations_execute_rules')
+        .send({})
+        .end((err, res) => {
+          if (err) {
+            return next(managementOperationsExecuteRules(new Error(JSON.parse(res.text))));
+          }
+          const count = JSON.parse(res.text);
+          return next(managementOperationsExecuteRules(count));
         });
       break;
   }
