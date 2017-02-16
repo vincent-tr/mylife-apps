@@ -197,7 +197,7 @@ function operationsMove(groupId, operationIds, done) {
     const operations = coMonk(db.get('operations'));
     return yield operations.update(
       { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
-      { $set: { group: new ObjectID(groupId) } },
+      { $set: { group: groupId ? new ObjectID(groupId) : null } },
       { multi: true }
     );
   }).then((status) => done(null, status), (err) => done(err));
