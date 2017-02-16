@@ -5,7 +5,7 @@ const coMonk   = require('co-monk');
 const co       = require('co');
 const log4js   = require('log4js');
 const logger   = log4js.getLogger('mylife:money:cli');
-const importer = require('./importer');
+const { operationsImport } = require('./importer');
 const { asyncToPromise } = require('./utils');
 
 module.exports.operationsImport = (db, accountCode, data, done) => {
@@ -17,7 +17,7 @@ module.exports.operationsImport = (db, accountCode, data, done) => {
       throw new Error(`Account not found: ${accountCode}`);
     }
 
-    return yield asyncToPromise(importer)(account._id, data);
+    return yield asyncToPromise(operationsImport)(account._id, data);
   }).then(() => done(), (err) => done(err));
 };
 

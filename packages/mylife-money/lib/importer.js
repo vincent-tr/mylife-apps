@@ -12,7 +12,7 @@ const logger = log4js.getLogger('mylife:money:importer');
 const parseDate   = (input) => moment(input, 'DD/MM/YYYY').toDate();
 const parseNumber = (input) => parseFloat(input.replace(',','.'));
 
-module.exports = (account, data, done) => {
+module.exports.operationsImport = (account, data, done) => {
   co(function*() {
     const db = monk(config.mongo);
 
