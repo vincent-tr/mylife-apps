@@ -7,6 +7,21 @@ import icons from '../icons';
 
 let idCounter = 0;
 
+const operators = {
+  $eq       : { display : 'Egal à' },
+  $gt       : { display : 'Inférieur à' },
+  $gte      : { display : 'Inférieur ou égal à' },
+  $lt       : { display : 'Supérieur à' },
+  $lte      : { display : 'Supérieur ou égal à' },
+  $regex    : { display : '(Expression régulière)' },
+  $contains : { display : 'Contient' } // convert to regex
+};
+
+const fields = {
+  amount : { display : 'Montant',     valueFormatter : val => parseInt(val, 10) },
+  label  : { display : 'Description', valueFormatter : val => val }
+};
+
 function parseRules(raw) {
   if(!raw) {
     return Immutable.Map();
@@ -52,6 +67,14 @@ function serializeConditions(map) {
   });
 }
 
+function displayCondition(condition) {
+
+  const field = fields[condition.field].display;
+  const operator = operators[condition.operator].display;
+
+  return `${field} ${operator} ${condition.value}`;
+}
+
 class EditorDialog extends React.Component {
 
   constructor(props, context) {
@@ -76,22 +99,22 @@ class EditorDialog extends React.Component {
   addRule() {
     const { rules } = this.state;
     const newRule   = {
-      id: ++idCounter,
-      conditions: Immutable.Map(),
-      name: 'newRule'
+      id         : ++idCounter,
+      conditions : Immutable.Map(),
+      name       : 'newRule'
     };
 
     this.setState({
-      rules: rules.set(newRule.id, newRule),
-      selectedRule: newRule.id
+      rules        : rules.set(newRule.id, newRule),
+      selectedRule : newRule.id
     });
   }
 
   deleteRule() {
     const { rules, selectedRule } = this.state;
     this.setState({
-      rules: rules.delete(selectedRule),
-      selectedRule: null
+      rules        : rules.delete(selectedRule),
+      selectedRule : null
     });
   }
 
@@ -102,9 +125,36 @@ class EditorDialog extends React.Component {
     });
   }
 
+  updateRuleConditions(updater) {
+    const { rules, selectedRule } = this.state;
+    this.setState({
+      rules: rules.update(selectedRule, rule => ({ ...rule, conditions: updater(rule.conditions) }))
+    });
+  }
+
+  deleteCondition(condition) {
+    this.updateRuleConditions((conditions) => conditions.delete(condition));
+  }
+
+  addCondition() {
+    const { conditionField, conditionOperator, conditionValue } = this.state;
+    const condition = {
+      id       : ++idCounter,
+      field    : conditionField,
+      operator : conditionOperator,
+      value    : fields[conditionField].valueFormatter(conditionValue)
+    };
+    this.setState({
+      conditionField    : null,
+      conditionOperator : null,
+      conditionValue    : null
+    });
+    this.updateRuleConditions((conditions) => conditions.set(condition.id, condition));
+  }
+
   render() {
     const { show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ } = this.props;
-    const { group, rules, selectedRule } = this.state;
+    const { group, rules, selectedRule, conditionField, conditionOperator, conditionValue } = this.state;
     const rule = rules.get(selectedRule);
     return (
       <base.Theme>
@@ -155,6 +205,45 @@ class EditorDialog extends React.Component {
                 />
               <fieldset>
                 <legend>Conditions</legend>
+                <mui.List>
+                {rule && rule.conditions.toArray().map(condition => (
+                  <mui.ListItem key={condition.id}
+                                primaryText={displayCondition(condition)}
+                                rightIconButton={
+                                  <mui.IconButton onClick={() => this.deleteCondition(condition.id)}>
+                                    <icons.actions.Delete />
+                                  </mui.IconButton>
+                                }
+                />))}
+                </mui.List>
+                <mui.SelectField
+                  floatingLabelText="Champ"
+                  id="conditionField"
+                  disabled={!rule}
+                  value={conditionField}
+                  onChange={(event, index, value) => this.setState({ conditionField: value })} >
+                    {Object.keys(fields).map(field => (<mui.MenuItem key={field} value={field} primaryText={fields[field].display} />))}
+                </mui.SelectField>
+                <mui.SelectField
+                  floatingLabelText="Operateur"
+                  id="conditionOperator"
+                  disabled={!rule}
+                  value={conditionOperator}
+                  onChange={(event, index, value) => this.setState({ conditionOperator: value })} >
+                    {Object.keys(operators).map(operator => (<mui.MenuItem key={operator} value={operator} primaryText={operators[operator].display} />))}
+                </mui.SelectField>
+                <mui.TextField
+                  floatingLabelText="Valeur"
+                  id="conditionValue"
+                  disabled={!rule}
+                  value={conditionValue || ''}
+                  onChange={(event) => this.setState({ conditionValue: event.target.value })}
+                />
+                <mui.IconButton tooltip="Ajouter une condition"
+                                disabled={!rule || !conditionField || !conditionOperator || !conditionValue}
+                                onClick={() => this.addCondition()}>
+                  <icons.actions.New />
+                </mui.IconButton>
               </fieldset>
             </fieldset>
           </div>
