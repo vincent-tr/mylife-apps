@@ -14,7 +14,7 @@ const operators = {
   $lt       : { display : 'Supérieur à' },
   $lte      : { display : 'Supérieur ou égal à' },
   $regex    : { display : '(Expression régulière)' },
-  $contains : { display : 'Contient' } // convert to regex
+  $contains : { display : 'Contient' }
 };
 
 const fields = {
