@@ -19,10 +19,11 @@ const GroupNode = ({ muiTheme, level, selected, group, children, onSelect }) => 
   <mui.ListItem
     onTouchTap={onSelect}
     style={getStyle(muiTheme, selected)}
-    primaryText={group.display}
+    primaryText={<div style={{textAlign: 'left'}}>{group.display}</div>}
     leftIcon={<icons.Group />}
     nestedItems={children.map((child) => (<GroupNodeContainer key={child.id} group={child} level={level+1} />))}
-    nestedLevel={level} />
+    nestedLevel={level}
+    initiallyOpen={true} />
 );
 
 GroupNode.propTypes = {

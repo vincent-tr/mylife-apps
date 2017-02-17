@@ -23,7 +23,7 @@ const styles = {
     textAlign: 'center',
   },
   paperRight:{
-    flex: 2,
+    flex: 5,
     height: '100%',
     textAlign: 'center',
   }

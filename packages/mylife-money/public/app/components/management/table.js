@@ -60,9 +60,9 @@ const Table = ({ onSelect, operations }) => {
       <mui.Table height={'calc(100% - 57px)'} wrapperStyle={styles.tableWrapper} multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}>
         <mui.TableHeader>
           <mui.TableRow>
-            <mui.TableHeaderColumn>Compte</mui.TableHeaderColumn>
-            <mui.TableHeaderColumn>Montant</mui.TableHeaderColumn>
-            <mui.TableHeaderColumn>Date</mui.TableHeaderColumn>
+            <mui.TableHeaderColumn width={150}>Compte</mui.TableHeaderColumn>
+            <mui.TableHeaderColumn width={100}>Montant</mui.TableHeaderColumn>
+            <mui.TableHeaderColumn width={100}>Date</mui.TableHeaderColumn>
             <mui.TableHeaderColumn>Libellé</mui.TableHeaderColumn>
           </mui.TableRow>
         </mui.TableHeader>
@@ -72,9 +72,9 @@ const Table = ({ onSelect, operations }) => {
             const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
             return (
               <mui.TableRow key={op.operation.id} style={rowStyle} selected={op.selected}>
-                <mui.TableRowColumn>{op.account && op.account.display}</mui.TableRowColumn>
-                <mui.TableRowColumn style={amountStyle}>{op.operation.amount}</mui.TableRowColumn>
-                <mui.TableRowColumn>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableRowColumn>
+                <mui.TableRowColumn width={150}>{op.account && op.account.display}</mui.TableRowColumn>
+                <mui.TableRowColumn width={100} style={amountStyle}>{op.operation.amount}</mui.TableRowColumn>
+                <mui.TableRowColumn width={100}>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableRowColumn>
                 <mui.TableRowColumn>{op.operation.label}</mui.TableRowColumn>
               </mui.TableRow>
             );
