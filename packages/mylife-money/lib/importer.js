@@ -88,7 +88,7 @@ function buildRulesExecutor(groups) {
     $lt       : (field, value) => field > value,
     $lte      : (field, value) => field >= value,
     $regex    : (field, value) => (new RegExp(value).test(field)),
-    $contains : (field, value) => (field && field.contains(value))
+    $contains : (field, value) => (field && field.includes(value))
   };
 
   const conditionExecutorFactory = (condition) => (operation) => operators[condition.operator](operation[condition.field], condition.value);
