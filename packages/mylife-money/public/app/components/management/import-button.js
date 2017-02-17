@@ -41,7 +41,7 @@ class Header extends React.Component {
       <mui.IconMenu open={open}
                     onRequestChange={(open) => this.handleRequestChange(open)}
                     useLayerForClickAway={true}
-                    iconButtonElement={<mui.IconButton style={style}><icons.actions.Import /></mui.IconButton>}>
+                    iconButtonElement={<mui.IconButton tooltip="Importer des opérations" style={style}><icons.actions.Import /></mui.IconButton>}>
         {accounts.map(account => (<mui.MenuItem key={account.id}
                                                 onClick={() => this.handleMenuClick(account.id)}
                                                 primaryText={account.display}
