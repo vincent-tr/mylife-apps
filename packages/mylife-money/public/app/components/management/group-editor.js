@@ -19,7 +19,8 @@ const operators = {
 
 const fields = {
   amount : { display : 'Montant',     valueFormatter : val => parseInt(val, 10) },
-  label  : { display : 'Description', valueFormatter : val => val }
+  label  : { display : 'Description', valueFormatter : val => val },
+  note   : { display : 'Note',        valueFormatter : val => val }
 };
 
 function parseRules(raw) {

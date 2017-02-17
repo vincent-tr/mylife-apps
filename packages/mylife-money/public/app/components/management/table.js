@@ -64,6 +64,7 @@ const Table = ({ onSelect, operations }) => {
             <mui.TableHeaderColumn width={100}>Montant</mui.TableHeaderColumn>
             <mui.TableHeaderColumn width={100}>Date</mui.TableHeaderColumn>
             <mui.TableHeaderColumn>Libellé</mui.TableHeaderColumn>
+            <mui.TableHeaderColumn>Note</mui.TableHeaderColumn>
           </mui.TableRow>
         </mui.TableHeader>
         <mui.TableBody deselectOnClickaway={false} key={Math.random().toString()}> {/* FIXME: because selected is not usable without this horror https://github.com/callemall/material-ui/issues/6006 */}
@@ -76,6 +77,7 @@ const Table = ({ onSelect, operations }) => {
                 <mui.TableRowColumn width={100} style={amountStyle}>{op.operation.amount}</mui.TableRowColumn>
                 <mui.TableRowColumn width={100}>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableRowColumn>
                 <mui.TableRowColumn>{op.operation.label}</mui.TableRowColumn>
+                <mui.TableRowColumn>{op.operation.note}</mui.TableRowColumn>
               </mui.TableRow>
             );
           })}
