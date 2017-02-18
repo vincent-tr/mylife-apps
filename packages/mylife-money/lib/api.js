@@ -94,6 +94,18 @@ module.exports = () => {
     });
   });
 
+  router.route('/operations_set_note').post(function(request, response) {
+    const { note, operations } = request.body;
+    operationsSetNote(note, operations, (err, status) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err.message);
+      }
+      logger.info(`Operations note set: ${JSON.stringify({ note, operations })} -> ${JSON.stringify(status)}`);
+      response.json({});
+    });
+  });
+
   router.route('/operations_import').post(function(request, response) {
     const { account, content } = request.body;
     operationsImport(account, content, (err, count) => {
@@ -198,6 +210,17 @@ function operationsMove(groupId, operationIds, done) {
     return yield operations.update(
       { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
       { $set: { group: groupId ? new ObjectID(groupId) : null } },
+      { multi: true }
+    );
+  }).then((status) => done(null, status), (err) => done(err));
+}
+
+function operationsSetNote(note, operationIds, done) {
+  co(function*() {
+    const operations = coMonk(db.get('operations'));
+    return yield operations.update(
+      { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
+      { $set: { note: note ? note : null } },
       { multi: true }
     );
   }).then((status) => done(null, status), (err) => done(err));

@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
+import base from '../base/index';
 
 import MoveButton from './move-button';
 import ImportButton from './import-button';
@@ -19,11 +20,12 @@ const styles = {
 };
 
 const Header = ({
-  showExecuteRules, canMove,
+  showExecuteRules, canProcessOperations,
   rootGroups,
   accounts,
   minDate, maxDate, account,
-  onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules
+  noteText,
+  onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote
 }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
@@ -35,7 +37,13 @@ const Header = ({
           <icons.actions.Execute />
         </mui.IconButton>
       )}
-      <MoveButton enabled={canMove} rootGroups={rootGroups} style={styles.button} />
+      <MoveButton enabled={canProcessOperations} rootGroups={rootGroups} style={styles.button} />
+      <mui.IconButton onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
+                      disabled={!canProcessOperations}
+                      style={styles.button}
+                      tooltip="Editer la note des opérations sélectionnées">
+        <icons.actions.Comment />
+      </mui.IconButton>
     </mui.ToolbarGroup>
     <mui.ToolbarGroup>
       <p>Date début</p>
@@ -68,17 +76,19 @@ const Header = ({
 
 Header.propTypes = {
   showExecuteRules         : React.PropTypes.bool.isRequired,
-  canMove                  : React.PropTypes.bool.isRequired,
+  canProcessOperations     : React.PropTypes.bool.isRequired,
   rootGroups               : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   accounts                 : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   minDate                  : React.PropTypes.instanceOf(Date),
   maxDate                  : React.PropTypes.instanceOf(Date),
   account                  : React.PropTypes.string,
+  noteText                 : React.PropTypes.string,
   onMinDateChanged         : React.PropTypes.func.isRequired,
   onMaxDateChanged         : React.PropTypes.func.isRequired,
   onAccountChanged         : React.PropTypes.func.isRequired,
   onOperationsImport       : React.PropTypes.func.isRequired,
   onOperationsExecuteRules : React.PropTypes.func.isRequired,
+  onOperationsSetNote      : React.PropTypes.func.isRequired,
 };
 
 export default Header;

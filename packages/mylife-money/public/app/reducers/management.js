@@ -76,6 +76,21 @@ export default handleActions({
         }
       })
     }})
+  },
+
+  [actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE] : {
+    next : (state, action) => ({ ...state, operations: {
+      ...state.operations,
+      all: state.operations.all.withMutations(map => {
+        for(const id of action.payload.operations) {
+          const op = map.get(id);
+          map.set(id, {
+            ...op,
+            note: action.payload.note
+          });
+        }
+      })
+    }})
   }
 
 }, {

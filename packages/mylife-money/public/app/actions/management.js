@@ -40,6 +40,7 @@ export const updateGroup = createAction(actionTypes.MANAGEMENT_QUERY_UPDATE_GROU
 
 const queryOperations = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS);
 const queryMoveOperations = createAction(actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS);
+const queryOperationsSetNote = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS_SET_NOTE);
 
 export const getOperations = () => {
   return (dispatch, getState) => {
@@ -56,6 +57,13 @@ export const moveOperations = (group) => {
   return (dispatch, getState) => {
     const operations = getSelectedOperations(getState()).map(op => op.id);
     dispatch(queryMoveOperations({ group, operations }));
+  };
+};
+
+export const operationsSetNote = (note) => {
+  return (dispatch, getState) => {
+    const operations = getSelectedOperations(getState()).map(op => op.id);
+    dispatch(queryOperationsSetNote({ note, operations }));
   };
 };
 
