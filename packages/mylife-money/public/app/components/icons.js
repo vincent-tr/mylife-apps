@@ -10,7 +10,7 @@ import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
 import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 
-import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
+//import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
 import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
 
 import NavigationArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
