@@ -81,10 +81,13 @@ class EditorDialog extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    const group = props && props.options && props.options.group;
+    const rules = props && props.options && props.options.rules;
+
     this.state = {
-      group: props && props.options && props.options.group,
-      rules: props && props.options && props.options.rules,
-      selectedRule: null
+      group,
+      rules,
+      selectedRule: (rules && rules.first() && rules.first().id) || null
     };
   }
 
@@ -93,7 +96,7 @@ class EditorDialog extends React.Component {
     this.setState({
       group,
       rules,
-      selectedRule: null
+      selectedRule: (rules && rules.first() && rules.first().id) || null
     });
   }
 
