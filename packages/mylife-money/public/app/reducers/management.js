@@ -31,7 +31,9 @@ export default handleActions({
           const operation = Object.assign({ id, date: Date.parse(date) }, props);
           map.set(id, operation);
         }
-      })
+      }),
+      visible: state.operations.visible.clear(),
+      selected: state.operations.selected.clear()
     }})
   },
 
