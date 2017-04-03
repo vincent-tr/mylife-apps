@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
 import { getSelectedOperations, getSelectedGroupId } from '../../selectors/management';
 import { getAccounts } from '../../selectors/accounts';
-import { makeGetSortedChildren } from '../../selectors/groups';
 
 import Header from '../../components/management/header';
 

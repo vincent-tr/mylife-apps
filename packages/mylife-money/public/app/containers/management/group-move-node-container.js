@@ -2,7 +2,6 @@
 
 import { connect } from 'react-redux';
 import { makeGetSortedChildren } from '../../selectors/groups';
-import { moveOperations } from '../../actions/management';
 
 import GroupMoveNode from '../../components/management/group-move-node';
 

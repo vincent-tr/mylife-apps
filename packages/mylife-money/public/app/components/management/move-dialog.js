@@ -3,7 +3,6 @@ import * as mui from 'material-ui';
 import { confirmable, createConfirmation } from 'react-confirm';
 import base from '../base/index';
 import GroupMoveTreeContainer from '../../containers/management/group-move-tree-container.js';
-import store from '../../services/store-factory';
 
 const MoveDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ }) => (
   <base.Theme>
