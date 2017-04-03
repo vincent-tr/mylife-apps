@@ -5,8 +5,8 @@ import * as mui from 'material-ui';
 import icons from '../icons';
 import base from '../base/index';
 
-import MoveButton from './move-button';
 import ImportButton from './import-button';
+import moveDialog from './move-dialog';
 
 const styles = {
   button: {
@@ -21,11 +21,10 @@ const styles = {
 
 const Header = ({
   showExecuteRules, canProcessOperations,
-  rootGroups,
   accounts,
   minDate, maxDate, account,
   noteText,
-  onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote
+  onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
 }) => (
   <mui.Toolbar>
     <mui.ToolbarGroup>
@@ -37,7 +36,14 @@ const Header = ({
           <icons.actions.Execute />
         </mui.IconButton>
       )}
-      <MoveButton enabled={canProcessOperations} rootGroups={rootGroups} style={styles.button} />
+
+      <mui.IconButton onClick={() => moveDialog({ proceed: onOperationsMove})}
+                      disabled={!canProcessOperations}
+                      style={styles.button}
+                      tooltip="Déplacer">
+        <icons.actions.Move />
+      </mui.IconButton>
+
       <mui.IconButton onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
                       disabled={!canProcessOperations}
                       style={styles.button}
@@ -77,7 +83,6 @@ const Header = ({
 Header.propTypes = {
   showExecuteRules         : React.PropTypes.bool.isRequired,
   canProcessOperations     : React.PropTypes.bool.isRequired,
-  rootGroups               : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   accounts                 : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   minDate                  : React.PropTypes.instanceOf(Date),
   maxDate                  : React.PropTypes.instanceOf(Date),
@@ -89,6 +94,7 @@ Header.propTypes = {
   onOperationsImport       : React.PropTypes.func.isRequired,
   onOperationsExecuteRules : React.PropTypes.func.isRequired,
   onOperationsSetNote      : React.PropTypes.func.isRequired,
+  onOperationsMove         : React.PropTypes.func.isRequired,
 };
 
 export default Header;

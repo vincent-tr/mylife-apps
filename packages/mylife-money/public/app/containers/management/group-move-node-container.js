@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { makeGetSortedChildren } from '../../selectors/groups';
 import { moveOperations } from '../../actions/management';
 
-import GroupMenuItem from '../../components/management/group-menu-item';
+import GroupMoveNode from '../../components/management/group-move-node';
 
 const mapStateToProps = () => {
   const getSortedChildren = makeGetSortedChildren();
@@ -13,14 +13,9 @@ const mapStateToProps = () => {
   });
 };
 
-
-const mapDispatchToProps = (dispatch, props) => ({
-  onSelect : () => dispatch(moveOperations(props.group.id))
-});
-
-const GroupMenuItemContainer = connect(
+const GroupMoveNodeContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
-)(GroupMenuItem);
+  null
+)(GroupMoveNode);
 
-export default GroupMenuItemContainer;
+export default GroupMoveNodeContainer;
