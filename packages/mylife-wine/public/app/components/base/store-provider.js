@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import store from '../../services/store-factory';
 import { Provider } from 'react-redux';
 
@@ -11,7 +12,7 @@ const StoreProvider = (props) => (
 );
 
 StoreProvider.propTypes = {
-  children: React.PropTypes.node
+  children: PropTypes.node
 };
 
 export default StoreProvider;

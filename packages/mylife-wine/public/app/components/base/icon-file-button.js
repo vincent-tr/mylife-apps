@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 
 const IconFileButton = ({ onFileSelected, children, ...props }) => {
@@ -31,10 +32,10 @@ const IconFileButton = ({ onFileSelected, children, ...props }) => {
 };
 
 IconFileButton.propTypes = {
-  onFileSelected: React.PropTypes.func.isRequired,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.node),
-    React.PropTypes.node
+  onFileSelected: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
   ])
 };
 

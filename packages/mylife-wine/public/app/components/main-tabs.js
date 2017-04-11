@@ -1,12 +1,10 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from './base/index';
 import icons from './icons';
-
-import Management from './management/index';
-import Reporting from './reporting/index';
 
 const styles = {
   tabs: {
@@ -43,20 +41,28 @@ const MainTabs = ({ activeTab, onTabChanged }) => (
             style={styles.tabs}
             contentContainerStyle={styles.tabContainer}
             tabTemplate={base.TabTemplate}>
-    <mui.Tab value="management"
-             label={renderTabLabel('Management', (<icons.tabs.Management />))}>
-      <Management />
+    <mui.Tab value="in"
+             label={renderTabLabel('Entree', (<icons.tabs.Management />))}>
+      <span>Entree</span>
     </mui.Tab>
-    <mui.Tab value="reporting"
-             label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))}>
-      <Reporting />
+    <mui.Tab value="out"
+             label={renderTabLabel('Sortie', (<icons.tabs.Management />))}>
+      <span>Sortie</span>
+    </mui.Tab>
+    <mui.Tab value="stock"
+             label={renderTabLabel('Stock', (<icons.tabs.Management />))}>
+      <span>Stock</span>
+    </mui.Tab>
+    <mui.Tab value="history"
+             label={renderTabLabel('Historique', (<icons.tabs.Management />))}>
+      <span>Historique</span>
     </mui.Tab>
   </mui.Tabs>
 );
 
 MainTabs.propTypes = {
-  activeTab: React.PropTypes.string.isRequired,
-  onTabChanged: React.PropTypes.func.isRequired
+  activeTab: PropTypes.string.isRequired,
+  onTabChanged: PropTypes.func.isRequired
 };
 
 export default MainTabs;

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 
 const DialogInfo = ({ info, onClose }) => (
@@ -19,8 +20,8 @@ const DialogInfo = ({ info, onClose }) => (
 );
 
 DialogInfo.propTypes = {
-  info: React.PropTypes.string,
-  onClose: React.PropTypes.func.isRequired
+  info: PropTypes.string,
+  onClose: PropTypes.func.isRequired
 };
 
 export default DialogInfo;
