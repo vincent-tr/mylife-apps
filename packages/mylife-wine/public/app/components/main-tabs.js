@@ -57,6 +57,10 @@ const MainTabs = ({ activeTab, onTabChanged }) => (
              label={renderTabLabel('Historique', (<icons.tabs.Management />))}>
       <span>Historique</span>
     </mui.Tab>
+    <mui.Tab value="reference"
+             label={renderTabLabel('Donnees de reference', (<icons.tabs.Management />))}>
+      <span>Donnees de reference</span>
+    </mui.Tab>
   </mui.Tabs>
 );
 
