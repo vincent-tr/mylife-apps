@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from './base/index';
 import icons from './icons';
+import Reference from './reference/index';
 
 const styles = {
   tabs: {
@@ -35,38 +36,43 @@ function renderTabLabel(text, icon) {
   );
 }
 
-const MainTabs = ({ activeTab, onTabChanged }) => (
-  <mui.Tabs value={activeTab}
-            onChange={onTabChanged}
-            style={styles.tabs}
-            contentContainerStyle={styles.tabContainer}
-            tabTemplate={base.TabTemplate}>
-    <mui.Tab value="in"
-             label={renderTabLabel('Entree', (<icons.tabs.Management />))}>
-      <span>Entree</span>
-    </mui.Tab>
-    <mui.Tab value="out"
-             label={renderTabLabel('Sortie', (<icons.tabs.Management />))}>
-      <span>Sortie</span>
-    </mui.Tab>
-    <mui.Tab value="stock"
-             label={renderTabLabel('Stock', (<icons.tabs.Management />))}>
-      <span>Stock</span>
-    </mui.Tab>
-    <mui.Tab value="history"
-             label={renderTabLabel('Historique', (<icons.tabs.Management />))}>
-      <span>Historique</span>
-    </mui.Tab>
-    <mui.Tab value="reference"
-             label={renderTabLabel('Donnees de reference', (<icons.tabs.Management />))}>
-      <span>Donnees de reference</span>
-    </mui.Tab>
-  </mui.Tabs>
-);
+class MainTabs extends React.Component {
 
-MainTabs.propTypes = {
-  activeTab: PropTypes.string.isRequired,
-  onTabChanged: PropTypes.func.isRequired
-};
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'in' };
+  }
+
+  render() {
+    return (
+      <mui.Tabs value={this.state.tab}
+                onChange={(value) => this.setState({ tab: value })}
+                style={styles.tabs}
+                contentContainerStyle={styles.tabContainer}
+                tabTemplate={base.TabTemplate}>
+        <mui.Tab value="in"
+                 label={renderTabLabel('Entree', (<icons.tabs.Management />))}>
+          <span>Entree</span>
+        </mui.Tab>
+        <mui.Tab value="out"
+                 label={renderTabLabel('Sortie', (<icons.tabs.Management />))}>
+          <span>Sortie</span>
+        </mui.Tab>
+        <mui.Tab value="stock"
+                 label={renderTabLabel('Stock', (<icons.tabs.Management />))}>
+          <span>Stock</span>
+        </mui.Tab>
+        <mui.Tab value="history"
+                 label={renderTabLabel('Historique', (<icons.tabs.Management />))}>
+          <span>Historique</span>
+        </mui.Tab>
+        <mui.Tab value="reference"
+                 label={renderTabLabel('Donnees de reference', (<icons.tabs.Management />))}>
+          <Reference/>
+        </mui.Tab>
+      </mui.Tabs>
+    );
+  }
+}
 
 export default MainTabs;
