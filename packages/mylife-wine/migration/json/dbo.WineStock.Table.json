@@ -1,0 +1,527 @@
+[
+  {
+    "sqlid": 2,
+    "articleSqlid": 7,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 3,
+    "articleSqlid": 8,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 4,
+    "articleSqlid": 9,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 5,
+    "articleSqlid": 10,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 6,
+    "articleSqlid": 11,
+    "year": 2011,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 8,
+    "articleSqlid": 13,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 9,
+    "articleSqlid": 14,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 2
+  },
+  {
+    "sqlid": 10,
+    "articleSqlid": 15,
+    "year": 2008,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 10012,
+    "articleSqlid": 10017,
+    "year": 2010,
+    "bottleCount": 8,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 10013,
+    "articleSqlid": 16,
+    "year": 2012,
+    "bottleCount": 10,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 20012,
+    "articleSqlid": 20017,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30013,
+    "articleSqlid": 30018,
+    "year": 2011,
+    "bottleCount": 3,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30014,
+    "articleSqlid": 30019,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30016,
+    "articleSqlid": 30021,
+    "year": 2007,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30018,
+    "articleSqlid": 30022,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30019,
+    "articleSqlid": 30023,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30020,
+    "articleSqlid": 30024,
+    "year": 1984,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30021,
+    "articleSqlid": 30025,
+    "year": 1995,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30022,
+    "articleSqlid": 30026,
+    "year": 2010,
+    "bottleCount": 16,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30023,
+    "articleSqlid": 30027,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 30024,
+    "articleSqlid": 30028,
+    "year": 2009,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 40012,
+    "articleSqlid": 40017,
+    "year": 2009,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 40015,
+    "articleSqlid": 40020,
+    "year": 2005,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 40016,
+    "articleSqlid": 40021,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 50015,
+    "articleSqlid": 50020,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 60015,
+    "articleSqlid": 60020,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 60017,
+    "articleSqlid": 60022,
+    "year": 2011,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 60018,
+    "articleSqlid": 60023,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 60019,
+    "articleSqlid": 60024,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 80015,
+    "articleSqlid": 80020,
+    "year": 2008,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 80016,
+    "articleSqlid": 80022,
+    "year": 2011,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 80017,
+    "articleSqlid": 80023,
+    "year": 2010,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 80018,
+    "articleSqlid": 80021,
+    "year": 2010,
+    "bottleCount": 6,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 80019,
+    "articleSqlid": 80024,
+    "year": 2011,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 80020,
+    "articleSqlid": 80025,
+    "year": 2011,
+    "bottleCount": 3,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90016,
+    "articleSqlid": 90021,
+    "year": 2012,
+    "bottleCount": 4,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90017,
+    "articleSqlid": 90022,
+    "year": 2012,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90018,
+    "articleSqlid": 10,
+    "year": 2012,
+    "bottleCount": 12,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90019,
+    "articleSqlid": 90023,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90020,
+    "articleSqlid": 90023,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90021,
+    "articleSqlid": 90024,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90022,
+    "articleSqlid": 90025,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90023,
+    "articleSqlid": 90026,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90024,
+    "articleSqlid": 30020,
+    "year": 2011,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90025,
+    "articleSqlid": 90027,
+    "year": 2011,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90026,
+    "articleSqlid": 70020,
+    "year": 2010,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 90028,
+    "articleSqlid": 90029,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100028,
+    "articleSqlid": 100029,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100029,
+    "articleSqlid": 100030,
+    "year": 2010,
+    "bottleCount": 6,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100030,
+    "articleSqlid": 100031,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100032,
+    "articleSqlid": 100033,
+    "year": 2009,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 3
+  },
+  {
+    "sqlid": 100033,
+    "articleSqlid": 100034,
+    "year": 1998,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 3
+  },
+  {
+    "sqlid": 100034,
+    "articleSqlid": 100035,
+    "year": 1997,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100035,
+    "articleSqlid": 30025,
+    "year": 2000,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100036,
+    "articleSqlid": 100036,
+    "year": 2000,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100037,
+    "articleSqlid": 100037,
+    "year": 2004,
+    "bottleCount": 2,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100038,
+    "articleSqlid": 100038,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100039,
+    "articleSqlid": 100039,
+    "year": 2009,
+    "bottleCount": 6,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100040,
+    "articleSqlid": 100040,
+    "year": 2011,
+    "bottleCount": 6,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100041,
+    "articleSqlid": 100041,
+    "year": 2011,
+    "bottleCount": 6,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100042,
+    "articleSqlid": 100042,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100043,
+    "articleSqlid": 100043,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100044,
+    "articleSqlid": 60021,
+    "year": 2013,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100046,
+    "articleSqlid": 100045,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100047,
+    "articleSqlid": 100046,
+    "year": 2010,
+    "bottleCount": 12,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100048,
+    "articleSqlid": 100047,
+    "year": 2009,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100049,
+    "articleSqlid": 100048,
+    "year": 2013,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100051,
+    "articleSqlid": 100050,
+    "year": 2012,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 100052,
+    "articleSqlid": 100051,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 110051,
+    "articleSqlid": 110050,
+    "year": 1976,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 110052,
+    "articleSqlid": 110051,
+    "year": 2010,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 110053,
+    "articleSqlid": 16,
+    "year": 2014,
+    "bottleCount": 39,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 110054,
+    "articleSqlid": 110052,
+    "year": 2011,
+    "bottleCount": 1,
+    "bottleCapacitySqlid": 3
+  },
+  {
+    "sqlid": 110055,
+    "articleSqlid": 10017,
+    "year": 2012,
+    "bottleCount": 11,
+    "bottleCapacitySqlid": 1
+  },
+  {
+    "sqlid": 110056,
+    "articleSqlid": 110053,
+    "year": 2011,
+    "bottleCount": 33,
+    "bottleCapacitySqlid": 1
+  }
+]

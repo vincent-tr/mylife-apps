@@ -1,0 +1,1018 @@
+[
+  {
+    "articleSqlid": 7,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 7,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 8,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 8,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 8,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 8,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 9,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 9,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 10,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 10,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 10,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 11,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 11,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 11,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 12,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 12,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 12,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 13,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 13,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 13,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 13,
+    "dishSqlid": 10
+  },
+  {
+    "articleSqlid": 14,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 14,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 14,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 14,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 15,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 16,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 16,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 17,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 17,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 10017,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 10017,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 10017,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 20017,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 20017,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 20017,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 20017,
+    "dishSqlid": 12
+  },
+  {
+    "articleSqlid": 30017,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30017,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 30017,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 30018,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 30018,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 30018,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 30018,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 30018,
+    "dishSqlid": 10
+  },
+  {
+    "articleSqlid": 30018,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 30019,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30019,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 30020,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30020,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 30020,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 30020,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 30020,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 30020,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 30020,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 30021,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30021,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 30021,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 30022,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 30023,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30023,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 30023,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 30024,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30024,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 30024,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 30025,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30025,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 30025,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 30026,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30026,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 30026,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 30027,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 30028,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 30028,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 40017,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 40017,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 40017,
+    "dishSqlid": 12
+  },
+  {
+    "articleSqlid": 40018,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 40018,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 40019,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 40019,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 40020,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 40021,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 40021,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 40021,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 40021,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 40021,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 50020,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 50020,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 50020,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 60020,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 60020,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 60020,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 60020,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 60021,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 60021,
+    "dishSqlid": 20012
+  },
+  {
+    "articleSqlid": 60022,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 60022,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 60022,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 60022,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 60023,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 60023,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 60024,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 60024,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 70020,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 70020,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 70020,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 70020,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 70020,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 70020,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 70020,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 80020,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 80020,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 80020,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 80021,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 80021,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 80021,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 80021,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 80021,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 80021,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 80021,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 80022,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 80022,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 80022,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 10
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 12
+  },
+  {
+    "articleSqlid": 80023,
+    "dishSqlid": 20012
+  },
+  {
+    "articleSqlid": 80024,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 80025,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 80025,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 80025,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 80025,
+    "dishSqlid": 10
+  },
+  {
+    "articleSqlid": 90021,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 90021,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 90021,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 90021,
+    "dishSqlid": 12
+  },
+  {
+    "articleSqlid": 90022,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 90022,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 90022,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 90022,
+    "dishSqlid": 20012
+  },
+  {
+    "articleSqlid": 90023,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 90023,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 90023,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 90023,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 90023,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 90023,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 90023,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 90024,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 90024,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 90024,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 90024,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 90024,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 90024,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 90024,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 90025,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 90025,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 90025,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 90025,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 90025,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 90025,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 90025,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 90026,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 90026,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 90026,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 90026,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 90026,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 90026,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 90026,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 90027,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 90027,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 90027,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 90027,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 90027,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 90027,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 90027,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 90028,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 90028,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 90029,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 90029,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100029,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 100029,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 100029,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 100030,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 100030,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 100031,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 100031,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 100031,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 100031,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 100032,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 100036,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100036,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 100036,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 100036,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100036,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 100037,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 100037,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 100037,
+    "dishSqlid": 10
+  },
+  {
+    "articleSqlid": 100038,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100039,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100040,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100041,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100042,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 100042,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100042,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100042,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 100043,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 100043,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100043,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100043,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 100044,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100044,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 100044,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100044,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 100045,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 100045,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 100045,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 100045,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 100046,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100046,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 100046,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 100046,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100046,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 100046,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 100047,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100047,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 100047,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100047,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 100047,
+    "dishSqlid": 10012
+  },
+  {
+    "articleSqlid": 100048,
+    "dishSqlid": 30012
+  },
+  {
+    "articleSqlid": 100049,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 100049,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 100049,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 100049,
+    "dishSqlid": 9
+  },
+  {
+    "articleSqlid": 100050,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 100050,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 100050,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 100050,
+    "dishSqlid": 30012
+  },
+  {
+    "articleSqlid": 100051,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 100051,
+    "dishSqlid": 5
+  },
+  {
+    "articleSqlid": 100051,
+    "dishSqlid": 11
+  },
+  {
+    "articleSqlid": 110052,
+    "dishSqlid": 1
+  },
+  {
+    "articleSqlid": 110052,
+    "dishSqlid": 3
+  },
+  {
+    "articleSqlid": 110052,
+    "dishSqlid": 4
+  },
+  {
+    "articleSqlid": 110053,
+    "dishSqlid": 2
+  },
+  {
+    "articleSqlid": 110053,
+    "dishSqlid": 6
+  },
+  {
+    "articleSqlid": 110053,
+    "dishSqlid": 7
+  },
+  {
+    "articleSqlid": 110053,
+    "dishSqlid": 8
+  },
+  {
+    "articleSqlid": 110053,
+    "dishSqlid": 10012
+  }
+]
