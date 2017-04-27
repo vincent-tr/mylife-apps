@@ -58,7 +58,7 @@ class Details extends React.Component {
     if(!isNaN(value)) {
       this.setState({ item: Object.assign(this.state.item, { value }) });
     }
-  };
+  }
 
   render() {
     const { type, onCreate, onUpdate, onDelete } = this.props;

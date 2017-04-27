@@ -3,7 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import base from '../base/index';
-import icons from '../icons';
 
 function title(type, item) {
   if(type === 'capacities') {

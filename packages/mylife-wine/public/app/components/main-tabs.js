@@ -3,7 +3,6 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from './base/index';
-import icons from './icons';
 import Reference from './reference/index';
 
 const styles = {
