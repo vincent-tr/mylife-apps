@@ -3,6 +3,11 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from './base/index';
+
+import In from './in/index';
+import Out from './out/index';
+import Stock from './stock/index';
+import History from './history/index';
 import Reference from './reference/index';
 
 const styles = {
@@ -50,19 +55,19 @@ class MainTabs extends React.Component {
                 tabTemplate={base.TabTemplate}>
         <mui.Tab value="in"
                  label={renderTabLabel('Entree', (<img src="images/misc/arrow-right-green-256.png" height="24" width="24" />))}>
-          <span>Entree</span>
+          <In/>
         </mui.Tab>
         <mui.Tab value="out"
                  label={renderTabLabel('Sortie', (<img src="images/misc/arrow-left-red-256.png" height="24" width="24" />))}>
-          <span>Sortie</span>
+          <Out/>
         </mui.Tab>
         <mui.Tab value="stock"
                  label={renderTabLabel('Stock', (<img src="images/misc/inventory-48.png" height="24" width="24" />))}>
-          <span>Stock</span>
+          <Stock/>
         </mui.Tab>
         <mui.Tab value="history"
                  label={renderTabLabel('Historique', (<img src="images/misc/history-32.png" height="24" width="24" />))}>
-          <span>Historique</span>
+          <History/>
         </mui.Tab>
         <mui.Tab value="reference"
                  label={renderTabLabel('Donnees de reference', (<img src="images/misc/list-32.png" height="24" width="24" />))}>
