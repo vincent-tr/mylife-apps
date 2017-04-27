@@ -20,11 +20,6 @@ export default (getConst, createConst, updateConst, deleteConst) => {
       next : (state, action) => state.withMutations(map => {
         map.clear();
 
-        map.set(null, {
-          id      : null,
-          display : 'Non triés'
-        });
-
         for(const raw of action.payload) {
           const { _id: id, ...props } = raw;
           const item = Object.assign({ id }, props);
