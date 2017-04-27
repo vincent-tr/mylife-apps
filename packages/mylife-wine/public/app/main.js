@@ -7,11 +7,19 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Application from './components/application';
 
+import { getCapacities, getDishes, getRegions, getTypes } from './actions/references';
+import store from './services/store-factory';
+
 //Needed for onTouchTap
 //Can go away when react 1.0 release
 //Check this repo:
 //https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
+
+store.dispatch(getCapacities());
+store.dispatch(getDishes());
+store.dispatch(getRegions());
+store.dispatch(getTypes());
 
 ReactDOM.render(
   <Application/>,
