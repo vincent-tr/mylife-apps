@@ -42,4 +42,13 @@ export default wrap({
   UPDATE_TYPE           : null,
   QUERY_CREATE_TYPE     : null,
   CREATE_TYPE           : null,
+
+  QUERY_GET_ARTICLES    : null,
+  GET_ARTICLES          : null,
+  QUERY_DELETE_ARTICLE  : null,
+  DELETE_ARTICLE        : null,
+  QUERY_UPDATE_ARTICLE  : null,
+  UPDATE_ARTICLE        : null,
+  QUERY_CREATE_ARTICLE  : null,
+  CREATE_ARTICLE        : null,
 });

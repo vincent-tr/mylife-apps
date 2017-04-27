@@ -19,3 +19,7 @@ export const getTypes       = createAction(actionTypes.GET_TYPES);
 export const createType     = createAction(actionTypes.CREATE_TYPE);
 export const updateType     = createAction(actionTypes.UPDATE_TYPE);
 export const deleteType     = createAction(actionTypes.DELETE_TYPE);
+export const getArticles    = createAction(actionTypes.GET_ARTICLES);
+export const createArticle  = createAction(actionTypes.CREATE_ARTICLE);
+export const updateArticle  = createAction(actionTypes.UPDATE_ARTICLE);
+export const deleteArticle  = createAction(actionTypes.DELETE_ARTICLE);

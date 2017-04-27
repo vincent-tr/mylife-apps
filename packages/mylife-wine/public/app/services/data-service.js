@@ -7,6 +7,7 @@ import {
   getDishes,     createDish,     updateDish,     deleteDish,
   getRegions,    createRegion,   updateRegion,   deleteRegion,
   getTypes,      createType,     updateType,     deleteType,
+  getArticles,   createArticle,  updateArticle,  deleteArticle,
 } from '../actions/service';
 
 
@@ -71,6 +72,7 @@ const capacitiesCrud = createCrud('capacity', actionTypes.QUERY_GET_CAPACITIES, 
 const dishesCrud     = createCrud('dish',     actionTypes.QUERY_GET_DISHES,     actionTypes.QUERY_CREATE_DISH,     actionTypes.QUERY_UPDATE_DISH,     actionTypes.QUERY_DELETE_DISH,     getDishes,     createDish,     updateDish,     deleteDish);
 const regionsCrud    = createCrud('region',   actionTypes.QUERY_GET_REGIONS,    actionTypes.QUERY_CREATE_REGION,   actionTypes.QUERY_UPDATE_REGION,   actionTypes.QUERY_DELETE_REGION,   getRegions,    createRegion,   updateRegion,   deleteRegion);
 const typesCrud      = createCrud('type',     actionTypes.QUERY_GET_TYPES,      actionTypes.QUERY_CREATE_TYPE,     actionTypes.QUERY_UPDATE_TYPE,     actionTypes.QUERY_DELETE_TYPE,     getTypes,      createType,     updateType,     deleteType);
+const articlesCrud   = createCrud('article',  actionTypes.QUERY_GET_ARTICLES,   actionTypes.QUERY_CREATE_ARTICLE,  actionTypes.QUERY_UPDATE_ARTICLE,  actionTypes.QUERY_DELETE_ARTICLE,  getArticles,   createArticle,  updateArticle,  deleteArticle);
 
 const dataService = (/*store*/) => next => action => {
   next(action);
@@ -79,6 +81,7 @@ const dataService = (/*store*/) => next => action => {
   dishesCrud(next, action);
   regionsCrud(next, action);
   typesCrud(next, action);
+  articlesCrud(next, action);
 };
 
 export default dataService;
