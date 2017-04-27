@@ -101,9 +101,9 @@ class Details extends React.Component {
         </table>
         )}
 
-        <mui.RaisedButton label={'Nouveau'} onClick={onCreate()} />
-        {type && item && (<mui.RaisedButton label={'Nouveau'} onClick={onUpdate(item)} />)}
-        {type && item && (<mui.RaisedButton label={'Supprimer'} onClick={onDelete(item)} />)}
+        <mui.RaisedButton label={'Nouveau'} onClick={onCreate} />
+        {type && item && (<mui.RaisedButton label={'Modifier'} onClick={() => onUpdate(item)} />)}
+        {type && item && (<mui.RaisedButton label={'Supprimer'} onClick={() => onDelete(item.id)} />)}
 
         <input
           ref="openImageFile"
