@@ -11,16 +11,26 @@ const logger = log4js.getLogger('mylife:wine:migrate_createdb');
 
 const sourceDirectory = path.resolve(__dirname, '../migration/json');
 
-const tables = {
-  //articleDishes : {},
-  articles   : { sqlName: 'WineArticle' },
-  capacities : { sqlName: 'WineBottleCapacity' },
-  dishes     : { sqlName: 'WineDish' },
-  history    : { sqlName: 'WineHistory' },
-  regions    : { sqlName: 'WineRegion' },
-  stock      : { sqlName: 'WineStock' },
-  types      : { sqlName: 'WineType' }
-};
+const tables = [
+  { name : 'articleDishes', sqlName : 'WineArticleDish' },
+  { name : 'articles',      sqlName : 'WineArticle' },
+  { name : 'capacities',    sqlName : 'WineBottleCapacity' },
+  { name : 'dishes',        sqlName : 'WineDish' },
+  { name : 'history',       sqlName : 'WineHistory' },
+  { name : 'regions',       sqlName : 'WineRegion' },
+  { name : 'stock',         sqlName : 'WineStock' },
+  { name : 'types',         sqlName : 'WineType' }
+];
+
+const constraints = [
+  //articleDishes
+  { table : 'articles', field: 'type',     sqlField : 'typeSqlid',           ref : 'types' },
+  { table : 'articles', field: 'region',   sqlField : 'regionSqlid',         ref : 'regions' },
+  { table : 'history',  field: 'capacity', sqlField : 'bottleCapacitySqlid', ref : 'capacities' },
+  { table : 'history',  field: 'article',  sqlField : 'articleSqlid',        ref : 'articles' },
+  { table : 'stock',    field: 'capacity', sqlField : 'bottleCapacitySqlid', ref : 'capacities' },
+  { table : 'stock',    field: 'article',  sqlField : 'articleSqlid',        ref : 'articles' }
+];
 
 const db = monk(config.mongo);
 
@@ -34,27 +44,84 @@ co(main).then(() => {
 
 function* main() {
 
-  for(const name of Object.keys(tables)) {
-    yield cleanTable(name);
+  for(const table of tables) {
+    yield dropTable(table.name);
   }
 
-  for(const name of Object.keys(tables)) {
-    yield importTable(name);
+  for(const table of tables) {
+    yield importTable(table);
   }
+
+  for(const constraint of constraints) {
+    yield resolveConstraint(constraint);
+  }
+
+  yield resolveNNConstraint();
+
+  for(const table of tables) {
+    yield removeField(table.name, 'sqlid');
+  }
+
+  for(const constraint of constraints) {
+    yield removeField(constraint.table, constraint.sqlField);
+  }
+
+  yield dropTable('articleDishes');
 
   db.close();
 }
 
-function* cleanTable(name) {
-  logger.info(`Cleaning ${name}`);
-  const collection = coMonk(db.get(name));
+function* dropTable(tableName) {
+  logger.info(`Dropping ${tableName}`);
+  const collection = coMonk(db.get(tableName));
   yield collection.drop();
 }
 
-function* importTable(name) {
-  logger.info(`Importing ${name}`);
-  const table = tables[name];
-  const collection = coMonk(db.get(name));
+function* importTable(table) {
+  logger.info(`Importing ${table.name}`);
+  const collection = coMonk(db.get(table.name));
   const records = JSON.parse(fs.readFileSync(path.resolve(sourceDirectory, `dbo.${table.sqlName}.Table.json`), { encoding: 'utf8' }));
   yield collection.insert(records);
+}
+
+function* removeField(tableName, field) {
+  logger.info(`Removing ${tableName}.${field}`);
+  const collection = coMonk(db.get(tableName));
+  yield collection.update({}, { $unset: { [field]: null } }, { multi: true });
+}
+
+function* resolveConstraint(constraint) {
+  logger.info(`Resolving ${constraint.table}.${constraint.sqlField} -> ${constraint.ref}.sqlid`);
+  const ref = yield loadPk(constraint.ref);
+  const collection = coMonk(db.get(constraint.table));
+  const data = yield collection.find({});
+  for(const item of data) {
+    const value = ref.get(item[constraint.sqlField]);
+    yield collection.update({ _id: item._id}, { $set: { [constraint.field]: value } });
+  }
+}
+
+function* resolveNNConstraint() {
+  logger.info(`Resolving articleDishes`);
+  const articles = yield loadPk('articles');
+  const dishes = yield loadPk('dishes');
+
+  const collection = coMonk(db.get('articles'));
+
+  const data = yield coMonk(db.get('articleDishes')).find({});
+  for(const item of data) {
+    const dishId = dishes.get(item.dishSqlid);
+    const articleId = articles.get(item.articleSqlid);
+    yield collection.update({ _id: articleId }, { $addToSet: { dishes : dishId } });
+  }
+}
+
+function* loadPk(tableName) {
+  const collection = coMonk(db.get(tableName));
+  const data = yield collection.find({});
+  const map = new Map();
+  for(const item of data) {
+    map.set(item.sqlid, item._id);
+  }
+  return map;
 }
