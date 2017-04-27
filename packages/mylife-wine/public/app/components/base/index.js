@@ -4,6 +4,7 @@ import TooltipContainer from './tooltip-container';
 import TabTemplate from './tab-template';
 import Theme from './theme';
 import StoreProvider from './store-provider';
+import DataImage from './data-image';
 import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import confirm from './confirm-dialog';
@@ -14,6 +15,7 @@ export default {
   TabTemplate,
   Theme,
   StoreProvider,
+  DataImage,
   SelectableList,
   SelectableListItem,
   confirm,
