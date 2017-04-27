@@ -8,6 +8,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import Application from './components/application';
 
 import { getCapacities, getDishes, getRegions, getTypes } from './actions/references';
+import { getArticles } from './actions/articles';
 import store from './services/store-factory';
 
 //Needed for onTouchTap
@@ -20,6 +21,7 @@ store.dispatch(getCapacities());
 store.dispatch(getDishes());
 store.dispatch(getRegions());
 store.dispatch(getTypes());
+store.dispatch(getArticles());
 
 ReactDOM.render(
   <Application/>,
