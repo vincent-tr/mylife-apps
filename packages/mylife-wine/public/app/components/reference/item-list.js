@@ -7,9 +7,9 @@ import icons from '../icons';
 
 function title(type, item) {
   if(type === 'capacities') {
-    return `${item.label} (${item.value} L)`;
+    return `${item.name} (${item.value} L)`;
   }
-  return item.label;
+  return item.name;
 }
 
 const ItemList = ({ type, list, value, onChange }) => (
