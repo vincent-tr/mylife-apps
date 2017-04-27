@@ -5,6 +5,7 @@ import * as mui from 'material-ui';
 
 import TypeList from './type-list';
 import ItemListContainer from '../../containers/reference/item-list-container';
+import DetailsContainer from '../../containers/reference/details-container';
 
 import tabStyles from '../base/tab-styles';
 
@@ -52,9 +53,7 @@ class Index extends React.Component {
           <ItemListContainer type={this.state.tab} value={this.state.selected} onChange={selected => this.setState({ selected })} />
         </mui.Paper>
         <mui.Paper zDepth={1} style={Object.assign({}, styles.paperDetails, tabStyles.scrollable, tabStyles.fullHeight)}>
-          <div style={tabStyles.fullHeight}>
-            DETAILS
-          </div>
+          <DetailsContainer type={this.state.tab} value={this.state.selected} />
         </mui.Paper>
       </div>
     );
