@@ -50,23 +50,23 @@ class MainTabs extends React.Component {
                 contentContainerStyle={styles.tabContainer}
                 tabTemplate={base.TabTemplate}>
         <mui.Tab value="in"
-                 label={renderTabLabel('Entree', (<icons.tabs.Management />))}>
+                 label={renderTabLabel('Entree', (<img src="images/misc/arrow-right-green-256.png" height="24" width="24" />))}>
           <span>Entree</span>
         </mui.Tab>
         <mui.Tab value="out"
-                 label={renderTabLabel('Sortie', (<icons.tabs.Management />))}>
+                 label={renderTabLabel('Sortie', (<img src="images/misc/arrow-left-red-256.png" height="24" width="24" />))}>
           <span>Sortie</span>
         </mui.Tab>
         <mui.Tab value="stock"
-                 label={renderTabLabel('Stock', (<icons.tabs.Management />))}>
+                 label={renderTabLabel('Stock', (<img src="images/misc/inventory-48.png" height="24" width="24" />))}>
           <span>Stock</span>
         </mui.Tab>
         <mui.Tab value="history"
-                 label={renderTabLabel('Historique', (<icons.tabs.Management />))}>
+                 label={renderTabLabel('Historique', (<img src="images/misc/history-32.png" height="24" width="24" />))}>
           <span>Historique</span>
         </mui.Tab>
         <mui.Tab value="reference"
-                 label={renderTabLabel('Donnees de reference', (<icons.tabs.Management />))}>
+                 label={renderTabLabel('Donnees de reference', (<img src="images/misc/list-32.png" height="24" width="24" />))}>
           <Reference/>
         </mui.Tab>
       </mui.Tabs>
