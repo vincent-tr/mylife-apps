@@ -16,7 +16,9 @@ const ItemList = ({ type, list, value, onChange }) => (
   <base.SelectableList selectedNode={{value}}
             selectedValueChanged={(obj) => onChange(obj.value)}>
     {list.map(item => (
-      <base.SelectableListItem value={{ value: item.id }}
+      <base.SelectableListItem
+        key={item.id}
+        value={{ value: item.id }}
         leftIcon={<icons.tabs.Management />}
         primaryText={title(type, item)}/>
     ))}
