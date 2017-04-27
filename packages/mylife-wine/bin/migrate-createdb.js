@@ -11,18 +11,20 @@ const logger = log4js.getLogger('mylife:wine:migrate_createdb');
 
 const sourceDirectory = path.resolve(__dirname, '../migration/json');
 
-const tables = [
+const doStock = !!process.argv.find(arg => arg === '--stock');
+
+const allTables = [
   { name : 'articleDishes', sqlName : 'WineArticleDish' },
   { name : 'articles',      sqlName : 'WineArticle' },
   { name : 'capacities',    sqlName : 'WineBottleCapacity' },
   { name : 'dishes',        sqlName : 'WineDish' },
-  { name : 'history',       sqlName : 'WineHistory' },
+  { name : 'history',       sqlName : 'WineHistory', stock: true },
   { name : 'regions',       sqlName : 'WineRegion' },
-  { name : 'stock',         sqlName : 'WineStock' },
+  { name : 'stock',         sqlName : 'WineStock', stock: true },
   { name : 'types',         sqlName : 'WineType' }
 ];
 
-const constraints = [
+const allConstraints = [
   //articleDishes
   { table : 'articles', field: 'type',     sqlField : 'typeSqlid',           ref : 'types' },
   { table : 'articles', field: 'region',   sqlField : 'regionSqlid',         ref : 'regions' },
@@ -44,7 +46,10 @@ co(main).then(() => {
 
 function* main() {
 
-  for(const table of tables) {
+  const tables = activeTables();
+  const constraints = activeConstraints();
+
+  for(const table of allTables) {
     yield dropTable(table.name);
   }
 
@@ -69,6 +74,16 @@ function* main() {
   yield dropTable('articleDishes');
 
   db.close();
+}
+
+function activeTables() {
+  if(doStock) { return allTables; }
+  return allTables.filter(table => !table.stock);
+}
+
+function activeConstraints() {
+  if(doStock) { return allConstraints; }
+  return allConstraints.filter(constraint => !allTables.find(table => table.name === constraint.table).stock);
 }
 
 function* dropTable(tableName) {
