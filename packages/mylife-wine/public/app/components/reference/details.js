@@ -4,6 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import PropTypes from 'prop-types';
 import base from '../base/index';
+import icons from '../icons';
 
 class Details extends React.Component {
 
@@ -66,44 +67,61 @@ class Details extends React.Component {
     return (
       <div>
         {type && item && (
-        <table>
-          <tbody>
-            <tr>
-              <td>Nom</td>
-              <td>
-                <mui.TextField
-                  id="name"
-                  value={item.name}
-                  onChange={(event) => this.setState({ item: Object.assign(item, { name: event.target.value }) })}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Icone</td>
-              <td>
-                <base.DataImage data={item.icon} height={16} width={16} />
-                <mui.RaisedButton label={'Change'} onClick={this.openImageFileDialog.bind(this)} />
-              </td>
-            </tr>
-            {type === 'capacities' && (
-            <tr>
-              <td>Valeur</td>
-              <td>
-                <mui.TextField
-                  id="Valeur"
-                  value={item.value}
-                  onChange={this.onCapacityValueChange.bind(this)}
-                  type='number' />
-              </td>
-            </tr>
-            )}
-          </tbody>
-        </table>
+        <mui.Paper>
+          <table style={{tableLayout: 'fixed', width: '100%'}}>
+            <tbody>
+              <tr>
+                <td>Nom</td>
+                <td>
+                  <mui.TextField
+                    id="name"
+                    value={item.name}
+                    onChange={(event) => this.setState({ item: Object.assign(item, { name: event.target.value }) })}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Icone</td>
+                <td>
+                  <base.DataImage data={item.icon} style={{ height: 24, width: 24, marginRight: 12 }} />
+                  <mui.RaisedButton label={'Modifier'} onClick={this.openImageFileDialog.bind(this)} />
+                </td>
+              </tr>
+              {type === 'capacities' && (
+              <tr>
+                <td>Valeur</td>
+                <td>
+                  <mui.TextField
+                    id="Valeur"
+                    value={item.value}
+                    onChange={this.onCapacityValueChange.bind(this)}
+                    type='number' />
+                </td>
+              </tr>
+              )}
+            </tbody>
+          </table>
+        </mui.Paper>
         )}
 
-        <mui.RaisedButton label={'Nouveau'} onClick={onCreate} />
-        {type && item && (<mui.RaisedButton label={'Modifier'} onClick={() => onUpdate(item)} />)}
-        {type && item && (<mui.RaisedButton label={'Supprimer'} onClick={() => onDelete(item.id)} />)}
+        <mui.IconButton onClick={onCreate}
+                        tooltip="Nouveau">
+          <icons.actions.New />
+        </mui.IconButton>
+
+        {type && item && (
+          <mui.IconButton onClick={() => onUpdate(item)}
+                          tooltip="Modifier">
+            <icons.actions.Edit />
+          </mui.IconButton>
+        )}
+
+        {type && item && (
+          <mui.IconButton onClick={() => onDelete(item.id)}
+                          tooltip="Supprimer">
+            <icons.actions.Delete />
+          </mui.IconButton>
+        )}
 
         <input
           ref="openImageFile"
