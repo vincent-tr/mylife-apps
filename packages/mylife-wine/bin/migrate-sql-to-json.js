@@ -1,9 +1,10 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const fs        = require('fs');
+const path      = require('path');
 const iconvlite = require('iconv-lite');
-const readline = require('readline');
+const readline  = require('readline');
+const conv      = require('binstring');
 
 main();
 
@@ -79,8 +80,8 @@ function formatValue(value) {
   }
 
   if(value.startsWith('0x')) {
-    // TODO: binary
-    return value;
+    const buffer = conv(value.substr(2), { in: 'hex', out: 'buffer'});
+    return buffer.toString('base64');
   }
 
   let nb = Number.parseFloat(value);
