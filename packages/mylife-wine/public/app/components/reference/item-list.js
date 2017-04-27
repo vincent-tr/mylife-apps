@@ -19,7 +19,7 @@ const ItemList = ({ type, list, value, onChange }) => (
       <base.SelectableListItem
         key={item.id}
         value={{ value: item.id }}
-        leftIcon={<base.DataImage data={item.icon} />}
+        leftIcon={<base.DataImage data={item.icon} height={16} width={16} />}
         primaryText={title(type, item)}/>
     ))}
   </base.SelectableList>
