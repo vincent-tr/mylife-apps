@@ -2,6 +2,13 @@
 
 import React from 'react';
 
-const Index = () => (<div>entree</div>);
+import ArticleFinderContainer from '../../containers/in/article-finder-container';
+
+const Index = () => (
+  <div>
+    entree
+    <ArticleFinderContainer />
+  </div>
+);
 
 export default Index;
