@@ -39,15 +39,41 @@ class ArticleFinder extends React.Component {
     super(props);
     this.state = {
       type: null,
-      region: null
+      region: null,
+      articles: props.articles
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.refreshArticles(this.state, nextProps.articles);
+  }
+
+  changeCriteria(newValues) {
+    const newCriteria = Object.assign({
+      type: this.state.type,
+      region: this.state.region
+    }, newValues);
+
+    this.setState(newValues);
+    this.refreshArticles(newCriteria, this.props.articles);
+  }
+
+  refreshArticles(criteria, articles) {
+    if(criteria.type) {
+      articles = articles.filter(article => article.type === criteria.type);
+    }
+    if(criteria.region) {
+      articles = articles.filter(article => article.region === criteria.region);
+    }
+
+    this.setState({ articles });
   }
 
   render() {
     const { types, regions } = this.props;
-    const { type, region } = this.state;
-    const typeChange = (event, index, value) => this.setState({ type: value });
-    const regionChange = (event, index, value) => this.setState({ region: value });
+    const { type, region, articles } = this.state;
+    const typeChange = (event, index, value) => this.changeCriteria({ type: value });
+    const regionChange = (event, index, value) => this.changeCriteria({ region: value });
 
     return (
       <div style={styles.div}>
@@ -90,7 +116,7 @@ class ArticleFinder extends React.Component {
 
         </mui.Paper>
         <mui.Paper zDepth={1} style={Object.assign({}, styles.paperList, tabStyles.scrollable, tabStyles.fullHeight)}>
-          List
+          {JSON.stringify(articles)}
         </mui.Paper>
       </div>
 
