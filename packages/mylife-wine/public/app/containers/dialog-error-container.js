@@ -11,7 +11,6 @@ const mapStateToProps = () => {
   });
 };
 
-
 const mapDispatchToProps = (dispatch) => ({
   onClose : () => dispatch(clearError()),
 });
