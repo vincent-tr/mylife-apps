@@ -3,6 +3,7 @@
 import React from 'react';
 
 import ArticleFinderContainer from '../../containers/in/article-finder-container';
+import ArticleDetailsContainer from '../../containers/in/article-details-container';
 
 const styles = {
   container: {
@@ -40,7 +41,9 @@ class Index extends React.Component {
         <div style={styles.articleFinder}>
           <ArticleFinderContainer article={this.state.article} onArticleChange={article => this.setState({ article })}/>
         </div>
-        <div style={styles.articleDetails}>article details</div>
+        <div style={styles.articleDetails}>
+          <ArticleDetailsContainer article={this.state.article} onArticleChange={ article => this.setState({ article })}/>
+        </div>
         <div style={styles.stockAdd}>stock add</div>
       </div>
     );

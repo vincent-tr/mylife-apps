@@ -27,7 +27,9 @@ function createCrud(routerName, getConst, createConst, updateConst, deleteConst,
           });
         break;
 
-      case createConst:
+      case createConst: {
+        const { newIdCallback } = action.payload;
+        delete action.payload.newIdCallback;
         request
           .put(`/api/${routerName}`)
           .send(action.payload)
@@ -36,9 +38,11 @@ function createCrud(routerName, getConst, createConst, updateConst, deleteConst,
               return next(createAction(new Error(JSON.parse(res.text))));
             }
             const data = JSON.parse(res.text);
+            newIdCallback(data._id);
             return next(createAction(data));
           });
         break;
+      }
 
       case updateConst:
         request

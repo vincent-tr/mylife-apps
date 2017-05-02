@@ -6,6 +6,7 @@ import ActionOpenInBrowser from 'material-ui/svg-icons/action/open-in-browser';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
 import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
+import ContentSave from 'material-ui/svg-icons/content/save';
 
 import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
@@ -22,6 +23,7 @@ export default {
     New     : ContentAddCircle,
     Edit    : EditorModeEdit,
     Delete  : NavigationClose,
+    Save    : ContentSave,
     Move    : FileFolderOpen,
     Import  : ActionOpenInBrowser,
     Execute : ActionSettings,

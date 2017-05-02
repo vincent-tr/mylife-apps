@@ -94,7 +94,6 @@ class ArticleFinder extends React.Component {
 
     this.setState(newValues);
     this.refreshArticles(this.props.articles);
-    this.props.onArticleChange(null);
   }
 
   refreshArticles(articles) {
