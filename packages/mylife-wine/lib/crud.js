@@ -68,20 +68,20 @@ module.exports.create = (router, routerName, storeName, constraintChecker = () =
     }).then((value) => done(null, value), (err) => done(err));
   }
 
-  function createItem(group, done) {
+  function createItem(item, done) {
     co(function*() {
       const store = coMonk(db.get(storeName));
-      return yield store.insert(group);
+      return yield store.insert(item);
     }).then((value) => done(null, value), (err) => done(err));
   }
 
-  function updateItem(group, done) {
-    group._id = group.id;
-    delete group.id;
+  function updateItem(item, done) {
+    item._id = item.id;
+    delete item.id;
     co(function*() {
       const store = coMonk(db.get(storeName));
-      yield store.update({ _id: group._id }, group);
-      return group;
+      yield store.update({ _id: item._id }, item);
+      return item;
     }).then((value) => done(null, value), (err) => done(err));
   }
 
