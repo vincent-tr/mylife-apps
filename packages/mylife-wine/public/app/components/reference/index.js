@@ -46,13 +46,13 @@ class Index extends React.Component {
   render() {
     return (
       <div style={styles.div}>
-        <mui.Paper zDepth={1} style={Object.assign({}, styles.paperWhat, tabStyles.scrollable, tabStyles.fullHeight)}>
+        <mui.Paper style={Object.assign({}, styles.paperWhat, tabStyles.scrollable, tabStyles.fullHeight)}>
           <TypeList value={this.state.tab} onChange={tab => this.setState({ tab, selected: null })} />
         </mui.Paper>
-        <mui.Paper zDepth={1} style={Object.assign({}, styles.paperList, tabStyles.scrollable, tabStyles.fullHeight)}>
+        <mui.Paper style={Object.assign({}, styles.paperList, tabStyles.scrollable, tabStyles.fullHeight)}>
           <ItemListContainer type={this.state.tab} value={this.state.selected} onChange={selected => this.setState({ selected })} />
         </mui.Paper>
-        <mui.Paper zDepth={1} style={Object.assign({}, styles.paperDetails, tabStyles.scrollable, tabStyles.fullHeight)}>
+        <mui.Paper style={Object.assign({}, styles.paperDetails, tabStyles.scrollable, tabStyles.fullHeight)}>
           <DetailsContainer type={this.state.tab} value={this.state.selected} />
         </mui.Paper>
       </div>

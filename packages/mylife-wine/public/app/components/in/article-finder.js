@@ -41,7 +41,7 @@ function createSelectedItem(list, value) {
 
 function renderArticleListHeader() {
   return (
-    <mui.Paper zDepth={1}>
+    <mui.Paper>
       <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'left', padding: 16, fontWeight: 'bold' }}>
         <div style={{ flex: 1 }}>Appelation</div>
         <div style={{ flex: 1 }}>Type de spiritueux</div>
@@ -115,7 +115,7 @@ class ArticleFinder extends React.Component {
 
     return (
       <div style={styles.container}>
-        <mui.Paper zDepth={1} style={styles.paperCriteria}>
+        <mui.Paper style={styles.paperCriteria}>
 
           <table style={{tableLayout: 'fixed', width: '100%'}}>
             <tbody>
@@ -153,7 +153,7 @@ class ArticleFinder extends React.Component {
           </table>
 
         </mui.Paper>
-        <mui.Paper zDepth={1} style={styles.paperList}>
+        <mui.Paper style={styles.paperList}>
           <div style={{ height: '100%'}}>
             {renderArticleListHeader()}
             <div style={{ position: 'relative', height: 'calc(100% - 50px)' }}>
