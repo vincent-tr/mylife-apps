@@ -5,6 +5,7 @@ import TabTemplate from './tab-template';
 import Theme from './theme';
 import StoreProvider from './store-provider';
 import DataImage from './data-image';
+import GroupBox from './group-box';
 import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import confirm from './confirm-dialog';
@@ -16,6 +17,7 @@ export default {
   Theme,
   StoreProvider,
   DataImage,
+  GroupBox,
   SelectableList,
   SelectableListItem,
   confirm,

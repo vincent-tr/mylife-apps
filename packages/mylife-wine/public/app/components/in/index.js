@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import base from '../base/index';
 
 import ArticleFinderContainer from '../../containers/in/article-finder-container';
 import ArticleDetailsContainer from '../../containers/in/article-details-container';
@@ -35,16 +36,20 @@ class Index extends React.Component {
     };
   }
 
+  // TODO: 3 papers with title like nmaterial-ui website
+
   render() {
     return (
       <div style={styles.container}>
-        <div style={styles.articleFinder}>
+        <base.GroupBox style={styles.articleFinder} title={'Rechercher un article'}>
           <ArticleFinderContainer article={this.state.article} onArticleChange={article => this.setState({ article })}/>
-        </div>
-        <div style={styles.articleDetails}>
+        </base.GroupBox>
+        <base.GroupBox style={styles.articleDetails} title={'Description de l\'article'}>
           <ArticleDetailsContainer article={this.state.article} onArticleChange={ article => this.setState({ article })}/>
-        </div>
-        <div style={styles.stockAdd}>stock add</div>
+        </base.GroupBox>
+        <base.GroupBox style={styles.stockAdd} title={'Ajout de stock'}>
+          stock add
+        </base.GroupBox>
       </div>
     );
   }
