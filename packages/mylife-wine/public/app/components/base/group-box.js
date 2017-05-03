@@ -29,7 +29,6 @@ const styles = {
 };
 
 function mergeStyle(baseStyle, additionalStyle) {
-  console.log(baseStyle, additionalStyle, Object.assign({}, baseStyle, additionalStyle));
   return Object.assign({}, baseStyle, additionalStyle);
 }
 
