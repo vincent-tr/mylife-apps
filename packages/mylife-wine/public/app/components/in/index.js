@@ -36,8 +36,6 @@ class Index extends React.Component {
     };
   }
 
-  // TODO: 3 papers with title like nmaterial-ui website
-
   render() {
     return (
       <div style={styles.container}>
