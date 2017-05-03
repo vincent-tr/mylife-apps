@@ -96,19 +96,29 @@ class ArticleDetails extends React.Component {
     onArticleChange(null);
   }
 
-  renderArticleProp(name, noNull) {
+  renderArticleProp(name, defaultValue = null) {
     const { article } = this.state;
-    if(!article) { return noNull ? '' : null; }
-    return article[name];
+    if(!article) {
+      return defaultValue;
+    }
+    const value = article[name];
+    if(value === null || value === undefined) {
+      return defaultValue;
+    }
+    return value;
   }
 
   render() {
     const { article } = this.state;
     const { regions, types } = this.props;
 
-    const nameChange = (event) => this.setState({ article: { ...article, name: event.target.value } });
-    const typeChange = (event, index, value) => this.setState({ article: { ...article, type: value } });
-    const regionChange = (event, index, value) => this.setState({ article: { ...article, region: value } });
+    const nameChange              = (event) => this.setState({ article: { ...article, name: event.target.value } });
+    const typeChange              = (event, index, value) => this.setState({ article: { ...article, type: value } });
+    const regionChange            = (event, index, value) => this.setState({ article: { ...article, region: value } });
+    const ownerChange             = (event) => this.setState({ article: { ...article, owner: event.target.value } });
+    const grapVarietyChange       = (event) => this.setState({ article: { ...article, grapVariety: event.target.value } });
+    const beginYearRelativeChange = (value) => this.setState({ article: { ...article, beginYearRelative: value } });
+    const endYearRelativeChange   = (value) => this.setState({ article: { ...article, endYearRelative: value } });
 
     return(
       <div>
@@ -118,36 +128,30 @@ class ArticleDetails extends React.Component {
               <tbody>
                 <tr>
                   <td><div style={styles.fieldTitle}>Appelation</div></td>
-                  <td>
-                    <mui.TextField
-                      id="name"
-                      value={this.renderArticleProp('name', true)}
-                      onChange={nameChange}
-                    />
-                  </td>
+                  <td><mui.TextField disabled={!article} id="name" style={{ width: 300 }} value={this.renderArticleProp('name', '')} onChange={nameChange} /></td>
                 </tr>
                 <tr>
                   <td><div style={styles.fieldTitle}>Type de spiritueux</div></td>
-                  <td>
-                    <common.ReferenceSelector
-                      autoWidth={false}
-                      style={{ width: 300 }}
-                      id="type"
-                      list={types}
-                      value={this.renderArticleProp('type')}
-                      onChange={typeChange} />
-                  </td>
+                  <td><common.ReferenceSelector disabled={!article} id="type" autoWidth={false} style={{ width: 300 }} list={types} value={this.renderArticleProp('type')} onChange={typeChange} /></td>
                 </tr>
                 <tr>
                   <td><div style={styles.fieldTitle}>Region</div></td>
+                  <td><common.ReferenceSelector disabled={!article} id="region" autoWidth={false} style={{ width: 300 }} list={regions} value={this.renderArticleProp('region')} onChange={regionChange} /></td>
+                </tr>
+                <tr>
+                  <td><div style={styles.fieldTitle}>Propriétaire récoltant</div></td>
+                  <td><mui.TextField disabled={!article} id="owner" style={{ width: 300 }} value={this.renderArticleProp('owner', '')} onChange={ownerChange} /></td>
+                </tr>
+                <tr>
+                  <td><div style={styles.fieldTitle}>Cépage</div></td>
+                  <td><mui.TextField disabled={!article} id="grapVariety" style={{ width: 300 }} value={this.renderArticleProp('grapVariety', '')} onChange={grapVarietyChange} /></td>
+                </tr>
+                <tr>
+                  <td><div style={styles.fieldTitle}>Fourchette de consommation (années)</div></td>
                   <td>
-                    <common.ReferenceSelector
-                      autoWidth={false}
-                      style={{ width: 300 }}
-                      id="region"
-                      list={regions}
-                      value={this.renderArticleProp('region')}
-                      onChange={regionChange} />
+                    <base.IntegerField disabled={!article} id="beginYearRelative" style={{ width: 145 }} value={this.renderArticleProp('beginYearRelative', 0)} onChange={beginYearRelativeChange} minValue={0} />
+                    <div style={{ display: 'inline-block', width: 10 }} />
+                    <base.IntegerField disabled={!article} id="endYearRelative" style={{ width: 145 }} value={this.renderArticleProp('endYearRelative', 0)} onChange={endYearRelativeChange} minValue={0} />
                   </td>
                 </tr>
               </tbody>
