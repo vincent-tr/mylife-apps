@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import common from '../common/index';
 import tabStyles from '../base/tab-styles';
 
 const styles = {
@@ -30,14 +31,6 @@ const styles = {
     textAlign: 'left'
   }
 };
-
-function createSelectedItem(list, value) {
-  if(!value) {
-    return (<mui.MenuItem primaryText="-" />);
-  }
-  const item = list.find(item => item.id === value);
-  return (<mui.MenuItem primaryText={item.name} leftIcon={<base.DataImage data={item.icon}/>} />);
-}
 
 function renderArticleListHeader() {
   return (
@@ -122,31 +115,25 @@ class ArticleFinder extends React.Component {
               <tr>
                 <td><div style={styles.criteriaTitle}>Type de spiritueux</div></td>
                 <td>
-                  <mui.DropDownMenu
+                  <common.ReferenceSelector
                     autoWidth={false}
                     style={{ width: 300 }}
                     id="type"
+                    list={types}
                     value={type}
-                    onChange={typeChange}
-                    selectionRenderer={value => createSelectedItem(types, value)}>
-                    <mui.MenuItem value={null} primaryText="-" />
-                    {types.map(type => (<mui.MenuItem key={type.id} value={type.id} primaryText={type.name} leftIcon={<base.DataImage data={type.icon}/>} />))}
-                  </mui.DropDownMenu>
+                    onChange={typeChange} />
                 </td>
               </tr>
               <tr>
                 <td><div style={styles.criteriaTitle}>Region</div></td>
                 <td>
-                  <mui.DropDownMenu
+                  <common.ReferenceSelector
                     autoWidth={false}
                     style={{ width: 300 }}
                     id="region"
+                    list={regions}
                     value={region}
-                    onChange={regionChange}
-                    selectionRenderer={value => createSelectedItem(regions, value)}>
-                    <mui.MenuItem value={null} primaryText="-" />
-                    {regions.map(region => (<mui.MenuItem key={region.id} value={region.id} primaryText={region.name} leftIcon={<base.DataImage data={region.icon}/>} />))}
-                  </mui.DropDownMenu>
+                    onChange={regionChange} />
                 </td>
               </tr>
             </tbody>
