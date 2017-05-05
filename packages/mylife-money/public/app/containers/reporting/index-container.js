@@ -1,7 +1,8 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { getOperations, getGroups } from '../../selectors/reporting';
+import { getOperations } from '../../selectors/reporting';
+import { getGroups } from '../../selectors/groups';
 import { refreshOperations, resetOperations } from '../../actions/reporting';
 
 import Index from '../../components/reporting/index';

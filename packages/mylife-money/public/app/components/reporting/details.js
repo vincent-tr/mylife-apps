@@ -8,12 +8,12 @@ const reports = {
   groupAbsoluteByMonth: GroupAbsoluteByMonth
 };
 
-const Details = ({ value, operations, onRefreshOperations }) => {
+const Details = ({ value, groups, operations, onRefreshOperations }) => {
   const Report = reports[value];
   if(!Report) {
     return null;
   }
-  return (<Report operations={operations} onRefreshOperations={onRefreshOperations} />);
+  return (<Report groups={groups} operations={operations} onRefreshOperations={onRefreshOperations} />);
 };
 
 Details.propTypes = {
