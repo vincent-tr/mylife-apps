@@ -40,10 +40,10 @@ export const getGroupAndChildrenIds = (state, props) => {
 function createGroupBags(groups) {
   const groupBags = new Map();
 
-  groupBags.set(null, [ groups.find(g => !g.id) ]);
+  groupBags.set(null, new Set([ groups.find(g => !g.id) ]));
 
   function children(bag, group) {
-    bag.push(group);
+    bag.add(group);
     for(const child of groups.filter(g => g.parent === group.id)) {
       children(bag, child);
     }
@@ -52,7 +52,7 @@ function createGroupBags(groups) {
   for(const group of groups) {
     if(!group.id) { continue; }
 
-    const bag = [];
+    const bag = new Set();
     children(bag, group);
     groupBags.set(group.id, bag);
   }
