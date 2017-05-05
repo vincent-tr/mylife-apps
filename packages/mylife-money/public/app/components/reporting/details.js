@@ -8,16 +8,18 @@ const reports = {
   groupAbsoluteByMonth: GroupAbsoluteByMonth
 };
 
-const Details = ({ value }) => {
+const Details = ({ value, operations, onRefreshOperations }) => {
   const Report = reports[value];
   if(!Report) {
     return null;
   }
-  return (<Report />);
+  return (<Report operations={operations} onRefreshOperations={onRefreshOperations} />);
 };
 
 Details.propTypes = {
-  value : PropTypes.string,
+  value               : PropTypes.string,
+  operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  onRefreshOperations : PropTypes.func.isRequired,
 };
 
 export default Details;

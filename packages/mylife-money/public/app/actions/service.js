@@ -16,6 +16,7 @@ const internalManagementGetOperations = createAction(actionTypes.MANAGEMENT_GET_
 const internalManagementMoveOperations = createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS);
 const internalManagementOperationsSetNote = createAction(actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE);
 
+
 export const managementGetOperations = (value) => {
   return (dispatch) => {
     dispatch(internalManagementGetOperations(value));
@@ -50,3 +51,5 @@ export const managementOperationsExecuteRules = (count) => {
     dispatch(showInfo(`${count} operation(s) déplacée(s)`));
   };
 };
+
+export const reportingGetOperations = createAction(actionTypes.REPORTING_GET_OPERATIONS);

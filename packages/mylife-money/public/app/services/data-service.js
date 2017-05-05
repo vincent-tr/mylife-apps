@@ -5,7 +5,8 @@ import { actionTypes } from '../constants/index';
 import {
   getAccounts,
   getGroups, createGroup, updateGroup, deleteGroup,
-  managementGetOperations, managementMoveOperations, managementOperationsSetNote, managementImportOperations, managementOperationsExecuteRules
+  managementGetOperations, managementMoveOperations, managementOperationsSetNote, managementImportOperations, managementOperationsExecuteRules,
+  reportingGetOperations
 } from '../actions/service';
 
 const dataService = (/*store*/) => next => action => {
@@ -147,6 +148,31 @@ const dataService = (/*store*/) => next => action => {
           return next(managementOperationsExecuteRules(count));
         });
       break;
+
+
+    case actionTypes.REPORTING_QUERY_OPERATIONS: {
+      const query = {};
+      if(action.payload.minDate) {
+        query.minDate = action.payload.minDate.valueOf();
+      }
+      if(action.payload.maxDate) {
+        query.maxDate = action.payload.maxDate.valueOf();
+      }
+      if(action.payload.account) {
+        query.account = action.payload.account;
+      }
+      request
+        .get('/api/operations')
+        .query(query)
+        .end((err, res) => {
+          if (err) {
+            return next(reportingGetOperations(new Error(JSON.parse(res.text))));
+          }
+          const data = JSON.parse(res.text);
+          return next(reportingGetOperations(data));
+        });
+      break;
+    }
   }
 };
 

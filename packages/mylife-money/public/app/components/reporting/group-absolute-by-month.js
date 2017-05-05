@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from '../base/index';
 import icons from '../icons';
@@ -32,12 +33,21 @@ class GroupAbsoluteByMonth extends React.Component {
     };
   }
 
+  changeCriteria(newValues) {
+    this.setState(newValues);
+
+    const { onRefreshOperations } = this.props;
+    const criteria = { ...this.state, ...newValues };
+    const { minDate, maxDate, account } = criteria;
+    onRefreshOperations(minDate, maxDate, account);
+  }
+
   render() {
     const { minDate, maxDate, account, group } = this.state;
-    const onMinDateChanged = (value) => this.setState({ minDate: value });
-    const onMaxDateChanged = (value) => this.setState({ maxDate: value });
-    const onAccountChanged = (value) => this.setState({ account: value });
-    const onGroupChanged   = (value) => this.setState({ group: value });
+    const onMinDateChanged = (value) => this.changeCriteria({ minDate: value });
+    const onMaxDateChanged = (value) => this.changeCriteria({ maxDate: value });
+    const onAccountChanged = (value) => this.changeCriteria({ account: value });
+    const onGroupChanged   = (value) => this.changeCriteria({ group: value });
 
     return (
       <mui.Toolbar>
@@ -76,6 +86,8 @@ class GroupAbsoluteByMonth extends React.Component {
 }
 
 GroupAbsoluteByMonth.propTypes = {
+  operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  onRefreshOperations : PropTypes.func.isRequired
 };
 
 export default GroupAbsoluteByMonth;

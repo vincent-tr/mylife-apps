@@ -7,7 +7,7 @@ import base from './base/index';
 import icons from './icons';
 
 import Management from './management/index';
-import Reporting from './reporting/index';
+import ReportingContainer from '../containers/reporting/index-container';
 
 const styles = {
   tabs: {
@@ -50,7 +50,7 @@ const MainTabs = ({ activeTab, onTabChanged }) => (
     </mui.Tab>
     <mui.Tab value="reporting"
              label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))}>
-      <Reporting />
+      <ReportingContainer />
     </mui.Tab>
   </mui.Tabs>
 );

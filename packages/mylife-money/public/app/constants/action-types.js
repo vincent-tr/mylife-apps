@@ -31,5 +31,9 @@ export default wrap({
   MANAGEMENT_OPERATIONS_SET_NOTE            : null,
   MANAGEMENT_QUERY_IMPORT_OPERATIONS        : null,
   MANAGEMENT_QUERY_OPERATIONS_EXECUTE_RULES : null,
+
+  REPORTING_QUERY_OPERATIONS                   : null,
+  REPORTING_GET_OPERATIONS                     : null,
+  REPORTING_RESET_OPERATIONS                   : null,
 });
 
