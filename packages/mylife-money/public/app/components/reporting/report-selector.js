@@ -7,7 +7,7 @@ import base from '../base/index';
 const ReportSelector = ({ value, onChange }) => (
   <base.SelectableList selectedNode={{value}}
             selectedValueChanged={(obj) => onChange(obj.value)}>
-    <base.SelectableListItem value={{ value: 'groupAbsoluteByMonth'}} primaryText="Montant par mois d'un groupe"/>
+    <base.SelectableListItem value={{ value: 'groupAbsoluteByMonth'}} primaryText="Montant par mois de groupes"/>
     <base.SelectableListItem value={{ value: 'todo'}} primaryText="Report #2"/>
   </base.SelectableList>
 );
