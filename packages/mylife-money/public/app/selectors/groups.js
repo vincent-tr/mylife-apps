@@ -62,7 +62,11 @@ export const makeGetGroupBags = () => createSelector([ getGroups ], createGroupB
 function createGroupStacks(groups) {
   const groupStacks = new Map();
 
+  groupStacks.set(null, [ groups.find(g => !g.id) ]);
+
   for(const group of groups) {
+    if(!group.id) { continue; }
+
     const stack = [];
     let value = group.id;
     while(value) {
