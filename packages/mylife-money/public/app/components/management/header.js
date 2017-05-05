@@ -6,6 +6,7 @@ import * as mui from 'material-ui';
 import icons from '../icons';
 import base from '../base/index';
 
+import AccountSelectorContainer from '../../containers/common/Account-selector-container';
 import ImportButton from './import-button';
 import moveDialog from './move-dialog';
 
@@ -74,9 +75,7 @@ const Header = ({
 
     <mui.ToolbarGroup>
       <p>Compte</p>
-      <mui.SelectField value={account} onChange={(event, index, value) => onAccountChanged(value)} width={200}>
-        {([{ id: null, display: 'Tous' }].concat(accounts)).map(account => (<mui.MenuItem key={account.id} value={account.id} primaryText={account.display} />))}
-      </mui.SelectField>
+      <AccountSelectorContainer allowNull={true} value={account} onChange={onAccountChanged} width={200} />
     </mui.ToolbarGroup>
   </mui.Toolbar>
 );
