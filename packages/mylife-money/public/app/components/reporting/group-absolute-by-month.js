@@ -19,6 +19,14 @@ const styles = {
   }
 };
 
+function leftPad(number, targetLength) {
+  let output = number + '';
+  while (output.length < targetLength) {
+    output = '0' + output;
+  }
+  return output;
+}
+
 class GroupAbsoluteByMonth extends React.Component {
 
   constructor(props) {
@@ -29,7 +37,8 @@ class GroupAbsoluteByMonth extends React.Component {
       maxDate : null,
       account : null,
       groups  : [ null ],
-      data    : null
+      data    : [],
+      dates   : []
     };
   }
 
@@ -59,15 +68,46 @@ class GroupAbsoluteByMonth extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { operations } = nextProps;
-    if(this.props.operations === operations) { return; }
-    this.refreshData(operations);
+    const { operations: newOperations } = nextProps;
+    const { operations: oldOperations } = this.props;
+
+    if(newOperations !== oldOperations) {
+      this.refreshData(newOperations);
+    }
   }
 
   refreshData(operations = this.props.operations) {
-    // TODO: transform
-    const data = operations;
-    this.setState({ data });
+    const { groups } = this.state;
+    const { groupBags } = this.props;
+    const map = new Map();
+    const dateSet = new Set();
+
+    for(const operation of operations) {
+      for(const group of groups) {
+        const bag = groupBags.get(group);
+        if(!bag.has(operation.group || null)) {
+          continue;
+        }
+
+        const opdate = new Date(operation.date);
+        const date = `${opdate.getFullYear()}-${leftPad(opdate.getMonth() + 1, 2)}`;
+        const key = `${group}-${date}`;
+
+        dateSet.add(date);
+
+        let item = map.get(key);
+        if(!item) {
+          map.set(key, (item = { group, date, value: 0 }));
+        }
+        item.value += operation.amount;
+      }
+    }
+
+    const data = Array.from(map.values());
+    const dates = Array.from(dateSet);
+    dates.sort();
+
+    this.setState({ data, dates });
   }
 
   renderGroups() {
@@ -88,7 +128,7 @@ class GroupAbsoluteByMonth extends React.Component {
     return [].concat(...arrays);
   }
 
-  render() {
+  renderToolbar() {
     const { minDate, maxDate, account } = this.state;
 
     const onMinDateChanged = (value) => this.changeCriteria({ minDate: value });
@@ -135,9 +175,33 @@ class GroupAbsoluteByMonth extends React.Component {
       </mui.Toolbar>
     );
   }
+
+  renderReport() {
+    const { groupStacks, groupBags } = this.props;
+    const { groups, dates, data } = this.state;
+
+    const series = groups.map(group => ({ field: group, name: groupStacks.get(group).map(group => group.display).join('/') }));
+
+console.log(series, dates, data);
+
+    return null;
+
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderToolbar()}
+        {this.renderReport()}
+      </div>
+    );
+  }
 }
 
 GroupAbsoluteByMonth.propTypes = {
+  groups              : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  groupBags           : PropTypes.object.isRequired,
+  groupStacks         : PropTypes.object.isRequired,
   operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   onRefreshOperations : PropTypes.func.isRequired
 };
