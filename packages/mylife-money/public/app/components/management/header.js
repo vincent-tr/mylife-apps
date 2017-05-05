@@ -6,7 +6,7 @@ import * as mui from 'material-ui';
 import icons from '../icons';
 import base from '../base/index';
 
-import AccountSelectorContainer from '../../containers/common/Account-selector-container';
+import AccountSelectorContainer from '../../containers/common/account-selector-container';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../common/group-selector-button';
 
