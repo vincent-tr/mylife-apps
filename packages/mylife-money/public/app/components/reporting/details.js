@@ -18,6 +18,7 @@ const Details = ({ value, operations, onRefreshOperations }) => {
 
 Details.propTypes = {
   value               : PropTypes.string,
+  groups              : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   onRefreshOperations : PropTypes.func.isRequired,
 };

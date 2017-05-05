@@ -1,13 +1,14 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { getOperations} from '../../selectors/reporting';
+import { getOperations, getGroups } from '../../selectors/reporting';
 import { refreshOperations, resetOperations } from '../../actions/reporting';
 
 import Index from '../../components/reporting/index';
 
 const mapStateToProps = (state) => ({
-  operations: getOperations(state)
+  operations : getOperations(state),
+  groups     : getGroups(state),
 });
 
 
