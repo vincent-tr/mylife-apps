@@ -8,17 +8,19 @@ const reports = {
   groupAbsoluteByMonth: GroupAbsoluteByMonth
 };
 
-const Details = ({ value, groups, operations, onRefreshOperations }) => {
+const Details = ({ value, groups, groupBags, groupStacks, operations, onRefreshOperations }) => {
   const Report = reports[value];
   if(!Report) {
     return null;
   }
-  return (<Report groups={groups} operations={operations} onRefreshOperations={onRefreshOperations} />);
+  return (<Report groups={groups} groupBags={groupBags} groupStacks={groupStacks} operations={operations} onRefreshOperations={onRefreshOperations} />);
 };
 
 Details.propTypes = {
   value               : PropTypes.string,
   groups              : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  groupBags           : PropTypes.object.isRequired,
+  groupStacks         : PropTypes.object.isRequired,
   operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   onRefreshOperations : PropTypes.func.isRequired,
 };

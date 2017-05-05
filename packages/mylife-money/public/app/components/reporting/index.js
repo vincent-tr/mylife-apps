@@ -44,14 +44,14 @@ class Reporting extends React.Component {
   }
 
   render() {
-    const { groups, operations, onRefreshOperations } = this.props;
+    const { groups, groupBags, groupStacks, operations, onRefreshOperations } = this.props;
     return (
       <div style={styles.div}>
         <mui.Paper style={Object.assign({}, styles.paperSelector, tabStyles.scrollable, tabStyles.fullHeight)}>
           <ReportSelector value={this.state.tab} onChange={tab => this.tabChange(tab)} />
         </mui.Paper>
         <mui.Paper style={Object.assign({}, styles.paperDetails, tabStyles.scrollable, tabStyles.fullHeight)}>
-          <Details groups={groups} operations={operations} onRefreshOperations={onRefreshOperations} value={this.state.tab} />
+          <Details groups={groups} groupBags={groupBags} groupStacks={groupStacks} operations={operations} onRefreshOperations={onRefreshOperations} value={this.state.tab} />
         </mui.Paper>
       </div>
     );
@@ -60,6 +60,8 @@ class Reporting extends React.Component {
 
 Reporting.propTypes = {
   groups              : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  groupBags           : PropTypes.object.isRequired,
+  groupStacks         : PropTypes.object.isRequired,
   operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   onRefreshOperations : PropTypes.func.isRequired,
   onResetOperations   : PropTypes.func.isRequired,

@@ -21,7 +21,6 @@ export const makeGetSortedChildren = () => createSelector(
   (groups) => groups.sortBy(it => it.display).toArray()
 );
 
-
 export const getGroupAndChildrenIds = (state, props) => {
   if(!props.group) { return [null]; }
 
@@ -37,3 +36,48 @@ export const getGroupAndChildrenIds = (state, props) => {
     }
   }
 };
+
+function createGroupBags(groups) {
+  const groupBags = new Map();
+
+  function children(bag, group) {
+    bag.push(group);
+    for(const child of groups.filter(g => g.parent === group.id)) {
+      children(bag, child);
+    }
+  }
+
+  for(const group of groups) {
+    const bag = [];
+    children(bag, group);
+    groupBags.set(group.id, bag);
+  }
+
+  return groupBags;
+}
+
+// bag of group children for each group
+export const makeGetGroupBags = () => createSelector([ getGroups ], createGroupBags);
+
+function createGroupStacks(groups) {
+  const groupStacks = new Map();
+
+  for(const group of groups) {
+    const stack = [];
+    let value = group.id;
+    while(value) {
+      const iterGroup = groups.find(g => g.id === value); // use map ?
+      if(!iterGroup) { break; } // broken structure ?
+      stack.push(iterGroup);
+      value = iterGroup.parent;
+    }
+    stack.reverse();
+
+    groupStacks.set(group.id, stack);
+  }
+
+  return groupStacks;
+}
+
+// stack from root for each group
+export const makeGetGroupStacks = () => createSelector([ getGroups ], createGroupStacks);
