@@ -29,7 +29,8 @@ class GroupAbsoluteByMonth extends React.Component {
       minDate : null,
       maxDate : null,
       account : null,
-      group   : null
+      group   : null,
+      data    : null
     };
   }
 
@@ -40,6 +41,15 @@ class GroupAbsoluteByMonth extends React.Component {
     const criteria = { ...this.state, ...newValues };
     const { minDate, maxDate, account } = criteria;
     onRefreshOperations(minDate, maxDate, account);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { operations } = nextProps;
+    if(this.props.operations === operations) { return; }
+
+    // TODO: transform
+    const data = operations;
+    this.setState({ data });
   }
 
   render() {
