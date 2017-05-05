@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import tabStyles from '../base/tab-styles';
 import * as muiColors from 'material-ui/styles/colors';
@@ -96,8 +97,8 @@ const Table = ({ onSelect, operations }) => {
 };
 
 Table.propTypes = {
-  onSelect   : React.PropTypes.func.isRequired,
-  operations : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired
+  onSelect   : PropTypes.func.isRequired,
+  operations : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 };
 
 export default Table;

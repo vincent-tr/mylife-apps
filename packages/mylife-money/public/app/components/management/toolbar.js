@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import icons from '../icons';
 import base from '../base/index';
@@ -49,11 +50,11 @@ const Toolbar = ({ group, onGroupCreate, onGroupEdit, onGroupDelete, canChange }
 );
 
 Toolbar.propTypes = {
-  group         : React.PropTypes.object,
-  onGroupCreate : React.PropTypes.func.isRequired,
-  onGroupEdit   : React.PropTypes.func.isRequired,
-  onGroupDelete : React.PropTypes.func.isRequired,
-  canChange     : React.PropTypes.bool.isRequired
+  group         : PropTypes.object,
+  onGroupCreate : PropTypes.func.isRequired,
+  onGroupEdit   : PropTypes.func.isRequired,
+  onGroupDelete : PropTypes.func.isRequired,
+  canChange     : PropTypes.bool.isRequired
 };
 
 export default Toolbar;

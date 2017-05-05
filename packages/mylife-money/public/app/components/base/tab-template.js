@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const baseStyle = {
   width: '100%',
@@ -26,8 +27,8 @@ const TabTemplate = ({ selected, children }) => {
 };
 
 TabTemplate.propTypes = {
-  children: React.PropTypes.node,
-  selected: React.PropTypes.bool,
+  children: PropTypes.node,
+  selected: PropTypes.bool,
 };
 
 export default TabTemplate;

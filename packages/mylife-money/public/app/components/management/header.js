@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import icons from '../icons';
 import base from '../base/index';
@@ -81,20 +82,20 @@ const Header = ({
 );
 
 Header.propTypes = {
-  showExecuteRules         : React.PropTypes.bool.isRequired,
-  canProcessOperations     : React.PropTypes.bool.isRequired,
-  accounts                 : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  minDate                  : React.PropTypes.instanceOf(Date),
-  maxDate                  : React.PropTypes.instanceOf(Date),
-  account                  : React.PropTypes.string,
-  noteText                 : React.PropTypes.string,
-  onMinDateChanged         : React.PropTypes.func.isRequired,
-  onMaxDateChanged         : React.PropTypes.func.isRequired,
-  onAccountChanged         : React.PropTypes.func.isRequired,
-  onOperationsImport       : React.PropTypes.func.isRequired,
-  onOperationsExecuteRules : React.PropTypes.func.isRequired,
-  onOperationsSetNote      : React.PropTypes.func.isRequired,
-  onOperationsMove         : React.PropTypes.func.isRequired,
+  showExecuteRules         : PropTypes.bool.isRequired,
+  canProcessOperations     : PropTypes.bool.isRequired,
+  accounts                 : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  minDate                  : PropTypes.instanceOf(Date),
+  maxDate                  : PropTypes.instanceOf(Date),
+  account                  : PropTypes.string,
+  noteText                 : PropTypes.string,
+  onMinDateChanged         : PropTypes.func.isRequired,
+  onMaxDateChanged         : PropTypes.func.isRequired,
+  onAccountChanged         : PropTypes.func.isRequired,
+  onOperationsImport       : PropTypes.func.isRequired,
+  onOperationsExecuteRules : PropTypes.func.isRequired,
+  onOperationsSetNote      : PropTypes.func.isRequired,
+  onOperationsMove         : PropTypes.func.isRequired,
 };
 
 export default Header;

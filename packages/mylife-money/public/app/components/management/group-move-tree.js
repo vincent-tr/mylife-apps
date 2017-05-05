@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import tabStyles from '../base/tab-styles';
 
@@ -13,8 +14,8 @@ const GroupTree = ({ groups, onSelect }) => (
 );
 
 GroupTree.propTypes = {
-  groups   : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  onSelect : React.PropTypes.func.isRequired
+  groups   : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  onSelect : PropTypes.func.isRequired
 };
 
 export default GroupTree;

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import icons from '../icons';
 
@@ -60,9 +61,9 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  style    : React.PropTypes.object,
-  accounts : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  onImport : React.PropTypes.func.isRequired
+  style    : PropTypes.object,
+  accounts : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  onImport : PropTypes.func.isRequired
 };
 
 export default Header;

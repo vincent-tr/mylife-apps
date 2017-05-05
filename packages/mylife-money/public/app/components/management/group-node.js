@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as muiColorManipulator from 'material-ui/utils/colorManipulator';
@@ -27,12 +28,12 @@ const GroupNode = ({ muiTheme, level, selected, group, children, onSelect }) => 
 );
 
 GroupNode.propTypes = {
-  muiTheme : React.PropTypes.object.isRequired,
-  level    : React.PropTypes.number.isRequired,
-  selected : React.PropTypes.bool.isRequired,
-  group    : React.PropTypes.object.isRequired,
-  children : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  onSelect : React.PropTypes.func.isRequired
+  muiTheme : PropTypes.object.isRequired,
+  level    : PropTypes.number.isRequired,
+  selected : PropTypes.bool.isRequired,
+  group    : PropTypes.object.isRequired,
+  children : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  onSelect : PropTypes.func.isRequired
 };
 
 export default muiThemeable()(GroupNode);

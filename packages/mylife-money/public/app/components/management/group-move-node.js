@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import icons from '../icons';
 
@@ -19,10 +20,10 @@ const GroupMoveNode = ({ level, group, children, onSelect }) => {
 };
 
 GroupMoveNode.propTypes = {
-  level    : React.PropTypes.number.isRequired,
-  group    : React.PropTypes.object.isRequired,
-  children : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  onSelect : React.PropTypes.func.isRequired
+  level    : PropTypes.number.isRequired,
+  group    : PropTypes.object.isRequired,
+  children : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  onSelect : PropTypes.func.isRequired
 };
 
 export default GroupMoveNode;

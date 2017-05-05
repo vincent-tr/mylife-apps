@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from './base/index';
 import icons from './icons';
@@ -55,8 +56,8 @@ const MainTabs = ({ activeTab, onTabChanged }) => (
 );
 
 MainTabs.propTypes = {
-  activeTab: React.PropTypes.string.isRequired,
-  onTabChanged: React.PropTypes.func.isRequired
+  activeTab: PropTypes.string.isRequired,
+  onTabChanged: PropTypes.func.isRequired
 };
 
 export default MainTabs;

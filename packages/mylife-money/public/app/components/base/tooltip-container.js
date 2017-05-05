@@ -1,7 +1,8 @@
 
 'use strict';
 import React from 'react';
-import PropTypes from 'material-ui/utils/propTypes';
+import PropTypes from 'prop-types';
+import MuiPropTypes from 'material-ui/utils/propTypes';
 import Tooltip from 'material-ui/internal/Tooltip';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
@@ -125,33 +126,33 @@ TooltipContainer.propTypes = {
   /**
    * The text to supply to the element's tooltip.
    */
-  tooltip: React.PropTypes.node,
+  tooltip: PropTypes.node,
 
   /**
    * The vertical and horizontal positions, respectively, of the element's tooltip.
    * Possible values are: "bottom-center", "top-center", "bottom-right", "top-right",
    * "bottom-left", and "top-left".
    */
-  tooltipPosition: PropTypes.cornersAndCenter,
+  tooltipPosition: MuiPropTypes.cornersAndCenter,
 
   /**
    * Override the inline-styles of the tooltip element.
    */
-  tooltipStyles: React.PropTypes.object,
+  tooltipStyles: PropTypes.object,
 
   /**
    * If true, increase the tooltip element's size.  Useful for increasing tooltip
    * readability on mobile devices.
    */
-  touch: React.PropTypes.bool,
+  touch: PropTypes.bool,
 
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 
-  onBlur: React.PropTypes.func,
-  onFocus: React.PropTypes.func,
-  onMouseLeave: React.PropTypes.func,
-  onMouseOut: React.PropTypes.func,
-  onMouseEnter: React.PropTypes.func
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  onMouseOut: PropTypes.func,
+  onMouseEnter: PropTypes.func
 };
 
 TooltipContainer.defaultProps = {

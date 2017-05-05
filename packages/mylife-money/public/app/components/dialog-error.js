@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 
 const DialogError = ({ error, onClose }) => (
@@ -19,8 +20,8 @@ const DialogError = ({ error, onClose }) => (
 );
 
 DialogError.propTypes = {
-  error: React.PropTypes.object,
-  onClose: React.PropTypes.func.isRequired
+  error: PropTypes.object,
+  onClose: PropTypes.func.isRequired
 };
 
 export default DialogError;
