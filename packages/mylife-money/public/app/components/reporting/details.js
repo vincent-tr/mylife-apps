@@ -2,8 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import base from '../base/index';
-import GroupAbsoluteByMonth from './group-absolute-by-month'
+import GroupAbsoluteByMonth from './group-absolute-by-month';
 
 const reports = {
   groupAbsoluteByMonth: GroupAbsoluteByMonth
