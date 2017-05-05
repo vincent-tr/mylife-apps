@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
+import { BarGroupChart } from 'react-d3-basic';
 import icons from '../icons';
 
 import AccountSelectorContainer from '../../containers/common/account-selector-container';
@@ -91,23 +92,30 @@ class GroupAbsoluteByMonth extends React.Component {
 
         const opdate = new Date(operation.date);
         const date = `${opdate.getFullYear()}-${leftPad(opdate.getMonth() + 1, 2)}`;
-        const key = `${group}-${date}`;
 
-        dateSet.add(date);
-
-        let item = map.get(key);
+        let item = map.get(date);
         if(!item) {
-          map.set(key, (item = { group, date, value: 0 }));
+          item = { date , groups: new Map() };
+          for(const group of groups) {
+            item.groups.set(group, { value: 0 });
+          }
+          map.set(date, item);
         }
-        item.value += operation.amount;
+        item.groups.get(group).value += operation.amount;
       }
     }
 
-    const data = Array.from(map.values());
-    const dates = Array.from(dateSet);
-    dates.sort();
+    const data = Array.from(map.values()).map(item => {
+      const ret = { date: item.date };
+      for(const [group, val] of item.groups.entries()) {
+        ret[`group-${group}`] = val.value;
+      }
+      return ret;
+    });
 
-    this.setState({ data, dates });
+    data.sort((item1, item2) => item1.date < item2.date ? -1 : 1);
+
+    this.setState({ data });
   }
 
   renderGroups() {
@@ -178,14 +186,29 @@ class GroupAbsoluteByMonth extends React.Component {
 
   renderReport() {
     const { groupStacks, groupBags } = this.props;
-    const { groups, dates, data } = this.state;
+    const { groups, data } = this.state;
 
-    const series = groups.map(group => ({ field: group, name: groupStacks.get(group).map(group => group.display).join('/') }));
+    const series = groups.map(group => ({ field: `group-${group}`, name: groupStacks.get(group).map(group => group.display).join('/') }));
 
-console.log(series, dates, data);
+    const x = (item) => {
+      return item.date;
+    }
 
-    return null;
+console.log(series, data);
 
+    if(!data.length) { return null; }
+
+    return (
+      <BarGroupChart
+        data={data}
+        chartSeries={series}
+        x={x}
+        width={1000}
+        height={400}
+        title="Montant par mois de groupes"
+        xLabel="Mois"
+        yLabel="Montant" />
+    );
   }
 
   render() {

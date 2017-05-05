@@ -28,6 +28,7 @@
     "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-confirm": "^0.1.14",
+    "react-d3-basic": "^1.6.11",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
     "react-tap-event-plugin": "^2.0.1",
