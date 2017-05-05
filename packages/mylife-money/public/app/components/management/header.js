@@ -8,7 +8,7 @@ import base from '../base/index';
 
 import AccountSelectorContainer from '../../containers/common/Account-selector-container';
 import ImportButton from './import-button';
-import moveDialog from './move-dialog';
+import GroupSelectorButton from '../common/group-selector-button';
 
 const styles = {
   button: {
@@ -39,12 +39,12 @@ const Header = ({
         </mui.IconButton>
       )}
 
-      <mui.IconButton onClick={() => moveDialog({ proceed: onOperationsMove})}
+      <GroupSelectorButton onSelect={onOperationsMove}
                       disabled={!canProcessOperations}
                       style={styles.button}
                       tooltip="Déplacer">
         <icons.actions.Move />
-      </mui.IconButton>
+      </GroupSelectorButton>
 
       <mui.IconButton onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
                       disabled={!canProcessOperations}

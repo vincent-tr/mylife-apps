@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 import { makeGetSortedChildren } from '../../selectors/groups';
 
-import GroupMoveTree from '../../components/management/group-move-tree';
+import GroupSelectorTree from '../../components/common/group-selector-tree';
 
 const mapStateToProps = () => {
   const getSortedChildren = makeGetSortedChildren();
@@ -12,9 +12,9 @@ const mapStateToProps = () => {
   });
 };
 
-const GroupMoveTreeContainer = connect(
+const GroupSelectorTreeContainer = connect(
   mapStateToProps,
   null
-)(GroupMoveTree);
+)(GroupSelectorTree);
 
-export default GroupMoveTreeContainer;
+export default GroupSelectorTreeContainer;
