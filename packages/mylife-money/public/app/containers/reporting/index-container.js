@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
 });
 
 
-const mapDispatchToProps = (dispatch, props) => ({
+const mapDispatchToProps = (dispatch) => ({
   onRefreshOperations : (minDate, maxDate, account) => dispatch(refreshOperations(minDate, maxDate, account)),
   onResetOperations   : () => dispatch(resetOperations())
 });

@@ -21,7 +21,7 @@ export default handleActions({
   },
 
   [actionTypes.REPORTING_RESET_OPERATIONS] : {
-    next : (state, action) => ({
+    next : (state) => ({
       ...state,
       operations: state.operations.clear(),
     })

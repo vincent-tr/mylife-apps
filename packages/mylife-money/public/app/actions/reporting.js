@@ -1,7 +1,5 @@
 'use strict';
 
-let groupIdCount = 0;
-
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
 

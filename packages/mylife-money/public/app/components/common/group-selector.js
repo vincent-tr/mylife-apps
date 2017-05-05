@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as mui from 'material-ui';
 import icons from '../icons';
 
 import GroupSelectorButton from './group-selector-button';
@@ -34,7 +33,7 @@ const styles = {
   }
 };
 
-const GroupSelector = ({ stack, allowNull, onChange, ...props }) => (
+const GroupSelector = ({ stack, onChange, ...props }) => (
   <div style={styles.mainWrapper} {...props}>
     <GroupSelectorButton onSelect={onChange}
                          style={styles.button}
