@@ -205,12 +205,19 @@ class GroupAbsoluteByMonth extends React.Component {
     const { groupStacks, groupBags } = this.props;
     const { groups, data } = this.state;
 
+    // http://materialuicolors.co/
+    const colors = [
+      '#EF9A9A', '#90CAF9', '#C5E1A5', '#FFAB91',
+      '#F48FB1', '#81D4FA', '#E6EE9C', '#BCAAA4'
+    ];
+
     if(!data.length) { return null; }
 
     const series = groups.map((group, index) => ({
       index,
       group,
-      display : groupStacks.get(group).map(group => group.display).join('/')
+      display : groupStacks.get(group).map(group => group.display).join('/'),
+      fill    : colors[index % colors.length]
     }));
 
     return (
@@ -222,7 +229,7 @@ class GroupAbsoluteByMonth extends React.Component {
             <chart.CartesianGrid strokeDasharray="3 3"/>
             <chart.Tooltip/>
             <chart.Legend />
-            {series.map(serie => (<chart.Bar key={serie.index} dataKey={`group-${serie.group}`} name={serie.display} />))}
+            {series.map(serie => (<chart.Bar key={serie.index} dataKey={`group-${serie.group}`} name={serie.display} fill={serie.fill} />))}
           </chart.BarChart>
         </chart.ResponsiveContainer>
       </div>
