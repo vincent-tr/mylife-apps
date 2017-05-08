@@ -59,23 +59,26 @@ class GroupAbsoluteByMonth extends React.Component {
   }
 
   addGroup() {
-    this.setState({ groups: [ ...this.state.groups, null ] });
-    this.refreshData();
+    const groups = [ ...this.state.groups, null ];
+    this.setState({ groups });
+    this.refreshData(null, { groups });
   }
 
   deleteGroup(index) {
-    this.setState({ groups: [ ...this.state.groups.slice(0, index), ...this.state.groups.slice(index + 1) ] });
-    this.refreshData();
+    const groups = [ ...this.state.groups.slice(0, index), ...this.state.groups.slice(index + 1) ];
+    this.setState({ groups });
+    this.refreshData(null, { groups });
   }
 
   changeGroup(index, value) {
-    this.setState({ groups: [ ...this.state.groups.slice(0, index), value, ...this.state.groups.slice(index + 1) ] });
-    this.refreshData();
+    const groups = [ ...this.state.groups.slice(0, index), value, ...this.state.groups.slice(index + 1) ];
+    this.setState({ groups });
+    this.refreshData(null, { groups });
   }
 
   setReverse(value) {
     this.setState({ reverse: value });
-    this.refreshData();
+    this.refreshData(null, { reverse: value });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -87,8 +90,10 @@ class GroupAbsoluteByMonth extends React.Component {
     }
   }
 
-  refreshData(operations = this.props.operations) {
-    const { groups, reverse } = this.state;
+  refreshData(operations, newState) {
+    operations = operations || this.props.operations;
+    newState = { ...this.state, ...newState };
+    const { groups, reverse } = newState;
     const { groupBags } = this.props;
     const map = new Map();
 
