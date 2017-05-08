@@ -91,7 +91,6 @@ class GroupAbsoluteByMonth extends React.Component {
     const { groups, reverse } = this.state;
     const { groupBags } = this.props;
     const map = new Map();
-    const dateSet = new Set();
 
     for(const operation of operations) {
       for(const group of groups) {
@@ -202,7 +201,7 @@ class GroupAbsoluteByMonth extends React.Component {
   }
 
   renderReport() {
-    const { groupStacks, groupBags } = this.props;
+    const { groupStacks } = this.props;
     const { groups, data } = this.state;
 
     // http://materialuicolors.co/
