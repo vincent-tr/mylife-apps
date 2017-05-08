@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
-import { BarGroupChart } from 'react-d3-basic';
+import * as chart from 'recharts';
 import icons from '../icons';
 
 import AccountSelectorContainer from '../../containers/common/account-selector-container';
@@ -188,26 +188,23 @@ class GroupAbsoluteByMonth extends React.Component {
     const { groupStacks, groupBags } = this.props;
     const { groups, data } = this.state;
 
-    const series = groups.map(group => ({ field: `group-${group}`, name: groupStacks.get(group).map(group => group.display).join('/') }));
-
-    const x = (item) => {
-      return item.date;
-    }
-
-console.log(series, data);
-
     if(!data.length) { return null; }
 
+    const series = groups.map((group, index) => ({
+      index,
+      group,
+      display : groupStacks.get(group).map(group => group.display).join('/')
+    }));
+
     return (
-      <BarGroupChart
-        data={data}
-        chartSeries={series}
-        x={x}
-        width={1000}
-        height={400}
-        title="Montant par mois de groupes"
-        xLabel="Mois"
-        yLabel="Montant" />
+      <chart.BarChart width={1000} height={400} data={data} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+        <chart.XAxis dataKey="date" name="Date" />
+        <chart.YAxis name="Montant" />
+        <chart.CartesianGrid strokeDasharray="3 3"/>
+        <chart.Tooltip/>
+        <chart.Legend />
+        {series.map(serie => (<chart.Bar key={serie.index} dataKey={`group-${serie.group}`} name={serie.display} />))}
+      </chart.BarChart>
     );
   }
 
