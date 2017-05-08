@@ -34,6 +34,7 @@ class GroupAbsoluteByMonth extends React.Component {
     super(props);
 
     this.state = {
+      reverse : true,
       minDate : null,
       maxDate : null,
       account : null,
@@ -68,6 +69,11 @@ class GroupAbsoluteByMonth extends React.Component {
     this.refreshData();
   }
 
+  setReverse(value) {
+    this.setState({ reverse: value });
+    this.refreshData();
+  }
+
   componentWillReceiveProps(nextProps) {
     const { operations: newOperations } = nextProps;
     const { operations: oldOperations } = this.props;
@@ -78,7 +84,7 @@ class GroupAbsoluteByMonth extends React.Component {
   }
 
   refreshData(operations = this.props.operations) {
-    const { groups } = this.state;
+    const { groups, reverse } = this.state;
     const { groupBags } = this.props;
     const map = new Map();
     const dateSet = new Set();
@@ -101,7 +107,7 @@ class GroupAbsoluteByMonth extends React.Component {
           }
           map.set(date, item);
         }
-        item.groups.get(group).value += operation.amount;
+        item.groups.get(group).value += (reverse ? -operation.amount : operation.amount);
       }
     }
 
@@ -137,8 +143,9 @@ class GroupAbsoluteByMonth extends React.Component {
   }
 
   renderToolbar() {
-    const { minDate, maxDate, account } = this.state;
+    const { reverse, minDate, maxDate, account } = this.state;
 
+    const onReverseChanged = (value) => this.setReverse(value);
     const onMinDateChanged = (value) => this.changeCriteria({ minDate: value });
     const onMaxDateChanged = (value) => this.changeCriteria({ maxDate: value });
     const onAccountChanged = (value) => this.changeCriteria({ account: value });
@@ -146,6 +153,12 @@ class GroupAbsoluteByMonth extends React.Component {
 
     return (
       <mui.Toolbar>
+        <mui.ToolbarGroup>
+          <p>Inverser montant</p>
+          <mui.Checkbox checked={reverse}
+                        onCheck={(evt, value) => onReverseChanged(value)} />
+        </mui.ToolbarGroup>
+
         <mui.ToolbarGroup>
           <p>Date début</p>
           <mui.IconButton tooltip="Pas de date de début"
