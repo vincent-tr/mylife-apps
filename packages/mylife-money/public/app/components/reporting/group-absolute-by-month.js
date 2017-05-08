@@ -118,7 +118,7 @@ class GroupAbsoluteByMonth extends React.Component {
     const data = Array.from(map.values()).map(item => {
       const ret = { date: item.date };
       for(const [group, val] of item.groups.entries()) {
-        ret[`group-${group}`] = val.value;
+        ret[`group-${group}`] = Math.round(val.value * 100) / 100;
       }
       return ret;
     });
