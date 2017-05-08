@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import * as chart from 'recharts';
 import icons from '../icons';
+import tabStyles from '../base/tab-styles';
 
 import AccountSelectorContainer from '../../containers/common/account-selector-container';
 import GroupSelectorContainer from '../../containers/common/group-selector-container';
@@ -17,6 +18,9 @@ const styles = {
   },
   date: {
     width: 100
+  },
+  chartWrapper: {
+    height: 'calc(100% - 60px)'
   }
 };
 
@@ -210,20 +214,24 @@ class GroupAbsoluteByMonth extends React.Component {
     }));
 
     return (
-      <chart.BarChart width={1000} height={400} data={data} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-        <chart.XAxis dataKey="date" name="Date" />
-        <chart.YAxis name="Montant" />
-        <chart.CartesianGrid strokeDasharray="3 3"/>
-        <chart.Tooltip/>
-        <chart.Legend />
-        {series.map(serie => (<chart.Bar key={serie.index} dataKey={`group-${serie.group}`} name={serie.display} />))}
-      </chart.BarChart>
+      <div style={styles.chartWrapper}>
+        <chart.ResponsiveContainer>
+          <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}}>
+            <chart.XAxis dataKey="date" name="Date" />
+            <chart.YAxis name="Montant" />
+            <chart.CartesianGrid strokeDasharray="3 3"/>
+            <chart.Tooltip/>
+            <chart.Legend />
+            {series.map(serie => (<chart.Bar key={serie.index} dataKey={`group-${serie.group}`} name={serie.display} />))}
+          </chart.BarChart>
+        </chart.ResponsiveContainer>
+      </div>
     );
   }
 
   render() {
     return (
-      <div>
+      <div style={tabStyles.fullHeight}>
         {this.renderToolbar()}
         {this.renderReport()}
       </div>
