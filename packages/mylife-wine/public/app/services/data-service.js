@@ -10,8 +10,6 @@ import {
   getArticles,   createArticle,  updateArticle,  deleteArticle,
 } from '../actions/service';
 
-
-
 function createCrud(routerName, getConst, createConst, updateConst, deleteConst, getAction, createAction, updateAction, deleteAction) {
   return (next, action) => {
     switch (action.type) {
