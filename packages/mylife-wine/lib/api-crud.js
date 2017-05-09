@@ -13,7 +13,7 @@ const db = monk(config.mongo);
 // ex:
 // create(router, 'capacity', 'capacities', (id) => [{ store: 'article', find: { capacity: id }}]);
 
-module.exports.create = (router, routerName, storeName, constraintChecker = () => []) => {
+module.exports.create = (router, routerName, storeName, constraintChecker = () => [], itemFormatter = item => item) => {
 
   router.route(`/${routerName}`).get(function(request, response) {
     getItems((err, res) => {
@@ -70,6 +70,7 @@ module.exports.create = (router, routerName, storeName, constraintChecker = () =
 
   function createItem(item, done) {
     co(function*() {
+      item = itemFormatter(item);
       const store = coMonk(db.get(storeName));
       return yield store.insert(item);
     }).then((value) => done(null, value), (err) => done(err));
@@ -79,6 +80,7 @@ module.exports.create = (router, routerName, storeName, constraintChecker = () =
     item._id = item.id;
     delete item.id;
     co(function*() {
+      item = itemFormatter(item);
       const store = coMonk(db.get(storeName));
       yield store.update({ _id: item._id }, item);
       return item;
