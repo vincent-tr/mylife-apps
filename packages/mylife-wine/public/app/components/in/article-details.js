@@ -287,19 +287,17 @@ class ArticleDetails extends React.Component {
             <icons.actions.New />
           </mui.IconButton>
 
-          {article && (
-            <mui.IconButton onClick={() => this.save()}
-                            tooltip="Enregistrer">
-              <icons.actions.Save />
-            </mui.IconButton>
-          )}
+          <mui.IconButton disabled={!article}
+                          onClick={() => this.save()}
+                          tooltip="Enregistrer">
+            <icons.actions.Save />
+          </mui.IconButton>
 
-          {article && (
-            <mui.IconButton onClick={() => this.delete()}
-                            tooltip="Supprimer">
-              <icons.actions.Delete />
-            </mui.IconButton>
-          )}
+          <mui.IconButton disabled={!article}
+                          onClick={() => this.delete()}
+                          tooltip="Supprimer">
+            <icons.actions.Delete />
+          </mui.IconButton>
         </div>
       </div>
     );
