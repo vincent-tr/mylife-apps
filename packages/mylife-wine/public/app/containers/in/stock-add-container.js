@@ -6,7 +6,7 @@ import { stockAdd } from '../../actions/stock';
 
 import StockAdd from '../../components/in/stock-add';
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
   capacities : getCapacities(state)
 });
 

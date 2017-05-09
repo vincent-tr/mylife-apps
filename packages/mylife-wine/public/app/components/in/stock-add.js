@@ -6,7 +6,6 @@ import * as mui from 'material-ui';
 import base from '../base/index';
 import icons from '../icons';
 import common from '../common/index';
-import tabStyles from '../base/tab-styles';
 
 const styles = {
   container: {
@@ -61,7 +60,7 @@ class StockAdd extends React.Component {
   }
 
   canSave() {
-    const { article, capacities } = this.props;
+    const { article } = this.props;
     const { bottleCount, bottleCapacity, year, date } = this.state;
 
     if(!article) { return false; }
