@@ -77,7 +77,7 @@ class StockAdd extends React.Component {
     const { bottleCount, bottleCapacity, year, date, bottlePrice, note } = this.state;
 
     const bottleCountChange    = (value) => this.setState({ bottleCount: value });
-    const bottleCapacityChange = (value) => this.setState({ bottleCapacity: value });
+    const bottleCapacityChange = (event, index, value) => this.setState({ bottleCapacity: value });
     const yearChange           = (value) => this.setState({ year: value });
     const bottlePriceChange    = (value) => this.setState({ bottlePrice: value });
     const dateChange           = (event, value) => this.setState({ bottlePrice: value.getTime() });
