@@ -28,7 +28,14 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      criteria: {}
+      criteria: {
+        type    : null,
+        region  : null,
+        name    : null,
+        minDate : null,
+        maxDate : null,
+        isAdd   : null
+      }
     };
   }
 
@@ -36,7 +43,7 @@ class Index extends React.Component {
     return (
       <div style={styles.container}>
         <base.GroupBox style={styles.criteria} title={'Critères de filtre'}>
-          <CriteriaContainer onChange={values => this.setState({ criteria: values })}/>
+          <CriteriaContainer criteria={this.state.criteria} onChange={values => this.setState({ criteria: { ... this.state.criteria, ... values } })}/>
         </base.GroupBox>
         <base.GroupBox style={styles.results} title={'Historique'}>
           <ResultsContainer criteria={this.state.criteria}/>
