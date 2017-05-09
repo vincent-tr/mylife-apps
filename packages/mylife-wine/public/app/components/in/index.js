@@ -5,6 +5,7 @@ import base from '../base/index';
 
 import ArticleFinderContainer from '../../containers/in/article-finder-container';
 import ArticleDetailsContainer from '../../containers/in/article-details-container';
+import StockAddContainer from '../../containers/in/stock-add-container';
 
 const styles = {
   container: {
@@ -46,7 +47,7 @@ class Index extends React.Component {
           <ArticleDetailsContainer article={this.state.article} onArticleChange={ article => this.setState({ article })}/>
         </base.GroupBox>
         <base.GroupBox style={styles.stockAdd} title={'Ajout de stock'}>
-          stock add
+          <StockAddContainer article={this.state.article}/>
         </base.GroupBox>
       </div>
     );
