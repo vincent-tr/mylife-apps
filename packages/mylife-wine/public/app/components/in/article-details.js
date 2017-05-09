@@ -252,10 +252,20 @@ class ArticleDetails extends React.Component {
 
   renderComment() {
     const { article } = this.state;
+    const commentChange = (event) => this.setState({ article: { ...article, comment: event.target.value } });
 
     return(
       <div style={styles.comment}>
-        {JSON.stringify(article)}
+        <table style={{tableLayout: 'fixed', width: '100%'}}>
+          <tbody>
+            <tr><td style={{height: 50}}><div style={styles.fieldTitle}>Commentaire</div></td></tr>
+            <tr><td>
+              <mui.Paper style={{ height: styles.dishes.height - 55, ...tabStyles.scrollable }}>
+                <mui.TextField disabled={!article} id="comment" multiLine={true} fullWidth={true} value={this.renderArticleProp('comment', 'string')} onChange={commentChange} />
+              </mui.Paper>
+            </td></tr>
+          </tbody>
+        </table>
       </div>
     );
   }
