@@ -7,6 +7,7 @@ import StoreProvider from './store-provider';
 import DataImage from './data-image';
 import GroupBox from './group-box';
 import IntegerField from './integer-field';
+import NumberField from './number-field';
 import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import confirm from './confirm-dialog';
@@ -20,6 +21,7 @@ export default {
   DataImage,
   GroupBox,
   IntegerField,
+  NumberField,
   SelectableList,
   SelectableListItem,
   confirm,
