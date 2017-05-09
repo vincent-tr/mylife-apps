@@ -4,29 +4,132 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import icons from '../icons';
 import common from '../common/index';
 import tabStyles from '../base/tab-styles';
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    height: '100%'
+  },
+  toolbar: {
+    width: '100%',
+    textAlign: 'center'
+  },
+  fieldTitle: {
+    fontWeight: 'bold',
+    width: 300,
+    display: 'inline-block',
+    textAlign: 'left'
+  },
+  row: {
+    height: 60
+  }
+};
 
 class StockAdd extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      count    : 1,
-      capacity : null,
-      year     : null,
-      date     : null,
-      price    : null,
-      comment  : null
+    this.state = { ... this.createNew() };
+  }
+
+  createNew() {
+    return {
+      bottleCount    : 1,
+      bottleCapacity : null,
+      year           : 0,
+      date           : new Date().setHours(0, 0, 0, 0),
+      bottlePrice    : 0,
+      note           : ''
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  new() {
+    this.setState(this.createNew());
+  }
+
+  save() {
+    const { article, onAdd } = this.props;
+    const { bottleCount, bottleCapacity, year, date, bottlePrice, note } = this.state;
+    onAdd({ article, bottleCount, bottleCapacity, year, date, bottlePrice, note });
+    this.new();
+  }
+
+  canSave() {
+    const { article, capacities } = this.props;
+    const { bottleCount, bottleCapacity, year, date } = this.state;
+
+    if(!article) { return false; }
+    if(!bottleCount) { return false; }
+    if(!bottleCapacity) { return false; }
+    if(!year) { return false; }
+    if(!date) { return false; }
+    return true;
   }
 
   render() {
-    return <div>stock-add</div>;
+
+    const { capacities } = this.props;
+    const { bottleCount, bottleCapacity, year, date, bottlePrice, note } = this.state;
+
+    const bottleCountChange    = (value) => this.setState({ bottleCount: value });
+    const bottleCapacityChange = (value) => this.setState({ bottleCapacity: value });
+    const yearChange           = (value) => this.setState({ year: value });
+    const bottlePriceChange    = (value) => this.setState({ bottlePrice: value });
+    const dateChange           = (event, value) => this.setState({ bottlePrice: value.getTime() });
+    const noteChange           = (event) => this.setState({ note: event.target.value });
+
+    return(
+      <div>
+        <mui.Paper style={styles.container}>
+          <table style={{tableLayout: 'fixed', width: '100%'}}>
+            <tbody>
+              <tr style={styles.row}>
+                <td><div style={styles.fieldTitle}>Nombre de bouteilles</div></td>
+                <td><base.IntegerField id="bottleCount" style={{ width: 300 }} value={bottleCount} onChange={bottleCountChange} minValue={1} /></td>
+
+                <td><div style={styles.fieldTitle}>Date d'entrée</div></td>
+                <td><mui.DatePicker id="date" style={{ width: 300 }} value={new Date(date)} onChange={dateChange} /></td>
+              </tr>
+              <tr style={styles.row}>
+                <td><div style={styles.fieldTitle}>Capacité de bouteille</div></td>
+                <td><common.ReferenceSelector id="type" autoWidth={false} style={{ width: 300 }} list={capacities} value={bottleCapacity} onChange={bottleCapacityChange} /></td>
+
+                <td><div style={styles.fieldTitle}>Prix de la bouteille</div></td>
+                <td><base.NumberField id="bottlePrice" style={{ width: 300 }} value={bottlePrice} onChange={bottlePriceChange} minValue={0} /></td>
+              </tr>
+              <tr style={styles.row}>
+                <td><div style={styles.fieldTitle}>Année des bouteilles</div></td>
+                <td><base.IntegerField id="year" style={{ width: 300 }} value={year} onChange={yearChange} minValue={1} /></td>
+
+                <td><div style={styles.fieldTitle}>Commentaire ajout stock</div></td>
+                <td rowSpan={2}><mui.TextField id="note" multiLine={true} rows={3} rowsMax={3} fullWidth={true} value={note} onChange={noteChange} /></td>
+              </tr>
+
+              <tr><td colSpan={4}></td></tr>
+            </tbody>
+          </table>
+        </mui.Paper>
+
+        <div style={styles.toolbar}>
+          <mui.IconButton onClick={() => this.new()}
+                          tooltip="Nouveau">
+            <icons.actions.New />
+          </mui.IconButton>
+
+          <mui.IconButton disabled={!this.canSave()}
+                          onClick={() => this.save()}
+                          tooltip="Enregistrer">
+            <icons.actions.Save />
+          </mui.IconButton>
+        </div>
+      </div>
+    );
   }
 }
 
