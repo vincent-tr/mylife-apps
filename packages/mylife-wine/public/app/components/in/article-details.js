@@ -95,7 +95,28 @@ class ArticleDetails extends React.Component {
     onArticleChange(null);
   }
 
-  renderArticleProp(name, defaultValue = null) {
+  renderArticleProp(name, type, defaultValue) {
+
+    if(typeof defaultValue === 'undefined') {
+      defaultValue = (() => {
+        switch(type) {
+          case 'id'      : return null;
+          case 'string'  : return '';
+          case 'boolean' : return false;
+          case 'number'  : return 0;
+        }
+      })();
+    }
+
+    const parse = (value) => {
+      switch(type) {
+        case 'id'      : return value;
+        case 'string'  : return value;
+        case 'boolean' : return value === 1 ? true : false;
+        case 'number'  : return value;
+      }
+    };
+
     const { article } = this.state;
     if(!article) {
       return defaultValue;
@@ -104,20 +125,27 @@ class ArticleDetails extends React.Component {
     if(value === null || value === undefined) {
       return defaultValue;
     }
-    return value;
+    return parse(value);
   }
 
   render() {
     const { article } = this.state;
     const { regions, types } = this.props;
 
-    const nameChange              = (event) => this.setState({ article: { ...article, name: event.target.value } });
-    const typeChange              = (event, index, value) => this.setState({ article: { ...article, type: value } });
-    const regionChange            = (event, index, value) => this.setState({ article: { ...article, region: value } });
-    const ownerChange             = (event) => this.setState({ article: { ...article, owner: event.target.value } });
-    const grapVarietyChange       = (event) => this.setState({ article: { ...article, grapVariety: event.target.value } });
-    const beginYearRelativeChange = (value) => this.setState({ article: { ...article, beginYearRelative: value } });
-    const endYearRelativeChange   = (value) => this.setState({ article: { ...article, endYearRelative: value } });
+    const nameChange                  = (event) => this.setState({ article: { ...article, name: event.target.value } });
+    const typeChange                  = (event, index, value) => this.setState({ article: { ...article, type: value } });
+    const regionChange                = (event, index, value) => this.setState({ article: { ...article, region: value } });
+    const ownerChange                 = (event) => this.setState({ article: { ...article, owner: event.target.value } });
+    const grapVarietyChange           = (event) => this.setState({ article: { ...article, grapVariety: event.target.value } });
+    const beginYearRelativeChange     = (value) => this.setState({ article: { ...article, beginYearRelative: value } });
+    const endYearRelativeChange       = (value) => this.setState({ article: { ...article, endYearRelative: value } });
+    const sparklingChange             = (event, value) => this.setState({ article: { ...article, sparkling: value } });
+    const alcoholContentChange        = (value) => this.setState({ article: { ...article, alcoholContent: value } });
+    const decantingChange             = (event, value) => this.setState({ article: { ...article, decanting: value } });
+    const servingTemperatureMinChange = (value) => this.setState({ article: { ...article, servingTemperatureMin: value } });
+    const servingTemperatureMaxChange = (value) => this.setState({ article: { ...article, servingTemperatureMax: value } });
+    const bottleCountThresholdChange  = (value) => this.setState({ article: { ...article, bottleCountThreshold: value } });
+    const qualityChange               = (event, value) => this.setState({ article: { ...article, quality: value } });
 
     return(
       <div>
@@ -127,30 +155,64 @@ class ArticleDetails extends React.Component {
               <tbody>
                 <tr>
                   <td><div style={styles.fieldTitle}>Appelation</div></td>
-                  <td><mui.TextField disabled={!article} id="name" style={{ width: 300 }} value={this.renderArticleProp('name', '')} onChange={nameChange} /></td>
+                  <td><mui.TextField disabled={!article} id="name" style={{ width: 300 }} value={this.renderArticleProp('name', 'string')} onChange={nameChange} /></td>
                 </tr>
                 <tr>
                   <td><div style={styles.fieldTitle}>Type de spiritueux</div></td>
-                  <td><common.ReferenceSelector disabled={!article} id="type" autoWidth={false} style={{ width: 300 }} list={types} value={this.renderArticleProp('type')} onChange={typeChange} /></td>
+                  <td><common.ReferenceSelector disabled={!article} id="type" autoWidth={false} style={{ width: 300 }} list={types} value={this.renderArticleProp('type', 'id')} onChange={typeChange} /></td>
                 </tr>
                 <tr>
                   <td><div style={styles.fieldTitle}>Region</div></td>
-                  <td><common.ReferenceSelector disabled={!article} id="region" autoWidth={false} style={{ width: 300 }} list={regions} value={this.renderArticleProp('region')} onChange={regionChange} /></td>
+                  <td><common.ReferenceSelector disabled={!article} id="region" autoWidth={false} style={{ width: 300 }} list={regions} value={this.renderArticleProp('region', 'id')} onChange={regionChange} /></td>
                 </tr>
                 <tr>
                   <td><div style={styles.fieldTitle}>Propriétaire récoltant</div></td>
-                  <td><mui.TextField disabled={!article} id="owner" style={{ width: 300 }} value={this.renderArticleProp('owner', '')} onChange={ownerChange} /></td>
+                  <td><mui.TextField disabled={!article} id="owner" style={{ width: 300 }} value={this.renderArticleProp('owner', 'string')} onChange={ownerChange} /></td>
                 </tr>
                 <tr>
                   <td><div style={styles.fieldTitle}>Cépage</div></td>
-                  <td><mui.TextField disabled={!article} id="grapVariety" style={{ width: 300 }} value={this.renderArticleProp('grapVariety', '')} onChange={grapVarietyChange} /></td>
+                  <td><mui.TextField disabled={!article} id="grapVariety" style={{ width: 300 }} value={this.renderArticleProp('grapVariety', 'string')} onChange={grapVarietyChange} /></td>
                 </tr>
                 <tr>
                   <td><div style={styles.fieldTitle}>Fourchette de consommation (années)</div></td>
                   <td>
-                    <base.IntegerField disabled={!article} id="beginYearRelative" style={{ width: 145 }} value={this.renderArticleProp('beginYearRelative', 0)} onChange={beginYearRelativeChange} minValue={0} />
+                    <base.IntegerField disabled={!article} id="beginYearRelative" style={{ width: 145 }} value={this.renderArticleProp('beginYearRelative', 'number')} onChange={beginYearRelativeChange} minValue={0} />
                     <div style={{ display: 'inline-block', width: 10 }} />
-                    <base.IntegerField disabled={!article} id="endYearRelative" style={{ width: 145 }} value={this.renderArticleProp('endYearRelative', 0)} onChange={endYearRelativeChange} minValue={0} />
+                    <base.IntegerField disabled={!article} id="endYearRelative" style={{ width: 145 }} value={this.renderArticleProp('endYearRelative', 'number')} onChange={endYearRelativeChange} minValue={0} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style={Object.assign({}, styles.fieldTitle, { width: 200 })}>Mousseux</div>
+                    <mui.Checkbox disabled={!article} id="sparkling" style={{ width: 100, display: 'inline-block' }} value={this.renderArticleProp('sparkling', 'boolean')} onCheck={sparklingChange}/>
+                  </td>
+                  <td>
+                    <div style={Object.assign({}, styles.fieldTitle, { width: 155 })}>Degré d'alcool</div>
+                    <base.IntegerField disabled={!article} id="alcoholContent" style={{ width: 145 }} value={this.renderArticleProp('alcoholContent', 'number')} onChange={alcoholContentChange} minValue={0} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style={Object.assign({}, styles.fieldTitle, { width: 200 })}>Carafage</div>
+                    <mui.Checkbox disabled={!article} id="decanting" style={{ width: 100, display: 'inline-block' }} value={this.renderArticleProp('decanting', 'boolean')} onCheck={decantingChange}/>
+                  </td>
+                  <td>
+                    <div style={Object.assign({}, styles.fieldTitle, { width: 155 })}>Température de service</div>
+                    <base.IntegerField disabled={!article} id="servingTemperatureMin" style={{ width: 70 }} value={this.renderArticleProp('servingTemperatureMin', 'number')} onChange={servingTemperatureMinChange} minValue={0} />
+                    <div style={{ display: 'inline-block', width: 5 }} />
+                    <base.IntegerField disabled={!article} id="servingTemperatureMax" style={{ width: 70 }} value={this.renderArticleProp('servingTemperatureMax', 'number')} onChange={servingTemperatureMaxChange} minValue={0} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style={Object.assign({}, styles.fieldTitle, { width: 200 })}>Seuil (-1 pour aucun)</div>
+                    <base.IntegerField disabled={!article} id="bottleCountThreshold" style={{ width: 100 }} value={this.renderArticleProp('bottleCountThreshold', 'number', -1)} onChange={bottleCountThresholdChange} minValue={0} />
+                  </td>
+                  <td>
+                    <div style={Object.assign({}, styles.fieldTitle, { width: 155 })}>Qualité</div>
+                    <mui.Slider disabled={!article} id="quality" style={{ width: 80, height: 30, display: 'inline-block' }} value={this.renderArticleProp('quality', 'number')} onChange={qualityChange} step={1} min={0} max={10} />
+                    <div style={{ display: 'inline-block', width: 15 }} />
+                    <base.IntegerField disabled={true} id="qualityLabel" style={{ width: 50 }} value={this.renderArticleProp('quality', 'number')} onChange={() => {}} />
                   </td>
                 </tr>
               </tbody>
@@ -160,7 +222,7 @@ class ArticleDetails extends React.Component {
             dishes
           </div>
           <div style={styles.comment}>
-            {JSON.stringify(article)}
+            {JSON.stringify(false && article)}
           </div>
         </div>
 
