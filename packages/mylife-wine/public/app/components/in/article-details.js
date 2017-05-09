@@ -15,7 +15,7 @@ const styles = {
     height: '100%'
   },
   common: {
-    flex: 2,
+    flex: '0 0 700px',
     height: '100%'
   },
   dishes: {
