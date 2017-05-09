@@ -5,28 +5,33 @@ import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from '../base/index';
 
-function createSelectedItem(list, value) {
+function renderName(nameRender, item) {
+  return nameRender ? nameRender(item) : item.name;
+}
+
+function createSelectedItem(nameRender, list, value) {
   if(!value) {
     return (<mui.MenuItem primaryText="-" />);
   }
   const item = list.find(item => item.id === value);
-  return (<mui.MenuItem primaryText={item.name} leftIcon={<base.DataImage data={item.icon}/>} />);
+  return (<mui.MenuItem primaryText={renderName(nameRender, item)} leftIcon={<base.DataImage data={item.icon}/>} />);
 }
 
-const ReferenceSelector = ({ list, value, onChange, ...props }) => (
+const ReferenceSelector = ({ nameRender, list, value, onChange, ...props }) => (
   <mui.DropDownMenu { ...props }
     value={value}
     onChange={onChange}
-    selectionRenderer={value => createSelectedItem(list, value)}>
+    selectionRenderer={value => createSelectedItem(nameRender, list, value)}>
     <mui.MenuItem value={null} primaryText="-" />
-    {list.map(item => (<mui.MenuItem key={item.id} value={item.id} primaryText={item.name} leftIcon={<base.DataImage data={item.icon}/>} />))}
+    {list.map(item => (<mui.MenuItem key={item.id} value={item.id} primaryText={renderName(nameRender, item)} leftIcon={<base.DataImage data={item.icon}/>} />))}
   </mui.DropDownMenu>
 );
 
 ReferenceSelector.propTypes = {
-  list     : PropTypes.arrayOf(PropTypes.object),
-  value    : PropTypes.string,
-  onChange : PropTypes.func.isRequired
+  list       : PropTypes.arrayOf(PropTypes.object),
+  value      : PropTypes.string,
+  onChange   : PropTypes.func.isRequired,
+  nameRender : PropTypes.func
 };
 
 export default ReferenceSelector;

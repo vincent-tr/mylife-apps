@@ -81,7 +81,7 @@ class StockAdd extends React.Component {
     const yearChange           = (value) => this.setState({ year: value });
     const bottlePriceChange    = (value) => this.setState({ bottlePrice: value });
     const dateChange           = (event, value) => this.setState({ bottlePrice: value.getTime() });
-    const noteChange           = (event) => this.setState({ note: event.target.value });
+    const noteChange           = (event) => this.setState({ note: event.target.value || null });
 
     return(
       <div>
@@ -97,7 +97,7 @@ class StockAdd extends React.Component {
               </tr>
               <tr style={styles.row}>
                 <td><div style={styles.fieldTitle}>Capacité de bouteille</div></td>
-                <td><common.ReferenceSelector id="type" autoWidth={false} style={{ width: 300 }} list={capacities} value={bottleCapacity} onChange={bottleCapacityChange} /></td>
+                <td><common.ReferenceSelector id="type" autoWidth={false} style={{ width: 300 }} list={capacities} nameRender={item => `${item.name} (${item.value} L)`} value={bottleCapacity} onChange={bottleCapacityChange} /></td>
 
                 <td><div style={styles.fieldTitle}>Prix de la bouteille</div></td>
                 <td><base.NumberField id="bottlePrice" style={{ width: 300 }} value={bottlePrice} onChange={bottlePriceChange} minValue={0} /></td>

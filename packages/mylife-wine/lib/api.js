@@ -1,16 +1,8 @@
 'use strict';
 
-//const { ObjectID } = require('mongodb');
-//const monk         = require('monk');
-//const config       = require('../conf/config');
-//const coMonk       = require('co-monk');
-//const co           = require('co');
-const express      = require('express');
-//const log4js       = require('log4js');
-//const logger       = log4js.getLogger('mylife:wine:api');
-const crud         = require('./crud');
-
-//const db = monk(config.mongo);
+const express = require('express');
+const crud    = require('./api-crud');
+const stock   = require('./api-stock');
 
 module.exports = () => {
   const router = express.Router();
@@ -20,6 +12,8 @@ module.exports = () => {
   crud.create(router, 'type',     'types',      (id) => [{ store : 'article', find : { type     : id }}]);
   crud.create(router, 'capacity', 'capacities', (id) => [{ store : 'history', find : { article  : id }}, { store : 'stock', find : { article : id }}]);
   crud.create(router, 'article',  'articles',   (id) => [{ store : 'history', find : { article  : id }}, { store : 'stock', find : { article : id }}]);
+
+  stock.create(router);
 
   return router;
 };
