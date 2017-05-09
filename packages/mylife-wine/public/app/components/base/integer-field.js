@@ -28,13 +28,13 @@ const IntegerField = ({ value, onChange, minValue, maxValue, ...props}) => {
       onChange={onIntegerChange}
       type='number' />
   );
-}
+};
 
 IntegerField.propTypes = {
-  value      : React.PropTypes.number,
-  onChange   : React.PropTypes.func.isRequired,
-  minValue   : React.PropTypes.number,
-  maxValue   : React.PropTypes.number,
+  value      : PropTypes.number,
+  onChange   : PropTypes.func.isRequired,
+  minValue   : PropTypes.number,
+  maxValue   : PropTypes.number,
 };
 
 export default IntegerField;

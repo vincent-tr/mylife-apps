@@ -44,10 +44,10 @@ const GroupBox = ({ children, title, style, titleStyle, ...props}) => (
 );
 
 GroupBox.propTypes = {
-  title      : React.PropTypes.node,
-  children   : React.PropTypes.node,
-  style      : React.PropTypes.object,
-  titleStyle : React.PropTypes.object,
+  title      : PropTypes.node,
+  children   : PropTypes.node,
+  style      : PropTypes.object,
+  titleStyle : PropTypes.object,
 };
 
 export default GroupBox;

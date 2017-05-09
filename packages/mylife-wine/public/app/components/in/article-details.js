@@ -6,7 +6,6 @@ import * as mui from 'material-ui';
 import base from '../base/index';
 import icons from '../icons';
 import common from '../common/index';
-import tabStyles from '../base/tab-styles';
 
 const styles = {
   container: {
