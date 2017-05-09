@@ -41,7 +41,7 @@ class StockAdd extends React.Component {
     return {
       bottleCount    : 1,
       bottleCapacity : null,
-      year           : 0,
+      year           : new Date().getFullYear(),
       date           : new Date().setHours(0, 0, 0, 0),
       bottlePrice    : 0,
       note           : ''
