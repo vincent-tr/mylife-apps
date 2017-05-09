@@ -140,9 +140,9 @@ class ArticleDetails extends React.Component {
     const grapVarietyChange           = (event) => this.setState({ article: { ...article, grapVariety: event.target.value } });
     const beginYearRelativeChange     = (value) => this.setState({ article: { ...article, beginYearRelative: value } });
     const endYearRelativeChange       = (value) => this.setState({ article: { ...article, endYearRelative: value } });
-    const sparklingChange             = (event, value) => this.setState({ article: { ...article, sparkling: value } });
+    const sparklingChange             = (event, value) => this.setState({ article: { ...article, sparkling: value ? 1 : 0 } });
     const alcoholContentChange        = (value) => this.setState({ article: { ...article, alcoholContent: value } });
-    const decantingChange             = (event, value) => this.setState({ article: { ...article, decanting: value } });
+    const decantingChange             = (event, value) => this.setState({ article: { ...article, decanting: value ? 1 : 0 } });
     const servingTemperatureMinChange = (value) => this.setState({ article: { ...article, servingTemperatureMin: value } });
     const servingTemperatureMaxChange = (value) => this.setState({ article: { ...article, servingTemperatureMax: value } });
     const bottleCountThresholdChange  = (value) => this.setState({ article: { ...article, bottleCountThreshold: value } });
