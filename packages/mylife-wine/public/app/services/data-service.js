@@ -8,6 +8,7 @@ import {
   getRegions,    createRegion,   updateRegion,   deleteRegion,
   getTypes,      createType,     updateType,     deleteType,
   getArticles,   createArticle,  updateArticle,  deleteArticle,
+  stockAdd,
 } from '../actions/service';
 
 function createCrud(routerName, getConst, createConst, updateConst, deleteConst, getAction, createAction, updateAction, deleteAction) {
@@ -70,6 +71,23 @@ function createCrud(routerName, getConst, createConst, updateConst, deleteConst,
   };
 }
 
+function stockHandler(next, action) {
+  switch(action.type) {
+    case actionTypes.QUERY_STOCK_ADD: {
+      request
+        .put('/api/stock')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(stockAdd(new Error(JSON.parse(res.text))));
+          }
+          return next(stockAdd());
+        });
+      break;
+    }
+  }
+}
+
 const capacitiesCrud = createCrud('capacity', actionTypes.QUERY_GET_CAPACITIES, actionTypes.QUERY_CREATE_CAPACITY, actionTypes.QUERY_UPDATE_CAPACITY, actionTypes.QUERY_DELETE_CAPACITY, getCapacities, createCapacity, updateCapacity, deleteCapacity);
 const dishesCrud     = createCrud('dish',     actionTypes.QUERY_GET_DISHES,     actionTypes.QUERY_CREATE_DISH,     actionTypes.QUERY_UPDATE_DISH,     actionTypes.QUERY_DELETE_DISH,     getDishes,     createDish,     updateDish,     deleteDish);
 const regionsCrud    = createCrud('region',   actionTypes.QUERY_GET_REGIONS,    actionTypes.QUERY_CREATE_REGION,   actionTypes.QUERY_UPDATE_REGION,   actionTypes.QUERY_DELETE_REGION,   getRegions,    createRegion,   updateRegion,   deleteRegion);
@@ -84,6 +102,7 @@ const dataService = (/*store*/) => next => action => {
   regionsCrud(next, action);
   typesCrud(next, action);
   articlesCrud(next, action);
+  stockHandler(next, action);
 };
 
 export default dataService;

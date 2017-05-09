@@ -2,6 +2,7 @@
 
 import { createAction } from 'redux-actions';
 import { actionTypes } from '../constants';
+import { showInfo } from './common';
 
 export const getCapacities  = createAction(actionTypes.GET_CAPACITIES);
 export const createCapacity = createAction(actionTypes.CREATE_CAPACITY);
@@ -23,3 +24,5 @@ export const getArticles    = createAction(actionTypes.GET_ARTICLES);
 export const createArticle  = createAction(actionTypes.CREATE_ARTICLE);
 export const updateArticle  = createAction(actionTypes.UPDATE_ARTICLE);
 export const deleteArticle  = createAction(actionTypes.DELETE_ARTICLE);
+
+export const stockAdd = (err) => showInfo(err || 'Stock ajouté');
