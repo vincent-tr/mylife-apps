@@ -15,15 +15,15 @@ const styles = {
     height: '100%'
   },
   articleFinder: {
-    flex: 2,
+    flex: 1,
     width: '100%'
   },
   articleDetails: {
-    flex: 3,
+    flex: '0 0 580px',
     width: '100%'
   },
   stockAdd: {
-    flex: 1,
+    flex: '0 0 335px',
     width: '100%'
   }
 };
