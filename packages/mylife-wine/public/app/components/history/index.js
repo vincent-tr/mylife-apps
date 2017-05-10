@@ -14,7 +14,7 @@ const styles = {
     height: '100%'
   },
   criteria: {
-    flex: '0 0 580px',
+    flex: '0 0 230px',
     width: '100%'
   },
   results: {
