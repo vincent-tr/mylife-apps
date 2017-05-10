@@ -6,15 +6,21 @@ import * as mui from 'material-ui';
 import base from '../base/index';
 import tabStyles from '../base/tab-styles';
 
-function getArticle(articles, item) {
-  const article = articles.get(item.article);
+function enhanceItem(articleMap, typeMap, regionMap, dishMap, capacityMap, item) {
+  const capacity = capacityMap.get(item.capacity);
+  const article = articleMap.get(item.article);
   if(!article) {
     console.error(`article ${item.article} not found on history ${item.id}`); // eslint-disable-line no-console
+    return { ...item, article: null, type: null, region: null, capacity, dishes: [] };
   }
-  return article;
+  const type = typeMap.get(article.type);
+  const region = regionMap.get(article.region);
+  const dishes = (article.dishes || []).map(it => dishMap.get(it));
+
+  return { ...item, article, type, region, capacity, dishes };
 }
 
-function filter(criteria, history, articles) {
+function filter(criteria, history, articles, types, regions, dishes, capacities) {
   const { type, region, name, minDate, maxDate, isAdd } = criteria;
   const typeTest    = type === null ? (() => true) : (item => item.article && item.article.type === type);
   const regionTest  = region === null ? (() => true) :(item => item.article && item.article.region === region);
@@ -24,7 +30,7 @@ function filter(criteria, history, articles) {
   const isAddTest   = isAdd === null ? (() => true) : (item => (item.isAdd === 1) === isAdd);
 
   return history
-    .map(item => ({ ...item, article: getArticle(articles, item) }))
+    .map(item => enhanceItem(articles, types, regions, dishes, capacities, item))
     .filter(item =>
       typeTest(item) &&
       regionTest(item) &&
@@ -64,23 +70,23 @@ function renderListItem(item) {
         <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'left' }}>
           <div style={{ flex: 1 }}>{item.date}</div>
           <div style={{ flex: 1 }}>{item.isAdd}</div>
-          <div style={{ flex: 1 }}>{item.name}</div>
-          <div style={{ flex: 1 }}><base.DataImage data={item.article && item.article.type.icon} style={{marginRight: 10}}/>{item.article && item.article.type.name}</div>
-          <div style={{ flex: 1 }}><base.DataImage data={item.article && item.article.region.icon} style={{marginRight: 10}}/>{item.article && item.article.region.name}</div>
+          <div style={{ flex: 1 }}>{item.article && item.article.name}</div>
+          <div style={{ flex: 1 }}><base.DataImage data={item.type && item.type.icon} style={{marginRight: 10}}/>{item.type && item.type.name}</div>
+          <div style={{ flex: 1 }}><base.DataImage data={item.region && item.region.icon} style={{marginRight: 10}}/>{item.region && item.region.name}</div>
           <div style={{ flex: 1 }}>{'plats'}</div>
-          <div style={{ flex: 1 }}>{item.owner}</div>
-          <div style={{ flex: 1 }}>{'qualite'}</div>
-          <div style={{ flex: 1 }}>{'quantite'}</div>
-          <div style={{ flex: 1 }}>{'prix'}</div>
-          <div style={{ flex: 1 }}>{'annee'}</div>
-          <div style={{ flex: 1 }}>{'commentaire'}</div>
+          <div style={{ flex: 1 }}>{item.article && item.article.owner}</div>
+          <div style={{ flex: 1 }}>{item.article && item.article.quality}</div>
+          <div style={{ flex: 1 }}>{item.bottleCount}</div>
+          <div style={{ flex: 1 }}>{item.bottlePrice || null}</div>
+          <div style={{ flex: 1 }}>{item.year}</div>
+          <div style={{ flex: 1 }}>{item.note}</div>
         </div>
       }/>
   );
 }
 
-const Results = ({ criteria, history, articles }) => {
-  const data = filter(criteria, history, articles);
+const Results = ({ criteria, history, articles, types, regions, dishes, capacities }) => {
+  const data = filter(criteria, history, articles, types, regions, dishes, capacities);
 
   return (
     <div style={{ height: '100%'}}>
@@ -95,9 +101,13 @@ const Results = ({ criteria, history, articles }) => {
 };
 
 Results.propTypes = {
-  criteria : PropTypes.object.isRequired,
-  history  : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  articles : PropTypes.object.isRequired,
+  criteria   : PropTypes.object.isRequired,
+  history    : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  articles   : PropTypes.object.isRequired,
+  types      : PropTypes.object.isRequired,
+  regions    : PropTypes.object.isRequired,
+  dishes     : PropTypes.object.isRequired,
+  capacities : PropTypes.object.isRequired,
 };
 
 export default Results;

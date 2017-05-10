@@ -1,5 +1,10 @@
 'use strict';
 
+export const getCapacityMap = (state) => state.capacities;
+export const getDishMap     = (state) => state.dishes;
+export const getRegionMap   = (state) => state.regions;
+export const getTypeMap     = (state) => state.types;
+
 export const getCapacities = (state) => state.capacities.valueSeq().sortBy(item => item.value).toArray();
 export const getDishes     = (state) => state.dishes.valueSeq().sortBy(item => item.name).toArray();
 export const getRegions    = (state) => state.regions.valueSeq().sortBy(item => item.name).toArray();
