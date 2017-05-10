@@ -25,4 +25,26 @@ export const createArticle  = createAction(actionTypes.CREATE_ARTICLE);
 export const updateArticle  = createAction(actionTypes.UPDATE_ARTICLE);
 export const deleteArticle  = createAction(actionTypes.DELETE_ARTICLE);
 
-export const stockAdd = (err) => showInfo(err || 'Stock ajouté');
+export const getStock     = createAction(actionTypes.GET_STOCK);
+const internalAddStock    = createAction(actionTypes.ADD_STOCK);
+const internalRemoveStock = createAction(actionTypes.REMOVE_STOCK);
+
+export const addStock = (data) => {
+  return (dispatch) => {
+    if(data instanceof Error) {
+      return dispatch(showInfo(data));
+    }
+    dispatch(internalAddStock(data));
+    dispatch(showInfo('Stock ajouté'));
+  };
+};
+
+export const removeStock = (data) => {
+  return (dispatch) => {
+    if(data instanceof Error) {
+      return dispatch(showInfo(data));
+    }
+    dispatch(internalRemoveStock(data));
+    dispatch(showInfo('Stock retiré'));
+  };
+};

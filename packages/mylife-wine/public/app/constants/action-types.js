@@ -52,5 +52,10 @@ export default wrap({
   QUERY_CREATE_ARTICLE  : null,
   CREATE_ARTICLE        : null,
 
-  QUERY_STOCK_ADD       : null,
+  QUERY_ADD_STOCK       : null,
+  ADD_STOCK             : null,
+  QUERY_REMOVE_STOCK    : null,
+  REMOVE_STOCK          : null,
+  QUERY_GET_STOCK       : null,
+  GET_STOCK             : null,
 });

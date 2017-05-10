@@ -3,11 +3,13 @@ import { actionTypes } from '../constants/index';
 
 import errors from './errors';
 import info from './info';
+import stock from './stock';
 import crud from './crud';
 
 export default combineReducers({
   errors,
   info,
+  stock,
   capacities : crud(actionTypes.GET_CAPACITIES, actionTypes.CREATE_CAPACITY, actionTypes.UPDATE_CAPACITY, actionTypes.DELETE_CAPACITY),
   dishes     : crud(actionTypes.GET_DISHES,     actionTypes.CREATE_DISH,     actionTypes.UPDATE_DISH,     actionTypes.DELETE_DISH),
   regions    : crud(actionTypes.GET_REGIONS,    actionTypes.CREATE_REGION,   actionTypes.UPDATE_REGION,   actionTypes.DELETE_REGION),

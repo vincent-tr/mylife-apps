@@ -12,39 +12,84 @@ const db = monk(config.mongo);
 
 module.exports.create = (router) => {
 
-  router.route('/stock').put(function(request, response) {
-    const item = request.body;
-    stockAdd(item, (err) => {
+  router.route('/stock').get(function(request, response) {
+    getStock((err, res) => {
       if(err) {
         logger.error(err);
         return response.status(500).json(err.message);
       }
-      logger.info(`stock created: ${JSON.stringify(item)}`);
-      response.json({});
+      response.json(res);
+    });
+  });
+
+  router.route('/stock').put(function(request, response) {
+    const item = request.body;
+    addStock(item, (err, res) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err.message);
+      }
+      logger.info(`stock created: ${JSON.stringify(res)}`);
+      response.json(res);
+    });
+  });
+
+  router.route('/stock').delete(function(request, response) {
+    const item = request.body;
+    removeStock(item, (err, res) => {
+      if(err) {
+        logger.error(err);
+        return response.status(500).json(err.message);
+      }
+      logger.info(`stock created: ${JSON.stringify(res)}`);
+      response.json(res);
     });
   });
 };
 
-function stockAdd(item, done) {
+function getStock(done) {
+  co(function*() {
+    const stock = coMonk(db.get('stock'));
+    const history = coMonk(db.get('history'));
+
+    return {
+      stock: yield stock.find({}),
+      history: yield history.find({})
+    };
+
+  }).then((value) => done(null, value), (err) => done(err));
+}
+
+function addStock(item, done) {
   co(function*() {
     item.article = new ObjectID(item.article);
     item.bottleCapacity = new ObjectID(item.bottleCapacity);
 
     const { article, bottleCount, bottleCapacity, year } = item;
 
-    const stock = coMonk(db.get('stock'));
-    const history = coMonk(db.get('history'));
+    const stockCollection = coMonk(db.get('stock'));
+    const historyCollection = coMonk(db.get('history'));
 
-    yield stock.update({
+    const stock = yield stockCollection.findOneAndUpdate({
       article, year, bottleCapacity
     }, {
       $setOnInsert: { article, year, bottleCapacity },
       $inc: { bottleCount },
     }, {
-      upsert: true
+      upsert: true,
+      returnNewDocument: true
     });
 
-    yield history.insert(Object.assign({}, item, { isAdd: 1 }));
+    const history = Object.assign({}, item, { isAdd: 1 });
+    yield historyCollection.insert(history);
 
-  }).then(() => done(), (err) => done(err));
+    return { history, stock };
+
+  }).then((value) => done(null, value), (err) => done(err));
+}
+
+function removeStock(item, done) {
+  co(function*() {
+    throw new Error('TODO');
+  }).then((value) => done(null, value), (err) => done(err));
 }

@@ -8,7 +8,7 @@ import {
   getRegions,    createRegion,   updateRegion,   deleteRegion,
   getTypes,      createType,     updateType,     deleteType,
   getArticles,   createArticle,  updateArticle,  deleteArticle,
-  stockAdd,
+  getStock,      addStock,       removeStock,
 } from '../actions/service';
 
 function createCrud(routerName, getConst, createConst, updateConst, deleteConst, getAction, createAction, updateAction, deleteAction) {
@@ -73,15 +73,44 @@ function createCrud(routerName, getConst, createConst, updateConst, deleteConst,
 
 function stockHandler(next, action) {
   switch(action.type) {
-    case actionTypes.QUERY_STOCK_ADD: {
+    case actionTypes.QUERY_GET_STOCK: {
+      request
+        .get('/api/stock')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(getStock(new Error(JSON.parse(res.text))));
+          }
+          const data = JSON.parse(res.text);
+          return next(getStock(data));
+        });
+      break;
+    }
+
+    case actionTypes.QUERY_ADD_STOCK: {
       request
         .put('/api/stock')
         .send(action.payload)
         .end((err, res) => {
           if (err) {
-            return next(stockAdd(new Error(JSON.parse(res.text))));
+            return next(addStock(new Error(JSON.parse(res.text))));
           }
-          return next(stockAdd());
+          const data = JSON.parse(res.text);
+          return next(addStock(data));
+        });
+      break;
+    }
+
+    case actionTypes.QUERY_REMOVE_STOCK: {
+      request
+        .delete('/api/stock')
+        .send(action.payload)
+        .end((err, res) => {
+          if (err) {
+            return next(removeStock(new Error(JSON.parse(res.text))));
+          }
+          const data = JSON.parse(res.text);
+          return next(removeStock(data));
         });
       break;
     }
