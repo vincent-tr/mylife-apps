@@ -9,7 +9,7 @@ import Application from './components/application';
 
 import { getCapacities, getDishes, getRegions, getTypes } from './actions/references';
 import { getArticles } from './actions/articles';
-import { getStock } from './actions/stock';
+import { refreshStock } from './actions/stock';
 import store from './services/store-factory';
 
 //Needed for onTouchTap
@@ -23,7 +23,7 @@ store.dispatch(getDishes());
 store.dispatch(getRegions());
 store.dispatch(getTypes());
 store.dispatch(getArticles());
-store.dispatch(getStock());
+store.dispatch(refreshStock());
 
 ReactDOM.render(
   <Application/>,
