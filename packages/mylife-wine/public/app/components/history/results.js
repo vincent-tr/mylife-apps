@@ -4,14 +4,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from '../base/index';
-import icons from '../icons';
-import common from '../common/index';
 import tabStyles from '../base/tab-styles';
 
 function getArticle(articles, item) {
   const article = articles.get(item.article);
   if(!article) {
-    console.error(`article ${item.article} not found on history ${item.id}`);
+    console.error(`article ${item.article} not found on history ${item.id}`); // eslint-disable-line no-console
   }
   return article;
 }
