@@ -20,7 +20,7 @@ const styles = {
   }
 };
 
-const Criteria = ({ regions, types, criteria, onChange }) => {
+const Criteria = ({ regions, types, criteria, onChange, onRefresh }) => {
   const { type, region, name, minDate, maxDate, isAdd } = criteria;
 
   const nameChange    = (event) => onChange({ name: event.target.value || null });
@@ -43,6 +43,13 @@ const Criteria = ({ regions, types, criteria, onChange }) => {
             <mui.IconButton tooltip="Pas de date de début"
                             onClick={() => minDateChange(null)}>
               <icons.actions.Delete />
+            </mui.IconButton>
+          </td>
+
+          <td rowSpan={3}>
+            <mui.IconButton onClick={() => onRefresh()}
+                            tooltip="Rafraîchir">
+              <icons.actions.Refresh />
             </mui.IconButton>
           </td>
         </tr>
@@ -78,10 +85,11 @@ const Criteria = ({ regions, types, criteria, onChange }) => {
 };
 
 Criteria.propTypes = {
-  regions  : PropTypes.arrayOf(PropTypes.object),
-  types    : PropTypes.arrayOf(PropTypes.object),
-  criteria : PropTypes.object.isRequired,
-  onChange : PropTypes.func.isRequired,
+  regions   : PropTypes.arrayOf(PropTypes.object),
+  types     : PropTypes.arrayOf(PropTypes.object),
+  criteria  : PropTypes.object.isRequired,
+  onChange  : PropTypes.func.isRequired,
+  onRefresh : PropTypes.func.isRequired,
 };
 
 export default Criteria;

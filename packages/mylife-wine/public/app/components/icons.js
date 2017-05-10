@@ -16,6 +16,7 @@ import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
 
 import NavigationArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 
 export default {
 
@@ -28,6 +29,7 @@ export default {
     Import  : ActionOpenInBrowser,
     Execute : ActionSettings,
     Comment : EditorModeComment,
+    Refresh : NavigationRefresh,
   },
 
   tabs: {
