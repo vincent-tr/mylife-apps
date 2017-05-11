@@ -3,7 +3,7 @@
 import React from 'react';
 import base from '../base/index';
 
-import CriteriaContainer from '../../containers/stock/criteria-container';
+import StockLookupPanelContainer from '../../containers/common/stock-lookup-panel-container';
 import ResultsContainer from '../../containers/stock/results-container';
 
 const styles = {
@@ -42,7 +42,7 @@ class Index extends React.Component {
     return (
       <div style={styles.container}>
         <base.GroupBox style={styles.criteria} title={'Critères de filtre'}>
-          <CriteriaContainer criteria={this.state.criteria} onChange={values => this.setState({ criteria: { ... this.state.criteria, ... values } })}/>
+          <StockLookupPanelContainer criteria={this.state.criteria} onChange={values => this.setState({ criteria: { ... this.state.criteria, ... values } })}/>
         </base.GroupBox>
         <base.GroupBox style={styles.results} title={'Etat du stock'}>
           <ResultsContainer criteria={this.state.criteria}/>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { refreshStock } from '../../actions/stock';
 import { getRegions, getTypes, getDishes } from '../../selectors/references';
 
-import Criteria from '../../components/stock/criteria';
+import StockLookupPanel from '../../components/common/stock-lookup-panel';
 
 const mapStateToProps = (state) => ({
   regions : getRegions(state),
@@ -16,9 +16,9 @@ const mapDispatchToProps = {
   onRefresh : refreshStock
 };
 
-const CriteriaContainer = connect(
+const StockLookupPanelContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Criteria);
+)(StockLookupPanel);
 
-export default CriteriaContainer;
+export default StockLookupPanelContainer;
