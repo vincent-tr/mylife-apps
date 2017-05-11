@@ -1,13 +1,13 @@
 'use strict';
 
 import { connect } from 'react-redux';
-import { getCapacities } from '../../selectors/references';
+import { getStockItem } from '../../selectors/stock';
 import { removeStock } from '../../actions/stock';
 
 import StockRemove from '../../components/out/stock-remove';
 
-const mapStateToProps = (state) => ({
-  capacities : getCapacities(state)
+const mapStateToProps = (state, { stockItem }) => ({
+  stockItem : stockItem && getStockItem(state, { value: stockItem })
 });
 
 const mapDispatchToProps = (dispatch) => ({

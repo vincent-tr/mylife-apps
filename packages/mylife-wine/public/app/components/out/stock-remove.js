@@ -40,11 +40,8 @@ class StockRemove extends React.Component {
   createNew() {
     return {
       bottleCount : 1,
-      capacity    : null,
-      year        : new Date().getFullYear(),
       date        : new Date().setHours(0, 0, 0, 0),
-      bottlePrice : 0,
-      note        : ''
+      note        : null
     };
   }
 
@@ -53,20 +50,19 @@ class StockRemove extends React.Component {
   }
 
   save() {
-    const { article, onRemove } = this.props;
-    const { bottleCount, capacity, year, date, bottlePrice, note } = this.state;
-    onRemove({ article, bottleCount, capacity, year, date, bottlePrice, note });
+    const { stockItem, onRemove } = this.props;
+    const { bottleCount, date, note } = this.state;
+    onRemove({ stock: stockItem.id, bottleCount, date, note });
     this.new();
   }
 
   canSave() {
-    const { article } = this.props;
-    const { bottleCount, capacity, year, date } = this.state;
+    const { stockItem } = this.props;
+    const { bottleCount, date } = this.state;
 
-    if(!article) { return false; }
+    if(!stockItem) { return false; }
     if(!bottleCount) { return false; }
-    if(!capacity) { return false; }
-    if(!year) { return false; }
+    if(bottleCount > stockItem.bottleCount)  { return false; }
     if(!date) { return false; }
     return true;
   }
@@ -92,25 +88,16 @@ class StockRemove extends React.Component {
                 <td><div style={styles.fieldTitle}>Nombre de bouteilles</div></td>
                 <td><base.IntegerField id="bottleCount" style={{ width: 300 }} value={bottleCount} onChange={bottleCountChange} minValue={1} /></td>
 
-                <td><div style={styles.fieldTitle}>Date d'entrée</div></td>
+                <td><div style={styles.fieldTitle}>Commentaire retrait stock</div></td>
+              </tr>
+              <tr style={styles.row}>
+                <td><div style={styles.fieldTitle}>Date de sortie</div></td>
                 <td><mui.DatePicker id="date" style={{ width: 300 }} value={new Date(date)} onChange={dateChange} /></td>
-              </tr>
-              <tr style={styles.row}>
-                <td><div style={styles.fieldTitle}>Capacité de bouteille</div></td>
-                <td><common.ReferenceSelector id="type" autoWidth={false} style={{ width: 300 }} list={capacities} nameRender={item => `${item.name} (${item.value} L)`} value={capacity} onChange={capacityChange} /></td>
 
-                <td><div style={styles.fieldTitle}>Prix de la bouteille</div></td>
-                <td><base.NumberField id="bottlePrice" style={{ width: 300 }} value={bottlePrice} onChange={bottlePriceChange} minValue={0} /></td>
-              </tr>
-              <tr style={styles.row}>
-                <td><div style={styles.fieldTitle}>Année des bouteilles</div></td>
-                <td><base.IntegerField id="year" style={{ width: 300 }} value={year} onChange={yearChange} minValue={1} /></td>
-
-                <td><div style={styles.fieldTitle}>Commentaire ajout stock</div></td>
-                <td rowSpan={2}><mui.TextField id="note" multiLine={true} rows={3} rowsMax={3} fullWidth={true} value={note} onChange={noteChange} /></td>
+                <td rowSpan={2}><mui.TextField id="note" multiLine={true} rows={3} rowsMax={3} fullWidth={true} value={note || ''} onChange={noteChange} /></td>
               </tr>
 
-              <tr><td colSpan={4}></td></tr>
+              <tr><td colSpan={3}></td></tr>
             </tbody>
           </table>
         </mui.Paper>
@@ -133,9 +120,8 @@ class StockRemove extends React.Component {
 }
 
 StockRemove.propTypes = {
-  article    : PropTypes.string,
-  capacities : PropTypes.arrayOf(PropTypes.object),
-  onRemove      : PropTypes.func.isRequired
+  stockItem : PropTypes.object,
+  onRemove  : PropTypes.func.isRequired
 };
 
 export default StockRemove;
