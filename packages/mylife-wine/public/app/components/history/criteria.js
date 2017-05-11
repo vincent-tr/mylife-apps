@@ -74,8 +74,8 @@ const Criteria = ({ regions, types, criteria, onChange, onRefresh }) => {
           <td>
             <mui.RadioButtonGroup name="operationType" valueSelected={isAdd === null ? 'null' : isAdd} onChange={isAddChange}>
               <mui.RadioButton style={styles.radioButton} value={'null'} label="Tous" />
-              <mui.RadioButton style={styles.radioButton} value={true} label="Entrées" />
-              <mui.RadioButton style={styles.radioButton} value={false} label="Sorties" />
+              <mui.RadioButton style={styles.radioButton} value={true} label={<div style={{width: 100}}><img src="images/misc/arrow-right-green-256.png" height="16" width="16" style={{marginRight: 10}} />Entrées</div>} />
+              <mui.RadioButton style={styles.radioButton} value={false} label={<div style={{width: 100}}><img src="images/misc/arrow-left-red-256.png" height="16" width="16" style={{marginRight: 10}} />Sorties</div>} />
             </mui.RadioButtonGroup>
           </td>
         </tr>
