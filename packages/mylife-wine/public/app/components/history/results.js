@@ -6,6 +6,32 @@ import * as mui from 'material-ui';
 import base from '../base/index';
 import tabStyles from '../base/tab-styles';
 
+const styles = (() => {
+
+  const baseColumnStyle = {
+    flex: 1,
+    lineHeight: '24px',
+  };
+
+  return {
+    columns: [
+      { ... baseColumnStyle, flex: '0 0 100px' },
+      { ... baseColumnStyle, flex: '0 0 30px' },
+      { ... baseColumnStyle },
+      { ... baseColumnStyle, flex: '0 0 200px' },
+      { ... baseColumnStyle, flex: '0 0 200px' },
+      { ... baseColumnStyle, flex: '0 0 250px' }, // plats
+      { ... baseColumnStyle },
+      { ... baseColumnStyle, flex: '0 0 120px' },
+      { ... baseColumnStyle, flex: '0 0 200px' },
+      { ... baseColumnStyle, flex: '0 0 80px' },
+      { ... baseColumnStyle, flex: '0 0 80px' },
+      { ... baseColumnStyle, flex: 3 }
+    ]
+  };
+
+})();
+
 function enhanceItem(articleMap, typeMap, regionMap, dishMap, capacityMap, item) {
   const capacity = capacityMap.get(item.capacity);
   const article = articleMap.get(item.article);
@@ -44,42 +70,71 @@ function renderListHeader() {
   return (
     <mui.Paper>
       <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'left', padding: 16, fontWeight: 'bold' }}>
-        <div style={{ flex: 1 }}>Date</div>
-        <div style={{ flex: 1 }}>Type</div>
-        <div style={{ flex: 1 }}>Appelation</div>
-        <div style={{ flex: 1 }}>Type de spiritueux</div>
-        <div style={{ flex: 1 }}>Region</div>
-        <div style={{ flex: 1 }}>Plats</div>
-        <div style={{ flex: 1 }}>Propriétaire récoltant</div>
-        <div style={{ flex: 1 }}>Qualité</div>
-        <div style={{ flex: 1 }}>Quantité</div>
-        <div style={{ flex: 1 }}>Prix</div>
-        <div style={{ flex: 1 }}>Année</div>
-        <div style={{ flex: 1 }}>Commentaire</div>
+        <div style={styles.columns[0]}>Date</div>
+        <div style={styles.columns[1]}>T.</div>
+        <div style={styles.columns[2]}>Appelation</div>
+        <div style={styles.columns[3]}>Type de spiritueux</div>
+        <div style={styles.columns[4]}>Region</div>
+        <div style={styles.columns[5]}>Plats</div>
+        <div style={styles.columns[6]}>Propriétaire récoltant</div>
+        <div style={styles.columns[7]}>Qualité</div>
+        <div style={styles.columns[8]}>Quantité</div>
+        <div style={styles.columns[9]}>Prix</div>
+        <div style={styles.columns[10]}>Année</div>
+        <div style={styles.columns[11]}>Commentaire</div>
       </div>
     </mui.Paper>
   );
 }
 
+function renderQuality(item) {
+  if(!item.article) {
+    return null;
+  }
+
+  const stars = [
+    key => <img key={key} src="images/misc/star-empty-48.png" height="20" width="20" />,
+    key => <img key={key} src="images/misc/star-half-48.png" height="20" width="20" />,
+    key => <img key={key} src="images/misc/star-filled-48.png" height="20" width="20" />
+  ];
+
+  const stack = [];
+  let value = item.article.quality;
+  for(let i=0; i<5; ++i) {
+    stack.push(stars[Math.min(value, 2)](i));
+    value = Math.max(value - 2, 0);
+  }
+  return stack;
+}
+
+const dateFormatter = new Intl.DateTimeFormat('fr-FR');
+
 function renderListItem(item) {
+  const isAddImage = [
+    <img src="images/misc/arrow-left-red-256.png" height="20" width="20" />,
+    <img src="images/misc/arrow-right-green-256.png" height="20" width="20" />
+  ];
+
+  const capacityText = item.capacity ? `${item.capacity.value}l x ${item.bottleCount} = ${item.capacity.value * item.bottleCount}l` : `${item.bottleCount} bouteilles`;
+
   return (
     <mui.ListItem
       key={item.id}
       value={{ value: item.id }}
       primaryText={
         <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'left' }}>
-          <div style={{ flex: 1 }}>{item.date}</div>
-          <div style={{ flex: 1 }}>{item.isAdd}</div>
-          <div style={{ flex: 1 }}>{item.article && item.article.name}</div>
-          <div style={{ flex: 1 }}><base.DataImage data={item.type && item.type.icon} style={{marginRight: 10}}/>{item.type && item.type.name}</div>
-          <div style={{ flex: 1 }}><base.DataImage data={item.region && item.region.icon} style={{marginRight: 10}}/>{item.region && item.region.name}</div>
-          <div style={{ flex: 1 }}>{'plats'}</div>
-          <div style={{ flex: 1 }}>{item.article && item.article.owner}</div>
-          <div style={{ flex: 1 }}>{item.article && item.article.quality}</div>
-          <div style={{ flex: 1 }}>{item.bottleCount}</div>
-          <div style={{ flex: 1 }}>{item.bottlePrice || null}</div>
-          <div style={{ flex: 1 }}>{item.year}</div>
-          <div style={{ flex: 1 }}>{item.note}</div>
+          <div style={styles.columns[0]}>{dateFormatter.format(new Date(item.date))}</div>
+          <div style={styles.columns[1]}>{isAddImage[item.isAdd]}</div>
+          <div style={styles.columns[2]}>{item.article && item.article.name}</div>
+          <div style={styles.columns[3]}><base.DataImage data={item.type && item.type.icon} height="20" width="20" style={{marginRight: 10}}/>{item.type && item.type.name}</div>
+          <div style={styles.columns[4]}><base.DataImage data={item.region && item.region.icon} height="20" width="20" style={{marginRight: 10}}/>{item.region && item.region.name}</div>
+          <div style={styles.columns[5]}>{item.dishes.map(dish => (<base.DataImage key={dish.id} data={dish.icon} height="24" width="24" style={{marginRight: 2}} title={dish.name}/>))}</div>
+          <div style={styles.columns[6]}>{item.article && item.article.owner}</div>
+          <div style={styles.columns[7]}>{renderQuality(item)}</div>
+          <div style={styles.columns[8]}><base.DataImage data={item.capacity && item.capacity.icon} height="20" width="20" style={{marginRight: 10}}/>{capacityText}</div>
+          <div style={styles.columns[9]}>{item.bottlePrice ? `${item.bottlePrice.toFixed(2)} €` : null}</div>
+          <div style={styles.columns[10]}>{item.year}</div>
+          <div style={styles.columns[11]}>{item.note}</div>
         </div>
       }/>
   );
