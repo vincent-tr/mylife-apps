@@ -23,7 +23,7 @@ const styles = {
     width: '100%'
   },
   stockRemove: {
-    flex: '0 0 500px',
+    flex: '0 0 280px',
     width: '100%'
   }
 };
