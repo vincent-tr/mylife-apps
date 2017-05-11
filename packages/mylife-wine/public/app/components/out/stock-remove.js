@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import * as mui from 'material-ui';
 import base from '../base/index';
 import icons from '../icons';
-import common from '../common/index';
 
 const styles = {
   container: {
@@ -68,14 +67,9 @@ class StockRemove extends React.Component {
   }
 
   render() {
-
-    const { capacities } = this.props;
-    const { bottleCount, capacity, year, date, bottlePrice, note } = this.state;
+    const { bottleCount, date, note } = this.state;
 
     const bottleCountChange = (value) => this.setState({ bottleCount: value });
-    const capacityChange    = (event, index, value) => this.setState({ capacity: value });
-    const yearChange        = (value) => this.setState({ year: value });
-    const bottlePriceChange = (value) => this.setState({ bottlePrice: value });
     const dateChange        = (event, value) => this.setState({ bottlePrice: value.getTime() });
     const noteChange        = (event) => this.setState({ note: event.target.value || null });
 
