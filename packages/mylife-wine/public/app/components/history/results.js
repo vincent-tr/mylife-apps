@@ -93,9 +93,9 @@ function renderQuality(item) {
   }
 
   const stars = [
-    key => <img key={key} src="images/misc/star-empty-48.png" height="20" width="20" />,
-    key => <img key={key} src="images/misc/star-half-48.png" height="20" width="20" />,
-    key => <img key={key} src="images/misc/star-filled-48.png" height="20" width="20" />
+    key => <img key={key} src="images/misc/star-empty-48.png" height="20" width="20" />, // eslint-disable-line react/display-name
+    key => <img key={key} src="images/misc/star-half-48.png" height="20" width="20" />, // eslint-disable-line react/display-name
+    key => <img key={key} src="images/misc/star-filled-48.png" height="20" width="20" /> // eslint-disable-line react/display-name
   ];
 
   const stack = [];
