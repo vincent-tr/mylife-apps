@@ -42,13 +42,19 @@ const styles = {
 };
 
 const Criteria = ({ regions, types, dishes, criteria, onChange, onRefresh }) => {
-  const { type, region, name, sparkling } = criteria;
+  const { type, region, name, sparkling, dishes: selectedDishes } = criteria;
 
   const nameChange      = (event) => onChange({ name: event.target.value || null });
   const typeChange      = (event, index, value) => onChange({ type: value });
   const regionChange    = (event, index, value) => onChange({ region: value });
   const sparklingChange = (event, value) => onChange({ sparkling: value === 'null' ? null : value });
-//dishes
+
+  const checked             = (dish) => selectedDishes.includes(dish.id);
+  const checkChangeFactory = (dish) => (event, value) => {
+    const newDishes = new Set(selectedDishes);
+    value ? newDishes.add(dish.id) : newDishes.delete(dish.id);
+    onChange({ dishes: Array.from(newDishes) });
+  };
 
   return (
         <table style={{tableLayout: 'fixed', width: '100%'}}>
@@ -62,7 +68,7 @@ const Criteria = ({ regions, types, dishes, criteria, onChange, onRefresh }) => 
                 <mui.Paper style={{ width: 400 }}>
                   <mui.List style={Object.assign({}, tabStyles.scrollable, { height: 240, width: 400 })}>
                     {dishes.map(dish => (<mui.ListItem key={dish.id}
-                                                       leftCheckbox={<mui.Checkbox />}
+                                                       leftCheckbox={<mui.Checkbox checked={checked(dish)} onCheck={checkChangeFactory(dish)} />}
                                                        rightIcon={<base.DataImage data={dish.icon}/>}
                                                        primaryText={dish.name}/>)
                     )}
