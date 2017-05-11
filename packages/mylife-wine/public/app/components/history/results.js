@@ -115,7 +115,7 @@ function renderListItem(item) {
     <img src="images/misc/arrow-right-green-256.png" height="20" width="20" />
   ];
 
-  const capacityText = item.capacity ? `${item.capacity.value}l x ${item.bottleCount} = ${item.capacity.value * item.bottleCount}l` : `${item.bottleCount} bouteilles`;
+  const capacityText = item.capacity ? `${item.capacity.value}L x ${item.bottleCount} = ${item.capacity.value * item.bottleCount}L` : `${item.bottleCount} bouteilles`;
 
   return (
     <mui.ListItem
