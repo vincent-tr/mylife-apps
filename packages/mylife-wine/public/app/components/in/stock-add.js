@@ -44,7 +44,7 @@ class StockAdd extends React.Component {
       year        : new Date().getFullYear(),
       date        : new Date().setHours(0, 0, 0, 0),
       bottlePrice : 0,
-      note        : ''
+      note        : null
     };
   }
 
@@ -107,7 +107,7 @@ class StockAdd extends React.Component {
                 <td><base.IntegerField id="year" style={{ width: 300 }} value={year} onChange={yearChange} minValue={1} /></td>
 
                 <td><div style={styles.fieldTitle}>Commentaire ajout stock</div></td>
-                <td rowSpan={2}><mui.TextField id="note" multiLine={true} rows={3} rowsMax={3} fullWidth={true} value={note} onChange={noteChange} /></td>
+                <td rowSpan={2}><mui.TextField id="note" multiLine={true} rows={3} rowsMax={3} fullWidth={true} value={note || ''} onChange={noteChange} /></td>
               </tr>
 
               <tr><td colSpan={4}></td></tr>
