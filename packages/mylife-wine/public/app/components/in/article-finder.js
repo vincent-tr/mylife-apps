@@ -144,7 +144,8 @@ class ArticleFinder extends React.Component {
           <div style={{ height: '100%'}}>
             {renderArticleListHeader()}
             <div style={{ position: 'relative', height: 'calc(100% - 50px)' }}>
-              <base.SelectableList style={Object.assign({}, tabStyles.scrollable, { position: 'absolute', padding: 0, height: '100%', width: '100%' })} selectedNode={{value: article}}
+              <base.SelectableList style={Object.assign({}, tabStyles.scrollable, { position: 'absolute', padding: 0, height: '100%', width: '100%' })}
+                                   selectedNode={{value: article}}
                                    selectedValueChanged={(obj) => onArticleChange(obj.value)}>
                 {articles.map(renderArticleListItem)}
               </base.SelectableList>
