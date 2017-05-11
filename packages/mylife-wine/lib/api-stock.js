@@ -41,7 +41,7 @@ module.exports.create = (router) => {
         logger.error(err);
         return response.status(500).json(err.message);
       }
-      logger.info(`stock created: ${JSON.stringify(res)}`);
+      logger.info(`stock removed: ${JSON.stringify(res)}`);
       response.json(res);
     });
   });
@@ -90,6 +90,36 @@ function addStock(item, done) {
 
 function removeStock(item, done) {
   co(function*() {
-    throw new Error('TODO');
+    const { stock: stockId, bottleCount, date, note } = item;
+
+    const stockCollection = coMonk(db.get('stock'));
+    const historyCollection = coMonk(db.get('history'));
+
+    const stock = yield stockCollection.findOneAndUpdate({
+      _id: stockId
+    }, {
+      $inc: { bottleCount: -bottleCount },
+    }, {
+      returnNewDocument: true
+    });
+
+    if(stock.bottleCount <= 0) {
+      yield stockCollection.remove({ _id: stockId }, { single: true });
+      stock.delete = true;
+    }
+
+    const history = {
+      year : stock.year,
+      bottleCount, date,
+      isAdd : 0,
+      bottlePrice : stock.bottlePrice,
+      note,
+      capacity : new ObjectID(stock.capacity),
+      article : new ObjectID(stock.article)
+    };
+
+    yield historyCollection.insert(history);
+
+    return { history, stock };
   }).then((value) => done(null, value), (err) => done(err));
 }
