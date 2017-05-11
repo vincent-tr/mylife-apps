@@ -39,12 +39,12 @@ class StockAdd extends React.Component {
 
   createNew() {
     return {
-      bottleCount    : 1,
-      bottleCapacity : null,
-      year           : new Date().getFullYear(),
-      date           : new Date().setHours(0, 0, 0, 0),
-      bottlePrice    : 0,
-      note           : ''
+      bottleCount : 1,
+      capacity    : null,
+      year        : new Date().getFullYear(),
+      date        : new Date().setHours(0, 0, 0, 0),
+      bottlePrice : 0,
+      note        : ''
     };
   }
 
@@ -54,18 +54,18 @@ class StockAdd extends React.Component {
 
   save() {
     const { article, onAdd } = this.props;
-    const { bottleCount, bottleCapacity, year, date, bottlePrice, note } = this.state;
-    onAdd({ article, bottleCount, bottleCapacity, year, date, bottlePrice, note });
+    const { bottleCount, capacity, year, date, bottlePrice, note } = this.state;
+    onAdd({ article, bottleCount, capacity, year, date, bottlePrice, note });
     this.new();
   }
 
   canSave() {
     const { article } = this.props;
-    const { bottleCount, bottleCapacity, year, date } = this.state;
+    const { bottleCount, capacity, year, date } = this.state;
 
     if(!article) { return false; }
     if(!bottleCount) { return false; }
-    if(!bottleCapacity) { return false; }
+    if(!capacity) { return false; }
     if(!year) { return false; }
     if(!date) { return false; }
     return true;
@@ -74,14 +74,14 @@ class StockAdd extends React.Component {
   render() {
 
     const { capacities } = this.props;
-    const { bottleCount, bottleCapacity, year, date, bottlePrice, note } = this.state;
+    const { bottleCount, capacity, year, date, bottlePrice, note } = this.state;
 
-    const bottleCountChange    = (value) => this.setState({ bottleCount: value });
-    const bottleCapacityChange = (event, index, value) => this.setState({ bottleCapacity: value });
-    const yearChange           = (value) => this.setState({ year: value });
-    const bottlePriceChange    = (value) => this.setState({ bottlePrice: value });
-    const dateChange           = (event, value) => this.setState({ bottlePrice: value.getTime() });
-    const noteChange           = (event) => this.setState({ note: event.target.value || null });
+    const bottleCountChange = (value) => this.setState({ bottleCount: value });
+    const capacityChange    = (event, index, value) => this.setState({ capacity: value });
+    const yearChange        = (value) => this.setState({ year: value });
+    const bottlePriceChange = (value) => this.setState({ bottlePrice: value });
+    const dateChange        = (event, value) => this.setState({ bottlePrice: value.getTime() });
+    const noteChange        = (event) => this.setState({ note: event.target.value || null });
 
     return(
       <div>
@@ -97,7 +97,7 @@ class StockAdd extends React.Component {
               </tr>
               <tr style={styles.row}>
                 <td><div style={styles.fieldTitle}>Capacité de bouteille</div></td>
-                <td><common.ReferenceSelector id="type" autoWidth={false} style={{ width: 300 }} list={capacities} nameRender={item => `${item.name} (${item.value} L)`} value={bottleCapacity} onChange={bottleCapacityChange} /></td>
+                <td><common.ReferenceSelector id="type" autoWidth={false} style={{ width: 300 }} list={capacities} nameRender={item => `${item.name} (${item.value} L)`} value={capacity} onChange={capacityChange} /></td>
 
                 <td><div style={styles.fieldTitle}>Prix de la bouteille</div></td>
                 <td><base.NumberField id="bottlePrice" style={{ width: 300 }} value={bottlePrice} onChange={bottlePriceChange} minValue={0} /></td>
