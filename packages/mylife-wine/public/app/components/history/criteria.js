@@ -26,8 +26,8 @@ const Criteria = ({ regions, types, criteria, onChange, onRefresh }) => {
   const nameChange    = (event) => onChange({ name: event.target.value || null });
   const typeChange    = (event, index, value) => onChange({ type: value });
   const regionChange  = (event, index, value) => onChange({ region: value });
-  const minDateChange = (_, value) => onChange({ minDate: value });
-  const maxDateChange = (_, value) => onChange({ maxDate: value });
+  const minDateChange = (value) => onChange({ minDate: value });
+  const maxDateChange = (value) => onChange({ maxDate: value });
   const isAddChange   = (event, value) => onChange({ isAdd: value === 'null' ? null : value });
 
   return (
@@ -39,7 +39,7 @@ const Criteria = ({ regions, types, criteria, onChange, onRefresh }) => {
 
           <td><div style={styles.fieldTitle}>Date début</div></td>
           <td>
-            <mui.DatePicker id="minDate" style={{ width: 300, display: 'inline-block' }} value={minDate} onChange={minDateChange} />
+            <mui.DatePicker id="minDate" style={{ width: 300, display: 'inline-block' }} value={minDate && new Date(minDate)} onChange={(_, value) => minDateChange(value.valueOf())} />
             <mui.IconButton tooltip="Pas de date de début"
                             onClick={() => minDateChange(null)}>
               <icons.actions.Delete />
@@ -59,7 +59,7 @@ const Criteria = ({ regions, types, criteria, onChange, onRefresh }) => {
 
           <td><div style={styles.fieldTitle}>Date fin</div></td>
           <td>
-            <mui.DatePicker id="maxDate" style={{ width: 300, display: 'inline-block' }} value={maxDate} onChange={maxDateChange} />
+            <mui.DatePicker id="maxDate" style={{ width: 300, display: 'inline-block' }} value={maxDate && new Date(maxDate)} onChange={(_, value) => maxDateChange(value.valueOf())} />
             <mui.IconButton tooltip="Pas de date de fin"
                             onClick={() => maxDateChange(null)}>
               <icons.actions.Delete />
