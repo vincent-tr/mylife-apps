@@ -145,7 +145,7 @@ const Results = ({ stockItem, onStockItemChange, ...props }) => {
   return (
     <div style={{ height: '100%'}}>
       {renderListHeader()}
-      <div style={{ position: 'relative', height: 'calc(100% - 50px)' }}>
+      <div style={{ position: 'relative', height: 'calc(100% - 60px)' }}>
         <base.SelectableList style={Object.assign({}, tabStyles.scrollable, { position: 'absolute', padding: 0, height: '100%', width: '100%' })}
                              selectedNode={{value: stockItem}}
                              selectedValueChanged={(obj) => onStockItemChange(obj.value)}>
