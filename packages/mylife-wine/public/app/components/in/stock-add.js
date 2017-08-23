@@ -80,7 +80,7 @@ class StockAdd extends React.Component {
     const capacityChange    = (event, index, value) => this.setState({ capacity: value });
     const yearChange        = (value) => this.setState({ year: value });
     const bottlePriceChange = (value) => this.setState({ bottlePrice: value });
-    const dateChange        = (event, value) => this.setState({ bottlePrice: value.getTime() });
+    const dateChange        = (event, value) => this.setState({ date: value.getTime() });
     const noteChange        = (event) => this.setState({ note: event.target.value || null });
 
     return(
