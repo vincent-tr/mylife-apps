@@ -33,7 +33,7 @@ const styles = (() => {
 })();
 
 function enhanceItem(articleMap, typeMap, regionMap, dishMap, capacityMap, item) {
-  const capacity = capacityMap.get(item.capacity);
+  const capacity = capacityMap.get(item.bottleCapacity);
   const article = articleMap.get(item.article);
   if(!article) {
     console.error(`article ${item.article} not found on history ${item.id}`); // eslint-disable-line no-console

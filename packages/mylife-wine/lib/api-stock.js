@@ -109,13 +109,14 @@ function removeStock(item, done) {
     }
 
     const history = {
-      year : stock.year,
-      bottleCount, date,
-      isAdd : 0,
-      bottlePrice : stock.bottlePrice,
+      year           : stock.year,
+      bottleCount,
+      date,
+      isAdd          : 0,
+      bottlePrice    : stock.bottlePrice,
       note,
-      capacity : new ObjectID(stock.capacity),
-      article : new ObjectID(stock.article)
+      bottleCapacity : new ObjectID(stock.bottleCapacity),
+      article        : new ObjectID(stock.article)
     };
 
     yield historyCollection.insert(history);

@@ -69,7 +69,7 @@ function prepareData({ criteria, stock, articles, types: typeMap, regions: regio
 
     article.stock.push({
       ...item,
-      capacity : capacityMap.get(item.capacity),
+      capacity : capacityMap.get(item.bottleCapacity),
     });
   }
 
