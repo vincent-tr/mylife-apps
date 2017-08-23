@@ -187,7 +187,7 @@ class ArticleDetails extends React.Component {
               </td>
               <td>
                 <div style={Object.assign({}, styles.fieldTitle, { width: 155 })}>Degré d'alcool</div>
-                <base.IntegerField disabled={!article} id="alcoholContent" style={{ width: 145 }} value={this.renderArticleProp('alcoholContent', 'number')} onChange={alcoholContentChange} minValue={0} />
+                <base.NumberField disabled={!article} id="alcoholContent" style={{ width: 145 }} value={this.renderArticleProp('alcoholContent', 'number')} onChange={alcoholContentChange} minValue={0} />
               </td>
             </tr>
             <tr>
@@ -197,9 +197,9 @@ class ArticleDetails extends React.Component {
               </td>
               <td>
                 <div style={Object.assign({}, styles.fieldTitle, { width: 155 })}>Température de service</div>
-                <base.IntegerField disabled={!article} id="servingTemperatureMin" style={{ width: 70 }} value={this.renderArticleProp('servingTemperatureMin', 'number')} onChange={servingTemperatureMinChange} minValue={0} />
+                <base.NumberField disabled={!article} id="servingTemperatureMin" style={{ width: 70 }} value={this.renderArticleProp('servingTemperatureMin', 'number')} onChange={servingTemperatureMinChange} minValue={0} />
                 <div style={{ display: 'inline-block', width: 5 }} />
-                <base.IntegerField disabled={!article} id="servingTemperatureMax" style={{ width: 70 }} value={this.renderArticleProp('servingTemperatureMax', 'number')} onChange={servingTemperatureMaxChange} minValue={0} />
+                <base.NumberField disabled={!article} id="servingTemperatureMax" style={{ width: 70 }} value={this.renderArticleProp('servingTemperatureMax', 'number')} onChange={servingTemperatureMaxChange} minValue={0} />
               </td>
             </tr>
             <tr>
