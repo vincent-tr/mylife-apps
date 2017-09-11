@@ -73,7 +73,11 @@ function prepareData({ criteria, stock, articles, types: typeMap, regions: regio
     });
   }
 
-  return articlesList;
+  if(criteria.showEmpty) {
+    return articlesList;
+  }
+
+  return articlesList.filter(item => item.stock.length);
 }
 
 function renderListHeader() {

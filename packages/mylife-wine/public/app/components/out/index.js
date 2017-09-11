@@ -48,7 +48,7 @@ class Index extends React.Component {
     return (
       <div style={styles.container}>
         <base.GroupBox style={styles.criteria} title={'Rechercher dans le stock'}>
-          <StockLookupPanelContainer criteria={this.state.criteria} onChange={values => this.setState({ criteria: { ... this.state.criteria, ... values } })}/>
+          <StockLookupPanelContainer showEmptyCheckbox={false} criteria={this.state.criteria} onChange={values => this.setState({ criteria: { ... this.state.criteria, ... values } })}/>
         </base.GroupBox>
         <base.GroupBox style={styles.results} title={'Résultat de recherche'}>
           <ResultsContainer criteria={this.state.criteria} stockItem={this.state.stockItem} onStockItemChange={stockItem => this.setState({ stockItem })}/>

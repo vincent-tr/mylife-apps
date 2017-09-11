@@ -41,13 +41,14 @@ const styles = {
   }
 };
 
-const StockLookupPanel = ({ regions, types, dishes, criteria, onChange, onRefresh }) => {
-  const { type, region, name, sparkling, dishes: selectedDishes } = criteria;
+const StockLookupPanel = ({ regions, types, dishes, criteria, onChange, onRefresh, showEmptyCheckbox }) => {
+  const { type, region, name, sparkling, showEmpty, dishes: selectedDishes } = criteria;
 
   const nameChange      = (event) => onChange({ name: event.target.value || null });
   const typeChange      = (event, index, value) => onChange({ type: value });
   const regionChange    = (event, index, value) => onChange({ region: value });
   const sparklingChange = (event, value) => onChange({ sparkling: value === 'null' ? null : value });
+  const showEmptyChange = (event, value) => onChange({ showEmpty: value });
 
   const checked             = (dish) => selectedDishes.includes(dish.id);
   const checkChangeFactory = (dish) => (event, value) => {
@@ -64,9 +65,9 @@ const StockLookupPanel = ({ regions, types, dishes, criteria, onChange, onRefres
           <td><common.ReferenceSelector id="type" autoWidth={false} style={{ width: 300 }} list={types} value={type} onChange={typeChange} /></td>
 
           <td><div style={styles.fieldTitle}>Avec quels plats le boire</div></td>
-          <td rowSpan={4}>
+          <td rowSpan={showEmptyCheckbox ? 5 : 4}>
             <mui.Paper style={{ width: 400 }}>
-              <mui.List style={Object.assign({}, tabStyles.scrollable, { height: 240, width: 400 })}>
+              <mui.List style={Object.assign({}, tabStyles.scrollable, { height: showEmptyCheckbox ? 300 : 240, width: 400 })}>
                 {dishes.map(dish => (<mui.ListItem key={dish.id}
                                                    leftCheckbox={<mui.Checkbox checked={checked(dish)} onCheck={checkChangeFactory(dish)} />}
                                                    rightIcon={<base.DataImage data={dish.icon}/>}
@@ -93,14 +94,30 @@ const StockLookupPanel = ({ regions, types, dishes, criteria, onChange, onRefres
               <mui.RadioButton style={styles.radioButton} value={false} label="Non" />
             </mui.RadioButtonGroup>
           </td>
-
+          {!showEmptyCheckbox &&
+          <td>
+            <mui.IconButton onClick={() => onRefresh()}
+                            tooltip="Rafraîchir">
+              <icons.actions.Refresh />
+            </mui.IconButton>
+          </td>}
+        </tr>
+        {showEmptyCheckbox &&
+        <tr style={styles.tableRow}>
+          <td><div style={styles.fieldTitle}>Afficher les articles sans stock</div></td>
+          <td>
+            <mui.RadioButtonGroup name="showEmpty" valueSelected={showEmpty === null ? 'null' : showEmpty} onChange={showEmptyChange}>
+              <mui.RadioButton style={styles.radioButton} value={true} label="Oui" />
+              <mui.RadioButton style={styles.radioButton} value={false} label="Non" />
+            </mui.RadioButtonGroup>
+          </td>
           <td>
             <mui.IconButton onClick={() => onRefresh()}
                             tooltip="Rafraîchir">
               <icons.actions.Refresh />
             </mui.IconButton>
           </td>
-        </tr>
+        </tr>}
      </tbody>
     </table>
   );
@@ -113,6 +130,7 @@ StockLookupPanel.propTypes = {
   criteria  : PropTypes.object.isRequired,
   onChange  : PropTypes.func.isRequired,
   onRefresh : PropTypes.func.isRequired,
+  showEmptyCheckbox : PropTypes.bool.isRequired
 };
 
 export default StockLookupPanel;

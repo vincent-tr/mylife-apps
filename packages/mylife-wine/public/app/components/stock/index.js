@@ -14,7 +14,7 @@ const styles = {
     height: '100%'
   },
   criteria: {
-    flex: '0 0 320px',
+    flex: '0 0 380px',
     width: '100%'
   },
   results: {
@@ -29,6 +29,7 @@ class Index extends React.Component {
     super(props);
     this.state = {
       criteria: {
+        showEmpty : false,
         type      : null,
         region    : null,
         name      : null,
@@ -42,7 +43,7 @@ class Index extends React.Component {
     return (
       <div style={styles.container}>
         <base.GroupBox style={styles.criteria} title={'Critères de filtre'}>
-          <StockLookupPanelContainer criteria={this.state.criteria} onChange={values => this.setState({ criteria: { ... this.state.criteria, ... values } })}/>
+          <StockLookupPanelContainer showEmptyCheckbox={true} criteria={this.state.criteria} onChange={values => this.setState({ criteria: { ... this.state.criteria, ... values } })}/>
         </base.GroupBox>
         <base.GroupBox style={styles.results} title={'Etat du stock'}>
           <ResultsContainer criteria={this.state.criteria}/>
