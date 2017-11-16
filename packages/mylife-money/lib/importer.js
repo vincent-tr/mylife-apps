@@ -18,7 +18,8 @@ module.exports.operationsImport = (account, data, done) => {
 
     const raw = csv(data, {
       delimiter : ';',
-      columns   : ['operationDate', 'valueDate', 'debit', 'credit', 'label', 'balance']
+      columns   : ['operationDate', 'valueDate', 'debit', 'credit', 'label', 'balance'],
+      from      : 2 // skip headers
     });
 
     const operations = coMonk(db.get('operations'));
@@ -30,9 +31,27 @@ module.exports.operationsImport = (account, data, done) => {
       account
     }));
 
-    const lastOperation     = yield operations.findOne({}, { sort : { date : -1 }, fields: { date : 1 } });
-    const lastOperationDate = lastOperation ? lastOperation.date : new Date(0);
-    records = records.filter(rec => rec.date > lastOperationDate);
+    const lastOperation = yield operations.findOne({}, { sort : { date : -1 }, fields: { date : 1 } });
+
+    if(lastOperation) {
+      // "merge" the day, then use all after
+      const lastOperationDate = lastOperation.date;
+      const lastDayOperations = yield operations.find({ date: lastOperationDate });
+      const opHashSet = new Set(lastDayOperations.map(op => `${op.amout}|${op.account}|${op.label}`));
+
+      records = records.filter(rec => {
+        if(rec.date < lastOperationDate) {
+          return false;
+        }
+        if(rec.date > lastOperationDate) {
+          return true;
+        }
+
+        // lookup into lastDayOperations by amount/label/account
+        const recHash = `${rec.amout}|${rec.account}|${rec.label}`;
+        return !opHashSet.has(recHash);
+      });
+    }
 
     if(records.length) {
       yield operations.insert(records);
