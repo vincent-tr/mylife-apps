@@ -18,6 +18,8 @@
   "homepage": "https://github.com/vincent-tr/mylife-gallery#readme",
   "dependencies": {
     "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "server-destroy": "^1.0.1",
     "webpack": "^4.11.1"
   },
   "devDependencies": {
