@@ -1,0 +1,27 @@
+{
+  "name": "mylife-gallery",
+  "version": "1.0.0",
+  "description": "MyLife photo gallery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vincent-tr/mylife-gallery.git"
+  },
+  "author": "Vincent Trumpff",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/vincent-tr/mylife-gallery/issues"
+  },
+  "homepage": "https://github.com/vincent-tr/mylife-gallery#readme",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "webpack": "^4.11.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "webpack-dev-middleware": "^3.1.3"
+  }
+}
