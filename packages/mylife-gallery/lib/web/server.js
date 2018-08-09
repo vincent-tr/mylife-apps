@@ -20,9 +20,10 @@ module.exports = class Server {
       // lazy require dev dependencies
       const webpack           = require('webpack');
       const webpackMiddleware = require('webpack-dev-middleware');
-      const webpackConfig     = require('../../webpack.config/dev');
+      const webpackConfig     = require('../../webpack.config');
+      const finalConfig = Object.assign({}, webpackConfig, { mode: 'development' });
 
-      app.use(webpackMiddleware(webpack(webpackConfig), { publicPath: webpackConfig.output.publicPath }));
+      app.use(webpackMiddleware(webpack(finalConfig), { publicPath: finalConfig.output.publicPath }));
     }
 
     const publicDirectory = path.resolve(path.join(__dirname, '../../public'));
