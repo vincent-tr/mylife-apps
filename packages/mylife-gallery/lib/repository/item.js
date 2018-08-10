@@ -3,14 +3,22 @@
 module.exports = class Item {
 
   constructor(props) {
-    this.properties = new Map();
+    this._properties = new Map();
     for(const [ key, value ] of Object.entries(props)) {
-      this.properties.set(key, value);
+      this._properties.set(key, value);
     }
   }
 
   property(key) {
-    return this.properties.get(key);
+    return this._properties.get(key);
+  }
+
+  properties(keys) {
+    const ret = {};
+    for(const key of keys) {
+      ret[key] = this.property(key);
+    }
+    return ret;
   }
 
   get id() {

@@ -6,6 +6,7 @@ const http               = require('http');
 const express            = require('express');
 const enableDestroy      = require('server-destroy');
 const createImagesRoutes = require('./images-routes');
+const createApiRoutes    = require('./api-routes');
 
 const debug = require('debug')('mylife:gallery:web:server');
 
@@ -30,6 +31,7 @@ module.exports = class Server {
     app.use(express.static(publicDirectory));
 
     app.use('/images', createImagesRoutes(repository));
+    app.use('/api', createApiRoutes(repository));
 
     this._server = http.Server(app);
     enableDestroy(this._server);

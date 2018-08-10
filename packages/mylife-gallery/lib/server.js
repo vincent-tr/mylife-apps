@@ -1,13 +1,14 @@
 'use strict';
 
 const WebServer = require('./web/server');
-const { createRepository } = require('./repository');
+const { createRepository, loadRepository } = require('./repository');
 
 module.exports = class Server {
 
   async init(options) {
-    this._repository = await createRepository(options);
+    this._repository = createRepository(options);
     this._web = new WebServer(options, this._repository);
+    await loadRepository(options, this._repository);
   }
 
   async close() {
