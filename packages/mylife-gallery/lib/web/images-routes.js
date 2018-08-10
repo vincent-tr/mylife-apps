@@ -8,7 +8,6 @@ module.exports = (repository) => {
   router.route('/raw/:id').get((req, res) => {
     const { id } = req.params;
     const { content, mime } = repository.get(id);
-    console.log(mime);
     res.contentType(mime);
     res.send(content);
   });
