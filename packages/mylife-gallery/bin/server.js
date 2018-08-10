@@ -13,7 +13,8 @@ async function start() {
 
   debug(`Starting server (config=${JSON.stringify(config)})`);
 
-  server = new Server(config);
+  server = new Server();
+  await server.init(config);
 }
 
 async function stop() {

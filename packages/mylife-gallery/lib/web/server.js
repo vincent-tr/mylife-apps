@@ -1,17 +1,17 @@
 'use strict';
 
-const util              = require('util');
-const path              = require('path');
-const http              = require('http');
-const express           = require('express');
-const enableDestroy     = require('server-destroy');
-//const routes            = require('./routes');
+const util               = require('util');
+const path               = require('path');
+const http               = require('http');
+const express            = require('express');
+const enableDestroy      = require('server-destroy');
+const createImagesRoutes = require('./images-routes');
 
 const debug = require('debug')('mylife:gallery:web:server');
 
 module.exports = class Server {
 
-  constructor(options = {}) {
+  constructor(options = {}, repository) {
     const app = express();
 
     if(options.dev) {
@@ -29,7 +29,7 @@ module.exports = class Server {
     const publicDirectory = path.resolve(path.join(__dirname, '../../public'));
     app.use(express.static(publicDirectory));
 
-    //routes.register(app);
+    app.use('/images', createImagesRoutes(repository));
 
     this._server = http.Server(app);
     enableDestroy(this._server);
