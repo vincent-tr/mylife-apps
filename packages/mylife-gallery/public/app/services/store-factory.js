@@ -5,11 +5,11 @@ import thunk                            from 'redux-thunk';
 import { createLogger }                 from 'redux-logger';
 
 import reducer                          from '../reducers';
-//import io                               from './io-middleware';
+import fetch                            from './fetch-middleware';
 
 const store = createStore(
   reducer,
-  applyMiddleware(thunk, createLogger())
+  applyMiddleware(fetch, thunk, createLogger())
 );
 
 export default store;

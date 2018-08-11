@@ -5,7 +5,7 @@ import actionTypes from '../constants/action-types';
 
 export default handleActions({
 
-  [actionTypes.GRID] : {
+  [actionTypes.SET_GRID] : {
     next : (state, action) => action.payload
   },
 

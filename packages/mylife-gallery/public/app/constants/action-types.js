@@ -3,6 +3,7 @@
 import wrap from './wrapper';
 
 export default wrap({
-  GRID   : null,
-  DETAIL : null,
+  FETCH_GRID : null,
+  SET_GRID   : null,
+  SET_DETAIL : null,
 });
