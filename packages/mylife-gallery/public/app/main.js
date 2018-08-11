@@ -5,10 +5,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import './services/store-factory';
+import './services/store-factory';
 
-// import Application from './components/application';
-const Application = () => (<div>Hello</div>);
+import Application from './components/application';
 
 ReactDOM.render(
   <Application/>,
