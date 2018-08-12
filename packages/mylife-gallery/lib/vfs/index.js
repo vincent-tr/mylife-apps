@@ -51,6 +51,13 @@ class FSEntry {
   get ext() {
     return this._driver.formatExt(this._path);
   }
+
+  toJSON() {
+    return {
+      driver : this._driver.type,
+      path   : this._path
+    };
+  }
 }
 
 class Directory extends FSEntry {
