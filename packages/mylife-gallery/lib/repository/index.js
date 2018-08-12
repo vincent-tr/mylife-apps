@@ -7,6 +7,6 @@ exports.createRepository = function() {
   return new Database();
 };
 
-exports.loadRepository = async function({ directory }, repository) {
-  await load(directory, repository);
+exports.loadRepository = async function({ gallery }, repository) {
+  await load(gallery, repository);
 };

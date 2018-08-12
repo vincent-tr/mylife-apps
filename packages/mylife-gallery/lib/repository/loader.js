@@ -1,7 +1,6 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs').promises;
+const vfs = require('../vfs');
 const jimp = require('jimp');
 const ExifImage = require('exif').ExifImage;
 
@@ -11,41 +10,39 @@ const debug = require('debug')('mylife:gallery:repository:loader');
 
 const supportedExtensions = new Set([ '.jpg', '.jpeg', '.png' ]);
 
-exports.load = async function(directory, database) {
-  for(const fileName of await fs.readdir(directory)) {
-    const fullName = path.join(directory, fileName);
-    const stats = await fs.lstat(fullName);
-    if(!stats.isDirectory()) {
+exports.load = async function(gallery, database) {
+  const directory = await vfs.FSEntry.load(gallery);
+  for(const item of await directory.list()) {
+    if(!(item instanceof vfs.Directory)) {
       continue;
     }
 
-    debug(`Loading directory ${fullName}`);
+    debug(`Loading directory ${item.path}`);
 
     const baseProps = {
-      album : fileName
+      album : item.name
     };
 
-    await loadDirectory(fullName, database, baseProps);
+    await loadDirectory(item, database, baseProps);
   }
 
   await loadDirectory(directory, database, {});
 };
 
 async function loadDirectory(directory, database, baseProps) {
-  for(const fileName of await fs.readdir(directory)) {
-    const fullName = path.join(directory, fileName);
-    const { name, ext } = path.parse(fullName);
-    if(!supportedExtensions.has(ext)) {
+  for(const item of await directory.list()) {
+    const { name, ext } = item;
+    if(!(item instanceof vfs.File) || !supportedExtensions.has(ext)) {
       continue;
     }
 
-    debug(`Loading file ${fullName}`);
+    debug(`Loading file ${item.path}`);
 
     const props = {
       ...baseProps,
       name,
       ext,
-      content : await fs.readFile(fullName)
+      content : await item.content()
     };
 
     try {

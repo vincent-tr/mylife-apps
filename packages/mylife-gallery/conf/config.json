@@ -1,4 +1,4 @@
 {
   "port" : 8012,
-  "directory" : "/Users/vincent/Desktop/gallery"
+  "gallery" : { "driver" : "local", "path" : "/Users/vincent/Desktop/gallery" }
 }

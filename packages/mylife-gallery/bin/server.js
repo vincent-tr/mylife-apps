@@ -13,8 +13,13 @@ async function start() {
 
   debug(`Starting server (config=${JSON.stringify(config)})`);
 
-  server = new Server();
-  await server.init(config);
+  try {
+    server = new Server();
+    await server.init(config);
+  } catch(err) {
+    console.error('Error starting server', err); // eslint-disable-line no-console
+    process.exit();
+  }
 }
 
 async function stop() {
