@@ -44,7 +44,7 @@ const Grid = ({ items, classes, showDetail }) => (
         <GridListTileBar
           title={item.name}
           actionIcon={
-            <IconButton onClick={() => showDetail(item.id)}>
+            <IconButton onClick={() => showDetail(item)}>
               <FullScreenIcon />
             </IconButton>
           }
@@ -67,7 +67,7 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDetail : id => dispatch(showDetail(id))
+  showDetail : item => dispatch(showDetail(item))
 });
 
 export default connect(
