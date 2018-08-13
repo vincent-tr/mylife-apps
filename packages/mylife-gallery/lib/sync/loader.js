@@ -4,8 +4,6 @@ const vfs = require('../vfs');
 const jimp = require('jimp');
 const ExifImage = require('exif').ExifImage;
 
-const { Item } = require('../repository');
-
 const debug = require('debug')('mylife:gallery:repository:loader');
 
 const supportedExtensions = new Set([ '.jpg', '.jpeg', '.png' ]);
@@ -64,7 +62,7 @@ async function loadDirectory(directory, cacheDirectory, database, baseProps) {
     const thumbnail = await cacheDirectory.writeFile(`${props.id}.png`, thumbnailContent);
     props.thumbnail = thumbnail.fullPath;
 
-    database.addItem(new Item(props));
+    database.addItem(props);
 
     debug(`File loaded (id=${props.id})`);
   }

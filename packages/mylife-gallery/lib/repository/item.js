@@ -36,4 +36,12 @@ module.exports = class Item {
   get thumbnail() {
     return this.property('thumbnail');
   }
+
+  toJSON() {
+    const ret = {};
+    for(const [ key, value ] of this._properties) {
+      ret[key] = value;
+    }
+    return ret;
+  }
 };

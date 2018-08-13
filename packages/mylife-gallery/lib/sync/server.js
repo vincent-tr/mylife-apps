@@ -3,6 +3,7 @@
 const debug = require('debug')('mylife:gallery:sync:server');
 
 const { load } = require('./loader');
+const database = require('./database');
 
 module.exports = class Server {
   constructor(options, repository) {
@@ -11,7 +12,8 @@ module.exports = class Server {
 
   async _run(options, repository) {
     try {
-      load(options, repository);
+      await load(options, repository);
+      await database.save(options, repository);
     } catch(err) {
       console.error(err);
     }
