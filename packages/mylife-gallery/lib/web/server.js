@@ -12,7 +12,7 @@ const debug = require('debug')('mylife:gallery:web:server');
 
 module.exports = class Server {
 
-  constructor(options = {}, repository) {
+  constructor(options, repository) {
     const app = express();
 
     if(options.dev) {

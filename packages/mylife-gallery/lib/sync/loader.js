@@ -4,14 +4,17 @@ const vfs = require('../vfs');
 const jimp = require('jimp');
 const ExifImage = require('exif').ExifImage;
 
-const Item = require('./item');
+const { Item } = require('../repository');
 
 const debug = require('debug')('mylife:gallery:repository:loader');
 
 const supportedExtensions = new Set([ '.jpg', '.jpeg', '.png' ]);
 
-exports.load = async function(gallery, database) {
+exports.load = async function({ gallery, cache }, database) {
   const directory = await vfs.FSEntry.load(gallery);
+  const cacheBaseDirectory = await vfs.FSEntry.load(cache);
+  const cacheDirectory = await cacheBaseDirectory.ensureDirectory('thumbnail');
+
   for(const item of await directory.list()) {
     if(!(item instanceof vfs.Directory)) {
       continue;
@@ -23,13 +26,13 @@ exports.load = async function(gallery, database) {
       album : item.name
     };
 
-    await loadDirectory(item, database, baseProps);
+    await loadDirectory(item, cacheDirectory, database, baseProps);
   }
 
-  await loadDirectory(directory, database, {});
+  await loadDirectory(directory, cacheDirectory, database, {});
 };
 
-async function loadDirectory(directory, database, baseProps) {
+async function loadDirectory(directory, cacheDirectory, database, baseProps) {
   for(const item of await directory.list()) {
     const { name, ext } = item;
     if(!(item instanceof vfs.File) || !supportedExtensions.has(ext)) {
@@ -38,23 +41,28 @@ async function loadDirectory(directory, database, baseProps) {
 
     debug(`Loading file ${item.path}`);
 
+    const content = await item.content();
+
     const props = {
       ...baseProps,
       name,
       ext,
-      content : await item.content()
+      content : item.fullPath
     };
 
     try {
-      props.metadata = await exif(props.content);
+      props.metadata = await exif(content);
     } catch(err) {
       console.error(err);
     }
 
-    const image = await jimp.read(props.content);
+    const image = await jimp.read(content);
     props.id = image.hash();
     props.mime = image.getMIME();
-    props.thumbnail = await image.scaleToFit(200, 200).getBufferAsync(jimp.MIME_PNG);
+
+    const thumbnailContent = await image.scaleToFit(200, 200).getBufferAsync(jimp.MIME_PNG);
+    const thumbnail = await cacheDirectory.writeFile(`${props.id}.png`, thumbnailContent);
+    props.thumbnail = thumbnail.fullPath;
 
     database.addItem(new Item(props));
 

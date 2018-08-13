@@ -58,11 +58,12 @@ class FSEntry {
     return this._driver.formatExt(this._path);
   }
 
+  get fullPath() {
+    return `${this._driver.type}:${this._path}`;
+  }
+
   toJSON() {
-    return {
-      driver : this._driver.type,
-      path   : this._path
-    };
+    return this.fullPath;
   }
 }
 
@@ -78,6 +79,16 @@ class Directory extends FSEntry {
       entries.push(await FSEntry._load(this._driver, path));
     }
     return entries;
+  }
+
+  async ensureDirectory(name) {
+    const path = await this._driver.ensureDirectory(this._path, name);
+    return new Directory(this._driver, path);
+  }
+
+  async writeFile(name, content) {
+    const path = await this._driver.writeFile(this._path, name, content);
+    return new File(this._driver, path);
   }
 }
 
