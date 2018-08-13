@@ -16,13 +16,19 @@ class FSEntry {
     this._path = path;
   }
 
-  static async load({ driver, path }) {
-    const driverImpl = drivers[driver];
-    if(!driverImpl) {
-      throw new Error(`Unknown driver '${driver}'`);
+  static async load(fullPath) {
+    const index = fullPath.indexOf(':');
+    if(index === -1) {
+      throw new Error(`Bad path '${fullPath}'`);
+    }
+    const driverType = fullPath.substring(0, index);
+    const path = fullPath.substring(index + 1);
+    const driver = drivers[driverType];
+    if(!driver) {
+      throw new Error(`Unknown driver '${driverType}'`);
     }
 
-    return await FSEntry._load(driverImpl, path);
+    return await FSEntry._load(driver, path);
   }
 
   static async _load(driver, path) {
