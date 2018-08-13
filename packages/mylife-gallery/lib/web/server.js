@@ -30,7 +30,7 @@ module.exports = class Server {
     const publicDirectory = path.resolve(path.join(__dirname, '../../public'));
     app.use(express.static(publicDirectory));
 
-    app.use('/images', createImagesRoutes(repository));
+    app.use('/images', createImagesRoutes(options, repository));
     app.use('/api', createApiRoutes(repository));
 
     this._server = http.Server(app);
