@@ -1,15 +1,21 @@
 'use strict';
 
-import { fetchGrid } from '../actions/fetch';
+import { fetchAlbums, fetchAlbum } from '../actions/fetch';
 import actionTypes from '../constants/action-types';
 
 export default store => next => action => {
   next(action);
 
   switch(action.type) {
-    case actionTypes.FETCH_GRID:
-      doFetch({ url : '/api/root' }, next, fetchGrid);
+    case actionTypes.FETCH_ALBUMS:
+      doFetch({ url : '/api/albums' }, next, fetchAlbums);
       break;
+
+    case actionTypes.FETCH_ALBUM: {
+      const album = action.payload;
+      doFetch({ url : `/api/album/${album}` }, next, fetchAlbum);
+      break;
+    }
   }
 };
 

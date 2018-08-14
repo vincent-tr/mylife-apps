@@ -2,15 +2,11 @@
 
 import React         from 'react';
 import StoreProvider from './base/store-provider';
-import DetailPopup   from './detail-popup';
-import Grid          from './grid';
+import Router        from './router';
 
 const Application = () => (
   <StoreProvider>
-    <React.Fragment>
-      <DetailPopup />
-      <Grid />
-    </React.Fragment>
+    <Router />
   </StoreProvider>
 );
 

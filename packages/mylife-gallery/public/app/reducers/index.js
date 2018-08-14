@@ -2,10 +2,12 @@
 
 import { combineReducers } from 'redux';
 
-import grid   from './grid';
+import albums from './albums';
+import album  from './album';
 import detail from './detail';
 
 export default combineReducers({
-  grid,
+  albums,
+  album,
   detail,
 });

@@ -4,8 +4,8 @@ import React       from 'react';
 import PropTypes   from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getGrid } from '../selectors/grid';
-import { showDetail } from '../actions/user';
+import { getAlbum } from '../selectors';
+import { showDetail, hideAlbum } from '../actions/user';
 
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
@@ -34,7 +34,7 @@ const styles = theme => ({
   }
 });
 
-const Grid = ({ items, classes, showDetail }) => (
+const Grid = ({ items, classes, showDetail, hideAlbum }) => (
   <div className={classes.list}>
     {items.map(item => (
       <div key={item.id} className={classes.item}>
@@ -51,23 +51,34 @@ const Grid = ({ items, classes, showDetail }) => (
         />
       </div>
     ))}
+    <div className={classes.item}>
+      <GridListTileBar
+        actionIcon={
+          <IconButton onClick={() => hideAlbum()}>
+            <FullScreenIcon />
+          </IconButton>
+        }
+      />
+    </div>
   </div>
 );
 
 Grid.propTypes = {
   items      : PropTypes.array.isRequired,
   showDetail : PropTypes.func.isRequired,
+  hideAlbum  : PropTypes.func.isRequired,
   classes    : PropTypes.object.isRequired,
 };
 
 const mapStateToProps = () => {
   return (state) => ({
-    items : getGrid(state)
+    items : getAlbum(state)
   });
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDetail : item => dispatch(showDetail(item))
+  showDetail : item => dispatch(showDetail(item)),
+  hideAlbum  : () => dispatch(hideAlbum())
 });
 
 export default connect(

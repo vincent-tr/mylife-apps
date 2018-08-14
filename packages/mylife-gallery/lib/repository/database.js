@@ -34,6 +34,10 @@ module.exports = class Database {
     return this._indexes.id.get(id);
   }
 
+  albums() {
+    return this._indexes.album.keys();
+  }
+
   album(value) {
     return this._indexes.album.get(value);
   }

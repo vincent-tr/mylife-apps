@@ -3,7 +3,9 @@
 import wrap from './wrapper';
 
 export default wrap({
-  FETCH_GRID : null,
-  SET_GRID   : null,
-  SET_DETAIL : null,
+  FETCH_ALBUMS : null,
+  SET_ALBUMS   : null,
+  FETCH_ALBUM  : null,
+  SET_ALBUM    : null,
+  SET_DETAIL   : null,
 });

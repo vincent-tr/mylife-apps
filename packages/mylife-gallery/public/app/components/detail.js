@@ -4,10 +4,9 @@ import React       from 'react';
 import PropTypes   from 'prop-types';
 import { connect } from 'react-redux';
 
-import { isDetail, getDetailId, getDetailName, getDetailAlbum } from '../selectors/detail';
+import { getDetail } from '../selectors';
 import { hideDetail } from '../actions/user';
 
-import Modal from '@material-ui/core/Modal';
 import IconButton from '@material-ui/core/IconButton';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import CloseIcon from '@material-ui/icons/Close';
@@ -36,45 +35,32 @@ const styles = theme => ({
   }
 });
 
-const DetailPopup = ({ visible, id, name, album, close, classes }) => (
-  <Modal
-    aria-labelledby="simple-modal-title"
-    aria-describedby="simple-modal-description"
-    open={visible}
-    onClose={close}
-  >
-    <div className={classes.modal}>
-      <img src={'/images/raw/' + id} className={classes.image} />
+const DetailPopup = ({ item, close, classes }) => (
+  <div className={classes.modal}>
+    <img src={'/images/raw/' + item.id} className={classes.image} />
 
-      <GridListTileBar
-        titlePosition='top'
-        title={`${album} - ${name}`}
-        actionIcon={
-          <IconButton onClick={close}>
-            <CloseIcon />
-          </IconButton>
-        }
-      />
+    <GridListTileBar
+      titlePosition='top'
+      title={`${item.album} - ${item.name}`}
+      actionIcon={
+        <IconButton onClick={close}>
+          <CloseIcon />
+        </IconButton>
+      }
+    />
 
-    </div>
-  </Modal>
+  </div>
 );
 
 DetailPopup.propTypes = {
-  visible : PropTypes.bool.isRequired,
-  id      : PropTypes.string,
-  name    : PropTypes.string,
-  album   : PropTypes.string,
+  item    : PropTypes.object.isRequired,
   close   : PropTypes.func.isRequired,
   classes : PropTypes.object.isRequired,
 };
 
 const mapStateToProps = () => {
   return (state) => ({
-    visible : isDetail(state),
-    id      : getDetailId(state),
-    name    : getDetailName(state),
-    album   : getDetailAlbum(state)
+    item : getDetail(state),
   });
 };
 
