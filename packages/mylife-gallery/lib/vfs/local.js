@@ -6,6 +6,7 @@ const fs   = require('fs').promises;
 const type = exports.type = 'local';
 
 exports.formatPath = p => `${type}:${p}`;
+exports.formatBase = p => path.parse(p).base;
 exports.formatName = p => path.parse(p).name;
 exports.formatExt = p => path.parse(p).ext;
 
@@ -48,6 +49,11 @@ exports.writeFile = async (p, name, content) => {
   p = path.join(p, name);
   await fs.writeFile(p, content);
   return p;
+};
+
+exports.deleteFile = async (p, name) => {
+  p = path.join(p, name);
+  await fs.unlink(p);
 };
 
 exports.fileSize = async p => {

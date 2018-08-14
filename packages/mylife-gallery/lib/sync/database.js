@@ -23,14 +23,14 @@ exports.load = async function(options, repository) {
 exports.save = async function(options, repository) {
   debug('Saving database');
   const directory = await vfs.FSEntry.load(options.cache);
-  const data = JSON.stringify(repository.list());
+  const data = JSON.stringify(repository.list(), null, 2);
   await directory.writeFile(FILENAME, data);
   debug('Database saved');
 };
 
 async function findEntry(directory, name) {
   for(const item of await directory.list()) {
-    if(item.name === name) {
+    if(item.base === name) {
       return item;
     }
   }

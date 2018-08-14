@@ -50,6 +50,10 @@ class FSEntry {
     return this._driver.formatPath(this._path);
   }
 
+  get base() {
+    return this._driver.formatBase(this._path);
+  }
+
   get name() {
     return this._driver.formatName(this._path);
   }
@@ -89,6 +93,10 @@ class Directory extends FSEntry {
   async writeFile(name, content) {
     const path = await this._driver.writeFile(this._path, name, content);
     return new File(this._driver, path);
+  }
+
+  async deleteFile(name) {
+    await this._driver.deleteFile(this._path, name);
   }
 }
 

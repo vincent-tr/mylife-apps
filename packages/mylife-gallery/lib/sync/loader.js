@@ -56,6 +56,15 @@ exports.load = async function load(cachePath, repository, items) {
   }
 };
 
+exports.unload = async function unload(cachePath, repository, items) {
+  const cacheDirectory = await initCacheDirectory(cachePath);
+
+  for(const { id } of items) {
+    repository.removeItem(id);
+    await cacheDirectory.deleteFile(`${id}.png`);
+  }
+};
+
 async function initCacheDirectory(cachePath) {
   const cacheBaseDirectory = await vfs.FSEntry.load(cachePath);
   return await cacheBaseDirectory.ensureDirectory('thumbnail');

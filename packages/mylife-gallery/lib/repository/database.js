@@ -11,6 +11,12 @@ module.exports = class Database {
     this.ids.set(item.id, item);
   }
 
+  removeItem(id) {
+    const item = this.ids.get(id);
+    this.ids.delete(id);
+    this.items.splice(this.items.indexOf(item), 1);
+  }
+
   list() {
     return this.items;
   }
