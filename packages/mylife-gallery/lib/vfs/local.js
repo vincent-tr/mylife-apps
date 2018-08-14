@@ -55,4 +55,9 @@ exports.fileSize = async p => {
   return stat.size;
 };
 
+exports.fileLastModified = async p => {
+  const stat = await fs.lstat(p);
+  return stat.mtimeMs;
+};
+
 exports.fileContent = async p => await fs.readFile(p);

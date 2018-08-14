@@ -1,15 +1,12 @@
 'use strict';
 
-const Item = require('./item');
-
 module.exports = class Database {
   constructor() {
     this.items = [];
     this.ids = new Map();
   }
 
-  addItem(props) {
-    const item = new Item(props);
+  addItem(item) {
     this.items.push(item);
     this.ids.set(item.id, item);
   }

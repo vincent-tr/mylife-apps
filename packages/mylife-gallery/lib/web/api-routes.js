@@ -7,8 +7,10 @@ module.exports = (repository) => {
 
   router.route('/root').get((req, res) => {
     const items = repository.list();
-    const keys = [ 'id', 'name', 'album' ];
-    res.json(items.map(item => item.properties(keys)));
+    res.json(items.map(item => {
+      const { id, metadata } = item;
+      return { id, ... metadata };
+    }));
   });
 
   return router;

@@ -15,8 +15,8 @@ module.exports = (options, repository) => {
   router.route('/raw/:id').get(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { content, mime } = repository.get(id);
-      await sendImage(res, rawCache, id, content, mime);
+      const { file } = repository.get(id);
+      await sendImage(res, rawCache, id, file.path, file.mime);
     } catch(err) {
       next(err);
     }
@@ -25,8 +25,8 @@ module.exports = (options, repository) => {
   router.route('/thumbnail/:id').get(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { thumbnail } = repository.get(id);
-      await sendImage(res, thumbnailCache, id, thumbnail, 'image/png');
+      const { file } = repository.get(id);
+      await sendImage(res, thumbnailCache, id, file.thumbnail, 'image/png');
     } catch(err) {
       next(err);
     }

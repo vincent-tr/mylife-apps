@@ -1,6 +1,6 @@
 'use strict';
 
-const { Database } = require('./repository');
+const Database = require('./repository/database');
 const WebServer = require('./web/server');
 const SyncServer = require('./sync/server');
 

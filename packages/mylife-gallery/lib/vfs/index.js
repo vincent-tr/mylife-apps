@@ -101,6 +101,10 @@ class File extends FSEntry {
     return await this._driver.fileSize(this._path);
   }
 
+  async lastModified() {
+    return await this._driver.fileLastModified(this._path);
+  }
+
   async content() {
     return await this._driver.fileContent(this._path);
   }
