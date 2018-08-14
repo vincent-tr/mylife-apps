@@ -13,7 +13,7 @@ export default store => next => action => {
 
     case actionTypes.FETCH_ALBUM: {
       const album = action.payload;
-      doFetch({ url : `/api/album/${album}` }, next, fetchAlbum);
+      doFetch({ url : `/api/album/${album || '<unset>'}` }, next, fetchAlbum);
       break;
     }
   }

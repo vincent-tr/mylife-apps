@@ -10,7 +10,8 @@ module.exports = (repository) => {
   });
 
   router.route('/album/:name').get((req, res) => {
-    const { name } = req.params;
+    let { name } = req.params;
+    name = name === '<unset>' ? undefined : name;
     const items = repository.album(name);
     res.json(items.map(item => {
       const { id, metadata } = item;
