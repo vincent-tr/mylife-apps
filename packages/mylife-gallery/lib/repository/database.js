@@ -1,27 +1,40 @@
 'use strict';
 
+const ListIndex   = require('./list-index');
+const MultiIndex  = require('./multi-index');
+const UniqueIndex = require('./unique-index');
+
 module.exports = class Database {
   constructor() {
-    this.items = [];
-    this.ids = new Map();
+    this._indexes = {
+      list  : new ListIndex(),
+      id    : new UniqueIndex(item => item.id),
+      album : new MultiIndex(item => item.metadata.album)
+    };
   }
 
   addItem(item) {
-    this.items.push(item);
-    this.ids.set(item.id, item);
+    for(const index of Object.values(this._indexes)) {
+      index.addItem(item);
+    }
   }
 
   removeItem(id) {
-    const item = this.ids.get(id);
-    this.ids.delete(id);
-    this.items.splice(this.items.indexOf(item), 1);
+    const item = this.get(id);
+    for(const index of Object.values(this._indexes)) {
+      index.removeItem(item);
+    }
   }
 
   list() {
-    return this.items;
+    return this._indexes.list.list();
   }
 
   get(id) {
-    return this.ids.get(id);
+    return this._indexes.id.get(id);
+  }
+
+  album(value) {
+    return this._indexes.album.get(value);
   }
 };
