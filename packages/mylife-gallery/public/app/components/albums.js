@@ -7,28 +7,16 @@ import { connect } from 'react-redux';
 import { getAlbums } from '../selectors';
 import { showAlbum } from '../actions/user';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Layout from './layout';
+
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Button from '@material-ui/core/Button';
 
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-  root : {
-    position      : 'absolute',
-    top           : 0,
-    bottom        : 0,
-    left          : 0,
-    right         : 0,
-    display       : 'flex',
-    flexDirection : 'column',
-    overflow      : 'hidden'
-  },
   list : {
-    margin    : 10,
-    overflowY : 'auto'
+    margin : 10,
   },
   item : {
     display  : 'inline-block',
@@ -58,14 +46,7 @@ const styles = theme => ({
 });
 
 const Albums = ({ items, classes, showAlbum }) => (
-  <div className={classes.root}>
-    <AppBar position='static'>
-      <Toolbar>
-        <Typography variant='title' color='inherit'>
-          Albums
-        </Typography>
-      </Toolbar>
-    </AppBar>
+  <Layout title='Albums'>
     <div className={classes.list}>
       {items.map(item => (
         <Button key={item.name || '<unset>'} className={classes.item} onClick={() => showAlbum(item.name)}>
@@ -76,7 +57,7 @@ const Albums = ({ items, classes, showAlbum }) => (
         </Button>
       ))}
     </div>
-  </div>
+  </Layout>
 );
 
 Albums.propTypes = {

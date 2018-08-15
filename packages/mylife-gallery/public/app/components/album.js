@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { getAlbum } from '../selectors';
 import { showDetail, hideAlbum } from '../actions/user';
 
+import Layout from './layout';
+
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import FullScreenIcon from '@material-ui/icons/FullScreen';
@@ -15,7 +17,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   list : {
-    flexWrap : 'nowrap',
+    margin : 10,
   },
   item : {
     display       : 'inline-block',
@@ -34,37 +36,30 @@ const styles = theme => ({
   }
 });
 
-const Album = ({ items, classes, showDetail, hideAlbum }) => (
-  <div className={classes.list}>
-    {items.map(item => (
-      <div key={item.id} className={classes.item}>
+const Album = ({ album, classes, showDetail, hideAlbum }) => (
+  <Layout title={album.name} onClose={hideAlbum}>
+    <div className={classes.list}>
+      {album.items.map(item => (
+        <div key={item.id} className={classes.item}>
 
-        <img src={'/images/thumbnail/' + item.id} className={classes.image} />
+          <img src={'/images/thumbnail/' + item.id} className={classes.image} />
 
-        <GridListTileBar
-          title={item.name}
-          actionIcon={
-            <IconButton onClick={() => showDetail(item)}>
-              <FullScreenIcon />
-            </IconButton>
-          }
-        />
-      </div>
-    ))}
-    <div className={classes.item}>
-      <GridListTileBar
-        actionIcon={
-          <IconButton onClick={() => hideAlbum()}>
-            <FullScreenIcon />
-          </IconButton>
-        }
-      />
+          <GridListTileBar
+            title={item.name}
+            actionIcon={
+              <IconButton onClick={() => showDetail(item)}>
+                <FullScreenIcon />
+              </IconButton>
+            }
+          />
+        </div>
+      ))}
     </div>
-  </div>
+  </Layout>
 );
 
 Album.propTypes = {
-  items      : PropTypes.array.isRequired,
+  album      : PropTypes.object.isRequired,
   showDetail : PropTypes.func.isRequired,
   hideAlbum  : PropTypes.func.isRequired,
   classes    : PropTypes.object.isRequired,
@@ -72,7 +67,7 @@ Album.propTypes = {
 
 const mapStateToProps = () => {
   return (state) => ({
-    items : getAlbum(state)
+    album : getAlbum(state)
   });
 };
 
