@@ -32,12 +32,12 @@ const styles = theme => ({
     display  : 'flex',
   },
   panel : {
-    flex            : 1,
+    flex            : '0 0 18em',
     backgroundColor : theme.palette.grey[100], // cf : https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/AppBar/AppBar.js
     padding         : 10,
   },
   imageContainer : {
-    flex            : 5,
+    flex            : 1,
     backgroundColor : theme.palette.background.paper,
   },
   image : {
