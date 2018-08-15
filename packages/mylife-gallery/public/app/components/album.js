@@ -34,7 +34,7 @@ const styles = theme => ({
   }
 });
 
-const Grid = ({ items, classes, showDetail, hideAlbum }) => (
+const Album = ({ items, classes, showDetail, hideAlbum }) => (
   <div className={classes.list}>
     {items.map(item => (
       <div key={item.id} className={classes.item}>
@@ -63,7 +63,7 @@ const Grid = ({ items, classes, showDetail, hideAlbum }) => (
   </div>
 );
 
-Grid.propTypes = {
+Album.propTypes = {
   items      : PropTypes.array.isRequired,
   showDetail : PropTypes.func.isRequired,
   hideAlbum  : PropTypes.func.isRequired,
@@ -84,4 +84,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Grid));
+)(withStyles(styles)(Album));

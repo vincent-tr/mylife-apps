@@ -7,25 +7,42 @@ import { connect } from 'react-redux';
 import { getAlbums } from '../selectors';
 import { showAlbum } from '../actions/user';
 
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import FullScreenIcon from '@material-ui/icons/FullScreen';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import Button from '@material-ui/core/Button';
 
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
+  root : {
+    position      : 'absolute',
+    top           : 0,
+    bottom        : 0,
+    left          : 0,
+    right         : 0,
+    display       : 'flex',
+    flexDirection : 'column',
+    overflow      : 'hidden'
+  },
   list : {
-    flexWrap : 'nowrap',
+    margin    : 10,
+    overflowY : 'auto'
   },
   item : {
-    display       : 'inline-block',
-    position      : 'relative',
-    height        : 200,
-    width         : 200,
-    margin        : 2,
+    display  : 'inline-block',
+    height   : 248,
+    width    : 200,
+    margin   : 2,
+    position : 'relative'
+  },
+  imageContainer : {
+    position : 'absolute',
+    top      : 0,
+    left     : 0,
+    right    : 0,
+    height   : 200,
   },
   image : {
     position : 'absolute',
@@ -34,25 +51,31 @@ const styles = theme => ({
     left     : 0,
     right    : 0,
     bottom   : 0,
+  },
+  title : {
+    flex : 1
   }
 });
 
 const Albums = ({ items, classes, showAlbum }) => (
-  <div className={classes.list}>
-    {items.map(item => (
-      <Card key={item}>
-        <CardContent>
-          <Typography>
-            {item}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <IconButton onClick={() => showAlbum(item)}>
-            <FullScreenIcon />
-          </IconButton>
-        </CardActions>
-      </Card>
-    ))}
+  <div className={classes.root}>
+    <AppBar position='static'>
+      <Toolbar>
+        <Typography variant='title' color='inherit'>
+          Albums
+        </Typography>
+      </Toolbar>
+    </AppBar>
+    <div className={classes.list}>
+      {items.map(item => (
+        <Button key={item.name || '<unset>'} className={classes.item} onClick={() => showAlbum(item.name)}>
+          <div className={classes.imageContainer}>
+            <img src={'/images/thumbnail/' + item.first} className={classes.image} />
+          </div>
+          <GridListTileBar className={classes.title} title={item.name} />
+        </Button>
+      ))}
+    </div>
   </div>
 );
 

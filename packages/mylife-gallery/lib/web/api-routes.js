@@ -6,7 +6,8 @@ module.exports = (repository) => {
   const router = express.Router();
 
   router.route('/albums').get((req, res) => {
-    res.json(repository.albums());
+    const names = repository.albums();
+    res.json(names.map(name => ({ name, first : repository.album(name)[0].id })));
   });
 
   router.route('/album/:name').get((req, res) => {
