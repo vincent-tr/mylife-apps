@@ -18,7 +18,7 @@ const Albums = ({ items, showAlbum }) => (
         source : item,
         id     : item.name || '<unset>',
         image  : '/images/thumbnail/' + item.first,
-        title  : item.name || '(Indéfini)'
+        title  : `${item.name || '(Indéfini)'} (${item.count})`
       }))} />
   </Layout>
 );

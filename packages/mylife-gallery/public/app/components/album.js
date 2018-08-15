@@ -11,7 +11,7 @@ import Layout from './layout';
 import Grid from './grid';
 
 const Album = ({ album, showDetail, hideAlbum }) => (
-  <Layout title={album.name || '(Indéfini)'} onClose={hideAlbum}>
+  <Layout title={`${album.name || '(Indéfini)'} - ${album.items.length} photos`} onClose={hideAlbum}>
     <Grid
       onItemClick={item => showDetail(item.source)}
       items={album.items.map(item => ({
