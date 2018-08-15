@@ -26,7 +26,10 @@ const styles = theme => ({
     flexGrow : 1
   },
   container : {
-    overflowY : 'auto'
+    overflowY : 'auto',
+    position  : 'relative',
+    height    : '100%',
+    width     :  '100%',
   }
 });
 

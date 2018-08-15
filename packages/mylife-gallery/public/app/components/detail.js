@@ -7,25 +7,18 @@ import { connect } from 'react-redux';
 import { getDetail } from '../selectors';
 import { hideDetail } from '../actions/user';
 
-import IconButton from '@material-ui/core/IconButton';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import CloseIcon from '@material-ui/icons/Close';
+import Layout from './layout';
 
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-  modal : {
+  container : {
     position        : 'absolute',
     top             : 0,
     bottom          : 0,
     left            : 0,
     right           : 0,
     backgroundColor : theme.palette.background.paper,
-  },
-  container : {
-    position : 'relative',
-    height   : '100%',
-    width    : '100%',
   },
   image : {
     position : 'relative',
@@ -35,24 +28,15 @@ const styles = theme => ({
   }
 });
 
-const DetailPopup = ({ item, close, classes }) => (
-  <div className={classes.modal}>
-    <img src={'/images/raw/' + item.id} className={classes.image} />
-
-    <GridListTileBar
-      titlePosition='top'
-      title={`${item.album} - ${item.name}`}
-      actionIcon={
-        <IconButton onClick={close}>
-          <CloseIcon />
-        </IconButton>
-      }
-    />
-
-  </div>
+const Detail = ({ item, close, classes }) => (
+  <Layout title={`${item.album} - ${item.name}`} onClose={close}>
+    <div className={classes.container}>
+      <img src={'/images/raw/' + item.id} className={classes.image} />
+    </div>
+  </Layout>
 );
 
-DetailPopup.propTypes = {
+Detail.propTypes = {
   item    : PropTypes.object.isRequired,
   close   : PropTypes.func.isRequired,
   classes : PropTypes.object.isRequired,
@@ -71,4 +55,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(DetailPopup));
+)(withStyles(styles)(Detail));
