@@ -35,7 +35,7 @@ const styles = theme => ({
 
 const Layout = ({ classes, title, onClose, children, noScroll }) => (
   <div className={classes.root}>
-    <AppBar position='static'>
+    <AppBar position='static' color='default'>
       <Toolbar>
         <Typography variant='title' color='inherit' className={classes.flex}>
           {title}
