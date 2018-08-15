@@ -29,11 +29,11 @@ const styles = theme => ({
     overflowY : 'auto',
     position  : 'relative',
     height    : '100%',
-    width     :  '100%',
+    width     : '100%',
   }
 });
 
-const Layout = ({ classes, title, onClose, children }) => (
+const Layout = ({ classes, title, onClose, children, noScroll }) => (
   <div className={classes.root}>
     <AppBar position='static'>
       <Toolbar>
@@ -47,7 +47,7 @@ const Layout = ({ classes, title, onClose, children }) => (
         )}
       </Toolbar>
     </AppBar>
-    <div className={classes.container}>
+    <div className={classes.container} style={{ overflowY : noScroll ? 'hidden' : 'auto' }}>
       {children}
     </div>
   </div>
@@ -58,6 +58,7 @@ Layout.propTypes = {
   title    : PropTypes.string.isRequired,
   onClose  : PropTypes.func,
   children : PropTypes.node,
+  noScroll : PropTypes.bool,
 };
 
 export default withStyles(styles)(Layout);

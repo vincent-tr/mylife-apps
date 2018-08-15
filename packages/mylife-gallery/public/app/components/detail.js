@@ -29,7 +29,7 @@ const styles = theme => ({
 });
 
 const Detail = ({ item, close, classes }) => (
-  <Layout title={`${item.album} - ${item.name}`} onClose={close}>
+  <Layout title={`${item.album} - ${item.name}`} onClose={close} noScroll={true}>
     <div className={classes.container}>
       <img src={'/images/raw/' + item.id} className={classes.image} />
     </div>
