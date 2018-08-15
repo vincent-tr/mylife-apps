@@ -35,6 +35,7 @@ const styles = theme => ({
     flex            : '0 0 18em',
     backgroundColor : theme.palette.grey[100], // cf : https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/AppBar/AppBar.js
     padding         : 10,
+    overflowY       : 'auto',
   },
   imageContainer : {
     flex            : 1,
