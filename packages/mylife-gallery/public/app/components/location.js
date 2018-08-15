@@ -5,18 +5,19 @@ import PropTypes   from 'prop-types';
 
 import GoogleMap from 'google-map-react';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import LocationIcon from '@material-ui/icons/GpsFixed';
+
+const Marker = () => <LocationIcon />;
 
 const Location = ({ latitude, longitude }) => (
-  <div style={{ height: '10vh', width: '100%' }}>
+  <div style={{ height: '15em', width: '15em' }}>
     <GoogleMap
-      defaultCenter={[59.938043, 30.337157]}
-      defaultZoom={9}
+      center={[latitude, longitude]}
+      zoom={12}
     >
-      <div
-        lat={59.955413}
-        lng={30.337844}
-        text={'Kreyser Avrora'}
+      <Marker
+        lat={latitude}
+        lng={longitude}
       />
     </GoogleMap>
   </div>

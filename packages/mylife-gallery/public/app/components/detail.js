@@ -12,6 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PrevIcon from '@material-ui/icons/ChevronLeft';
 import NextIcon from '@material-ui/icons/ChevronRight';
@@ -77,8 +78,11 @@ const Detail = ({ item, prev, next, close, move, classes }) => (
           )}
           {item.gps && (
             <ListItem>
-              <ListItemText primary='Localisation' />
-              <Location latitude={item.gps.latitude} longitude={item.gps.longitude} />
+              <ListItemText primary='Localisation' secondary={
+                <Typography component='div'>
+                  <Location latitude={item.gps.latitude} longitude={item.gps.longitude} />
+                </Typography>
+              } />
             </ListItem>
           )}
         </List>
