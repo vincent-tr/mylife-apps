@@ -28,8 +28,7 @@ const styles = theme => ({
 class Carousel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -43,15 +42,45 @@ class Carousel extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.timer = setInterval(() => this.switch(), 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+
+  switch() {
+    this.setState((prevState, props) => {
+      const { album } = props;
+      if(!album) {
+        return {};
+      }
+
+      if(album.items.length < 2) {
+        return { index : 0 };
+      }
+
+      let index;
+      do {
+        index = Math.floor(Math.random() * album.items.length);
+      } while(index === prevState.index);
+
+      return { index };
+    });
+  }
+
   render() {
     const { classes, album } = this.props;
+    const { index } = this.state;
     if(!album) {
-      return;
+      return null;
     }
 
     return (
       <div className={classes.container}>
-        <img src={'/images/raw/' + album.items[0].id} className={classes.image} />
+        <img src={'/images/raw/' + album.items[index].id} className={classes.image} />
       </div>
     );
   }
