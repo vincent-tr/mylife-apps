@@ -5,6 +5,7 @@ const path               = require('path');
 const http               = require('http');
 const express            = require('express');
 const enableDestroy      = require('server-destroy');
+const createIndexRoutes  = require('./index-routes');
 const createImagesRoutes = require('./images-routes');
 const createApiRoutes    = require('./api-routes');
 
@@ -28,8 +29,9 @@ module.exports = class Server {
     }
 
     const publicDirectory = path.resolve(path.join(__dirname, '../../public'));
-    app.use(express.static(publicDirectory));
+    app.use(express.static(publicDirectory, { index : false }));
 
+    app.use(createIndexRoutes());
     app.use('/images', createImagesRoutes(options, repository));
     app.use('/api', createApiRoutes(repository));
 
