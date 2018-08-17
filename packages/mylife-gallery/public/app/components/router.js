@@ -1,38 +1,47 @@
 'use strict';
 
-import React       from 'react';
-import PropTypes   from 'prop-types';
-import { connect } from 'react-redux';
+import React             from 'react';
+import PropTypes         from 'prop-types';
+import { connect }       from 'react-redux';
+import { Router, Route, Switch } from 'react-router-dom';
+import history           from '../services/history-factory';
 
-import { isAlbum, isDetail } from '../selectors';
+import { ensureAlbums, ensureAlbum, ensureDetail } from '../actions/user';
 
 import Detail from './detail';
 import Albums from './albums';
 import Album from './album';
 
-const Router = ({ detail, album }) => {
-  if(detail) {
-    return (<Detail />);
-  }
-  if(album) {
-    return (<Album />);
-  }
-  return (<Albums />);
+const RouterComponent = ({ ensureAlbums, ensureAlbum, ensureDetail }) => (
+  <Router history={history}>
+    <Switch>
+      <Route exact path='/'                    render={({ match }) => ensureAndDisplay(match, ensureAlbums, Albums)} />
+      <Route path='/album/:albumName'          render={({ match }) => ensureAndDisplay(match, ensureAlbum, Album)} />
+      <Route path='/image/:albumName/:imageId' render={({ match }) => ensureAndDisplay(match, ensureDetail, Detail)} />
+    </Switch>
+  </Router>
+);
+
+function ensureAndDisplay(match, ensure, Component) {
+  ensure(match.params);
+  return (<Component />);
+}
+
+RouterComponent.propTypes = {
+  ensureAlbums : PropTypes.func.isRequired,
+  ensureAlbum  : PropTypes.func.isRequired,
+  ensureDetail : PropTypes.func.isRequired,
 };
 
-Router.propTypes = {
-  detail : PropTypes.bool.isRequired,
-  album  : PropTypes.bool.isRequired,
-};
+const mapStateToProps = null;
 
-const mapStateToProps = () => {
-  return (state) => ({
-    detail : isDetail(state),
-    album  : isAlbum(state)
-  });
-};
+const mapDispatchToProps = (dispatch) => ({
+  ensureAlbums : () => dispatch(ensureAlbums()),
+  ensureAlbum  : ({ albumName }) => dispatch(ensureAlbum(albumName)),
+  ensureDetail : ({ albumName, imageId }) => dispatch(ensureDetail(albumName, imageId))
+});
 
 export default connect(
   mapStateToProps,
-  null
-)(Router);
+  mapDispatchToProps
+)(RouterComponent);

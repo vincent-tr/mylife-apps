@@ -9,4 +9,4 @@ export default handleActions({
     next : (state, action) => action.payload
   },
 
-}, []);
+}, null);

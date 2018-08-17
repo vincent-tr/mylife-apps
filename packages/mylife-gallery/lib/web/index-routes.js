@@ -4,7 +4,7 @@ const fs      = require('fs');
 const path    = require('path');
 const express = require('express');
 
-const routes = [ '/', '/album/:name', '/image/:id' ];
+const routes = [ '/', '/album/:albumName', '/image/:albumName/:imageId' ];
 const file = fs.readFileSync(path.join(__dirname, '../../public/index.html'));
 
 const handler = (req, res) => res.contentType('text/html').send(file).end();

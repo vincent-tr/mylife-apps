@@ -10,7 +10,7 @@ import { showDetail, hideAlbum } from '../actions/user';
 import Layout from './layout';
 import Grid from './grid';
 
-const Album = ({ album, showDetail, hideAlbum }) => (
+const Album = ({ album, showDetail, hideAlbum }) => album && (
   <Layout title={`${album.name || '(Indéfini)'} - ${album.items.length} photos`} onClose={hideAlbum}>
     <Grid
       onItemClick={item => showDetail(item.source)}
@@ -25,7 +25,7 @@ const Album = ({ album, showDetail, hideAlbum }) => (
 );
 
 Album.propTypes = {
-  album      : PropTypes.object.isRequired,
+  album      : PropTypes.object,
   showDetail : PropTypes.func.isRequired,
   hideAlbum  : PropTypes.func.isRequired,
 };

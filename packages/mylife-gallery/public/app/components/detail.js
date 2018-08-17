@@ -49,7 +49,7 @@ const styles = theme => ({
   }
 });
 
-const Detail = ({ item, prev, next, close, move, classes }) => (
+const Detail = ({ item, prev, next, close, move, classes }) => item && (
   <Layout title={`${item.album || '(Indéfini)'} - ${item.name}`} onClose={close} noScroll={true}>
     <div className={classes.container}>
       <div className={classes.imageContainer}>
@@ -93,7 +93,7 @@ const Detail = ({ item, prev, next, close, move, classes }) => (
 );
 
 Detail.propTypes = {
-  item    : PropTypes.object.isRequired,
+  item    : PropTypes.object,
   prev    : PropTypes.object,
   next    : PropTypes.object,
   close   : PropTypes.func.isRequired,

@@ -10,7 +10,7 @@ import { showAlbum } from '../actions/user';
 import Layout from './layout';
 import Grid from './grid';
 
-const Albums = ({ items, showAlbum }) => (
+const Albums = ({ items, showAlbum }) => items && (
   <Layout title='Albums'>
     <Grid
       onItemClick={item => showAlbum(item.source.name)}
@@ -24,7 +24,7 @@ const Albums = ({ items, showAlbum }) => (
 );
 
 Albums.propTypes = {
-  items     : PropTypes.array.isRequired,
+  items     : PropTypes.array,
   showAlbum : PropTypes.func.isRequired
 };
 
