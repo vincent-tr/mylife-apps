@@ -62,3 +62,9 @@ export const hideDetail = () => (dispatch, getState) => {
   const album = getAlbum(state);
   dispatch(push(`/album/${album.name || '<unset>'}`));
 };
+
+export const showCarousel = () => (dispatch, getState) => {
+  const state = getState();
+  const album = getAlbum(state);
+  dispatch(push(`/carousel/${album.name || '<unset>'}`));
+};

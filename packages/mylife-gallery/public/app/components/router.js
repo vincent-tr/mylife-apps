@@ -8,40 +8,81 @@ import history           from '../services/history-factory';
 
 import { ensureAlbums, ensureAlbum, ensureDetail } from '../actions/user';
 
-import Detail from './detail';
+import Refresh from './refresh';
 import Albums from './albums';
 import Album from './album';
+import Detail from './detail';
+import Carousel from './carousel';
 
-const RouterComponent = ({ ensureAlbums, ensureAlbum, ensureDetail }) => (
+const AlbumsWrapper = connect(
+  null,
+  (dispatch) => ({
+    ensureAlbums : () => dispatch(ensureAlbums()),
+  })
+)(({ ensureAlbums }) => {
+  return (
+    <Refresh trigger={() => ensureAlbums()}>
+      <Albums />
+    </Refresh>
+  );
+});
+
+const AlbumWrapper = connect(
+  null,
+  (dispatch) => ({
+    ensureAlbum  : albumName => dispatch(ensureAlbum(albumName)),
+  })
+)(({ match, ensureAlbum }) => {
+  const albumName = getMatchParam(match, 'albumName');
+  return (
+    <Refresh trigger={() => ensureAlbum(albumName)} albumName={albumName}>
+      <Album />
+    </Refresh>
+  );
+});
+
+const DetailWrapper = connect(
+  null,
+  (dispatch) => ({
+    ensureDetail : (albumName, imageId) => dispatch(ensureDetail(albumName, imageId))
+  })
+)(({ match, ensureDetail }) => {
+  const albumName = getMatchParam(match, 'albumName');
+  const imageId = getMatchParam(match, 'imageId');
+  return (
+    <Refresh trigger={() => ensureDetail(albumName, imageId)} albumName={albumName} imageId={imageId}>
+      <Detail />
+    </Refresh>
+  );
+});
+
+const CarouselWrapper = connect(
+  null,
+  (dispatch) => ({
+    ensureAlbum  : albumName => dispatch(ensureAlbum(albumName)),
+  })
+)(({ match, ensureAlbum }) => {
+  const albumName = getMatchParam(match, 'albumName');
+  return (
+    <Refresh trigger={() => ensureAlbum(albumName)} albumName={albumName}>
+      <Carousel />
+    </Refresh>
+  );
+});
+
+const RouterComponent = () => (
   <Router history={history}>
     <Switch>
-      <Route exact path='/'                    render={({ match }) => ensureAndDisplay(match, ensureAlbums, Albums)} />
-      <Route path='/album/:albumName'          render={({ match }) => ensureAndDisplay(match, ensureAlbum, Album)} />
-      <Route path='/image/:albumName/:imageId' render={({ match }) => ensureAndDisplay(match, ensureDetail, Detail)} />
+      <Route exact path='/'                    component={AlbumsWrapper} />
+      <Route path='/album/:albumName'          component={AlbumWrapper} />
+      <Route path='/image/:albumName/:imageId' component={DetailWrapper} />
+      <Route path='/carousel/:albumName'       component={CarouselWrapper} />
     </Switch>
   </Router>
 );
 
-function ensureAndDisplay(match, ensure, Component) {
-  ensure(match.params);
-  return (<Component />);
+export default RouterComponent;
+
+function getMatchParam(match, name) {
+  return match && match.params && match.params[name];
 }
-
-RouterComponent.propTypes = {
-  ensureAlbums : PropTypes.func.isRequired,
-  ensureAlbum  : PropTypes.func.isRequired,
-  ensureDetail : PropTypes.func.isRequired,
-};
-
-const mapStateToProps = null;
-
-const mapDispatchToProps = (dispatch) => ({
-  ensureAlbums : () => dispatch(ensureAlbums()),
-  ensureAlbum  : ({ albumName }) => dispatch(ensureAlbum(albumName)),
-  ensureDetail : ({ albumName, imageId }) => dispatch(ensureDetail(albumName, imageId))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RouterComponent);

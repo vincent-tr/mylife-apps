@@ -33,13 +33,14 @@ const styles = theme => ({
   }
 });
 
-const Layout = ({ classes, title, onClose, children, noScroll }) => (
+const Layout = ({ classes, title, onClose, children, noScroll, buttons }) => (
   <div className={classes.root}>
     <AppBar position='static' color='default'>
       <Toolbar>
         <Typography variant='title' color='inherit' className={classes.flex}>
           {title}
         </Typography>
+        {buttons}
         {onClose && (
           <IconButton onClick={onClose} color='inherit'>
             <CloseIcon />
@@ -59,6 +60,7 @@ Layout.propTypes = {
   onClose  : PropTypes.func,
   children : PropTypes.node,
   noScroll : PropTypes.bool,
+  buttons  : PropTypes.oneOfType([ PropTypes.array, PropTypes.node ]),
 };
 
 export default withStyles(styles)(Layout);

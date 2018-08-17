@@ -5,13 +5,20 @@ import PropTypes   from 'prop-types';
 import { connect } from 'react-redux';
 
 import { getAlbum } from '../selectors';
-import { showDetail, hideAlbum } from '../actions/user';
+import { showDetail, hideAlbum, showCarousel } from '../actions/user';
+
+import IconButton from '@material-ui/core/IconButton';
+import CarouselIcon from '@material-ui/icons/ViewCarousel';
 
 import Layout from './layout';
 import Grid from './grid';
 
-const Album = ({ album, showDetail, hideAlbum }) => album && (
-  <Layout title={`${album.name || '(Indéfini)'} - ${album.items.length} photos`} onClose={hideAlbum}>
+const Album = ({ album, showDetail, hideAlbum, showCarousel }) => album && (
+  <Layout title={`${album.name || '(Indéfini)'} - ${album.items.length} photos`} onClose={hideAlbum} buttons={
+    <IconButton onClick={showCarousel} color='inherit'>
+      <CarouselIcon />
+    </IconButton>
+  }>
     <Grid
       onItemClick={item => showDetail(item.source)}
       items={album.items.map(item => ({
@@ -25,9 +32,10 @@ const Album = ({ album, showDetail, hideAlbum }) => album && (
 );
 
 Album.propTypes = {
-  album      : PropTypes.object,
-  showDetail : PropTypes.func.isRequired,
-  hideAlbum  : PropTypes.func.isRequired,
+  album        : PropTypes.object,
+  showDetail   : PropTypes.func.isRequired,
+  hideAlbum    : PropTypes.func.isRequired,
+  showCarousel : PropTypes.func.isRequired,
 };
 
 const mapStateToProps = () => {
@@ -37,8 +45,9 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDetail : item => dispatch(showDetail(item)),
-  hideAlbum  : () => dispatch(hideAlbum())
+  showDetail   : item => dispatch(showDetail(item)),
+  hideAlbum    : () => dispatch(hideAlbum()),
+  showCarousel : () => dispatch(showCarousel()),
 });
 
 export default connect(
