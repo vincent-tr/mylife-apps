@@ -1,19 +1,19 @@
 'use strict';
 
-const vfs = require('../vfs');
+const fs    = require('fs').promises;
+const path  = require('path');
 const debug = require('debug')('mylife:gallery:sync:database');
 
 const FILENAME = 'metadata.json';
 
 exports.load = async function(options, repository) {
-  const directory = await vfs.FSEntry.load(options.cache);
-  const file = await findEntry(directory, FILENAME);
-  if(!file) {
+  const content = await tryReadFile(path.join(options.cache, FILENAME));
+  if(!content) {
     return;
   }
 
   debug('Loading database');
-  const data = JSON.parse(await file.content());
+  const data = JSON.parse(content);
   for(const props of data) {
     repository.addItem(props);
   }
@@ -22,16 +22,19 @@ exports.load = async function(options, repository) {
 
 exports.save = async function(options, repository) {
   debug('Saving database');
-  const directory = await vfs.FSEntry.load(options.cache);
   const data = JSON.stringify(repository.list(), null, 2);
-  await directory.writeFile(FILENAME, data);
+  await fs.writeFile(path.join(options.cache, FILENAME), data);
   debug('Database saved');
 };
 
-async function findEntry(directory, name) {
-  for(const item of await directory.list()) {
-    if(item.base === name) {
-      return item;
+async function tryReadFile(path) {
+  try {
+    return await fs.readFile(path);
+  } catch(err) {
+    if(err.code === 'ENOENT') {
+      return null;
     }
+    throw err;
   }
 }
+

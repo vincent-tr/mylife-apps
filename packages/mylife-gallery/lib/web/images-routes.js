@@ -2,7 +2,7 @@
 
 const express = require('express');
 const LRU     = require('lru-cache');
-const vfs     = require('../vfs');
+const fs      = require('fs').promises;
 
 const debug = require('debug')('mylife:gallery:web:image-routes');
 
@@ -39,8 +39,7 @@ async function sendImage(res, cache, id, path, mime) {
   let content = cache.get(id);
   if(!content) {
     debug(`Loading image file '${path}'`);
-    const file = await vfs.FSEntry.load(path);
-    content = await file.content();
+    content = await fs.readFile(path);
     cache.set(id, content);
   }
 
@@ -48,4 +47,6 @@ async function sendImage(res, cache, id, path, mime) {
   res.send(content);
 }
 
-function cachenEntryLength(item) { return item.length; }
+function cachenEntryLength(item) {
+  return item.length;
+}

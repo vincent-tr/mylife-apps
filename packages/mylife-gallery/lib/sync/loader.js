@@ -1,6 +1,7 @@
 'use strict';
 
-const vfs = require('../vfs');
+const fs    = require('fs').promises;
+const path  = require('path');
 const jimp = require('jimp');
 const ExifImage = require('exif').ExifImage;
 
@@ -9,16 +10,16 @@ const debug = require('debug')('mylife:gallery:repository:loader');
 const supportedExtensions = new Set([ '.jpg', '.jpeg', '.png' ]);
 
 exports.discover = async function discover(fullPath) {
-  const directory = await vfs.FSEntry.load(fullPath);
   const list = [];
 
-  const items = await directory.list();
+  const items = await directoryList(fullPath);
   for(const item of items) {
-    if(!(item instanceof vfs.Directory)) {
+    const stat = await fs.lstat(item);
+    if(!stat.isDirectory()) {
       continue;
     }
 
-    await discoverDirectory(list, await item.list(), { album : item.name });
+    await discoverDirectory(list, await directoryList(item), { album : path.basename(item) });
   }
 
   await discoverDirectory(list, items, {});
@@ -28,23 +29,21 @@ exports.discover = async function discover(fullPath) {
 
 async function discoverDirectory(list, items, baseMetadata) {
   for(const file of items) {
-    const { name, ext } = file;
-    if(!(file instanceof vfs.File) || !supportedExtensions.has(ext)) {
+    const { name, ext } = path.parse(file);
+    const stat = await fs.lstat(file);
+    if(!stat.isFile() || !supportedExtensions.has(ext)) {
       continue;
     }
 
     list.push({
-      props : {
-        metadata : {
-          ... baseMetadata,
-          name
-        },
-        file : {
-          path      : file.fullPath,
-          timestamp : await file.lastModified()
-        }
+      metadata : {
+        ... baseMetadata,
+        name
       },
-      file
+      file : {
+        path      : file,
+        timestamp : await stat.mtimeMs
+      }
     });
   }
 }
@@ -66,8 +65,9 @@ exports.unload = async function unload(cachePath, repository, items) {
 };
 
 async function initCacheDirectory(cachePath) {
-  const cacheBaseDirectory = await vfs.FSEntry.load(cachePath);
-  return await cacheBaseDirectory.ensureDirectory('thumbnail');
+  const dir = path.join(cachePath, 'thumbnail');
+  await ensureDirectory(dir);
+  return dir;
 }
 
 async function loadFile(item, cacheDirectory) {
@@ -75,10 +75,10 @@ async function loadFile(item, cacheDirectory) {
   debug(`Loading file ${item.file.path}`);
 
   const props = {};
-  const metadata = props.metadata = { ... item.props.metadata };
-  const file = props.file = { ... item.props.file };
+  const metadata = props.metadata = { ... item.metadata };
+  const file = props.file = { ... item.file };
 
-  const content = await item.file.content();
+  const content = await fs.readFile(item.file.path);
 
   try {
     const { image, exif, gps } = await runExif(content);
@@ -94,8 +94,9 @@ async function loadFile(item, cacheDirectory) {
   file.mime = image.getMIME();
 
   const thumbnailContent = await image.scaleToFit(200, 200).getBufferAsync(jimp.MIME_PNG);
-  const thumbnail = await cacheDirectory.writeFile(`${props.id}.png`, thumbnailContent);
-  file.thumbnail = thumbnail.fullPath;
+  const thumbnail = path.join(cacheDirectory, `${props.id}.png`);
+  await fs.writeFile(thumbnail, thumbnailContent);
+  file.thumbnail = thumbnail;
 
   debug(`File loaded (id=${props.id})`);
 
@@ -143,4 +144,24 @@ function formatGPS(gps) {
 
 function timeToDec([ h, m, s ]) {
   return h + m / 60 + s / 3600;
+}
+
+async function ensureDirectory(path) {
+  try {
+    await fs.mkdir(path);
+  } catch(err) {
+    if(err.code !== 'EEXIST') {
+      throw err;
+    }
+
+    const stat = await fs.stat(path);
+    if(!stat.isDirectory()) {
+      throw err;
+    }
+  }
+}
+
+async function directoryList(dir) {
+  const names = await fs.readdir(dir);
+  return names.map(name => path.join(dir, name));
 }

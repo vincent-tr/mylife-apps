@@ -45,20 +45,16 @@ module.exports = class Server {
   }
 };
 
-function repositoryKey(item) {
+function key(item) {
   return `${item.file.path}:${item.file.timestamp}`;
 }
 
-function discoveryKey(item) {
-  return repositoryKey(item.props);
-}
-
 function diff(repository, discovery) {
-  const repositoryIds = new Set(repository.list().map(repositoryKey));
-  const discoveryIds = new Set(discovery.map(discoveryKey));
+  const repositoryIds = new Set(repository.list().map(key));
+  const discoveryIds = new Set(discovery.map(key));
 
   return {
-    added : discovery.filter(item => !repositoryIds.has(discoveryKey(item))),
-    removed : repository.list().filter(item => !discoveryIds.has(repositoryKey(item)))
+    added : discovery.filter(item => !repositoryIds.has(key(item))),
+    removed : repository.list().filter(item => !discoveryIds.has(key(item)))
   };
 }
