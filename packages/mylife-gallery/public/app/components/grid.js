@@ -5,6 +5,7 @@ import PropTypes   from 'prop-types';
 
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -42,12 +43,14 @@ const styles = theme => ({
 const Grid = ({ classes, items, onItemClick }) => (
   <div className={classes.list}>
     {items.map(item => (
-      <Button key={item.id} className={classes.item} onClick={() => onItemClick(item)}>
-        <div className={classes.imageContainer}>
-          <img src={item.image} className={classes.image} />
-        </div>
-        <GridListTileBar className={classes.title} title={item.title} />
-      </Button>
+      <Tooltip key={item.id} title={item.title}>
+        <Button className={classes.item} onClick={() => onItemClick(item)}>
+          <div className={classes.imageContainer}>
+            <img src={item.image} className={classes.image} />
+          </div>
+          <GridListTileBar className={classes.title} title={item.title} />
+        </Button>
+      </Tooltip>
     ))}
   </div>
 );
