@@ -1,7 +1,6 @@
 {
   "port" : 8012,
-  "gallery" : "/Users/vincent/Desktop/gallery/source",
-  "__gallery" : "/Users/vincent/Desktop/gallery/source     /Volumes/share/Photos",
+  "gallery" : "/Volumes/share/Photos",
   "cache" : "/Users/vincent/Desktop/gallery/cache",
   "rawCacheSize" : 100000000,
   "thumbnailCacheSize" : 10000000
