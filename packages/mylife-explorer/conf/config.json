@@ -1,0 +1,6 @@
+{
+  "port" : 8013,
+  "roots" : [
+    { "path" : "/Volumes/share" }
+  ]
+}
