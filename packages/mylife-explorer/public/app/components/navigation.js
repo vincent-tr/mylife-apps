@@ -1,10 +1,63 @@
 'use strict';
 
-import React              from 'react';
-import PropTypes          from 'prop-types';
+import React                from 'react';
+import PropTypes            from 'prop-types';
+import { Breadcrumb }       from 'semantic-ui-react';
+import { connect }          from 'react-redux';
+import { getMetadataNodes } from '../selectors/metadata';
+import { navigate }         from '../actions/navigation';
 
-const Navigation = () => (
-  <div>Navigation</div>
+const Navigation = ({ nodes, navigate }) => (
+  <Breadcrumb>
+    {nodes.map((node, index) => {
+      const isLast = index === nodes.length -1;
+
+      if(isLast) {
+        return (
+          <Breadcrumb.Section key={index} active>{node}</Breadcrumb.Section>
+        );
+      }
+
+      const path = '/' + nodes.slice(0, index).join('/');
+      const handler = () => navigate(path);
+
+      return (
+        <React.Fragment key={index}>
+          <Breadcrumb.Section link onClick={handler}>{node}</Breadcrumb.Section>
+          <Breadcrumb.Divider />
+        </React.Fragment>
+      );
+    })}
+  </Breadcrumb>
 );
 
-export default Navigation;
+Navigation.propTypes = {
+  nodes    : PropTypes.array.isRequired,
+  navigate : PropTypes.func.isRequired,
+};
+
+const mapStateToProps = () => {
+  return (state) => ({
+    nodes : getMetadataNodes(state) || []
+  });
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  navigate : path => dispatch(navigate(path)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navigation);
+
+
+const BreadcrumbExampleStandard = () => (
+  <Breadcrumb>
+    <Breadcrumb.Section link>Home</Breadcrumb.Section>
+    <Breadcrumb.Divider />
+    <Breadcrumb.Section link>Store</Breadcrumb.Section>
+    <Breadcrumb.Divider />
+    <Breadcrumb.Section active>T-Shirt</Breadcrumb.Section>
+  </Breadcrumb>
+)
