@@ -1,37 +1,23 @@
 'use strict';
 
 const express = require('express');
+const asyncHandler = require('express-async-handler');
+const { create : fsCreate } = require('../fs');
 
 module.exports = (options) => {
   const router = express.Router();
-/*
-  router.route('metadata').get((req, res) => {
+  const fs = fsCreate(options);
 
-  });
+  router.get(/\/metadata\/(.*)/, asyncHandler(async (req, res) => {
+    const path = req.params[0];
+    const data = await fs.metadata(path);
+    res.json(data);
+  }));
 
-  router.route('content').get((req, res) => {
+  router.get(/\/content\/(.*)/, asyncHandler(async (req, res) => {
+    const path = req.params[0];
+    throw new Error('TODO');
+  }));
 
-  });
-*/
-
-/*
-  router.route('/albums').get((req, res) => {
-    const names = repository.albums();
-    res.json(names.map(name => {
-      const album = repository.album(name);
-      return { name, first : album[0].id, count : album.length };
-    }));
-  });
-
-  router.route('/album/:name').get((req, res) => {
-    let { name } = req.params;
-    name = name === '<unset>' ? undefined : name;
-    const items = repository.album(name);
-    res.json(items.map(item => {
-      const { id, metadata } = item;
-      return { id, ... metadata };
-    }));
-  });
-*/
   return router;
 };

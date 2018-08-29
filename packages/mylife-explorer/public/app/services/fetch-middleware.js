@@ -1,6 +1,7 @@
 'use strict';
 
 import actionTypes from '../constants/action-types';
+import { setBusy, clearBusy } from '../actions/dialogs';
 
 export default store => next => action => {
   void store;
@@ -16,6 +17,7 @@ export default store => next => action => {
 
 async function doFetch(next, action) {
 
+  next(setBusy());
   const { url, params, callback, resultAction } = action.payload;
 
   try {
@@ -28,5 +30,7 @@ async function doFetch(next, action) {
   } catch(err) {
     console.error(err);
     callback && callback(err);
+  } finally {
+    next(clearBusy());
   }
 }
