@@ -50,14 +50,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Navigation);
-
-
-const BreadcrumbExampleStandard = () => (
-  <Breadcrumb>
-    <Breadcrumb.Section link>Home</Breadcrumb.Section>
-    <Breadcrumb.Divider />
-    <Breadcrumb.Section link>Store</Breadcrumb.Section>
-    <Breadcrumb.Divider />
-    <Breadcrumb.Section active>T-Shirt</Breadcrumb.Section>
-  </Breadcrumb>
-)
