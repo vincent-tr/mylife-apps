@@ -12,7 +12,12 @@ exports.create = function(options) {
   }
 
   async function metadata(p) {
-    const { root : rootName, path : relative } = splitPath(p);
+    const { nodes, root : rootName, path : relative } = splitPath(p);
+    if(!nodes.length) {
+      // root, show virtual root directory
+      return await vroot(roots);
+    }
+
     const root = roots.get(rootName);
     if(!root) {
       throw new Error(`Invalid path '${p}'`);
@@ -20,6 +25,9 @@ exports.create = function(options) {
 
     const fullPath = path.join(root.path, relative);
     const result = await infos(fullPath);
+
+    result.nodes = nodes;
+    result.path = '/' + nodes.join('/');
 
     switch(result.type) {
       case 'Directory': {
@@ -44,9 +52,33 @@ exports.create = function(options) {
 function splitPath(p) {
   const nodes = p.split('/').filter(n => n);
   return {
-    root : nodes.shift(),
-    path : nodes.join(path.sep)
+    nodes,
+    root : nodes[0],
+    path : nodes.slice(1).join(path.sep)
   };
+}
+
+async function vroot(roots) {
+  const result = {
+    atime     : 0,
+    mtime     : 0,
+    ctime     : 0,
+    birthtime : 0,
+    size      : 0,
+    type      : 'Directory',
+    nodes     : [],
+    path      : '/'
+  };
+
+  const list = result.content = [];
+  for(const root of roots.values()) {
+    list.push({
+      name : root.name,
+      ... await infos(root.path)
+    });
+  }
+
+  return result;
 }
 
 async function infos(fullPath) {

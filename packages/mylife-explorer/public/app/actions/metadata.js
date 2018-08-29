@@ -19,7 +19,7 @@ export const ensureMetadata = (path) => (dispatch, getState) => {
   }
 
   dispatch(fetch({
-    url : `/metadata/${path}`,
+    url : `/api/metadata/${path}`,
     resultAction : setMetadata
   }));
 };
