@@ -3,7 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import  './services/store-factory';
+import 'semantic-ui-css/semantic.min.css';
+import './services/store-factory';
 
 import Application from './components/application';
 

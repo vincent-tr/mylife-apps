@@ -14,6 +14,8 @@ export const ensureMetadata = (path) => (dispatch, getState) => {
     return;
   }
 
+  setMetadata(null);
+
   if(path.startsWith('/')) {
     path = path.substring(1);
   }
