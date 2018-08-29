@@ -7,29 +7,36 @@ import { connect }          from 'react-redux';
 import { getMetadataNodes } from '../selectors/metadata';
 import { navigate }         from '../actions/navigation';
 
-const Navigation = ({ nodes, navigate }) => (
-  <Breadcrumb>
-    {nodes.map((node, index) => {
-      const isLast = index === nodes.length -1;
+const Navigation = ({ nodes, navigate }) => {
+  const isRoot = !nodes.length;
+  const rootHandler = isRoot ? null : () => navigate('/');
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Section active={isRoot} link={!isRoot} onClick={rootHandler}>Racine</Breadcrumb.Section>
+      <Breadcrumb.Divider />
 
-      if(isLast) {
+      {nodes.map((node, index) => {
+        const isLast = index === nodes.length -1;
+
+        if(isLast) {
+          return (
+            <Breadcrumb.Section key={index} active>{node}</Breadcrumb.Section>
+          );
+        }
+
+        const path = '/' + nodes.slice(0, index + 1).join('/');
+        const handler = () => navigate(path);
+
         return (
-          <Breadcrumb.Section key={index} active>{node}</Breadcrumb.Section>
+          <React.Fragment key={index}>
+            <Breadcrumb.Section link onClick={handler}>{node}</Breadcrumb.Section>
+            <Breadcrumb.Divider />
+          </React.Fragment>
         );
-      }
-
-      const path = '/' + nodes.slice(0, index + 1).join('/');
-      const handler = () => navigate(path);
-
-      return (
-        <React.Fragment key={index}>
-          <Breadcrumb.Section link onClick={handler}>{node}</Breadcrumb.Section>
-          <Breadcrumb.Divider />
-        </React.Fragment>
-      );
-    })}
-  </Breadcrumb>
-);
+      })}
+    </Breadcrumb>
+  );
+};
 
 Navigation.propTypes = {
   nodes    : PropTypes.array.isRequired,
