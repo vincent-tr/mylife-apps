@@ -18,7 +18,7 @@ const Navigation = ({ nodes, navigate }) => (
         );
       }
 
-      const path = '/' + nodes.slice(0, index).join('/');
+      const path = '/' + nodes.slice(0, index + 1).join('/');
       const handler = () => navigate(path);
 
       return (
