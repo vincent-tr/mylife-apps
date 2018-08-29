@@ -2,10 +2,10 @@
 
 import React from 'react';
 
-const Dispatcher = (({ path }) => {
+const Dispatcher = () => {
   return (
-    <div>{path}</div>
+    <div>Dispatcher</div>
   );
-});
+};
 
 export default Dispatcher;
