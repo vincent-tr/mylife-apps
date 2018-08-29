@@ -1,13 +1,14 @@
 'use strict';
 
-const util            = require('util');
-const path            = require('path');
-const http            = require('http');
-const express         = require('express');
-const enableDestroy   = require('server-destroy');
-const createApiRoutes = require('./api-routes');
+const util              = require('util');
+const path              = require('path');
+const http              = require('http');
+const express           = require('express');
+const enableDestroy     = require('server-destroy');
+const createIndexRoutes = require('./index-routes');
+const createApiRoutes   = require('./api-routes');
 
-const debug = require('debug')('mylife:gallery:web:server');
+const debug = require('debug')('mylife:explorer:web:server');
 
 module.exports = class Server {
 
@@ -27,8 +28,9 @@ module.exports = class Server {
     }
 
     const publicDirectory = path.resolve(path.join(__dirname, '../../public'));
-    app.use(express.static(publicDirectory));
+    app.use(express.static(publicDirectory, { index : false }));
 
+    app.use(createIndexRoutes());
     app.use('/api', createApiRoutes(options));
 
     this._server = http.Server(app);

@@ -5,6 +5,16 @@ const express = require('express');
 module.exports = (options) => {
   const router = express.Router();
 /*
+  router.route('metadata').get((req, res) => {
+
+  });
+
+  router.route('content').get((req, res) => {
+
+  });
+*/
+
+/*
   router.route('/albums').get((req, res) => {
     const names = repository.albums();
     res.json(names.map(name => {
