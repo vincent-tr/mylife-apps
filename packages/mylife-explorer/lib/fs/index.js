@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const fs   = require('fs').promises;
+const fs   = require('fs');
 const mime = require('mime-types');
 
 exports.create = function(options) {
@@ -9,6 +9,16 @@ exports.create = function(options) {
   const roots = new Map();
   for(const root of options.roots) {
     roots.set(root.name, root);
+  }
+
+  function getFullPath(p) {
+    const { root : rootName, path : relative } = splitPath(p);
+    const root = roots.get(rootName);
+    if(!root) {
+      throw new Error(`Invalid path '${p}'`);
+    }
+
+    return path.join(root.path, relative);
   }
 
   async function metadata(p) {
@@ -31,7 +41,7 @@ exports.create = function(options) {
 
     switch(result.type) {
       case 'Directory': {
-        const names = await fs.readdir(fullPath);
+        const names = await fs.promises.readdir(fullPath);
         const list = result.content = [];
         for(const name of names) {
           list.push({
@@ -46,7 +56,17 @@ exports.create = function(options) {
     return result;
   }
 
-  return { metadata };
+  async function getInfos(p) {
+    const fullPath = getFullPath(p);
+    return await infos(fullPath);
+  }
+
+  function createReadStream(p, options) {
+    const fullPath = getFullPath(p);
+    return fs.createReadStream(fullPath, options);
+  }
+
+  return { metadata, getInfos, createReadStream };
 };
 
 function splitPath(p) {
@@ -82,7 +102,7 @@ async function vroot(roots) {
 }
 
 async function infos(fullPath) {
-  const stats = await fs.lstat(fullPath);
+  const stats = await fs.promises.lstat(fullPath);
 
   const result = {
     atime     : stats.atimeMs,
