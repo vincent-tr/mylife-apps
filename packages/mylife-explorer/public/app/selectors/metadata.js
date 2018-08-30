@@ -2,6 +2,7 @@
 
 export const getMetadataPath    = state => state.metadata && state.metadata.path;
 export const getMetadataType    = state => state.metadata && state.metadata.type;
+export const getMetadataMime    = state => state.metadata && state.metadata.mime;
 export const getMetadataNodes   = state => state.metadata && state.metadata.nodes;
 export const getMetadataContent = state => state.metadata && sortContent(state.metadata.content);
 
