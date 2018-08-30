@@ -1,10 +1,10 @@
 'use strict';
 
-import React               from 'react';
-import PropTypes           from 'prop-types';
-import { connect }         from 'react-redux';
+import React                                from 'react';
+import PropTypes                            from 'prop-types';
+import { connect }                          from 'react-redux';
 import { getMetadataPath, getMetadataMime } from '../../selectors/metadata';
-import { formatContentURL } from '../utils';
+import { formatContentURL }                 from '../utils';
 
 const styles = {
   container : {
