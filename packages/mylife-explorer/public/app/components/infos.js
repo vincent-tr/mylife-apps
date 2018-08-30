@@ -1,10 +1,10 @@
 'use strict';
 
-import React              from 'react';
-import PropTypes          from 'prop-types';
-import { List, Icon, Header }       from 'semantic-ui-react';
-import { connect }          from 'react-redux';
-import { getMetadataInfos } from '../selectors/metadata';
+import React                      from 'react';
+import PropTypes                  from 'prop-types';
+import { List, Icon, Header }     from 'semantic-ui-react';
+import { connect }                from 'react-redux';
+import { getMetadataInfos }       from '../selectors/metadata';
 import { formatSize, formatDate } from './utils';
 import { getTypeInfo }            from './types';
 
