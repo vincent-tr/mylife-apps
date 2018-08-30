@@ -2,13 +2,14 @@
 
 import Default     from './default';
 import Directory   from './directory';
+import Video       from './video';
 
 const types = {
   unknown   : { icon : 'file outline',           Component : Default },
   directory : { icon : 'folder',                 Component : Directory },
   mimetext  : { icon : 'file alternate outline', Component : Default },
   mimeimage : { icon : 'file image outline',     Component : Default },
-  mimevideo : { icon : 'file video outline',     Component : Default },
+  mimevideo : { icon : 'file video outline',     Component : Video },
   mimeaudio : { icon : 'file audio outline',     Component : Default },
 };
 

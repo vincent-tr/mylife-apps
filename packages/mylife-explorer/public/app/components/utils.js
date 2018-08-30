@@ -23,3 +23,6 @@ export function formatPath(... parts) {
   return '/' + nodes.join('/');
 }
 
+export function formatContentURL(path) {
+  return formatPath('/api/content', path);
+}
