@@ -1,12 +1,13 @@
 'use strict';
 
-import React                  from 'react';
-import PropTypes              from 'prop-types';
-import { connect }            from 'react-redux';
-import { Icon, Table } from 'semantic-ui-react';
+import React                                   from 'react';
+import PropTypes                               from 'prop-types';
+import { connect }                             from 'react-redux';
+import { Icon, Table }                         from 'semantic-ui-react';
 import { getMetadataContent, getMetadataPath } from '../../selectors/metadata';
-import { getTypeInfo } from './';
-import { navigate }         from '../../actions/navigation';
+import { getTypeInfo }                         from './';
+import { navigate }                            from '../../actions/navigation';
+import { formatSize, formatDate, formatPath }  from '../utils';
 
 const styles = {
   table : {
@@ -47,7 +48,7 @@ const Directory = ({ path, content, navigate }) => (
       {content.map(({ name, mtime, size, type, mime }) => (
         <Table.Row key={name} onClick={() => navigate(formatPath(path, name))} style={styles.row}>
           <Table.Cell><Icon name={getTypeInfo({ type, mime }).icon} /> {name}</Table.Cell>
-          <Table.Cell>{(new Date(mtime)).toLocaleString('fr-FR')}</Table.Cell>
+          <Table.Cell>{formatDate(mtime)}</Table.Cell>
           <Table.Cell>{formatSize(size)}</Table.Cell>
         </Table.Row>
       ))}
@@ -76,22 +77,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Directory);
-
-function formatPath(... parts) {
-  const nodes = [];
-  for(const part of parts) {
-    nodes.push(...part.split('/').filter(n => n));
-  }
-  return '/' + nodes.join('/');
-}
-
-function formatSize(size) {
-  let i = -1;
-  const byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
-  do {
-    size = size / 1024;
-    i++;
-  } while (size > 1024);
-
-  return Math.max(size, 0.1).toFixed(1) + byteUnits[i];
-}
