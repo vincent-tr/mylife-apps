@@ -10,7 +10,7 @@ import { navigate }         from '../../actions/navigation';
 const Directory = ({ path, content, navigate }) => (
   <List>
     {content.map(({ name }) => (
-      <List.Item key={name} onClick={() => navigate(path + '/' + name)}>{name}</List.Item>
+      <List.Item key={name} onClick={() => navigate(formatPath(path, name))}>{name}</List.Item>
     ))}
   </List>
 );
@@ -36,3 +36,11 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Directory);
+
+function formatPath(... parts) {
+  const nodes = [];
+  for(const part of parts) {
+    nodes.push(...part.split('/').filter(n => n));
+  }
+  return '/' + nodes.join('/');
+}
