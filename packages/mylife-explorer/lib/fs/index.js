@@ -92,6 +92,10 @@ async function vroot(roots) {
 
   const list = result.content = [];
   for(const root of roots.values()) {
+    if(root.hidden) {
+      continue;
+    }
+
     list.push({
       name : root.name,
       ... await infos(root.path)
