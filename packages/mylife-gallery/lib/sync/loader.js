@@ -60,7 +60,7 @@ exports.unload = async function unload(cachePath, repository, items) {
 
   for(const { id } of items) {
     repository.removeItem(id);
-    await cacheDirectory.deleteFile(`${id}.png`);
+    await fs.unlink(path.join(cacheDirectory, `${id}.png`));
   }
 };
 
