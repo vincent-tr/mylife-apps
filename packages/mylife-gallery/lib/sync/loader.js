@@ -31,7 +31,7 @@ async function discoverDirectory(list, items, baseMetadata) {
   for(const file of items) {
     const { name, ext } = path.parse(file);
     const stat = await fs.lstat(file);
-    if(!stat.isFile() || !supportedExtensions.has(ext)) {
+    if(!stat.isFile() || !ext || !supportedExtensions.has(ext.toUpperCase())) {
       continue;
     }
 
