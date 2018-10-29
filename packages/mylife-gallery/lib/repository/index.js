@@ -31,6 +31,11 @@ exports.images = new class Images extends CRUDBase {
     const [ object ] = await data.find(this.name, { path });
     return object;
   }
+
+  async getByIId(iid) {
+    const [ object ] = await data.find(this.name, { iid });
+    return object;
+  }
 };
 
 exports.thumbnails = new class Thumbnails extends CRUDBase {
@@ -54,6 +59,10 @@ exports.close = async function close() {
   await data.close();
 };
 
-exports.wrapBinary = async function wrapBinary(buffer) {
+exports.wrapBinary = function wrapBinary(buffer) {
   return data.wrapBinary(buffer);
+};
+
+exports.unwrapBinary = function unwrapBinary(binary) {
+  return data.unwrapBinary(binary);
 };

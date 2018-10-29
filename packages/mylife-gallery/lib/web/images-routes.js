@@ -1,40 +1,38 @@
 'use strict';
 
-const express = require('express');
-const LRU     = require('lru-cache');
-const fs      = require('fs').promises;
+const path                   = require('path');
+const fs                     = require('fs').promises;
+const express                = require('express');
+const asyncHandler           = require('express-async-handler');
+const LRU                    = require('lru-cache');
+const config                 = require('../../conf/config');
+const { images, thumbnails, unwrapBinary } = require('../repository');
 
 const debug = require('debug')('mylife:gallery:web:image-routes');
 
-module.exports = (options, repository) => {
+module.exports = () => {
   const router = express.Router();
 
-  const rawCache = LRU({ max : options.rawCacheSize, length : cachenEntryLength });
-  const thumbnailCache = LRU({ max : options.thumbnailCacheSize, length : cachenEntryLength });
+  //const rawCache = LRU({ max : config.rawCacheSize, length : cachenEntryLength });
+  //const thumbnailCache = LRU({ max : config.thumbnailCacheSize, length : cachenEntryLength });
 
-  router.route('/raw/:id').get(async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { file } = repository.get(id);
-      await sendImage(res, rawCache, id, file.path, file.mime);
-    } catch(err) {
-      next(err);
-    }
-  });
+  router.route('/raw/:iid').get(asyncHandler(async (req, res) => {
+    const { iid } = req.params;
+    const { ipath, mime } = await images.getByIId(iid);
+    res.contentType(mime);
+    res.sendFile(path.join(config.gallery, ipath));
+  }));
 
-  router.route('/thumbnail/:id').get(async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { file } = repository.get(id);
-      await sendImage(res, thumbnailCache, id, file.thumbnail, 'image/png');
-    } catch(err) {
-      next(err);
-    }
-  });
+  router.route('/thumbnail/:iid').get(asyncHandler(async (req, res) => {
+    const { iid } = req.params;
+    const { content } = await thumbnails.getByIId(iid);
+    res.contentType('image/png');
+    res.send(unwrapBinary(content));
+  }));
 
   return router;
 };
-
+/*
 async function sendImage(res, cache, id, path, mime) {
   let content = cache.get(id);
   if(!content) {
@@ -50,3 +48,4 @@ async function sendImage(res, cache, id, path, mime) {
 function cachenEntryLength(item) {
   return item.length;
 }
+*/

@@ -8,12 +8,13 @@ const enableDestroy      = require('server-destroy');
 const createIndexRoutes  = require('./index-routes');
 const createImagesRoutes = require('./images-routes');
 const createApiRoutes    = require('./api-routes');
+const config             = require('../../conf/config');
 
 const debug = require('debug')('mylife:gallery:web:server');
 
 module.exports = class Server {
 
-  constructor(options, repository) {
+  constructor(options) {
     const app = express();
 
     if(options.dev) {
@@ -32,14 +33,14 @@ module.exports = class Server {
     app.use(express.static(publicDirectory, { index : false }));
 
     app.use(createIndexRoutes());
-    app.use('/images', createImagesRoutes(options, repository));
-    app.use('/api', createApiRoutes(repository));
+    app.use('/images', createImagesRoutes());
+    app.use('/api', createApiRoutes());
 
     this._server = http.Server(app);
     enableDestroy(this._server);
 
-    debug(`Start listening on port ${options.port}`);
-    this._server.listen(options.port);
+    debug(`Start listening on port ${config.port}`);
+    this._server.listen(config.port);
   }
 
   async close() {

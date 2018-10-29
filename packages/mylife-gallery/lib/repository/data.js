@@ -85,3 +85,8 @@ exports.wrapObjectID = function wrapObjectID(value) {
 exports.wrapBinary = function wrapBinary(buffer) {
   return new Binary(buffer, Binary.SUBTYPE_BYTE_ARRAY);
 };
+
+exports.unwrapBinary = function unwrapBinary(binary) {
+  const len = binary.length();
+  return binary.read(0, len);
+};

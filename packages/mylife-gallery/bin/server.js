@@ -1,21 +1,20 @@
 'use strict';
 
 const debug = require('debug')('mylife:gallery:bin:server');
-const configFile = require('../conf/config');
 const Server = require('../lib/server');
 
 const dev = process.argv.includes('--dev');
-const config = Object.assign({}, configFile, { dev });
+const options = { dev };
 
 let server;
 
 async function start() {
 
-  debug(`Starting server (config=${JSON.stringify(config)})`);
+  debug(`Starting server (options=${JSON.stringify(options)})`);
 
   try {
     server = new Server();
-    await server.init(config);
+    await server.init(options);
   } catch(err) {
     console.error('Error starting server', err); // eslint-disable-line no-console
     process.exit();

@@ -4,5 +4,6 @@
   "gallery" : "/Users/vincent/Desktop/gallery/source",
   "mongo": "mongodb://localhost:27017/mylife-gallery",
   "rawCacheSize" : 100000000,
-  "thumbnailCacheSize" : 10000000
+  "thumbnailCacheSize" : 10000000,
+  "useSyncServer" : false
 }
