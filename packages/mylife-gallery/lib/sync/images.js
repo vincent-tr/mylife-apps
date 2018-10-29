@@ -68,7 +68,15 @@ exports.create = async function create(album, ipath) {
   if(!metadata.tags) {
     metadata.tags = [];
   }
-  metadata.tags.push(... ipath.split('/').filter(node => node));
+
+  const nodes = ipath.split('/').filter(node => node);
+  nodes.pop(); // last is image name
+  nodes.shift(); // first is album
+  if(nodes.length) {
+    metadata.tags.push(... nodes);
+  }
+
+  const { name } = path.parse(ipath);
 
   const thm = {
     iid,
@@ -76,6 +84,7 @@ exports.create = async function create(album, ipath) {
   };
 
   const img = {
+    name,
     iid,
     ipath,
     album : album._id,

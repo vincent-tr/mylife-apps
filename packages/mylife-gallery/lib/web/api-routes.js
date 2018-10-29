@@ -16,7 +16,7 @@ module.exports = () => {
     const { name } = req.params;
     const album = await albums.getByName(name);
     const imgs = await images.listByAlbum(album._id);
-    res.json(imgs.map(({ iid, metadata }) => ({ id : iid, metadata })));
+    res.json(imgs.map(({ name, iid, metadata }) => ({ name, id : iid, album : album.name, ... metadata })));
   }));
 
   return router;
