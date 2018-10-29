@@ -27,8 +27,8 @@ exports.images = new class Images extends CRUDBase {
     return await data.find(this.name, { album: data.wrapObjectID(id) });
   }
 
-  async getByPath(path) {
-    const [ object ] = await data.find(this.name, { path });
+  async getByPath(ipath) {
+    const [ object ] = await data.find(this.name, { ipath });
     return object;
   }
 
