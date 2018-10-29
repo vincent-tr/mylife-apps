@@ -28,4 +28,6 @@ async function syncAlbum(album) {
   for(const ipath of add) {
     await images.create(album, ipath);
   }
+
+  await albums.aggregate(album);
 }

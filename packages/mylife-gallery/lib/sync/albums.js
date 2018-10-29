@@ -93,3 +93,15 @@ exports.create = async function create(name) {
   await albums.set(album);
   return album;
 };
+
+exports.aggregate = async function aggregate(album) {
+  debug(`Aggregate album ${album.name}`);
+
+  const imgs = await images.listByAlbum(album._id);
+  const first = imgs[0];
+
+  album.first = first.iid;
+  album.count = imgs.length;
+
+  await albums.set(album);
+};
