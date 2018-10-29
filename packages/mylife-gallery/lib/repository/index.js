@@ -8,6 +8,11 @@ exports.albums = new class Albums extends CRUDBase {
     super('albums');
   }
 
+  async getByName(name) {
+    const [ object ] = await data.find(this.name, { name });
+    return object;
+  }
+
   async list() {
     return await data.find(this.name, {});
   }
@@ -26,6 +31,10 @@ exports.images = new class Images extends CRUDBase {
 exports.thumbnails = new class Thumbnails extends CRUDBase {
   constructor() {
     super('thumbnails');
+  }
+
+  async listByMultipleIIds(iids) {
+    return await data.find(this.name, { iid : { $in : iids }});
   }
 
   // prefetchAlbum ?

@@ -55,8 +55,8 @@ exports.set = async function set(name, object) {
     return await collection.replaceOne({ _id : object._id }, object);
   }
 
-  debug(`Insert ${name} (id: ${object._id})`);
   object._id = new ObjectID();
+  debug(`Insert ${name} (id: ${object._id})`);
   return await collection.insertOne(object);
 };
 
