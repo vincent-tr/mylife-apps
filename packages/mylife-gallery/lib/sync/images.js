@@ -12,7 +12,7 @@ const debug = require('debug')('mylife:gallery:sync:images');
 async function fsList(album) {
   const list = [];
   const albumDirectory = path.join(config.gallery, album.name);
-  await fsListDir(list, albumDirectory, albumDirectory);
+  await fsListDir(list, albumDirectory);
   return list;
 }
 
@@ -29,18 +29,18 @@ exports.diff = async function diff(album) {
   return arrayDiff(dbl, fsl);
 };
 
-async function fsListDir(list, albumDirectory, directory) {
+async function fsListDir(list, directory) {
   for(const item of await directoryList(directory)) {
     const { ext } = path.parse(item);
     const stat = await fs.lstat(item);
 
     if(stat.isFile() && ext && supportedExtensions.has(ext.toLowerCase())) {
-      list.push(path.relative(albumDirectory, item));
+      list.push(path.relative(config.gallery, item));
       continue;
     }
 
     if(stat.isDirectory()) {
-      await fsListDir(list, albumDirectory, item);
+      await fsListDir(list, item);
     }
   }
 }
@@ -58,7 +58,7 @@ exports.delete = async function delete_(album, ipath) {
 exports.create = async function create(album, ipath) {
   debug(`Create image '${ipath}' of album '${album.name}'`);
 
-  const result = await load(path.join(config.gallery, album.name, ipath));
+  const result = await load(path.join(config.gallery, ipath));
   if(!result) {
     // loading failed
     return;
