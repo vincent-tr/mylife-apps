@@ -1,7 +1,7 @@
 {
   "port" : 8012,
-  "__gallery" : "/Volumes/share/Photos",
-  "gallery" : "/Users/vincent/Desktop/gallery/source",
+  "gallery" : "/Volumes/share/Photos",
+  "__gallery" : "/Users/vincent/Desktop/gallery/source",
   "mongo": "mongodb://localhost:27017/mylife-gallery",
   "rawCacheSize" : 100000000,
   "thumbnailCacheSize" : 10000000,
