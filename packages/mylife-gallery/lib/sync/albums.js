@@ -33,8 +33,8 @@ async function dbList() {
 
 exports.diff = async function diff() {
 
-  const fsl = new Set(await fsList());
-  const dbl = new Set(await dbList());
+  const fsl = await fsList();
+  const dbl = await dbList();
 
   return arrayDiff(dbl, fsl);
 };

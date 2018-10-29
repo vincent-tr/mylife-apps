@@ -20,5 +20,12 @@ exports.sync = async function() {
 };
 
 async function syncAlbum(album) {
+  const { add, remove } = await images.diff(album);
 
+  for(const ipath of remove) {
+    await images.delete(album, ipath);
+  }
+  for(const ipath of add) {
+    await images.create(album, ipath);
+  }
 }

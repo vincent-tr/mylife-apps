@@ -1,9 +1,9 @@
 'use strict';
 
-const { URL }                   = require('url');
-const { MongoClient, ObjectID } = require('mongodb');
-const debug                     = require('debug')('mylife:gallery:repository:data');
-const config                    = require('../../conf/config');
+const { URL }                           = require('url');
+const { MongoClient, ObjectID, Binary } = require('mongodb');
+const debug                             = require('debug')('mylife:gallery:repository:data');
+const config                            = require('../../conf/config');
 
 let client = null;
 let db = null;
@@ -80,4 +80,8 @@ async function find(name, query, options) {
 
 exports.wrapObjectID = function wrapObjectID(value) {
   return new ObjectID(value);
+};
+
+exports.wrapBinary = function wrapBinary(buffer) {
+  return new Binary(buffer, Binary.SUBTYPE_BYTE_ARRAY);
 };
