@@ -86,7 +86,7 @@ const Detail = ({ item, prev, next, close, move, classes }) => item && (
               } />
             </ListItem>
           )}
-          {item.tags && item.tags.length && (
+          {item.tags && !!item.tags.length && (
             <ListItem>
               <ListItemText primary='Tags' secondary={
                 <React.Fragment>
