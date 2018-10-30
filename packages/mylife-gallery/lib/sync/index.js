@@ -29,5 +29,7 @@ async function syncAlbum(album) {
     await images.create(album, ipath);
   }
 
-  await albums.aggregate(album);
+  if(add.length || remove.length) {
+    await albums.aggregate(album);
+  }
 }
