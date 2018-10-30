@@ -17,7 +17,7 @@ async function fsList() {
       continue;
     }
 
-    if(!findImage(item)) {
+    if(!await findImage(item)) {
       continue;
     }
 
