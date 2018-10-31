@@ -1,8 +1,9 @@
 'use strict';
 
-import React       from 'react';
-import PropTypes   from 'prop-types';
-import { connect } from 'react-redux';
+import React         from 'react';
+import PropTypes     from 'prop-types';
+import { connect }   from 'react-redux';
+import OrientedImage from './base/oriented-image';
 
 import { getDetail, getPrevDetail, getNextDetail } from '../selectors';
 import { hideDetail, showDetail } from '../actions/user';
@@ -53,7 +54,7 @@ const Detail = ({ item, prev, next, close, move, classes }) => item && (
   <Layout title={`${item.album || '(Indéfini)'} - ${item.name}`} onClose={close} noScroll={true}>
     <div className={classes.container}>
       <div className={classes.imageContainer}>
-        <img src={'/images/raw/' + item.id} className={classes.image} />
+        <OrientedImage src={'/images/raw/' + item.id} className={classes.image} />
       </div>
       <Paper square className={classes.panel}>
         <List>

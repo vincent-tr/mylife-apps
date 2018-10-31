@@ -46,6 +46,8 @@
     "connected-react-router": "^4.5.0",
     "eslint": "^5.8.0",
     "eslint-plugin-react": "^7.11.1",
+    "exif-js": "^2.3.0",
+    "exif2css": "^1.2.0",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "react": "^16.6.0",
