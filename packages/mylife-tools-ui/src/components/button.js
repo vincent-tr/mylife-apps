@@ -12,7 +12,7 @@ class Button extends React.Component {
   render() {
     const { primary, ...otherProps } = this.props;
     return (
-      <button className={primary ? 'primary' : 'secondary' } {...otherProps} onClick={() => console.log('click')} />
+      <button className={primary ? 'primary' : 'secondary' } {...otherProps} />
     );
   }
 }
