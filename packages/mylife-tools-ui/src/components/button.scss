@@ -1,3 +1,8 @@
+@import '../base/index';
+
 button {
-  margin: 10px
+  font-family: $font;
+  margin: 0.5em;
+  border: 1px solid $color-primary;
 }
+
