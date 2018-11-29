@@ -1,11 +1,12 @@
 'use strict';
 
+import 'normalize.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Button from '../src/components/button';
 
-import 'normalize.css';
 
 const App = () => (
   <Button>text</Button>
