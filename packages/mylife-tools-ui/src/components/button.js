@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import propTypes from 'prop-types';
 import './button.scss';
 
 class Button extends React.Component {
@@ -9,10 +10,19 @@ class Button extends React.Component {
   }
 
   render() {
+    const { primary, ...otherProps } = this.props;
     return (
-      <button {...this.props} />
+      <button className={primary ? 'primary' : 'secondary' } {...otherProps} onClick={() => console.log('click')} />
     );
   }
 }
+
+Button.propTypes = {
+  primary: propTypes.bool
+};
+
+Button.defaultProps = {
+  primary: false
+};
 
 export default Button;
