@@ -1,8 +1,18 @@
 @import '../base/index';
 
 button {
-  font-family: $font;
+  display: inline-block;
+  outline: none;
   margin: 0.5em;
-  border: 1px solid $color-primary;
-}
+  padding: 0.5em 1em;
 
+  font-family: $font;
+  border: 0.05em solid $color-primary;
+  color: $color-primary;
+  background-color: $color-background;
+
+  &:hover {
+    color: $color-background;
+    background-color: $color-primary;
+  }
+}
