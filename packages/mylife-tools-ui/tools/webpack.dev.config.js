@@ -2,6 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, '..', 'dist');
 const SRC_DIR   = path.resolve(__dirname, '..', 'src');
@@ -40,6 +41,9 @@ module.exports = {
             ],
           }
         }]
+      }, {
+        test: /\.(png|jpg|gif|svg|eot|woff|woff2|ttf)$/,
+        use: [ 'file-loader' ]
       }
     ]
   },
@@ -48,6 +52,9 @@ module.exports = {
       'process.env': {
         //DEBUG: JSON.stringify('mylife:tools:ui:*')
       }
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(DEMO_DIR, 'index.html')
     })
   ],
   devtool: 'eval'
