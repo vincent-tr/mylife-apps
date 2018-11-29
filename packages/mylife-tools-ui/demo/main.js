@@ -5,8 +5,10 @@ import ReactDOM from 'react-dom';
 
 import Button from '../src/components/button';
 
+import 'normalize.css';
+
 const App = () => (
-  <Button />
+  <Button>text</Button>
 )
 
 ReactDOM.render(

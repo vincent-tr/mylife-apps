@@ -16,14 +16,20 @@ module.exports = {
   },
   module : {
     rules : [{
-      test: /\.scss$/,
+      test: /\.css$/,
       use: [
-          'style-loader', // creates style nodes from JS strings
-          'css-loader', // translates CSS into CommonJS
-          'sass-loader' // compiles Sass to CSS, using Node Sass by default
+        'style-loader',
+        'css-loader'
       ]
     }, {
-        test : /\.js/,
+      test: /\.scss$/,
+      use: [
+        'style-loader', // creates style nodes from JS strings
+        'css-loader', // translates CSS into CommonJS
+        'sass-loader' // compiles Sass to CSS, using Node Sass by default
+      ]
+    }, {
+        test : /\.js$/,
         use : [{
           loader : 'babel-loader',
           //include : [ DEMO_DIR, SRC_DIR ],
