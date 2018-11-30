@@ -1,7 +1,8 @@
 'use strict';
 
 import 'normalize.css';
-import "ubuntu-fontface/_ubuntu-base.scss";
+import 'ubuntu-fontface/_ubuntu-base.scss';
+import '../src/main.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
