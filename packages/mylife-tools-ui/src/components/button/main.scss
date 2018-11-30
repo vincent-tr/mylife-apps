@@ -1,9 +1,10 @@
+$button-margin: 0.5em;
 
 button {
 
   display: inline-block;
   outline: none;
-  margin: 0.5em;
+  margin: $button-margin;
   padding: 0.5em 1em;
 
   border-style: solid;
