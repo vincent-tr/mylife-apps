@@ -1,6 +1,7 @@
 @import '../base/index';
 
-@mixin button-base() {
+button {
+
   display: inline-block;
   outline: none;
   margin: 0.5em;
@@ -10,11 +11,9 @@
 
   border-style: solid;
   border-width: 0.05em;
-}
 
-button {
+
   &.primary {
-    @include button-base();
 
     border-color: $color-primary;
     color: $color-background;
@@ -32,7 +31,6 @@ button {
   }
 
   &.secondary {
-    @include button-base();
 
     border-color: $color-primary;
     color: $color-primary;
