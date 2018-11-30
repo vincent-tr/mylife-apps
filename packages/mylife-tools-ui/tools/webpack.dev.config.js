@@ -39,6 +39,9 @@ module.exports = {
               [ '@babel/env', { targets : 'last 2 versions' } ],
               '@babel/react'
             ],
+            plugins: [
+              '@babel/plugin-proposal-export-default-from'
+            ]
           }
         }]
       }, {
