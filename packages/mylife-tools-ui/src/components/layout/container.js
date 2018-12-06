@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Container = ({ children }) => (
-  <div className={'layout-container'}>
+  <div className='layout-container'>
     {children}
   </div>
 );
