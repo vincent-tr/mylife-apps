@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Header = ({ appName, appIcon, viewIcon, viewName }) => (
-  <div>
+  <div className={'layout-header'}>
     {appIcon}
     {appName}
     {viewIcon}

@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Footer = ({ children }) => (
-  <div>
+  <div className={'layout-footer'}>
     {children}
   </div>
 );

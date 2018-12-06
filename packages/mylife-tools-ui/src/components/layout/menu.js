@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Menu = ({ items }) => (
-  <div>
+  <div className={'layout-menu'}>
     {JSON.stringify(items)}
   </div>
 );

@@ -1,0 +1,54 @@
+@mixin base() {
+  border-color: $color-primary;
+  border-width: $border-width;
+  border-style: $border-style;
+  color: $color-primary;
+  background-color: $color-background;
+}
+
+div {
+
+  &.layout-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: $color-background;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "menu content"
+      "footer footer";
+    align-content: stretch;
+  }
+
+  &.layout-header {
+    @include base();
+
+    grid-area: header;
+    align-self: auto;
+  }
+
+  &.layout-footer {
+    @include base();
+
+    grid-area: footer;
+  }
+
+  &.layout-menu {
+    @include base();
+
+    grid-area: menu;
+  }
+
+  &.layout-content {
+    @include base();
+
+    grid-area: content;
+  }
+}
