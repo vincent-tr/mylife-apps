@@ -1,7 +1,4 @@
 @mixin base() {
-  border-color: $color-primary;
-  border-width: $border-width;
-  border-style: $border-style;
   color: $color-primary;
   background-color: $color-background;
 }
@@ -30,18 +27,23 @@ div {
   &.layout-header {
     @include base();
 
+    border-bottom: $border-width $border-style $color-primary;
+
     grid-area: header;
-    align-self: auto;
   }
 
   &.layout-footer {
     @include base();
+
+    border-top: $border-width $border-style $color-primary;
 
     grid-area: footer;
   }
 
   &.layout-menu {
     @include base();
+
+    border-right: $border-width $border-style $color-primary;
 
     grid-area: menu;
   }
