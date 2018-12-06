@@ -10,8 +10,8 @@ const Header = ({ appName, appIcon, viewIcon, viewName }) => (
       <div className='text'>{appName}</div>
     </div>
     <div className='view'>
-      {viewIcon}
-      {viewName}
+      <div className='icon'>{viewIcon}</div>
+      <div className='text'>{viewName}</div>
     </div>
   </div>
 );

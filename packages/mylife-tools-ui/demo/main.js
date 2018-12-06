@@ -8,8 +8,8 @@ import icon from './icon.ico';
 const App = () => (
   <Layout appName={<h1>Demo</h1>}
           appIcon={<img src={icon} style={{objectFit: 'scale-down', height: '100%', width: '100%'}}/>}
-          viewName={'Components'}
-          viewIcon={'Icon'}
+          viewName={<h2>Components</h2>}
+          viewIcon={<img src={icon} style={{objectFit: 'scale-down', height: '100%', width: '100%'}}/>}
           menu={[{
             id: 'item1',
             text: 'item1',

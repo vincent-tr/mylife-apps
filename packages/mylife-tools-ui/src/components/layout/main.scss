@@ -31,24 +31,26 @@ div {
       grid-area: header;
       display: flex;
 
+      padding: 0.4em;
+      height: 3.8em;
+
       &> .app {
 
         display: flex;
-        margin: 0.4em;
-        height: 3em;
 
         &> .icon {
           order: 1;
 
           width: 3em;
-          margin-left:1em;
-          margin-right:1em;
+          margin-left: 1em;
+          margin-right: 1em;
         }
 
         &> .text {
           order: 2;
 
-          display:flex;
+          margin-right: 1em;
+          display: flex;
           align-items: center;
           justify-content: center;
         }
@@ -57,6 +59,26 @@ div {
       &> .view {
         flex-grow: 1;
         flex-shrink: 1;
+
+        display: flex;
+        justify-content: center;
+
+        &> .icon {
+          order: 1;
+
+          width: 3em;
+          margin-left: 1em;
+          margin-right: 1em;
+        }
+
+        &> .text {
+          order: 2;
+
+          margin-right: 1em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
     }
 
