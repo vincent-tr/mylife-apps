@@ -2,6 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, '..', 'dist');
@@ -13,7 +14,7 @@ module.exports = {
   entry: [ 'babel-polyfill', DEMO_DIR + '/main.js' ],
   output: {
     path: BUILD_DIR,
-    filename: 'bundle.js'
+    filename: '[name].[contenthash].js'
   },
   module : {
     rules : [{
@@ -51,6 +52,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin([ BUILD_DIR ]),
     new webpack.DefinePlugin({
       'process.env': {
         //DEBUG: JSON.stringify('mylife:tools:ui:*')
