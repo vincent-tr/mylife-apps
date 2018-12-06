@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class Button extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Button extends React.Component {
 }
 
 Button.propTypes = {
-  primary: propTypes.bool
+  primary: PropTypes.bool
 };
 
 Button.defaultProps = {

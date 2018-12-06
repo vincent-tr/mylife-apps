@@ -5,3 +5,4 @@ import 'ubuntu-fontface/_ubuntu-base.scss';
 import '../src/main.scss';
 
 export * from './components/button';
+export * from './components/layout';
