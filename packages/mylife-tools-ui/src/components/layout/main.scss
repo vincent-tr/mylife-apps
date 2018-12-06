@@ -29,6 +29,35 @@ div {
       border-bottom: $border-width $border-style $color-primary;
 
       grid-area: header;
+      display: flex;
+
+      &> .app {
+
+        display: flex;
+        margin: 0.4em;
+        height: 3em;
+
+        &> .icon {
+          order: 1;
+
+          width: 3em;
+          margin-left:1em;
+          margin-right:1em;
+        }
+
+        &> .text {
+          order: 2;
+
+          display:flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      &> .view {
+        flex-grow: 1;
+        flex-shrink: 1;
+      }
     }
 
     &> .footer {
