@@ -22,35 +22,35 @@ div {
       "menu content"
       "footer footer";
     align-content: stretch;
-  }
 
-  &.layout-header {
-    @include base();
+    &> .header {
+      @include base();
 
-    border-bottom: $border-width $border-style $color-primary;
+      border-bottom: $border-width $border-style $color-primary;
 
-    grid-area: header;
-  }
+      grid-area: header;
+    }
 
-  &.layout-footer {
-    @include base();
+    &> .footer {
+      @include base();
 
-    border-top: $border-width $border-style $color-primary;
+      border-top: $border-width $border-style $color-primary;
 
-    grid-area: footer;
-  }
+      grid-area: footer;
+    }
 
-  &.layout-menu {
-    @include base();
+    &> .menu {
+      @include base();
 
-    border-right: $border-width $border-style $color-primary;
+      border-right: $border-width $border-style $color-primary;
 
-    grid-area: menu;
-  }
+      grid-area: menu;
+    }
 
-  &.layout-content {
-    @include base();
+    &> .content {
+      @include base();
 
-    grid-area: content;
+      grid-area: content;
+    }
   }
 }

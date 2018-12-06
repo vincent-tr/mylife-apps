@@ -4,11 +4,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Header = ({ appName, appIcon, viewIcon, viewName }) => (
-  <div className='layout-header'>
     {appIcon}
     {appName}
     {viewIcon}
     {viewName}
+  <div className='header'>
   </div>
 );
 
