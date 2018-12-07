@@ -18,67 +18,67 @@ div {
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
-      "header header"
+      "logo header"
       "menu content"
       "footer footer";
     align-content: stretch;
+
+    &> .logo {
+      @include base();
+
+      border-bottom: $border-width $border-style $color-primary;
+      padding: 0.4em;
+      height: 3.8em;
+
+      grid-area: logo;
+
+      display: flex;
+
+      &> .icon {
+        order: 1;
+
+        width: 3em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      &> .text {
+        order: 2;
+
+        margin-right: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
 
     &> .header {
       @include base();
 
       border-bottom: $border-width $border-style $color-primary;
-
-      grid-area: header;
-      display: flex;
-
       padding: 0.4em;
       height: 3.8em;
 
-      &> .app {
+      grid-area: header;
 
-        display: flex;
+      display: flex;
+      justify-content: center;
 
-        &> .icon {
-          order: 1;
+      &> .icon {
+        order: 1;
 
-          width: 3em;
-          margin-left: 1em;
-          margin-right: 1em;
-        }
-
-        &> .text {
-          order: 2;
-
-          margin-right: 1em;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+        width: 3em;
+        margin-left: 1em;
+        margin-right: 1em;
       }
 
-      &> .view {
-        flex-grow: 1;
-        flex-shrink: 1;
+      &> .text {
+        order: 2;
 
+        margin-right: 1em;
         display: flex;
+        align-items: center;
         justify-content: center;
-
-        &> .icon {
-          order: 1;
-
-          width: 3em;
-          margin-left: 1em;
-          margin-right: 1em;
-        }
-
-        &> .text {
-          order: 2;
-
-          margin-right: 1em;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
       }
     }
 

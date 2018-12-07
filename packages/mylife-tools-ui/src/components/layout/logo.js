@@ -3,16 +3,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Header = ({ icon, name }) => (
-  <div className='header'>
+const Logo = ({ name, icon }) => (
+  <div className='logo'>
     <div className='icon'>{icon}</div>
     <div className='text'>{name}</div>
   </div>
 );
 
-Header.propTypes = {
+Logo.propTypes = {
   icon: PropTypes.node.isRequired,
   name: PropTypes.node.isRequired,
 };
 
-export default Header;
+
+export default Logo;

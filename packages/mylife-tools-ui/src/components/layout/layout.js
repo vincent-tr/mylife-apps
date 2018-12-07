@@ -2,20 +2,24 @@
 
 import React from 'react';
 
+import Logo from './logo';
 import Header from './header';
 import Footer from './footer';
 import Menu from './menu';
 import Content from './content';
 import Container from './container';
 
-const Layout = ({ appIcon, appName, viewIcon, viewName, menu, children }) => (
+const Layout = ({ appIcon, appName, viewIcon, viewName, menu, children, footer }) => (
   <Container>
-    <Header appIcon={appIcon} appName={appName} viewIcon={viewIcon} viewName={viewName} />
+  <Logo icon={appIcon} name={appName} />
+    <Header icon={viewIcon} name={viewName} />
     <Menu items={menu} />
     <Content>
       {children}
     </Content>
-    <Footer />
+    <Footer>
+      {footer}
+    </Footer>
   </Container>
 );
 
@@ -26,6 +30,7 @@ Layout.propTypes = {
   viewName : Header.propTypes.viewName,
   menu     : Menu.propTypes.items,
   children : Content.propTypes.children,
+  footer   : Footer.propTypes.children,
 };
 
 export default Layout;

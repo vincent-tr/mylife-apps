@@ -15,7 +15,8 @@ const App = () => (
             text: 'item1',
             icon: null,
             onClick: id => console.log('menu click', id)
-          }]}>
+          }]}
+          footer={'footer'}>
     <div>
       <Button primary>primary</Button>
       <Button>secondary</Button>
