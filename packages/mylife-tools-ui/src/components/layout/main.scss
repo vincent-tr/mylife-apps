@@ -3,6 +3,24 @@
   background-color: $color-background;
 }
 
+@mixin header() {
+  border-bottom: $border-width $border-style $color-primary;
+  padding: 0.4em;
+  height: 3.8em;
+}
+
+@mixin header-icon() {
+  width: 3em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+@mixin header-text() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 div {
 
   &.layout-container {
@@ -25,39 +43,28 @@ div {
 
     &> .logo {
       @include base();
-
-      border-bottom: $border-width $border-style $color-primary;
-      padding: 0.4em;
-      height: 3.8em;
+      @include header();
 
       grid-area: logo;
 
       display: flex;
 
       &> .icon {
-        order: 1;
+        @include header-icon();
 
-        width: 3em;
-        margin-left: 1em;
-        margin-right: 1em;
+        order: 1;
       }
 
       &> .text {
-        order: 2;
+        @include header-text();
 
-        margin-right: 1em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        order: 2;
       }
     }
 
     &> .header {
       @include base();
-
-      border-bottom: $border-width $border-style $color-primary;
-      padding: 0.4em;
-      height: 3.8em;
+      @include header();
 
       grid-area: header;
 
@@ -65,20 +72,15 @@ div {
       justify-content: center;
 
       &> .icon {
-        order: 1;
+        @include header-icon();
 
-        width: 3em;
-        margin-left: 1em;
-        margin-right: 1em;
+        order: 1;
       }
 
       &> .text {
-        order: 2;
+        @include header-text();
 
-        margin-right: 1em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        order: 2;
       }
     }
 
