@@ -2,15 +2,15 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Layout, Button } from '../src';
+import { Layout, Button, Icon } from '../src';
 import icon from './icon.ico';
 
 const App = () => (
   <Layout logoName={<h1>Demo</h1>}
-          logoIcon={<img draggable={false} src={icon} style={{objectFit: 'scale-down', height: '100%', width: '100%'}}/>}
+          logoIcon={<Icon src={icon}/>}
           logoOnClick={() => console.log('onLogoClick')}
           viewName={<h2>Components</h2>}
-          viewIcon={<img draggable={false} src={icon} style={{objectFit: 'scale-down', height: '100%', width: '100%'}}/>}
+          viewIcon={<Icon src={icon}/>}
           menu={[{
             id: 'item1',
             text: 'item1',
