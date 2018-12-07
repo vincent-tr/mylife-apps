@@ -4,6 +4,7 @@
 }
 
 @import './header.scss';
+@import './menu.scss';
 
 div {
 
@@ -39,6 +40,17 @@ div {
       grid-area: menu;
 
       border-right: $border-width $border-style $color-primary;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+
+      &> .header {
+
+      }
+
+      &> .item {
+
+      }
     }
 
     &> .content {
