@@ -8,6 +8,14 @@ $button-margin: 0.5em;
 
   border-style: $border-style;
   border-width: $border-width;
+
+  &:not([disabled]) {
+    @include cursor-clickable();
+  }
+
+  &:disabled {
+    @include cursor-disabled();
+  }
 }
 
 button {
@@ -18,12 +26,12 @@ button {
     color: $color-background;
     background-color: $color-primary;
 
-    &:hover, &:focus {
+    &:hover:not([disabled]), &:focus:not([disabled]) {
       border-color: $color-secondary;
       background-color: $color-secondary;
     }
 
-    &:active {
+    &:active:not([disabled]) {
       color: $color-primary;
       background-color: $color-background;
     }
@@ -36,12 +44,12 @@ button {
     color: $color-primary;
     background-color: $color-background;
 
-    &:hover, &:focus {
+    &:hover:not([disabled]), &:focus:not([disabled]) {
       border-color: $color-secondary;
       color: $color-secondary;
     }
 
-    &:active {
+    &:active:not([disabled]) {
       color: $color-background;
       background-color: $color-primary;
     }

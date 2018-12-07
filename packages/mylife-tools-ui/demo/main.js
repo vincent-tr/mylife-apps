@@ -21,6 +21,8 @@ const App = () => (
     <div>
       <Button primary>primary</Button>
       <Button>secondary</Button>
+      <Button disabled primary>disabled primary</Button>
+      <Button disabled>disabled secondary</Button>
     </div>
   </Layout>
 )

@@ -1,7 +1,7 @@
-.cursor-clickable {
+@mixin cursor-clickable() {
   cursor: pointer;
 }
 
-.cursor-disabled {
+@mixin cursor-disabled() {
   cursor: not-allowed;
 }

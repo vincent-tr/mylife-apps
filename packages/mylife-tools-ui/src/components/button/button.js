@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 class Button extends React.Component {
   constructor(props) {
@@ -9,19 +10,21 @@ class Button extends React.Component {
   }
 
   render() {
-    const { primary, ...otherProps } = this.props;
+    const { primary, disabled, ...otherProps } = this.props;
     return (
-      <button className={primary ? 'primary' : 'secondary' } {...otherProps} />
+      <button disabled={disabled} className={classNames({ primary, secondary: !primary })} {...otherProps} />
     );
   }
 }
 
 Button.propTypes = {
-  primary: PropTypes.bool
+  primary: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 Button.defaultProps = {
-  primary: false
+  primary: false,
+  disabled: false
 };
 
 export default Button;

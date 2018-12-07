@@ -45,6 +45,10 @@ div {
       @include base();
       @include header();
 
+      &.clickable {
+        @include cursor-clickable();
+      }
+
       grid-area: logo;
 
       display: flex;
