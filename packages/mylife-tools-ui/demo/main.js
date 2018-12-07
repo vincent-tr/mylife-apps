@@ -7,7 +7,7 @@ import icon from './icon.ico';
 
 const menuClick = id => console.log('menu click', id);
 const menu = [
-  { id: 'header1', text: 'Header 1', icon: null, type: 'header', onClick: menuClick },
+  { id: 'header1', text: 'Header 1', icon: null, type: 'header' },
   { id: 'item11', text: 'Item 1.1', icon: null, type: 'item', onClick: menuClick },
   { id: 'item12', text: 'Item 1.2', icon: null, type: 'item', onClick: menuClick },
   { id: 'header2', text: 'Header 2', icon: null, type: 'header', onClick: menuClick },
