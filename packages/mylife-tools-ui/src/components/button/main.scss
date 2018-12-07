@@ -1,7 +1,6 @@
 $button-margin: 0.5em;
 
-button {
-
+@mixin base() {
   display: inline-block;
   outline: none;
   margin: $button-margin;
@@ -9,8 +8,11 @@ button {
 
   border-style: $border-style;
   border-width: $border-width;
+}
 
+button {
   &.primary {
+    @include base();
 
     border-color: $color-primary;
     color: $color-background;
@@ -28,6 +30,7 @@ button {
   }
 
   &.secondary {
+    @include base();
 
     border-color: $color-primary;
     color: $color-primary;
