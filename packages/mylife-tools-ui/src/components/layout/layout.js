@@ -9,9 +9,9 @@ import Menu from './menu';
 import Content from './content';
 import Container from './container';
 
-const Layout = ({ appIcon, appName, viewIcon, viewName, menu, children, footer }) => (
+const Layout = ({ logoIcon, logoName, viewIcon, viewName, menu, children, footer, logoOnClick }) => (
   <Container>
-  <Logo icon={appIcon} name={appName} />
+  <Logo icon={logoIcon} name={logoName} onClick={logoOnClick} />
     <Header icon={viewIcon} name={viewName} />
     <Menu items={menu} />
     <Content>
@@ -24,13 +24,14 @@ const Layout = ({ appIcon, appName, viewIcon, viewName, menu, children, footer }
 );
 
 Layout.propTypes = {
-  appIcon  : Header.propTypes.appIcon,
-  appName  : Header.propTypes.appName,
-  viewIcon : Header.propTypes.viewIcon,
-  viewName : Header.propTypes.viewName,
-  menu     : Menu.propTypes.items,
-  children : Content.propTypes.children,
-  footer   : Footer.propTypes.children,
+  logoIcon    : Logo.propTypes.icon,
+  logoName    : Logo.propTypes.name,
+  viewIcon    : Header.propTypes.icon,
+  viewName    : Header.propTypes.name,
+  menu        : Menu.propTypes.items,
+  children    : Content.propTypes.children,
+  footer      : Footer.propTypes.children,
+  logoOnClick : Logo.propTypes.onClick
 };
 
 export default Layout;

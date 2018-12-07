@@ -6,8 +6,9 @@ import { Layout, Button } from '../src';
 import icon from './icon.ico';
 
 const App = () => (
-  <Layout appName={<h1>Demo</h1>}
-          appIcon={<img src={icon} style={{objectFit: 'scale-down', height: '100%', width: '100%'}}/>}
+  <Layout logoName={<h1>Demo</h1>}
+          logoIcon={<img src={icon} style={{objectFit: 'scale-down', height: '100%', width: '100%'}}/>}
+          logoOnClick={() => console.log('onLogoClick')}
           viewName={<h2>Components</h2>}
           viewIcon={<img src={icon} style={{objectFit: 'scale-down', height: '100%', width: '100%'}}/>}
           menu={[{
