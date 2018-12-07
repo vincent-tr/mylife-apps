@@ -3,23 +3,7 @@
   background-color: $color-background;
 }
 
-@mixin header() {
-  border-bottom: $border-width $border-style $color-primary;
-  padding: 0.4em;
-  height: 3.8em;
-}
-
-@mixin header-icon() {
-  width: 3em;
-  margin-left: 1em;
-  margin-right: 1em;
-}
-
-@mixin header-text() {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+@import './header.scss';
 
 div {
 
@@ -41,67 +25,20 @@ div {
       "footer footer";
     align-content: stretch;
 
-    &> .logo {
-      @include base();
-      @include header();
-
-      &.clickable {
-        @include cursor-clickable();
-      }
-
-      grid-area: logo;
-
-      display: flex;
-
-      &> .icon {
-        @include header-icon();
-
-        order: 1;
-      }
-
-      &> .text {
-        @include header-text();
-
-        order: 2;
-      }
-    }
-
-    &> .header {
-      @include base();
-      @include header();
-
-      grid-area: header;
-
-      display: flex;
-      justify-content: center;
-
-      &> .icon {
-        @include header-icon();
-
-        order: 1;
-      }
-
-      &> .text {
-        @include header-text();
-
-        order: 2;
-      }
-    }
-
     &> .footer {
       @include base();
 
-      border-top: $border-width $border-style $color-primary;
-
       grid-area: footer;
+
+      border-top: $border-width $border-style $color-primary;
     }
 
     &> .menu {
       @include base();
 
-      border-right: $border-width $border-style $color-primary;
-
       grid-area: menu;
+
+      border-right: $border-width $border-style $color-primary;
     }
 
     &> .content {
