@@ -32,6 +32,8 @@ div {
       grid-area: footer;
 
       border-top: $border-width $border-style $color-primary;
+
+      display: flex;
     }
 
     &> .menu {

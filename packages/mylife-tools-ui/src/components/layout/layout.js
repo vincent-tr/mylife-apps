@@ -17,9 +17,9 @@ const Layout = ({ logoIcon, logoName, viewIcon, viewName, menu, children, footer
     <Content>
       {children}
     </Content>
-    <Footer>
+    {footer && <Footer>
       {footer}
-    </Footer>
+    </Footer>}
   </Container>
 );
 
