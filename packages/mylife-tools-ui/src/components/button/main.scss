@@ -15,6 +15,7 @@ $button-margin: 0.5em;
 
   &:disabled {
     @include cursor-disabled();
+    opacity: 0.4;
   }
 }
 
