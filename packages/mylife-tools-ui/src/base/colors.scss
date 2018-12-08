@@ -1,3 +1,8 @@
 $color-primary: #4da6ff;
 $color-secondary: #0073e6;
 $color-background: #ffffff;
+$opacity-disabled: 0.4;
+
+$color-divider: rgba($color-primary, 0.2);
+$color-primary-disabled: rgba($color-primary, $opacity-disabled);
+$color-secondary-disabled: rgba($color-secondary, $opacity-disabled);

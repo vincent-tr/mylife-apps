@@ -1,5 +1,5 @@
 @mixin header() {
-  border-bottom: $border-width $border-style $color-primary;
+  border-bottom: $border-width $border-style $color-divider;
   padding: 0.4em;
   height: 3.8em;
 }

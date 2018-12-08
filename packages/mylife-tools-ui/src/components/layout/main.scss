@@ -31,28 +31,9 @@ div {
 
       grid-area: footer;
 
-      border-top: $border-width $border-style $color-primary;
+      border-top: $border-width $border-style $color-divider;
 
       display: flex;
-    }
-
-    &> .menu {
-      @include base();
-
-      grid-area: menu;
-
-      border-right: $border-width $border-style $color-primary;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-
-      &> .header {
-
-      }
-
-      &> .item {
-
-      }
     }
 
     &> .content {
