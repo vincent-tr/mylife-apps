@@ -1,43 +1,51 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true,
-        "mocha": true
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
-    "parserOptions": {
-        "ecmaVersion" : 2017,
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        },
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
     ],
-    "rules": {
-        "indent": [
-            "error",
-            2,
-            { "SwitchCase": 1 }
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "react/prop-types": [
-            2,
-            { "ignore": ["muiTheme"] }
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "react/prop-types": [
+      2,
+      {
+        "ignore": [
+          "muiTheme"
         ]
-    }
+      }
+    ]
+  }
 }
