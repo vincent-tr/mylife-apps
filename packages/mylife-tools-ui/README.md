@@ -19,3 +19,14 @@ MyLife Tools UI
 
 #### tablette :
 * ???
+
+## react/redux notes
+
+* Redux actions+thunk+promise
+* Dossiers par feature plutôt que components constantes etc
+* Plusieurs fichiers constante
+
+* Babel class properties plugin
+* Bind avec props en arrow
+
+* Eslint/format
