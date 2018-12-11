@@ -28,5 +28,3 @@ MyLife Tools UI
 
 * Babel class properties plugin
 * Bind avec props en arrow
-
-* Eslint/format
