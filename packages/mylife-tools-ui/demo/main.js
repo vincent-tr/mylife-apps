@@ -17,12 +17,12 @@ const menu = [
 
 const App = () => (
   <Layout logoName={<h1>Demo</h1>}
-          logoIcon={<Icon src={icon}/>}
-          logoOnClick={() => console.log('onLogoClick')}
-          viewName={<h2>Components</h2>}
-          viewIcon={<Icon src={icon}/>}
-          menu={menu}
-          footer={'footer'}>
+    logoIcon={<Icon src={icon}/>}
+    logoOnClick={() => console.log('onLogoClick')}
+    viewName={<h2>Components</h2>}
+    viewIcon={<Icon src={icon}/>}
+    menu={menu}
+    footer={'footer'}>
     <div>
       <Button primary>primary</Button>
       <Button>secondary</Button>
@@ -30,7 +30,7 @@ const App = () => (
       <Button disabled>disabled secondary</Button>
     </div>
   </Layout>
-)
+);
 
 ReactDOM.render(
   <App/>,

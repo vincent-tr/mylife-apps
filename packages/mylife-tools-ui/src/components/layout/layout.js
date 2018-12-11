@@ -11,7 +11,7 @@ import Container from './container';
 
 const Layout = ({ logoIcon, logoName, viewIcon, viewName, menu, children, footer, logoOnClick }) => (
   <Container>
-  <Logo icon={logoIcon} name={logoName} onClick={logoOnClick} />
+    <Logo icon={logoIcon} name={logoName} onClick={logoOnClick} />
     <Header icon={viewIcon} name={viewName} />
     <Menu items={menu} />
     <Content>
