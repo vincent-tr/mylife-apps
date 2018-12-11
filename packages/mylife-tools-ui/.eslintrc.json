@@ -1,4 +1,12 @@
 {
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
   "env": {
     "browser": true,
     "es6": true,
@@ -9,13 +17,6 @@
     "eslint:recommended",
     "plugin:react/recommended"
   ],
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "sourceType": "module"
-  },
   "plugins": [
     "react"
   ],
@@ -40,12 +41,7 @@
       "always"
     ],
     "react/prop-types": [
-      2,
-      {
-        "ignore": [
-          "muiTheme"
-        ]
-      }
+      2
     ]
   }
 }
