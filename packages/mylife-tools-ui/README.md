@@ -26,5 +26,4 @@ MyLife Tools UI
 * Dossiers par feature plutôt que components constantes etc
 * Plusieurs fichiers constante
 
-* Babel class properties plugin
 * Bind avec props en arrow
