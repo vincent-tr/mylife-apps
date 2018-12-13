@@ -1,3 +1,3 @@
 'use strict';
 
-export * from './components';
+export * as components from './components';
