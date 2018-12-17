@@ -7,7 +7,7 @@ import classNames from 'classnames';
 const Menu = ({ items }) => (
   <ul className='menu'>
     {items.map(({ id, text, icon, onClick, type }) => (
-      <li key={id} onClick={() => onClick(id)} className={classNames(type, { clickable: onClick })}>
+      <li key={id} onClick={onClick && (() => onClick(id))} className={classNames(type, { clickable: onClick })}>
         {icon && <div className='icon'>{icon}</div>}
         <div className='text'>{text}</div>
       </li>
