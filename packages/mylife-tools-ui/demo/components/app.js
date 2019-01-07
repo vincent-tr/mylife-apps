@@ -3,7 +3,6 @@
 import React from 'react';
 import Layout from './layout';
 import { components } from 'mylife-tools-ui';
-import icon from '../icon.ico';
 
 const App = () => (
   <components.Application>
