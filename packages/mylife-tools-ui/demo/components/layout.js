@@ -34,7 +34,9 @@ Layout.propTypes = {
   logoClick: PropTypes.func.isRequired
 };
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  viewName: 'Components', // TODO
+  viewIcon: icon // TODO
 });
 
 const mapDispatchToProps = (dispatch) => ({

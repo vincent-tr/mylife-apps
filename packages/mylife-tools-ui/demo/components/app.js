@@ -7,9 +7,7 @@ import icon from '../icon.ico';
 
 const App = () => (
   <components.Application>
-    <Layout
-      viewName={'Components'}
-      viewIcon={icon}>
+    <Layout>
       <div>
         <components.Button primary>primary</components.Button>
         <components.Button>secondary</components.Button>
