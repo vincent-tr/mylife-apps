@@ -9,10 +9,10 @@ const proxyHandler = {
   }
 };
 
-export default function(target) {
+export default function(target, prefix = '') {
   const obj = {};
   for(const [ key, value ] of Object.entries(target)) {
-    const symbol = Symbol(value || key);
+    const symbol = Symbol(prefix + (value || key));
     obj[key] = symbol;
   }
   Object.freeze(obj);
