@@ -53,7 +53,7 @@ module.exports = {
     }]
   },
   plugins: [
-    new CleanWebpackPlugin([ BUILD_DIR ]),
+    new CleanWebpackPlugin([ BUILD_DIR ], { root: path.resolve(__dirname, '..') }),
     new webpack.DefinePlugin({
       'process.env': {
         //DEBUG: JSON.stringify('mylife:tools:ui:*')
@@ -63,7 +63,7 @@ module.exports = {
       template: path.join(DEMO_DIR, 'index.html')
     })
   ],
-  devtool: 'eval',
+  devtool: 'inline-cheap-module-source-map',
   resolve: {
     alias: {
       'mylife-tools-ui': path.resolve(__dirname, '../src'),
