@@ -6,20 +6,42 @@ import { connect } from 'react-redux';
 import { components } from 'mylife-tools-ui';
 import icon from '../icon.ico';
 import { setView } from '../actions/view';
+import { getView } from '../selectors/view';
+import * as views from './views';
+
+function buildMenuItem(id, menuClick, type = 'item') {
+  const meta = views[id].meta;
+  return {
+    id,
+    text: meta.title,
+    icon: meta.icon && <components.Icon src={meta.icon}/>,
+    type,
+    onClick: menuClick
+  };
+}
+
+function buildComponentItems(menuClick) {
+  const res = [];
+  for(const [ id, View ] of Object.entries(views)) {
+    const { meta } = View;
+    if(meta.exclude) {
+      continue;
+    }
+    res.push(buildMenuItem(id, menuClick));
+  }
+  return res;
+}
 
 const Layout = ({ viewName, viewIcon, children, menuClick, logoClick }) => (
   <components.Layout logoName={<h1>Demo</h1>}
     logoIcon={<components.Icon src={icon}/>}
     logoOnClick={logoClick}
     viewName={<h2>{viewName}</h2>}
-    viewIcon={<components.Icon src={viewIcon}/>}
+    viewIcon={viewIcon && <components.Icon src={viewIcon}/>}
     menu={[
-      { id: 'header1', text: 'Header 1', icon: null, type: 'header' },
-      { id: 'item11', text: 'Item 1.1', icon: <components.Icon src={icon}/>, type: 'item', onClick: menuClick },
-      { id: 'item12', text: 'Item 1.2', icon: <components.Icon src={icon}/>, type: 'item', onClick: menuClick },
-      { id: 'header2', text: 'Header 2', icon: <components.Icon src={icon}/>, type: 'header', onClick: menuClick },
-      { id: 'item21', text: 'Item 2.1', icon: null, type: 'item', onClick: menuClick },
-      { id: 'item22', text: 'Item 2.2', icon: null, type: 'item', onClick: menuClick },
+      buildMenuItem('main', menuClick, 'header'),
+      { id: 'components', text: 'Components', type: 'header' },
+      ... buildComponentItems(menuClick)
     ]}
     footer={'footer'}>
     {children}
@@ -28,16 +50,19 @@ const Layout = ({ viewName, viewIcon, children, menuClick, logoClick }) => (
 
 Layout.propTypes = {
   viewName: PropTypes.string.isRequired,
-  viewIcon: PropTypes.string.isRequired,
+  viewIcon: PropTypes.string,
   children: components.Layout.propTypes.children,
   menuClick: PropTypes.func.isRequired,
   logoClick: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => ({
-  viewName: 'Components', // TODO
-  viewIcon: icon // TODO
-});
+const mapStateToProps = (state) => {
+  const { meta } = views[getView(state)];
+  return {
+    viewName: meta.title,
+    viewIcon: meta.icon
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   menuClick : id => dispatch(setView(id)),

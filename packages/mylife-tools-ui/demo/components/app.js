@@ -2,17 +2,13 @@
 
 import React from 'react';
 import Layout from './layout';
+import Dispatcher from './dispatcher';
 import { components } from 'mylife-tools-ui';
 
 const App = () => (
   <components.Application>
     <Layout>
-      <div>
-        <components.Button primary>primary</components.Button>
-        <components.Button>secondary</components.Button>
-        <components.Button disabled primary>disabled primary</components.Button>
-        <components.Button disabled>disabled secondary</components.Button>
-      </div>
+      <Dispatcher />
     </Layout>
   </components.Application>
 );

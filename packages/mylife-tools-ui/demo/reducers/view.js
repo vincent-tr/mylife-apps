@@ -11,4 +11,4 @@ export default handleActions({
     }
   },
 
-}, null);
+}, 'main');

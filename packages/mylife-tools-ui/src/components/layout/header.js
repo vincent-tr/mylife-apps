@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 
 const Header = ({ icon, name }) => (
   <div className='header'>
-    <div className='icon'>{icon}</div>
+    {icon && <div className='icon'>{icon}</div>}
     <div className='text'>{name}</div>
   </div>
 );
 
 Header.propTypes = {
-  icon: PropTypes.node.isRequired,
+  icon: PropTypes.node,
   name: PropTypes.node.isRequired,
 };
 
