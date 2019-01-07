@@ -1,6 +1,6 @@
 'use strict';
 
-import { constants } from '../src';
+import { constants } from 'mylife-tools-ui';
 
 export default constants.wrap({
   VIEW_SET : null,

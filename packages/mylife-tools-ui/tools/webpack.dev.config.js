@@ -63,5 +63,10 @@ module.exports = {
       template: path.join(DEMO_DIR, 'index.html')
     })
   ],
-  devtool: 'eval'
+  devtool: 'eval',
+  resolve: {
+    alias: {
+      'mylife-tools-ui': path.resolve(__dirname, '../src'),
+    }
+  }
 };

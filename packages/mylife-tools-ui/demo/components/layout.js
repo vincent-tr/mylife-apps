@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { components } from '../../src';
+import { components } from 'mylife-tools-ui';
 import icon from '../icon.ico';
 
 const menuClick = id => console.log('menu click', id);
