@@ -1,7 +1,3 @@
-import { combineReducers } from 'redux';
+'use strict';
 
-import view from './view';
-
-export default combineReducers({
-  view
-});
+export view from './view';

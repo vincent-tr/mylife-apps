@@ -20,12 +20,17 @@
   "homepage": "https://github.com/vincent-tr/mylife-tools-ui#readme",
   "dependencies": {
     "normalize.css": "^8.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "ubuntu-fontface": "^0.1.13"
   },
   "peerDependencies": {
     "prop-types": "^15.0.0",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.0",
+    "redux-actions": "^2.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -48,6 +53,9 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.4",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.26.1",
