@@ -66,7 +66,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   menuClick : id => dispatch(setView(id)),
-  logoClick : () => dispatch(setView('default'))
+  logoClick : () => dispatch(setView('main'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);
