@@ -8,7 +8,7 @@ const Dialogs = () => (
     <div>
       <components.Button>Error</components.Button>
       <components.Button>Info</components.Button>
-      <components.Button>Slow process</components.Button>
+      <components.Button>Busy</components.Button>
       <components.Button>Custom</components.Button>
     </div>
     <div>

@@ -2,6 +2,8 @@
 
 import { combineReducers } from 'redux';
 
-export default combineReducers({
+import dialogs from './dialogs';
 
+export default combineReducers({
+  dialogs
 });
