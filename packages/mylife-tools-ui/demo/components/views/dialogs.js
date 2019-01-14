@@ -5,7 +5,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { components, modules } from 'mylife-tools-ui';
 
-const { busySet, infoShow } = modules.dialogs;
+const { busySet, infoShow, showDialog, Dialog } = modules.dialogs;
+
+const CustomDialog = ({ open, onClose }) => (
+  <Dialog
+    open={open}
+    onClose={onClose}
+    title={<h3>Custom title</h3>}
+    actions={<components.Button primary onClick={onClose}>Ok</components.Button>}>
+    {'Custom text'}
+  </Dialog>
+);
+
+CustomDialog.propTypes = {
+  open: Dialog.propTypes.open,
+  onClose: Dialog.propTypes.onClose
+};
 
 const Dialogs = ({ errorClick, busyClick, infoClick }) => (
   <div>
@@ -13,7 +28,7 @@ const Dialogs = ({ errorClick, busyClick, infoClick }) => (
       <components.Button onClick={errorClick}>Error</components.Button>
       <components.Button onClick={infoClick}>Info</components.Button>
       <components.Button onClick={busyClick}>Busy</components.Button>
-      <components.Button>Custom</components.Button>
+      <components.Button onClick={() => showDialog(CustomDialog)}>Custom</components.Button>
     </div>
     <div>
       <components.Button>Message Info</components.Button>
