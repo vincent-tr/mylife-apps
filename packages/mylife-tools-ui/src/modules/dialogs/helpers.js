@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export async function showDialog(DialogComponent) {
+export async function showDialog(DialogComponent, props) {
   return new Promise(accept => {
     const node = document.createElement('div');
 
@@ -14,6 +14,6 @@ export async function showDialog(DialogComponent) {
     };
 
     document.body.appendChild(node);
-    ReactDOM.render(<DialogComponent open={true} onClose={onClose} />, node);
+    ReactDOM.render(<DialogComponent open={true} onClose={onClose} {...props} />, node);
   });
 }

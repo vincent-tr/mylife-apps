@@ -7,20 +7,46 @@ import { components, modules } from 'mylife-tools-ui';
 
 const { busySet, infoShow, showDialog, Dialog } = modules.dialogs;
 
-const CustomDialog = ({ open, onClose }) => (
+const CustomQuestion = ({ open, onClose }) => (
   <Dialog
     open={open}
     onClose={onClose}
     title={<h3>Custom title</h3>}
-    actions={<components.Button primary onClick={onClose}>Ok</components.Button>}>
+    actions={[
+      <components.Button key='ok' primary onClick={() => onClose('ok')}>Ok</components.Button>,
+      <components.Button key='cancel' secondary onClick={() => onClose('cancel')}>Annuler</components.Button>
+    ]}>
     {'Custom text'}
   </Dialog>
 );
 
-CustomDialog.propTypes = {
+CustomQuestion.propTypes = {
   open: Dialog.propTypes.open,
   onClose: Dialog.propTypes.onClose
 };
+
+const CustomAnswer = ({ open, onClose, value }) => (
+  <Dialog
+    open={open}
+    onClose={onClose}
+    title={<h3>Custom title</h3>}
+    actions={[
+      <components.Button key='ok' primary onClick={() => onClose('ok')}>Ok</components.Button>
+    ]}>
+    {`Answer : ${value}`}
+  </Dialog>
+);
+
+CustomAnswer.propTypes = {
+  open: Dialog.propTypes.open,
+  onClose: Dialog.propTypes.onClose,
+  value: PropTypes.string.isRequired
+};
+
+async function customDialogs() {
+  const value = await showDialog(CustomQuestion);
+  showDialog(CustomAnswer, { value });
+}
 
 const Dialogs = ({ errorClick, busyClick, infoClick }) => (
   <div>
@@ -28,7 +54,7 @@ const Dialogs = ({ errorClick, busyClick, infoClick }) => (
       <components.Button onClick={errorClick}>Error</components.Button>
       <components.Button onClick={infoClick}>Info</components.Button>
       <components.Button onClick={busyClick}>Busy</components.Button>
-      <components.Button onClick={() => showDialog(CustomDialog)}>Custom</components.Button>
+      <components.Button onClick={customDialogs}>Custom</components.Button>
     </div>
     <div>
       <components.Button>Message Info</components.Button>
