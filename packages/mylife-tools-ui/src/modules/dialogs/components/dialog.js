@@ -18,7 +18,7 @@ const Dialog = ({ open, onClose, children }) => (
 );
 
 Dialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
 };
