@@ -1,8 +1,8 @@
 'use strict';
 
 import { createAction }   from 'redux-actions';
-import actionTypes        from '../constants/internal/action-types';
-import notificationTypes  from '../constants/internal/notification-types';
+import actionTypes        from '../../constants/internal/action-types';
+import notificationTypes  from '../../constants/internal/notification-types';
 
 export const errorClear = createAction(actionTypes.ERROR_CLEAR);
 export const infoClear = createAction(actionTypes.INFO_CLEAR);

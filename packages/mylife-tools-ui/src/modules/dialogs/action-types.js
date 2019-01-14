@@ -1,11 +1,10 @@
 'use strict';
 
-import { wrap } from '..';
-import { STATE_PREFIX } from './defines';
+import wrap from '../../constants/wrapper';
+import { STATE_PREFIX } from '../../constants/defines';
 
 export default wrap({
-  
-  // dialogs
+
   ERROR_CLEAR          : null,
   INFO_SHOW            : null,
   INFO_CLEAR           : null,

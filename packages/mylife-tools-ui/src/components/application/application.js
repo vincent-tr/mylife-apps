@@ -4,16 +4,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StoreProvider from './store-provider';
 
-const Application = ({ children }) => (
+const Application = ({ dialogs, children }) => (
   <StoreProvider>
     <React.Fragment>
+      {dialogs && false /* TODO */}
       {children}
     </React.Fragment>
   </StoreProvider>
 );
 
 Application.propTypes = {
-  children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
+  dialogs: PropTypes.bool,
+  children: PropTypes.node.isRequired
 };
 
 export default Application;

@@ -4,6 +4,7 @@ MyLife Tools UI
 ## integration:
 * divider : https://www.npmjs.com/package/react-splitter-layout
 * scrollbar : https://www.npmjs.com/package/react-scrollbar
+* react-modal
 
 ## css notes
 
@@ -22,7 +23,7 @@ MyLife Tools UI
 
 ## react/redux notes
 
-* Redux actions+thunk+promise
+* Redux actions+thunk+promise => promise a la main
 * Dossiers par feature plutôt que components constantes etc
 * Plusieurs fichiers constante
 

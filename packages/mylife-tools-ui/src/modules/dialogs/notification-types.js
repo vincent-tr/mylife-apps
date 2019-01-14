@@ -1,6 +1,6 @@
 'use strict';
 
-import { wrap } from '..';
+import wrap from '../../constants/wrapper';
 
 export default wrap({
   info    : null,

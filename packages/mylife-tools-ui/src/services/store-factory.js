@@ -4,7 +4,7 @@ import { applyMiddleware, createStore, combineReducers } from 'redux';
 import thunk                                             from 'redux-thunk';
 import { createLogger }                                  from 'redux-logger';
 import builtinReducers                                   from '../reducers';
-import { STATE_PREFIX }                                  from '../constants/internal/defines';
+import { STATE_PREFIX }                                  from '../constants/defines';
 
 let store;
 

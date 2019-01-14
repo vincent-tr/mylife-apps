@@ -1,6 +1,6 @@
 'use strict';
 
-import { getInternalState } from './base';
+import { getInternalState } from '../../selectors/base';
 
 const getDialogs = state => getInternalState(state);
 

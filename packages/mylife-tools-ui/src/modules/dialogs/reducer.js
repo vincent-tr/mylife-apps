@@ -2,7 +2,7 @@
 
 import Immutable         from 'immutable';
 import { handleActions } from 'redux-actions';
-import actionTypes       from '../constants/internal/action-types';
+import actionTypes       from './action-types';
 
 const defaultState = {
   busy          : false,
