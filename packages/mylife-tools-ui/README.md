@@ -4,7 +4,7 @@ MyLife Tools UI
 ## integration:
 * divider : https://www.npmjs.com/package/react-splitter-layout
 * scrollbar : https://www.npmjs.com/package/react-scrollbar
-* react-modal
+* react-modal : https://www.npmjs.com/package/react-modal
 
 ## css notes
 
