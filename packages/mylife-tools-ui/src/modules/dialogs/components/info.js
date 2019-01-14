@@ -13,7 +13,7 @@ const Info = ({ info, clear }) => (
   <Dialog
     open={!!info}
     onClose={clear}
-    title='Information'
+    title={<h3>Information</h3>}
     actions={<Button primary onClick={clear}>Ok</Button>}>
     {info}
   </Dialog>

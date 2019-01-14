@@ -12,6 +12,7 @@ div {
     overflow: auto;
     border: $border-width $border-style $color-primary;
     background-color: $color-background;
+    color: $color-primary;
 
     top: 50%;
     left: 50%;
