@@ -1,7 +1,9 @@
 @import '../../../components/base/base.scss';
 
+$padding-horizontal: 2em;
+$title-padding-vertical: 0.2em;
+$content-padding-vertical: 1em;
 $actions-padding-vertical: 0;
-$actions-padding-horizontal: 2em;
 
 div {
   &.dialog {
@@ -18,16 +20,16 @@ div {
     transform: translate(-50%, -50%);
 
     &> .title {
-      padding: 2em;
+      padding: $title-padding-vertical $padding-horizontal $title-padding-vertical $padding-horizontal;
       border-bottom: $border-width $border-style $color-primary;
     }
 
     &> .content {
-      padding: 2em;
+      padding: $content-padding-vertical $padding-horizontal $content-padding-vertical $padding-horizontal;
     }
 
     &> .actions {
-      padding: $actions-padding-vertical $actions-padding-horizontal $actions-padding-vertical $actions-padding-horizontal;
+      padding: $actions-padding-vertical $padding-horizontal $actions-padding-vertical $padding-horizontal;
       border-top: $border-width $border-style $color-primary;
       display: flex;
       flex-direction: row;

@@ -8,10 +8,12 @@ import { Button } from '../../../components';
 import { getInfo } from '../selectors';
 import { infoClear } from '../actions';
 
+// TODO: icon
 const Info = ({ info, clear }) => (
   <Dialog
     open={!!info}
     onClose={clear}
+    title='Information'
     actions={<Button primary onClick={clear}>Ok</Button>}>
     {info}
   </Dialog>
