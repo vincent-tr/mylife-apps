@@ -39,7 +39,7 @@ const mapStateToProps = (/*state*/) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  errorClick : () => { console.log('pate'); },
+  errorClick : () => dispatch(busySet(new Error('Boom!'))),
   busyClick : async () => {
     dispatch(busySet(true));
     await delay(1000);
