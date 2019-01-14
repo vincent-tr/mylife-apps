@@ -10,7 +10,7 @@ const { busySet, infoShow, showDialog, Dialog } = modules.dialogs;
 const CustomQuestion = ({ open, onClose }) => (
   <Dialog
     open={open}
-    onClose={onClose}
+    onClose={() => onClose('abort')}
     title={<h3>Custom title</h3>}
     actions={[
       <components.Button key='ok' primary onClick={() => onClose('ok')}>Ok</components.Button>,
