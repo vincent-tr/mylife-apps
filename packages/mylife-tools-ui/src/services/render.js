@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import Modal from 'react-modal';
 import { Application } from '../components/application';
 
 export function render(element, {
@@ -19,4 +19,6 @@ export function render(element, {
     container,
     callback
   );
+
+  Modal.setAppElement(container);
 }
