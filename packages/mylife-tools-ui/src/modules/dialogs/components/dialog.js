@@ -7,7 +7,7 @@ import StoreProvider from '../../../components/application/store-provider';
 
 import './dialog.scss';
 
-const Dialog = ({ open, onClose, children }) => (
+const Dialog = ({ open, onClose, title, actions, children }) => (
   // http://reactcommunity.org/react-modal/#usage
   <Modal
     className='dialog'
@@ -16,7 +16,21 @@ const Dialog = ({ open, onClose, children }) => (
     onRequestClose={onClose}
     shouldCloseOnOverlayClick={false}>
     <StoreProvider>
-      {children}
+      <React.Fragment>
+        {title && (
+          <div className='title'>
+            {title}
+          </div>
+        )}
+        <div className='content'>
+          {children}
+        </div>
+        {actions && (
+          <div className='actions'>
+            {actions}
+          </div>
+        )}
+      </React.Fragment>
     </StoreProvider>
   </Modal>
 );
@@ -24,6 +38,8 @@ const Dialog = ({ open, onClose, children }) => (
 Dialog.propTypes = {
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
+  title: PropTypes.node,
+  actions: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
 };
 

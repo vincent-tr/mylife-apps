@@ -1,5 +1,8 @@
 @import '../../../components/base/base.scss';
 
+$actions-padding-vertical: 0;
+$actions-padding-horizontal: 2em;
+
 div {
   &.dialog {
     position: absolute;
@@ -13,6 +16,23 @@ div {
     right: auto;
     bottom: auto;
     transform: translate(-50%, -50%);
+
+    &> .title {
+      padding: 2em;
+      border-bottom: $border-width $border-style $color-primary;
+    }
+
+    &> .content {
+      padding: 2em;
+    }
+
+    &> .actions {
+      padding: $actions-padding-vertical $actions-padding-horizontal $actions-padding-vertical $actions-padding-horizontal;
+      border-top: $border-width $border-style $color-primary;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
   }
 
   &.dialog-overlay {
