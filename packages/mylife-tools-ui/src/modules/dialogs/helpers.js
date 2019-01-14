@@ -30,7 +30,6 @@ export async function showDialog(Impl) {
     }
 
     document.body.appendChild(node);
-    // TODO: why no render ?
-    ReactDOM.createPortal(<Root />, node);
+    ReactDOM.render(<Root />, node);
   });
 }
