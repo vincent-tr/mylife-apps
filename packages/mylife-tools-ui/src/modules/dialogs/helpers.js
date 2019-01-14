@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export async function showDialog(DialogComponent, props) {
+export async function showDialog(DialogComponent, { requestCloseValue = 'abort', ...props } = {}) {
   return new Promise(accept => {
     const node = document.createElement('div');
 
@@ -14,8 +14,6 @@ export async function showDialog(DialogComponent, props) {
     };
 
     document.body.appendChild(node);
-    ReactDOM.render(<DialogComponent open={true} onClose={onClose} {...props} />, node);
+    ReactDOM.render(<DialogComponent open={true} onClose={() => onClose(requestCloseValue)} {...props} />, node);
   });
 }
-
-// TODO: handle escape
