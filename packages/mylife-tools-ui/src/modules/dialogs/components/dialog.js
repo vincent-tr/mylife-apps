@@ -7,6 +7,8 @@ import StoreProvider from '../../../components/application/store-provider';
 
 import './dialog.scss';
 
+// TODO: handle keys ([Y]es, Enter, ...)
+
 const Dialog = ({ open, onClose, title, actions, children }) => (
   // http://reactcommunity.org/react-modal/#usage
   <Modal

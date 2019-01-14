@@ -17,3 +17,5 @@ export async function showDialog(DialogComponent, props) {
     ReactDOM.render(<DialogComponent open={true} onClose={onClose} {...props} />, node);
   });
 }
+
+// TODO: handle escape
