@@ -23,7 +23,6 @@ MyLife Tools UI
 
 ## react/redux notes
 
-* Redux actions+thunk+promise => promise a la main
 * Dossiers par feature plutôt que components constantes etc
 * Plusieurs fichiers constante
 
