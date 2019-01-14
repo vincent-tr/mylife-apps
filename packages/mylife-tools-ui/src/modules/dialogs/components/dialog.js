@@ -9,14 +9,15 @@ import './dialog.scss';
 
 // TODO: handle keys ([Y]es, Enter, ...)
 
-const Dialog = ({ open, onClose, title, actions, children }) => (
+const Dialog = ({ open, onClose, title, actions, children, ...props }) => (
   // http://reactcommunity.org/react-modal/#usage
   <Modal
     className='dialog'
     overlayClassName='dialog-overlay'
     isOpen={open}
     onRequestClose={onClose}
-    shouldCloseOnOverlayClick={false}>
+    shouldCloseOnOverlayClick={false}
+    {...props}>
     <StoreProvider>
       <React.Fragment>
         {title && (
