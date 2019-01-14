@@ -14,7 +14,7 @@ const CustomQuestion = ({ open, onClose }) => (
     title={<h3>Custom title</h3>}
     actions={[
       <components.Button key='ok' primary onClick={() => onClose('ok')}>Ok</components.Button>,
-      <components.Button key='cancel' secondary onClick={() => onClose('cancel')}>Annuler</components.Button>
+      <components.Button key='cancel' onClick={() => onClose('cancel')}>Annuler</components.Button>
     ]}>
     {'Custom text'}
   </Dialog>
