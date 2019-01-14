@@ -1,14 +1,18 @@
 'use strict';
 
 import React from 'react';
-import { components } from 'mylife-tools-ui';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { components, modules } from 'mylife-tools-ui';
 
-const Dialogs = () => (
+const { busySet, infoShow } = modules.dialogs;
+
+const Dialogs = ({ errorClick, busyClick, infoClick }) => (
   <div>
     <div>
-      <components.Button>Error</components.Button>
-      <components.Button>Info</components.Button>
-      <components.Button>Busy</components.Button>
+      <components.Button onClick={errorClick}>Error</components.Button>
+      <components.Button onClick={infoClick}>Info</components.Button>
+      <components.Button onClick={busyClick}>Busy</components.Button>
       <components.Button>Custom</components.Button>
     </div>
     <div>
@@ -19,9 +23,33 @@ const Dialogs = () => (
   </div>
 );
 
+Dialogs.propTypes = {
+  errorClick: PropTypes.func.isRequired,
+  busyClick: PropTypes.func.isRequired,
+  infoClick: PropTypes.func.isRequired
+};
+
 Dialogs.meta = {
   icon: null,
   title: 'Dialogs'
 };
 
-export default Dialogs;
+const mapStateToProps = (/*state*/) => ({
+
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  errorClick : () => { console.log('pate'); },
+  busyClick : async () => {
+    dispatch(busySet(true));
+    await delay(1000);
+    dispatch(busySet(false));
+  },
+  infoClick : () => dispatch(infoShow('information text'))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+
+async function delay(value) {
+  return new Promise(resolve =>setTimeout(() => resolve(), value));
+}

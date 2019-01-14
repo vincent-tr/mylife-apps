@@ -1,16 +1,17 @@
 'use strict';
 
 import { createAction }   from 'redux-actions';
-import actionTypes        from '../../constants/internal/action-types';
-import notificationTypes  from '../../constants/internal/notification-types';
+import actionTypes        from './action-types';
+import notificationTypes  from './notification-types';
 
+export const busySet = createAction(actionTypes.BUSY_SET);
 export const errorClear = createAction(actionTypes.ERROR_CLEAR);
 export const infoClear = createAction(actionTypes.INFO_CLEAR);
 export const infoShow = createAction(actionTypes.INFO_SHOW);
 
-export const notificationDismiss = createAction(actionTypes.MESSAGE_DISMISS);
-export const notificationClearAll = createAction(actionTypes.MESSAGE_CLEAR);
-const notificationShowInternal = createAction(actionTypes.MESSAGE_SHOW);
+export const notificationDismiss = createAction(actionTypes.NOTIFICATION_DISMISS);
+export const notificationClearAll = createAction(actionTypes.NOTIFICATION_CLEAR);
+const notificationShowInternal = createAction(actionTypes.NOTIFICATION_SHOW);
 
 // https://gist.github.com/markerikson/7621fca0e9704e99db5598bed0db861d
 let notificationIdGenerator = 0;

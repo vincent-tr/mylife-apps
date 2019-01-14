@@ -5,6 +5,7 @@ import { STATE_PREFIX } from '../../constants/defines';
 
 export default wrap({
 
+  BUSY_SET             : null,
   ERROR_CLEAR          : null,
   INFO_SHOW            : null,
   INFO_CLEAR           : null,

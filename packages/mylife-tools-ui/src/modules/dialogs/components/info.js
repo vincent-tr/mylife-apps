@@ -14,7 +14,7 @@ const Info = ({ info, clear }) => (
 );
 
 Info.propTypes = {
-  info: PropTypes.object,
+  info: PropTypes.string,
   clear: PropTypes.func.isRequired,
 };
 

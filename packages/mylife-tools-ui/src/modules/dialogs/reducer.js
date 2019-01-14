@@ -13,6 +13,11 @@ const defaultState = {
 
 const others = handleActions({
 
+  [actionTypes.BUSY_SET] : (state, action) => ({
+    ...state,
+    busy : action.payload
+  }),
+
   [actionTypes.ERROR_CLEAR] : state => ({
     ...state,
     error : null
