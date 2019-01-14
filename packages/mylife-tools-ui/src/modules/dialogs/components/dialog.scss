@@ -1,0 +1,27 @@
+@import '../../../components/base/base.scss';
+
+div {
+  &.dialog {
+    position: absolute;
+    outline: none;
+    overflow: auto;
+    border: $border-width $border-style $color-primary;
+    background-color: $color-background;
+
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+  }
+
+  &.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-overlay;
+  }
+}

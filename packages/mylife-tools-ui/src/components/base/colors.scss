@@ -2,7 +2,9 @@ $color-primary: #4da6ff;
 $color-secondary: #0073e6;
 $color-background: #ffffff;
 $opacity-disabled: 0.4;
+$opacity-overlay: 0.5;
 
 $color-divider: rgba($color-primary, 0.2);
 $color-primary-disabled: rgba($color-primary, $opacity-disabled);
 $color-secondary-disabled: rgba($color-secondary, $opacity-disabled);
+$color-overlay: rgba(0, 0, 0, $opacity-overlay);

@@ -5,9 +5,13 @@ import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import StoreProvider from '../../../components/application/store-provider';
 
+import './dialog.scss';
+
 const Dialog = ({ open, onClose, children }) => (
   // http://reactcommunity.org/react-modal/#usage
   <Modal
+    className='dialog'
+    overlayClassName='dialog-overlay'
     isOpen={open}
     onRequestClose={onClose}
     shouldCloseOnOverlayClick={false}>
