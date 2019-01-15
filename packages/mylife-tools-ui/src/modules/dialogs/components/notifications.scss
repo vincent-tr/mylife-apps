@@ -18,17 +18,19 @@ div {
   }
 
   &.notification {
+    border: $border-width $border-style $color-primary;
+    color: $color-primary;
 
     &.info {
-      background-color: rgb(0, 255, 0);
+      background-color: $color-background;
     }
 
     &.warning {
-      background-color: rgb(255, 255, 0);
+      background-color: $color-warning;
     }
 
     &.error {
-      background-color: rgb(255, 0, 0);
+      background-color: $color-error;
     }
 
     &> .title {
@@ -42,10 +44,6 @@ div {
 
     &> .action {
       padding: $actions-padding-vertical $padding-horizontal $actions-padding-vertical $padding-horizontal;
-      border-top: $border-width $border-style $color-primary;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
     }
   }
 }

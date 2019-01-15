@@ -8,3 +8,6 @@ $color-divider: rgba($color-primary, 0.2);
 $color-primary-disabled: rgba($color-primary, $opacity-disabled);
 $color-secondary-disabled: rgba($color-secondary, $opacity-disabled);
 $color-overlay: rgba(0, 0, 0, $opacity-overlay);
+
+$color-warning: #ffffcc;
+$color-error: #ffebeb;
