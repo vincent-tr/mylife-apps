@@ -24,6 +24,9 @@ module.exports = {
         'css-loader'
       ]
     }, {
+      test: /\.svg$/,
+      use: [ 'svg-react-loader' ]
+    }, {
       test: /\.scss$/,
       use: [
         'style-loader', // creates style nodes from JS strings

@@ -26,6 +26,7 @@
     "react-portal": "^4.2.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "svg-react-loader": "^0.4.6",
     "ubuntu-fontface": "^0.1.13"
   },
   "peerDependencies": {

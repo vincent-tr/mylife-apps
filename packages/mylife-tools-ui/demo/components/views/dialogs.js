@@ -85,11 +85,11 @@ const mapDispatchToProps = (dispatch) => ({
   errorClick : () => dispatch(busySet(new Error('Boom!'))),
   busyClick : async () => {
     dispatch(busySet(true));
-    await delay(1000);
+    await delay(1000000);
     dispatch(busySet(false));
   },
   infoClick : () => dispatch(infoShow('information text')),
-  notificationClick : (type) => dispatch(notificationShow({ dismissAfter: 100000000000, header: type === 'info' ? 'Title' : null, message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
+  notificationClick : (type) => dispatch(notificationShow({ header: type === 'info' ? 'Title' : null, message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogs);
