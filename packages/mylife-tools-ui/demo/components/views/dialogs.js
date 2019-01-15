@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { components, modules } from 'mylife-tools-ui';
 
-const { busySet, infoShow, showDialog, Dialog } = modules.dialogs;
+const { busySet, infoShow, showDialog, Dialog, notificationShow } = modules.dialogs;
 
 const CustomQuestion = ({ open, onClose }) => (
   <Dialog
@@ -49,7 +49,7 @@ async function customDialogs() {
   showDialog(CustomAnswer, { value });
 }
 
-const Dialogs = ({ errorClick, busyClick, infoClick }) => (
+const Dialogs = ({ errorClick, busyClick, infoClick, notificationClick }) => (
   <div>
     <div>
       <components.Button onClick={errorClick}>Error</components.Button>
@@ -58,9 +58,9 @@ const Dialogs = ({ errorClick, busyClick, infoClick }) => (
       <components.Button onClick={customDialogs}>Custom</components.Button>
     </div>
     <div>
-      <components.Button>Message Info</components.Button>
-      <components.Button>Message Warning</components.Button>
-      <components.Button>Message Error</components.Button>
+      <components.Button onClick={() => notificationClick('info')}>Message Info</components.Button>
+      <components.Button onClick={() => notificationClick('warning')}>Message Warning</components.Button>
+      <components.Button onClick={() => notificationClick('error')}>Message Error</components.Button>
     </div>
   </div>
 );
@@ -68,7 +68,8 @@ const Dialogs = ({ errorClick, busyClick, infoClick }) => (
 Dialogs.propTypes = {
   errorClick: PropTypes.func.isRequired,
   busyClick: PropTypes.func.isRequired,
-  infoClick: PropTypes.func.isRequired
+  infoClick: PropTypes.func.isRequired,
+  notificationClick: PropTypes.func.isRequired,
 };
 
 Dialogs.meta = {
@@ -87,7 +88,8 @@ const mapDispatchToProps = (dispatch) => ({
     await delay(1000);
     dispatch(busySet(false));
   },
-  infoClick : () => dispatch(infoShow('information text'))
+  infoClick : () => dispatch(infoShow('information text')),
+  notificationClick : (type) => dispatch(notificationShow({ message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogs);
