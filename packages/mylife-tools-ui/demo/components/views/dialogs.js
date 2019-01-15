@@ -89,7 +89,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(busySet(false));
   },
   infoClick : () => dispatch(infoShow('information text')),
-  notificationClick : (type) => dispatch(notificationShow({ header: type === 'info' ? 'Title' : null, message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
+  notificationClick : (type) => dispatch(notificationShow({ dismissAfter: 100000000000, header: type === 'info' ? 'Title' : null, message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogs);
