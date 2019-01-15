@@ -12,7 +12,7 @@ const CustomQuestion = ({ open, onClose }) => (
     open={open}
     keyMap={{ esc: 'cancel', enter: 'ok' }}
     onClose={onClose}
-    title={<h3>Custom title</h3>}
+    title={<h2>Custom title</h2>}
     actions={[
       { closeValue: 'ok', content: 'Ok', primary: true, shortcuts: [ 'o' ] },
       { closeValue: 'cancel', content: 'Annuler', shortcuts: [ 'esc' ], isDefault: true }
@@ -89,7 +89,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(busySet(false));
   },
   infoClick : () => dispatch(infoShow('information text')),
-  notificationClick : (type) => dispatch(notificationShow({ message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
+  notificationClick : (type) => dispatch(notificationShow({ header: type === 'info' ? 'Title' : null, message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialogs);

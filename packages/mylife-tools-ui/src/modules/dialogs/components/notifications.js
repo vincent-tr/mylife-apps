@@ -8,41 +8,26 @@ import { getNotifications } from '../selectors';
 import { notificationDismiss } from '../actions';
 import { Button } from '../../../components';
 
-const NOTIFICATION_CONTAINER_STYLE = {
-  position  : 'fixed',
-  top       : '10px',
-  right     : 0,
-  left      : 0,
-  zIndex   : 1000,
-  width     : '80%',
-  maxWidth : '400px',
-  margin    : 'auto',
-};
+import './notifications.scss';
 
 const Notification = ({ message, header, type, onCloseClick }) => {
-  let headerText = header;
-  let messageText = message;
 
-  if(!headerText) {
-    headerText = message;
-    messageText = null;
+  if(typeof message === 'string') {
+    const messagePieces = message.split('\n');
+    message = messagePieces.map((piece, index) => (<div key={index}>{piece}</div>));
   }
 
-  const messageHeader = headerText ? <div className='header'>{headerText}</div> : null;
-
-  // Turn the type string into a boolean prop with the same name
-  // TODO: type
-
-  if(typeof messageText === 'string') {
-    const messagePieces = messageText.split('\n');
-    messageText = messagePieces.map((piece, index) => (<div key={index}>{piece}</div>));
+  if(typeof header === 'string') {
+    header = (<h3>{header}</h3>);
   }
 
   return (
-    <div className='dialog-notification'>
-      <Button onClick={onCloseClick}>X</Button>
-      {messageHeader}
-      <div className='content'>{messageText}</div>
+    <div className={`notification ${type.description}`}>
+      <div className='action'>
+        <Button onClick={onCloseClick}>X</Button>
+      </div>
+      {header && <div className='title'>{header}</div>}
+      <div className='content'>{message}</div>
     </div>
   );
 };
@@ -55,8 +40,8 @@ Notification.propTypes = {
 };
 
 const Notifications = ({ dismiss, notifications }) => (
-  <Portal isOpened={true} key="notificationsPortal">
-    <div style={NOTIFICATION_CONTAINER_STYLE}>
+  <Portal isOpened={true} key='notificationsPortal'>
+    <div className='notifications-overlay'>
       {notifications.map(notification => (
         <Notification
           key={notification.id}

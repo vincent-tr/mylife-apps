@@ -1,0 +1,51 @@
+@import '../../../components/base/base.scss';
+
+$padding-horizontal: 2em;
+$title-padding-vertical: 0.2em;
+$content-padding-vertical: 1em;
+$actions-padding-vertical: 0;
+
+div {
+  &.notifications-overlay {
+    position  : fixed;
+    top       : 1em;
+    right     : 0;
+    left      : 0;
+    z-index   : 1000;
+    width     : 80%;
+    max-width : 20em;
+    margin    : auto;
+  }
+
+  &.notification {
+
+    &.info {
+      background-color: rgb(0, 255, 0);
+    }
+
+    &.warning {
+      background-color: rgb(255, 255, 0);
+    }
+
+    &.error {
+      background-color: rgb(255, 0, 0);
+    }
+
+    &> .title {
+      padding: $title-padding-vertical $padding-horizontal $title-padding-vertical $padding-horizontal;
+      border-bottom: $border-width $border-style $color-primary;
+    }
+
+    &> .content {
+      padding: $content-padding-vertical $padding-horizontal $content-padding-vertical $padding-horizontal;
+    }
+
+    &> .action {
+      padding: $actions-padding-vertical $padding-horizontal $actions-padding-vertical $padding-horizontal;
+      border-top: $border-width $border-style $color-primary;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
+}
