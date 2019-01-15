@@ -4,18 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-class Button extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { primary, disabled, ...otherProps } = this.props;
-    return (
-      <button disabled={disabled} className={classNames({ primary, secondary: !primary })} {...otherProps} />
-    );
-  }
-}
+const Button = React.forwardRef(({ primary, disabled, ...otherProps }, ref) => (
+  <button ref={ref} disabled={disabled} className={classNames({ primary, secondary: !primary })} {...otherProps} />
+));
 
 Button.propTypes = {
   primary: PropTypes.bool,
