@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dialog from './dialog';
-import { Button } from '../../../components';
 import { getInfo } from '../selectors';
 import { infoClear } from '../actions';
 
@@ -14,7 +13,9 @@ const Info = ({ info, clear }) => (
     open={!!info}
     onClose={clear}
     title={<h3>Information</h3>}
-    actions={<Button primary onClick={clear}>Ok</Button>}>
+    actions={[
+      { closeValue: 'ok', content: 'Ok', primary: true, shortcuts: [ 'esc' ] }
+    ]}>
     {info}
   </Dialog>
 );

@@ -10,11 +10,12 @@ const { busySet, infoShow, showDialog, Dialog } = modules.dialogs;
 const CustomQuestion = ({ open, onClose }) => (
   <Dialog
     open={open}
-    onClose={() => onClose('abort')}
+    keyMap={{ esc: 'cancel', enter: 'ok' }}
+    onClose={onClose}
     title={<h3>Custom title</h3>}
     actions={[
-      <components.Button tabIndex={1} key='ok' primary onClick={() => onClose('ok')}>Ok</components.Button>,
-      <components.Button tabIndex={2} key='cancel' onClick={() => onClose('cancel')}>Annuler</components.Button>
+      { closeValue: 'ok', content: 'Ok', primary: true, shortcuts: [ 'o' ] },
+      { closeValue: 'cancel', content: 'Annuler', shortcuts: [ 'esc' ], isDefault: true }
     ]}>
     {'Custom text'}
   </Dialog>
@@ -31,7 +32,7 @@ const CustomAnswer = ({ open, onClose, value }) => (
     onClose={onClose}
     title={<h3>Custom title</h3>}
     actions={[
-      <components.Button key='ok' primary onClick={() => onClose('ok')}>Ok</components.Button>
+      { closeValue: 'ok', content: 'Ok', primary: true, shortcuts: [ 'esc' ] },
     ]}>
     {`Answer : ${value}`}
   </Dialog>

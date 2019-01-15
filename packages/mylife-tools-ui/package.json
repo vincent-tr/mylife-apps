@@ -21,6 +21,7 @@
   "dependencies": {
     "normalize.css": "^8.0.1",
     "react-dom": "^16.7.0",
+    "react-keyboard-event-handler": "^1.4.1",
     "react-modal": "^3.8.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",

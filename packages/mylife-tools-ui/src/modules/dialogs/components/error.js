@@ -8,7 +8,13 @@ import { getError } from '../selectors';
 import { errorClear } from '../actions';
 
 const Error = ({ error, clear }) => (
-  <Dialog open={!!error} onClose={clear}>
+  <Dialog
+    open={!!error}
+    onClose={clear}
+    title={<h3>Error</h3>}
+    actions={[
+      { closeValue: 'ok', content: 'Ok', primary: true, shortcuts: [ 'esc' ] }
+    ]}>
     {error && error.toString()}
   </Dialog>
 );
