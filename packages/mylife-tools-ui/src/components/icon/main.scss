@@ -1,9 +1,23 @@
 @import '../base/base.scss';
 
+
+@mixin base() {
+  object-fit: scale-down;
+  height: 100%;
+  width: 100%;
+}
+
 img {
   &.icon {
-    object-fit: scale-down;
-    height: 100%;
-    width: 100%;
+    @include base();
+  }
+}
+
+svg {
+  &.svg-icon {
+    @include base();
+    color: $color-primary;
+    stroke: currentColor;
+    fill: currentColor;
   }
 }

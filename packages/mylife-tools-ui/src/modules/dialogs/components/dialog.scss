@@ -46,4 +46,12 @@ div {
     bottom: 0;
     background-color: $color-overlay;
   }
+
+}
+
+svg {
+  &.dialog-icon {
+    stroke: currentColor;
+    fill: currentColor;
+  }
 }
