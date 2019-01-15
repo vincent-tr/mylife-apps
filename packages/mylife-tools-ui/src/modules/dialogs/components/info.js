@@ -12,7 +12,7 @@ const Info = ({ info, clear }) => (
   <Dialog
     open={!!info}
     onClose={clear}
-    title={<h3>Information</h3>}
+    title='Information'
     actions={[
       { closeValue: 'ok', content: 'Ok', primary: true, shortcuts: [ 'esc' ] }
     ]}>

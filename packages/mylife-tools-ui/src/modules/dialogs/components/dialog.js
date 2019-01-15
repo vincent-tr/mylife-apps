@@ -67,11 +67,29 @@ class Dialog extends React.Component {
     );
   }
 
+  renderTitle() {
+    let { title } = this.props;
+    if(!title) {
+      return;
+    }
+
+    if(typeof title === 'string') {
+      title = (<h3>{title}</h3>);
+    }
+
+    return (
+      <div className='title'>
+        {title}
+      </div>
+    );
+  }
+
   render() {
     const { open, onClose, title, actions, keyMap, children, ...props } = this.props;
     void onClose;
     void actions;
     void keyMap;
+    void title;
 
     return (
       // http://reactcommunity.org/react-modal/#usage
@@ -86,11 +104,7 @@ class Dialog extends React.Component {
         <StoreProvider>
           <React.Fragment>
 
-            {title && (
-              <div className='title'>
-                {title}
-              </div>
-            )}
+            {this.renderTitle()}
 
             <div className='content'>
               {children}
