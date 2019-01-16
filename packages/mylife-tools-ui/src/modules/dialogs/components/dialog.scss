@@ -5,6 +5,12 @@ $title-padding-vertical: 0.2em;
 $content-padding-vertical: 1em;
 $actions-padding-vertical: 0;
 
+@mixin dialog-title() {
+  display: flex;
+  align-items: center;
+  padding-left: 0.4em !important;
+}
+
 div {
   &.dialog {
     position: absolute;
@@ -58,6 +64,32 @@ div {
     }
 
     &> .busy-text {
+      margin-left: 1em;
+    }
+  }
+
+  &.dialog-title-info {
+    @include dialog-title();
+
+    &> .info-title-icon {
+      height: 3em;
+      width: 3em;
+    }
+
+    &> .info-title-text {
+      margin-left: 1em;
+    }
+  }
+
+  &.dialog-title-error {
+    @include dialog-title();
+
+    &> .error-title-icon {
+      height: 3em;
+      width: 3em;
+    }
+
+    &> .error-title-text {
       margin-left: 1em;
     }
   }

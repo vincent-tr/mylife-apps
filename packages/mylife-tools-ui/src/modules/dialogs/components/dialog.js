@@ -33,7 +33,7 @@ class Dialog extends React.Component {
   }
 
   renderActions() {
-    const { actions, onClose } = this.props;
+    const { actions, onClose, actionsClassName } = this.props;
     if(!actions) {
       return null;
     }
@@ -47,7 +47,7 @@ class Dialog extends React.Component {
     }
 
     return (
-      <div className='actions'>
+      <div className={classNames('actions', actionsClassName)}>
         <KeyboardEventHandler handleKeys={keys} onKeyEvent={this.onKey}>
           {actions.map(({ isDefault, shortcuts, closeValue, tabIndex, content, ...props }, index) => {
             void shortcuts;
@@ -69,7 +69,7 @@ class Dialog extends React.Component {
   }
 
   renderTitle() {
-    let { title } = this.props;
+    let { title, titleClassName } = this.props;
     if(!title) {
       return;
     }
@@ -79,18 +79,20 @@ class Dialog extends React.Component {
     }
 
     return (
-      <div className='title'>
+      <div className={classNames('title', titleClassName)}>
         {title}
       </div>
     );
   }
 
   render() {
-    const { open, onClose, title, actions, keyMap, children, className, ...props } = this.props;
+    const { open, onClose, title, actions, keyMap, children, className, titleClassName, actionsClassName, ...props } = this.props;
     void onClose;
     void actions;
     void keyMap;
     void title;
+    void titleClassName;
+    void actionsClassName;
 
     return (
       // http://reactcommunity.org/react-modal/#usage
@@ -121,6 +123,8 @@ class Dialog extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
+    titleClassName: PropTypes.string,
+    actionsClassName: PropTypes.string,
     onClose: PropTypes.func,
     open: PropTypes.bool.isRequired,
     title: PropTypes.node,
