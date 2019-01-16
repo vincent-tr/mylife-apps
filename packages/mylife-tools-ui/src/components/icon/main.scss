@@ -16,7 +16,6 @@ img {
 svg {
   &.svg-icon {
     @include base();
-    color: $color-primary;
     stroke: currentColor;
     fill: currentColor;
   }
