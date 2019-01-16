@@ -1,13 +1,16 @@
 'use strict';
 
 import React from 'react';
+import { components } from 'mylife-tools-ui';
 
 const Containers = () => (
   <div>
+    <components.GroupBox title='Titre'>
+      Contenu
+    </components.GroupBox>
     TODO
-    Groupbox
-    Divider
-    ScrollView
+    Splitter
+    ScrollArea
   </div>
 );
 
