@@ -13,11 +13,11 @@ div {
     }
 
     &> .layout-pane:first-child {
-      margin-right: $container-padding;
+      padding-right: $container-padding;
     }
 
     &> .layout-pane:last-child {
-      margin-left: $container-padding;
+      padding-left: $container-padding;
     }
 
   }
@@ -34,13 +34,13 @@ div {
     }
 
     &> .layout-pane:first-child {
-      margin-bottom: $container-padding;
-      margin-right: 0;
+      padding-bottom: $container-padding;
+      padding-right: 0;
     }
 
     &> .layout-pane:last-child {
-      margin-top: $container-padding;
-      margin-left: 0;
+      padding-top: $container-padding;
+      padding-left: 0;
     }
   }
 }
