@@ -2,7 +2,7 @@
 
 $padding-horizontal: 2em;
 $title-padding-vertical: 0.2em;
-$content-padding-vertical: 1em;
+$content-padding-vertical: $container-padding;
 $actions-padding-vertical: 0;
 
 @mixin dialog-title() {

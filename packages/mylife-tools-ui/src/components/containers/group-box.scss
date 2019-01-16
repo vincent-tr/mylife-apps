@@ -1,12 +1,9 @@
 @import '../base/base.scss';
 
-$container-margin: 0.5em;
 $title-height: 1.8em;
 $title-left: 2em;
 $title-padding-vertical: 0.2em;
-$title-padding-horizontal: 1em;
-$content-padding-vertical: 1em;
-$content-padding-horizontal: 1em;
+$title-padding-horizontal: $container-padding;
 
 div {
   &.group-box-container {
@@ -30,7 +27,8 @@ div {
     }
 
     &> .content {
-      padding: $content-padding-vertical $content-padding-horizontal $content-padding-vertical $content-padding-horizontal;
+      padding: $container-padding;
+      width: 100%;
     }
   }
 }

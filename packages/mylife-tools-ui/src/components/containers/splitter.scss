@@ -1,0 +1,31 @@
+@import '../base/base.scss';
+
+div {
+  &.splitter-layout {
+
+    &> .layout-splitter {
+      background-color: $color-divider;
+      width: 0.2em;
+      margin-left: $container-padding;
+      margin-right: $container-padding;
+
+      &:hover {
+        background-color: $color-primary;
+      }
+    }
+  }
+
+  &.splitter-layout.layout-changing {
+    &> .layout-splitter {
+      background-color: $color-secondary;
+    }
+  }
+
+  &.splitter-layout.splitter-layout-vertical {
+    &> .layout-splitter {
+      height: 0.2em;
+      margin-top: $container-padding;
+      margin-bottom: $container-padding;
+    }
+  }
+}
