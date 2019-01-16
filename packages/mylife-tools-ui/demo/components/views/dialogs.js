@@ -85,7 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
   errorClick : () => dispatch(busySet(new Error('Boom!'))),
   busyClick : async () => {
     dispatch(busySet(true));
-    await delay(1000000);
+    await delay(2000);
     dispatch(busySet(false));
   },
   infoClick : () => dispatch(infoShow('information text')),
