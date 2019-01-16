@@ -1,12 +1,36 @@
 @import '../base/base.scss';
 
+$container-margin: 0.5em;
+$title-height: 1.8em;
+$title-left: 2em;
+$title-padding-vertical: 0.2em;
+$title-padding-horizontal: 1em;
+$content-padding-vertical: 1em;
+$content-padding-horizontal: 1em;
+
 div {
   &.group-box-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: $border-width $border-style $color-divider;
+    margin: ($container-margin+($title-height/2)) $container-margin $container-margin $container-margin;
 
     &> .title {
+      height: $title-height;
+      margin-left: $title-left;
+      margin-top: -($title-height/2);
+      border: $border-width $border-style $color-divider;
+      padding: $title-padding-vertical $title-padding-horizontal $title-padding-vertical $title-padding-horizontal;
+      background-color: $color-background;
+
+      &> * {
+        margin: 0;
+      }
     }
 
     &> .content {
+      padding: $content-padding-vertical $content-padding-horizontal $content-padding-vertical $content-padding-horizontal;
     }
   }
 }
