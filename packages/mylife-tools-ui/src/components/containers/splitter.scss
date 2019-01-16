@@ -6,13 +6,20 @@ div {
     &> .layout-splitter {
       background-color: $color-divider;
       width: 0.2em;
-      margin-left: $container-padding;
-      margin-right: $container-padding;
 
       &:hover {
         background-color: $color-primary;
       }
     }
+
+    &> .layout-pane:first-child {
+      margin-right: $container-padding;
+    }
+
+    &> .layout-pane:last-child {
+      margin-left: $container-padding;
+    }
+
   }
 
   &.splitter-layout.layout-changing {
@@ -24,8 +31,16 @@ div {
   &.splitter-layout.splitter-layout-vertical {
     &> .layout-splitter {
       height: 0.2em;
-      margin-top: $container-padding;
+    }
+
+    &> .layout-pane:first-child {
       margin-bottom: $container-padding;
+      margin-right: 0;
+    }
+
+    &> .layout-pane:last-child {
+      margin-top: $container-padding;
+      margin-left: 0;
     }
   }
 }
