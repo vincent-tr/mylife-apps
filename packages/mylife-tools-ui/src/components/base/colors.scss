@@ -10,7 +10,10 @@ $color-secondary-disabled: rgba($color-secondary, $opacity-disabled);
 $color-overlay: rgba(0, 0, 0, $opacity-overlay);
 $color-transparent: rgba(0, 0, 0, 0);
 
-$color-info: #e6f2ff;
-$color-warning: #ffffcc;
-$color-error: #ffebeb;
+$color-background-info: #e6f2ff;
+$color-background-warning: #ffffcc;
+$color-background-error: #ffebeb;
 
+$color-info: $color-primary;
+$color-warning: #ffcc80;
+$color-error: #ff8080;

@@ -21,15 +21,15 @@ div {
     margin-bottom: 0.2em;
 
     &.info {
-      background-color: $color-info;
+      background-color: $color-background-info;
     }
 
     &.warning {
-      background-color: $color-warning;
+      background-color: $color-background-warning;
     }
 
     &.error {
-      background-color: $color-error;
+      background-color: $color-background-error;
     }
 
     &> .title {

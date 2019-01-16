@@ -70,6 +70,7 @@ div {
 
   &.dialog-title-info {
     @include dialog-title();
+    color: $color-info;
 
     &> .info-title-icon {
       height: 3em;
@@ -83,6 +84,7 @@ div {
 
   &.dialog-title-error {
     @include dialog-title();
+    color: $color-error;
 
     &> .error-title-icon {
       height: 3em;
