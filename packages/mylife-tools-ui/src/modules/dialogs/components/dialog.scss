@@ -47,4 +47,18 @@ div {
     background-color: $color-overlay;
   }
 
+  &.dialog-busy {
+    display: flex;
+    align-items: center;
+    padding-left: 1em !important;
+
+    &> .busy-icon {
+      height: 3em;
+      width: 3em;
+    }
+
+    &> .busy-text {
+      margin-left: 1em;
+    }
+  }
 }

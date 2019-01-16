@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Modal from 'react-modal';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import StoreProvider from '../../../components/application/store-provider';
@@ -85,7 +86,7 @@ class Dialog extends React.Component {
   }
 
   render() {
-    const { open, onClose, title, actions, keyMap, children, ...props } = this.props;
+    const { open, onClose, title, actions, keyMap, children, className, ...props } = this.props;
     void onClose;
     void actions;
     void keyMap;
@@ -106,7 +107,7 @@ class Dialog extends React.Component {
 
             {this.renderTitle()}
 
-            <div className='content'>
+            <div className={classNames('content', className)}>
               {children}
             </div>
 
@@ -119,6 +120,7 @@ class Dialog extends React.Component {
   }
 
   static propTypes = {
+    className: PropTypes.string,
     onClose: PropTypes.func,
     open: PropTypes.bool.isRequired,
     title: PropTypes.node,

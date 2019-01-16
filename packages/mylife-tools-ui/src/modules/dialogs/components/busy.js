@@ -8,9 +8,9 @@ import { Spinner } from '../../../components';
 import { getBusy } from '../selectors';
 
 const Busy = ({ busy }) => (
-  <Dialog open={busy}>
-    <Spinner />
-    Traitement en cours ...
+  <Dialog open={busy} className='dialog-busy'>
+    <Spinner className='busy-icon' />
+    <span className='busy-text'>Traitement en cours ...</span>
   </Dialog>
 );
 
