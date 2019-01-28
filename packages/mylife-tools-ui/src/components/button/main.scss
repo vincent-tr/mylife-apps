@@ -1,12 +1,12 @@
 @import '../base/base.scss';
 
-$button-margin: 0.5em;
+$button-margin: 0.5rem;
 
 @mixin base() {
   display: inline-block;
   outline: none;
   margin: $button-margin;
-  padding: 0.5em 1em;
+  padding: 0.5rem 1rem;
 
   border-style: $border-style;
   border-width: $border-width;

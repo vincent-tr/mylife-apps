@@ -1,7 +1,7 @@
 @mixin item() {
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
-  margin-right: 1em;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  margin-right: 1rem;
   display: flex;
 
   &.clickable {
@@ -14,10 +14,10 @@
 
   &> .icon {
     order: 1;
-    margin-right: 0.5em;
+    margin-right: 0.5rem;
 
-    height: 1em;
-    width: 1em;
+    height: 1rem;
+    width: 1rem;
   }
 
   &> .text {
@@ -35,7 +35,7 @@ div {
 
       border-right: $border-width $border-style $color-divider;
       margin: 0;
-      padding: 0.4em;
+      padding: 0.4rem;
       list-style-type: none;
       display: flex;
       flex-direction: column;
@@ -43,15 +43,15 @@ div {
       &> .header {
         @include item();
 
-        margin-left: 1em;
-        font-size: 1.2em;
+        margin-left: 1rem;
+        font-size: 1.2rem;
       }
 
       &> .item {
         @include item();
 
-        margin-left: 2em;
-        font-size: 1em;
+        margin-left: 2rem;
+        font-size: 1rem;
       }
     }
   }

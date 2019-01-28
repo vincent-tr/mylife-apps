@@ -1,13 +1,13 @@
 @mixin header() {
   border-bottom: $border-width $border-style $color-divider;
-  padding: 0.4em;
-  height: 3.8em;
+  padding: 0.4rem;
+  height: 3.8rem;
 }
 
 @mixin header-icon() {
-  width: 3em;
-  margin-left: 1em;
-  margin-right: 1em;
+  width: 3rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 @mixin header-text() {

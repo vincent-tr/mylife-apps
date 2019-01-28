@@ -1,14 +1,14 @@
 @import '../../../components/base/base.scss';
 
-$padding-horizontal: 2em;
-$title-padding-vertical: 0.2em;
+$padding-horizontal: 2rem;
+$title-padding-vertical: 0.2rem;
 $content-padding-vertical: $container-padding;
 $actions-padding-vertical: 0;
 
 @mixin dialog-title() {
   display: flex;
   align-items: center;
-  padding-left: 0.4em;
+  padding-left: 0.4rem;
 }
 
 div {
@@ -56,15 +56,15 @@ div {
     &> .content.dialog-busy {
       display: flex;
       align-items: center;
-      padding-left: 1em;
+      padding-left: 1rem;
 
       &> .busy-icon {
-        height: 3em;
-        width: 3em;
+        height: 3rem;
+        width: 3rem;
       }
 
       &> .busy-text {
-        margin-left: 1em;
+        margin-left: 1rem;
       }
     }
 
@@ -73,12 +73,12 @@ div {
       color: $color-info;
 
       &> .info-title-icon {
-        height: 3em;
-        width: 3em;
+        height: 3rem;
+        width: 3rem;
       }
 
       &> .info-title-text {
-        margin-left: 1em;
+        margin-left: 1rem;
       }
     }
 
@@ -87,12 +87,12 @@ div {
       color: $color-error;
 
       &> .error-title-icon {
-        height: 3em;
-        width: 3em;
+        height: 3rem;
+        width: 3rem;
       }
 
       &> .error-title-text {
-        margin-left: 1em;
+        margin-left: 1rem;
       }
     }
   }

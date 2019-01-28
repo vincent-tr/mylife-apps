@@ -1,24 +1,24 @@
 @import '../../../components/base/base.scss';
 
-$padding-horizontal: 0.5em;
-$padding-vertical: 0.3em;
+$padding-horizontal: 0.5rem;
+$padding-vertical: 0.3rem;
 
 div {
   &.notifications-overlay {
     position  : fixed;
-    top       : 1em;
+    top       : 1rem;
     right     : 0;
     left      : 0;
     z-index   : 1000;
     width     : 80%;
-    max-width : 20em;
+    max-width : 20rem;
     margin    : auto;
   }
 
   &.notification {
     border: $border-width $border-style $color-primary;
     color: $color-primary;
-    margin-bottom: 0.2em;
+    margin-bottom: 0.2rem;
 
     &.info {
       background-color: $color-background-info;
