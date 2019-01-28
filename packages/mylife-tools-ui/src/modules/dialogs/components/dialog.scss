@@ -8,10 +8,20 @@ $actions-padding-vertical: 0;
 @mixin dialog-title() {
   display: flex;
   align-items: center;
-  padding-left: 0.4em !important;
+  padding-left: 0.4em;
 }
 
 div {
+
+  &.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-overlay;
+  }
+
   &.dialog {
     position: absolute;
     outline: none;
@@ -42,57 +52,48 @@ div {
       flex-direction: row;
       justify-content: flex-end;
     }
-  }
 
-  &.dialog-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: $color-overlay;
-  }
+    &> .content.dialog-busy {
+      display: flex;
+      align-items: center;
+      padding-left: 1em;
 
-  &.dialog-busy {
-    display: flex;
-    align-items: center;
-    padding-left: 1em !important;
+      &> .busy-icon {
+        height: 3em;
+        width: 3em;
+      }
 
-    &> .busy-icon {
-      height: 3em;
-      width: 3em;
+      &> .busy-text {
+        margin-left: 1em;
+      }
     }
 
-    &> .busy-text {
-      margin-left: 1em;
-    }
-  }
+    &> .title.dialog-title-info {
+      @include dialog-title();
+      color: $color-info;
 
-  &.dialog-title-info {
-    @include dialog-title();
-    color: $color-info;
+      &> .info-title-icon {
+        height: 3em;
+        width: 3em;
+      }
 
-    &> .info-title-icon {
-      height: 3em;
-      width: 3em;
-    }
-
-    &> .info-title-text {
-      margin-left: 1em;
-    }
-  }
-
-  &.dialog-title-error {
-    @include dialog-title();
-    color: $color-error;
-
-    &> .error-title-icon {
-      height: 3em;
-      width: 3em;
+      &> .info-title-text {
+        margin-left: 1em;
+      }
     }
 
-    &> .error-title-text {
-      margin-left: 1em;
+    &> .title.dialog-title-error {
+      @include dialog-title();
+      color: $color-error;
+
+      &> .error-title-icon {
+        height: 3em;
+        width: 3em;
+      }
+
+      &> .error-title-text {
+        margin-left: 1em;
+      }
     }
   }
 }
