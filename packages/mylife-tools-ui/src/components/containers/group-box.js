@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 import './group-box.scss';
 
-const GroupBox = ({ className, containerClassName, titleClassName, title, children, }) => (
-  <div className={classNames('group-box-container', containerClassName)}>
+const GroupBox = ({ stretch, className, containerClassName, titleClassName, title, children, }) => (
+  <div className={classNames('group-box-container', containerClassName, { stretch })}>
     <div className={classNames('title', titleClassName)}>
       {formatTitle(title)}
     </div>
@@ -18,6 +18,7 @@ const GroupBox = ({ className, containerClassName, titleClassName, title, childr
 );
 
 GroupBox.propTypes = {
+  stretch: PropTypes.bool,
   className: PropTypes.string,
   containerClassName: PropTypes.string,
   titleClassName: PropTypes.string,

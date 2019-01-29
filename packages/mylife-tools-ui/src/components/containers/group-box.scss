@@ -5,13 +5,20 @@ $title-left: 2rem;
 $title-padding-vertical: 0.2rem;
 $title-padding-horizontal: $container-padding;
 
+$container-margin-top: $container-margin+($title-height/2);
+
 div {
   &.group-box-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     border: $border-width $border-style $color-divider;
-    margin: ($container-margin+($title-height/2)) $container-margin $container-margin $container-margin;
+    margin: $container-margin-top $container-margin $container-margin $container-margin;
+
+    &.stretch {
+      min-height: calc(100% - #{$container-margin-top + $container-margin});
+      min-width: calc(100% - #{2 * $container-margin});
+    }
 
     &> .title {
       height: $title-height;
