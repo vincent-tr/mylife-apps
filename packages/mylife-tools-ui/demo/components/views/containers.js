@@ -3,11 +3,9 @@
 import React from 'react';
 import { components } from 'mylife-tools-ui';
 
-import './containers.scss';
-
 const Containers = () => (
-  <components.GroupBox stretch title='Titre' className='demo-groupbox-content'>
-    <components.Splitter customClassName='demo-splitter'>
+  <components.GroupBox stretch title='Titre'>
+    <components.Splitter>
       <div>Pane1</div>
       <div>Pane2</div>
     </components.Splitter>
