@@ -36,6 +36,7 @@ div {
     &> .content {
       padding: $container-padding;
       width: 100%;
+      flex: auto;
     }
   }
 }
