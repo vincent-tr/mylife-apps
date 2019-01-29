@@ -12,7 +12,7 @@ const Containers = () => (
   </components.GroupBox>
 );
 
-// TODO: ScrollArea
+// TODO: Container, TabPanel
 
 Containers.meta = {
   icon: null,
