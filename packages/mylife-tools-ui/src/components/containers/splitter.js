@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -47,6 +49,7 @@ Pane.defaultProps = {
 class Splitter extends React.Component {
 
   static propTypes = {
+    stretch: PropTypes.bool,
     customClassName: PropTypes.string,
     vertical: PropTypes.bool,
     percentage: PropTypes.bool,
@@ -61,7 +64,8 @@ class Splitter extends React.Component {
   };
 
   static defaultProps = {
-    customClassName: '',
+    stretch: false,
+    customClassName: undefined,
     vertical: false,
     percentage: false,
     primaryIndex: 0,
@@ -217,7 +221,7 @@ class Splitter extends React.Component {
   }
 
   render() {
-    const { customClassName, vertical, percentage, children, primaryIndex } = this.props;
+    const { stretch, customClassName, vertical, percentage, children, primaryIndex } = this.props;
     const { resizing, secondaryPaneSize } = this.state;
 
     const childrenArray = React.Children.toArray(children);
@@ -235,16 +239,9 @@ class Splitter extends React.Component {
     });
 
     return (
-      <div className={classNames('splitter-layout', customClassName, { 'splitter-layout-vertical': vertical, 'layout-changing': resizing } )} ref={(c) => { this.container = c; }}>
+      <div className={classNames('splitter-layout', customClassName, { stretch, 'splitter-layout-vertical': vertical, 'layout-changing': resizing } )} ref={(c) => { this.container = c; }}>
         {wrappedChildren[0]}
-        {wrappedChildren.length > 1 &&
-          <div
-            role="separator"
-            className="layout-splitter"
-            ref={(c) => { this.splitter = c; }}
-            onMouseDown={this.handleSplitterMouseDown}
-          />
-        }
+        <div role='separator' className='layout-splitter' ref={(c) => { this.splitter = c; }} onMouseDown={this.handleSplitterMouseDown} />
         {wrappedChildren[1]}
       </div>
     );

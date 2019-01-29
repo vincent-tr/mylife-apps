@@ -5,7 +5,7 @@ import { components } from 'mylife-tools-ui';
 
 const Containers = () => (
   <components.GroupBox stretch title='Titre'>
-    <components.Splitter>
+    <components.Splitter stretch>
       <div>Pane1</div>
       <div>Pane2</div>
     </components.Splitter>
