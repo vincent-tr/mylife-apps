@@ -6,16 +6,12 @@
   width: 100%;
 }
 
-img {
-  &.icon {
-    @include base();
-  }
+.icon {
+  @include base();
 }
 
-svg {
-  &.svg-icon {
-    @include base();
-    stroke: currentColor;
-    fill: currentColor;
-  }
+.svg-icon {
+  @include base();
+  stroke: currentColor;
+  fill: currentColor;
 }
