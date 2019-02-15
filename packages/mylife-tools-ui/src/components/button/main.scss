@@ -20,52 +20,52 @@ $button-margin: 0.5rem;
     @include cursor-disabled();
     border-color: $color-primary-disabled;
   }
-}
 
-.button-primary {
+  &.primary {
 
-  color: $color-background;
-
-  &:not([disabled]) {
-    background-color: $color-primary;
-  }
-
-  &:disabled {
-    background-color: $color-primary-disabled;
-  }
-
-  &:hover:not([disabled]), &:focus:not([disabled]) {
-    border-color: $color-secondary;
-    background-color: $color-secondary;
-  }
-
-  &:active:not([disabled]) {
-    border-color: $color-primary;
-    color: $color-primary;
-    background-color: $color-background;
-  }
-}
-
-.button-secondary {
-
-  background-color: $color-background;
-
-  &:not([disabled]) {
-    color: $color-primary;
-  }
-
-  &:disabled {
-    color: $color-primary-disabled;
-  }
-
-  &:hover:not([disabled]), &:focus:not([disabled]) {
-    border-color: $color-secondary;
-    color: $color-secondary;
-  }
-
-  &:active:not([disabled]) {
     color: $color-background;
-    border-color: $color-primary;
-    background-color: $color-primary;
+
+    &:not([disabled]) {
+      background-color: $color-primary;
+    }
+
+    &:disabled {
+      background-color: $color-primary-disabled;
+    }
+
+    &:hover:not([disabled]), &:focus:not([disabled]) {
+      border-color: $color-secondary;
+      background-color: $color-secondary;
+    }
+
+    &:active:not([disabled]) {
+      border-color: $color-primary;
+      color: $color-primary;
+      background-color: $color-background;
+    }
+  }
+
+  &.secondary {
+
+    background-color: $color-background;
+
+    &:not([disabled]) {
+      color: $color-primary;
+    }
+
+    &:disabled {
+      color: $color-primary-disabled;
+    }
+
+    &:hover:not([disabled]), &:focus:not([disabled]) {
+      border-color: $color-secondary;
+      color: $color-secondary;
+    }
+
+    &:active:not([disabled]) {
+      color: $color-background;
+      border-color: $color-primary;
+      background-color: $color-primary;
+    }
   }
 }
