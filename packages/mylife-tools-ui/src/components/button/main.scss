@@ -2,7 +2,7 @@
 
 $button-margin: 0.5rem;
 
-@mixin base() {
+.button {
   display: inline-block;
   outline: none;
   margin: $button-margin;
@@ -22,54 +22,50 @@ $button-margin: 0.5rem;
   }
 }
 
-button {
-  &.primary {
-    @include base();
+.button-primary {
 
-    color: $color-background;
+  color: $color-background;
 
-    &:not([disabled]) {
-      background-color: $color-primary;
-    }
-
-    &:disabled {
-      background-color: $color-primary-disabled;
-    }
-
-    &:hover:not([disabled]), &:focus:not([disabled]) {
-      border-color: $color-secondary;
-      background-color: $color-secondary;
-    }
-
-    &:active:not([disabled]) {
-      border-color: $color-primary;
-      color: $color-primary;
-      background-color: $color-background;
-    }
+  &:not([disabled]) {
+    background-color: $color-primary;
   }
 
-  &.secondary {
-    @include base();
+  &:disabled {
+    background-color: $color-primary-disabled;
+  }
 
+  &:hover:not([disabled]), &:focus:not([disabled]) {
+    border-color: $color-secondary;
+    background-color: $color-secondary;
+  }
+
+  &:active:not([disabled]) {
+    border-color: $color-primary;
+    color: $color-primary;
     background-color: $color-background;
+  }
+}
 
-    &:not([disabled]) {
-      color: $color-primary;
-    }
+.button-secondary {
 
-    &:disabled {
-      color: $color-primary-disabled;
-    }
+  background-color: $color-background;
 
-    &:hover:not([disabled]), &:focus:not([disabled]) {
-      border-color: $color-secondary;
-      color: $color-secondary;
-    }
+  &:not([disabled]) {
+    color: $color-primary;
+  }
 
-    &:active:not([disabled]) {
-      color: $color-background;
-      border-color: $color-primary;
-      background-color: $color-primary;
-    }
+  &:disabled {
+    color: $color-primary-disabled;
+  }
+
+  &:hover:not([disabled]), &:focus:not([disabled]) {
+    border-color: $color-secondary;
+    color: $color-secondary;
+  }
+
+  &:active:not([disabled]) {
+    color: $color-background;
+    border-color: $color-primary;
+    background-color: $color-primary;
   }
 }

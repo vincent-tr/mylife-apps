@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const Button = React.forwardRef(({ primary, disabled, ...otherProps }, ref) => (
-  <button ref={ref} disabled={disabled} className={classNames({ primary, secondary: !primary })} {...otherProps} />
+  <button ref={ref} disabled={disabled} className={classNames({ 'button': true, 'button-primary': primary, 'button-secondary': !primary })} {...otherProps} />
 ));
 
 Button.propTypes = {
