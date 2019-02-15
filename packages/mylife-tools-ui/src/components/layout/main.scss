@@ -8,40 +8,37 @@
 @import './header.scss';
 @import './menu.scss';
 
-div {
+.layout-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 
-  &.layout-container {
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
+  background-color: $color-background;
 
-    background-color: $color-background;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "logo header"
+    "menu content"
+    "footer footer";
+  align-content: stretch;
 
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-      "logo header"
-      "menu content"
-      "footer footer";
-    align-content: stretch;
+  &> .footer {
+    @include base();
 
-    &> .footer {
-      @include base();
+    grid-area: footer;
 
-      grid-area: footer;
+    border-top: $border-width $border-style $color-divider;
 
-      border-top: $border-width $border-style $color-divider;
+    display: flex;
+  }
 
-      display: flex;
-    }
+  &> .content {
+    @include base();
 
-    &> .content {
-      @include base();
-
-      grid-area: content;
-    }
+    grid-area: content;
   }
 }

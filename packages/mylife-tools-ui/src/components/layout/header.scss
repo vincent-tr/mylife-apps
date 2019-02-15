@@ -16,58 +16,56 @@
   justify-content: center;
 }
 
-div {
-  &.layout-container {
+.layout-container {
 
-    &> .logo {
-      @include base();
-      @include header();
+  &> .logo {
+    @include base();
+    @include header();
 
-      &.clickable {
-        @include cursor-clickable();
+    &.clickable {
+      @include cursor-clickable();
 
-        &:hover:not([disabled]), &:focus:not([disabled]) {
-          color: $color-secondary;
-        }
-      }
-
-      grid-area: logo;
-
-      display: flex;
-
-      &> .icon {
-        @include header-icon();
-
-        order: 1;
-      }
-
-      &> .text {
-        @include header-text();
-
-        order: 2;
+      &:hover:not([disabled]), &:focus:not([disabled]) {
+        color: $color-secondary;
       }
     }
 
-    &> .header {
-      @include base();
-      @include header();
+    grid-area: logo;
 
-      grid-area: header;
+    display: flex;
 
-      display: flex;
-      justify-content: center;
+    &> .icon {
+      @include header-icon();
 
-      &> .icon {
-        @include header-icon();
+      order: 1;
+    }
 
-        order: 1;
-      }
+    &> .text {
+      @include header-text();
 
-      &> .text {
-        @include header-text();
+      order: 2;
+    }
+  }
 
-        order: 2;
-      }
+  &> .header {
+    @include base();
+    @include header();
+
+    grid-area: header;
+
+    display: flex;
+    justify-content: center;
+
+    &> .icon {
+      @include header-icon();
+
+      order: 1;
+    }
+
+    &> .text {
+      @include header-text();
+
+      order: 2;
     }
   }
 }

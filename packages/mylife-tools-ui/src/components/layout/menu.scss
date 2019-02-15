@@ -25,34 +25,32 @@
   }
 }
 
-div {
-  &.layout-container {
+.layout-container {
 
-    &> .menu {
-      @include base();
+  &> .menu {
+    @include base();
 
-      grid-area: menu;
+    grid-area: menu;
 
-      border-right: $border-width $border-style $color-divider;
-      margin: 0;
-      padding: 0.4rem;
-      list-style-type: none;
-      display: flex;
-      flex-direction: column;
+    border-right: $border-width $border-style $color-divider;
+    margin: 0;
+    padding: 0.4rem;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
 
-      &> .header {
-        @include item();
+    &> .header {
+      @include item();
 
-        margin-left: 1rem;
-        font-size: 1.2rem;
-      }
+      margin-left: 1rem;
+      font-size: 1.2rem;
+    }
 
-      &> .item {
-        @include item();
+    &> .item {
+      @include item();
 
-        margin-left: 2rem;
-        font-size: 1rem;
-      }
+      margin-left: 2rem;
+      font-size: 1rem;
     }
   }
 }
