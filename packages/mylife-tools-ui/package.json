@@ -25,7 +25,6 @@
     "react-modal": "^3.8.1",
     "react-portal": "^4.2.0",
     "react-scrollbar": "^0.5.4",
-    "react-splitter-layout": "^3.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "svg-react-loader": "^0.4.6",
@@ -65,4 +64,7 @@
     "redux-actions": "^2.6.4",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "webpack": "^4.26
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2"
+  }
+}
