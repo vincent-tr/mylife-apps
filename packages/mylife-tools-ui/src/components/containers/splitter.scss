@@ -1,80 +1,78 @@
 @import '../base/base.scss';
 
-div {
-  &.splitter-layout {
+.splitter-layout {
 
-    &.stretch {
-      min-height: 100%;
-      min-width: 100%;
-    }
+  &.stretch {
+    min-height: 100%;
+    min-width: 100%;
+  }
 
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
 
-    &.layout-changing {
-      cursor: col-resize;
-    }
+  &.layout-changing {
+    cursor: col-resize;
+  }
 
-    &> .layout-splitter {
-      flex: 0 0 auto;
-      height: 100%;
-      cursor: col-resize;
+  &> .layout-splitter {
+    flex: 0 0 auto;
+    height: 100%;
+    cursor: col-resize;
 
-      background-color: $color-divider;
-      width: 4px;
+    background-color: $color-divider;
+    width: 4px;
 
-      &:hover {
-        background-color: $color-primary;
-      }
-    }
-
-    &.layout-changing > .layout-splitter {
-      background-color: $color-secondary;
-    }
-
-    &> .layout-pane {
-
-      position: relative;
-      flex: 0 0 auto;
-      overflow: auto;
-
-      &.layout-pane-primary {
-        flex: 1 1 auto;
-      }
-
-      &:first-child {
-        padding-right: $container-padding;
-      }
-
-      &:last-child {
-        padding-left: $container-padding;
-      }
+    &:hover {
+      background-color: $color-primary;
     }
   }
 
-  &.splitter-layout.splitter-layout-vertical {
+  &.layout-changing > .layout-splitter {
+    background-color: $color-secondary;
+  }
 
-    flex-direction: column;
+  &> .layout-pane {
 
-    &.layout-changing {
-      cursor: row-resize;
+    position: relative;
+    flex: 0 0 auto;
+    overflow: auto;
+
+    &.layout-pane-primary {
+      flex: 1 1 auto;
     }
 
-    &> .layout-splitter {
-      width: 100%;
-      height: 4px;
-      cursor: row-resize;
+    &:first-child {
+      padding-right: $container-padding;
     }
 
-    &> .layout-pane:first-child {
-      padding-bottom: $container-padding;
-      padding-right: 0;
+    &:last-child {
+      padding-left: $container-padding;
     }
+  }
+}
 
-    &> .layout-pane:last-child {
-      padding-top: $container-padding;
-      padding-left: 0;
-    }
+&.splitter-layout.splitter-layout-vertical {
+
+  flex-direction: column;
+
+  &.layout-changing {
+    cursor: row-resize;
+  }
+
+  &> .layout-splitter {
+    width: 100%;
+    height: 4px;
+    cursor: row-resize;
+  }
+
+  &> .layout-pane:first-child {
+    padding-bottom: $container-padding;
+    padding-right: 0;
+  }
+
+  &> .layout-pane:last-child {
+    padding-top: $container-padding;
+    padding-left: 0;
   }
 }
