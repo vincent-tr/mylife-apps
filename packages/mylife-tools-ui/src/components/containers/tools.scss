@@ -2,7 +2,6 @@
 
 .container-box {
   margin: 0;
-  padding: 0;
 
   &.stretch {
     position: absolute;
@@ -14,5 +13,6 @@
 }
 
 .container-content {
+  padding: 0;
   position: relative;
 }

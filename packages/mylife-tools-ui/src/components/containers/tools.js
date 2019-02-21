@@ -6,11 +6,11 @@ import classNames from 'classnames';
 
 import './tools.scss';
 
-const Box = ({ stretch, className, children }) => (
-  <div className={classNames('container-box', className, { stretch })}>
+const Box = React.forwardRef(({ stretch, className, children }, ref) => (
+  <div ref={ref} className={classNames('container-box', className, { stretch })}>
     {children}
   </div>
-);
+));
 
 Box.propTypes = {
   stretch: PropTypes.bool,
@@ -22,11 +22,11 @@ Box.defaultProps = {
   stretch: true
 };
 
-const Content = ({ className, children }) => (
-  <div className={classNames('container-content', className)}>
+const Content = React.forwardRef(({ className, children }, ref) => (
+  <div ref={ref} className={classNames('container-content', className)}>
     {children}
   </div>
-);
+));
 
 Content.propTypes = {
   className: PropTypes.string,

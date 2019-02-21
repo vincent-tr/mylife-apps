@@ -10,11 +10,12 @@ $container-margin-top: $container-margin+($title-height/2);
 .group-box-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   border: $border-width $border-style $color-divider;
   margin: $container-margin-top $container-margin $container-margin $container-margin;
 
   &> .title {
+    align-self: flex-start;
     height: $title-height;
     margin-left: $title-left;
     margin-top: -($title-height/2);
@@ -28,8 +29,7 @@ $container-margin-top: $container-margin+($title-height/2);
   }
 
   &> .content {
-    padding: $container-padding;
-    width: 100%;
+    margin: $container-padding;
     flex: auto;
   }
 }

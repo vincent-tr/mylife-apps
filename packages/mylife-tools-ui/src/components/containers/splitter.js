@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Box, Content } from './tools';
 
 import './splitter.scss';
 
@@ -21,9 +22,9 @@ const Pane = ({ size = 0, percentage, primary, vertical, children }) => {
     }
   }
   return (
-    <div className={classNames('layout-pane', { 'layout-pane-primary': primary })} style={style}>
+    <Content className={classNames('layout-pane', { 'layout-pane-primary': primary })} style={style}>
       {children}
-    </div>
+    </Content>
   );
 };
 
@@ -239,11 +240,11 @@ class Splitter extends React.Component {
     });
 
     return (
-      <div className={classNames('splitter-layout', customClassName, { stretch, 'splitter-layout-vertical': vertical, 'layout-changing': resizing } )} ref={(c) => { this.container = c; }}>
+      <Box stretch={stretch} className={classNames('splitter-container', customClassName, { 'splitter-container-vertical': vertical, 'layout-changing': resizing } )} ref={(c) => { this.container = c; }}>
         {wrappedChildren[0]}
         <div role='separator' className='layout-splitter' ref={(c) => { this.splitter = c; }} onMouseDown={this.handleSplitterMouseDown} />
         {wrappedChildren[1]}
-      </div>
+      </Box>
     );
   }
 }
