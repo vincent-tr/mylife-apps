@@ -12,7 +12,6 @@
 
   &> .layout-splitter {
     flex: 0 0 auto;
-    height: 100%;
     cursor: col-resize;
 
     background-color: $color-divider;
@@ -29,7 +28,6 @@
 
   &> .layout-pane {
 
-    position: relative;
     flex: 0 0 auto;
     overflow: auto;
 
@@ -38,11 +36,11 @@
     }
 
     &:first-child {
-      padding-right: $container-padding;
+      margin-right: $container-margin;
     }
 
     &:last-child {
-      padding-left: $container-padding;
+      margin-left: $container-margin;
     }
   }
 
@@ -55,19 +53,19 @@
     }
 
     &> .layout-splitter {
-      width: 100%;
+      width: auto;
       height: 4px;
       cursor: row-resize;
     }
 
     &> .layout-pane:first-child {
-      padding-bottom: $container-padding;
-      padding-right: 0;
+      margin-bottom: $container-margin;
+      margin-right: 0;
     }
 
     &> .layout-pane:last-child {
-      padding-top: $container-padding;
-      padding-left: 0;
+      margin-top: $container-margin;
+      margin-left: 0;
     }
   }
 

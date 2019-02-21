@@ -65,18 +65,11 @@ class Splitter extends React.Component {
   };
 
   static defaultProps = {
-    stretch: false,
-    customClassName: undefined,
     vertical: false,
     percentage: false,
     primaryIndex: 0,
     primaryMinSize: 0,
-    secondaryInitialSize: undefined,
-    secondaryMinSize: 0,
-    onDragStart: null,
-    onDragEnd: null,
-    onSecondaryPaneSizeChange: null,
-    children: []
+    secondaryMinSize: 0
   };
 
   constructor(props) {
