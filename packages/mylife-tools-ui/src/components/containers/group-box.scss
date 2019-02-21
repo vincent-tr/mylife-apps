@@ -14,11 +14,6 @@ $container-margin-top: $container-margin+($title-height/2);
   border: $border-width $border-style $color-divider;
   margin: $container-margin-top $container-margin $container-margin $container-margin;
 
-  &.stretch {
-    min-height: calc(100% - #{$container-margin-top + $container-margin});
-    min-width: calc(100% - #{2 * $container-margin});
-  }
-
   &> .title {
     height: $title-height;
     margin-left: $title-left;

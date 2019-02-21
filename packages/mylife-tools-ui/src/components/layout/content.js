@@ -2,11 +2,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Content as ContainerContent } from '../containers/tools';
 
 const Content = ({ children }) => (
-  <div className='content'>
+  <ContainerContent className='content'>
     {children}
-  </div>
+  </ContainerContent>
 );
 
 Content.propTypes = {

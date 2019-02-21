@@ -3,18 +3,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Box, Content } from './tools';
 
 import './group-box.scss';
 
 const GroupBox = ({ stretch, className, containerClassName, titleClassName, title, children }) => (
-  <div className={classNames('group-box-container', containerClassName, { stretch })}>
+  <Box stretch={stretch} className={classNames('group-box-container', containerClassName)}>
     <div className={classNames('title', titleClassName)}>
       {formatTitle(title)}
     </div>
-    <div className={classNames('content', className)}>
+    <Content className={classNames('content', className)}>
       {children}
-    </div>
-  </div>
+    </Content>
+  </Box>
 );
 
 GroupBox.propTypes = {
