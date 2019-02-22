@@ -1,29 +1,25 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Dialog from './dialog';
 import { Spinner } from '../../../components';
 import { getBusy } from '../selectors';
+import { createUseConnect } from 'react-use-redux';
 
-const Busy = ({ busy }) => (
-  <Dialog open={busy} className='dialog-busy'>
-    <Spinner className='busy-icon' />
-    <span className='busy-text'>Traitement en cours ...</span>
-  </Dialog>
+const useConnect = createUseConnect(
+  (state) => ({
+    busy : getBusy(state),
+  })
 );
 
-Busy.propTypes = {
-  busy: PropTypes.bool.isRequired
+const Busy = () => {
+  const { busy } = useConnect();
+  return (
+    <Dialog open={busy} className='dialog-busy'>
+      <Spinner className='busy-icon' />
+      <span className='busy-text'>Traitement en cours ...</span>
+    </Dialog>
+  );
 };
 
-const mapStateToProps = (state) => ({
-  busy : getBusy(state),
-});
-
-const mapDispatchToProps = (/*dispatch*/) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Busy);
+export default Busy;
