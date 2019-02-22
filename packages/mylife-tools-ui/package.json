@@ -34,8 +34,7 @@
   "peerDependencies": {
     "immutable": "^4.0.0",
     "prop-types": "^15.0.0",
-    "react": "^16.0.0",
-    "react-redux": "^6.0.0",
+    "react": "^16.8.0",
     "redux": "^4.0.0",
     "redux-actions": "^2.6.0"
   },
@@ -60,7 +59,6 @@
     "node-sass": "^4.11.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.3",
-    "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
     "sass-loader": "^7.1.0",

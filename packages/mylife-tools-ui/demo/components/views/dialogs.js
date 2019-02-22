@@ -2,8 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { components, modules } from 'mylife-tools-ui';
+import { createUseConnect } from 'react-use-redux';
 
 const { busySet, infoShow, showDialog, Dialog, notificationShow } = modules.dialogs;
 
@@ -49,27 +49,36 @@ async function customDialogs() {
   showDialog(CustomAnswer, { value });
 }
 
-const Dialogs = ({ errorClick, busyClick, infoClick, notificationClick }) => (
-  <div>
-    <div>
-      <components.Button onClick={errorClick}>Error</components.Button>
-      <components.Button onClick={infoClick}>Info</components.Button>
-      <components.Button onClick={busyClick}>Busy</components.Button>
-      <components.Button onClick={customDialogs}>Custom</components.Button>
-    </div>
-    <div>
-      <components.Button onClick={() => notificationClick('info')}>Message Info</components.Button>
-      <components.Button onClick={() => notificationClick('warning')}>Message Warning</components.Button>
-      <components.Button onClick={() => notificationClick('error')}>Message Error</components.Button>
-    </div>
-  </div>
+const useConnect = createUseConnect(undefined,
+  (dispatch) => ({
+    errorClick : () => dispatch(busySet(new Error('Boom!'))),
+    busyClick : async () => {
+      dispatch(busySet(true));
+      await delay(2000);
+      dispatch(busySet(false));
+    },
+    infoClick : () => dispatch(infoShow('information text')),
+    notificationClick : (type) => dispatch(notificationShow({ header: type === 'info' ? 'Title' : null, message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
+  })
 );
 
-Dialogs.propTypes = {
-  errorClick: PropTypes.func.isRequired,
-  busyClick: PropTypes.func.isRequired,
-  infoClick: PropTypes.func.isRequired,
-  notificationClick: PropTypes.func.isRequired,
+const Dialogs = () => {
+  const { errorClick, busyClick, infoClick, notificationClick } = useConnect();
+  return (
+    <div>
+      <div>
+        <components.Button onClick={errorClick}>Error</components.Button>
+        <components.Button onClick={infoClick}>Info</components.Button>
+        <components.Button onClick={busyClick}>Busy</components.Button>
+        <components.Button onClick={customDialogs}>Custom</components.Button>
+      </div>
+      <div>
+        <components.Button onClick={() => notificationClick('info')}>Message Info</components.Button>
+        <components.Button onClick={() => notificationClick('warning')}>Message Warning</components.Button>
+        <components.Button onClick={() => notificationClick('error')}>Message Error</components.Button>
+      </div>
+    </div>
+  );
 };
 
 Dialogs.meta = {
@@ -77,22 +86,7 @@ Dialogs.meta = {
   title: 'Dialogs'
 };
 
-const mapStateToProps = (/*state*/) => ({
-
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  errorClick : () => dispatch(busySet(new Error('Boom!'))),
-  busyClick : async () => {
-    dispatch(busySet(true));
-    await delay(2000);
-    dispatch(busySet(false));
-  },
-  infoClick : () => dispatch(infoShow('information text')),
-  notificationClick : (type) => dispatch(notificationShow({ header: type === 'info' ? 'Title' : null, message: `Message ${type.toUpperCase()}`, type: notificationShow.types[type] }))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+export default Dialogs;
 
 async function delay(value) {
   return new Promise(resolve =>setTimeout(() => resolve(), value));

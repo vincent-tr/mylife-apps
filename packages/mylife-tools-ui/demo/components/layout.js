@@ -1,13 +1,12 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { components } from 'mylife-tools-ui';
 import icon from '../icon.ico';
 import { setView } from '../actions/view';
 import { getView } from '../selectors/view';
 import * as views from './views';
+import { createUseConnect } from 'react-use-redux';
 
 function buildMenuItem(id, menuClick, type = 'item') {
   const meta = views[id].meta;
@@ -32,41 +31,41 @@ function buildComponentItems(menuClick) {
   return res;
 }
 
-const Layout = ({ viewName, viewIcon, children, menuClick, logoClick }) => (
-  <components.Layout logoName={<h1>Demo</h1>}
-    logoIcon={<components.Icon src={icon}/>}
-    logoOnClick={logoClick}
-    viewName={<h2>{viewName}</h2>}
-    viewIcon={viewIcon && <components.Icon src={viewIcon}/>}
-    menu={[
-      buildMenuItem('main', menuClick, 'header'),
-      { id: 'components', text: 'Components', type: 'header' },
-      ... buildComponentItems(menuClick)
-    ]}
-    footer={'footer'}>
-    {children}
-  </components.Layout>
+const useConnect = createUseConnect(
+  (state) => {
+    const { meta } = views[getView(state)];
+    return {
+      viewName: meta.title,
+      viewIcon: meta.icon
+    };
+  },
+  (dispatch) => ({
+    menuClick : id => dispatch(setView(id)),
+    logoClick : () => dispatch(setView('main'))
+  })
 );
 
+const Layout = ({ children }) => {
+  const { viewName, viewIcon, menuClick, logoClick } = useConnect();
+  return (
+    <components.Layout logoName={<h1>Demo</h1>}
+      logoIcon={<components.Icon src={icon}/>}
+      logoOnClick={logoClick}
+      viewName={<h2>{viewName}</h2>}
+      viewIcon={viewIcon && <components.Icon src={viewIcon}/>}
+      menu={[
+        buildMenuItem('main', menuClick, 'header'),
+        { id: 'components', text: 'Components', type: 'header' },
+        ... buildComponentItems(menuClick)
+      ]}
+      footer={'footer'}>
+      {children}
+    </components.Layout>
+  );
+};
+
 Layout.propTypes = {
-  viewName: PropTypes.string.isRequired,
-  viewIcon: PropTypes.string,
-  children: components.Layout.propTypes.children,
-  menuClick: PropTypes.func.isRequired,
-  logoClick: PropTypes.func.isRequired
+  children: components.Layout.propTypes.children
 };
 
-const mapStateToProps = (state) => {
-  const { meta } = views[getView(state)];
-  return {
-    viewName: meta.title,
-    viewIcon: meta.icon
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  menuClick : id => dispatch(setView(id)),
-  logoClick : () => dispatch(setView('main'))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default Layout;

@@ -3,10 +3,10 @@
 import React from 'react';
 import {Portal} from 'react-portal';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { getNotifications } from '../selectors';
 import { notificationDismiss } from '../actions';
 import { Button } from '../../../components';
+import { createUseConnect } from 'react-use-redux';
 
 import './notifications.scss';
 
@@ -39,31 +39,30 @@ Notification.propTypes = {
   type: PropTypes.symbol.isRequired,
 };
 
-const Notifications = ({ dismiss, notifications }) => (
-  <Portal isOpened={true} key='notificationsPortal'>
-    <div className='notifications-overlay'>
-      {notifications.map(notification => (
-        <Notification
-          key={notification.id}
-          onCloseClick={() => dismiss(notification.id)}
-          {...notification}
-        />
-      ))}
-    </div>
-  </Portal>
+const useConnect = createUseConnect(
+  (state) => ({
+    notifications : getNotifications(state),
+  }),
+  (dispatch) => ({
+    dismiss : (id) => dispatch(notificationDismiss(id))
+  })
 );
 
-Notifications.propTypes = {
-  dismiss: PropTypes.func.isRequired,
-  notifications: PropTypes.object.isRequired
+const Notifications = () => {
+  const { dismiss, notifications } = useConnect();
+  return (
+    <Portal isOpened={true} key='notificationsPortal'>
+      <div className='notifications-overlay'>
+        {notifications.map(notification => (
+          <Notification
+            key={notification.id}
+            onCloseClick={() => dismiss(notification.id)}
+            {...notification}
+          />
+        ))}
+      </div>
+    </Portal>
+  );
 };
 
-const mapStateToProps = (state) => ({
-  notifications : getNotifications(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  dismiss : (id) => dispatch(notificationDismiss(id))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
+export default Notifications;
