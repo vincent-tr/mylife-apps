@@ -48,8 +48,6 @@ MyLife Tools UI
 ## TODO:
 * containers :
   * tab panel
-  * container
-  * responsive
 * editors :
   * field avec :
     - datatype (ex: count qui est un entier positif)
