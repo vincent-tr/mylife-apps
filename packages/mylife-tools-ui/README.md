@@ -44,3 +44,14 @@ MyLife Tools UI
 * https://webpack.js.org/guides/author-libraries/
 * https://webpack.js.org/guides/production/
 * https://medium.com/dailyjs/building-a-react-component-with-webpack-publish-to-npm-deploy-to-github-guide-6927f60b3220
+
+## TODO:
+* containers :
+  * tab panel
+  * container
+  * responsive
+* editors :
+  * field avec :
+    - datatype (ex: count qui est un entier positif)
+    - rules (ex: required, upperBound(10) ) qui est implémenté en validators mais qui peut être géré sur la UI de l éditeur aussi
+    - nom du field
