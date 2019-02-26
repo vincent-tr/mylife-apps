@@ -6,8 +6,12 @@ import { components } from 'mylife-tools-ui';
 const Containers = () => (
   <components.GroupBox title='Titre'>
     <components.Splitter>
-      <div>Pane1</div>
-      <div>Pane2</div>
+      <components.Container stretch borders scroll>
+        Pane1
+      </components.Container>
+      <components.Container stretch>
+        Pane2
+      </components.Container>
     </components.Splitter>
   </components.GroupBox>
 );
