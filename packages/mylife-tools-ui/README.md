@@ -1,18 +1,23 @@
 # mylife-tools-ui
 MyLife Tools UI
 
-## integration:
-* divider : https://www.npmjs.com/package/react-splitter-layout
-* scrollbar : https://www.npmjs.com/package/react-scrollbar
-* react-modal : https://www.npmjs.com/package/react-modal
-
 ## css notes
 
-### main layout :
+* better css : https://blog.theodo.fr/2018/06/write-better-css-part-1/
+* flex/grid :
+  * https://medium.com/youstart-labs/beginners-guide-to-choose-between-css-grid-and-flexbox-783005dd2412
+  * https://hackernoon.com/the-ultimate-css-battle-grid-vs-flexbox-d40da0449faf
 
-#### desktop :
+## UX
+
+### Main layout :
+
+#### desktop large :
 * header haut : titre app, puis titre fenetre
 * a gauche : menu app
+
+#### desktop :
+* header haut : titre app, menu, titre fenetre
 
 #### mobile :
 * header haut : ligne 1 : titre app, ligne 2 : titre fenetre, icon pour afficher menu
@@ -21,11 +26,21 @@ MyLife Tools UI
 #### tablette :
 * ???
 
+### Examples :
+* https://geomax-positioning.com/
+
+### Tips :
+* Tout accessible en 3 clics
+
 ## react/redux notes
 
 * Dossiers par feature plutôt que components constantes etc
 * Plusieurs fichiers constante
-
 * Bind avec props en arrow
-
 * noop action ?
+
+## Webpack/npm packaging
+
+* https://webpack.js.org/guides/author-libraries/
+* https://webpack.js.org/guides/production/
+* https://medium.com/dailyjs/building-a-react-component-with-webpack-publish-to-npm-deploy-to-github-guide-6927f60b3220
