@@ -1,45 +1,51 @@
 'use strict';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { components } from 'mylife-tools-ui';
 
-const Containers = () => (
-  <components.GroupBox title='Titre'>
-    <components.Splitter>
-      <components.Container stretch borders scroll>
-        <components.Responsive large laptop>
-          <div>desktop</div>
-        </components.Responsive>
-        <components.Responsive large>
-          <div>large</div>
-        </components.Responsive>
-        <components.Responsive laptop>
-          <div>laptop</div>
-        </components.Responsive>
-        <components.Responsive tablet>
-          <div>tablet</div>
-        </components.Responsive>
-        <components.Responsive mobile>
-          <div>mobile</div>
-        </components.Responsive>
-        <components.Responsive portrait>
-          <div>portrait</div>
-        </components.Responsive>
-        <components.Responsive landscape>
-          <div>landscape</div>
-        </components.Responsive>
-        <components.Responsive landscape tablet mobile>
-          <div>tablet or mobile landscape</div>
-        </components.Responsive>
-      </components.Container>
-      <components.Container stretch>
-        Pane2
-      </components.Container>
-    </components.Splitter>
-  </components.GroupBox>
-);
-
-// TODO: Container, TabPanel
+const Containers = () => {
+  const [ current, setCurrent ] = useState('tab1');
+  return (
+    <components.GroupBox title='Titre'>
+      <components.Splitter>
+        <components.Container stretch borders scroll>
+          <components.Responsive large laptop>
+            <div>desktop</div>
+          </components.Responsive>
+          <components.Responsive large>
+            <div>large</div>
+          </components.Responsive>
+          <components.Responsive laptop>
+            <div>laptop</div>
+          </components.Responsive>
+          <components.Responsive tablet>
+            <div>tablet</div>
+          </components.Responsive>
+          <components.Responsive mobile>
+            <div>mobile</div>
+          </components.Responsive>
+          <components.Responsive portrait>
+            <div>portrait</div>
+          </components.Responsive>
+          <components.Responsive landscape>
+            <div>landscape</div>
+          </components.Responsive>
+          <components.Responsive landscape tablet mobile>
+            <div>tablet or mobile landscape</div>
+          </components.Responsive>
+        </components.Container>
+        <components.TabPanel stretch current={current} onChange={setCurrent}>
+          <components.Tab id='tab1' header={<h2>Tab1</h2>}>
+            Content1
+          </components.Tab>
+          <components.Tab id='tab2' header={<h2>Tab2</h2>}>
+            Content2
+          </components.Tab>
+        </components.TabPanel>
+      </components.Splitter>
+    </components.GroupBox>
+  );
+};
 
 Containers.meta = {
   icon: null,
