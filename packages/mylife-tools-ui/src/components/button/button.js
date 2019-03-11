@@ -4,13 +4,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const Button = React.forwardRef(({ primary, disabled, ...otherProps }, ref) => (
-  <button ref={ref} disabled={disabled} className={classNames({ 'button': true, primary, secondary: !primary })} {...otherProps} />
+import './button.scss';
+
+const Button = React.forwardRef(({ primary, disabled, className, ...otherProps }, ref) => (
+  <button ref={ref} disabled={disabled} className={classNames('button', { primary, secondary: !primary }, className)} {...otherProps} />
 ));
 
 Button.propTypes = {
   primary: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 Button.defaultProps = {
