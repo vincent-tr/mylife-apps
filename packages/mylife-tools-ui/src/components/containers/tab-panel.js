@@ -3,10 +3,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Box, Content } from './tools';
+import { Button } from '../button';
+import GroupBox from './group-box';
+
+import './tab-panel.scss';
 
 const Tab = ({ id, header, className, headerClassName, children }) => {
-
+  void id, header, className, headerClassName, children; // read props directly
+  return null;
 };
 
 Tab.propTypes = {
@@ -17,11 +21,21 @@ Tab.propTypes = {
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
 };
 
-const TabPanel = ({ stretch, current, onChange, className, children }) => {
+const TabPanel = ({ stretch, current, onChange, className, headerClassName, children }) => {
+  const tabs = getTabs(children);
+  const currentTab = tabs.find(tab => tab.id === current);
+  if(!currentTab) {
+    throw new Error(`No tab found with id '${current}'`);
+  }
+
   return (
-    <Box stretch={stretch}>
-      TODO
-    </Box>
+    <GroupBox stretch={stretch} containerClassName={classNames('tab-panel', className)} titleClassName={headerClassName} title={tabs.map(tab => (
+      <Button key={tab.id} primary={currentTab === tab} className={classNames('header-item', tab.headerClassName)} onClick={() => onChange(tab.id)}>
+        {tab.header}
+      </Button>
+    ))} className={currentTab.className}>
+      {currentTab.children}
+    </GroupBox>
   );
 };
 
@@ -30,7 +44,19 @@ TabPanel.propTypes = {
   current: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
+  headerClassName: PropTypes.string,
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
 };
 
 export { TabPanel, Tab };
+
+function getTabs(children) {
+  return React.Children.map(children, tab => {
+    if(tab.type !== Tab) {
+      throw new Error('Only expect Tab children');
+    }
+
+    const { id, header, className, headerClassName, children } = tab.props;
+    return { id, header, className, headerClassName, children };
+  });
+}

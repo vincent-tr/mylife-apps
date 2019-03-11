@@ -35,11 +35,14 @@ const Containers = () => {
           </components.Responsive>
         </components.Container>
         <components.TabPanel stretch current={current} onChange={setCurrent}>
-          <components.Tab id='tab1' header={<h2>Tab1</h2>}>
+          <components.Tab id='tab1' header='Tab1'>
             Content1
           </components.Tab>
-          <components.Tab id='tab2' header={<h2>Tab2</h2>}>
+          <components.Tab id='tab2' header='Tab2'>
             Content2
+          </components.Tab>
+          <components.Tab id='tab3' header='Tab3'>
+            Content3
           </components.Tab>
         </components.TabPanel>
       </components.Splitter>
