@@ -8,14 +8,15 @@ import GroupBox from './group-box';
 
 import './tab-panel.scss';
 
-const Tab = ({ id, header, className, headerClassName, children }) => {
-  void id, header, className, headerClassName, children; // read props directly
+const Tab = ({ id, header, disabled, className, headerClassName, children }) => {
+  void id, header, disabled, className, headerClassName, children; // read props directly
   return null;
 };
 
 Tab.propTypes = {
   id: PropTypes.string.isRequired,
   header: PropTypes.node.isRequired,
+  disabled: PropTypes.bool,
   className: PropTypes.string,
   headerClassName: PropTypes.string,
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
@@ -30,7 +31,7 @@ const TabPanel = ({ stretch, current, onChange, className, headerClassName, chil
 
   return (
     <GroupBox stretch={stretch} containerClassName={classNames('tab-panel', className)} titleClassName={headerClassName} title={tabs.map(tab => (
-      <Button key={tab.id} primary={currentTab === tab} className={classNames('header-item', tab.headerClassName)} onClick={() => onChange(tab.id)}>
+      <Button key={tab.id} primary={currentTab === tab} disabled={tab.disabled} className={classNames('header-item', tab.headerClassName)} onClick={() => onChange(tab.id)}>
         {tab.header}
       </Button>
     ))} className={currentTab.className}>
@@ -56,7 +57,7 @@ function getTabs(children) {
       throw new Error('Only expect Tab children');
     }
 
-    const { id, header, className, headerClassName, children } = tab.props;
-    return { id, header, className, headerClassName, children };
+    const { id, header, disabled, className, headerClassName, children } = tab.props;
+    return { id, header, disabled, className, headerClassName, children };
   });
 }

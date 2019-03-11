@@ -44,6 +44,9 @@ const Containers = () => {
           <components.Tab id='tab3' header='Tab3'>
             Content3
           </components.Tab>
+          <components.Tab id='tab4' header='Tab4' disabled>
+            Content4
+          </components.Tab>
         </components.TabPanel>
       </components.Splitter>
     </components.GroupBox>
