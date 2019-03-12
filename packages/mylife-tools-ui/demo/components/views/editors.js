@@ -2,15 +2,15 @@
 
 import React from 'react';
 
-const Inputs = () => (
+const Editors = () => (
   <div>
     TODO
   </div>
 );
 
-Inputs.meta = {
+Editors.meta = {
   icon: null,
-  title: 'Inputs'
+  title: 'Editors'
 };
 
-export default Inputs;
+export default Editors;
