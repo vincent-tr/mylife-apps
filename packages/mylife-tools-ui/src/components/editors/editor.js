@@ -6,7 +6,6 @@ import String from './string';
 
 import './editor.scss';
 
-// TODO: rules
 const editors = {
   string: String, // max length ?
   integer: null, // can be < 0 ?
