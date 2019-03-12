@@ -1,12 +1,17 @@
 'use strict';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { components } from 'mylife-tools-ui';
 
-const Editors = () => (
-  <div>
-    TODO
-  </div>
-);
+const Editors = () => {
+  const [ stringValue, setStringValue ] = useState('string value');
+  return (
+    <div>
+      <components.Editor type='string' value={stringValue} onChange={setStringValue} />
+      TODO
+    </div>
+  );
+};
 
 Editors.meta = {
   menu: 'Components',
