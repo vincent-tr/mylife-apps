@@ -11,10 +11,8 @@ $button-margin: 0.5rem;
   border-style: $border-style;
   border-width: $border-width;
 
-  &:not([disabled]) {
-    @include cursor-clickable();
-    border-color: $color-primary;
-  }
+  @include cursor-clickable();
+  border-color: $color-primary;
 
   &:disabled {
     @include cursor-disabled();
