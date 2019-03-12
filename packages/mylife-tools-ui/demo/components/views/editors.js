@@ -9,6 +9,7 @@ const Editors = () => (
 );
 
 Editors.meta = {
+  menu: 'Components',
   icon: null,
   title: 'Editors'
 };

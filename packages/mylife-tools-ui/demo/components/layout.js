@@ -8,29 +8,6 @@ import { getView } from '../selectors/view';
 import * as views from './views';
 import { createUseConnect } from 'react-use-redux';
 
-function buildMenuItem(id, menuClick, type = 'item') {
-  const meta = views[id].meta;
-  return {
-    id,
-    text: meta.title,
-    icon: meta.icon && <components.Icon src={meta.icon}/>,
-    type,
-    onClick: menuClick
-  };
-}
-
-function buildComponentItems(menuClick) {
-  const res = [];
-  for(const [ id, View ] of Object.entries(views)) {
-    const { meta } = View;
-    if(meta.exclude) {
-      continue;
-    }
-    res.push(buildMenuItem(id, menuClick));
-  }
-  return res;
-}
-
 const useConnect = createUseConnect(
   (state) => {
     const { meta } = views[getView(state)];
@@ -53,11 +30,7 @@ const Layout = ({ children }) => {
       logoOnClick={logoClick}
       viewName={<h2>{viewName}</h2>}
       viewIcon={viewIcon && <components.Icon src={viewIcon}/>}
-      menu={[
-        buildMenuItem('main', menuClick, 'header'),
-        { id: 'components', text: 'Components', type: 'header' },
-        ... buildComponentItems(menuClick)
-      ]}
+      menu={buildMenu(menuClick)}
       footer={'footer'}>
       {children}
     </components.Layout>
@@ -69,3 +42,68 @@ Layout.propTypes = {
 };
 
 export default Layout;
+
+function buildMenuItem(id, view) {
+  const { menu, icon, title } = view.meta;
+  return {
+    id,
+    text: title,
+    icon,
+    type: menu ? 'item' : 'header',
+    onClick: true
+  };
+}
+
+function buildMenuHeader(title) {
+  return {
+    id: title.toLowerCase(),
+    text: title,
+    type: 'header'
+  };
+}
+
+function buildMenuTemplate() {
+  const tree = {};
+  for(const [id, view] of Object.entries(views)) {
+    const { menu } = view.meta;
+    if(!menu) {
+      tree[id] = {
+        header: buildMenuItem(id, view),
+        items: []
+      };
+      continue;
+    }
+
+    let leaf = tree[menu];
+    if(!leaf) {
+      leaf = tree[menu] = {
+        header: buildMenuHeader(menu),
+        items: []
+      };
+    }
+    leaf.items.push(buildMenuItem(id, view));
+  }
+
+  const template = [];
+  for(const leaf of Object.values(tree)) {
+    template.push(leaf.header);
+    for(const item of leaf.items) {
+      template.push(item);
+    }
+  }
+  return template;
+}
+
+const menuTemplate = buildMenuTemplate();
+
+function buildMenu(menuClick) {
+  return menuTemplate.map(({ icon, onClick, ...item }) => {
+    if(onClick) {
+      item.onClick = menuClick;
+    }
+    if(icon) {
+      item.icon = (<components.Icon src={icon}/>);
+    }
+    return item;
+  });
+}

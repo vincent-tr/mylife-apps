@@ -82,6 +82,7 @@ const Dialogs = () => {
 };
 
 Dialogs.meta = {
+  menu: 'Modules',
   icon: null,
   title: 'Dialogs'
 };

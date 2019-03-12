@@ -54,6 +54,7 @@ const Containers = () => {
 };
 
 Containers.meta = {
+  menu: 'Components',
   icon: null,
   title: 'Containers'
 };

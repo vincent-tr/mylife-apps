@@ -13,6 +13,7 @@ const Buttons = () => (
 );
 
 Buttons.meta = {
+  menu: 'Components',
   icon: null,
   title: 'Buttons'
 };

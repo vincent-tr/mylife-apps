@@ -10,7 +10,7 @@ const Main = () => (
 );
 
 Main.meta = {
-  exclude: true,
+  menu: null,
   icon,
   title: 'Main'
 };
