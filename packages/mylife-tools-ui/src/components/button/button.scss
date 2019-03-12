@@ -24,10 +24,7 @@ $button-margin: 0.5rem;
   &.primary {
 
     color: $color-background;
-
-    &:not([disabled]) {
-      background-color: $color-primary;
-    }
+    background-color: $color-primary;
 
     &:disabled {
       background-color: $color-primary-disabled;
@@ -48,10 +45,7 @@ $button-margin: 0.5rem;
   &.secondary {
 
     background-color: $color-background;
-
-    &:not([disabled]) {
-      color: $color-primary;
-    }
+    color: $color-primary;
 
     &:disabled {
       color: $color-primary-disabled;
