@@ -7,8 +7,8 @@ const Buttons = () => (
   <div>
     <components.Button primary>primary</components.Button>
     <components.Button>secondary</components.Button>
-    <components.Button disabled primary>disabled primary</components.Button>
-    <components.Button disabled>disabled secondary</components.Button>
+    <components.Button enabled={false} primary>disabled primary</components.Button>
+    <components.Button enabled={false}>disabled secondary</components.Button>
   </div>
 );
 

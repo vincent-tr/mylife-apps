@@ -44,7 +44,7 @@ const Containers = () => {
           <components.Tab id='tab3' header='Tab3'>
             Content3
           </components.Tab>
-          <components.Tab id='tab4' header='Tab4' disabled>
+          <components.Tab id='tab4' header='Tab4' enabled={false}>
             Content4
           </components.Tab>
         </components.TabPanel>
