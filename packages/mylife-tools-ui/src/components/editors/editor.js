@@ -6,8 +6,15 @@ import String from './string';
 
 import './editor.scss';
 
+// TODO: rules
 const editors = {
-  string: String
+  string: String, // max length ?
+  integer: null, // can be < 0 ?
+  number: null, // decimals count, can be < 0 ?, +/- steps ?
+  list: null,
+  date: null,
+  datetime: null,
+  bool: null, // splitter or checkbox ?
 };
 
 const Editor = React.forwardRef(({ type, ...props }, ref) => {
