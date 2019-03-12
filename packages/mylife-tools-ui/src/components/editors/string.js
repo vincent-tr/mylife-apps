@@ -12,7 +12,7 @@ const String = React.forwardRef(({ className, enabled, readOnly, nullable, value
     ref={ref}
     value={valueToEditor(nullable, value)}
     onChange={e => onChange(editorToValue(nullable, e.target.value))}
-    className={classNames('editor-string', className)}
+    className={classNames('editor-base', 'editor-string', className)}
     disabled={!enabled}
     readOnly={readOnly}
     { ...props }/>

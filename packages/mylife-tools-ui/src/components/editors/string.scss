@@ -1,28 +1,5 @@
 @import '../base/base.scss';
 
 .editor-string {
-  border: $border-width $border-style $color-primary;
-  background-color: $color-background;
-  color: $color-primary;
-  outline: none;
-  padding: 0.2rem;
-
-  &:disabled {
-    @include cursor-disabled();
-    border-color: $color-primary-disabled;
-    color: $color-primary-disabled;
-  }
-
-  &:read-only {
-  }
-
-  &:hover:not([disabled]) {
-    border-color: $color-secondary;
-    color: $color-secondary;
-  }
-
-  &:focus:not([disabled]) {
-    border-color: $color-secondary;
-    color: $color-secondary;
-  }
+  
 }

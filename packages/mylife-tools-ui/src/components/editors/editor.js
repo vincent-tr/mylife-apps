@@ -4,6 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import String from './string';
 
+import './editor.scss';
+
 const editors = {
   string: String
 };
