@@ -8,6 +8,8 @@ const Editors = () => {
   return (
     <div>
       <components.Editor type='string' value={stringValue} onChange={setStringValue} />
+      <components.Editor type='string' enabled={false} value='string disabled' onChange={() => {}} />
+      <components.Editor type='string' readOnly={true} value='string readonly' onChange={() => {}} />
       TODO
     </div>
   );

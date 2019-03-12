@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import './string.scss';
 
-const String = React.forwardRef(({ className, enabled, readonly, nullable, value, onChange, ...props }, ref) => (
+const String = React.forwardRef(({ className, enabled, readOnly, nullable, value, onChange, ...props }, ref) => (
   <input
     type='text'
     ref={ref}
@@ -14,7 +14,7 @@ const String = React.forwardRef(({ className, enabled, readonly, nullable, value
     onChange={e => onChange(editorToValue(nullable, e.target.value))}
     className={classNames('editor-string', className)}
     disabled={!enabled}
-    readOnly={readonly}
+    readOnly={readOnly}
     { ...props }/>
 ));
 
@@ -23,7 +23,7 @@ String.displayName = 'String';
 String.propTypes = {
   className: PropTypes.string,
   enabled: PropTypes.bool,
-  readonly: PropTypes.bool,
+  readOnly: PropTypes.bool,
   nullable: PropTypes.bool,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired
@@ -31,7 +31,7 @@ String.propTypes = {
 
 String.defaultProps = {
   enabled: true,
-  readonly: false,
+  readOnly: false,
   nullable: false
 };
 
