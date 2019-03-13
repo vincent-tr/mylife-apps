@@ -22,8 +22,8 @@ const Integer = React.forwardRef(({ containerClassName, className, enabled, read
       readOnly={readOnly}
       { ...props }>
     </input>
-    <button>+</button>
-    <button>-</button>
+    <button onClick={() => onChange(diffValue(value, min, max, 1))}>+</button>
+    <button onClick={() => onChange(diffValue(value, min, max, -1))}>-</button>
   </div>
 ));
 
@@ -67,4 +67,11 @@ function limitToRange(value, min, max) {
     return max;
   }
   return value;
+}
+
+function diffValue(value, min, max, diff) {
+  if(value === null) {
+    return null;
+  }
+  return limitToRange(value + diff, min, max);
 }
