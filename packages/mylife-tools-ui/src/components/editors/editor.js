@@ -3,12 +3,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import String from './string';
+import Integer from './integer';
 
 import './editor.scss';
 
 const editors = {
   string: String, // max length ?
-  integer: null, // can be < 0 ?
+  integer: Integer, // can be < 0 ?
   number: null, // decimals count, can be < 0 ?, +/- steps ?
   list: null,
   date: null,

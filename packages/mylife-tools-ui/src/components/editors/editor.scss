@@ -6,6 +6,7 @@
   color: $color-primary;
   outline: none;
   padding: 0.2rem;
+  margin: 0.5rem;
 
   &:disabled {
     @include cursor-disabled();

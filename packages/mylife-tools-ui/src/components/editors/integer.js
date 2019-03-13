@@ -5,38 +5,43 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createValueToEditor, createEditorToValue } from './helpers';
 
-import './string.scss';
+// import './integer.scss';
 
-const valueToEditor = createValueToEditor(x => x);
-const editorToValue = createEditorToValue(x => x, '');
+const valueToEditor = createValueToEditor(x => x.toString());
+const editorToValue = createEditorToValue(parseIntOrZero, 0);
 
-const String = React.forwardRef(({ className, enabled, readOnly, nullable, value, onChange, ...props }, ref) => (
+const Integer = React.forwardRef(({ className, enabled, readOnly, nullable, value, onChange, ...props }, ref) => (
   <input
     type='text'
     ref={ref}
     value={valueToEditor(nullable, value)}
     onChange={e => onChange(editorToValue(nullable, e.target.value))}
-    className={classNames('editor-base', 'editor-string', className)}
+    className={classNames('editor-base', 'editor-integer', className)}
     disabled={!enabled}
     readOnly={readOnly}
     { ...props }/>
 ));
 
-String.displayName = 'String';
+Integer.displayName = 'Integer';
 
-String.propTypes = {
+Integer.propTypes = {
   className: PropTypes.string,
   enabled: PropTypes.bool,
   readOnly: PropTypes.bool,
   nullable: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.number,
   onChange: PropTypes.func.isRequired
 };
 
-String.defaultProps = {
+Integer.defaultProps = {
   enabled: true,
   readOnly: false,
   nullable: false
 };
 
-export default String;
+export default Integer;
+
+function parseIntOrZero(value) {
+  const result = parseInt(value);
+  return isNaN(result) ? 0 : result;
+}
