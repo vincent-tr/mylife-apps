@@ -18,6 +18,7 @@ const Editors = () => {
   const [ stringValue, setStringValue ] = useState('string value');
   const [ integerValue, setIntegerValue ] = useState(42);
   const [ integerValue2, setIntegerValue2 ] = useState(42);
+  const [ integerValue3, setIntegerValue3 ] = useState(5);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -30,6 +31,7 @@ const Editors = () => {
       <h3 style={styles.title}>Integer</h3>
       <div><span style={styles.label}>Not nullable</span><components.Editor type='integer' value={integerValue} onChange={setIntegerValue} /></div>
       <div><span style={styles.label}>Nullable</span><components.Editor type='integer' nullable={true} value={integerValue2} onChange={setIntegerValue2} /></div>
+      <div><span style={styles.label}>Min/Max</span><components.Editor type='integer' value={integerValue3} onChange={setIntegerValue3} min={1} max={10} /></div>
     </div>
   );
 };
