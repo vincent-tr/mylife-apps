@@ -5,26 +5,32 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createValueToEditor, createEditorToValue } from './helpers';
 
-// import './integer.scss';
+import './integer.scss';
 
 const valueToEditor = createValueToEditor(x => x.toString());
 const editorToValue = createEditorToValue(parseIntOrZero, 0);
 
-const Integer = React.forwardRef(({ className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => (
-  <input
-    type='text'
-    ref={ref}
-    value={valueToEditor(nullable, value)}
-    onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}
-    className={classNames('editor-base', 'editor-integer', className)}
-    disabled={!enabled}
-    readOnly={readOnly}
-    { ...props }/>
+const Integer = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => (
+  <div className={classNames('editor-container', { disabled: !enabled, 'read-only': readOnly }, containerClassName)} disabled={!enabled}>
+    <input
+      type='text'
+      ref={ref}
+      value={valueToEditor(nullable, value)}
+      onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}
+      className={classNames('editor-base', 'editor-integer', className)}
+      disabled={!enabled}
+      readOnly={readOnly}
+      { ...props }>
+    </input>
+    <button>+</button>
+    <button>-</button>
+  </div>
 ));
 
 Integer.displayName = 'Integer';
 
 Integer.propTypes = {
+  containerClassName: PropTypes.string,
   className: PropTypes.string,
   enabled: PropTypes.bool,
   readOnly: PropTypes.bool,
