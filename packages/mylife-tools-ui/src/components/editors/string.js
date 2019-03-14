@@ -12,8 +12,12 @@ const editorToValue = createEditorToValue(x => x, '');
 
 const String = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
+
   return (
-    <div className={classNames('editor-container', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)} disabled={!enabled}>
+    <div
+      className={classNames('editor-container', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
+      disabled={!enabled}>
+
       <input
         type='text'
         ref={ref}
@@ -25,6 +29,7 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         { ...props }/>
+      
     </div>
   );
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createValueToEditor, createEditorToValue } from './helpers';
@@ -11,26 +11,40 @@ import './integer.scss';
 const valueToEditor = createValueToEditor(x => x.toString());
 const editorToValue = createEditorToValue(parseIntOrZero, 0);
 
-const Integer = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => (
-  <div className={classNames('editor-container', 'editor-container-integer', { disabled: !enabled, 'read-only': readOnly }, containerClassName)} disabled={!enabled}>
-    <input
-      type='text'
-      ref={ref}
-      value={valueToEditor(nullable, value)}
-      onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}
-      className={classNames('editor-base', 'editor-integer', className)}
+const Integer = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
+  const [focus, setFocus] = useState(false);
+  const [hover, setHover] = useState(false);
+  const showButtons = enabled && !readOnly && (hover || focus);
+
+  return (
+    <div
+      className={classNames('editor-container', 'editor-container-integer', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
-      readOnly={readOnly}
-      { ...props }>
-    </input>
-    {enabled && !readOnly && (
-      <React.Fragment>
-        <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, 1))}>+</Button>
-        <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, -1))}>-</Button>
-      </React.Fragment>
-    )}
-  </div>
-));
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}>
+
+      <input
+        type='text'
+        ref={ref}
+        value={valueToEditor(nullable, value)}
+        onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}
+        className={classNames('editor-base', 'editor-integer', className)}
+        disabled={!enabled}
+        readOnly={readOnly}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        { ...props } />
+
+      {showButtons && (
+        <React.Fragment>
+          <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, 1))}>+</Button>
+          <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, -1))}>-</Button>
+        </React.Fragment>
+      )}
+      
+    </div>
+  );
+});
 
 Integer.displayName = 'Integer';
 
