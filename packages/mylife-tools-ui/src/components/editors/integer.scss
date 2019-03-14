@@ -1,33 +1,6 @@
 @import '../base/base.scss';
 
 .editor-container-integer {
-  &> .editor-button {
-      margin: 0;
-      border-right: 0;
-      border-bottom: 0;
-      border-top: 0;
-      padding: 0 0.2rem;
-
-      background-color: $color-background;
-      color: $color-primary;
-
-      &:disabled {
-        color: $color-primary-disabled;
-      }
-
-      &:hover:not([disabled]), &:focus:not([disabled]) {
-        border-color: $color-secondary;
-        color: $color-secondary;
-      }
-
-      &:active:not([disabled]) {
-        color: $color-background;
-        border-color: $color-primary;
-        background-color: $color-primary;
-      }
-
-      // TODO: style colors properly with container focus/hover
-  }
 }
 
 .editor-integer {

@@ -39,9 +39,10 @@ const Integer = React.forwardRef(({ containerClassName, className, enabled, read
         <React.Fragment>
           <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, 1))}>+</Button>
           <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, -1))}>-</Button>
+          {nullable && (<Button className='editor-button' onClick={() => onChange(null)}>x</Button>)}
         </React.Fragment>
       )}
-      
+
     </div>
   );
 });
@@ -90,7 +91,13 @@ function limitToRange(value, min, max) {
 
 function diffValue(value, min, max, diff) {
   if(value === null) {
-    return null;
+    if(diff > 0 && typeof(min) === 'number') {
+      return min;
+    }
+    if(diff < 0 && typeof(max) === 'number') {
+      return max;
+    }
+    return 0;
   }
   return limitToRange(value + diff, min, max);
 }
