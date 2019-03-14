@@ -52,7 +52,7 @@ const StringTextbox = React.forwardRef(({ containerClassName, className, enabled
   );
 });
 
-StringTextbox.displayName = 'String';
+StringTextbox.displayName = 'StringTextbox';
 
 StringTextbox.propTypes = {
   containerClassName: PropTypes.string,

@@ -54,7 +54,7 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
   );
 });
 
-IntegerTextbox.displayName = 'Integer';
+IntegerTextbox.displayName = 'IntegerTextbox';
 
 IntegerTextbox.propTypes = {
   containerClassName: PropTypes.string,

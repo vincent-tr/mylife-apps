@@ -11,7 +11,7 @@ import './integer-slider.scss';
 const valueToEditor = createValueToEditor(x => x.toString());
 const editorToValue = createEditorToValue(parseIntOrZero, 0);
 
-const IntegerTextbox = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
+const IntegerSlider = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
@@ -25,7 +25,7 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
 
   return (
     <div
-      className={classNames('editor-container', 'editor-container-integer-textbox', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
+      className={classNames('editor-container', 'editor-container-integer-slider', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -37,7 +37,7 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
         max={max}
         value={valueToEditor(nullable, value)}
         onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}
-        className={classNames('editor-base', 'editor-integer-textbox', className)}
+        className={classNames('editor-base', 'editor-integer-slider', { 'value-null': value === null }, className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}
@@ -46,8 +46,6 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
 
       {showButtons && (
         <React.Fragment>
-          <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, 1))}>+</Button>
-          <Button className='editor-button' onClick={() => onChange(diffValue(value, min, max, -1))}>-</Button>
           {nullable && (<Button className='editor-button' onClick={() => onChange(null)}>x</Button>)}
         </React.Fragment>
       )}
@@ -56,9 +54,9 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
   );
 });
 
-IntegerTextbox.displayName = 'Integer';
+IntegerSlider.displayName = 'IntegerSlider';
 
-IntegerTextbox.propTypes = {
+IntegerSlider.propTypes = {
   containerClassName: PropTypes.string,
   className: PropTypes.string,
   enabled: PropTypes.bool,
@@ -70,13 +68,13 @@ IntegerTextbox.propTypes = {
   max: PropTypes.number.isRequired,
 };
 
-IntegerTextbox.defaultProps = {
+IntegerSlider.defaultProps = {
   enabled: true,
   readOnly: false,
   nullable: false
 };
 
-export default IntegerTextbox;
+export default IntegerSlider;
 
 function parseIntOrZero(value) {
   const result = parseInt(value);
