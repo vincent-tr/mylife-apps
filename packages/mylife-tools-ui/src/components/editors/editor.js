@@ -2,14 +2,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import StringInput from './string-input';
-import IntegerInput from './integer-input';
+import StringTextbox from './string-textbox';
+import IntegerTextbox from './integer-textbox';
 
 import './editor.scss';
 
 const editors = {
-  string: { def: 'input', displays: { input: StringInput } },
-  integer: { def: 'input', displays: { input: IntegerInput } }, // as slider ?
+  string: { def: 'textbox', displays: { textbox: StringTextbox } },
+  integer: { def: 'textbox', displays: { textbox: IntegerTextbox } }, // as slider ?
   number: null, // decimals count, can be < 0 ?, +/- steps ?, as slider ?
   list: null,
   date: null,

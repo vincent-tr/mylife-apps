@@ -6,12 +6,12 @@ import classNames from 'classnames';
 import { createValueToEditor, createEditorToValue } from './helpers';
 import { Button } from '../button';
 
-import './integer-input.scss';
+import './integer-textbox.scss';
 
 const valueToEditor = createValueToEditor(x => x.toString());
 const editorToValue = createEditorToValue(parseIntOrZero, 0);
 
-const IntegerInput = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
+const IntegerTextbox = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
@@ -25,7 +25,7 @@ const IntegerInput = React.forwardRef(({ containerClassName, className, enabled,
 
   return (
     <div
-      className={classNames('editor-container', 'editor-container-integer-input', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
+      className={classNames('editor-container', 'editor-container-integer-textbox', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -35,7 +35,7 @@ const IntegerInput = React.forwardRef(({ containerClassName, className, enabled,
         ref={ref}
         value={valueToEditor(nullable, value)}
         onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}
-        className={classNames('editor-base', 'editor-integer-input', className)}
+        className={classNames('editor-base', 'editor-integer-textbox', className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}
@@ -54,9 +54,9 @@ const IntegerInput = React.forwardRef(({ containerClassName, className, enabled,
   );
 });
 
-IntegerInput.displayName = 'Integer';
+IntegerTextbox.displayName = 'Integer';
 
-IntegerInput.propTypes = {
+IntegerTextbox.propTypes = {
   containerClassName: PropTypes.string,
   className: PropTypes.string,
   enabled: PropTypes.bool,
@@ -68,7 +68,7 @@ IntegerInput.propTypes = {
   max: PropTypes.number,
 };
 
-IntegerInput.defaultProps = {
+IntegerTextbox.defaultProps = {
   enabled: true,
   readOnly: false,
   nullable: false,
@@ -76,7 +76,7 @@ IntegerInput.defaultProps = {
   max: null,
 };
 
-export default IntegerInput;
+export default IntegerTextbox;
 
 function parseIntOrZero(value) {
   const result = parseInt(value);

@@ -6,12 +6,12 @@ import classNames from 'classnames';
 import { createValueToEditor, createEditorToValue } from './helpers';
 import { Button } from '../button';
 
-import './string-input.scss';
+import './string-textbox.scss';
 
 const valueToEditor = createValueToEditor(x => x);
 const editorToValue = createEditorToValue(x => x, '');
 
-const StringInput = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, maxLength, ...props }, ref) => {
+const StringTextbox = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, maxLength, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
@@ -25,7 +25,7 @@ const StringInput = React.forwardRef(({ containerClassName, className, enabled, 
 
   return (
     <div
-      className={classNames('editor-container', 'editor-container-string-input', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
+      className={classNames('editor-container', 'editor-container-string-textbox', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -35,7 +35,7 @@ const StringInput = React.forwardRef(({ containerClassName, className, enabled, 
         ref={ref}
         value={valueToEditor(nullable, value)}
         onChange={e => onChange(limitToLength(editorToValue(nullable, e.target.value), maxLength, value))}
-        className={classNames('editor-base', 'editor-string-input', className)}
+        className={classNames('editor-base', 'editor-string-textbox', className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}
@@ -52,9 +52,9 @@ const StringInput = React.forwardRef(({ containerClassName, className, enabled, 
   );
 });
 
-StringInput.displayName = 'String';
+StringTextbox.displayName = 'String';
 
-StringInput.propTypes = {
+StringTextbox.propTypes = {
   containerClassName: PropTypes.string,
   className: PropTypes.string,
   enabled: PropTypes.bool,
@@ -65,14 +65,14 @@ StringInput.propTypes = {
   maxLength: PropTypes.number
 };
 
-StringInput.defaultProps = {
+StringTextbox.defaultProps = {
   enabled: true,
   readOnly: false,
   nullable: false,
   maxLength: null
 };
 
-export default StringInput;
+export default StringTextbox;
 
 function limitToLength(value, maxLength, oldValue) {
   if(value === null) {
