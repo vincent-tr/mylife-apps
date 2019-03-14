@@ -25,7 +25,7 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
 
   return (
     <div
-      className={classNames('editor-container', 'editor-container-integer-textbox', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
+      className={classNames('editor-container', 'integer-textbox', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -35,7 +35,7 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
         ref={ref}
         value={valueToEditor(nullable, value)}
         onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}
-        className={classNames('editor-base', 'editor-integer-textbox', className)}
+        className={classNames('editor-component', 'integer-textbox', className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}

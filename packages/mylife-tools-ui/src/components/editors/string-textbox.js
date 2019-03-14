@@ -25,7 +25,7 @@ const StringTextbox = React.forwardRef(({ containerClassName, className, enabled
 
   return (
     <div
-      className={classNames('editor-container', 'editor-container-string-textbox', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
+      className={classNames('editor-container', 'string-textbox', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -35,7 +35,7 @@ const StringTextbox = React.forwardRef(({ containerClassName, className, enabled
         ref={ref}
         value={valueToEditor(nullable, value)}
         onChange={e => onChange(limitToLength(editorToValue(nullable, e.target.value), maxLength, value))}
-        className={classNames('editor-base', 'editor-string-textbox', className)}
+        className={classNames('editor-component', 'string-textbox', className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}
