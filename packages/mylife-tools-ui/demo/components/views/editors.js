@@ -16,6 +16,7 @@ const styles = {
 
 const Editors = () => {
   const [ stringValue, setStringValue ] = useState('string value');
+  const [ stringValue2, setStringValue2 ] = useState('string value');
   const [ integerValue, setIntegerValue ] = useState(42);
   const [ integerValue2, setIntegerValue2 ] = useState(42);
   const [ integerValue3, setIntegerValue3 ] = useState(5);
@@ -26,6 +27,7 @@ const Editors = () => {
 
       <h3 style={styles.title}>String</h3>
       <div><span style={styles.label}>Basic</span><components.Editor type='string' value={stringValue} onChange={setStringValue} /></div>
+      <div><span style={styles.label}>Nullable</span><components.Editor type='string' nullable={true} value={stringValue2} onChange={setStringValue2} /></div>
       <div><span style={styles.label}>Disabled</span><components.Editor type='string' enabled={false} value='string disabled' onChange={() => {}} /></div>
       <div><span style={styles.label}>Readonly</span><components.Editor type='string' readOnly={true} value='string readonly' onChange={() => {}} /></div>
 
