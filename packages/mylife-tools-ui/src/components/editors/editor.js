@@ -9,12 +9,12 @@ import './editor.scss';
 
 const editors = {
   string: String,
-  integer: Integer,
-  number: null, // decimals count, can be < 0 ?, +/- steps ?
+  integer: Integer, // as slider ?
+  number: null, // decimals count, can be < 0 ?, +/- steps ?, as slider ?
   list: null,
   date: null,
   datetime: null,
-  bool: null, // splitter or checkbox ?
+  bool: null, // slider or checkbox ?
 };
 
 const Editor = React.forwardRef(({ type, ...props }, ref) => {
