@@ -11,7 +11,7 @@ import './string.scss';
 const valueToEditor = createValueToEditor(x => x);
 const editorToValue = createEditorToValue(x => x, '');
 
-const String = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, ...props }, ref) => {
+const String = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, maxLength, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
@@ -27,7 +27,7 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
         type='text'
         ref={ref}
         value={valueToEditor(nullable, value)}
-        onChange={e => onChange(editorToValue(nullable, e.target.value))}
+        onChange={e => onChange(limitToLength(editorToValue(nullable, e.target.value), maxLength, value))}
         className={classNames('editor-base', 'editor-string', className)}
         disabled={!enabled}
         readOnly={readOnly}
@@ -54,13 +54,25 @@ String.propTypes = {
   readOnly: PropTypes.bool,
   nullable: PropTypes.bool,
   value: PropTypes.string,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  maxLength: PropTypes.number
 };
 
 String.defaultProps = {
   enabled: true,
   readOnly: false,
-  nullable: false
+  nullable: false,
+  maxLength: null
 };
 
 export default String;
+
+function limitToLength(value, maxLength, oldValue) {
+  if(value === null) {
+    return value;
+  }
+  if(maxLength === null || value.length <= maxLength) {
+    return value;
+  }
+  return oldValue;
+}
