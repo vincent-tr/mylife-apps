@@ -16,6 +16,13 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
 
+  const handleFocus = (e) => {
+    setFocus(true);
+    if(!readOnly && enabled) {
+      e.target.select();
+    }
+  };
+
   return (
     <div
       className={classNames('editor-container', 'editor-container-string', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
@@ -31,7 +38,7 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
         className={classNames('editor-base', 'editor-string', className)}
         disabled={!enabled}
         readOnly={readOnly}
-        onFocus={() => setFocus(true)}
+        onFocus={handleFocus}
         onBlur={() => setFocus(false)}
         { ...props }/>
 
