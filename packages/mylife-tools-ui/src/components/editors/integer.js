@@ -24,7 +24,7 @@ const Integer = React.forwardRef(({ containerClassName, className, enabled, read
       onMouseLeave={() => setHover(false)}>
 
       <input
-        type='text'
+        type='number'
         ref={ref}
         value={valueToEditor(nullable, value)}
         onChange={e => onChange(limitToRange(editorToValue(nullable, e.target.value), min, max))}

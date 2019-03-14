@@ -8,8 +8,8 @@ import Integer from './integer';
 import './editor.scss';
 
 const editors = {
-  string: String,
-  integer: Integer, // as slider ?
+  string: String, // select text on focus
+  integer: Integer, // as slider ? handle left/down arrow for +/-, select text on focus
   number: null, // decimals count, can be < 0 ?, +/- steps ?, as slider ?
   list: null,
   date: null,
