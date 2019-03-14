@@ -15,7 +15,7 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
 
   return (
     <div
-      className={classNames('editor-container', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
+      className={classNames('editor-container', 'editor-container-string', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
       disabled={!enabled}>
 
       <input
@@ -29,7 +29,7 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         { ...props }/>
-      
+
     </div>
   );
 });
