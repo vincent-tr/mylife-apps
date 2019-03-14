@@ -1,5 +1,14 @@
 @import '../base/base.scss';
 
+@mixin thumb() {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
 .editor-container.integer-slider {
 }
 
@@ -17,21 +26,10 @@
   }
 
   &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    background: #4CAF50;
-    cursor: pointer;
-
+    @include thumb();
   }
 
   &::-moz-range-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    background: #4CAF50;
-    cursor: pointer;
+    @include thumb();
   }
 }
