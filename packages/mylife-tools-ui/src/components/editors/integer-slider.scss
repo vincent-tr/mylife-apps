@@ -9,6 +9,11 @@
   cursor: pointer;
 }
 
+@mixin null-thumb() {
+  width: 0;
+  height: 0;
+}
+
 .editor-container.integer-slider {
 }
 
@@ -31,5 +36,16 @@
 
   &::-moz-range-thumb {
     @include thumb();
+  }
+
+  &.value-null {
+
+    &::-webkit-slider-thumb {
+      @include null-thumb();
+    }
+
+    &::-moz-range-thumb {
+      @include null-thumb();
+    }
   }
 }
