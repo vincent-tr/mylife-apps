@@ -2,14 +2,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import String from './string';
-import Integer from './integer';
+import StringInput from './string-input';
+import IntegerInput from './integer-input';
 
 import './editor.scss';
 
 const editors = {
-  string: String,
-  integer: Integer, // as slider ?
+  string: { def: 'input', displays: { input: StringInput } },
+  integer: { def: 'input', displays: { input: IntegerInput } }, // as slider ?
   number: null, // decimals count, can be < 0 ?, +/- steps ?, as slider ?
   list: null,
   date: null,
@@ -17,10 +17,15 @@ const editors = {
   bool: null, // slider or checkbox ?
 };
 
-const Editor = React.forwardRef(({ type, ...props }, ref) => {
-  const EditorComponent = editors[type];
-  if(!EditorComponent) {
+const Editor = React.forwardRef(({ type, display, ...props }, ref) => {
+  const editor = editors[type];
+  if(!editor) {
     throw new Error(`Bad editor type: '${type}'`);
+  }
+  const { displays, def } = editor;
+  const EditorComponent = displays[display || def];
+  if(!EditorComponent) {
+    throw new Error(`Bad display type '${display}' for editor type: '${type}'`);
   }
   return (
     <EditorComponent ref={ref} {...props} />
@@ -28,7 +33,8 @@ const Editor = React.forwardRef(({ type, ...props }, ref) => {
 });
 
 Editor.propTypes = {
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  display: PropTypes.string,
 };
 
 Editor.displayName = 'Editor';

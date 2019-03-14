@@ -6,12 +6,12 @@ import classNames from 'classnames';
 import { createValueToEditor, createEditorToValue } from './helpers';
 import { Button } from '../button';
 
-import './string.scss';
+import './string-input.scss';
 
 const valueToEditor = createValueToEditor(x => x);
 const editorToValue = createEditorToValue(x => x, '');
 
-const String = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, maxLength, ...props }, ref) => {
+const StringInput = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, maxLength, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
@@ -25,7 +25,7 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
 
   return (
     <div
-      className={classNames('editor-container', 'editor-container-string', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
+      className={classNames('editor-container', 'editor-container-string-input', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -35,7 +35,7 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
         ref={ref}
         value={valueToEditor(nullable, value)}
         onChange={e => onChange(limitToLength(editorToValue(nullable, e.target.value), maxLength, value))}
-        className={classNames('editor-base', 'editor-string', className)}
+        className={classNames('editor-base', 'editor-string-input', className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}
@@ -52,9 +52,9 @@ const String = React.forwardRef(({ containerClassName, className, enabled, readO
   );
 });
 
-String.displayName = 'String';
+StringInput.displayName = 'String';
 
-String.propTypes = {
+StringInput.propTypes = {
   containerClassName: PropTypes.string,
   className: PropTypes.string,
   enabled: PropTypes.bool,
@@ -65,14 +65,14 @@ String.propTypes = {
   maxLength: PropTypes.number
 };
 
-String.defaultProps = {
+StringInput.defaultProps = {
   enabled: true,
   readOnly: false,
   nullable: false,
   maxLength: null
 };
 
-export default String;
+export default StringInput;
 
 function limitToLength(value, maxLength, oldValue) {
   if(value === null) {
