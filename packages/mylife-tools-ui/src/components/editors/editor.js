@@ -10,7 +10,7 @@ import IntegerSlider from './integer-slider';
 import './editor.scss';
 
 const editors = {
-  string: { def: 'textbox', displays: { textbox: StringTextbox } },
+  string: { def: 'textbox', displays: { textbox: StringTextbox } }, // text area
   integer: { def: 'textbox', displays: { textbox: IntegerTextbox, slider: IntegerSlider } },
   number: null, // decimals count, can be < 0 ?, +/- steps ?, as slider ?
   list: null,
