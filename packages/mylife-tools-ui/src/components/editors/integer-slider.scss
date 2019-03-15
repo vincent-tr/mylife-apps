@@ -3,30 +3,29 @@
 $colorTrack: #2788d0 !default;
 $colorThumb: orange !default;
 
-$h: 1em;
-$w: 100%;
+$input-height: 1.5rem;
+$input-width: 100%;
 
 @mixin trackN($n) {
   &.range-#{$n}:before {
-    $bgW: $w / ($n - 1);
+    $background-width: $input-width / ($n - 1);
     background-size: (
-      $bgW $h,
-      $w .25em
+      $background-width $input-height,
+      $input-width .25rem
     );
   }
 }
 
 @mixin track() {
-  width: $w;
+  width: $input-height;
   box-sizing: border-box;
-  height: $h;
-  border-radius: $h/2;
-  // margin-right: 1em;
+  height: $input-height;
+  border-radius: $input-height/2;
   box-sizing: content-box;
   background:
     (
-      radial-gradient(circle at $h/2 50%, $colorTrack .3125em, $colorTrack .3125em, $colorTrack $h/2,transparent $h/2),
-      linear-gradient(90deg, transparent $h, $colorTrack $h) repeat-x 0 50%
+      radial-gradient(circle at $input-height/2 50%, $colorTrack .3125rem, $colorTrack .3125rem, $colorTrack $input-height/2,transparent $input-height/2),
+      linear-gradient(90deg, transparent $input-height, $colorTrack $input-height) repeat-x 0 50%
     );
 }
 
@@ -34,15 +33,15 @@ $w: 100%;
   border: none;
   border-radius: 50%;
   box-sizing: border-box;
-  border: (solid .35em transparent) null (solid .25em transparent);
-  width: $h + .3em;
-  height: $h + .3em;
+  border: (solid .35rem transparent) null (solid .25rem transparent);
+  width: $input-height + .3rem;
+  height: $input-height + .3rem;
   background: $colorThumb;
   background-clip: content-box;
   position: relative;
   z-index: 10;
-  margin-top: -.1em;
-  margin-left: .05em;
+  margin-top: -.1rem;
+  margin-left: .05rem;
 }
 
 @mixin null-thumb() {
@@ -57,83 +56,57 @@ $w: 100%;
   -webkit-appearance: none;
   appearance: none;
   outline: none;
+  width: $input-width;
+  height: $input-height;
+  position: relative;
 
-    display: block;
-    margin: 1em auto;
-    padding: 0;
-    background: transparent;
-    font-size: 1em;
+  &:not([readonly]):not([disabled]) {
     cursor: pointer;
-    width: $w;
-    position: relative;
+  }
 
-    &,
-    &::-webkit-slider-runnable-track,
-    &::-webkit-slider-thumb {
-      -webkit-appearance: none;
-    }
+  &::-webkit-slider-runnable-track,
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  }
+
+    //margin: 0.25rem auto;
+    padding: 0.2rem;
+    background: transparent;
+
+
+
     &:after {
       content: "";
-      width: 1em;
-      height: 1em;
+      width: 1rem;
+      height: 1rem;
       border-radius: 50%;
       background: $colorTrack;
       position: absolute;
       right: 0;
     }
+
     &:before {
       content: "";
       position: absolute;
       z-index: 0;
       left: 0;
-      right: $h - .2em;
-      height: $h;
+      right: $input-height - .2rem;
+      height: $input-height;
       background:
         (
-          radial-gradient(circle at $h/2 50%, $colorTrack .3125em,  $colorTrack .3125em, $colorTrack $h/2,transparent $h/2),
+          radial-gradient(circle at $input-height/2 50%, $colorTrack .3125rem,  $colorTrack .3125rem, $colorTrack $input-height/2,transparent $input-height/2),
           linear-gradient(90deg, transparent 0, $colorTrack 0) repeat-x 0 50%
         );
       box-sizing: border-box;
     }
 
-    &::-ms-track {
-      border: none;
-      color: transparent;
-    }
-    &::-ms-tooltip {
-      display: none
-    }
+  &::-ms-track {
+    border: none;
+    color: transparent;
+  }
 
-    &::-webkit-slider-thumb {
-      @include thumb();
-    }
-    &::-moz-range-thumb {
-      @include thumb();
-    }
-    &::-ms-thumb {
-      @include thumb();
-    }
-
-    &.value-null {
-      &::-webkit-slider-thumb {
-        @include null-thumb();
-      }
-      &::-moz-range-thumb {
-        @include null-thumb();
-      }
-      &::-ms-thumb {
-        @include null-thumb();
-      }
-    }
-/*
-
-  width: 100%;
-  height: 25px;
-  background: #d3d3d3;
-  opacity: 0.7;
-
-  &>:hover {
-    opacity: 1;
+  &::-ms-tooltip {
+    display: none
   }
 
   &::-webkit-slider-thumb {
@@ -144,8 +117,11 @@ $w: 100%;
     @include thumb();
   }
 
-  &.value-null {
+  &::-ms-thumb {
+    @include thumb();
+  }
 
+  &.value-null {
     &::-webkit-slider-thumb {
       @include null-thumb();
     }
@@ -153,7 +129,11 @@ $w: 100%;
     &::-moz-range-thumb {
       @include null-thumb();
     }
-  }*/
+
+    &::-ms-thumb {
+      @include null-thumb();
+    }
+  }
 
   @for $n from 2 through 20 {
     @include trackN($n);
