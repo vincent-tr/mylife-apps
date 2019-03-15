@@ -1,9 +1,14 @@
 'use strict';
 
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { components } from 'mylife-tools-ui';
 
 const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
   label: {
     marginLeft: '2rem',
     width: '10rem',
@@ -11,44 +16,60 @@ const styles = {
   },
   title: {
     marginLeft: '0.5rem',
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 
-const Editors = () => {
-  const [ stringValue, setStringValue ] = useState('string value');
-  const [ stringValue2, setStringValue2 ] = useState('string value');
-  const [ stringValue3, setStringValue3 ] = useState('short val');
-  const [ integerValue, setIntegerValue ] = useState(42);
-  const [ integerValue2, setIntegerValue2 ] = useState(42);
-  const [ integerValue3, setIntegerValue3 ] = useState(5);
-  const [ integerValue4, setIntegerValue4 ] = useState(5);
-  const [ integerValue5, setIntegerValue5 ] = useState(5);
-  const [ integerValue6, setIntegerValue6 ] = useState(5);
-
+const Row = ({ title, initialValue, ...editorProps }) => {
+  const [ value, onChange ] = useState(initialValue);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-
-      <h3 style={styles.title}>String</h3>
-      <div><span style={styles.label}>Basic</span><components.Editor type='string' value={stringValue} onChange={setStringValue} /></div>
-      <div><span style={styles.label}>Nullable</span><components.Editor type='string' nullable={true} value={stringValue2} onChange={setStringValue2} /></div>
-      <div><span style={styles.label}>Max length</span><components.Editor type='string' value={stringValue3} onChange={setStringValue3} maxLength={10} /></div>
-      <div><span style={styles.label}>Disabled</span><components.Editor type='string' enabled={false} value='string disabled' onChange={() => {}} /></div>
-      <div><span style={styles.label}>Readonly</span><components.Editor type='string' readOnly={true} value='string readonly' onChange={() => {}} /></div>
-
-      <h3 style={styles.title}>Integer</h3>
-      <div><span style={styles.label}>Basic</span><components.Editor type='integer' value={integerValue} onChange={setIntegerValue} /></div>
-      <div><span style={styles.label}>Nullable</span><components.Editor type='integer' nullable={true} value={integerValue2} onChange={setIntegerValue2} /></div>
-      <div><span style={styles.label}>Min/Max</span><components.Editor type='integer' value={integerValue3} onChange={setIntegerValue3} min={1} max={10} /></div>
-      <div><span style={styles.label}>Nullable Min/Max</span><components.Editor type='integer' nullable={true} value={integerValue4} onChange={setIntegerValue4} min={1} max={10} /></div>
-      <div><span style={styles.label}>Disabled</span><components.Editor type='integer' enabled={false} value={42} onChange={() => {}} /></div>
-      <div><span style={styles.label}>Readonly</span><components.Editor type='integer' readOnly={true} value={42} onChange={() => {}} /></div>
-      <div><span style={styles.label}>Slider</span><components.Editor type='integer' display='slider' value={integerValue5} onChange={setIntegerValue5} min={0} max={10} /></div>
-      <div><span style={styles.label}>Slider Nullable</span><components.Editor type='integer' display='slider' nullable={true} value={integerValue6} onChange={setIntegerValue6} min={0} max={10} /></div>
-      <div><span style={styles.label}>Slider Disabled</span><components.Editor type='integer' display='slider' enabled={false} value={5} min={0} max={10} onChange={() => {}} /></div>
-      <div><span style={styles.label}>Slider Readonly</span><components.Editor type='integer' display='slider' readOnly={true} value={5} min={0} max={10} onChange={() => {}} /></div>
+    <div style={styles.row}>
+      <span style={styles.label}>{title}</span>
+      <components.Editor value={value} onChange={onChange} {...editorProps} />
     </div>
   );
 };
+
+Row.propTypes = {
+  title: PropTypes.string.isRequired,
+  initialValue: PropTypes.any
+};
+
+const Title = ({ children }) => (
+  <h3 style={styles.title}>{children}</h3>
+);
+
+Title.propTypes = {
+  children: PropTypes.string.isRequired
+};
+
+const Editors = () => (
+  <div style={styles.container}>
+
+    <Title>String</Title>
+    <Row title='Basic' initialValue='string value' type='string' />
+    <Row title='Nullable' initialValue='string value' type='string' nullable={true} />
+    <Row title='Max length' initialValue='short val' type='string' maxLength={10} />
+    <Row title='Disabled' initialValue='string disabled' type='string' enabled={false} />
+    <Row title='Readonly' initialValue='string readonly' type='string' readOnly={true} />
+
+    <Title>Integer</Title>
+    <Row title='Basic' initialValue={42} type='integer' />
+    <Row title='Nullable' initialValue={42} type='integer' nullable={true} />
+    <Row title='Min/Max' initialValue={5} type='integer' min={1} max={10} />
+    <Row title='Nullable Min/Max' initialValue={5} type='integer' nullable={true} min={1} max={10} />
+    <Row title='Disabled' initialValue={42} type='integer' enabled={false}  />
+    <Row title='Readonly' initialValue={42} type='integer' readOnly={true}  />
+    <Row title='Slider' initialValue={5} type='integer' display='slider' min={0} max={10} />
+    <Row title='Slider Nullable' initialValue={5} type='integer' display='slider' nullable={true} min={0} max={10} />
+    <Row title='Slider Disabled' initialValue={5} type='integer' display='slider' enabled={false} min={0} max={10} />
+    <Row title='Slider Readonly' initialValue={5} type='integer' display='slider' readOnly={true} min={0} max={10} />
+    
+  </div>
+);
 
 Editors.meta = {
   menu: 'Components',
