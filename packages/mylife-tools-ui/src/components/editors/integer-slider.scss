@@ -1,10 +1,8 @@
 @import '../base/base.scss';
+@import './editor-base.scss';
 
 $colorTrack: #2788d0 !default;
 $colorThumb: orange !default;
-
-$input-height: 1.5rem;
-$input-width: 100%;
 
 @mixin trackN($n) {
   &.range-#{$n}:before {
@@ -56,8 +54,6 @@ $input-width: 100%;
   -webkit-appearance: none;
   appearance: none;
   outline: none;
-  width: $input-width;
-  height: $input-height;
   position: relative;
 
   &:not([readonly]):not([disabled]) {
