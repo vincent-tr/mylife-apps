@@ -53,7 +53,6 @@ $colorThumb: orange !default;
 .editor-component.integer-slider {
   -webkit-appearance: none;
   appearance: none;
-  outline: none;
   position: relative;
 
   &:not([readonly]):not([disabled]) {
@@ -64,12 +63,6 @@ $colorThumb: orange !default;
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
   }
-
-    //margin: 0.25rem auto;
-    padding: 0.2rem;
-    background: transparent;
-
-
 
     &:after {
       content: "";
