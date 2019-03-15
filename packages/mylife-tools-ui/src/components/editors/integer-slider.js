@@ -15,7 +15,8 @@ const IntegerSlider = React.forwardRef(({ containerClassName, className, enabled
   const range = max - min + 1;
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
-  const showButtons = enabled && !readOnly && (hover || focus);
+  const canChange = enabled && !readOnly;
+  const showButtons = canChange && (hover || focus);
 
   const handleFocus = (e) => {
     setFocus(true);
@@ -37,7 +38,7 @@ const IntegerSlider = React.forwardRef(({ containerClassName, className, enabled
         min={min}
         max={max}
         value={valueToEditor(nullable, value)}
-        onChange={e => onChange(editorToValue(nullable, e.target.value))}
+        onChange={e => canChange /* seems that chrome readonly on input range is broken */ && onChange(editorToValue(nullable, e.target.value))}
         className={classNames('editor-component', 'integer-slider', `range-${range}`, { 'value-null': value === null }, className)}
         disabled={!enabled}
         readOnly={readOnly}

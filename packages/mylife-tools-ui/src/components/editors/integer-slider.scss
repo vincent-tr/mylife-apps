@@ -6,11 +6,23 @@ $colorThumb: orange !default;
 
 @mixin trackN($n) {
   &.range-#{$n}:before {
+    right: $input-height - .2rem;
     $background-width: $input-width / ($n - 1);
     background-size: (
       $background-width $input-height,
       $input-width .25rem
     );
+  }
+
+  // always same after but only when we manage range-x
+  &.range-#{$n}:after {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: $colorTrack;
+    position: absolute;
+    right: 0;
   }
 }
 
@@ -64,22 +76,13 @@ $colorThumb: orange !default;
     -webkit-appearance: none;
   }
 
-  &:after {
-    content: "";
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    background: $colorTrack;
-    position: absolute;
-    right: 0;
-  }
-
+  // default when range too big
   &:before {
     content: "";
     position: absolute;
     z-index: 0;
     left: 0;
-    right: $input-height - .2rem;
+    right: 0;
     height: $input-height;
     background:
       (
