@@ -12,7 +12,7 @@ const valueToEditor = createValueToEditor(x => x.toString());
 const editorToValue = createEditorToValue(parseInt, 0);
 
 const IntegerSlider = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
-  const range = max - min + 1;
+  const range = max - min;
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const canChange = enabled && !readOnly;

@@ -1,13 +1,22 @@
 @import '../base/base.scss';
 @import './editor-base.scss';
 
-$colorTrack: #2788d0 !default;
-$colorThumb: orange !default;
+// https://css-tricks.com/sliding-nightmare-understanding-range-input/
+
+$track-height: 1rem;
+$colorTrack: red;
+$colorThumb: orange;
 
 @mixin trackN($n) {
   &.range-#{$n}:before {
     right: $input-height - .2rem;
-    $background-width: $input-width / ($n - 1);
+
+    background: (
+      radial-gradient(circle at $track-height/2 50%, $colorTrack .3125rem,  $colorTrack .3125rem, $colorTrack $track-height/2,transparent $track-height/2),
+      linear-gradient(90deg, transparent 0, $colorTrack 0) repeat-x 0 50%
+    );
+
+    $background-width: $input-width / $n;
     background-size: (
       $background-width $input-height,
       $input-width .25rem
@@ -17,26 +26,13 @@ $colorThumb: orange !default;
   // always same after but only when we manage range-x
   &.range-#{$n}:after {
     content: "";
-    width: 1rem;
-    height: 1rem;
+    width: $track-height;
+    height: $track-height;
     border-radius: 50%;
     background: $colorTrack;
     position: absolute;
     right: 0;
   }
-}
-
-@mixin track() {
-  width: $input-height;
-  box-sizing: border-box;
-  height: $input-height;
-  border-radius: $input-height/2;
-  box-sizing: content-box;
-  background:
-    (
-      radial-gradient(circle at $input-height/2 50%, $colorTrack .3125rem, $colorTrack .3125rem, $colorTrack $input-height/2,transparent $input-height/2),
-      linear-gradient(90deg, transparent $input-height, $colorTrack $input-height) repeat-x 0 50%
-    );
 }
 
 @mixin thumb() {
@@ -60,6 +56,7 @@ $colorThumb: orange !default;
 }
 
 .editor-container.integer-slider {
+  //border: 0; TODO: remvoe at the end
 }
 
 .editor-component.integer-slider {
@@ -83,13 +80,14 @@ $colorThumb: orange !default;
     z-index: 0;
     left: 0;
     right: 0;
-    height: $input-height;
-    background:
-      (
-        radial-gradient(circle at $input-height/2 50%, $colorTrack .3125rem,  $colorTrack .3125rem, $colorTrack $input-height/2,transparent $input-height/2),
-        linear-gradient(90deg, transparent 0, $colorTrack 0) repeat-x 0 50%
-      );
-    box-sizing: border-box;
+    top: 0;
+    bottom: 0;
+    height: $track-height;
+    margin: auto 0;
+
+    background: (
+      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%) repeat-x 0 50%
+    );
   }
 
   &::-ms-track {
@@ -127,7 +125,7 @@ $colorThumb: orange !default;
     }
   }
 
-  @for $n from 2 through 20 {
+  @for $n from 1 through 20 {
     @include trackN($n);
   }
 }
