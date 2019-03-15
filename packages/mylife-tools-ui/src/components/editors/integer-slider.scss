@@ -64,30 +64,30 @@ $colorThumb: orange !default;
     -webkit-appearance: none;
   }
 
-    &:after {
-      content: "";
-      width: 1rem;
-      height: 1rem;
-      border-radius: 50%;
-      background: $colorTrack;
-      position: absolute;
-      right: 0;
-    }
+  &:after {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: $colorTrack;
+    position: absolute;
+    right: 0;
+  }
 
-    &:before {
-      content: "";
-      position: absolute;
-      z-index: 0;
-      left: 0;
-      right: $input-height - .2rem;
-      height: $input-height;
-      background:
-        (
-          radial-gradient(circle at $input-height/2 50%, $colorTrack .3125rem,  $colorTrack .3125rem, $colorTrack $input-height/2,transparent $input-height/2),
-          linear-gradient(90deg, transparent 0, $colorTrack 0) repeat-x 0 50%
-        );
-      box-sizing: border-box;
-    }
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: $input-height - .2rem;
+    height: $input-height;
+    background:
+      (
+        radial-gradient(circle at $input-height/2 50%, $colorTrack .3125rem,  $colorTrack .3125rem, $colorTrack $input-height/2,transparent $input-height/2),
+        linear-gradient(90deg, transparent 0, $colorTrack 0) repeat-x 0 50%
+      );
+    box-sizing: border-box;
+  }
 
   &::-ms-track {
     border: none;

@@ -13,10 +13,6 @@ const editorToValue = createEditorToValue(parseInt, 0);
 
 const IntegerSlider = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
   const range = max - min + 1;
-  if(range > 20) {
-    throw new Error('slider range should max 20');
-  }
-
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
