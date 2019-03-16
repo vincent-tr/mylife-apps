@@ -51,6 +51,7 @@ const Editors = () => (
 
     <Title>String</Title>
     <Row title='Basic' initialValue='string value' type='string' />
+    <Row title='Error' initialValue='string value' type='string' error={true} />
     <Row title='Nullable' initialValue='string value' type='string' nullable={true} />
     <Row title='Max length' initialValue='short val' type='string' maxLength={10} />
     <Row title='Disabled' initialValue='string disabled' type='string' enabled={false} />
@@ -58,12 +59,14 @@ const Editors = () => (
 
     <Title>Integer</Title>
     <Row title='Basic' initialValue={42} type='integer' />
+    <Row title='Error' initialValue={42} type='integer' error={true} />
     <Row title='Nullable' initialValue={42} type='integer' nullable={true} />
     <Row title='Min/Max' initialValue={5} type='integer' min={1} max={10} />
     <Row title='Nullable Min/Max' initialValue={5} type='integer' nullable={true} min={1} max={10} />
     <Row title='Disabled' initialValue={42} type='integer' enabled={false}  />
     <Row title='Readonly' initialValue={42} type='integer' readOnly={true}  />
     <Row title='Slider' initialValue={5} type='integer' display='slider' min={0} max={10} />
+    <Row title='Slider Error' initialValue={5} type='integer' display='slider' min={0} max={10} error={true} />
     <Row title='Slider big range' initialValue={50} type='integer' display='slider' min={0} max={100} />
     <Row title='Slider Nullable' initialValue={5} type='integer' display='slider' nullable={true} min={0} max={10} />
     <Row title='Slider Disabled' initialValue={5} type='integer' display='slider' enabled={false} min={0} max={10} />

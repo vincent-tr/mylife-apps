@@ -11,7 +11,7 @@ import './integer-textbox.scss';
 const valueToEditor = createValueToEditor(x => x.toString());
 const editorToValue = createEditorToValue(parseIntOrZero, 0);
 
-const IntegerTextbox = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
+const IntegerTextbox = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, min, max, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
@@ -25,7 +25,7 @@ const IntegerTextbox = React.forwardRef(({ containerClassName, className, enable
 
   return (
     <div
-      className={classNames('editor-container', 'integer-textbox', { disabled: !enabled, 'read-only': readOnly }, containerClassName)}
+      className={classNames('editor-container', 'integer-textbox', { error, disabled: !enabled, 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -59,6 +59,7 @@ IntegerTextbox.displayName = 'IntegerTextbox';
 IntegerTextbox.propTypes = {
   containerClassName: PropTypes.string,
   className: PropTypes.string,
+  error: PropTypes.bool,
   enabled: PropTypes.bool,
   readOnly: PropTypes.bool,
   nullable: PropTypes.bool,
@@ -69,6 +70,7 @@ IntegerTextbox.propTypes = {
 };
 
 IntegerTextbox.defaultProps = {
+  error: false,
   enabled: true,
   readOnly: false,
   nullable: false,

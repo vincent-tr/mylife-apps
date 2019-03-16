@@ -19,14 +19,24 @@
   &.read-only {
   }
 
+  &.error {
+    border-color: $color-error;
+  }
+
   &.focus:not(.disabled) {
-    border-color: $color-secondary;
     color: $color-secondary;
+
+    &:not(.error) {
+      border-color: $color-secondary;
+    }
   }
 
   &:hover:not(.disabled) {
-    border-color: $color-secondary;
     color: $color-secondary;
+
+    &:not(.error) {
+      border-color: $color-secondary;
+    }
   }
 
   &> .editor-button {

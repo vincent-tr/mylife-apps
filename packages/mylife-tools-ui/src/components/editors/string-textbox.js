@@ -11,7 +11,7 @@ import './string-textbox.scss';
 const valueToEditor = createValueToEditor(x => x);
 const editorToValue = createEditorToValue(x => x, '');
 
-const StringTextbox = React.forwardRef(({ containerClassName, className, enabled, readOnly, nullable, value, onChange, maxLength, ...props }, ref) => {
+const StringTextbox = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, maxLength, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const showButtons = enabled && !readOnly && (hover || focus);
@@ -25,7 +25,7 @@ const StringTextbox = React.forwardRef(({ containerClassName, className, enabled
 
   return (
     <div
-      className={classNames('editor-container', 'string-textbox', { disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
+      className={classNames('editor-container', 'string-textbox', { error, disabled: !enabled, 'read-only': readOnly, focus }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -57,6 +57,7 @@ StringTextbox.displayName = 'StringTextbox';
 StringTextbox.propTypes = {
   containerClassName: PropTypes.string,
   className: PropTypes.string,
+  error: PropTypes.bool,
   enabled: PropTypes.bool,
   readOnly: PropTypes.bool,
   nullable: PropTypes.bool,
@@ -66,6 +67,7 @@ StringTextbox.propTypes = {
 };
 
 StringTextbox.defaultProps = {
+  error: false,
   enabled: true,
   readOnly: false,
   nullable: false,
