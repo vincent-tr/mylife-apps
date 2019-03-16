@@ -53,7 +53,7 @@ module.exports = {
     }]
   },
   plugins: [
-    new CleanWebpackPlugin([ BUILD_DIR ], { root: path.resolve(__dirname, '..') }),
+    new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         //DEBUG: JSON.stringify('mylife:tools:ui:*')
