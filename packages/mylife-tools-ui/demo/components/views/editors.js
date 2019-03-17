@@ -5,10 +5,6 @@ import PropTypes from 'prop-types';
 import { components } from 'mylife-tools-ui';
 
 const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   label: {
     marginLeft: '2rem',
     width: '10rem',
@@ -47,7 +43,7 @@ Title.propTypes = {
 };
 
 const Editors = () => (
-  <div style={styles.container}>
+  <components.Container scroll>
 
     <Title>String</Title>
     <Row title='Basic' initialValue='string value' type='string' />
@@ -72,7 +68,7 @@ const Editors = () => (
     <Row title='Slider Disabled' initialValue={5} type='integer' display='slider' enabled={false} min={0} max={10} />
     <Row title='Slider Readonly' initialValue={5} type='integer' display='slider' readOnly={true} min={0} max={10} />
 
-  </div>
+  </components.Container>
 );
 
 Editors.meta = {
