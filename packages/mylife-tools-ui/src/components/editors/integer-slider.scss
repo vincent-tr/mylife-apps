@@ -5,8 +5,8 @@
 // https://codepen.io/daniloprates/pen/KgOVdK
 
 $track-height: 1rem;
-$track-bullet-radius: 0.3rem;
-$thumb-bullet-radius: $track-height;
+$track-bullet-radius: 0.15rem;
+$thumb-bullet-radius: $track-height/2;
 $track-margin-width: 0.2rem;
 
 $colorTrack: red;
@@ -14,11 +14,12 @@ $colorThumb: orange;
 
 @mixin trackN($n) {
   &.range-#{$n}:before {
-    margin: auto 0 auto $track-margin-width;
+    margin-right: 0;
+    padding-left: $thumb-bullet-radius;
     right: $track-margin-width + $track-height;
 
     background: (
-      radial-gradient(circle at $thumb-bullet-radius/2 50%, $colorTrack $track-bullet-radius, transparent $track-bullet-radius),
+      radial-gradient(circle at $thumb-bullet-radius 50%, $colorTrack $track-bullet-radius*2, transparent $track-bullet-radius*2),
       linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
     );
 
@@ -27,13 +28,14 @@ $colorThumb: orange;
       $background-width $track-height
     );
 
-    background-position: (
-      initial,
-      right
+    background-clip: (
+      padding-box,
+      content-box
     );
   }
 
   &.range-#{$n}:after {
+    box-sizing: border-box;
     content: "";
     position: absolute;
     z-index: 0;
@@ -41,12 +43,22 @@ $colorThumb: orange;
     top: 0;
     bottom: 0;
     margin: auto $track-margin-width auto 0;
+    padding-right: $thumb-bullet-radius;
     height: $track-height;
     width : $track-height;
 
     background: (
-      radial-gradient(circle at $thumb-bullet-radius/2 50%, $colorTrack $track-bullet-radius, transparent $track-bullet-radius),
+      radial-gradient(circle at $thumb-bullet-radius 50%, $colorTrack $track-bullet-radius*2, transparent $track-bullet-radius*2),
       linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
+    );
+
+    background-clip: (
+      padding-box,
+      content-box
+    );
+
+    background-position: (
+      right
     );
   }
 }
@@ -90,6 +102,7 @@ $colorThumb: orange;
 
   // default when range too big
   &:before {
+    box-sizing: border-box;
     content: "";
     position: absolute;
     z-index: 0;

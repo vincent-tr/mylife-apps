@@ -62,7 +62,7 @@ const Editors = () => (
     <Row title='Disabled' initialValue={42} type='integer' enabled={false}  />
     <Row title='Readonly' initialValue={42} type='integer' readOnly={true}  />
     <Row title='Slider' initialValue={5} type='integer' display='slider' min={0} max={10} />
-    <Row title='Slider Error' initialValue={5} type='integer' display='slider' min={0} max={10} error={true} />
+    <Row title='Slider Error' initialValue={5} type='integer' display='slider' min={0} max={5} error={true} />
     <Row title='Slider big range' initialValue={50} type='integer' display='slider' min={0} max={100} />
     <Row title='Slider Nullable' initialValue={5} type='integer' display='slider' nullable={true} min={0} max={10} />
     <Row title='Slider Disabled' initialValue={5} type='integer' display='slider' enabled={false} min={0} max={10} />
