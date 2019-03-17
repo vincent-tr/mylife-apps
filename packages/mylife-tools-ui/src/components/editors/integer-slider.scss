@@ -2,36 +2,52 @@
 @import './editor-base.scss';
 
 // https://css-tricks.com/sliding-nightmare-understanding-range-input/
+// https://codepen.io/daniloprates/pen/KgOVdK
 
 $track-height: 1rem;
+$track-bullet-radius: 0.3rem;
+$thumb-bullet-radius: $track-height;
+$track-margin-width: 0.2rem;
+
 $colorTrack: red;
 $colorThumb: orange;
 
 @mixin trackN($n) {
   &.range-#{$n}:before {
-    right: $input-height - .2rem;
+    margin: auto 0 auto $track-margin-width;
+    right: $track-margin-width + $track-height;
 
     background: (
-      radial-gradient(circle at $track-height/2 50%, $colorTrack .3125rem,  $colorTrack .3125rem, $colorTrack $track-height/2,transparent $track-height/2),
-      linear-gradient(90deg, transparent 0, $colorTrack 0) repeat-x 0 50%
+      radial-gradient(circle at $thumb-bullet-radius/2 50%, $colorTrack $track-bullet-radius, transparent $track-bullet-radius),
+      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
     );
 
-    $background-width: $input-width / $n;
+    $background-width: 100% / $n;
     background-size: (
-      $background-width $input-height,
-      $input-width .25rem
+      $background-width $track-height
+    );
+
+    background-position: (
+      initial,
+      right
     );
   }
 
-  // always same after but only when we manage range-x
   &.range-#{$n}:after {
     content: "";
-    width: $track-height;
-    height: $track-height;
-    border-radius: 50%;
-    background: $colorTrack;
     position: absolute;
+    z-index: 0;
     right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto $track-margin-width auto 0;
+    height: $track-height;
+    width : $track-height;
+
+    background: (
+      radial-gradient(circle at $thumb-bullet-radius/2 50%, $colorTrack $track-bullet-radius, transparent $track-bullet-radius),
+      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
+    );
   }
 }
 
@@ -40,14 +56,13 @@ $colorThumb: orange;
   border-radius: 50%;
   box-sizing: border-box;
   border: (solid .35rem transparent) null (solid .25rem transparent);
-  width: $input-height + .3rem;
-  height: $input-height + .3rem;
+  width: $track-height;
+  height: $track-height;
   background: $colorThumb;
   background-clip: content-box;
   position: relative;
   z-index: 10;
-  margin-top: -.1rem;
-  margin-left: .05rem;
+  margin: auto 0;
 }
 
 @mixin null-thumb() {
@@ -82,11 +97,11 @@ $colorThumb: orange;
     right: 0;
     top: 0;
     bottom: 0;
+    margin: auto $track-margin-width;
     height: $track-height;
-    margin: auto 0;
 
     background: (
-      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%) repeat-x 0 50%
+      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
     );
   }
 
