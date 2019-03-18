@@ -23,14 +23,7 @@
     border-color: $color-error;
   }
 
-  &.focus:not(.disabled) {
-    color: $color-secondary;
-
-    &:not(.error) {
-      border-color: $color-secondary;
-    }
-  }
-
+  &.focus:not(.disabled),
   &:hover:not(.disabled) {
     color: $color-secondary;
 
