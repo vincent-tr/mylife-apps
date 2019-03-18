@@ -96,7 +96,7 @@ $colorTrack: red;
 }
 
 @mixin thumb-disabled() {
-  background: $color-primary-disabled;
+  border: $color-primary-disabled solid 1px;
 }
 
 @mixin null-thumb() {
