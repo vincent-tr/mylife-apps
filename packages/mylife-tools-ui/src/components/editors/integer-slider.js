@@ -17,6 +17,7 @@ const IntegerSlider = React.forwardRef(({ containerClassName, className, error, 
   const [hover, setHover] = useState(false);
   const canChange = enabled && !readOnly;
   const showButtons = canChange && (hover || focus);
+  const commonClasses = { error, disabled: !enabled };
 
   const handleFocus = (e) => {
     setFocus(true);
@@ -27,7 +28,7 @@ const IntegerSlider = React.forwardRef(({ containerClassName, className, error, 
 
   return (
     <div
-      className={classNames('editor-container', 'integer-slider', { error, disabled: !enabled, 'read-only': readOnly }, containerClassName)}
+      className={classNames('editor-container', 'integer-slider', commonClasses, { 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
@@ -39,7 +40,7 @@ const IntegerSlider = React.forwardRef(({ containerClassName, className, error, 
         max={max}
         value={valueToEditor(nullable, value)}
         onChange={e => canChange /* seems that chrome readonly on input range is broken */ && onChange(editorToValue(nullable, e.target.value))}
-        className={classNames('editor-component', 'integer-slider', `range-${range}`, { disabled: !enabled, 'value-null': value === null }, className)}
+        className={classNames('editor-component', 'integer-slider', `range-${range}`, commonClasses, { 'value-null': value === null }, className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}

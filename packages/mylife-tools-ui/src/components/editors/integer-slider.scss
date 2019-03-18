@@ -10,17 +10,16 @@ $thumb-bullet-radius: $track-height/2;
 $track-margin-width: 0.2rem;
 
 $colorTrack: red;
-$colorThumb: orange;
 
-@mixin trackN($n) {
+@mixin track-n($n, $color) {
   &.range-#{$n}:before {
     margin-right: 0;
     padding-left: $thumb-bullet-radius;
     right: $track-margin-width + $track-height;
 
     background: (
-      radial-gradient(circle at $thumb-bullet-radius 50%, $colorTrack $track-bullet-radius*2, transparent $track-bullet-radius*2),
-      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
+      radial-gradient(circle at $thumb-bullet-radius 50%, $color $track-bullet-radius*2, transparent $track-bullet-radius*2),
+      linear-gradient(to bottom, transparent 45%, $color 45% 55%, transparent 55%)
     );
 
     $background-width: 100% / $n;
@@ -48,8 +47,8 @@ $colorThumb: orange;
     width : $track-height;
 
     background: (
-      radial-gradient(circle at $thumb-bullet-radius 50%, $colorTrack $track-bullet-radius*2, transparent $track-bullet-radius*2),
-      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
+      radial-gradient(circle at $thumb-bullet-radius 50%, $color $track-bullet-radius*2, transparent $track-bullet-radius*2),
+      linear-gradient(to bottom, transparent 45%, $color 45% 55%, transparent 55%)
     );
 
     background-clip: (
@@ -63,18 +62,41 @@ $colorThumb: orange;
   }
 }
 
-@mixin thumb() {
+@mixin track-big($color) {
+  &:before {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto $track-margin-width;
+    height: $track-height;
+
+    background: (
+      linear-gradient(to bottom, transparent 45%, $color 45% 55%, transparent 55%)
+    );
+  }
+}
+
+@mixin thumb($color) {
   border: none;
   border-radius: 50%;
   box-sizing: border-box;
   border: (solid .35rem transparent) null (solid .25rem transparent);
   width: $track-height;
   height: $track-height;
-  background: $colorThumb;
+  background: $color;
   background-clip: content-box;
   position: relative;
   z-index: 10;
   margin: auto 0;
+}
+
+@mixin thumb-disabled() {
+  background: $color-primary-disabled;
 }
 
 @mixin null-thumb() {
@@ -109,24 +131,6 @@ $colorThumb: orange;
     -webkit-appearance: none;
   }
 
-  // default when range too big
-  &:before {
-    box-sizing: border-box;
-    content: "";
-    position: absolute;
-    z-index: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto $track-margin-width;
-    height: $track-height;
-
-    background: (
-      linear-gradient(to bottom, transparent 45%, $colorTrack 45% 55%, transparent 55%)
-    );
-  }
-
   &::-ms-track {
     border: none;
     color: transparent;
@@ -137,16 +141,23 @@ $colorThumb: orange;
   }
 
   &::-webkit-slider-thumb {
-    @include thumb();
+    @include thumb($color-primary);
   }
 
   &::-moz-range-thumb {
-    @include thumb();
+    @include thumb($color-primary);
   }
 
   &::-ms-thumb {
-    @include thumb();
+    @include thumb($color-primary);
   }
+
+  @for $n from 1 through 20 {
+    @include track-n($n, $color-primary);
+  }
+
+  // default when range too big
+  @include track-big($color-primary);
 
   &.value-null {
     &::-webkit-slider-thumb {
@@ -162,7 +173,54 @@ $colorThumb: orange;
     }
   }
 
-  @for $n from 1 through 20 {
-    @include trackN($n);
+  &.disabled {
+    &::-webkit-slider-thumb {
+      @include thumb-disabled();
+    }
+
+    &::-moz-range-thumb {
+      @include thumb-disabled();
+    }
+
+    &::-ms-thumb {
+      @include thumb-disabled();
+    }
+
+    @for $n from 1 through 20 {
+      @include track-n($n, $color-primary-disabled);
+    }
+  }
+
+  &.error {
+    @for $n from 1 through 20 {
+      @include track-n($n, $color-error);
+    }
+
+    @include track-big($color-error);
+  }
+
+  &:hover:not([disabled]),
+  &:focus:not([disabled]) {
+    &:not(.value-null) {
+      &::-webkit-slider-thumb {
+        @include thumb($color-secondary);
+      }
+
+      &::-moz-range-thumb {
+        @include thumb($color-secondary);
+      }
+
+      &::-ms-thumb {
+        @include thumb($color-secondary);
+      }
+    }
+
+    &:not(.error) {
+      @for $n from 1 through 20 {
+        @include track-n($n, $color-secondary);
+      }
+
+      @include track-big($color-secondary);
+    }
   }
 }
