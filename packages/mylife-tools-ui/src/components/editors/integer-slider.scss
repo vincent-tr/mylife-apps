@@ -48,7 +48,7 @@ $colorTrack: red;
 
     background: (
       radial-gradient(circle at $thumb-bullet-radius 50%, $color $track-bullet-radius*2, transparent $track-bullet-radius*2),
-      linear-gradient(to bottom, transparent 45%, $color 45% 55%, transparent 55%)
+      linear-gradient(to bottom, transparent calc(50% - 0.5px), $color calc(50% - 0.5px) calc(50% + 0.5px), transparent calc(50% + 0.5px))
     );
 
     background-clip: (
