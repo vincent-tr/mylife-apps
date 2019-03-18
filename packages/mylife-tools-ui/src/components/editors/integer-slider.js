@@ -39,7 +39,7 @@ const IntegerSlider = React.forwardRef(({ containerClassName, className, error, 
         max={max}
         value={valueToEditor(nullable, value)}
         onChange={e => canChange /* seems that chrome readonly on input range is broken */ && onChange(editorToValue(nullable, e.target.value))}
-        className={classNames('editor-component', 'integer-slider', `range-${range}`, { 'value-null': value === null }, className)}
+        className={classNames('editor-component', 'integer-slider', `range-${range}`, { disabled: !enabled, 'value-null': value === null }, className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={handleFocus}
