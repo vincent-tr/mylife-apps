@@ -28,7 +28,8 @@ $button-margin: 0.5rem;
       background-color: $color-primary-disabled;
     }
 
-    &:hover:not([disabled]), &:focus:not([disabled]) {
+    &:hover:not([disabled]),
+    &:focus:not([disabled]) {
       border-color: $color-secondary;
       background-color: $color-secondary;
     }
@@ -49,7 +50,8 @@ $button-margin: 0.5rem;
       color: $color-primary-disabled;
     }
 
-    &:hover:not([disabled]), &:focus:not([disabled]) {
+    &:hover:not([disabled]),
+    &:focus:not([disabled]) {
       border-color: $color-secondary;
       color: $color-secondary;
     }
