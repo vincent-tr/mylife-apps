@@ -68,6 +68,13 @@ const Editors = () => (
     <Row title='Slider Disabled' initialValue={5} type='integer' display='slider' enabled={false} min={0} max={10} />
     <Row title='Slider Readonly' initialValue={5} type='integer' display='slider' readOnly={true} min={0} max={10} />
 
+    <Title>Boolean</Title>
+    <Row title='Basic' initialValue={false} type='boolean' />
+    <Row title='Error' initialValue={false} type='boolean' error={true} />
+    <Row title='Nullable' initialValue={false} type='boolean' nullable={true} />
+    <Row title='Disabled' initialValue={false} type='boolean' enabled={false}  />
+    <Row title='Readonly' initialValue={false} type='boolean' readOnly={true}  />
+
   </components.Container>
 );
 
