@@ -27,7 +27,7 @@ const BooleanCheckbox = React.forwardRef(({ containerClassName, className, error
         checked={value === true}
         indeterminate={value === null}
         onChange={() => canChange && onChange(editorToValueChange(nullable, value))}
-        className={classNames('editor-component', 'boolean-checkbox', commonClasses, { 'value-null': value === null }, className)}
+        className={classNames('editor-component', 'boolean-checkbox', commonClasses, className)}
         disabled={!enabled}
         readOnly={readOnly}
         onFocus={() => setFocus(true)}
