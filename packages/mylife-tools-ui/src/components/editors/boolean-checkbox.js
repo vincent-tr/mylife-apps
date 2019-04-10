@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button } from '../button';
+import IndeterminableCheckbox from './helpers/indeterminable-checkbox';
 
 import './boolean-checkbox.scss';
 
@@ -21,11 +22,11 @@ const BooleanCheckbox = React.forwardRef(({ containerClassName, className, error
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
 
-      <input
-        type='checkbox'
+      <IndeterminableCheckbox
         ref={ref}
-        checked={value}
-        onChange={e => canChange && onChange(!value)}
+        checked={value === true}
+        indeterminate={value === null}
+        onChange={() => canChange && onChange(editorToValueChange(nullable, value))}
         className={classNames('editor-component', 'boolean-checkbox', commonClasses, { 'value-null': value === null }, className)}
         disabled={!enabled}
         readOnly={readOnly}
@@ -64,3 +65,11 @@ BooleanCheckbox.defaultProps = {
 };
 
 export default BooleanCheckbox;
+
+function editorToValueChange(nullable, current) {
+  switch(current) {
+    case false: return true;
+    case true: return nullable ? null : false;
+    case null: return false;
+  }
+}
