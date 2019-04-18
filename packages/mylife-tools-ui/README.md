@@ -52,12 +52,12 @@ MyLife Tools UI
     - datatype (ex: count qui est un entier positif)
     - rules (ex: required, upperBound(10) ) qui est implémenté en validators mais qui peut être géré sur la UI de l éditeur aussi
     - nom du field
-   * css checkbox : https://codepen.io/bbodine1/pen/novBm
  * globalization
  * routing
  * images
    * trier le dossier images
    * react font awesome : https://www.npmjs.com/package/@fortawesome/react-fontawesome
+ * charts
  * packaging :
    * https://webpack.js.org/guides/author-libraries
    * https://webpack.js.org/guides/caching
