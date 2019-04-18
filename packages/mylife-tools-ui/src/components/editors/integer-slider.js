@@ -28,7 +28,7 @@ const IntegerSlider = React.forwardRef(({ containerClassName, className, error, 
 
   return (
     <div
-      className={classNames('editor-container', 'integer-slider', commonClasses, { 'read-only': readOnly }, containerClassName)}
+      className={classNames('editor-container', 'integer-slider', 'no-border', commonClasses, { 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>

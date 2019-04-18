@@ -104,19 +104,6 @@ $colorTrack: red;
   height: 0;
 }
 
-.editor-container.integer-slider {
-  border: 0;
-
-  &> .editor-button {
-    border-bottom-width: $border-width;
-    border-top-width: $border-width;
-
-    &:last-child {
-      border-right-width: $border-width;
-    }
-  }
-}
-
 .editor-component.integer-slider {
   -webkit-appearance: none;
   appearance: none;

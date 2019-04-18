@@ -7,6 +7,7 @@ import StringTextbox from './string-textbox';
 import IntegerTextbox from './integer-textbox';
 import IntegerSlider from './integer-slider';
 import BooleanCheckbox from './boolean-checkbox';
+import BooleanSlider from './boolean-slider';
 
 import './editor.scss';
 
@@ -17,7 +18,7 @@ const editors = {
   list: null,
   date: null,
   datetime: null,
-  boolean: { def: 'checkbox', displays: { checkbox: BooleanCheckbox } }, // slider
+  boolean: { def: 'checkbox', displays: { checkbox: BooleanCheckbox, slider: BooleanSlider } },
 };
 
 const Editor = React.forwardRef(({ type, display, ...props }, ref) => {

@@ -10,6 +10,19 @@
   display: inline-flex;
   width: 20rem;
 
+  &.no-border {
+    border: 0;
+
+    &> .editor-button {
+      border-bottom-width: $border-width;
+      border-top-width: $border-width;
+
+      &:last-child {
+        border-right-width: $border-width;
+      }
+    }
+  }
+
   &.disabled {
     @include cursor-disabled();
     border-color: $color-primary-disabled;
