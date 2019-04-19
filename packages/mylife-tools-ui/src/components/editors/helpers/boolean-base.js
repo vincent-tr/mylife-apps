@@ -11,10 +11,13 @@ const BooleanBase = React.forwardRef(({ containerClassName, className, editorCla
   const [hover, setHover] = useState(false);
   const canChange = enabled && !readOnly;
   const showButtons = canChange && (hover || focus);
-  const commonClasses = { error, disabled: !enabled };
+  const commonClasses = { error, disabled: !enabled, hover, focus };
+  const checked = value === true;
+  const indeterminate = value === null;
 
+  // without label it does not receive onChange events ?!
   return (
-    <div
+    <label
       className={classNames('editor-container', editorClassName, 'no-border', commonClasses, { 'read-only': readOnly }, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
@@ -22,8 +25,8 @@ const BooleanBase = React.forwardRef(({ containerClassName, className, editorCla
 
       <IndeterminableCheckbox
         ref={ref}
-        checked={value === true}
-        indeterminate={value === null}
+        checked={checked}
+        indeterminate={indeterminate}
         onChange={() => canChange && onChange(editorToValueChange(nullable, value))}
         className={classNames('editor-component', editorClassName, commonClasses, className)}
         disabled={!enabled}
@@ -32,13 +35,15 @@ const BooleanBase = React.forwardRef(({ containerClassName, className, editorCla
         onBlur={() => setFocus(false)}
         { ...props } />
 
+      <div className={classNames('editor-component', editorClassName, commonClasses, {checked, indeterminate}, className)} />
+
       {showButtons && (
         <React.Fragment>
           {nullable && (<Button className='editor-button' onClick={() => onChange(null)}>x</Button>)}
         </React.Fragment>
       )}
 
-    </div>
+    </label>
   );
 });
 
