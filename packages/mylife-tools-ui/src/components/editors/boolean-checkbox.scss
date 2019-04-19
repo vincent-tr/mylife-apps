@@ -8,6 +8,10 @@
 $checkbox-size: 1.5rem;
 
 .editor-container.boolean-checkbox {
+
+  &> .editor-button:first-of-type {
+    border-left-width: 0;
+  }
 }
 
 input.editor-component.boolean-checkbox {
