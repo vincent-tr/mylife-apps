@@ -20,7 +20,9 @@ input.editor-component.boolean-slider {
 }
 
 div.editor-component.boolean-slider {
-  cursor: pointer;
+  &:not(.disabled) {
+    cursor: pointer;
+  }
   padding: 0;
   margin: 0;
   height: $slider-height;
