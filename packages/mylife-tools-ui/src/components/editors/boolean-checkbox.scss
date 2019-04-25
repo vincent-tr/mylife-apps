@@ -22,9 +22,14 @@ input.editor-component.boolean-checkbox {
 }
 
 div.editor-component.boolean-checkbox {
-  &:not(.disabled) {
-    cursor: pointer;
+  cursor: pointer;
+  &.read-only {
+    cursor: default;
   }
+  &.disabled {
+    @include cursor-disabled();
+  }
+
   padding: 0;
   margin: 0;
   height: $checkbox-size;

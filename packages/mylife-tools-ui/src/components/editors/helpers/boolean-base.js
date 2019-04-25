@@ -11,14 +11,14 @@ const BooleanBase = React.forwardRef(({ containerClassName, className, editorCla
   const [hover, setHover] = useState(false);
   const canChange = enabled && !readOnly;
   const showButtons = canChange && (hover || focus);
-  const commonClasses = { error, disabled: !enabled, hover, focus };
+  const commonClasses = { error, disabled: !enabled, 'read-only': readOnly, hover, focus };
   const checked = value === true;
   const indeterminate = value === null;
 
   // without label it does not receive onChange events ?!
   return (
     <label
-      className={classNames('editor-container', editorClassName, 'no-border', commonClasses, { 'read-only': readOnly }, containerClassName)}
+      className={classNames('editor-container', editorClassName, 'no-border', commonClasses, containerClassName)}
       disabled={!enabled}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
