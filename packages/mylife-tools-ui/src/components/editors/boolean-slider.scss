@@ -35,14 +35,25 @@ div.editor-component.boolean-slider {
   background-color: $color-divider;
   border-radius: $slider-height / 2;
   position: relative;
-  -webkit-transition: .4s;
-  transition: .4s;
+
+  &:not(.disabled):not(.read-only) {
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
 
   border: $border-width $border-style $color-primary;
 
+  &.disabled {
+    border-color: $color-primary-disabled;
+  }
+
   &.checked,
   &.indeterminate {
-    background-color:  $color-primary;
+    background-color: $color-primary;
+
+    &.disabled {
+      background-color: $color-primary-disabled;
+    }
   }
 
   &.error {
@@ -78,8 +89,11 @@ div.editor-component.boolean-slider {
     margin-right: $bullet-padding-big;
     border-radius: 50%;
     background-color: $color-background;
-    -webkit-transition: .4s;
-    transition: .4s;
+
+    &:not(.disabled):not(.read-only) {
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
   }
 
   &.checked:after {

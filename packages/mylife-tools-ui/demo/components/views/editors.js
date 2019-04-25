@@ -72,12 +72,16 @@ const Editors = () => (
     <Row title='Basic' initialValue={false} type='boolean' />
     <Row title='Error' initialValue={false} type='boolean' error={true} />
     <Row title='Nullable' initialValue={false} type='boolean' nullable={true} />
-    <Row title='Disabled' initialValue={false} type='boolean' enabled={false}  />
-    <Row title='Readonly' initialValue={false} type='boolean' readOnly={true}  />
+    <Row title='Disabled' initialValue={false} type='boolean' enabled={false} />
+    <Row title='Disabled true' initialValue={true} type='boolean' enabled={false} />
+    <Row title='Disabled null' initialValue={null} type='boolean' enabled={false} nullable={true} />
+    <Row title='Readonly' initialValue={false} type='boolean' readOnly={true} />
     <Row title='Slider' initialValue={false} type='boolean' display='slider' />
     <Row title='Slider Error' initialValue={false} type='boolean' display='slider' error={true} />
     <Row title='Slider Nullable' initialValue={false} type='boolean' display='slider' nullable={true} />
-    <Row title='Slider Disabled' initialValue={false} type='boolean' display='slider' enabled={false}  />
+    <Row title='Slider Disabled' initialValue={false} type='boolean' display='slider' enabled={false} />
+    <Row title='Slider Disabled true' initialValue={true} type='boolean' display='slider' enabled={false} />
+    <Row title='Slider Disabled null' initialValue={null} type='boolean' display='slider' enabled={false} nullable={true} />
     <Row title='Slider Readonly' initialValue={false} type='boolean' display='slider' readOnly={true}  />
 
   </components.Container>

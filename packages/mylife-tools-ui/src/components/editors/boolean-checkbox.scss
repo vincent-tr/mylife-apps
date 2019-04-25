@@ -39,9 +39,17 @@ div.editor-component.boolean-checkbox {
 
   border: $border-width $border-style $color-primary;
 
+  &.disabled {
+    border-color: $color-primary-disabled;
+  }
+
   &.checked,
   &.indeterminate {
-    background-color:  $color-primary;
+    background-color: $color-primary;
+
+    &.disabled {
+      background-color: $color-primary-disabled;
+    }
   }
 
   &.error {
@@ -49,7 +57,7 @@ div.editor-component.boolean-checkbox {
 
     &.checked,
     &.indeterminate {
-      background-color:$color-error;
+      background-color: $color-error;
     }
   }
 
