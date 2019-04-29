@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { components } from 'mylife-tools-ui';
+import icon from '../../icon.ico';
 
 const styles = {
   label: {
@@ -41,6 +42,12 @@ const Title = ({ children }) => (
 Title.propTypes = {
   children: PropTypes.string.isRequired
 };
+
+const listValues = [
+  { value: 'a', text: 'A', icon },
+  { value: 'b', text: 'B'},
+  { value: 'c', text: 'C'}
+];
 
 const Editors = () => (
   <components.Container scroll>
@@ -83,6 +90,13 @@ const Editors = () => (
     <Row title='Slider Disabled true' initialValue={true} type='boolean' display='slider' enabled={false} />
     <Row title='Slider Disabled null' initialValue={null} type='boolean' display='slider' enabled={false} nullable={true} />
     <Row title='Slider Readonly' initialValue={false} type='boolean' display='slider' readOnly={true}  />
+
+    <Title>List</Title>
+    <Row title='Basic' initialValue={'a'} type='list' values={listValues} />
+    <Row title='Error' initialValue={'a'} type='list' values={listValues} error={true} />
+    <Row title='Nullable' initialValue={'a'} type='list' values={listValues} nullable={true} />
+    <Row title='Disabled' initialValue={'a'} type='list' values={listValues} enabled={false} />
+    <Row title='Readonly' initialValue={'a'} type='list' values={listValues} readOnly={true} />
 
   </components.Container>
 );

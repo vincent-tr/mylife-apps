@@ -8,6 +8,7 @@ import IntegerTextbox from './integer-textbox';
 import IntegerSlider from './integer-slider';
 import BooleanCheckbox from './boolean-checkbox';
 import BooleanSlider from './boolean-slider';
+import Listbox from './listbox';
 
 import './editor.scss';
 
@@ -15,7 +16,7 @@ const editors = {
   string: { def: 'textbox', displays: { textbox: StringTextbox } }, // text area
   integer: { def: 'textbox', displays: { textbox: IntegerTextbox, slider: IntegerSlider } },
   number: null, // decimals count, can be < 0 ?, +/- steps ?, as slider ?
-  list: null,
+  list: { def: 'listbox', displays: { listbox: Listbox } },
   date: null,
   datetime: null,
   boolean: { def: 'checkbox', displays: { checkbox: BooleanCheckbox, slider: BooleanSlider } },
