@@ -63,7 +63,7 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
       onMouseLeave={() => setHover(false)}>
 
       <div
-        ref={ref || componentRef}
+        ref={ref}
         className={classNames('editor-component', 'listbox', commonClasses, className)}
         disabled={!enabled}
         onFocus={() => setFocus(true)}
