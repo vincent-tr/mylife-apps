@@ -14,14 +14,13 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
   const [opened, setOpen, setClose, toggle, containerRef] = useDropdownBehavior();
   const canChange = enabled && !readOnly;
   const commonClasses = { error, disabled: !enabled, 'read-only': readOnly, hover, focus, opened };
-  
+
   void setOpen;
 
   // TODO: does it really work ?
   if(!ref) {
     ref = useRef();
   }
-
 
   const handleKeyDown = (event) => {
     switch(event.key) {
