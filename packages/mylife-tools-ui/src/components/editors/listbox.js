@@ -3,17 +3,29 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button } from '../button';
 import { useDropdownBehavior } from './helpers/dropdown-behavior';
+import { Icon } from '../icon';
 
 import './listbox.scss';
 
-const Listbox = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, values, ...props }, ref) => {
+const Item = ({ text, icon }) => (
+  <div className={'item'}>
+    {icon && <div className='icon'><Icon src={icon}/></div>}
+    <div className='text'>{text}</div>
+  </div>
+);
+
+Item.propTypes = {
+  icon: PropTypes.string,
+  text: PropTypes.node.isRequired,
+};
+
+const Listbox = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, values, tabIndex, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
   const [opened, setOpen, setClose, toggle, containerRef] = useDropdownBehavior();
   const canChange = enabled && !readOnly;
-  const commonClasses = { error, disabled: !enabled, 'read-only': readOnly, hover, focus };
+  const commonClasses = { error, disabled: !enabled, 'read-only': readOnly, hover, focus, opened };
 
   const handleKeyDown = (event) => {
     switch(event.key) {
@@ -24,6 +36,16 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
     }
   };
 
+  const items = [ ... values ];
+  if(nullable) {
+    items.unshift({ text: ' ', value: null });
+  }
+
+  const current = items.find(item => Object.is(item.value, value));
+  if(!current) {
+    throw new Error(`Current value '${value}' not found in values`);
+  }
+
   return (
     <div
       ref={containerRef}
@@ -31,22 +53,24 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
 
-      <input
-        type='text'
+      <div
         ref={ref}
-        value={'toto'}
-        className={classNames('editor-component', 'listbox', className)}
+        className={classNames('editor-component', 'listbox', commonClasses, className)}
         disabled={!enabled}
-        readOnly={true}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        onMouseDown={toggle}
-        onTouchEnd={toggle}
-        onKeyDown={handleKeyDown}
-        { ...props }/>
+        onMouseDown={canChange ? toggle : undefined}
+        onTouchEnd={canChange ? toggle : undefined}
+        onKeyDown={canChange ? handleKeyDown : undefined}
+        tabIndex={enabled ? tabIndex : undefined}
+        { ...props }>
+        <Item {...current} />
+      </div>
 
       {opened && (
-        <div>Popup</div>
+        <div className={'popup'}>
+          {items.map(item => (<Item key={makeKey(item)} {...item} />))}
+        </div>
       )}
 
     </div>
@@ -62,13 +86,14 @@ Listbox.propTypes = {
   enabled: PropTypes.bool,
   readOnly: PropTypes.bool,
   nullable: PropTypes.bool,
+  tabIndex: PropTypes.number,
   value: PropTypes.any,
   onChange: PropTypes.func.isRequired,
   values: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.any.isRequired,
       text: PropTypes.node.isRequired,
-      icon: PropTypes.node
+      icon: PropTypes.string
     }).isRequired
   ).isRequired
 };
@@ -77,7 +102,12 @@ Listbox.defaultProps = {
   error: false,
   enabled: true,
   readOnly: false,
-  nullable: false
+  nullable: false,
+  tabIndex: 0
 };
 
 export default Listbox;
+
+function makeKey(item) {
+  return item.value === null ? '<null>' : item.value.toString();
+}

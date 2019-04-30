@@ -1,0 +1,42 @@
+@import '../base/base.scss';
+
+.editor-container.listbox {
+}
+
+.editor-component.listbox {
+  &> .item {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    &> .icon {
+      height: 1rem;
+      width: 1rem;
+    }
+
+    &> .text {
+      flex: 1 1 auto;
+      margin-left: 0.5rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: left;
+    }
+
+    &:after {
+      content: '';
+      @include arrow-down(0.3rem);
+    }
+  }
+
+  &.opened > .item:after {
+    content: '';
+    @include arrow-up(0.3rem);
+  }
+
+  &> .popup {
+
+  }
+}
