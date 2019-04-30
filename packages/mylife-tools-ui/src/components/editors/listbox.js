@@ -1,24 +1,12 @@
 'use strict';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDropdownBehavior } from './helpers/dropdown-behavior';
 import { Icon } from '../icon';
 
 import './listbox.scss';
-
-const Item = ({ text, icon }) => (
-  <div className={'item'}>
-    {icon && <div className='icon'><Icon src={icon}/></div>}
-    <div className='text'>{text}</div>
-  </div>
-);
-
-Item.propTypes = {
-  icon: PropTypes.string,
-  text: PropTypes.node.isRequired,
-};
 
 const Listbox = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, values, tabIndex, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
@@ -27,6 +15,12 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
   const canChange = enabled && !readOnly;
   const commonClasses = { error, disabled: !enabled, 'read-only': readOnly, hover, focus, opened };
 
+  // TODO: does it really work
+  if(!ref) {
+    ref = useRef();
+  }
+
+
   const handleKeyDown = (event) => {
     switch(event.key) {
       case 'Enter':
@@ -34,6 +28,19 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
         toggle();
         break;
     }
+  };
+
+  const createPopupItem = item => {
+    const handler = () => {
+      setClose();
+      onChange(item.value);
+      // TODO: this is hacky :/
+      setTimeout(() => ref.current.focus(), 10);
+    };
+
+    // TODO: keyboard navigation ?
+    const props = { onMouseDown: handler, onTouchEnd: handler };
+    return makeItem(item, props);
   };
 
   const items = [ ... values ];
@@ -54,7 +61,7 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
       onMouseLeave={() => setHover(false)}>
 
       <div
-        ref={ref}
+        ref={ref || componentRef}
         className={classNames('editor-component', 'listbox', commonClasses, className)}
         disabled={!enabled}
         onFocus={() => setFocus(true)}
@@ -64,14 +71,14 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
         onKeyDown={canChange ? handleKeyDown : undefined}
         tabIndex={enabled ? tabIndex : undefined}
         { ...props }>
-        <Item {...current} />
-      </div>
+        {makeItem(current)}
 
-      {opened && (
-        <div className={'popup'}>
-          {items.map(item => (<Item key={makeKey(item)} {...item} />))}
-        </div>
-      )}
+        {opened && (
+          <div className={'popup'}>
+            {items.map(createPopupItem)}
+          </div>
+        )}
+      </div>
 
     </div>
   );
@@ -108,6 +115,22 @@ Listbox.defaultProps = {
 
 export default Listbox;
 
-function makeKey(item) {
-  return item.value === null ? '<null>' : item.value.toString();
+const Item = ({ text, icon, ...props }) => (
+  <div className={'item'} { ... props }>
+    {icon && <div className='icon'><Icon src={icon}/></div>}
+    <div className='text'>{text}</div>
+  </div>
+);
+
+Item.propTypes = {
+  icon: PropTypes.string,
+  text: PropTypes.node.isRequired,
+};
+
+function makeItem(item, props = {}) {
+  const { value, text, icon } = item;
+  const key = value === null ? '<null>' : value.toString();
+  return (
+    <Item key={key} text={text} icon={icon} {...props} />
+  );
 }

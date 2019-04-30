@@ -1,9 +1,7 @@
 @import '../base/base.scss';
+@import './editor-base.scss';
 
-.editor-container.listbox {
-}
-
-.editor-component.listbox {
+@mixin item() {
   &> .item {
     height: 100%;
     width: 100%;
@@ -24,19 +22,42 @@
       align-items: center;
       justify-content: left;
     }
+  }
+}
 
-    &:after {
-      content: '';
-      @include arrow-down(0.3rem);
-    }
+.editor-container.listbox {
+}
+
+.editor-component.listbox {
+
+  position: relative;
+
+  &.disabled {
+    color: $color-primary-disabled;
   }
 
-  &.opened > .item:after {
+  @include item();
+
+  &:not(.read-only):not(.disabled) > .item:after {
+    content: '';
+    @include arrow-up(0.3rem);
+  }
+
+  &.opened:not(.read-only):not(.disabled) > .item:after {
     content: '';
     @include arrow-up(0.3rem);
   }
 
   &> .popup {
+    position: absolute;
+    top: 100%;
+    left: -$border-width;
+    right: -$border-width;
+    z-index: 99;
 
+    border: $border-width $border-style $color-secondary;
+    background-color: $color-background;
+
+    @include item();
   }
 }
