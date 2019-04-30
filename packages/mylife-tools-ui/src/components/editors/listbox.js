@@ -36,7 +36,8 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
       setClose();
       onChange(item.value);
       // TODO: this is hacky :/
-      setTimeout(() => ref.current.focus(), 10);
+      const node = ref.current;
+      setTimeout(() => node.focus(), 10);
     };
 
     // TODO: keyboard navigation ?
