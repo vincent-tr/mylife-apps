@@ -62,6 +62,13 @@
       @include item();
 
       height: 1.1rem;
+
+      // TODO: keyboard navigation
+
+      &:hover {
+        background-color: $color-secondary;
+        color: $color-background;
+      }
     }
   }
 }
