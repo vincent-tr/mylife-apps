@@ -42,5 +42,5 @@ export function useDropdownBehavior(ref) {
     };
   });
 
-  return [opened, setOpen, setClose, toggle, setSelect, containerRef, componentRef];
+  return [containerRef, componentRef, opened, toggle, setSelect, setOpen, setClose];
 }

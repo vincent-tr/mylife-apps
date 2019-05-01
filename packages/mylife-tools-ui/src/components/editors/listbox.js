@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDropdownBehavior } from './helpers/dropdown-behavior';
@@ -11,12 +11,9 @@ import './listbox.scss';
 const Listbox = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, values, tabIndex, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
-  const localRef = useRef();
-  const [opened, setOpen, setClose, toggle, setSelect, containerRef, componentRef] = useDropdownBehavior(ref);
+  const [containerRef, componentRef, opened, toggle, setSelect] = useDropdownBehavior(ref);
   const canChange = enabled && !readOnly;
   const commonClasses = { error, disabled: !enabled, 'read-only': readOnly, hover, focus, opened };
-
-  void setOpen;
 
   const handleKeyDown = (event) => {
     switch(event.key) {
