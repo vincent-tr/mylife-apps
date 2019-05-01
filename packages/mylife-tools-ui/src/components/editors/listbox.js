@@ -11,16 +11,12 @@ import './listbox.scss';
 const Listbox = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, values, tabIndex, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
   const [hover, setHover] = useState(false);
-  const [opened, setOpen, setClose, toggle, containerRef] = useDropdownBehavior();
+  const localRef = useRef();
+  const [opened, setOpen, setClose, toggle, setSelect, containerRef, componentRef] = useDropdownBehavior(ref);
   const canChange = enabled && !readOnly;
   const commonClasses = { error, disabled: !enabled, 'read-only': readOnly, hover, focus, opened };
 
   void setOpen;
-
-  // TODO: does it really work ?
-  if(!ref) {
-    ref = useRef();
-  }
 
   const handleKeyDown = (event) => {
     switch(event.key) {
@@ -33,11 +29,8 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
 
   const createPopupItem = item => {
     const handler = () => {
-      setClose();
+      setSelect();
       onChange(item.value);
-      // TODO: this is hacky :/
-      const node = ref.current;
-      setTimeout(() => node.focus(), 10);
     };
 
     // TODO: keyboard navigation ?
@@ -63,7 +56,7 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
       onMouseLeave={() => setHover(false)}>
 
       <div
-        ref={ref}
+        ref={componentRef}
         className={classNames('editor-component', 'listbox', commonClasses, className)}
         disabled={!enabled}
         onFocus={() => setFocus(true)}

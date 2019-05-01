@@ -2,13 +2,24 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-export function useDropdownBehavior() {
+export function useDropdownBehavior(ref) {
   const [opened, setOpened] = useState(false);
   const containerRef = useRef();
+  const localRef = useRef();
+
+  // TODO: does it really work ?
+  const componentRef = ref || localRef;
 
   const setOpen = () => setOpened(true);
   const setClose = () => setOpened(false);
   const toggle = () => setOpened(!opened);
+
+  const setSelect = () => {
+    setClose();
+    // TODO: this is hacky :/
+    const node = componentRef.current;
+    setTimeout(() => node.focus(), 10);
+  };
 
   useEffect(() => {
     function handleDocumentClick() {
@@ -31,5 +42,5 @@ export function useDropdownBehavior() {
     };
   });
 
-  return [opened, setOpen, setClose, toggle, containerRef];
+  return [opened, setOpen, setClose, toggle, setSelect, containerRef, componentRef];
 }
