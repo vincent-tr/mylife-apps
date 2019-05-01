@@ -1,0 +1,47 @@
+@import '../base/base.scss';
+@import './editor-base.scss';
+
+.editor-container.date-picker {
+}
+
+.editor-component.date-picker {
+
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &.disabled {
+    color: $color-primary-disabled;
+  }
+
+  &> .value {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: left;
+  }
+
+  &:not(.read-only):not(.disabled):after {
+    content: '';
+    @include arrow-down(0.3rem);
+  }
+
+  &.opened:not(.read-only):not(.disabled):after {
+    content: '';
+    @include arrow-up(0.3rem);
+  }
+
+  &> .popup {
+    position: absolute;
+    top: 100%;
+    left: -$border-width;
+    right: -$border-width;
+    z-index: 99;
+
+    border: $border-width $border-style $color-secondary;
+    background-color: $color-background;
+
+  }
+}

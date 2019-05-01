@@ -49,6 +49,8 @@ const listValues = [
   { value: 'c', text: 'C'}
 ];
 
+const dateValue = new Date(2019, 5-1, 27);
+
 const Editors = () => (
   <components.Container scroll>
 
@@ -97,6 +99,13 @@ const Editors = () => (
     <Row title='Nullable' initialValue={'a'} type='list' values={listValues} nullable={true} />
     <Row title='Disabled' initialValue={'a'} type='list' values={listValues} enabled={false} />
     <Row title='Readonly' initialValue={'a'} type='list' values={listValues} readOnly={true} />
+
+    <Title>Date</Title>
+    <Row title='Basic' initialValue={dateValue} type='date' />
+    <Row title='Error' initialValue={dateValue} type='date' error={true} />
+    <Row title='Nullable' initialValue={dateValue} type='date' nullable={true} />
+    <Row title='Disabled' initialValue={dateValue} type='date' enabled={false} />
+    <Row title='Readonly' initialValue={dateValue} type='date' readOnly={true} />
 
   </components.Container>
 );
