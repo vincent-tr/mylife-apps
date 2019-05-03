@@ -30,7 +30,12 @@
 
   position: relative;
 
+  cursor: pointer;
+  &.read-only {
+    cursor: default;
+  }
   &.disabled {
+    @include cursor-disabled();
     color: $color-primary-disabled;
   }
 
