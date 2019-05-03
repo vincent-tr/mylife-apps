@@ -66,7 +66,7 @@ const Listbox = React.forwardRef(({ containerClassName, className, error, enable
         {makeItem(current)}
 
         {opened && (
-          <div className={'popup'}>
+          <div className='popup'>
             {items.map(createPopupItem)}
           </div>
         )}
@@ -108,7 +108,7 @@ Listbox.defaultProps = {
 export default Listbox;
 
 const Item = ({ text, icon, ...props }) => (
-  <div className={'item'} { ... props }>
+  <div className='item' { ... props }>
     {icon && <div className='icon'><Icon src={icon}/></div>}
     <div className='text'>{text}</div>
   </div>

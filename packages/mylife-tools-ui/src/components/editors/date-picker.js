@@ -42,7 +42,7 @@ const DatePicker = React.forwardRef(({ containerClassName, className, error, ena
         tabIndex={enabled ? tabIndex : undefined}
         { ...props }>
 
-        <div className={'value'}>
+        <div className='value'>
           {formatDate(value)}
         </div>
 
