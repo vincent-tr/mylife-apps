@@ -4,8 +4,58 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDropdownBehavior } from './helpers/dropdown-behavior';
+import { Button } from '../button';
 
 import './date-picker.scss';
+
+const Popup = ({ nullable, initialValue, onSelect }) => {
+  const [current, setCurrent] = useState(firstDayOfMonth(initialValue || new Date()));
+  const createCellClickHandler = cell => e => {
+    e.stopPropagation();
+    onSelect(cell.value);
+  };
+
+  return (
+    <div className='popup'>
+      <div className='header'>
+        <Button>null</Button>
+        <Button>month prev</Button>
+        <Button>year prev</Button>
+        {formatMonth(current)}
+        <Button>month next</Button>
+        <Button>year next</Button>
+      </div>
+      <table className='table'>
+        <thead>
+          <tr>
+            <th>L</th>
+            <th>M</th>
+            <th>M</th>
+            <th>J</th>
+            <th>V</th>
+            <th>S</th>
+            <th>D</th>
+          </tr>
+        </thead>
+        <tbody>
+          {getDaysTable(current).map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, colIndex) => (
+                <td key={colIndex}><Button onClick={createCellClickHandler(cell)}>{cell.content}</Button></td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+Popup.propTypes = {
+  nullable: PropTypes.bool,
+  initialValue: PropTypes.instanceOf(Date),
+  onSelect: PropTypes.func.isRequired
+};
 
 const DatePicker = React.forwardRef(({ containerClassName, className, error, enabled, readOnly, nullable, value, onChange, tabIndex, ...props }, ref) => {
   const [focus, setFocus] = useState(false);
@@ -21,6 +71,11 @@ const DatePicker = React.forwardRef(({ containerClassName, className, error, ena
         toggle();
         break;
     }
+  };
+
+  const handleSelect = (selectedValue) => {
+    setSelect();
+    onChange(selectedValue);
   };
 
   return (
@@ -47,9 +102,7 @@ const DatePicker = React.forwardRef(({ containerClassName, className, error, ena
         </div>
 
         {opened && (
-          <div className={'popup'}>
-            Popup
-          </div>
+          <Popup nullable={nullable} initialValue={value} onSelect={handleSelect} />
         )}
       </div>
 
@@ -87,8 +140,81 @@ function formatDate(value) {
   }
 
   // TODO: localization
-  const day = value.getDate();
-  const month = value.getMonth() + 1;
-  const year = value.getFullYear();
+  const day = value.toLocaleString('fr-fr', { day: '2-digit' });
+  const month = value.toLocaleString('fr-fr', { month: '2-digit' });
+  const year = value.toLocaleString('fr-fr', { year: 'numeric' });
   return `${day}/${month}/${year}`;
+}
+
+function firstDayOfMonth(date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+function lastDayOfMonth(date) {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+}
+
+function formatMonth(value) {
+  // TODO: localization
+  const month = value.toLocaleString('fr-fr', { month: 'long' });
+  const year = value.toLocaleString('fr-fr', { year: 'numeric' });
+  return `${month} ${year}`;
+}
+
+function getDaysTable(value) {
+  // TODO: localization
+  const firstDayOfWeek = 1;
+
+  const firstDayDate = firstDayOfMonth(value);
+  const lastDayDate = lastDayOfMonth(value);
+  const day = firstDayDate.getDay();
+  const daysInMonth = lastDayDate.getDate();
+  let weeksInMonth = Math.ceil(daysInMonth / 7);
+  const prevMonth = new Date(value.getYear(), value.getMonth() - 1, 1);
+  const prevDaysInMonth = new Date(prevMonth.getFullYear(), prevMonth.getMonth() + 1, 0).getDate();
+
+  // The real first day in relation to the sequence of calendar days (array index)
+  let realFirstWeekDay = day - firstDayOfWeek;
+  // if the real first day is under 0, we want to shift it a week back
+  if (realFirstWeekDay < 0) {
+    realFirstWeekDay = 7 - day - firstDayOfWeek;
+    ++weeksInMonth;
+  }
+  if(realFirstWeekDay + daysInMonth > 7 * weeksInMonth) {
+    ++weeksInMonth;
+  }
+
+  let cellDay = 0;
+  let nextMonthDay = 0;
+  const rows = [];
+
+  for(let rowIndex = 0; rowIndex < weeksInMonth; ++rowIndex) {
+    const cells = [];
+    for(let colIndex = 0; colIndex < 7; ++colIndex) {
+      const i = rowIndex * 7 + colIndex;
+      const value = new Date(firstDayDate);
+      let day;
+      let disabled = false;
+
+      if (i >= realFirstWeekDay && cellDay < daysInMonth) {
+        cellDay += 1;
+        day = cellDay;
+      } else if (i < realFirstWeekDay) {
+        day = prevDaysInMonth - realFirstWeekDay + i + 1;
+        value.setMonth(value.getMonth() - 1);
+        disabled = true;
+      } else if (i >= daysInMonth) {
+        nextMonthDay += 1;
+        day = nextMonthDay;
+        value.setMonth(value.getMonth() + 1);
+        disabled = true;
+      }
+
+      value.setDate(day);
+      const cell = { content: day.toString(), value, disabled };
+      cells.push(cell);
+    }
+    rows.push(cells);
+  }
+  return rows;
 }
