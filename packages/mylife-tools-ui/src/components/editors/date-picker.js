@@ -25,7 +25,7 @@ const Popup = ({ nullable, initialValue, onSelect }) => {
         {nullable && (
           <PopupButton onClick={() => onSelect(null)}>null</PopupButton>
         )}
-        <PopupButton onClick={(e) => { e.stopPropagation(); setCurrent(addMonths(current, -1));}}>month prev</PopupButton>
+        <PopupButton onClick={() => setCurrent(addMonths(current, -1))}>month prev</PopupButton>
         <PopupButton onClick={() => setCurrent(addYears(current, -1))}>year prev</PopupButton>
         <span>{formatMonth(current)}</span>
         <PopupButton onClick={() => setCurrent(addMonths(current, 1))}>month next</PopupButton>
