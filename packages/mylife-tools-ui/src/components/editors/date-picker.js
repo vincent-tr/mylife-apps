@@ -27,13 +27,14 @@ const Popup = ({ nullable, initialValue, onSelect }) => {
         )}
         <PopupButton onClick={(e) => { e.stopPropagation(); setCurrent(addMonths(current, -1));}}>month prev</PopupButton>
         <PopupButton onClick={() => setCurrent(addYears(current, -1))}>year prev</PopupButton>
-        {formatMonth(current)}
+        <span>{formatMonth(current)}</span>
         <PopupButton onClick={() => setCurrent(addMonths(current, 1))}>month next</PopupButton>
         <PopupButton onClick={() => setCurrent(addYears(current, 1))}>year next</PopupButton>
       </div>
       <table className='table'>
         <thead>
           <tr>
+            {/* TODO: localization */}
             <th>L</th>
             <th>M</th>
             <th>M</th>
