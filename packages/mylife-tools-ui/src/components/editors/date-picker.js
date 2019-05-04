@@ -50,7 +50,7 @@ const Popup = ({ nullable, initialValue, onSelect }) => {
               {row.map((cell, colIndex) => (
                 <td key={colIndex}>
                   {cell.visible && (
-                    <PopupButton onClick={createCellClickHandler(cell)}>
+                    <PopupButton primary onClick={createCellClickHandler(cell)}>
                       {cell.content}
                     </PopupButton>
                   )}
