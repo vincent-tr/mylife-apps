@@ -8,6 +8,10 @@ import { Button } from '../button';
 
 import './date-picker.scss';
 
+const PopupButton = ({ ... props }) => (
+  <Button onMouseDown={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()} {...props} />
+);
+
 const Popup = ({ nullable, initialValue, onSelect }) => {
   const [current, setCurrent] = useState(firstDayOfMonth(initialValue || new Date()));
   const createCellClickHandler = cell => e => {
@@ -18,12 +22,14 @@ const Popup = ({ nullable, initialValue, onSelect }) => {
   return (
     <div className='popup'>
       <div className='header'>
-        <Button>null</Button>
-        <Button>month prev</Button>
-        <Button>year prev</Button>
+        {nullable && (
+          <PopupButton onClick={() => onSelect(null)}>null</PopupButton>
+        )}
+        <PopupButton onClick={(e) => { e.stopPropagation(); setCurrent(addMonths(current, -1));}}>month prev</PopupButton>
+        <PopupButton onClick={() => setCurrent(addYears(current, -1))}>year prev</PopupButton>
         {formatMonth(current)}
-        <Button>month next</Button>
-        <Button>year next</Button>
+        <PopupButton onClick={() => setCurrent(addMonths(current, 1))}>month next</PopupButton>
+        <PopupButton onClick={() => setCurrent(addYears(current, 1))}>year next</PopupButton>
       </div>
       <table className='table'>
         <thead>
@@ -41,7 +47,13 @@ const Popup = ({ nullable, initialValue, onSelect }) => {
           {getDaysTable(current).map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, colIndex) => (
-                <td key={colIndex}><Button onClick={createCellClickHandler(cell)}>{cell.content}</Button></td>
+                <td key={colIndex}>
+                  {cell.visible && (
+                    <PopupButton onClick={createCellClickHandler(cell)}>
+                      {cell.content}
+                    </PopupButton>
+                  )}
+                </td>
               ))}
             </tr>
           ))}
@@ -154,6 +166,14 @@ function lastDayOfMonth(date) {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 }
 
+function addMonths(date, inc) {
+  return new Date(date.getFullYear(), date.getMonth() + inc, date.getDay());
+}
+
+function addYears(date, inc) {
+  return new Date(date.getFullYear() + inc, date.getMonth(), date.getDay());
+}
+
 function formatMonth(value) {
   // TODO: localization
   const month = value.toLocaleString('fr-fr', { month: 'long' });
@@ -194,7 +214,7 @@ function getDaysTable(value) {
       const i = rowIndex * 7 + colIndex;
       const value = new Date(firstDayDate);
       let day;
-      let disabled = false;
+      let visible = true;
 
       if (i >= realFirstWeekDay && cellDay < daysInMonth) {
         cellDay += 1;
@@ -202,16 +222,16 @@ function getDaysTable(value) {
       } else if (i < realFirstWeekDay) {
         day = prevDaysInMonth - realFirstWeekDay + i + 1;
         value.setMonth(value.getMonth() - 1);
-        disabled = true;
+        visible = false;
       } else if (i >= daysInMonth) {
         nextMonthDay += 1;
         day = nextMonthDay;
         value.setMonth(value.getMonth() + 1);
-        disabled = true;
+        visible = false;
       }
 
       value.setDate(day);
-      const cell = { content: day.toString(), value, disabled };
+      const cell = { content: day.toString(), value, visible };
       cells.push(cell);
     }
     rows.push(cells);
