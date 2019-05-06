@@ -8,3 +8,4 @@ export * from './button';
 export * from './editors';
 export * from './containers';
 export * from './layout';
+export * from './table';
