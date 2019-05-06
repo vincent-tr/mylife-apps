@@ -23,14 +23,15 @@ const Popup = ({ nullable, initialValue, onSelect }) => {
   return (
     <div className='popup'>
       <div className='header'>
-        {nullable && (
-          <PopupButton onClick={() => onSelect(null)}>x</PopupButton>
-        )}
         <PopupButton onClick={() => setCurrent(addYears(current, -1))}><FaAngleDoubleLeft /></PopupButton>
         <PopupButton onClick={() => setCurrent(addMonths(current, -1))}><FaAngleLeft /></PopupButton>
         <span>{formatMonth(current)}</span>
         <PopupButton onClick={() => setCurrent(addMonths(current, 1))}><FaAngleRight /></PopupButton>
         <PopupButton onClick={() => setCurrent(addYears(current, 1))}><FaAngleDoubleRight /></PopupButton>
+
+        {nullable && (
+          <PopupButton onClick={() => onSelect(null)}>x</PopupButton>
+        )}
       </div>
       <table className='table'>
         <thead>
