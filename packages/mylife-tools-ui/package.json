@@ -21,6 +21,7 @@
   "dependencies": {
     "normalize.css": "^8.0.1",
     "react-dom": "^16.8.3",
+    "react-icons": "^3.6.1",
     "react-keyboard-event-handler": "^1.4.1",
     "react-modal": "^3.8.1",
     "react-portal": "^4.2.0",
