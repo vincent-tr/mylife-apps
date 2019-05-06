@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { components } from 'mylife-tools-ui';
-import icon from '../icon.ico';
 import { setView } from '../actions/view';
 import { getView } from '../selectors/view';
 import * as views from './views';
@@ -26,10 +25,10 @@ const Layout = ({ children }) => {
   const { viewName, viewIcon, menuClick, logoClick } = useConnect();
   return (
     <components.Layout logoName={<h1>Demo</h1>}
-      logoIcon={<components.Icon src={icon}/>}
+      logoIcon={<components.MylifeLogo />}
       logoOnClick={logoClick}
       viewName={<h2>{viewName}</h2>}
-      viewIcon={viewIcon && <components.Icon src={viewIcon}/>}
+      viewIcon={viewIcon}
       menu={buildMenu(menuClick)}
       footer={'footer'}>
       {children}
@@ -97,12 +96,9 @@ function buildMenuTemplate() {
 const menuTemplate = buildMenuTemplate();
 
 function buildMenu(menuClick) {
-  return menuTemplate.map(({ icon, onClick, ...item }) => {
+  return menuTemplate.map(({ onClick, ...item }) => {
     if(onClick) {
       item.onClick = menuClick;
-    }
-    if(icon) {
-      item.icon = (<components.Icon src={icon}/>);
     }
     return item;
   });

@@ -92,7 +92,7 @@ Listbox.propTypes = {
     PropTypes.shape({
       value: PropTypes.any.isRequired,
       text: PropTypes.node.isRequired,
-      icon: PropTypes.string
+      icon: PropTypes.node
     }).isRequired
   ).isRequired
 };
@@ -109,13 +109,13 @@ export default Listbox;
 
 const Item = ({ text, icon, ...props }) => (
   <div className='item' { ... props }>
-    {icon && <div className='icon'><Icon src={icon}/></div>}
+    {icon && <div className='icon'>{icon}</div>}
     <div className='text'>{text}</div>
   </div>
 );
 
 Item.propTypes = {
-  icon: PropTypes.string,
+  icon: PropTypes.node,
   text: PropTypes.node.isRequired,
 };
 

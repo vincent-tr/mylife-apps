@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import icon from '../../icon.ico';
+import { components } from 'mylife-tools-ui';
 
 const Main = () => (
   <div>
@@ -11,7 +11,7 @@ const Main = () => (
 
 Main.meta = {
   menu: null,
-  icon,
+  icon: <components.MylifeLogo />,
   title: 'Main'
 };
 

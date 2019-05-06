@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { components } from 'mylife-tools-ui';
-import icon from '../../icon.ico';
 
 const styles = {
   label: {
@@ -44,7 +43,7 @@ Title.propTypes = {
 };
 
 const listValues = [
-  { value: 'a', text: 'A', icon },
+  { value: 'a', text: 'A', icon: <components.MylifeLogo /> },
   { value: 'b', text: 'B'},
   { value: 'c', text: 'C'}
 ];
