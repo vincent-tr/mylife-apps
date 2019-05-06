@@ -56,7 +56,6 @@ MyLife Tools UI
  * routing
  * images
    * trier le dossier images
-   * react font awesome : https://www.npmjs.com/package/@fortawesome/react-fontawesome
  * charts
  * packaging :
    * https://webpack.js.org/guides/author-libraries
