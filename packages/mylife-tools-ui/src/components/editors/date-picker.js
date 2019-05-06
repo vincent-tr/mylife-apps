@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDropdownBehavior } from './helpers/dropdown-behavior';
 import { Button } from '../button';
+import { FaAngleDoubleLeft, FaAngleLeft, FaAngleRight, FaAngleDoubleRight } from '../icon';
 
 import './date-picker.scss';
 
@@ -23,13 +24,13 @@ const Popup = ({ nullable, initialValue, onSelect }) => {
     <div className='popup'>
       <div className='header'>
         {nullable && (
-          <PopupButton onClick={() => onSelect(null)}>null</PopupButton>
+          <PopupButton onClick={() => onSelect(null)}>x</PopupButton>
         )}
-        <PopupButton onClick={() => setCurrent(addMonths(current, -1))}>month prev</PopupButton>
-        <PopupButton onClick={() => setCurrent(addYears(current, -1))}>year prev</PopupButton>
+        <PopupButton onClick={() => setCurrent(addYears(current, -1))}><FaAngleDoubleLeft /></PopupButton>
+        <PopupButton onClick={() => setCurrent(addMonths(current, -1))}><FaAngleLeft /></PopupButton>
         <span>{formatMonth(current)}</span>
-        <PopupButton onClick={() => setCurrent(addMonths(current, 1))}>month next</PopupButton>
-        <PopupButton onClick={() => setCurrent(addYears(current, 1))}>year next</PopupButton>
+        <PopupButton onClick={() => setCurrent(addMonths(current, 1))}><FaAngleRight /></PopupButton>
+        <PopupButton onClick={() => setCurrent(addYears(current, 1))}><FaAngleDoubleRight /></PopupButton>
       </div>
       <table className='table'>
         <thead>
@@ -168,16 +169,16 @@ function lastDayOfMonth(date) {
 }
 
 function addMonths(date, inc) {
-  return new Date(date.getFullYear(), date.getMonth() + inc, date.getDay());
+  return new Date(date.getFullYear(), date.getMonth() + inc, 1);
 }
 
 function addYears(date, inc) {
-  return new Date(date.getFullYear() + inc, date.getMonth(), date.getDay());
+  return new Date(date.getFullYear() + inc, date.getMonth(), 1);
 }
 
 function formatMonth(value) {
   // TODO: localization
-  const month = value.toLocaleString('fr-fr', { month: 'long' });
+  const month = value.toLocaleString('fr-fr', { month: 'short' });
   const year = value.toLocaleString('fr-fr', { year: 'numeric' });
   return `${month} ${year}`;
 }
