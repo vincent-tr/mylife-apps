@@ -3,8 +3,6 @@
 import React from 'react';
 import { components } from 'mylife-tools-ui';
 
-console.log(components);
-
 const Tables = () => (
   <div>
     <components.Table>
