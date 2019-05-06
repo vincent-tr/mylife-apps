@@ -42,14 +42,27 @@
     position: absolute;
     top: 100%;
     left: -$border-width;
-    right: -$border-width;
     z-index: 99;
 
     border: $border-width $border-style $color-secondary;
     background-color: $color-background;
 
-    &> .header {
+    cursor: default;
 
+    &> .header {
+      display: flex;
+      align-items: center;
+
+      &> .button {
+        flex: 0 0 auto;
+        padding: 0.1rem;
+        margin: 0.5rem;
+      }
+
+      &> span {
+        flex: 1 1 auto;
+        text-align: center;
+      }
     }
 
     &> .table .button {
