@@ -68,5 +68,8 @@ module.exports = {
     alias: {
       'mylife-tools-ui': path.resolve(__dirname, '../src'),
     }
+  },
+  devServer: {
+    historyApiFallback: true
   }
 };
