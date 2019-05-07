@@ -23,6 +23,7 @@ const Tables = () => {
   return (
     <components.Box style={{ display: 'flex', flexDirection: 'column' }}>
       <components.Container stretch={false}>
+        {/* TODO: use form components when ready */}
         <span>Big data</span>
         <components.Editor type='boolean' value={big} onChange={setBig} />
       </components.Container>
