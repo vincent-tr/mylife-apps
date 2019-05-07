@@ -11,7 +11,7 @@ import './table.scss';
 
 const HeaderCell = ({ column }) => {
   if(column.headerRenderer) {
-    return column.headerRenderer(column);
+    return column.headerRenderer(column, getColumnStyle(column));
   }
 
   return (
@@ -42,7 +42,7 @@ Header.propTypes = {
 const Cell = ({ column, row }) => {
   const value = row[column.id];
   if(column.renderer) {
-    return column.renderer(value, column);
+    return column.renderer(value, column, getColumnStyle(column));
   }
 
   return (

@@ -13,7 +13,7 @@ $cell-padding: 0.2rem;
   flex: 0 0 auto;
 
   display: flex;
-  align-items: center;
+  align-items: stretch;
 
   border-bottom: $border-width $border-style $color-divider;
 }
@@ -23,6 +23,8 @@ $cell-padding: 0.2rem;
     border-left: $border-width $border-style $color-divider;
   }
 
+  display: flex;
+  align-items: center;
   padding: $header-padding $cell-padding;
   font-weight: bold;
 }
@@ -37,7 +39,7 @@ $cell-padding: 0.2rem;
 
 .table-row {
   display: flex;
-  align-items: center;
+  align-items: stretch;
 }
 
 .table-cell {
@@ -45,5 +47,7 @@ $cell-padding: 0.2rem;
     border-left: $border-width $border-style $color-divider;
   }
 
+  display: flex;
+  align-items: center;
   padding: $cell-padding;
 }

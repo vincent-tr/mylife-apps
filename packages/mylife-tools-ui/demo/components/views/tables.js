@@ -3,9 +3,16 @@
 import React, { useState } from 'react';
 import { components } from 'mylife-tools-ui';
 
+const actionsRenderer = (value, column, style) => (
+  <div className={'table-header-cell'} style={{ ...style, padding: 0 }}>
+    <components.Button style={{ margin: 0, padding: '0.1rem 0.5rem' }}>a</components.Button>
+    <components.Button style={{ margin: 0, padding: '0.1rem 0.5rem' }}>b</components.Button>
+  </div>
+);
+
 const columns = [
-  { id: 'col1', text: 'Column1', width: '10%' },
-  { id: 'col2', text: 'Column2', width: '10%' },
+  { id: 'col1', text: ' ', width: '4rem', renderer: actionsRenderer },
+  { id: 'col2', text: 'Column2' },
   { id: 'col3', text: 'Column3' },
 ];
 
