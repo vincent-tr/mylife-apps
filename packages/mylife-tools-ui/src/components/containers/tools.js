@@ -12,6 +12,8 @@ const Box = React.forwardRef(({ stretch, className, children, ...props }, ref) =
   </div>
 ));
 
+Box.displayName = 'Box';
+
 Box.propTypes = {
   stretch: PropTypes.bool,
   className: PropTypes.string,
@@ -27,6 +29,8 @@ const Content = React.forwardRef(({ className, children, ...props }, ref) => (
     {children}
   </div>
 ));
+
+Content.displayName = 'Box';
 
 Content.propTypes = {
   className: PropTypes.string,
