@@ -52,6 +52,8 @@ MyLife Tools UI
     - datatype (ex: count qui est un entier positif)
     - rules (ex: required, upperBound(10) ) qui est implémenté en validators mais qui peut être géré sur la UI de l éditeur aussi
     - nom du field
+* buttons :
+  * toolbar
  * globalization
  * routing
  * images
