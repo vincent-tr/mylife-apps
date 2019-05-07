@@ -1,23 +1,22 @@
 'use strict';
 
 import React from 'react';
-import { components } from 'mylife-tools-ui';
-import { setView } from '../actions/view';
-import { getView } from '../selectors/view';
+import { components, modules } from 'mylife-tools-ui';
 import * as views from './views';
 import { createUseConnect } from 'react-use-redux';
 
 const useConnect = createUseConnect(
   (state) => {
-    const { meta } = views[getView(state)];
+    const id = modules.routing.getLocation(state).substr(1) || 'main';
+    const { meta } = views[id];
     return {
       viewName: meta.title,
       viewIcon: meta.icon
     };
   },
   (dispatch) => ({
-    menuClick : id => dispatch(setView(id)),
-    logoClick : () => dispatch(setView('main'))
+    menuClick : id => dispatch(modules.routing.push(`/${id}`)),
+    logoClick : () => dispatch(modules.routing.push('/'))
   })
 );
 
