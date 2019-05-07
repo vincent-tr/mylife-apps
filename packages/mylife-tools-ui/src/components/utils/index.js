@@ -1,4 +1,4 @@
 'use strict';
 
 export AutoSizer from 'react-virtualized-auto-sizer';
-export Measure from 'react-measure'
+export Measure from 'react-measure';
