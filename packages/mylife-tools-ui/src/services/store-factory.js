@@ -1,9 +1,7 @@
 'use strict';
 
 import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
-import promise                                                    from './middlewares/promise';
-import thunk                                                      from 'redux-thunk';
-import { createLogger }                                           from 'redux-logger';
+import builtinMiddlewares                                         from './middlewares';
 import builtinReducers                                            from '../reducers';
 import { STATE_PREFIX }                                           from '../constants/defines';
 
@@ -18,7 +16,7 @@ export function initStore(reducers, ...middlewares) {
       ...reducers
     }),
     composeEnhancers(
-      applyMiddleware(...middlewares, promise, thunk, createLogger())
+      applyMiddleware(...middlewares, ...builtinMiddlewares)
     )
   );
 }
