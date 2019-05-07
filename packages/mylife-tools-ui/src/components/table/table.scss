@@ -1,21 +1,24 @@
 @import '../base/base.scss';
 
 .table {
+  display: flex;
+  flex-direction: column;
 }
 
 .table-header {
-}
-
-.table-header-row {
+  flex: 0 0 auto;
+  display: flex;
 }
 
 .table-header-cell {
 }
 
 .table-body {
+  flex: 1 1 auto;
 }
 
 .table-row {
+  display: flex;
 }
 
 .table-cell {
