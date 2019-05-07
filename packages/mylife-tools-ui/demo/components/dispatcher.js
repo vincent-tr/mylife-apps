@@ -2,12 +2,12 @@
 
 import React from 'react';
 import * as views from './views';
-import { getView } from '../selectors/view';
+import { modules } from 'mylife-tools-ui';
 import { createUseConnect } from 'react-use-redux';
 
 const useConnect = createUseConnect(
   (state) => ({
-    id: getView(state),
+    id: modules.routing.getLocation(state).substr(1) || 'main',
   })
 );
 
