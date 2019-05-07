@@ -56,7 +56,7 @@ MyLife Tools UI
  * routing
  * images
    * trier le dossier images
- * charts
+ * charts : http://recharts.org/en-US/
  * packaging :
    * https://webpack.js.org/guides/author-libraries
    * https://webpack.js.org/guides/caching
