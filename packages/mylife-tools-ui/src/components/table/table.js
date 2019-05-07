@@ -15,7 +15,7 @@ const HeaderCell = ({ column }) => {
   }
 
   return (
-    <div className={classNames('table-header-cell', column.headerClassName)}>
+    <div className={classNames('table-header-cell', column.headerClassName)} style={getColumnStyle(column)}>
       {column.text}
     </div>
   );
@@ -46,7 +46,7 @@ const Cell = ({ column, row }) => {
   }
 
   return (
-    <div className={classNames('table-cell', column.className)}>
+    <div className={classNames('table-cell', column.className)} style={getColumnStyle(column)}>
       {value}
     </div>
   );
@@ -127,3 +127,7 @@ Table.defaultProps = {
 };
 
 export default Table;
+
+function getColumnStyle({ width = 1 }) {
+  return { flex: `${width} ${width} auto` };
+}

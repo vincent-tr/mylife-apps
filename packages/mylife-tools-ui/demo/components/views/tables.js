@@ -6,7 +6,7 @@ import { components } from 'mylife-tools-ui';
 const columns = [
   { id: 'col1', text: 'Column1' },
   { id: 'col2', text: 'Column2' },
-  { id: 'col3', text: 'Column3' },
+  { id: 'col3', text: 'Column3', width: 2 },
 ];
 
 const bigData = new Array(1000).fill().map((_, index) => ({
@@ -27,7 +27,7 @@ const Tables = () => {
         <span>Big data</span>
         <components.Editor type='boolean' value={big} onChange={setBig} />
       </components.Container>
-      <components.Table columns={columns} data={big ? bigData : smallData} stretch={false} style={{ flex: '1 1 auto', position: 'relative'}} />
+      <components.Table columns={columns} data={big ? bigData : smallData} stretch={false} style={{ flex: '1 1 auto', position: 'relative', margin: '1rem' }} />
     </components.Box>
   );
 };

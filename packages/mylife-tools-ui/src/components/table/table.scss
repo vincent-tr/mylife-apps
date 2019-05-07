@@ -1,8 +1,12 @@
 @import '../base/base.scss';
 
+$header-padding: 0.4rem;
+$cell-padding: 0.2rem;
+
 .table {
   display: flex;
   flex-direction: column;
+  border: $border-width $border-style $color-divider;
 }
 
 .table-header {
@@ -10,14 +14,25 @@
 
   display: flex;
   align-items: center;
+
+  border-bottom: $border-width $border-style $color-divider;
 }
 
 .table-header-cell {
-  flex: 1 1 auto;
+  &:not(:first-child) {
+    border-left: $border-width $border-style $color-divider;
+  }
+
+  padding: $header-padding $cell-padding;
+  font-weight: bold;
 }
 
 .table-body {
   flex: 1 1 auto;
+
+  & div:not(:first-child) .table-row {
+    border-top: $border-width $border-style $color-divider;
+  }
 }
 
 .table-row {
@@ -26,5 +41,9 @@
 }
 
 .table-cell {
-  flex: 1 1 auto;
+  &:not(:first-child) {
+    border-left: $border-width $border-style $color-divider;
+  }
+
+  padding: $cell-padding;
 }
