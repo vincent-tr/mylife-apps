@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { components } from 'mylife-tools-ui';
 
 const columns = [
@@ -9,16 +9,27 @@ const columns = [
   { id: 'col3', text: 'Column3' },
 ];
 
-const data = [
-  { col1: 'Cell11', col2: 'Cell12', col3: 'Cell13' },
-  { col1: 'Cell21', col2: 'Cell22', col3: 'Cell23' },
-  { col1: 'Cell31', col2: 'Cell32', col3: 'Cell33' },
-  { col1: 'Cell41', col2: 'Cell42', col3: 'Cell43' },
-];
+const bigData = new Array(1000).fill().map((_, index) => ({
+  col1: `Cell-${index}-1`, col2: `Cell-${index}-2`, col3: `Cell-${index}-3`
+}));
 
-const Tables = () => (
-  <components.Table columns={columns} data={data} />
-);
+const smallData = new Array(10).fill().map((_, index) => ({
+  col1: `Cell-${index}-1`, col2: `Cell-${index}-2`, col3: `Cell-${index}-3`
+}));
+
+const Tables = () => {
+  const [big, setBig] = useState(false);
+
+  return (
+    <components.Box style={{ display: 'flex', flexDirection: 'column' }}>
+      <components.Container stretch={false}>
+        <span>Big data</span>
+        <components.Editor type='boolean' value={big} onChange={setBig} />
+      </components.Container>
+      <components.Table columns={columns} data={big ? bigData : smallData} stretch={false} style={{ flex: '1 1 auto', position: 'relative'}} />
+    </components.Box>
+  );
+};
 
 Tables.meta = {
   menu: 'Components',

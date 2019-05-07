@@ -7,10 +7,13 @@
 
 .table-header {
   flex: 0 0 auto;
+
   display: flex;
+  align-items: center;
 }
 
 .table-header-cell {
+  flex: 1 1 auto;
 }
 
 .table-body {
@@ -19,7 +22,9 @@
 
 .table-row {
   display: flex;
+  align-items: center;
 }
 
 .table-cell {
+  flex: 1 1 auto;
 }

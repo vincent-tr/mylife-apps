@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FixedSizeList } from 'react-window';
 import { AutoSizer, Measure } from '../utils';
-import { Box } from '../containers/tools'; // TODO: should we publish it ?
+import { Box } from '../containers';
 
 import './table.scss';
 
@@ -25,8 +25,8 @@ HeaderCell.propTypes = {
   column: PropTypes.object.isRequired
 };
 
-const Header = ({ headerClassName, columns }) => (
-  <div className={classNames('table-header', headerClassName)}>
+const Header = ({ headerClassName, columns, width }) => (
+  <div style={{ width }} className={classNames('table-header', headerClassName)}>
     {columns.map(column => (
       <HeaderCell key={column.id} column={column} />
     ))}
@@ -35,7 +35,8 @@ const Header = ({ headerClassName, columns }) => (
 
 Header.propTypes = {
   headerClassName: PropTypes.string,
-  columns: PropTypes.array.isRequired
+  columns: PropTypes.array.isRequired,
+  width: PropTypes.number.isRequired
 };
 
 const Cell = ({ column, row }) => {
@@ -73,22 +74,26 @@ Row.propTypes = {
 };
 
 const Table = React.forwardRef(({ className, headerClassName, bodyClassName, rowClassName, columns, data, ...otherProps }, ref) => {
-  const [itemSize, setItemSize] = useState(1);
+  const [itemHeight, setItemHeight] = useState(1);
+  const [itemWidth, setItemWidth] = useState(1);
 
   const onRowMeasure=contentRect => {
-    const { height } = contentRect.bounds;
-    if(itemSize < height) {
-      setItemSize(height);
+    const { height, width } = contentRect.bounds;
+    if(itemHeight < height) {
+      setItemHeight(height);
+    }
+    if(itemWidth !== width) {
+      setItemWidth(width);
     }
   };
 
   return (
     <Box ref={ref} className={classNames('table', className)} {...otherProps}>
-      <Header headerClassName={headerClassName} columns={columns} />
+      <Header headerClassName={headerClassName} columns={columns} width={itemWidth}/>
       <div className={classNames('table-body', bodyClassName)}>
         <AutoSizer>
           {({ height, width }) => (
-            <FixedSizeList height={height} width={width} itemCount={data.length} itemSize={itemSize}>
+            <FixedSizeList height={height} width={width} itemCount={data.length} itemSize={itemHeight}>
               {({ index, style }) => (
                 <div style={style}>
                   <Measure bounds onResize={onRowMeasure}>
