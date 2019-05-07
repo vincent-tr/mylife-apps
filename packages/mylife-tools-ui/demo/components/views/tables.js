@@ -3,40 +3,21 @@
 import React from 'react';
 import { components } from 'mylife-tools-ui';
 
+const columns = [
+  { id: 'col1', text: 'Column1' },
+  { id: 'col2', text: 'Column2' },
+  { id: 'col3', text: 'Column3' },
+];
+
+const data = [
+  { col1: 'Cell11', col2: 'Cell12', col3: 'Cell13' },
+  { col1: 'Cell21', col2: 'Cell22', col3: 'Cell23' },
+  { col1: 'Cell31', col2: 'Cell32', col3: 'Cell33' },
+  { col1: 'Cell41', col2: 'Cell42', col3: 'Cell43' },
+];
+
 const Tables = () => (
-  <div>
-    <components.Table>
-      <components.TableHeader>
-        <components.TableHeaderRow>
-          <components.TableHeaderCell>Column1</components.TableHeaderCell>
-          <components.TableHeaderCell>Column2</components.TableHeaderCell>
-          <components.TableHeaderCell>Column3</components.TableHeaderCell>
-        </components.TableHeaderRow>
-      </components.TableHeader>
-      <components.TableBody>
-        <components.TableRow>
-          <components.TableCell>Cell11</components.TableCell>
-          <components.TableCell>Cell12</components.TableCell>
-          <components.TableCell>Cell13</components.TableCell>
-        </components.TableRow>
-        <components.TableRow>
-          <components.TableCell>Cell21</components.TableCell>
-          <components.TableCell>Cell22</components.TableCell>
-          <components.TableCell>Cell23</components.TableCell>
-        </components.TableRow>
-        <components.TableRow>
-          <components.TableCell>Cell31</components.TableCell>
-          <components.TableCell>Cell32</components.TableCell>
-          <components.TableCell>Cell33</components.TableCell>
-        </components.TableRow>
-        <components.TableRow>
-          <components.TableCell>Cell41</components.TableCell>
-          <components.TableCell>Cell42</components.TableCell>
-          <components.TableCell>Cell43</components.TableCell>
-        </components.TableRow>
-      </components.TableBody>
-    </components.Table>
-  </div>
+  <components.Table columns={columns} data={data} />
 );
 
 Tables.meta = {
