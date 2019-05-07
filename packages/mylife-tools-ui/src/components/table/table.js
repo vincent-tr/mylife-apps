@@ -128,6 +128,7 @@ Table.defaultProps = {
 
 export default Table;
 
-function getColumnStyle({ width = 1 }) {
-  return { flex: `${width} ${width} auto` };
+function getColumnStyle({ width }) {
+  const flex = width ? `0 0 ${width}` : '1 1 auto';
+  return { flex };
 }

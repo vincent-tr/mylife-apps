@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { components } from 'mylife-tools-ui';
 
 const columns = [
-  { id: 'col1', text: 'Column1' },
-  { id: 'col2', text: 'Column2' },
-  { id: 'col3', text: 'Column3', width: 2 },
+  { id: 'col1', text: 'Column1', width: '10%' },
+  { id: 'col2', text: 'Column2', width: '10%' },
+  { id: 'col3', text: 'Column3' },
 ];
 
 const bigData = new Array(1000).fill().map((_, index) => ({
