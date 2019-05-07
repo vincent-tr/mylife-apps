@@ -5,14 +5,13 @@ import actionTypes       from './action-types';
 
 const defaultState = {
   location : null,
-  action : null
 };
 
 export default handleActions({
 
   [actionTypes.LOCATION_CHANGE] : (state, action) => ({
     ...state,
-    ...action.payload
+    location: action.payload.location.pathname
   }),
 
 }, defaultState);
