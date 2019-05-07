@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/vincent-tr/mylife-tools-ui#readme",
   "dependencies": {
+    "history": "^4.9.0",
     "normalize.css": "^8.0.1",
     "react-dom": "^16.8.3",
     "react-icons": "^3.6.1",
@@ -27,6 +28,7 @@
     "react-modal": "^3.8.1",
     "react-portal": "^4.2.0",
     "react-responsive": "^6.1.1",
+    "react-router-dom": "^5.0.0",
     "react-scrollbar": "^0.5.4",
     "react-use-redux": "^0.1.4",
     "react-virtualized-auto-sizer": "^1.0.2",
