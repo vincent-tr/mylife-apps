@@ -61,3 +61,4 @@ MyLife Tools UI
    * https://webpack.js.org/guides/author-libraries
    * https://webpack.js.org/guides/caching
    * https://webpack.js.org/guides/asset-management/
+   * https://webpack.js.org/guides/tree-shaking/
