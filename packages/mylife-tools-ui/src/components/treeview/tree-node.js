@@ -37,7 +37,7 @@ TreeNode.propTypes = {
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
 };
 
-TreeNode.defaultPropTypes = {
+TreeNode.defaultProps = {
   enabled: true,
   active: false,
   expanded: true

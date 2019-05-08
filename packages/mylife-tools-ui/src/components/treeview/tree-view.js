@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TreeNode from './tree-node';
+import { Container } from '../containers';
 
 import './treeview.scss';
 
@@ -34,17 +35,18 @@ Node.propTypes = {
 };
 
 // Use TreeNode directly if more flexibility is needed
-const TreeView = ({ items, itemParser, value, onSelect, ...props }) => {
+const TreeView = ({ className, items, itemParser, value, onSelect, ...props }) => {
   return (
-    <div className='tree-view' {...props}>
+    <Container className={classNames('tree-view', className)} {...props}>
       {items.map(item => (
         <Node key={itemParser(item).id} item={item} itemParser={itemParser} value={value} onSelect={onSelect} />
       ))}
-    </div>
+    </Container>
   );
 };
 
 TreeView.propTypes = {
+  className: PropTypes.string,
   items: PropTypes.array,
   itemParser: PropTypes.func,
   value: PropTypes.any,

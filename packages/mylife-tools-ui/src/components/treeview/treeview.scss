@@ -1,6 +1,8 @@
 @import '../base/base.scss';
 
 .tree-view {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .tree-node-container {
