@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Portal} from 'react-portal';
+import { Portal } from 'react-portal';
 import PropTypes from 'prop-types';
 import { getNotifications } from '../selectors';
 import { notificationDismiss } from '../actions';
