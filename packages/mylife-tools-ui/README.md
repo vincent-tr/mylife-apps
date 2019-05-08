@@ -53,12 +53,12 @@ MyLife Tools UI
      - rules (ex: required, upperBound(10) ) qui est implémenté en validators mais qui peut être géré sur la UI de l éditeur aussi
      - nom du field
  * buttons :
-   * toolbar
+   * actionbar
  * globalization
- * routing
  * images
    * trier le dossier images
  * charts : http://recharts.org/en-US/
+ * DEMO: cleanup du state redux pour le routage mais trouver un autre exemple de state à mettre
  * packaging :
    * https://webpack.js.org/guides/author-libraries
    * https://webpack.js.org/guides/caching
