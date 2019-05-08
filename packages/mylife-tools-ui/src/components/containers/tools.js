@@ -30,7 +30,7 @@ const Content = React.forwardRef(({ className, children, ...props }, ref) => (
   </div>
 ));
 
-Content.displayName = 'Box';
+Content.displayName = 'Content';
 
 Content.propTypes = {
   className: PropTypes.string,
