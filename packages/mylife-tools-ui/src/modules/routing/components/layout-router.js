@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout } from '../../../components';
 import { useRoutingConnect } from './behaviors';
+import RouteView from './route-view';
 
 const defaultRouteData = { name: null, icon: null };
 
@@ -57,11 +58,9 @@ function mapMenu({ navigate, menu }) {
 function findRouteData(children) {
   const routeData = [];
   React.Children.forEach(children, (child) => {
-    if(!React.isValidElement(child)) {
+    if(!React.isValidElement(child) || child.type !== RouteView) {
       return;
     }
-
-    console.log(child);
 
     const { location, name, icon } = child.props;
     routeData.push({ location, name, icon });
