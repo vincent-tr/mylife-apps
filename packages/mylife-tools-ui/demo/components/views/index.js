@@ -6,3 +6,4 @@ export editors from './editors';
 export containers from './containers';
 export dialogs from './dialogs';
 export tables from './tables';
+export treeviews from './treeviews';
