@@ -3,19 +3,51 @@
 .tree-view {
   overflow-x: hidden;
   overflow-y: auto;
+
+  background-color: $color-background;
+  color: $color-primary;
 }
 
 .tree-node-container {
 }
 
 .tree-node-item {
+  display: flex;
+
+  &:disabled {
+    color: $color-primary-disabled;
+  }
 }
 
 .tree-node-arrow {
+  cursor: pointer;
+  margin-right: 6px;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &:after {
+    content: '▾';
+  }
+
+  &:not(.expanded) {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+
+  &:hover:not([disabled]) {
+    border-color: $color-secondary;
+    color: $color-secondary;
+  }
 }
 
 .tree-node-text {
 }
 
 .tree-node-children {
+  margin-left: 1rem;
 }

@@ -47,19 +47,19 @@ export default TreeNode;
 
 function prepareChildren(children) {
   const nodes = [];
-  const item = [];
+  let item;
 
   React.Children.forEach(children, child => {
     if(!React.isValidElement(child)) {
       return;
     }
 
-    if(child.type === TreeNode) {
-      nodes.push(child);
+    if(!item) {
+      item = child;
       return;
     }
 
-    item.push(child);
+    nodes.push(child);
   });
 
   return { nodes, item };
