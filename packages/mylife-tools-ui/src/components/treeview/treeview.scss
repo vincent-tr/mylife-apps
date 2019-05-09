@@ -13,6 +13,7 @@
 
 .tree-node-item {
   display: flex;
+  align-items: center;
 
   &:disabled {
     color: $color-primary-disabled;
@@ -20,32 +21,56 @@
 }
 
 .tree-node-arrow {
-  cursor: pointer;
-  margin-right: 6px;
+  margin-right: 0.3rem;
+  width: 1rem;
   display: inline-block;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 
-  &:after {
-    content: '▾';
-  }
+  &.expandable {
+    cursor: pointer;
 
-  &:not(.expanded) {
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-  }
+    &:after {
+      content: '▾';
+    }
 
-  &:hover:not([disabled]) {
-    border-color: $color-secondary;
-    color: $color-secondary;
+    &:not(.expanded) {
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+    }
+
+    &:hover:not(.disabled) {
+      border-color: $color-secondary;
+      color: $color-secondary;
+    }
   }
 }
 
 .tree-node-text {
+  padding: 0.2rem;
+
+  &.selectable {
+    cursor: pointer;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+
+  &.active {
+    color: $color-background;
+    background-color: $color-primary;
+
+    &:hover {
+      color: $color-background;
+      background-color: $color-secondary;
+    }
+  }
+
 }
 
 .tree-node-children {

@@ -17,7 +17,7 @@ const Node = ({ item, itemParser, value, onSelect }) => {
   const onClick = onSelect && (() => onSelect(id));
   return (
     <TreeNode active={active} expanded={expanded} onToggle={onToggle}>
-      <div onClick={onClick} className='tree-node-text'>
+      <div onClick={onClick} className={classNames('tree-node-text', { active, selectable: !!onClick })}>
         {text}
       </div>
       {items.map(item => (

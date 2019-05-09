@@ -12,7 +12,7 @@ const TreeNode = ({ containerClassName, arrowClassName, itemClassName, childrenC
     <div className={classNames('tree-node-container', containerClassName)} {...props}>
       <div className={classNames('tree-node-item', itemClassName)}>
         <div
-          className={classNames('tree-node-arrow', arrowClassName, { disabled: !enabled, expanded, active })}
+          className={classNames('tree-node-arrow', arrowClassName, { disabled: !enabled, expanded, active, expandable: !!nodes.length })}
           onClick={onToggle} />
         {item}
       </div>
