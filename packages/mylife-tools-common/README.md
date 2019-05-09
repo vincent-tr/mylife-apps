@@ -1,2 +1,2 @@
-# https-github.com-vincent-tr-mylife-tools-common
+# mylife-tools-common
 MyLife Tools Common
