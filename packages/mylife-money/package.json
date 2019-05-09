@@ -5,6 +5,12 @@
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-money",
   "author": "Vincent Trumpff",
+  "scripts": {
+    "lint": "eslint lib/* public/app/*",
+    "start-dev": "node bin/server.js --dev",
+    "start": "node bin/server.js",
+    "bundle": "webpack -d"
+  },
   "dependencies": {
     "async": "*",
     "babel-core": "^6.22.1",
@@ -50,6 +56,5 @@
     "eslint-plugin-react": "^6.7.1",
     "webpack-dev-middleware": "^1.9.0"
   },
-  "scripts": {},
   "license": "GPL-3.0+"
 }
