@@ -12,12 +12,12 @@ const webpackMiddleware = require('webpack-dev-middleware');
 const webpackConfig     = require('../webpack.config.dev.js');
 const createApi         = require('./api');
 
-const { logging, config, cli } = require('mylife-tools-server');
-const log = logging.createLogger('mylife:money:lib:server');
+const { createLogger, getConfig, getArg } = require('mylife-tools-server');
+const log = createLogger('mylife:money:lib:server');
 
 module.exports = class {
 
-  constructor({ conf = config.getConfig(), dev = cli.getArg('dev') } = {}) {
+  constructor({ config = getConfig(), dev = getArg('dev') } = {}) {
     const app = express();
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json({ limit: '100mb' }));
@@ -35,8 +35,8 @@ module.exports = class {
     this._server = http.Server(app);
     enableDestroy(this._server);
 
-    this._server.listen(conf.webServer);
-    log.info(`server created : ${JSON.stringify(conf.webServer)}`);
+    this._server.listen(config.webServer);
+    log.info(`server created : ${JSON.stringify(config.webServer)}`);
   }
 
   close(done) {
