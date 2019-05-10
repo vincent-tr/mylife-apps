@@ -12,9 +12,12 @@ const webpackMiddleware = require('webpack-dev-middleware');
 const webpackConfig     = require('../webpack.config.dev.js');
 const createApi         = require('./api');
 
+const { logging, config, cli } = require('mylife-tools-server');
+const log = logging.createLogger('mylife:money:lib:server');
+
 module.exports = class {
 
-  constructor(config, dev) {
+  constructor({ conf = config.getConfig(), dev = cli.getArg('dev') } = {}) {
     const app = express();
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json({ limit: '100mb' }));
@@ -22,7 +25,7 @@ module.exports = class {
     const publicDirectory = path.resolve(path.join(__dirname, '../public'));
 
     if(dev) {
-      console.log('setup webpack dev middleware'); // eslint-disable-line no-console
+      log.info('setup webpack dev middleware');
       app.use(webpackMiddleware(webpack(webpackConfig), { publicPath: webpackConfig.output.publicPath }));
     }
     app.use(favicon(path.join(publicDirectory, 'images/favicon.ico')));
@@ -32,10 +35,12 @@ module.exports = class {
     this._server = http.Server(app);
     enableDestroy(this._server);
 
-    this._server.listen(config.port);
+    this._server.listen(conf.webServer);
+    log.info(`server created : ${JSON.stringify(conf.webServer)}`);
   }
 
   close(done) {
+    log.info('server close');
     this._server.close(done);
     this._server.destroy();
   }

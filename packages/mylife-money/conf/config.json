@@ -1,4 +1,4 @@
 {
   "mongo": "mongodb://localhost:27017/mylife-money",
-  "port": 8003
+  "webServer": { "port": 8003 }
 }

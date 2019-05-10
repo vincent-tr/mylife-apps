@@ -1,11 +1,15 @@
 'use strict';
 
-const config = require('../conf/config');
+const path = require('path');
+const { init } = require('mylife-tools-server');
+
+init({
+  baseDirectory: path.resolve(__dirname, '..'),
+  applicationName: 'mylife-money'
+});
+
 const Server = require('../lib/server');
-
-const dev = process.argv.includes('--dev');
-
-const server = new Server(config, dev);
+const server = new Server();
 
 function terminate() {
   server.close(() => process.exit());
