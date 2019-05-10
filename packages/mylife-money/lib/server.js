@@ -17,7 +17,7 @@ const log = createLogger('mylife:money:lib:server');
 
 module.exports = class {
 
-  constructor({ config = getConfig(), dev = getArg('dev') } = {}) {
+  constructor({ config = getConfig('webServer'), dev = getArg('dev') } = {}) {
     const app = express();
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json({ limit: '100mb' }));
@@ -35,8 +35,8 @@ module.exports = class {
     this._server = http.Server(app);
     enableDestroy(this._server);
 
-    this._server.listen(config.webServer);
-    log.info(`server created : ${JSON.stringify(config.webServer)}`);
+    this._server.listen(config);
+    log.info(`server created : ${JSON.stringify(config)}`);
   }
 
   close(done) {
