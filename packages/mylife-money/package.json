@@ -7,9 +7,9 @@
   "author": "Vincent Trumpff",
   "scripts": {
     "lint": "eslint lib/* public/app/*",
-    "start:dev": "node bin/server.js --dev",
-    "start": "node bin/server.js",
-    "bundle": "webpack -d"
+    "start:dev": "./bin/server.js --dev",
+    "start": "./bin/server.js",
+    "build": "mylife-build"
   },
   "dependencies": {
     "async": "*",
