@@ -19,7 +19,7 @@ async function main() {
     const display = process.argv[3];
 
     if(!code || !display) {
-      console.log('Usage: node bin/createAccount <code> <display>');
+      console.log('Usage: bin/create-account <code> <display>');
       return;
     }
 
