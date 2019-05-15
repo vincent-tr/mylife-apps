@@ -6,8 +6,6 @@ const { operationsImport, executeRules } = require('./importer');
 const logger = createLogger('mylife:money:cli');
 
 exports.createAccount = async (code, display) => {
-  await initDatabase();
-
   const accounts = getDatabaseCollection('accounts');
 
   if(await accounts.findOne({ code }, { fields: { _id : 1 }})) {

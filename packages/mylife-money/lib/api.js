@@ -1,13 +1,12 @@
 'use strict';
 
-const { createLogger, initDatabase, getDatabaseCollection, dbObjects } = require('mylife-tools-server');
+const { createLogger, getDatabaseCollection, dbObjects } = require('mylife-tools-server');
 const { operationsImport, executeRules } = require('./importer');
 
 const { ObjectID } = dbObjects;
 const logger = createLogger('mylife:money:api');
 
 exports.createApi = async ({ app, express, apiHandler }) => {
-  await initDatabase();
 
   const router = express.Router();
   app.use('/api', router);
