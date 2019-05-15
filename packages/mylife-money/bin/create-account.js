@@ -4,7 +4,7 @@
 
 require('../lib/init');
 const { createLogger, runTask, Database } = require('mylife-tools-server');
-const { createAccount } = require('../lib/cli.js');
+const business = require('../lib/business');
 
 const logger = createLogger('mylife:money:create-account');
 
@@ -18,6 +18,6 @@ runTask({ services: [Database], task: async () => {
     return;
   }
 
-  await createAccount(code, display);
+  await business.createAccount(code, display);
   logger.info('Account successfully created');
 } });
