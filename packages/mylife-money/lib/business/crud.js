@@ -19,28 +19,28 @@ exports.createAccount = async (code, display) => {
   }
 
   const account = { code, display };
-
   await accounts.insertOne(account);
-
-  logger.info(`Account created: ${code}`);
 };
 
 exports.getGroups = async () => {
   const groups = getDatabaseCollection('groups');
   const records = await groups.find({});
-  return await records.toArray();s
+  return await records.toArray();
 };
 
 exports.createGroup = async group => {
+  group.parent = group.parent && new ObjectID(group.parent);
   const groups = getDatabaseCollection('groups');
-  return await groups.insertOne(group);
+  await groups.insertOne(group);
+  return group;
 };
 
 exports.updateGroup = async group => {
-  group._id = group.id;
+  group._id = new ObjectID(group.id);
+  group.parent = group.parent && new ObjectID(group.parent);
   delete group.id;
   const groups = getDatabaseCollection('groups');
-  await groups.updateOne({ _id: group._id }, group);
+  await groups.replaceOne({ _id: group._id }, group);
   return group;
 };
 
@@ -48,13 +48,13 @@ exports.deleteGroup = async id => {
   const groups = getDatabaseCollection('groups');
   const operations = getDatabaseCollection('operations');
 
-  const child = await groups.findOne({ parent: id });
+  const child = await groups.findOne({ parent: new ObjectID(id) });
   if(child) { throw new Error(`Cannot delete group '${id}' because it has children groups`); }
 
-  const operation = await operations.findOne({ group: id });
+  const operation = await operations.findOne({ group: new ObjectID(id) });
   if(operation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
 
-  return await groups.deleteOne({ _id: id });
+  return await groups.deleteOne({ _id: new ObjectID(id) });
 };
 
 exports.getOperations = async (minDate, maxDate, account) => {
