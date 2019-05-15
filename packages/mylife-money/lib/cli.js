@@ -7,19 +7,6 @@ const log4js   = require('log4js');
 const logger   = log4js.getLogger('mylife:money:cli');
 const { operationsImport, executeRules } = require('./importer');
 
-exports.operationsImport = async (accountCode, data) => {
-  const accounts   = getDatabaseCollection('accounts');
-
-  const account = await accounts.findOne({ code: accountCode }, { fields: { _id : 1 }});
-  if(!account) {
-    throw new Error(`Account not found: ${accountCode}`);
-  }
-
-  const ret = await operationsImport(account._id, data);
-  await executeRules();
-  return ret;
-};
-
 exports.createAccount = async (code, display) => {
   const accounts = getDatabaseCollection('accounts');
 
