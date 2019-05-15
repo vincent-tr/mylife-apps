@@ -63,8 +63,8 @@ exports.executeRules = async () => {
   const operationCollection = getDatabaseCollection('operations');
   const groupCollection = getDatabaseCollection('groups');
 
-  const operations = await operationCollection.find({ group : null });
-  const groups = await groupCollection.find({});
+  const operations = await(await operationCollection.find({ group : null })).toArray();
+  const groups = await(await groupCollection.find({})).toArray();
 
   const ruleExecutor = buildRulesExecutor(groups);
 
