@@ -72,12 +72,14 @@ exports.createApi = async ({ app, express, apiHandler }) => {
 
 async function getAccounts(done) {
   const accounts = getDatabaseCollection('accounts');
-  return await accounts.find({});
+  const records = await accounts.find({});
+  return await records.toArray();
 }
 
 async function getGroups(done) {
   const groups = getDatabaseCollection('groups');
-  return await groups.find({});
+  const records = await groups.find({});
+  return await records.toArray();
 }
 
 async function createGroup(group, done) {
@@ -120,7 +122,9 @@ async function getOperations(minDate, maxDate, account, done) {
   if(account) {
     criteria.account = { $eq: new ObjectID(account) };
   }
-  return await operations.find(criteria);
+
+  const records = await operations.find(criteria);
+  return await records.toArray();
 }
 
 async function operationsMove(groupId, operationIds, done) {
