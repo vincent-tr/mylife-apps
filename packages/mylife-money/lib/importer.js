@@ -2,101 +2,84 @@
 
 const csv    = require('csv-parse/lib/sync');
 const moment = require('moment');
-const monk   = require('monk');
-const config = require('../conf/config');
-const coMonk = require('co-monk');
-const co     = require('co');
-const log4js = require('log4js');
-const logger = log4js.getLogger('mylife:money:importer');
+const { createLogger, getDatabaseCollection, dbObjects } = require('mylife-tools-server');
+
+const { ObjectID } = dbObjects;
+const logger = createLogger('mylife:money:importer');
 
 const parseDate   = (input) => moment(input, 'DD/MM/YYYY').toDate();
 const parseNumber = (input) => parseFloat(input.replace(',','.'));
 
-module.exports.operationsImport = (account, data, done) => {
-  co(function*() {
-    const db = monk(config.mongo);
+exports.operationsImport = async (account, data) => {
 
-    const raw = csv(data, {
-      delimiter : ';',
-      columns   : ['operationDate', 'valueDate', 'debit', 'credit', 'label', 'balance'],
-      from      : 2 // skip headers
+  const raw = csv(data, {
+    delimiter : ';',
+    columns   : ['operationDate', 'valueDate', 'debit', 'credit', 'label', 'balance'],
+    from      : 2 // skip headers
+  });
+
+  const operations = getDatabaseCollection('operations');
+
+  let records = raw.map(r => ({
+    date    : parseDate(r.operationDate),
+    amount  : parseNumber(r.debit ? r.debit : r.credit),
+    label   : r.label,
+    account
+  }));
+
+  const lastOperation = await operations.findOne({}, { sort : { date : -1 }, fields: { date : 1 } });
+
+  if(lastOperation) {
+    // "merge" the day, then use all after
+    const lastOperationDate = lastOperation.date;
+    const lastDayOperations = await operations.find({ date: lastOperationDate });
+    const opHashSet = new Set(lastDayOperations.map(op => `${op.amout}|${op.account}|${op.label}`));
+
+    records = records.filter(rec => {
+      if(rec.date < lastOperationDate) {
+        return false;
+      }
+      if(rec.date > lastOperationDate) {
+        return true;
+      }
+
+      // lookup into lastDayOperations by amount/label/account
+      const recHash = `${rec.amout}|${rec.account}|${rec.label}`;
+      return !opHashSet.has(recHash);
     });
+  }
 
-    const operations = coMonk(db.get('operations'));
+  if(records.length) {
+    await operations.insert(records);
+  }
 
-    let records = raw.map(r => ({
-      date    : parseDate(r.operationDate),
-      amount  : parseNumber(r.debit ? r.debit : r.credit),
-      label   : r.label,
-      account
-    }));
-
-    const lastOperation = yield operations.findOne({}, { sort : { date : -1 }, fields: { date : 1 } });
-
-    if(lastOperation) {
-      // "merge" the day, then use all after
-      const lastOperationDate = lastOperation.date;
-      const lastDayOperations = yield operations.find({ date: lastOperationDate });
-      const opHashSet = new Set(lastDayOperations.map(op => `${op.amout}|${op.account}|${op.label}`));
-
-      records = records.filter(rec => {
-        if(rec.date < lastOperationDate) {
-          return false;
-        }
-        if(rec.date > lastOperationDate) {
-          return true;
-        }
-
-        // lookup into lastDayOperations by amount/label/account
-        const recHash = `${rec.amout}|${rec.account}|${rec.label}`;
-        return !opHashSet.has(recHash);
-      });
-    }
-
-    if(records.length) {
-      yield operations.insert(records);
-    }
-
-    logger.info(`Import done, ${records.length} operations added`);
-
-    db.close();
-
-    return records.length;
-
-  }).then((res) => done(null, res), (err) => done(err));
+  logger.info(`Import done, ${records.length} operations added`);
+  return records.length;
 };
 
-module.exports.executeRules = (done) => {
-  co(function*() {
+exports.executeRules = async () => {
+  logger.info('Executing rules');
 
-    logger.info('Executing rules');
+  const operationCollection = getDatabaseCollection('operations');
+  const groupCollection = getDatabaseCollection('groups');
 
-    const db = monk(config.mongo);
+  const operations = await operationCollection.find({ group : null });
+  const groups = await groupCollection.find({});
 
-    const operationCollection = coMonk(db.get('operations'));
-    const groupCollection = coMonk(db.get('groups'));
+  const ruleExecutor = buildRulesExecutor(groups);
 
-    const operations = yield operationCollection.find({ group : null });
-    const groups = yield groupCollection.find({});
+  let opCount = 0;
+  for(const operation of operations) {
+    const group = ruleExecutor(operation);
+    if(!group) { continue; }
+    logger.info(`Moving operation ${operation._id} to group ${group._id} (${group.display})`);
+    await operationCollection.update({ _id: operation._id}, { $set: { group: group._id } });
+    ++opCount;
+  }
 
-    const ruleExecutor = buildRulesExecutor(groups);
+  logger.info(`Execution done, moved ${opCount} operations`);
 
-    let opCount = 0;
-    for(const operation of operations) {
-      const group = ruleExecutor(operation);
-      if(!group) { continue; }
-      logger.info(`Moving operation ${operation._id} to group ${group._id} (${group.display})`);
-      yield operationCollection.update({ _id: operation._id}, { $set: { group: group._id } });
-      ++opCount;
-    }
-
-    logger.info(`Execution done, moved ${opCount} operations`);
-
-    db.close();
-
-    return opCount;
-
-  }).then((res) => done(null, res), (err) => done(err));
+  return opCount;
 };
 
 function buildRulesExecutor(groups) {

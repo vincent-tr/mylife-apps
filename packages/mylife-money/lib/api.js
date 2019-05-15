@@ -1,9 +1,10 @@
 'use strict';
 
 const { createLogger, initDatabase, getDatabaseCollection, dbObjects } = require('mylife-tools-server');
+const { operationsImport, executeRules } = require('./importer');
+
 const { ObjectID } = dbObjects;
 const logger = createLogger('mylife:money:api');
-const { operationsImport, executeRules } = require('./importer');
 
 exports.createApi = async ({ app, express, apiHandler }) => {
   await initDatabase();
@@ -29,13 +30,13 @@ exports.createApi = async ({ app, express, apiHandler }) => {
     const res = await updateGroup(group);
     logger.info(`group updated: ${JSON.stringify(res)}`);
     return res;
-  });
+  }));
 
   router.route('/group').delete(apiHandler(async ({ id }) => {
     const res = await deleteGroup(id);
     logger.info(`group deleted: ${id}`);
     return res;
-  });
+  }));
 
   router.route('/operations').get(apiHandler(async ({ minDate, maxDate, account }) => {
     return await getOperations(minDate, maxDate, account);

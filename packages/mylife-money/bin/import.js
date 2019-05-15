@@ -2,24 +2,28 @@
 
 'use strict';
 
-const monk                 = require('monk');
-const config               = require('../conf/config');
-const fs                   = require('fs');
-const log4js               = require('log4js');
-const logger               = log4js.getLogger('mylife:money:import');
+const fs = require('fs');
+require('../lib/init');
+const { createLogger, initDatabase } = require('mylife-tools-server');
 const { operationsImport } = require('../lib/cli.js');
 
-const account = process.argv[2];
-const file    = process.argv[3];
-const data    = fs.readFileSync(file);
-const db      = monk(config.mongo);
+const logger = createLogger('mylife:money:import');
 
-operationsImport(db, account, data, (err) => {
-  if(err) {
-    db.close();
-    return logger.error(err);
+main();
+
+async function main() {
+  try {
+    await initDatabase();
+
+    // TODO: rewrite with yargs
+    const account = process.argv[2];
+    const file    = process.argv[3];
+    const data    = fs.readFileSync(file);
+
+    await operationsImport(account, data);
+    logger.info('Import successfully executed');
+
+  } catch(err) {
+    logger.error(err.stack);
   }
-
-  logger.info("Import successfully executed");
-  db.close();
-});
+}
