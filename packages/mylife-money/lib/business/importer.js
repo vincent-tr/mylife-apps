@@ -32,7 +32,7 @@ exports.operationsImport = async (account, data) => {
   if(lastOperation) {
     // "merge" the day, then use all after
     const lastOperationDate = lastOperation.date;
-    const lastDayOperations = await operations.find({ date: lastOperationDate });
+    const lastDayOperations = await(await operations.find({ date: lastOperationDate })).toArray();
     const opHashSet = new Set(lastDayOperations.map(op => `${op.amout}|${op.account}|${op.label}`));
 
     records = records.filter(rec => {
