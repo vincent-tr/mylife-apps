@@ -50,7 +50,7 @@ exports.operationsImport = async (account, data) => {
   }
 
   if(records.length) {
-    await operations.insert(records);
+    await operations.insertMany(records);
   }
 
   logger.info(`Import done, ${records.length} operations added`);
@@ -73,7 +73,7 @@ exports.executeRules = async () => {
     const group = ruleExecutor(operation);
     if(!group) { continue; }
     logger.info(`Moving operation ${operation._id} to group ${group._id} (${group.display})`);
-    await operationCollection.update({ _id: operation._id}, { $set: { group: group._id } });
+    await operationCollection.updateOne({ _id: operation._id}, { $set: { group: group._id } });
     ++opCount;
   }
 

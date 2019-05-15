@@ -20,7 +20,7 @@ exports.createAccount = async (code, display) => {
 
   const account = { code, display };
 
-  await accounts.insert(account);
+  await accounts.insertOne(account);
 
   logger.info(`Account created: ${code}`);
 };
@@ -33,14 +33,14 @@ exports.getGroups = async () => {
 
 exports.createGroup = async group => {
   const groups = getDatabaseCollection('groups');
-  return await groups.insert(group);
+  return await groups.insertOne(group);
 };
 
 exports.updateGroup = async group => {
   group._id = group.id;
   delete group.id;
   const groups = getDatabaseCollection('groups');
-  await groups.update({ _id: group._id }, group);
+  await groups.updateOne({ _id: group._id }, group);
   return group;
 };
 
@@ -54,7 +54,7 @@ exports.deleteGroup = async id => {
   const operation = await operations.findOne({ group: id });
   if(operation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
 
-  return await groups.remove({ _id: id });
+  return await groups.deleteOne({ _id: id });
 };
 
 exports.getOperations = async (minDate, maxDate, account) => {
@@ -78,7 +78,7 @@ exports.getOperations = async (minDate, maxDate, account) => {
 
 exports.operationsMove = async (groupId, operationIds) => {
   const operations = getDatabaseCollection('operations');
-  return await operations.update(
+  return await operations.updateMany(
     { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
     { $set: { group: groupId ? new ObjectID(groupId) : null } },
     { multi: true }
@@ -87,7 +87,7 @@ exports.operationsMove = async (groupId, operationIds) => {
 
 exports.operationsSetNote = async (note, operationIds) => {
   const operations = getDatabaseCollection('operations');
-  return await operations.update(
+  return await operations.updateMany(
     { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
     { $set: { note: note ? note : null } },
     { multi: true }
