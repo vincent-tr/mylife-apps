@@ -12,11 +12,9 @@
     "build": "mylife-build"
   },
   "dependencies": {
-    "async": "*",
     "csv-parse": "^1.2.0",
     "immutable": "^3.8.1",
     "keymirror": "^0.1.1",
-    "log4js": "^1.1.0",
     "material-ui": "^0.16.7",
     "moment": "^2.17.1",
     "prop-types": "^15.5.8",
