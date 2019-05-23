@@ -9,12 +9,8 @@ const ConfirmDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation,*/ o
     <mui.Dialog
       title={options.title}
       actions={<div>
-                <mui.FlatButton
-                  label="Oui"
-                  onTouchTap={() => proceed()} />
-                <mui.FlatButton
-                  label="Non"
-                  onTouchTap={() => cancel()} />
+                <mui.Button onClick={() => proceed()}>Oui</mui.Button>
+                <mui.Button onClick={() => cancel()}>Non</mui.Button>
               </div>}
       modal={true}
       open={show}

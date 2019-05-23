@@ -27,12 +27,8 @@ class InputDialog extends React.Component {
         <mui.Dialog
           title={options.title}
           actions={<div>
-                    <mui.FlatButton
-                      label="OK"
-                      onTouchTap={() => proceed(text)} />
-                    <mui.FlatButton
-                      label="Annuler"
-                      onTouchTap={() => cancel()} />
+                    <mui.Button onClick={() => proceed(text)}>OK</mui.Button>
+                    <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
                   </div>}
           modal={true}
           open={show}

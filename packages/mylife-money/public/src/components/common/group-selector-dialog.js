@@ -11,9 +11,7 @@ const SelectorDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, op
       <mui.Dialog
         title={'selectionnez un groupe'}
         actions={<div>
-                  <mui.FlatButton
-                    label="Annuler"
-                    onTouchTap={() => cancel()} />
+                  <mui.Button onClick={() => cancel()} >Annuler</mui.Button>
                 </div>}
         modal={true}
         open={show}

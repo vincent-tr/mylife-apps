@@ -7,10 +7,7 @@ import * as mui from '@material-ui/core';
 const DialogError = ({ error, onClose }) => (
   <mui.Dialog
     title="Erreur !"
-    actions={<mui.FlatButton
-              label="OK"
-              primary={true}
-              onTouchTap={onClose} />}
+    actions={<mui.Button primary onClick={onClose} >OK</mui.Button>}
     modal={true}
     open={!!error}>
     <div style={{whiteSpace: 'pre'}}>

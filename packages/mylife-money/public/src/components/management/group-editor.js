@@ -166,12 +166,8 @@ class EditorDialog extends React.Component {
         <mui.Dialog
           title="Editer le groupe"
           actions={<div>
-                    <mui.FlatButton
-                      label="OK"
-                      onTouchTap={() => proceed({ group, rules })} />
-                    <mui.FlatButton
-                      label="Annuler"
-                      onTouchTap={() => cancel()} />
+                    <mui.Button onClick={() => proceed({ group, rules })}>OK</mui.Button>
+                    <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
                   </div>}
           modal={true}
           open={show}

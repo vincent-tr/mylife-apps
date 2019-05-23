@@ -17,7 +17,7 @@ const getStyle = (theme, selected) => {
 
 const GroupNode = ({ theme, level, selected, group, children, onSelect }) => (
   <mui.ListItem
-    onTouchTap={onSelect}
+    onClick={onSelect}
     style={getStyle(theme, selected)}
     primaryText={<div style={{textAlign: 'left'}}>{group.display}</div>}
     leftIcon={<icons.Group />}

@@ -10,7 +10,7 @@ import GroupSelectorNodeContainer from '../../containers/common/group-selector-n
 const GroupSelectorNode = ({ level, group, children, onSelect }) => {
   return (
   <mui.ListItem
-    onTouchTap={() => onSelect(group.id)}
+    onClick={() => onSelect(group.id)}
     primaryText={<div style={{textAlign: 'left'}}>{group.display}</div>}
     leftIcon={<icons.Group />}
     nestedItems={children.map((child) => (<GroupSelectorNodeContainer key={child.id} group={child} level={level+1} onSelect={onSelect} />))}

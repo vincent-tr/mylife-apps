@@ -7,10 +7,7 @@ import * as mui from '@material-ui/core';
 const DialogInfo = ({ info, onClose }) => (
   <mui.Dialog
     title="Information"
-    actions={<mui.FlatButton
-              label="OK"
-              primary={true}
-              onTouchTap={onClose} />}
+    actions={<mui.Button primary onClick={onClose}>OK</mui.Button>}
     modal={true}
     open={!!info}>
     <div style={{whiteSpace: 'pre'}}>
