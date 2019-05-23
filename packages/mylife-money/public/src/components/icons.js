@@ -9,6 +9,8 @@ import ModeComment from '@material-ui/icons/ModeComment';
 import Edit from '@material-ui/icons/Edit';
 import FolderOpen from '@material-ui/icons/FolderOpen';
 import Close from '@material-ui/icons/Close';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 export default {
 
@@ -29,4 +31,6 @@ export default {
 
   Account : AccountBalance,
   Group   : FolderOpen,
+
+  tree : { ExpandLess, ExpandMore  }
 };

@@ -40,7 +40,7 @@ function renderTabLabel(text, icon) {
 
 const MainTabs = ({ activeTab, onTabChanged }) => (
   <React.Fragment>
-    <mui.Tabs value={activeTab} onChange={onTabChanged}>
+    <mui.Tabs value={activeTab} onChange={(e, value) => onTabChanged(value)}>
       <mui.Tab value="management" label={renderTabLabel('Management', (<icons.tabs.Management />))} />
       <mui.Tab value="reporting" label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))} />
     </mui.Tabs>
