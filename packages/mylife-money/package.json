@@ -34,7 +34,6 @@
     "recharts": "^1.6.2",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
-    "redux-immutable-state-invariant": "^2.1.0",
     "redux-logger": "^3.0.6",
     "reselect": "^4.0.0",
     "superagent": "^5.0.5",
