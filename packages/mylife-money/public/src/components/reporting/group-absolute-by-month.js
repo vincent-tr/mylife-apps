@@ -137,7 +137,7 @@ class GroupAbsoluteByMonth extends React.Component {
     const onGroupDelete    = (index) => this.deleteGroup(index);
 
     const arrays = groups.map((group, index) => [
-      <mui.ToolbarSeparator key={`${index}-1`}/>,
+      /* <mui.ToolbarSeparator key={`${index}-1`}/>, */
       <GroupSelectorContainer key={`${index}-2`} value={group} onChange={(value) => onGroupChanged(index, value)} />,
       <mui.IconButton key={`${index}-3`} tooltip="Supprimer le groupe"
                       onClick={() => onGroupDelete(index)}
@@ -159,46 +159,44 @@ class GroupAbsoluteByMonth extends React.Component {
 
     return (
       <mui.Toolbar>
-        <mui.ToolbarGroup>
-          <p>Inverser montant</p>
-          <mui.Checkbox checked={reverse}
-                        onCheck={(evt, value) => onReverseChanged(value)} />
-        </mui.ToolbarGroup>
+        <p>Inverser montant</p>
+        <mui.Checkbox checked={reverse}
+                      onCheck={(evt, value) => onReverseChanged(value)} />
 
-        <mui.ToolbarGroup>
-          <p>Date début</p>
-          <mui.IconButton tooltip="Pas de date de début"
-                          onClick={() => onMinDateChanged(null)}
-                          style={styles.button}>
-            <icons.actions.Delete />
-          </mui.IconButton>
-          <DatePicker value={minDate} onChange={onMinDateChanged} />
-        </mui.ToolbarGroup>
+        {/* Separator */}
 
-        <mui.ToolbarGroup>
-          <p>Date fin</p>
-          <mui.IconButton tooltip="Pas de date de fin"
-                          onClick={() => onMaxDateChanged(null)}
-                          style={styles.button}>
-            <icons.actions.Delete />
-          </mui.IconButton>
-          <DatePicker value={maxDate} onChange={onMaxDateChanged} />
-        </mui.ToolbarGroup>
+        <p>Date début</p>
+        <mui.IconButton tooltip="Pas de date de début"
+                        onClick={() => onMinDateChanged(null)}
+                        style={styles.button}>
+          <icons.actions.Delete />
+        </mui.IconButton>
+        <DatePicker value={minDate} onChange={onMinDateChanged} />
 
-        <mui.ToolbarGroup>
-          <p>Compte</p>
-          <AccountSelectorContainer allowNull={true} value={account} onChange={onAccountChanged} width={200} />
-        </mui.ToolbarGroup>
+        {/* Separator */}
 
-        <mui.ToolbarGroup>
-          <p>Groupes</p>
-          <mui.IconButton tooltip="Ajouter un groupe"
-                          onClick={() => onGroupAdd()}
-                          style={styles.button}>
-            <icons.actions.New />
-          </mui.IconButton>
-          {this.renderGroups()}
-        </mui.ToolbarGroup>
+        <p>Date fin</p>
+        <mui.IconButton tooltip="Pas de date de fin"
+                        onClick={() => onMaxDateChanged(null)}
+                        style={styles.button}>
+          <icons.actions.Delete />
+        </mui.IconButton>
+        <DatePicker value={maxDate} onChange={onMaxDateChanged} />
+
+        {/* Separator */}
+
+        <p>Compte</p>
+        <AccountSelectorContainer allowNull={true} value={account} onChange={onAccountChanged} width={200} />
+
+        {/* Separator */}
+
+        <p>Groupes</p>
+        <mui.IconButton tooltip="Ajouter un groupe"
+                        onClick={() => onGroupAdd()}
+                        style={styles.button}>
+          <icons.actions.New />
+        </mui.IconButton>
+        {this.renderGroups()}
       </mui.Toolbar>
     );
   }

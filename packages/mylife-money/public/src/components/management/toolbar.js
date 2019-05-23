@@ -20,32 +20,30 @@ const styles = {
 
 const Toolbar = ({ group, onGroupCreate, onGroupEdit, onGroupDelete, canChange }) => (
   <mui.Toolbar>
-    <mui.ToolbarGroup>
 
-      <mui.IconButton tooltip="Créer un groupe enfant"
-                      tooltipPosition="top-right"
-                      onClick={onGroupCreate}
-                      style={styles.button}>
-        <icons.actions.New />
-      </mui.IconButton>
+    <mui.IconButton tooltip="Créer un groupe enfant"
+                    tooltipPosition="top-right"
+                    onClick={onGroupCreate}
+                    style={styles.button}>
+      <icons.actions.New />
+    </mui.IconButton>
 
-      <mui.IconButton tooltip="Editer le groupe"
-                      tooltipPosition="top-right"
-                      onClick={() => groupEditor(group, (err, group) => onGroupEdit(group))}
-                      disabled={!canChange}
-                      style={styles.button}>
-        <icons.actions.Edit />
-      </mui.IconButton>
+    <mui.IconButton tooltip="Editer le groupe"
+                    tooltipPosition="top-right"
+                    onClick={() => groupEditor(group, (err, group) => onGroupEdit(group))}
+                    disabled={!canChange}
+                    style={styles.button}>
+      <icons.actions.Edit />
+    </mui.IconButton>
 
-      <mui.IconButton tooltip="Supprimer le groupe"
-                      tooltipPosition="top-right"
-                      onClick={() => base.confirm({ lines: ['Supprimer le groupe ?'], proceed: onGroupDelete })}
-                      disabled={!canChange}
-                      style={styles.button}>
-        <icons.actions.Delete />
-      </mui.IconButton>
+    <mui.IconButton tooltip="Supprimer le groupe"
+                    tooltipPosition="top-right"
+                    onClick={() => base.confirm({ lines: ['Supprimer le groupe ?'], proceed: onGroupDelete })}
+                    disabled={!canChange}
+                    style={styles.button}>
+      <icons.actions.Delete />
+    </mui.IconButton>
 
-    </mui.ToolbarGroup>
   </mui.Toolbar>
 );
 
