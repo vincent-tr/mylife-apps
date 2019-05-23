@@ -181,13 +181,13 @@ class EditorDialog extends React.Component {
             />
             <fieldset>
               <legend>Règles</legend>
-                <mui.SelectField
+                <mui.Select
                   floatingLabelText="Règle"
                   id="selectedRule"
                   value={selectedRule}
                   onChange={(event, index, value) => this.setState({ selectedRule : value })}>
                     {rules.toArray().map(rule => (<mui.MenuItem key={rule.id} value={rule.id} primaryText={rule.name} />))}
-                </mui.SelectField>
+                </mui.Select>
                 <mui.IconButton tooltip="Ajouter une règle"
                                 onClick={() => this.addRule()}>
                   <icons.actions.New />
@@ -217,22 +217,22 @@ class EditorDialog extends React.Component {
                                 }
                 />))}
                 </mui.List>
-                <mui.SelectField
+                <mui.Select
                   floatingLabelText="Champ"
                   id="conditionField"
                   disabled={!rule}
                   value={conditionField}
                   onChange={(event, index, value) => this.setState({ conditionField: value })} >
                     {Object.keys(fields).map(field => (<mui.MenuItem key={field} value={field} primaryText={fields[field].display} />))}
-                </mui.SelectField>
-                <mui.SelectField
+                </mui.Select>
+                <mui.Select
                   floatingLabelText="Operateur"
                   id="conditionOperator"
                   disabled={!rule}
                   value={conditionOperator}
                   onChange={(event, index, value) => this.setState({ conditionOperator: value })} >
                     {Object.keys(operators).map(operator => (<mui.MenuItem key={operator} value={operator} primaryText={operators[operator].display} />))}
-                </mui.SelectField>
+                </mui.Select>
                 <mui.TextField
                   floatingLabelText="Valeur"
                   id="conditionValue"

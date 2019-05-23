@@ -12,9 +12,9 @@ function renderList(accounts, allowNull) {
 }
 
 const AccountSelector = ({ accounts, allowNull, value, onChange, ...props }) => (
-  <mui.SelectField value={value} onChange={(event, index, value) => onChange(value)} {...props}>
+  <mui.Select value={value} onChange={(event, index, value) => onChange(value)} {...props}>
     {renderList(accounts, allowNull)}
-  </mui.SelectField>
+  </mui.Select>
 );
 
 AccountSelector.propTypes = {

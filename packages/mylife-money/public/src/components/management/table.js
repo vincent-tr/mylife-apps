@@ -58,38 +58,36 @@ const Table = ({ onSelect, operations }) => {
   return (
     <div style={tabStyles.fullHeight}>
       <mui.Table height={'calc(100% - 57px)'} wrapperStyle={styles.tableWrapper} multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}>
-        <mui.TableHeader>
+        <mui.TableHead>
           <mui.TableRow>
-            <mui.TableHeaderColumn width={150}>Compte</mui.TableHeaderColumn>
-            <mui.TableHeaderColumn width={100}>Montant</mui.TableHeaderColumn>
-            <mui.TableHeaderColumn width={100}>Date</mui.TableHeaderColumn>
-            <mui.TableHeaderColumn>Libellé</mui.TableHeaderColumn>
-            <mui.TableHeaderColumn>Note</mui.TableHeaderColumn>
+            <mui.TableCell width={150}>Compte</mui.TableCell>
+            <mui.TableCell width={100}>Montant</mui.TableCell>
+            <mui.TableCell width={100}>Date</mui.TableCell>
+            <mui.TableCell>Libellé</mui.TableCell>
+            <mui.TableCell>Note</mui.TableCell>
           </mui.TableRow>
-        </mui.TableHeader>
+        </mui.TableHead>
         <mui.TableBody deselectOnClickaway={false} key={Math.random().toString()}> {/* FIXME: because selected is not usable without this horror https://github.com/callemall/material-ui/issues/6006 */}
           {operations.map(op => {
             const rowStyle = op.fromChildGroup ? styles.fromChild : styles.normal;
             const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
             return (
               <mui.TableRow key={op.operation.id} style={rowStyle} selected={op.selected}>
-                <mui.TableRowColumn width={150}>{op.account && op.account.display}</mui.TableRowColumn>
-                <mui.TableRowColumn width={100} style={amountStyle}>{op.operation.amount}</mui.TableRowColumn>
-                <mui.TableRowColumn width={100}>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableRowColumn>
-                <mui.TableRowColumn>{op.operation.label}</mui.TableRowColumn>
-                <mui.TableRowColumn>{op.operation.note}</mui.TableRowColumn>
+                <mui.TableCell width={150}>{op.account && op.account.display}</mui.TableCell>
+                <mui.TableCell width={100} style={amountStyle}>{op.operation.amount}</mui.TableCell>
+                <mui.TableCell width={100}>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableCell>
+                <mui.TableCell>{op.operation.label}</mui.TableCell>
+                <mui.TableCell>{op.operation.note}</mui.TableCell>
               </mui.TableRow>
             );
           })}
         </mui.TableBody>
       </mui.Table>
       <mui.Toolbar>
-        <mui.ToolbarGroup>
-          <p>Total</p>
-          <p style={Object.assign({}, styles.amountDebit, styles.total)}>{totalDebit}</p>
-          <p style={Object.assign({}, styles.amountCredit, styles.total)}>{totalCredit}</p>
-          <p style={Object.assign({}, styles.total)}>{total}</p>
-        </mui.ToolbarGroup>
+        <p>Total</p>
+        <p style={Object.assign({}, styles.amountDebit, styles.total)}>{totalDebit}</p>
+        <p style={Object.assign({}, styles.amountCredit, styles.total)}>{totalCredit}</p>
+        <p style={Object.assign({}, styles.total)}>{total}</p>
       </mui.Toolbar>
     </div>
   );

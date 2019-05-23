@@ -24,30 +24,40 @@ class Header extends React.Component {
     onImport(this.state.account, file);
   }
 
-  handleRequestChange(value) {
-    this.setState({ open: value });
+  handleClick = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
+  }
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
   }
 
   handleMenuClick(value) {
     this.handleRequestChange(false);
-    this.setState({ account: value });
+    this.setState({ account: value, anchorEl: null });
     this.fileInput.click();
   }
 
   render() {
     const { accounts, style } = this.props;
-    const { open } = this.state;
+    const { anchorEl } = this.state;
     return (
     <div>
-      <mui.IconMenu open={open}
-                    onRequestChange={(open) => this.handleRequestChange(open)}
-                    useLayerForClickAway={true}
-                    iconButtonElement={<mui.IconButton tooltip="Importer des opérations" style={style}><icons.actions.Import /></mui.IconButton>}>
+      <mui.IconButton
+        aria-owns={anchorEl ? 'simple-menu' : undefined}
+        aria-haspopup="true"
+        onClick={this.handleClick}
+        tooltip="Importer des opérations"
+        style={style}>
+        <icons.actions.Import />
+      </mui.IconButton>
+
+      <mui.Menu id="simple-menu" anchorEl={anchorEl} open={!!anchorEl} onClose={this.handleClose}>
         {accounts.map(account => (<mui.MenuItem key={account.id}
                                                 onClick={() => this.handleMenuClick(account.id)}
                                                 primaryText={account.display}
                                                 leftIcon={<icons.Account />} />))}
-      </mui.IconMenu>
+      </mui.Menu>
 
       <input
         ref={(input) => { this.fileInput = input; }}
