@@ -2,14 +2,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import base from '../base/index';
+import * as mui from '@material-ui/core';
 
 const ReportSelector = ({ value, onChange }) => (
-  <base.SelectableList selectedNode={{value}}
-            selectedValueChanged={(obj) => onChange(obj.value)}>
-    <base.SelectableListItem value={{ value: 'groupAbsoluteByMonth'}} primaryText="Montant par mois de groupes"/>
-    <base.SelectableListItem value={{ value: 'todo'}} primaryText="Report #2"/>
-  </base.SelectableList>
+  <mui.List component="nav">
+    <mui.ListItem button selected={value === 'groupAbsoluteByMonth'} onClick={() => onChange('groupAbsoluteByMonth')}>Montant par mois de groupes</mui.ListItem>
+    <mui.ListItem button selected={value === 'todo'} onClick={() => onChange('todo')}>Report #2</mui.ListItem>
+  </mui.List>
 );
 
 ReportSelector.propTypes = {

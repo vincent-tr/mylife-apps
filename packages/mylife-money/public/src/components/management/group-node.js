@@ -3,23 +3,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as muiColorManipulator from 'material-ui/utils/colorManipulator';
 import icons from '../icons';
 
+const { withTheme } = mui;
+
 import GroupNodeContainer from '../../containers/management/group-node-container';
 
-const getStyle = (muiTheme, selected) => {
+const getStyle = (theme, selected) => {
   if(!selected) { return {}; }
-  const textColor = muiTheme.palette.textColor;
+  const textColor = theme.palette.textColor;
   const backgroundColor = muiColorManipulator.fade(textColor, 0.2);
   return { backgroundColor };
 };
 
-const GroupNode = ({ muiTheme, level, selected, group, children, onSelect }) => (
+const GroupNode = ({ theme, level, selected, group, children, onSelect }) => (
   <mui.ListItem
     onTouchTap={onSelect}
-    style={getStyle(muiTheme, selected)}
+    style={getStyle(theme, selected)}
     primaryText={<div style={{textAlign: 'left'}}>{group.display}</div>}
     leftIcon={<icons.Group />}
     nestedItems={children.map((child) => (<GroupNodeContainer key={child.id} group={child} level={level+1} />))}
@@ -28,7 +29,7 @@ const GroupNode = ({ muiTheme, level, selected, group, children, onSelect }) => 
 );
 
 GroupNode.propTypes = {
-  muiTheme : PropTypes.object.isRequired,
+  theme    : PropTypes.object.isRequired,
   level    : PropTypes.number.isRequired,
   selected : PropTypes.bool.isRequired,
   group    : PropTypes.object.isRequired,
@@ -36,4 +37,4 @@ GroupNode.propTypes = {
   onSelect : PropTypes.func.isRequired
 };
 
-export default muiThemeable()(GroupNode);
+export default withTheme()(GroupNode);
