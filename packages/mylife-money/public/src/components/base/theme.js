@@ -2,14 +2,19 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as muiStyles from 'material-ui/styles/index';
+import { colors, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
-const theme = muiStyles.getMuiTheme(muiStyles.lightBaseTheme);
+const theme = createMuiTheme({
+  palette: {
+    primary: colors.blue,
+    secondary: colors.pink,
+  }
+});
 
 const Theme = (props) => (
-  <muiStyles.MuiThemeProvider muiTheme={theme}>
+  <MuiThemeProvider theme={theme}>
     { props.children }
-  </muiStyles.MuiThemeProvider>
+  </MuiThemeProvider>
 );
 
 Theme.propTypes = {
