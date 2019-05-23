@@ -3,7 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
-import * as muiColorManipulator from 'material-ui/utils/colorManipulator';
 import icons from '../icons';
 
 const { withTheme } = mui;
@@ -12,8 +11,7 @@ import GroupNodeContainer from '../../containers/management/group-node-container
 
 const getStyle = (theme, selected) => {
   if(!selected) { return {}; }
-  const textColor = theme.palette.textColor;
-  const backgroundColor = muiColorManipulator.fade(textColor, 0.2);
+  const backgroundColor = theme.palette.action.selected;
   return { backgroundColor };
 };
 

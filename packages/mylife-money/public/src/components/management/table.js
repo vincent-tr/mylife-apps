@@ -4,20 +4,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
 import tabStyles from '../base/tab-styles';
-import * as muiColors from 'material-ui/styles/colors';
 
 const styles = {
   tableWrapper: {
     height : 'calc(100% - 130px)',
   },
   amountDebit: {
-    backgroundColor: muiColors.red100
+    backgroundColor: mui.colors.red[100]
   },
   amountCredit: {
-    backgroundColor: muiColors.lightGreen100
+    backgroundColor: mui.colors.lightGreen[100]
   },
   fromChild: {
-    backgroundColor: muiColors.grey200
+    backgroundColor: mui.colors.grey[200]
   },
   normal: {
   },
