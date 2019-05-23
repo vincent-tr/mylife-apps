@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
+import { DatePicker } from '@material-ui/pickers';
 import icons from '../icons';
 import base from '../base/index';
 
@@ -15,9 +16,6 @@ const styles = {
     height: 56,
     width: 56,
     overflow: 'inherit'
-  },
-  date: {
-    width: 100
   }
 };
 
@@ -60,7 +58,7 @@ const Header = ({
                       style={styles.button}>
         <icons.actions.Delete />
       </mui.IconButton>
-      <mui.DatePicker id="minDate" value={minDate} onChange={(event, date) => onMinDateChanged(date)} textFieldStyle={styles.date} />
+      <DatePicker value={minDate} onChange={onMinDateChanged} />
     </mui.ToolbarGroup>
 
     <mui.ToolbarGroup>
@@ -70,7 +68,7 @@ const Header = ({
                       style={styles.button}>
         <icons.actions.Delete />
       </mui.IconButton>
-      <mui.DatePicker id="maxDate" value={maxDate} onChange={(event, date) => onMaxDateChanged(date)} textFieldStyle={styles.date} />
+      <DatePicker value={maxDate} onChange={onMaxDateChanged} />
     </mui.ToolbarGroup>
 
     <mui.ToolbarGroup>
