@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 import tabStyles from '../base/tab-styles';
 
 import GroupNodeContainer from '../../containers/management/group-node-container';

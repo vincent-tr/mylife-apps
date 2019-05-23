@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as muiColorManipulator from 'material-ui/utils/colorManipulator';
 

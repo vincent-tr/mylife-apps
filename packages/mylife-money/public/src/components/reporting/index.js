@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 
 import ReportSelector from './report-selector';
 import Details from './details';

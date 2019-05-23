@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 import Immutable from 'immutable';
 import { confirmable, createConfirmation } from 'react-confirm';
 import base from '../base/index';

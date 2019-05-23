@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 import icons from '../icons';
 
 class Header extends React.Component {

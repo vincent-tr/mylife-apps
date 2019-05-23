@@ -3,6 +3,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import 'typeface-roboto';
+import 'material-icons/iconfont/material-icons.css';
+
 import { getAccounts, getGroups } from './actions/common';
 import { getOperations } from './actions/management';
 import Application from './components/application';

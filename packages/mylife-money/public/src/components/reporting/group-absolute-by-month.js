@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 import * as chart from 'recharts';
 import icons from '../icons';
 import tabStyles from '../base/tab-styles';

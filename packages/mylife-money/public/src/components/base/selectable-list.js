@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 
 class SelectableList extends React.Component {
 

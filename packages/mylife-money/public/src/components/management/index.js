@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
+import * as mui from '@material-ui/core';
 
 import GroupTreeContainer from '../../containers/management/group-tree-container.js';
 import ToolbarContainer from '../../containers/management/toolbar-container.js';
