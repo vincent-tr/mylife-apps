@@ -5,28 +5,25 @@ import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
 import icons from '../icons';
 
-const { withTheme } = mui;
+const { withTheme, makeStyles } = mui;
 
 import GroupNodeContainer from '../../containers/management/group-node-container';
 
-const getStyle = (theme, selected) => {
-  const style = {
-    paddingLeft: theme.spacing(4)
-  };
-  if(selected) {
-    style.backgroundColor = theme.palette.action.selected;
-  }
-  return style;
-};
+const useStyles = makeStyles(theme => ({
+  listItem: props => ({
+    paddingLeft: theme.spacing(2 * (props.level + 1))
+  })
+}));
 
-const GroupNode = ({ theme, level, selected, group, children, onSelect }) => {
+const GroupNode = ({ level, selected, group, children, onSelect }) => {
   const [open, setOpen] = useState(true);
+  const classes = useStyles({ level });
   return (
     <React.Fragment>
-      <mui.ListItem button onClick={onSelect} style={getStyle(theme, selected)}>
+      <mui.ListItem button onClick={onSelect} className={classes.listItem} selected={selected}>
         <mui.ListItemIcon><icons.Group /></mui.ListItemIcon>
         <mui.ListItemText primary={group.display} />
-        <mui.IconButton onClick={() => setOpen(!open)}>
+        <mui.IconButton onClick={(e) => { e.stopPropagation(); setOpen(!open); } }>
           {open ? <icons.tree.ExpandLess /> : <icons.tree.ExpandMore />}
         </mui.IconButton>
       </mui.ListItem>
@@ -40,7 +37,6 @@ const GroupNode = ({ theme, level, selected, group, children, onSelect }) => {
 };
 
 GroupNode.propTypes = {
-  theme    : PropTypes.object.isRequired,
   level    : PropTypes.number.isRequired,
   selected : PropTypes.bool.isRequired,
   group    : PropTypes.object.isRequired,
