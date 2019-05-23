@@ -35,4 +35,4 @@ GroupNode.propTypes = {
   onSelect : PropTypes.func.isRequired
 };
 
-export default withTheme()(GroupNode);
+export default withTheme(GroupNode);

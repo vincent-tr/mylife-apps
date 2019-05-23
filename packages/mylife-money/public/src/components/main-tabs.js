@@ -39,20 +39,14 @@ function renderTabLabel(text, icon) {
 }
 
 const MainTabs = ({ activeTab, onTabChanged }) => (
-  <mui.Tabs value={activeTab}
-            onChange={onTabChanged}
-            style={styles.tabs}
-            contentContainerStyle={styles.tabContainer}
-            tabTemplate={base.TabTemplate}>
-    <mui.Tab value="management"
-             label={renderTabLabel('Management', (<icons.tabs.Management />))}>
-      <Management />
-    </mui.Tab>
-    <mui.Tab value="reporting"
-             label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))}>
-      <ReportingContainer />
-    </mui.Tab>
-  </mui.Tabs>
+  <React.Fragment>
+    <mui.Tabs value={activeTab} onChange={onTabChanged}>
+      <mui.Tab value="management" label={renderTabLabel('Management', (<icons.tabs.Management />))} />
+      <mui.Tab value="reporting" label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))} />
+    </mui.Tabs>
+    {activeTab === 'management' && <Management />}
+    {activeTab === 'reporting' && <ReportingContainer />}
+  </React.Fragment>
 );
 
 MainTabs.propTypes = {

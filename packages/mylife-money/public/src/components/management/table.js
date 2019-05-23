@@ -57,7 +57,7 @@ const Table = ({ onSelect, operations }) => {
   const { totalDebit, totalCredit, total } = summaries(operations);
   return (
     <div style={tabStyles.fullHeight}>
-      <mui.Table height={'calc(100% - 57px)'} wrapperStyle={styles.tableWrapper} multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}>
+      <mui.Table height={'calc(100% - 57px)'} multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}>
         <mui.TableHead>
           <mui.TableRow>
             <mui.TableCell width={150}>Compte</mui.TableCell>
@@ -67,7 +67,7 @@ const Table = ({ onSelect, operations }) => {
             <mui.TableCell>Note</mui.TableCell>
           </mui.TableRow>
         </mui.TableHead>
-        <mui.TableBody deselectOnClickaway={false} key={Math.random().toString()}> {/* FIXME: because selected is not usable without this horror https://github.com/callemall/material-ui/issues/6006 */}
+        <mui.TableBody>
           {operations.map(op => {
             const rowStyle = op.fromChildGroup ? styles.fromChild : styles.normal;
             const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;

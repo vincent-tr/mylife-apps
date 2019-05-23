@@ -31,13 +31,13 @@ const styles = {
 
 const Management = () => (
   <div style={styles.div}>
-    <mui.Paper zDepth={1} style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
+    <mui.Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <GroupTreeContainer />
         <ToolbarContainer />
       </div>
     </mui.Paper>
-    <mui.Paper zDepth={1} style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
+    <mui.Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <HeaderContainer />
         <TableContainer />
