@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
 import base from './base/index';
@@ -38,20 +38,18 @@ function renderTabLabel(text, icon) {
   );
 }
 
-const MainTabs = ({ activeTab, onTabChanged }) => (
-  <React.Fragment>
-    <mui.Tabs value={activeTab} onChange={(e, value) => onTabChanged(value)}>
-      <mui.Tab value="management" label={renderTabLabel('Management', (<icons.tabs.Management />))} />
-      <mui.Tab value="reporting" label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))} />
-    </mui.Tabs>
-    {activeTab === 'management' && <Management />}
-    {activeTab === 'reporting' && <ReportingContainer />}
-  </React.Fragment>
-);
-
-MainTabs.propTypes = {
-  activeTab: PropTypes.string.isRequired,
-  onTabChanged: PropTypes.func.isRequired
+const MainTabs = () => {
+  const [activeTab, onTabChanged] = useState('management');
+  return (
+    <React.Fragment>
+      <mui.Tabs value={activeTab} onChange={(e, value) => onTabChanged(value)}>
+        <mui.Tab value="management" label={renderTabLabel('Management', (<icons.tabs.Management />))} />
+        <mui.Tab value="reporting" label={renderTabLabel('Reporting', (<icons.tabs.Reporting />))} />
+      </mui.Tabs>
+      {activeTab === 'management' && <Management />}
+      {activeTab === 'reporting' && <ReportingContainer />}
+    </React.Fragment>
+  );
 };
 
 export default MainTabs;

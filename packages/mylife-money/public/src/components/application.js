@@ -20,29 +20,18 @@ const styles = {
   }
 };
 
-class Application extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = { tab: 'management' };
-  }
-
-  render() {
-    return (
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <base.Theme>
-          <base.StoreProvider>
-            <div style={styles.root}>
-              <MainTabs activeTab={this.state.tab} onTabChanged={(value) => this.setState({ tab: value })} />
-              <DialogErrorContainer />
-              <DialogInfoContainer />
-            </div>
-          </base.StoreProvider>
-        </base.Theme>
-      </MuiPickersUtilsProvider>
-    );
-  }
-}
+const Application = () => (
+  <MuiPickersUtilsProvider utils={MomentUtils}>
+    <base.Theme>
+      <base.StoreProvider>
+        <div style={styles.root}>
+          <MainTabs activeTab={this.state.tab} onTabChanged={(value) => this.setState({ tab: value })} />
+          <DialogErrorContainer />
+          <DialogInfoContainer />
+        </div>
+      </base.StoreProvider>
+    </base.Theme>
+  </MuiPickersUtilsProvider>
+);
 
 export default Application;
