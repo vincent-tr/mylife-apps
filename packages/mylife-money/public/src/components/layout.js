@@ -93,11 +93,11 @@ const Layout = () => {
           <Breadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />} classes={{ ol: classes.breadcrumbList }}>
             <Link color='inherit' component='button' variant='h6' className={classes.titleLink} onClick={() => console.log('click')} noWrap>
               <HomeIcon className={classes.titleIcon} />
-              MyLife Money
+              Money
             </Link>
             <Typography color='inherit' variant='h6' className={classes.titleLink} noWrap>
               <icons.tabs.Management className={classes.titleIcon} />
-              Management
+              Gestion
             </Typography>
           </Breadcrumbs>
         </Toolbar>
@@ -108,15 +108,15 @@ const Layout = () => {
         <List>
           <ListItem button>
             <ListItemIcon><icons.tabs.Management /></ListItemIcon>
-            <ListItemText primary="Management" />
+            <ListItemText primary="Gestion" />
           </ListItem>
           <ListItem button>
             <ListItemIcon><icons.tabs.Reporting /></ListItemIcon>
-            <ListItemText primary="Report 1" />
+            <ListItemText primary="Rapport 1" />
           </ListItem>
           <ListItem button>
             <ListItemIcon><icons.tabs.Reporting /></ListItemIcon>
-            <ListItemText primary="Report 2" />
+            <ListItemText primary="Rapport 2" />
           </ListItem>
         </List>
       </Drawer>
