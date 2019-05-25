@@ -3,11 +3,11 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles, AppBar, Toolbar, Typography, Drawer, IconButton, Divider, List, ListItem, ListItemIcon, ListItemText, Breadcrumbs, Link } from '@material-ui/core';
+import { makeStyles, AppBar, Toolbar, Typography, Drawer, IconButton, Divider, List, ListItem, ListItemIcon, ListItemText, Breadcrumbs, Link, Button } from '@material-ui/core';
 import icons from './icons';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import Management from './management/index';
 import ReportingContainer from '../containers/reporting/index-container';
@@ -18,14 +18,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
+  drawerHeader: {
     ...theme.mixins.toolbar,
   },
   appBar: {
@@ -105,17 +98,17 @@ const Layout = () => {
   const [menuOpen, setMenuOpen] = useState(true);
   return (
     <div className={classes.root}>
-      <AppBar position='absolute' className={clsx(classes.appBar, menuOpen && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton edge='start' color='inherit' aria-label='Open drawer' onClick={() => setMenuOpen(true)} className={clsx(classes.menuButton, menuOpen && classes.menuButtonHidden)}>
+      <AppBar position='absolute' className={classes.appBar}>
+        <Toolbar>
+          <IconButton edge='start' color='inherit' aria-label='Open drawer' onClick={() => setMenuOpen(!menuOpen)} className={classes.menuButton}>
             <MenuIcon />
           </IconButton>
-          <Breadcrumbs aria-label="Breadcrumb" variant="h5" color='inherit' >
-            <Link color='inherit' href='/' className={classes.titleLink} onClick={() => console.log('click')}>
+          <Breadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />}>
+            <Link color='inherit' component='button' variant='h6' className={classes.titleLink} onClick={() => console.log('click')}>
               <HomeIcon className={classes.titleIcon} />
               MyLife Money
             </Link>
-            <Typography color='inherit' className={classes.titleLink}>
+            <Typography color='inherit' variant='h6' className={classes.titleLink}>
               <icons.tabs.Management className={classes.titleIcon} />
               Management
             </Typography>
@@ -124,12 +117,7 @@ const Layout = () => {
       </AppBar>
 
       <Drawer variant='permanent' open={menuOpen} classes={{paper: clsx(classes.drawerPaper, !menuOpen && classes.drawerPaperClose)}}>
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={() => setMenuOpen(false)}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
+        <div className={classes.drawerHeader} />
         <List>
           <ListItem button>
             <ListItemIcon><icons.tabs.Management /></ListItemIcon>
