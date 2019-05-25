@@ -7,6 +7,7 @@ import MomentUtils from '@date-io/moment';
 
 import base from './base/index';
 import MainTabs from './main-tabs';
+import Layout from './layout';
 import DialogErrorContainer from '../containers/dialog-error-container';
 import DialogInfoContainer from '../containers/dialog-info-container';
 
@@ -25,7 +26,8 @@ const Application = () => (
     <base.Theme>
       <base.StoreProvider>
         <div style={styles.root}>
-          <MainTabs activeTab={this.state.tab} onTabChanged={(value) => this.setState({ tab: value })} />
+          <Layout />
+          {/* <MainTabs activeTab={this.state.tab} onTabChanged={(value) => this.setState({ tab: value })} /> */}
           <DialogErrorContainer />
           <DialogInfoContainer />
         </div>
