@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
+  breadcrumbList: {
+    flexWrap: 'nowrap'
+  },
   drawerHeader: {
     ...theme.mixins.toolbar,
   },
@@ -103,12 +106,12 @@ const Layout = () => {
           <IconButton edge='start' color='inherit' aria-label='Open drawer' onClick={() => setMenuOpen(!menuOpen)} className={classes.menuButton}>
             <MenuIcon />
           </IconButton>
-          <Breadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />}>
-            <Link color='inherit' component='button' variant='h6' className={classes.titleLink} onClick={() => console.log('click')}>
+          <Breadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />} classes={{ ol: classes.breadcrumbList }}>
+            <Link color='inherit' component='button' variant='h6' className={classes.titleLink} onClick={() => console.log('click')} noWrap>
               <HomeIcon className={classes.titleIcon} />
               MyLife Money
             </Link>
-            <Typography color='inherit' variant='h6' className={classes.titleLink}>
+            <Typography color='inherit' variant='h6' className={classes.titleLink} noWrap>
               <icons.tabs.Management className={classes.titleIcon} />
               Management
             </Typography>
