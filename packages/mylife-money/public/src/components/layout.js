@@ -25,25 +25,10 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+    zIndex: theme.zIndex.drawer + 1
   },
   menuButton: {
     marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
   },
   title: {
     flexGrow: 1,
@@ -65,7 +50,6 @@ const useStyles = makeStyles(theme => ({
     }),
     width: theme.spacing(7),
   },
-  appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: '100vh',
