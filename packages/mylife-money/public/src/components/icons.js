@@ -1,7 +1,8 @@
 'use strict';
 
 import AccountBalance from '@material-ui/icons/AccountBalance';
-import Timeline from '@material-ui/icons/Timeline';
+import FormatListBulleted from '@material-ui/icons/FormatListBulleted';
+import ShowChart from '@material-ui/icons/ShowChart';
 import OpenInBrowser from '@material-ui/icons/OpenInBrowser';
 import Settings from '@material-ui/icons/Settings';
 import AddCircle from '@material-ui/icons/AddCircle';
@@ -25,8 +26,8 @@ export default {
   },
 
   tabs: {
-    Management : AccountBalance,
-    Reporting  : Timeline
+    Management : FormatListBulleted,
+    Reporting  : ShowChart
   },
 
   Account : AccountBalance,
