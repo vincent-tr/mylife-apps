@@ -1,7 +1,7 @@
 # mylife-tools-ui
 MyLife Tools UI
 
-### Tips :
+## Tips :
 * Tout accessible en 3 clics
 
 ## react/redux notes
