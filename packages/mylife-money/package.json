@@ -9,7 +9,8 @@
     "lint": "eslint lib/* public/app/*",
     "start:dev": "./bin/server.js --dev",
     "start": "./bin/server.js",
-    "build": "mylife-build"
+    "build": "mylife-build",
+    "links:dev": "npm link mylife-tools-common && npm link mylife-tools-server && npm link mylife-tools-ui"
   },
   "dependencies": {
     "csv-parse": "^4.4.1",
