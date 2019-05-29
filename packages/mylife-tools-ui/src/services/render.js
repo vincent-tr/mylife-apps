@@ -2,23 +2,18 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Modal from 'react-modal';
 import { Application } from '../components/application';
 
-export function render(element, {
+export function render({
   containerId = 'content',
   container = document.getElementById(containerId),
   callback,
-  dialogs = true
+  ...props
 } = {}) {
 
   ReactDOM.render(
-    <Application dialogs={dialogs}>
-      {element}
-    </Application>,
+    <Application {...props} />,
     container,
     callback
   );
-
-  Modal.setAppElement(container);
 }
