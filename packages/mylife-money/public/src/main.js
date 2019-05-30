@@ -10,7 +10,11 @@ import { components, services } from 'mylife-tools-ui';
 import dataService from './services/data-service';
 import reducer from './reducers/index';
 
-const { React, SvgIcon } = components;
+const { React, SvgIcon, icons } = components;
+const {
+  FormatListBulleted: ManagementIcon,
+  ShowChart: ReportingIcon
+} = icons;
 
 services.initStore(reducer, dataService);
 
@@ -22,8 +26,11 @@ const MoneyIcon = (props) => (
 
 services.render({ routes: (
   <div />
-), appIcon: MoneyIcon,
-  appName: 'Money'
+),
+  appIcon: MoneyIcon,
+  appName: 'Money',
+  viewIcon: ManagementIcon,
+  viewName: 'Gestion',
 });
 
 store.dispatch(getAccounts());
