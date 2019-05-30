@@ -28,7 +28,7 @@ const Application = ({
       <StoreProvider>
         <React.Fragment>
           <Dialogs />
-          <Layout />
+          <Layout {...props}/>
           {/*
           <LayoutRouter {...props}>
             {routes}
