@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles, AppBar, Toolbar, Typography, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Breadcrumbs, Link, SvgIcon } from '@material-ui/core';
+import { makeStyles, AppBar, Toolbar, Typography, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Breadcrumbs, Link } from '@material-ui/core';
 import * as icons from '@material-ui/icons';
 
 const {
@@ -82,8 +82,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Layout = ({ appName, appIcon }) => {
+const Layout = ({ appName, appIcon, viewName, viewIcon }) => {
   const AppIcon = appIcon;
+  const ViewIcon = viewIcon;
   const classes = useStyles();
   const [menuOpen, setMenuOpen] = useState(true);
   return (
@@ -98,10 +99,12 @@ const Layout = ({ appName, appIcon }) => {
               <AppIcon className={classes.titleIcon} />
               {appName}
             </Link>
-            <Typography color='inherit' variant='h6' className={classes.titleLink} noWrap>
-              <ManagementIcon className={classes.titleIcon} />
-              Gestion
-            </Typography>
+            {viewName && (
+              <Typography color='inherit' variant='h6' className={classes.titleLink} noWrap>
+                <ViewIcon className={classes.titleIcon} />
+                {viewName}
+              </Typography>
+            )}
           </Breadcrumbs>
         </Toolbar>
       </AppBar>
@@ -131,7 +134,9 @@ const Layout = ({ appName, appIcon }) => {
 
 Layout.propTypes = {
   appName: PropTypes.string.isRequired,
-  appIcon: PropTypes.func.isRequired
+  appIcon: PropTypes.func.isRequired,
+  viewName: PropTypes.string,
+  viewIcon: PropTypes.func,
 };
 
 export default Layout;
