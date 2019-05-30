@@ -3,8 +3,12 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, AppBar, Toolbar, Typography, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Breadcrumbs, Link, SvgIcon } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import * as icons from '@material-ui/icons';
+
+const {
+  Menu: MenuIcon,
+  NavigateNext: NavigateNextIcon,
+} = icons;
 
 import ManagementIcon from '@material-ui/icons/FormatListBulleted';
 import ReportingIcon from '@material-ui/icons/ShowChart';
