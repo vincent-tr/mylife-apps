@@ -2,13 +2,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import Modal from 'react-modal';
-import KeyboardEventHandler from 'react-keyboard-event-handler';
+import clsx from 'clsx';
+//import Modal from 'react-modal';
 import StoreProvider from '../../../components/application/store-provider';
 import { Button } from '../../../components';
 
-import './dialog.scss';
+const Module = null; // TODO
 
 class Dialog extends React.Component {
 
@@ -47,23 +46,21 @@ class Dialog extends React.Component {
     }
 
     return (
-      <div className={classNames('actions', actionsClassName)}>
-        <KeyboardEventHandler handleKeys={keys} onKeyEvent={this.onKey}>
-          {actions.map(({ isDefault, shortcuts, closeValue, tabIndex, content, ...props }, index) => {
-            void shortcuts;
-            const finalIsDefault = isDefault || (!hasDefault && !index);
-            return (
-              <Button
-                key={index}
-                tabIndex={tabIndex || (index + 1)}
-                onClick={() => onClose(closeValue)}
-                ref={finalIsDefault && this.defaultRef}
-                {...props}>
-                {content}
-              </Button>
-            );
-          })}
-        </KeyboardEventHandler>
+      <div className={clsx('actions', actionsClassName)}>
+        {actions.map(({ isDefault, shortcuts, closeValue, tabIndex, content, ...props }, index) => {
+          void shortcuts;
+          const finalIsDefault = isDefault || (!hasDefault && !index);
+          return (
+            <Button
+              key={index}
+              tabIndex={tabIndex || (index + 1)}
+              onClick={() => onClose(closeValue)}
+              ref={finalIsDefault && this.defaultRef}
+              {...props}>
+              {content}
+            </Button>
+          );
+        })}
       </div>
     );
   }
@@ -79,7 +76,7 @@ class Dialog extends React.Component {
     }
 
     return (
-      <div className={classNames('title', titleClassName)}>
+      <div className={clsx('title', titleClassName)}>
         {title}
       </div>
     );
@@ -109,7 +106,7 @@ class Dialog extends React.Component {
 
             {this.renderTitle()}
 
-            <div className={classNames('content', className)}>
+            <div className={clsx('content', className)}>
               {children}
             </div>
 

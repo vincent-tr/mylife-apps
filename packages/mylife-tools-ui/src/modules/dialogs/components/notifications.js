@@ -8,8 +8,6 @@ import { notificationDismiss } from '../actions';
 import { Button } from '../../../components';
 import { createUseConnect } from 'react-use-redux';
 
-import './notifications.scss';
-
 const Notification = ({ message, header, type, onCloseClick }) => {
 
   if(typeof message === 'string') {
