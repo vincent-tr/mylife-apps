@@ -7,13 +7,8 @@ import { makeStyles, Drawer, List, ListItem, ListItemIcon, ListItemText } from '
 
 const drawerWidth = 240;
 
-import ManagementIcon from '@material-ui/icons/FormatListBulleted';
-import ReportingIcon from '@material-ui/icons/ShowChart';
-
 const useStyles = makeStyles(theme => ({
-  drawerHeader: {
-    ...theme.mixins.toolbar,
-  },
+  drawerHeader: theme.mixins.toolbar,
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
