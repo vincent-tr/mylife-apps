@@ -8,9 +8,6 @@ import { makeStyles, AppBar, Toolbar, Typography, Drawer, IconButton, List, List
 import Header from './header';
 import Menu from './menu';
 
-import ManagementIcon from '@material-ui/icons/FormatListBulleted';
-import ReportingIcon from '@material-ui/icons/ShowChart';
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
