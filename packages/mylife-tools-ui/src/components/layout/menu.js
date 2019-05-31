@@ -62,7 +62,7 @@ Menu.propTypes = {
     PropTypes.shape({
       id      : PropTypes.string.isRequired,
       text    : PropTypes.node.isRequired,
-      icon    : PropTypes.node,
+      icon    : PropTypes.elementType,
       onClick : PropTypes.func
     }).isRequired
   ),

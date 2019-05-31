@@ -73,11 +73,11 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, menu, child
 };
 
 Layout.propTypes = {
-  appName: PropTypes.string.isRequired,
-  appIcon: PropTypes.func.isRequired,
+  appName: Header.propTypes.appName,
+  appIcon: Header.propTypes.appIcon,
   onMainClick: PropTypes.func,
-  viewName: PropTypes.string,
-  viewIcon: PropTypes.func,
+  viewName: Header.propTypes.viewName,
+  viewIcon: Header.propTypes.viewIcon,
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
   menu: Menu.propTypes.items
 };

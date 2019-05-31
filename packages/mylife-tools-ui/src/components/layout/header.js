@@ -62,10 +62,10 @@ const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, onMenuButto
 
 Header.propTypes = {
   appName: PropTypes.string.isRequired,
-  appIcon: PropTypes.func.isRequired,
+  appIcon: PropTypes.elementType.isRequired,
   onMainClick: PropTypes.func,
   viewName: PropTypes.string,
-  viewIcon: PropTypes.func,
+  viewIcon: PropTypes.elementType,
   onMenuButtonClick: PropTypes.func
 };
 
