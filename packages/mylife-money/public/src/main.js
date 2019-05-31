@@ -24,13 +24,17 @@ const MoneyIcon = (props) => (
   </SvgIcon>
 );
 
-services.render({ routes: (
-  <div />
-),
+services.render({
+  routes: (<div />),
   appIcon: MoneyIcon,
   appName: 'Money',
   viewIcon: ManagementIcon,
   viewName: 'Gestion',
+  menu: [
+    { id: 'management', text: 'Gestion', icon: ManagementIcon },
+    { id: 'report1', text: 'Rapport 1', icon: ReportingIcon },
+    { id: 'report2', text: 'Rapport 2', icon: ReportingIcon },
+  ]
 });
 
 store.dispatch(getAccounts());
