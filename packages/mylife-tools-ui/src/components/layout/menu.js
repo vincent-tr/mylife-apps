@@ -40,18 +40,12 @@ const Menu = ({ items, open }) => {
     <Drawer variant='permanent' open={open} classes={{paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
       <div className={classes.drawerHeader} />
       <List>
-        <ListItem button>
-          <ListItemIcon><ManagementIcon /></ListItemIcon>
-          <ListItemText primary="Gestion" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon><ReportingIcon /></ListItemIcon>
-          <ListItemText primary="Rapport 1" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon><ReportingIcon /></ListItemIcon>
-          <ListItemText primary="Rapport 2" />
-        </ListItem>
+        {items.map(({ id, text, icon: Icon, onClick }) => (
+          <ListItem button key={id} onClick={onClick}>
+            <ListItemIcon><Icon /></ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
       </List>
     </Drawer>
   );
