@@ -10,6 +10,11 @@ import Menu from './menu';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1
