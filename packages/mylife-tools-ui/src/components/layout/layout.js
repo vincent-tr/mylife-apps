@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { makeStyles, AppBar, Toolbar, Typography, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Breadcrumbs, Link } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 import Header from './header';
 import Menu from './menu';
@@ -15,30 +14,11 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1
   },
-  menuButton: {
-    marginRight: theme.spacing(4),
-  },
-  title: {
-    flexGrow: 1,
-  },
   content: {
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
-  },
+  }
 }));
 
 const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, menu, children }) => {
