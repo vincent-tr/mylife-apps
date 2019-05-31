@@ -2,18 +2,60 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
+import { makeStyles, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
-const Menu = ({ items }) => (
-  <ul className='menu'>
-    {items.map(({ id, text, icon, onClick, type }) => (
-      <li key={id} onClick={onClick && (() => onClick(id))} className={classNames(type, { clickable: onClick })}>
-        {icon && <div className='icon'>{icon}</div>}
-        <div className='text'>{text}</div>
-      </li>
-    ))}
-  </ul>
-);
+const drawerWidth = 240;
+
+import ManagementIcon from '@material-ui/icons/FormatListBulleted';
+import ReportingIcon from '@material-ui/icons/ShowChart';
+
+const useStyles = makeStyles(theme => ({
+  drawerHeader: {
+    ...theme.mixins.toolbar,
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+  }
+}));
+
+const Menu = ({ items, open }) => {
+  const classes = useStyles();
+
+  return (
+    <Drawer variant='permanent' open={open} classes={{paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
+      <div className={classes.drawerHeader} />
+      <List>
+        <ListItem button>
+          <ListItemIcon><ManagementIcon /></ListItemIcon>
+          <ListItemText primary="Gestion" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon><ReportingIcon /></ListItemIcon>
+          <ListItemText primary="Rapport 1" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon><ReportingIcon /></ListItemIcon>
+          <ListItemText primary="Rapport 2" />
+        </ListItem>
+      </List>
+    </Drawer>
+  );
+};
 
 Menu.propTypes = {
   items: PropTypes.arrayOf(
@@ -21,10 +63,10 @@ Menu.propTypes = {
       id      : PropTypes.string.isRequired,
       text    : PropTypes.node.isRequired,
       icon    : PropTypes.node,
-      onClick : PropTypes.func,
-      type    : PropTypes.string.isRequired
+      onClick : PropTypes.func
     }).isRequired
-  ).isRequired
+  ),
+  open: PropTypes.bool.isRequired
 };
 
 export default Menu;
