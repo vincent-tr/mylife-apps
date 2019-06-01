@@ -15,6 +15,7 @@ export * as chart from 'recharts';
 
 export * from 'redux';
 export * from 'redux-actions';
+export * from 'reselect';
 
 export * from './components';
 export * as constants from './constants';
