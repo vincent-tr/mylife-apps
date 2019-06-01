@@ -2,7 +2,6 @@
 
 import { getAccounts, getGroups } from './actions/common';
 import { getOperations } from './actions/management';
-import Application from './components/application';
 
 import store from './services/store-factory';
 
@@ -27,29 +26,23 @@ const MoneyIcon = (props) => (
 );
 
 const routes = [
-  <RouteView key='home' location='/'>
-    Home
-  </RouteView>,
-  <RouteView key='management' location='/management' name='Gestion' icon={ManagementIcon}>
-    Gestion
-  </RouteView>,
-  <RouteView key='report1' location='/reports/1' name='Report1' icon={ReportingIcon}>
-    Report 1
-  </RouteView>,
-  <RouteView key='report2' location='/reports/2' name='Report2' icon={ReportingIcon}>
-    Report 2
-  </RouteView>,
+  { location: '/', renderer: () => 'Home' },
+  { location: '/management', name: 'Gestion', icon: ManagementIcon, renderer: () => 'Gestion' },
+  { location: '/reports/1', name: 'Rapport 1', icon: ReportingIcon, renderer: () => 'Report1' },
+  { location: '/reports/2', name: 'Rapport 2', icon: ReportingIcon, renderer: () => 'Report2' },
+];
+
+const menu = [
+  { id: 'management', text: 'Gestion', icon: ManagementIcon, location: '/management' },
+  { id: 'report1', text: 'Rapport 1', icon: ReportingIcon, location: '/reports/1' },
+  { id: 'report2', text: 'Rapport 2', icon: ReportingIcon, location: '/reports/2' },
 ];
 
 services.render({
-  routes,
   appIcon: MoneyIcon,
   appName: 'Money',
-  menu: [
-    { id: 'management', text: 'Gestion', icon: ManagementIcon, location: '/management' },
-    { id: 'report1', text: 'Rapport 1', icon: ReportingIcon, location: '/reports/1' },
-    { id: 'report2', text: 'Rapport 2', icon: ReportingIcon, location: '/reports/2' },
-  ]
+  routes,
+  menu
 });
 
 store.dispatch(getAccounts());
