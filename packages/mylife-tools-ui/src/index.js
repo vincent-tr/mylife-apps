@@ -11,7 +11,7 @@ export { default as clsx } from 'clsx';
 export * from '@material-ui/core';
 export * from '@material-ui/pickers';
 export * as icons from '@material-ui/icons';
-export * from 'recharts';
+export * as chart from 'recharts';
 
 export * from 'redux';
 export * from 'redux-actions';
