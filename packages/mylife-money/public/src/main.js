@@ -6,7 +6,7 @@ import Application from './components/application';
 
 import store from './services/store-factory';
 
-import { components, services } from 'mylife-tools-ui';
+import { components, services, routing } from 'mylife-tools-ui';
 import dataService from './services/data-service';
 import reducer from './reducers/index';
 
@@ -16,6 +16,8 @@ const {
   ShowChart: ReportingIcon
 } = icons;
 
+const { RouteView } = routing;
+
 services.initStore(reducer, dataService);
 
 const MoneyIcon = (props) => (
@@ -24,16 +26,29 @@ const MoneyIcon = (props) => (
   </SvgIcon>
 );
 
+const routes = [
+  <RouteView key='home' location='/'>
+    Home
+  </RouteView>,
+  <RouteView key='management' location='/management' name='Gestion' icon={ManagementIcon}>
+    Gestion
+  </RouteView>,
+  <RouteView key='report1' location='/reports/1' name='Report1' icon={ReportingIcon}>
+    Report 1
+  </RouteView>,
+  <RouteView key='report2' location='/reports/2' name='Report2' icon={ReportingIcon}>
+    Report 2
+  </RouteView>,
+];
+
 services.render({
-  routes: (<div />),
+  routes,
   appIcon: MoneyIcon,
   appName: 'Money',
-  viewIcon: ManagementIcon,
-  viewName: 'Gestion',
   menu: [
-    { id: 'management', text: 'Gestion', icon: ManagementIcon },
-    { id: 'report1', text: 'Rapport 1', icon: ReportingIcon },
-    { id: 'report2', text: 'Rapport 2', icon: ReportingIcon },
+    { id: 'management', text: 'Gestion', icon: ManagementIcon, location: '/management' },
+    { id: 'report1', text: 'Rapport 1', icon: ReportingIcon, location: '/reports/1' },
+    { id: 'report2', text: 'Rapport 2', icon: ReportingIcon, location: '/reports/2' },
   ]
 });
 
