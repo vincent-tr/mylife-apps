@@ -8,9 +8,7 @@ export * from 'react';
 export { default as PropTypes } from 'prop-types';
 export { default as clsx } from 'clsx';
 
-export * from '@material-ui/core';
-export * from '@material-ui/pickers';
-export * as icons from '@material-ui/icons';
+export * as mui from './mui-components';
 export * as chart from 'recharts';
 
 export * from 'redux';
