@@ -1,13 +1,14 @@
 'use strict';
 
-import { getAccounts, getGroups } from './actions/common';
-import { getOperations } from './actions/management';
-
-import store from './services/store-factory';
-
 import { components, services } from 'mylife-tools-ui';
 import dataService from './services/data-service';
 import reducer from './reducers/index';
+
+import { getAccounts, getGroups } from './actions/common';
+import { getOperations } from './actions/management';
+
+import Management from './components/management/index';
+import Reporting from './containers/reporting/index-container';
 
 const { React, SvgIcon, icons } = components;
 const {
@@ -25,8 +26,8 @@ const MoneyIcon = (props) => (
 
 const routes = [
   { location: '/', renderer: () => 'Home' },
-  { location: '/management', name: 'Gestion', icon: ManagementIcon, renderer: () => 'Gestion' },
-  { location: '/reports/1', name: 'Rapport 1', icon: ReportingIcon, renderer: () => 'Report1' },
+  { location: '/management', name: 'Gestion', icon: ManagementIcon, renderer: () => <Management /> },
+  { location: '/reports/1', name: 'Rapport 1', icon: ReportingIcon, renderer: () => <Reporting /> },
   { location: '/reports/2', name: 'Rapport 2', icon: ReportingIcon, renderer: () => 'Report2' },
 ];
 
@@ -42,6 +43,8 @@ services.render({
   routes,
   menu
 });
+
+const store = services.getStore();
 
 store.dispatch(getAccounts());
 store.dispatch(getGroups());

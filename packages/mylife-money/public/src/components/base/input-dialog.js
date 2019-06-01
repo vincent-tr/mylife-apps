@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
 import { confirmable, createConfirmation } from 'react-confirm';
-import base from '../base/index';
 
 class InputDialog extends React.Component {
 
@@ -23,24 +22,22 @@ class InputDialog extends React.Component {
     const { show, proceed, /*dismiss,*/ cancel, /*confirmation,*/ options } = this.props;
     const { text } = this.state;
     return (
-      <base.Theme>
-        <mui.Dialog
-          title={options.title}
-          actions={<div>
-                    <mui.Button onClick={() => proceed(text)}>OK</mui.Button>
-                    <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
-                  </div>}
-          modal={true}
-          open={show}
-          autoScrollBodyContent={true}>
-          <mui.TextField
-            floatingLabelText={options.label}
-            id="text"
-            value={text || ''}
-            onChange={(event) => this.setState({ text: event.target.value })}
-          />
-        </mui.Dialog>
-      </base.Theme>
+      <mui.Dialog
+        title={options.title}
+        actions={<div>
+                  <mui.Button onClick={() => proceed(text)}>OK</mui.Button>
+                  <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
+                </div>}
+        modal={true}
+        open={show}
+        autoScrollBodyContent={true}>
+        <mui.TextField
+          floatingLabelText={options.label}
+          id="text"
+          value={text || ''}
+          onChange={(event) => this.setState({ text: event.target.value })}
+        />
+      </mui.Dialog>
     );
   }
 }

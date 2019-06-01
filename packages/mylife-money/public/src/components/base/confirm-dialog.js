@@ -2,24 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
 import { confirmable, createConfirmation } from 'react-confirm';
-import Theme from './theme';
 
 const ConfirmDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation,*/ options }) => (
-  <Theme>
-    <mui.Dialog
-      title={options.title}
-      actions={<div>
-                <mui.Button onClick={() => proceed()}>Oui</mui.Button>
-                <mui.Button onClick={() => cancel()}>Non</mui.Button>
-              </div>}
-      modal={true}
-      open={show}
-      autoScrollBodyContent={true}>
-      <mui.List>
-        {options.lines.map(it => (<mui.ListItem key={it} primaryText={it} />))}
-      </mui.List>
-    </mui.Dialog>
-  </Theme>
+  <mui.Dialog
+    title={options.title}
+    actions={<div>
+              <mui.Button onClick={() => proceed()}>Oui</mui.Button>
+              <mui.Button onClick={() => cancel()}>Non</mui.Button>
+            </div>}
+    modal={true}
+    open={show}
+    autoScrollBodyContent={true}>
+    <mui.List>
+      {options.lines.map(it => (<mui.ListItem key={it} primaryText={it} />))}
+    </mui.List>
+  </mui.Dialog>
 );
 
 ConfirmDialog.propTypes = {
