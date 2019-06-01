@@ -8,8 +8,7 @@ import { colors, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
 import StoreProvider from './store-provider';
 import Dialogs from '../../modules/dialogs/components/dialogs';
-//import { LayoutRouter } from '../../modules/routing/components';
-import { Layout } from '../layout';
+import { LayoutRouter } from '../../modules/routing/components';
 
 const defaultThemeConfig = {
   palette: {
@@ -28,12 +27,9 @@ const Application = ({
       <StoreProvider>
         <React.Fragment>
           <Dialogs />
-          <Layout {...props}/>
-          {/*
           <LayoutRouter {...props}>
             {routes}
           </LayoutRouter>
-          */}
         </React.Fragment>
       </StoreProvider>
     </MuiThemeProvider>

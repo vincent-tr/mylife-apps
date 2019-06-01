@@ -17,7 +17,7 @@ const LayoutRouter = ({ children, menu, ...props }) => {
 
   return (
     <Layout
-      logoOnClick={() => navigate('/')}
+      onMainClick={() => navigate('/')}
       viewName={currentRoute.name}
       viewIcon={currentRoute.icon}
       menu={mappedMenu}
@@ -28,14 +28,13 @@ const LayoutRouter = ({ children, menu, ...props }) => {
 };
 
 LayoutRouter.propTypes = {
-  children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
+  children: Layout.propTypes.children,
   menu: PropTypes.arrayOf(
     PropTypes.shape({
       id       : PropTypes.string.isRequired,
-      text     : PropTypes.node.isRequired,
-      icon     : PropTypes.node,
-      location : PropTypes.string,
-      type     : PropTypes.string.isRequired
+      text     : PropTypes.string.isRequired,
+      icon     : PropTypes.elementType,
+      location : PropTypes.string
     }).isRequired
   )
 };

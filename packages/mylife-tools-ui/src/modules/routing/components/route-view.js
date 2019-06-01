@@ -12,9 +12,9 @@ const RouteView = ({ location, name, icon, children }) => {
 
 RouteView.propTypes = {
   location: PropTypes.string.isRequired,
-  //name: Layout.propTypes.viewName,
-  //icon: Layout.propTypes.viewIcon,
-  //children: Layout.propTypes.children
+  name: Layout.propTypes.viewName,
+  icon: Layout.propTypes.viewIcon,
+  children: Layout.propTypes.children
 };
 
 export default RouteView;
