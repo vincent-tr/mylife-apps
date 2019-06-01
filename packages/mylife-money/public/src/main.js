@@ -5,7 +5,7 @@ import { getOperations } from './actions/management';
 
 import store from './services/store-factory';
 
-import { components, services, routing } from 'mylife-tools-ui';
+import { components, services } from 'mylife-tools-ui';
 import dataService from './services/data-service';
 import reducer from './reducers/index';
 
@@ -14,8 +14,6 @@ const {
   FormatListBulleted: ManagementIcon,
   ShowChart: ReportingIcon
 } = icons;
-
-const { RouteView } = routing;
 
 services.initStore(reducer, dataService);
 
