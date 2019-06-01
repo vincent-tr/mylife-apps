@@ -1,8 +1,8 @@
 'use strict';
 
-import wrap from './constant-wrapper';
+import constants from 'mylife-tools-ui';
 
-export default wrap({
+export default constants.wrap({
   QUERY_ACCOUNTS                            : null,
   GET_ACCOUNTS                              : null,
   QUERY_GROUPS                              : null,
@@ -36,4 +36,3 @@ export default wrap({
   REPORTING_GET_OPERATIONS                     : null,
   REPORTING_RESET_OPERATIONS                   : null,
 });
-
