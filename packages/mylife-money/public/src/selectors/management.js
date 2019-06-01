@@ -1,6 +1,6 @@
 'use strict';
 
-import { createSelector } from 'reselect';
+import { createSelector } from 'mylife-tools-ui';
 
 export const getAllOperations        = (state) => state.management.operations.all.toArray();
 export const getVisibleOperationIds  = (state) => state.management.operations.visible.toArray();

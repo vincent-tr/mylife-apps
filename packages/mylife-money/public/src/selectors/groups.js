@@ -1,7 +1,7 @@
 'use strict';
 
 import Immutable from 'immutable';
-import { createSelector } from 'reselect';
+import { createSelector } from 'mylife-tools-ui';
 
 export const getGroups = (state) => state.groups.toArray();
 export const getGroup  = (state, { group }) => state.groups.get(group);
