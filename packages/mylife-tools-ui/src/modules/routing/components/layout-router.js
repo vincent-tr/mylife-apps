@@ -4,16 +4,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout } from '../../../components';
 import { useRoutingConnect } from './behaviors';
-import RouteView from './route-view';
 
 const defaultRouteData = { name: null, icon: null };
 
-const LayoutRouter = ({ children, menu, ...props }) => {
+const LayoutRouter = ({ routes, menu, ...props }) => {
   const { location, navigate } = useRoutingConnect();
 
   const mappedMenu = mapMenu({ navigate, menu });
-  const routeData = findRouteData(children);
-  const currentRoute = routeData.find(route => route.location === location) || defaultRouteData;
+  const currentRoute = routes.find(route => route.location === location) || defaultRouteData;
 
   return (
     <Layout
@@ -22,13 +20,12 @@ const LayoutRouter = ({ children, menu, ...props }) => {
       viewIcon={currentRoute.icon}
       menu={mappedMenu}
       {...props}>
-      {children}
+      {currentRoute.renderer()}
     </Layout>
   );
 };
 
 LayoutRouter.propTypes = {
-  children: Layout.propTypes.children,
   menu: PropTypes.arrayOf(
     PropTypes.shape({
       id       : PropTypes.string.isRequired,
@@ -36,7 +33,15 @@ LayoutRouter.propTypes = {
       icon     : PropTypes.elementType,
       location : PropTypes.string
     }).isRequired
-  )
+  ),
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      location: PropTypes.string.isRequired,
+      name: Layout.propTypes.viewName,
+      icon: Layout.propTypes.viewIcon,
+      renderer: PropTypes.func.isRequired
+    }).isRequired
+  ).isRequired
 };
 
 export default LayoutRouter;
@@ -52,17 +57,4 @@ function mapMenu({ navigate, menu }) {
       ... item
     };
   });
-}
-
-function findRouteData(children) {
-  const routeData = [];
-  React.Children.forEach(children, (child) => {
-    if(!React.isValidElement(child) || child.type !== RouteView) {
-      return;
-    }
-
-    const { location, name, icon } = child.props;
-    routeData.push({ location, name, icon });
-  });
-  return routeData;
 }

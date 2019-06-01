@@ -18,7 +18,6 @@ const defaultThemeConfig = {
 };
 
 const Application = ({
-  routes,
   theme = createMuiTheme(defaultThemeConfig),
   ...props
 } = {}) => (
@@ -27,9 +26,7 @@ const Application = ({
       <StoreProvider>
         <React.Fragment>
           <Dialogs />
-          <LayoutRouter {...props}>
-            {routes}
-          </LayoutRouter>
+          <LayoutRouter {...props} />
         </React.Fragment>
       </StoreProvider>
     </MuiThemeProvider>
