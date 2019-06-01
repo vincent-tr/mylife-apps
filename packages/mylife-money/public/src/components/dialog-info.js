@@ -2,7 +2,7 @@
 
 import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
-import * as mui from '@material-ui/core';
+import { mui } from 'mylife-tools-ui';
 
 const DialogInfo = ({ info, onClose }) => (
   <mui.Dialog

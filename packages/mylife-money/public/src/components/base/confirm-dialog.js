@@ -1,6 +1,6 @@
 import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
-import * as mui from '@material-ui/core';
+import { mui } from 'mylife-tools-ui';
 import { confirmable, createConfirmation } from 'react-confirm';
 
 const ConfirmDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation,*/ options }) => (

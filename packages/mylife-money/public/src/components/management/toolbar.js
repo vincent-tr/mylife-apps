@@ -2,7 +2,7 @@
 
 import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
-import * as mui from '@material-ui/core';
+import { mui } from 'mylife-tools-ui';
 import icons from '../icons';
 import base from '../base/index';
 import groupEditor from './group-editor';

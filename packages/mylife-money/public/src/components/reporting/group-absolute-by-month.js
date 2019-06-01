@@ -2,8 +2,7 @@
 
 import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
-import * as mui from '@material-ui/core';
-import { DatePicker } from '@material-ui/pickers';
+import { mui } from 'mylife-tools-ui';
 import { chart } from 'mylife-tools-ui';
 import icons from '../icons';
 import tabStyles from '../base/tab-styles';
@@ -171,7 +170,7 @@ class GroupAbsoluteByMonth extends React.Component {
                         style={styles.button}>
           <icons.actions.Delete />
         </mui.IconButton>
-        <DatePicker value={minDate} onChange={onMinDateChanged} />
+        <mui.DatePicker value={minDate} onChange={onMinDateChanged} />
 
         {/* Separator */}
 
@@ -181,7 +180,7 @@ class GroupAbsoluteByMonth extends React.Component {
                         style={styles.button}>
           <icons.actions.Delete />
         </mui.IconButton>
-        <DatePicker value={maxDate} onChange={onMaxDateChanged} />
+        <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} />
 
         {/* Separator */}
 

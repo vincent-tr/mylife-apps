@@ -2,7 +2,7 @@
 
 import { handleActions } from 'mylife-tools-ui';
 import { actionTypes } from '../constants/index';
-import Immutable from 'immutable';
+import { immutable } from 'mylife-tools-ui';
 
 export default handleActions({
   [actionTypes.MANAGEMENT_SET_MIN_DATE] : {
@@ -101,8 +101,8 @@ export default handleActions({
   account       : null,
   selectedGroup : null,
   operations    : {
-    all      : Immutable.Map(),
-    visible  : Immutable.Set(),
-    selected : Immutable.Set()
+    all      : new immutable.Map(),
+    visible  : new immutable.Set(),
+    selected : new immutable.Set()
   }
 });

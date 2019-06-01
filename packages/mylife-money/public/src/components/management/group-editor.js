@@ -1,7 +1,7 @@
 import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
-import * as mui from '@material-ui/core';
-import Immutable from 'immutable';
+import { mui } from 'mylife-tools-ui';
+import { immutable } from 'mylife-tools-ui';
 import { confirmable, createConfirmation } from 'react-confirm';
 import base from '../base/index';
 import icons from '../icons';
@@ -26,10 +26,10 @@ const fields = {
 
 function parseRules(raw) {
   if(!raw) {
-    return Immutable.Map();
+    return new immutable.Map();
   }
 
-  return Immutable.Map(raw.map(rawRule => {
+  return new immutable.Map(raw.map(rawRule => {
     const id = ++idCounter;
     return [ id, {
       ... rawRule,
@@ -41,10 +41,10 @@ function parseRules(raw) {
 
 function parseConditions(raw) {
   if(!raw) {
-    return Immutable.Map();
+    return new immutable.Map();
   }
 
-  return Immutable.Map(raw.map(rawCondition => {
+  return new immutable.Map(raw.map(rawCondition => {
     const id = ++idCounter;
     return [ id, {
       id,
@@ -105,7 +105,7 @@ class EditorDialog extends React.Component {
     const { rules } = this.state;
     const newRule   = {
       id         : ++idCounter,
-      conditions : Immutable.Map(),
+      conditions : new immutable.Map(),
       name       : 'newRule'
     };
 

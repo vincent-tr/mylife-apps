@@ -2,7 +2,7 @@
 
 import { handleActions } from 'mylife-tools-ui';
 import { actionTypes } from '../constants/index';
-import Immutable from 'immutable';
+import { immutable } from 'mylife-tools-ui';
 
 export default handleActions({
 
@@ -28,5 +28,5 @@ export default handleActions({
   },
 
 }, {
-  operations : Immutable.Map()
+  operations : new immutable.Map()
 });

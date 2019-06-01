@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import * as mui from '@material-ui/core';
+import { mui } from 'mylife-tools-ui';
 import icons from '../icons';
 
 const { withTheme, makeStyles } = mui;

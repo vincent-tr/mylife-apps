@@ -2,7 +2,7 @@
 
 import { handleActions } from 'mylife-tools-ui';
 import { actionTypes } from '../constants/index';
-import Immutable from 'immutable';
+import { immutable } from 'mylife-tools-ui';
 
 const setGroup = {
   next : (state, action) => {
@@ -39,4 +39,4 @@ export default handleActions({
     next : (state, action) => state.delete(action.payload)
   },
 
-}, Immutable.Map());
+}, new immutable.Map());
