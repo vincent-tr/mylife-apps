@@ -1,7 +1,6 @@
 'use strict';
 
-import React from 'react';
-import * as mui from '@material-ui/core';
+import { React, Paper } from 'mylife-tools-ui';
 
 import GroupTreeContainer from '../../containers/management/group-tree-container.js';
 import ToolbarContainer from '../../containers/management/toolbar-container.js';
@@ -31,22 +30,19 @@ const styles = {
 
 const Management = () => (
   <div style={styles.div}>
-    <mui.Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
+    <Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <GroupTreeContainer />
         <ToolbarContainer />
       </div>
-    </mui.Paper>
-    <mui.Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
+    </Paper>
+    <Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <HeaderContainer />
         <TableContainer />
       </div>
-    </mui.Paper>
+    </Paper>
   </div>
 );
-
-Management.propTypes = {
-};
 
 export default Management;

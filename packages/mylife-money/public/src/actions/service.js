@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction } from 'redux-actions';
+import { createAction } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { refresh, getOperations } from './management';
 import { showInfo } from './common';

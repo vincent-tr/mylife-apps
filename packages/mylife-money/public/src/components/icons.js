@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import { React } from 'mylife-tools-ui';
 import { SvgIcon } from '@material-ui/core';
 
 import AccountBalance from '@material-ui/icons/AccountBalance';

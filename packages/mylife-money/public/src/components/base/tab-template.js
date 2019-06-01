@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
 
 const baseStyle = {

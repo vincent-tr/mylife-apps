@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction } from 'redux-actions';
+import { createAction } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 
 export const getAccounts = createAction(actionTypes.QUERY_ACCOUNTS);

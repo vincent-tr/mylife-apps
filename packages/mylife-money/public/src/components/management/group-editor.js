@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
 import Immutable from 'immutable';

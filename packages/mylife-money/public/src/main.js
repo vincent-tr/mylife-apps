@@ -1,6 +1,6 @@
 'use strict';
 
-import { components, services } from 'mylife-tools-ui';
+import { React, SvgIcon, icons, services } from 'mylife-tools-ui';
 import dataService from './services/data-service';
 import reducer from './reducers/index';
 
@@ -10,7 +10,6 @@ import { getOperations } from './actions/management';
 import Management from './components/management/index';
 import Reporting from './containers/reporting/index-container';
 
-const { React, SvgIcon, icons } = components;
 const {
   FormatListBulleted: ManagementIcon,
   ShowChart: ReportingIcon

@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'mylife-tools-ui';
 
 import errors from './errors';
 import info from './info';

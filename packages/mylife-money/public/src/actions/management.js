@@ -2,7 +2,7 @@
 
 let groupIdCount = 0;
 
-import { createAction } from 'redux-actions';
+import { createAction } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { getGroupAndChildrenIds } from '../selectors/groups';
 import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
