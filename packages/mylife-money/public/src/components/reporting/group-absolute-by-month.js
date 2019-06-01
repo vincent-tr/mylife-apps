@@ -4,7 +4,7 @@ import { React } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
 import * as mui from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
-import * as chart from 'recharts';
+import { chart } from 'mylife-tools-ui';
 import icons from '../icons';
 import tabStyles from '../base/tab-styles';
 
