@@ -8,7 +8,7 @@ import { getAccounts, getGroups } from './actions/common';
 import { getOperations } from './actions/management';
 
 import Management from './components/management/index';
-import Reporting from './containers/reporting/index-container';
+// import Reporting from './containers/reporting/index-container';
 
 const {
   FormatListBulleted: ManagementIcon,
@@ -26,7 +26,7 @@ const MoneyIcon = (props) => (
 const routes = [
   { location: '/', renderer: () => 'Home' },
   { location: '/management', name: 'Gestion', icon: ManagementIcon, renderer: () => <Management /> },
-  { location: '/reports/1', name: 'Rapport 1', icon: ReportingIcon, renderer: () => <Reporting /> },
+  { location: '/reports/1', name: 'Rapport 1', icon: ReportingIcon, renderer: () =>'Report1' },
   { location: '/reports/2', name: 'Rapport 2', icon: ReportingIcon, renderer: () => 'Report2' },
 ];
 

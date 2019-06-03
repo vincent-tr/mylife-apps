@@ -3,8 +3,8 @@
 import { React, Paper } from 'mylife-tools-ui';
 
 import GroupTreeContainer from '../../containers/management/group-tree-container.js';
-import ToolbarContainer from '../../containers/management/toolbar-container.js';
-import HeaderContainer from '../../containers/management/header-container.js';
+import Toolbar from './toolbar';
+import Header from './header';
 import TableContainer from '../../containers/management/table-container.js';
 
 import tabStyles from '../base/tab-styles';
@@ -33,12 +33,12 @@ const Management = () => (
     <Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <GroupTreeContainer />
-        <ToolbarContainer />
+        <Toolbar />
       </div>
     </Paper>
     <Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
-        <HeaderContainer />
+        <Header />
         <TableContainer />
       </div>
     </Paper>

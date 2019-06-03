@@ -1,14 +1,39 @@
 'use strict';
 
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
+import { React, mui, createUseConnect } from 'mylife-tools-ui';
 import icons from '../icons';
 import base from '../base/index';
+import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
+import { getSelectedOperations, getSelectedGroupId } from '../../selectors/management';
+import { getAccounts } from '../../selectors/accounts';
 
-import AccountSelectorContainer from '../../containers/common/account-selector-container';
+import AccountSelector from '../common/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../common/group-selector-button';
+
+const useConnect = createUseConnect(
+  (state) => {
+    const selectedOperations = getSelectedOperations(state);
+    return {
+      showExecuteRules     : !getSelectedGroupId(state),
+      canProcessOperations : !!selectedOperations.length,
+      accounts             : getAccounts(state),
+      minDate              : state.management.minDate,
+      maxDate              : state.management.maxDate,
+      account              : state.management.account,
+      noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
+    };
+  },
+  (dispatch) => ({
+    onMinDateChanged         : (value) => dispatch(setMinDate(value)),
+    onMaxDateChanged         : (value) => dispatch(setMaxDate(value)),
+    onAccountChanged         : (value) => dispatch(setAccount(value)),
+    onOperationsImport       : (account, file) => dispatch(importOperations(account, file)),
+    onOperationsExecuteRules : () => dispatch(operationsExecuteRules()),
+    onOperationsSetNote      : (note) => dispatch(operationsSetNote(note)),
+    onOperationsMove         : (group) => dispatch(moveOperations(group))
+  })
+);
 
 const styles = {
   button: {
@@ -18,80 +43,67 @@ const styles = {
   }
 };
 
-const Header = ({
-  showExecuteRules, canProcessOperations,
-  accounts,
-  minDate, maxDate, account,
-  noteText,
-  onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
-}) => (
-  <mui.Toolbar>
-    <ImportButton accounts={accounts} onImport={onOperationsImport} style={styles.button} />
-    {showExecuteRules && (
-      <mui.IconButton onClick={onOperationsExecuteRules}
+const Header = () => {
+  const {
+    showExecuteRules, canProcessOperations,
+    accounts,
+    minDate, maxDate, account,
+    noteText,
+    onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
+  } = useConnect();
+
+  return (
+    <mui.Toolbar>
+      <ImportButton accounts={accounts} onImport={onOperationsImport} style={styles.button} />
+      {showExecuteRules && (
+        <mui.IconButton onClick={onOperationsExecuteRules}
+                        style={styles.button}
+                        tooltip="Executer les règles sur les opérations">
+          <icons.actions.Execute />
+        </mui.IconButton>
+      )}
+
+      <GroupSelectorButton onSelect={onOperationsMove}
+                      disabled={!canProcessOperations}
                       style={styles.button}
-                      tooltip="Executer les règles sur les opérations">
-        <icons.actions.Execute />
+                      tooltip="Déplacer">
+        <icons.actions.Move />
+      </GroupSelectorButton>
+
+      <mui.IconButton onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
+                      disabled={!canProcessOperations}
+                      style={styles.button}
+                      tooltip="Editer la note des opérations sélectionnées">
+        <icons.actions.Comment />
       </mui.IconButton>
-    )}
 
-    <GroupSelectorButton onSelect={onOperationsMove}
-                    disabled={!canProcessOperations}
-                    style={styles.button}
-                    tooltip="Déplacer">
-      <icons.actions.Move />
-    </GroupSelectorButton>
-
-    <mui.IconButton onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
-                    disabled={!canProcessOperations}
-                    style={styles.button}
-                    tooltip="Editer la note des opérations sélectionnées">
-      <icons.actions.Comment />
-    </mui.IconButton>
-
-    {/* Separator */}
+      {/* Separator */}
 
 
-    <p>Date début</p>
-    <mui.IconButton tooltip="Pas de date de début"
-                    onClick={() => onMinDateChanged(null)}
-                    style={styles.button}>
-      <icons.actions.Delete />
-    </mui.IconButton>
-    <mui.DatePicker value={minDate} onChange={onMinDateChanged} />
+      <p>Date début</p>
+      <mui.IconButton tooltip="Pas de date de début"
+                      onClick={() => onMinDateChanged(null)}
+                      style={styles.button}>
+        <icons.actions.Delete />
+      </mui.IconButton>
+      <mui.DatePicker value={minDate} onChange={onMinDateChanged} />
 
-    {/* Separator */}
+      {/* Separator */}
 
-    <p>Date fin</p>
-    <mui.IconButton tooltip="Pas de date de fin"
-                    onClick={() => onMaxDateChanged(null)}
-                    style={styles.button}>
-      <icons.actions.Delete />
-    </mui.IconButton>
-    <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} />
+      <p>Date fin</p>
+      <mui.IconButton tooltip="Pas de date de fin"
+                      onClick={() => onMaxDateChanged(null)}
+                      style={styles.button}>
+        <icons.actions.Delete />
+      </mui.IconButton>
+      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} />
 
-    {/* Separator */}
+      {/* Separator */}
 
-    <p>Compte</p>
-    <AccountSelectorContainer allowNull={true} value={account} onChange={onAccountChanged} width={200} />
-  </mui.Toolbar>
-);
-
-Header.propTypes = {
-  showExecuteRules         : PropTypes.bool.isRequired,
-  canProcessOperations     : PropTypes.bool.isRequired,
-  accounts                 : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  minDate                  : PropTypes.instanceOf(Date),
-  maxDate                  : PropTypes.instanceOf(Date),
-  account                  : PropTypes.string,
-  noteText                 : PropTypes.string,
-  onMinDateChanged         : PropTypes.func.isRequired,
-  onMaxDateChanged         : PropTypes.func.isRequired,
-  onAccountChanged         : PropTypes.func.isRequired,
-  onOperationsImport       : PropTypes.func.isRequired,
-  onOperationsExecuteRules : PropTypes.func.isRequired,
-  onOperationsSetNote      : PropTypes.func.isRequired,
-  onOperationsMove         : PropTypes.func.isRequired,
+      <p>Compte</p>
+      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} width={200} />
+    </mui.Toolbar>
+  );
 };
 
 export default Header;
