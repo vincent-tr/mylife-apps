@@ -12,7 +12,7 @@ export * from 'react-confirm';
 export * as mui from './mui-components';
 export * as chart from 'recharts';
 
-export { createUseConnect } from 'react-use-redux';
+export { useSelector, useDispatch } from 'react-redux';
 export { combineReducers } from 'redux';
 export * from 'redux-actions';
 export * from 'reselect';

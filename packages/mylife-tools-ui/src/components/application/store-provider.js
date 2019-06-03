@@ -3,12 +3,12 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
 import { getStore } from '../../services/store-factory';
-import { StoreContext } from 'react-use-redux';
+import { Provider } from 'react-redux';
 
 const StoreProvider = ({ children }) => (
-  <StoreContext.Provider value={getStore()}>
+  <Provider store={getStore()}>
     {children}
-  </StoreContext.Provider>
+  </Provider>
 );
 
 StoreProvider.propTypes = {
