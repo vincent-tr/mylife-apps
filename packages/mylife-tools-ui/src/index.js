@@ -7,6 +7,7 @@ export { default as React } from 'react';
 export * from 'react';
 export { default as PropTypes } from 'prop-types';
 export { default as clsx } from 'clsx';
+export * from 'react-confirm';
 
 export * as mui from './mui-components';
 export * as chart from 'recharts';
