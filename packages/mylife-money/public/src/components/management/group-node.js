@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useState, PropTypes, mui, createUseConnect } from 'mylife-tools-ui';
+import { React, useState, useMemo, PropTypes, mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
@@ -8,18 +8,19 @@ import { selectGroup } from '../../actions/management';
 
 const { withTheme, makeStyles } = mui;
 
-const useConnect = createUseConnect(
-  () => {
-    const getSortedChildren = makeGetSortedChildren();
-    return (state, props) => ({
-      selected : getSelectedGroupId(state) === props.group.id,
-      children : getSortedChildren(state, props)
-    });
-  },
-  (dispatch, props) => ({
-    onSelect : () => dispatch(selectGroup(props.group.id)),
-  })
-);
+const useConnect = ({ group }) => {
+  const getSortedChildren = useMemo(makeGetSortedChildren, []);
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => ({
+      selected : getSelectedGroupId(state) === group.id,
+      children : getSortedChildren(state, { group })
+    })),
+    ...useMemo(() => ({
+      onSelect : () => dispatch(selectGroup(group.id))
+    }), [dispatch, group])
+  };
+};
 
 const useStyles = makeStyles(theme => ({
   listItem: props => ({
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 const GroupNode = ({ level, group }) => {
   const [open, setOpen] = useState(true);
   const classes = useStyles({ level });
-  const { selected, children, onSelect } = useConnect();
+  const { selected, children, onSelect } = useConnect({ group });
   return (
     <React.Fragment>
       <mui.ListItem button onClick={onSelect} className={classes.listItem} selected={selected}>
