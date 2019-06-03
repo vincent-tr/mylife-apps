@@ -1,8 +1,4 @@
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
-import { immutable } from 'mylife-tools-ui';
-import { confirmable, createConfirmation } from 'react-confirm';
+import { React, PropTypes, mui, immutable, confirmable, createConfirmation } from 'mylife-tools-ui';
 import base from '../base/index';
 import icons from '../icons';
 

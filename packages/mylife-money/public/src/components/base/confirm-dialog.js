@@ -1,7 +1,4 @@
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
-import { confirmable, createConfirmation } from 'react-confirm';
+import { React, PropTypes, mui, confirmable, createConfirmation } from 'mylife-tools-ui';
 
 const ConfirmDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation,*/ options }) => (
   <mui.Dialog

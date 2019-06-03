@@ -1,8 +1,6 @@
 'use strict';
 
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
+import { React, useState, PropTypes, mui } from 'mylife-tools-ui';
 import icons from '../icons';
 
 const { withTheme, makeStyles } = mui;
