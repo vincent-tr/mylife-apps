@@ -5,7 +5,7 @@ import { React, Paper } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
 import Toolbar from './toolbar';
 import Header from './header';
-import TableContainer from '../../containers/management/table-container';
+import Table from './table';
 
 import tabStyles from '../base/tab-styles';
 
@@ -32,14 +32,14 @@ const Management = () => (
   <div style={styles.div}>
     <Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
-        <GroupTreeContainer />
+        <GroupTree />
         <Toolbar />
       </div>
     </Paper>
     <Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <Header />
-        <TableContainer />
+        <Table />
       </div>
     </Paper>
   </div>
