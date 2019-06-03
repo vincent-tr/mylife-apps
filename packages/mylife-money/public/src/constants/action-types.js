@@ -1,6 +1,6 @@
 'use strict';
 
-import constants from 'mylife-tools-ui';
+import { constants } from 'mylife-tools-ui';
 
 export default constants.wrap({
   QUERY_ACCOUNTS                            : null,

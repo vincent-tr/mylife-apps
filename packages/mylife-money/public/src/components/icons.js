@@ -2,7 +2,10 @@
 
 import { React, mui } from 'mylife-tools-ui';
 
-const { AccountBalance, FormatListBulleted, ShowChart,
+const {
+  AccountBalance,
+  FormatListBulleted,
+  ShowChart,
   OpenInBrowser,
   Settings,
   AddCircle,
