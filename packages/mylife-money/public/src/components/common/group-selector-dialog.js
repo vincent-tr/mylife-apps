@@ -1,6 +1,6 @@
 import { React, PropTypes, mui, confirmable, createConfirmation } from 'mylife-tools-ui';
 import base from '../base/index';
-import GroupSelectorTreeContainer from '../../containers/common/group-selector-tree-container.js';
+import GroupSelectorTree from './group-selector-tree';
 
 const SelectorDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ }) => (
   <base.Theme>

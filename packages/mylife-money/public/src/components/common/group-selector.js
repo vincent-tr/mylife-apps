@@ -1,10 +1,16 @@
 'use strict';
 
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
+import { React, PropTypes, createUseConnect } from 'mylife-tools-ui';
 import icons from '../icons';
+import { getGroup } from '../../selectors/groups';
 
 import GroupSelectorButton from './group-selector-button';
+
+const useConnect = createUseConnect(
+  (state, { value }) => ({
+    stack: getStack(state, value)
+  })
+);
 
 const styles = {
   button: {
@@ -33,29 +39,49 @@ const styles = {
   }
 };
 
-const GroupSelector = ({ stack, onChange, ...props }) => (
-  <div style={styles.mainWrapper} {...props}>
-    <GroupSelectorButton onSelect={onChange}
-                         style={styles.button}
-                         tooltip="Sélectionner">
-      <icons.actions.Move />
-    </GroupSelectorButton>
-    <div style={styles.nodeListContainer}>
-      {stack.map(node => (
-        <div style={styles.nodeContainer} key={node.id}>
-          <p style={styles.node}>
-            {node.display}
-          </p>
-        </div>
-      ))}
+const GroupSelector = ({ onChange, ...props }) => {
+  const { stack } = useConnect();
+  return (
+    <div style={styles.mainWrapper} {...props}>
+      <GroupSelectorButton onSelect={onChange}
+                           style={styles.button}
+                           tooltip="Sélectionner">
+        <icons.actions.Move />
+      </GroupSelectorButton>
+      <div style={styles.nodeListContainer}>
+        {stack.map(node => (
+          <div style={styles.nodeContainer} key={node.id}>
+            <p style={styles.node}>
+              {node.display}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+
+  );
+};
 
 GroupSelector.propTypes = {
-  stack     : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   value     : PropTypes.string,
   onChange  : PropTypes.func.isRequired,
 };
 
 export default GroupSelector;
+
+
+function getStack(state, value) {
+  if(!value) {
+    return [ getGroup(state, { group: value }) ]; // non tries
+  }
+
+  const ret = [];
+  while(value) {
+    const group = getGroup(state, { group: value });
+    ret.push(group);
+    value = group.parent;
+  }
+
+  ret.reverse();
+  return ret;
+}

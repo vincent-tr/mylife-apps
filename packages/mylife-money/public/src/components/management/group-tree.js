@@ -1,11 +1,19 @@
 'use strict';
 
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
+import { React, mui, createUseConnect } from 'mylife-tools-ui';
 import tabStyles from '../base/tab-styles';
+import { makeGetSortedChildren } from '../../selectors/groups';
 
-import GroupNodeContainer from '../../containers/management/group-node-container';
+import GroupNode from './group-node';
+
+const useConnect = createUseConnect(
+  () => {
+    const getSortedChildren = makeGetSortedChildren();
+    return (state) => ({
+      groups : getSortedChildren(state, {})
+    });
+  }
+);
 
 const styles = {
   tree: {
@@ -13,14 +21,13 @@ const styles = {
   }
 };
 
-const GroupTree = ({ groups }) => (
-  <mui.List style={Object.assign({}, styles.tree, tabStyles.scrollable)}>
-    {groups.map((group) => (<GroupNodeContainer key={group.id} group={group} level={0} />))}
-  </mui.List>
-);
-
-GroupTree.propTypes = {
-  groups: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+const GroupTree = () => {
+  const { groups } = useConnect();
+  return (
+    <mui.List style={Object.assign({}, styles.tree, tabStyles.scrollable)}>
+      {groups.map((group) => (<GroupNode key={group.id} group={group} level={0} />))}
+    </mui.List>
+  );
 };
 
 export default GroupTree;

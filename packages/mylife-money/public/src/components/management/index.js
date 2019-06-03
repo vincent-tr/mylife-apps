@@ -2,10 +2,10 @@
 
 import { React, Paper } from 'mylife-tools-ui';
 
-import GroupTreeContainer from '../../containers/management/group-tree-container.js';
+import GroupTree from './group-tree';
 import Toolbar from './toolbar';
 import Header from './header';
-import TableContainer from '../../containers/management/table-container.js';
+import TableContainer from '../../containers/management/table-container';
 
 import tabStyles from '../base/tab-styles';
 

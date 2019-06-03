@@ -1,9 +1,25 @@
 'use strict';
 
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
+import { React, mui, createUseConnect } from 'mylife-tools-ui';
 import tabStyles from '../base/tab-styles';
+
+const useConnect = createUseConnect(
+  (state) => {
+    const selectedGroup = getSelectedGroupId(state) || null;
+    const selectedOperationIds = getSelectedOperationIds(state);
+    return {
+      operations: getSortedVisibleOperations(state).map(operation => ({
+        operation,
+        account        : getAccount(state, operation),
+        fromChildGroup : (operation.group || null) !== selectedGroup,
+        selected       : selectedOperationIds.includes(operation.id)
+      }))
+    };
+  },
+  (dispatch) => ({
+    onSelect : (val) => dispatch(selectOperation(val)),
+  })
+);
 
 const styles = {
   tableWrapper: {
@@ -53,7 +69,8 @@ function summaries(operations) {
   };
 }
 
-const Table = ({ onSelect, operations }) => {
+const Table = () => {
+  const { onSelect, operations } = useConnect();
   const { totalDebit, totalCredit, total } = summaries(operations);
   return (
     <div style={tabStyles.fullHeight}>
@@ -91,11 +108,6 @@ const Table = ({ onSelect, operations }) => {
       </mui.Toolbar>
     </div>
   );
-};
-
-Table.propTypes = {
-  onSelect   : PropTypes.func.isRequired,
-  operations : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 };
 
 export default Table;

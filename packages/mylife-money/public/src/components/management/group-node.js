@@ -1,11 +1,25 @@
 'use strict';
 
-import { React, useState, PropTypes, mui } from 'mylife-tools-ui';
+import { React, useState, PropTypes, mui, createUseConnect } from 'mylife-tools-ui';
 import icons from '../icons';
+import { makeGetSortedChildren } from '../../selectors/groups';
+import { getSelectedGroupId } from '../../selectors/management';
+import { selectGroup } from '../../actions/management';
 
 const { withTheme, makeStyles } = mui;
 
-import GroupNodeContainer from '../../containers/management/group-node-container';
+const useConnect = createUseConnect(
+  () => {
+    const getSortedChildren = makeGetSortedChildren();
+    return (state, props) => ({
+      selected : getSelectedGroupId(state) === props.group.id,
+      children : getSortedChildren(state, props)
+    });
+  },
+  (dispatch, props) => ({
+    onSelect : () => dispatch(selectGroup(props.group.id)),
+  })
+);
 
 const useStyles = makeStyles(theme => ({
   listItem: props => ({
@@ -13,9 +27,10 @@ const useStyles = makeStyles(theme => ({
   })
 }));
 
-const GroupNode = ({ level, selected, group, children, onSelect }) => {
+const GroupNode = ({ level, group }) => {
   const [open, setOpen] = useState(true);
   const classes = useStyles({ level });
+  const { selected, children, onSelect } = useConnect();
   return (
     <React.Fragment>
       <mui.ListItem button onClick={onSelect} className={classes.listItem} selected={selected}>
@@ -27,7 +42,7 @@ const GroupNode = ({ level, selected, group, children, onSelect }) => {
       </mui.ListItem>
       <mui.Collapse in={open} timeout="auto" unmountOnExit>
        <mui.List component="div" disablePadding>
-         {children.map((child) => (<GroupNodeContainer key={child.id} group={child} level={level+1} />))}
+         {children.map((child) => (<GroupNode key={child.id} group={child} level={level+1} />))}
        </mui.List>
      </mui.Collapse>
     </React.Fragment>
@@ -35,11 +50,8 @@ const GroupNode = ({ level, selected, group, children, onSelect }) => {
 };
 
 GroupNode.propTypes = {
-  level    : PropTypes.number.isRequired,
-  selected : PropTypes.bool.isRequired,
-  group    : PropTypes.object.isRequired,
-  children : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  onSelect : PropTypes.func.isRequired
+  level : PropTypes.number.isRequired,
+  group : PropTypes.object.isRequired,
 };
 
 export default withTheme(GroupNode);
