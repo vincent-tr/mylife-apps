@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, Paper } from 'mylife-tools-ui';
+import { React, mui } from 'mylife-tools-ui';
 
 import GroupTree from './group-tree';
 import Toolbar from './toolbar';
@@ -30,18 +30,18 @@ const styles = {
 
 const Management = () => (
   <div style={styles.div}>
-    <Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
+    <mui.Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <GroupTree />
         <Toolbar />
       </div>
-    </Paper>
-    <Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
+    </mui.Paper>
+    <mui.Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
       <div style={tabStyles.fullHeight}>
         <Header />
         <Table />
       </div>
-    </Paper>
+    </mui.Paper>
   </div>
 );
 
