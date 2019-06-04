@@ -3,7 +3,7 @@
 import { immutable } from 'mylife-tools-ui';
 import { createSelector } from 'mylife-tools-ui';
 
-export const getGroups = (state) => state.groups.toArray();
+export const getGroups = (state) => state.groups.valueSeq().toArray();
 export const getGroup  = (state, { group }) => state.groups.get(group);
 
 export const getChildren = (state, props) => {
@@ -18,7 +18,7 @@ export const getChildren = (state, props) => {
 
 export const makeGetSortedChildren = () => createSelector(
   [ getChildren ],
-  (groups) => groups.sortBy(it => it.display).toArray()
+  (groups) => groups.valueSeq().sortBy(it => it.display).toArray()
 );
 
 export const getGroupAndChildrenIds = (state, props) => {

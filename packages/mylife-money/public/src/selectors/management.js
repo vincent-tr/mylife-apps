@@ -2,10 +2,10 @@
 
 import { createSelector } from 'mylife-tools-ui';
 
-export const getAllOperations        = (state) => state.management.operations.all.toArray();
-export const getVisibleOperationIds  = (state) => state.management.operations.visible.toArray();
+export const getAllOperations        = (state) => state.management.operations.all.valueSeq().toArray();
+export const getVisibleOperationIds  = (state) => state.management.operations.visible.valueSeq().toArray();
 export const getVisibleOperations    = (state) => getVisibleOperationIds(state).map(id => state.management.operations.all.get(id));
-export const getSelectedOperationIds = (state) => state.management.operations.selected.toArray();
+export const getSelectedOperationIds = (state) => state.management.operations.selected.valueSeq().toArray();
 export const getSelectedOperations   = (state) => getSelectedOperationIds(state).map(id => state.management.operations.all.get(id));
 export const getSelectedGroupId      = (state) => state.management.selectedGroup;
 
