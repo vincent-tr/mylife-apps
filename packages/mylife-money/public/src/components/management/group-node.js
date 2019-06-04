@@ -42,10 +42,10 @@ const GroupNode = ({ level, group }) => {
         </mui.IconButton>
       </mui.ListItem>
       <mui.Collapse in={open} timeout="auto" unmountOnExit>
-       <mui.List component="div" disablePadding>
-         {children.map((child) => (<GroupNode key={child.id} group={child} level={level+1} />))}
-       </mui.List>
-     </mui.Collapse>
+        <mui.List component="div" disablePadding>
+          {children.map((child) => (<GroupNode key={child.id} group={child} level={level+1} />))}
+        </mui.List>
+      </mui.Collapse>
     </React.Fragment>
   );
 };

@@ -7,13 +7,15 @@ const SelectorDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, op
     <base.StoreProvider>
       <mui.Dialog
         title={'selectionnez un groupe'}
-        actions={<div>
-                  <mui.Button onClick={() => cancel()} >Annuler</mui.Button>
-                </div>}
+        actions={
+          <div>
+            <mui.Button onClick={() => cancel()} >Annuler</mui.Button>
+          </div>
+        }
         modal={true}
         open={show}
         autoScrollBodyContent={true}>
-        <GroupSelectorTreeContainer onSelect={proceed} />
+        <GroupSelectorTree onSelect={proceed} />
       </mui.Dialog>
     </base.StoreProvider>
   </base.Theme>

@@ -43,9 +43,7 @@ const GroupSelector = ({ onChange, value, ...props }) => {
   const { stack } = useConnect({ value });
   return (
     <div style={styles.mainWrapper} {...props}>
-      <GroupSelectorButton onSelect={onChange}
-                           style={styles.button}
-                           tooltip="Sélectionner">
+      <GroupSelectorButton onSelect={onChange} style={styles.button} tooltip="Sélectionner">
         <icons.actions.Move />
       </GroupSelectorButton>
       <div style={styles.nodeListContainer}>
