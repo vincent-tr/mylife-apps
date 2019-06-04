@@ -38,3 +38,6 @@ jspm_packages
 
 # webpack bundle
 public/bundle.js*
+
+#mongo dump
+dump
