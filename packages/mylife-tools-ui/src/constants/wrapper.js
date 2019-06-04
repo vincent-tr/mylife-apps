@@ -10,6 +10,9 @@ const proxyHandler = {
 };
 
 export default function(target, prefix = '') {
+  if(prefix) {
+    prefix = prefix + ':';
+  }
   const obj = {};
   for(const [ key, value ] of Object.entries(target)) {
     const symbol = Symbol(prefix + (value || key));
