@@ -5,6 +5,7 @@ import { React, mui } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
 import Toolbar from './toolbar';
 import Header from './header';
+import Footer from './footer';
 import Table from './table';
 
 const { makeStyles } = mui;
@@ -28,7 +29,12 @@ const useStyles = makeStyles(theme => ({
   tableContainer: {
     flex: 5,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
+  },
+  table: {
+    flex: '1 1 auto',
   }
 }));
 
@@ -37,17 +43,14 @@ const Management = () => {
   return (
     <div className={classes.container}>
       <mui.Paper className={classes.treeContainer}>
-        <div className={classes.tree}>
-          <GroupTree/>
-        </div>
+        <GroupTree className={classes.tree}/>
         <Toolbar />
       </mui.Paper>
-      {/*
-      <mui.Container className={classes.tableContainer}>
+      <mui.Paper className={classes.tableContainer}>
         <Header />
-        <Table />
-      </mui.Container>
-      */}
+        <Table className={classes.table}/>
+        <Footer />
+      </mui.Paper>
     </div>
   );
 };

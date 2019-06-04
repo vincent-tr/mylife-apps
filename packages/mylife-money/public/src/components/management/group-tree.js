@@ -16,15 +16,15 @@ const useConnect = () => {
 const GroupTree = (props) => {
   const { groups } = useConnect();
   return (
-    <AutoSizer disableWidth>
-      {({ height }) => (
-        <mui.Box height={height}>
-          <mui.List component="div" {...props}>
+    <div {...props}>
+      <AutoSizer disableWidth>
+        {({ height }) => (
+          <mui.List component="div" height={height}>
             {groups.map((group) => (<GroupNode key={group.id} group={group} level={0} />))}
           </mui.List>
-        </mui.Box>
-      )}
-    </AutoSizer>
+        )}
+      </AutoSizer>
+    </div>
   );
 };
 
