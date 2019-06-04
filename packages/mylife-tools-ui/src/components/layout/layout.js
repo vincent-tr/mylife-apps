@@ -53,9 +53,7 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, menu, child
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          {children}
-        </Container>
+        {children}
       </main>
 
     </div>
