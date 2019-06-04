@@ -1,25 +1,31 @@
 'use strict';
 
-import { React, mui, createUseConnect } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import tabStyles from '../base/tab-styles';
+import { getSelectedGroupId, getSortedVisibleOperations, getSelectedOperationIds } from '../../selectors/management';
+import { getAccount } from '../../selectors/accounts';
+import { selectOperation } from '../../actions/management';
 
-const useConnect = createUseConnect(
-  (state) => {
-    const selectedGroup = getSelectedGroupId(state) || null;
-    const selectedOperationIds = getSelectedOperationIds(state);
-    return {
-      operations: getSortedVisibleOperations(state).map(operation => ({
-        operation,
-        account        : getAccount(state, operation),
-        fromChildGroup : (operation.group || null) !== selectedGroup,
-        selected       : selectedOperationIds.includes(operation.id)
-      }))
-    };
-  },
-  (dispatch) => ({
-    onSelect : (val) => dispatch(selectOperation(val)),
-  })
-);
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => {
+      const selectedGroup = getSelectedGroupId(state) || null;
+      const selectedOperationIds = getSelectedOperationIds(state);
+      return {
+        operations: getSortedVisibleOperations(state).map(operation => ({
+          operation,
+          account        : getAccount(state, operation),
+          fromChildGroup : (operation.group || null) !== selectedGroup,
+          selected       : selectedOperationIds.includes(operation.id)
+        }))
+      };
+    }),
+    ...useMemo(() => ({
+      onSelect : (val) => dispatch(selectOperation(val))
+    }), [dispatch])
+  };
+};
 
 const styles = {
   tableWrapper: {

@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, mui, createUseConnect } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import icons from '../icons';
 import base from '../base/index';
 import groupEditor from './group-editor';
@@ -8,20 +8,23 @@ import { getGroup } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
 import { createGroup, updateGroup, deleteGroup } from '../../actions/management';
 
-const useConnect = createUseConnect(
-  (state) => {
-    const selected = getSelectedGroupId(state);
-    return {
-      group     : selected && getGroup(state, { group: selected }),
-      canChange : !!selected
-    };
-  },
-  (dispatch) => ({
-    onGroupCreate   : () => dispatch(createGroup()),
-    onGroupEdit     : (group) => dispatch(updateGroup(group)),
-    onGroupDelete   : () => dispatch(deleteGroup())
-  })
-);
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => {
+      const selected = getSelectedGroupId(state);
+      return {
+        group     : selected && getGroup(state, { group: selected }),
+        canChange : !!selected
+      };
+    }),
+    ...useMemo(() => ({
+      onGroupCreate   : () => dispatch(createGroup()),
+      onGroupEdit     : (group) => dispatch(updateGroup(group)),
+      onGroupDelete   : () => dispatch(deleteGroup())
+    }), [dispatch])
+  };
+};
 
 const styles = {
   icon: {

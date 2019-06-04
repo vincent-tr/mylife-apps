@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, mui, createUseConnect } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import icons from '../icons';
 import base from '../base/index';
 import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
@@ -11,29 +11,32 @@ import AccountSelector from '../common/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../common/group-selector-button';
 
-const useConnect = createUseConnect(
-  (state) => {
-    const selectedOperations = getSelectedOperations(state);
-    return {
-      showExecuteRules     : !getSelectedGroupId(state),
-      canProcessOperations : !!selectedOperations.length,
-      accounts             : getAccounts(state),
-      minDate              : state.management.minDate,
-      maxDate              : state.management.maxDate,
-      account              : state.management.account,
-      noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
-    };
-  },
-  (dispatch) => ({
-    onMinDateChanged         : (value) => dispatch(setMinDate(value)),
-    onMaxDateChanged         : (value) => dispatch(setMaxDate(value)),
-    onAccountChanged         : (value) => dispatch(setAccount(value)),
-    onOperationsImport       : (account, file) => dispatch(importOperations(account, file)),
-    onOperationsExecuteRules : () => dispatch(operationsExecuteRules()),
-    onOperationsSetNote      : (note) => dispatch(operationsSetNote(note)),
-    onOperationsMove         : (group) => dispatch(moveOperations(group))
-  })
-);
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => {
+      const selectedOperations = getSelectedOperations(state);
+      return {
+        showExecuteRules     : !getSelectedGroupId(state),
+        canProcessOperations : !!selectedOperations.length,
+        accounts             : getAccounts(state),
+        minDate              : state.management.minDate,
+        maxDate              : state.management.maxDate,
+        account              : state.management.account,
+        noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
+      };
+    }),
+    ...useMemo(() => ({
+      onMinDateChanged         : (value) => dispatch(setMinDate(value)),
+      onMaxDateChanged         : (value) => dispatch(setMaxDate(value)),
+      onAccountChanged         : (value) => dispatch(setAccount(value)),
+      onOperationsImport       : (account, file) => dispatch(importOperations(account, file)),
+      onOperationsExecuteRules : () => dispatch(operationsExecuteRules()),
+      onOperationsSetNote      : (note) => dispatch(operationsSetNote(note)),
+      onOperationsMove         : (group) => dispatch(moveOperations(group))
+    }), [dispatch])
+  };
+};
 
 const styles = {
   button: {
