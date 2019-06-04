@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Container } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 import Header from './header';
 import Menu from './menu';
@@ -25,10 +25,6 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
   },
   appBarSpacer: theme.mixins.toolbar,
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  }
 }));
 
 const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, menu, children }) => {
