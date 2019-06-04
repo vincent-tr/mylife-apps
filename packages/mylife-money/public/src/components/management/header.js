@@ -59,24 +59,20 @@ const Header = () => {
     <mui.Toolbar>
       <ImportButton accounts={accounts} onImport={onOperationsImport} style={styles.button} />
       {showExecuteRules && (
-        <mui.IconButton onClick={onOperationsExecuteRules}
-                        style={styles.button}
-                        tooltip="Executer les règles sur les opérations">
+        <mui.IconButton onClick={onOperationsExecuteRules} style={styles.button} tooltip="Executer les règles sur les opérations">
           <icons.actions.Execute />
         </mui.IconButton>
       )}
 
-      <GroupSelectorButton onSelect={onOperationsMove}
-                      disabled={!canProcessOperations}
-                      style={styles.button}
-                      tooltip="Déplacer">
+      <GroupSelectorButton onSelect={onOperationsMove} disabled={!canProcessOperations} style={styles.button} tooltip="Déplacer">
         <icons.actions.Move />
       </GroupSelectorButton>
 
-      <mui.IconButton onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
-                      disabled={!canProcessOperations}
-                      style={styles.button}
-                      tooltip="Editer la note des opérations sélectionnées">
+      <mui.IconButton
+        onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
+        disabled={!canProcessOperations}
+        style={styles.button}
+        tooltip="Editer la note des opérations sélectionnées">
         <icons.actions.Comment />
       </mui.IconButton>
 
@@ -84,9 +80,7 @@ const Header = () => {
 
 
       <p>Date début</p>
-      <mui.IconButton tooltip="Pas de date de début"
-                      onClick={() => onMinDateChanged(null)}
-                      style={styles.button}>
+      <mui.IconButton tooltip="Pas de date de début" onClick={() => onMinDateChanged(null)} style={styles.button}>
         <icons.actions.Delete />
       </mui.IconButton>
       <mui.DatePicker value={minDate} onChange={onMinDateChanged} />
@@ -94,9 +88,7 @@ const Header = () => {
       {/* Separator */}
 
       <p>Date fin</p>
-      <mui.IconButton tooltip="Pas de date de fin"
-                      onClick={() => onMaxDateChanged(null)}
-                      style={styles.button}>
+      <mui.IconButton tooltip="Pas de date de fin" onClick={() => onMaxDateChanged(null)} style={styles.button}>
         <icons.actions.Delete />
       </mui.IconButton>
       <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} />
