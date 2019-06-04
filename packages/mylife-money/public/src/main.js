@@ -2,7 +2,7 @@
 
 import { React, services } from 'mylife-tools-ui';
 import dataService from './services/data-service';
-import reducer from './reducers/index';
+import reducers from './reducers';
 
 import { getAccounts, getGroups } from './actions/common';
 import { getOperations } from './actions/management';
@@ -11,7 +11,7 @@ import icons from './components/icons';
 import Management from './components/management/index';
 // import Reporting from './containers/reporting/index-container';
 
-services.initStore(reducer, dataService);
+services.initStore(reducers, dataService);
 
 const routes = [
   { location: '/', renderer: () => 'Home' },

@@ -1,4 +1,4 @@
-import { combineReducers } from 'mylife-tools-ui';
+'use strict';
 
 import errors from './errors';
 import info from './info';
@@ -7,11 +7,11 @@ import groups from './groups';
 import management from './management';
 import reporting from './reporting';
 
-export default combineReducers({
+export default {
   errors,
   info,
   accounts,
   groups,
   management,
   reporting
-});
+};
