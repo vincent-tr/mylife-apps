@@ -32,20 +32,25 @@ const GroupNode = ({ level, group }) => {
   const [open, setOpen] = useState(true);
   const classes = useStyles({ level });
   const { selected, children, onSelect } = useConnect({ group });
+  const hasChildren = children.length > 0;
   return (
     <React.Fragment>
       <mui.ListItem button onClick={onSelect} className={classes.listItem} selected={selected}>
         <mui.ListItemIcon><icons.Group /></mui.ListItemIcon>
         <mui.ListItemText primary={group.display} />
-        <mui.IconButton onClick={(e) => { e.stopPropagation(); setOpen(!open); } }>
-          {open ? <icons.tree.ExpandLess /> : <icons.tree.ExpandMore />}
-        </mui.IconButton>
+        {hasChildren && (
+          <mui.IconButton size='small' onClick={(e) => { e.stopPropagation(); setOpen(!open); } }>
+            {open ? <icons.tree.ExpandLess /> : <icons.tree.ExpandMore />}
+          </mui.IconButton>
+        )}
       </mui.ListItem>
-      <mui.Collapse in={open} timeout="auto" unmountOnExit>
-        <mui.List component="div" disablePadding dense>
-          {children.map((child) => (<GroupNode key={child.id} group={child} level={level+1} />))}
-        </mui.List>
-      </mui.Collapse>
+      {hasChildren && (
+        <mui.Collapse in={open} timeout="auto" unmountOnExit>
+          <mui.List component="div" disablePadding>
+            {children.map((child) => (<GroupNode key={child.id} group={child} level={level+1} />))}
+          </mui.List>
+        </mui.Collapse>
+      )}
     </React.Fragment>
   );
 };

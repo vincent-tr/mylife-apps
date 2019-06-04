@@ -15,7 +15,7 @@ const useConnect = () => {
 const GroupTree = (props) => {
   const { groups } = useConnect();
   return (
-    <mui.List dense {...props}>
+    <mui.List component="div" {...props}>
       {groups.map((group) => (<GroupNode key={group.id} group={group} level={0} />))}
     </mui.List>
   );
