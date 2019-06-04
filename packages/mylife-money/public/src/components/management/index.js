@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, mui } from 'mylife-tools-ui';
+import { React, mui, clsx } from 'mylife-tools-ui';
 
 import GroupTree from './group-tree';
 import Toolbar from './toolbar';
@@ -9,40 +9,44 @@ import Table from './table';
 
 import tabStyles from '../base/tab-styles';
 
-const styles = {
-  div:{
+const { makeStyles } = mui;
+
+const useStyles = makeStyles(() => ({
+  div: {
     display: 'flex',
     flexDirection: 'row wrap',
-    width: '100%',
-    height: '100%'
   },
-  paperLeft:{
+  paperLeft: {
     flex: 1,
     height: '100%',
     textAlign: 'center',
   },
-  paperRight:{
+  paperRight: {
     flex: 5,
     height: '100%',
     textAlign: 'center',
-  }
-};
+  },
+  ...tabStyles
+}));
 
-const Management = () => (
-  <div style={styles.div}>
-    <mui.Paper style={Object.assign({}, styles.paperLeft, tabStyles.fullHeight)}>
-      <div style={tabStyles.fullHeight}>
-        <GroupTree />
-        <Toolbar />
-      </div>
-    </mui.Paper>
-    <mui.Paper style={Object.assign({}, styles.paperRight, tabStyles.fullHeight)}>
-      <div style={tabStyles.fullHeight}>
-        <Header />
-        <Table />
-      </div>
-    </mui.Paper>
-  </div>
-);
+const Management = () => {
+  const classes = useStyles();
+  return (
+    <div className={classes.div}>
+      <mui.Paper className={clsx(classes.paperLeft, tabStyles.fullHeight)}>
+        <div className={classes.fullHeight}>
+          <GroupTree />
+          <Toolbar />
+        </div>
+      </mui.Paper>
+      <mui.Paper className={clsx(classes.paperRight, tabStyles.fullHeight)}>
+        <div className={classes.fullHeight}>
+          <Header />
+          <Table />
+        </div>
+      </mui.Paper>
+    </div>
+  );
+};
 
 export default Management;
