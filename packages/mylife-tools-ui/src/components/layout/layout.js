@@ -25,7 +25,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column'
   },
-  appBarSpacer: theme.mixins.toolbar,
+  appBarSpacer: {
+    ...theme.mixins.toolbar,
+    flex: '0 0 auto'
+  },
 }));
 
 const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, menu, children }) => {
