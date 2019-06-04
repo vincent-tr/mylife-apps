@@ -9,35 +9,45 @@ import Table from './table';
 
 const { makeStyles } = mui;
 
-const useStyles = makeStyles(() => ({
-  div: {
+const useStyles = makeStyles(theme => ({
+  container: {
+    flex: '1 1 auto',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row'
+  },
+  treeContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
   },
   tree: {
-    flex: 1,
-    textAlign: 'center',
-    overflow: 'auto',
+    overflowY: 'auto',
+    flex: '1 1 auto',
   },
-  table: {
+  tableContainer: {
     flex: 5,
-    textAlign: 'center',
-    overflow: 'auto',
+    display: 'flex',
+    flexDirection: 'column'
   }
 }));
 
 const Management = () => {
   const classes = useStyles();
   return (
-    <div className={classes.div}>
-      <mui.Container className={classes.tree}>
-        <GroupTree />
+    <div className={classes.container}>
+      <mui.Paper className={classes.treeContainer}>
+        <div className={classes.tree}>
+          <GroupTree/>
+        </div>
         <Toolbar />
-      </mui.Container>
-      <mui.Container className={classes.table}>
+      </mui.Paper>
+      {/*
+      <mui.Container className={classes.tableContainer}>
         <Header />
         <Table />
       </mui.Container>
+      */}
     </div>
   );
 };
