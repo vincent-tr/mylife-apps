@@ -13,7 +13,6 @@ export * as mui from './mui-components';
 export * as chart from 'recharts';
 
 export { useSelector, useDispatch } from 'react-redux';
-export { combineReducers } from 'redux';
 export * from 'redux-actions';
 export * from 'reselect';
 export * as immutable from 'immutable';
