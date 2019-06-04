@@ -1,13 +1,11 @@
 'use strict';
 
-import { React, PropTypes, mui, createUseConnect } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import { getAccounts } from '../../selectors/accounts';
 
-const useConnect = createUseConnect(
-  (state) => ({
-    accounts : getAccounts(state),
-  })
-);
+const useConnect = () => useSelector(state => ({
+  accounts : getAccounts(state),
+}));
 
 const NULL_VALUE='<null>';
 

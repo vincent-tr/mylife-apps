@@ -1,17 +1,15 @@
 'use strict';
 
-import { React, PropTypes, mui, createUseConnect } from 'mylife-tools-ui';
+import { React, useMemo, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import tabStyles from '../base/tab-styles';
 import { makeGetSortedChildren } from '../../selectors/groups';
 
-const useConnect = createUseConnect(
-  () => {
-    const getSortedChildren = makeGetSortedChildren();
-    return (state) => ({
-      groups : getSortedChildren(state, {})
-    });
-  }
-);
+const useConnect = () => {
+  const getSortedChildren = useMemo(makeGetSortedChildren, []);
+  return useSelector(state => ({
+    groups : getSortedChildren(state, {})
+  }));
+};
 
 const GroupSelectorTree = ({ onSelect }) => {
   const groups = useConnect();

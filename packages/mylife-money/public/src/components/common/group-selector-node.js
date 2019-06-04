@@ -1,20 +1,18 @@
 'use strict';
 
-import { React, PropTypes, mui, createUseConnect } from 'mylife-tools-ui';
+import { React, useMemo, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../selectors/groups';
 
-const useConnect = createUseConnect(
-  () => {
-    const getSortedChildren = makeGetSortedChildren();
-    return (state, props) => ({
-      children : getSortedChildren(state, props)
-    });
-  }
-);
+const useConnect = ({ group }) => {
+  const getSortedChildren = useMemo(makeGetSortedChildren, []);
+  return useSelector(state => ({
+    children : getSortedChildren(state, { group })
+  }));
+};
 
 const GroupSelectorNode = ({ level, group, onSelect }) => {
-  const { children } = useConnect();
+  const { children } = useConnect({ group });
   return (
     <mui.ListItem
       onClick={() => onSelect(group.id)}

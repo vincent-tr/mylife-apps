@@ -1,16 +1,16 @@
 'use strict';
 
-import { React, PropTypes, createUseConnect } from 'mylife-tools-ui';
+import { React, PropTypes, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
 import { getGroup } from '../../selectors/groups';
 
 import GroupSelectorButton from './group-selector-button';
 
-const useConnect = createUseConnect(
-  (state, { value }) => ({
+const useConnect = ({ value }) => {
+  return useSelector(state => ({
     stack: getStack(state, value)
-  })
-);
+  }));
+};
 
 const styles = {
   button: {
@@ -39,8 +39,8 @@ const styles = {
   }
 };
 
-const GroupSelector = ({ onChange, ...props }) => {
-  const { stack } = useConnect();
+const GroupSelector = ({ onChange, value, ...props }) => {
+  const { stack } = useConnect({ value });
   return (
     <div style={styles.mainWrapper} {...props}>
       <GroupSelectorButton onSelect={onChange}
