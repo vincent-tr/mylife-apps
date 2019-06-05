@@ -1,38 +1,38 @@
 'use strict';
 
-import React from 'react';
-import Dialog from './dialog';
-import { ErrorSvg } from '../../../components';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Button } from '@material-ui/core';
 import { getError } from '../selectors';
 import { errorClear } from '../actions';
-import { createUseConnect } from 'react-use-redux';
 
-const useConnect = createUseConnect(
-  (state) => ({
-    error : getError(state),
-  }),
-  (dispatch) => ({
-    clear : () => dispatch(errorClear())
-  })
-);
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => ({
+      error: getError(state)
+    })),
+    ...useMemo(() => ({
+      clear : () => dispatch(errorClear())
+    }), [dispatch])
+  };
+};
 
 const Error = () => {
   const { error, clear } = useConnect();
   return (
-    <Dialog
-      titleClassName='dialog-title-error'
-      open={!!error}
-      onClose={clear}
-      title={
-        <React.Fragment>
-          <ErrorSvg className='error-title-icon' />
-          <h3 className='error-title-text'>Erreur</h3>
-        </React.Fragment>
-      }
-      actions={[
-        { closeValue: 'ok', content: 'Ok', primary: true, shortcuts: [ 'esc' ] }
-      ]}>
-      {error && error.toString()}
+    <Dialog open={!!error} onClose={clear} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description' fullWidth maxWidth='sm'>
+      <DialogTitle id='alert-dialog-title' disableTypography><Typography variant='h6' color='error'>{'Erreur'}</Typography></DialogTitle>
+      <DialogContent>
+        <DialogContentText id='alert-dialog-description'>
+          {error && error.message}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={clear} color='primary' autoFocus>
+          Ok
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };
