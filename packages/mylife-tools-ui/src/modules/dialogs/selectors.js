@@ -6,5 +6,4 @@ const getDialogs = state => getInternalState(state).dialogs;
 
 export const getBusy          = state => getDialogs(state).busy;
 export const getError         = state => getDialogs(state).error;
-export const getInfo          = state => getDialogs(state).info;
 export const getNotifications = state => getDialogs(state).notifications;

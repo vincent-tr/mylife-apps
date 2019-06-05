@@ -7,7 +7,6 @@ import actionTypes       from './action-types';
 const defaultState = {
   busy          : false,
   error         : null,
-  info          : null,
   notifications : new Immutable.List()
 };
 
@@ -21,16 +20,6 @@ const others = handleActions({
   [actionTypes.ERROR_CLEAR] : state => ({
     ...state,
     error : null
-  }),
-
-  [actionTypes.INFO_SHOW] : (state, action) => ({
-    ...state,
-    info : action.payload
-  }),
-
-  [actionTypes.INFO_CLEAR] : state => ({
-    ...state,
-    info : null
   }),
 
   //https://gist.github.com/markerikson/7621fca0e9704e99db5598bed0db861d

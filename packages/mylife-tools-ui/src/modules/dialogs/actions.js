@@ -6,8 +6,6 @@ import notificationTypes  from './notification-types';
 
 export const busySet = createAction(actionTypes.BUSY_SET);
 export const errorClear = createAction(actionTypes.ERROR_CLEAR);
-export const infoClear = createAction(actionTypes.INFO_CLEAR);
-export const infoShow = createAction(actionTypes.INFO_SHOW);
 
 export const notificationDismiss = createAction(actionTypes.NOTIFICATION_DISMISS);
 export const notificationClearAll = createAction(actionTypes.NOTIFICATION_CLEAR);
