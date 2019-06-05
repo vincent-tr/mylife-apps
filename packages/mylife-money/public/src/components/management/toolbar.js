@@ -2,7 +2,7 @@
 
 import { React, useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import icons from '../icons';
-import base from '../base/index';
+import base from '../base';
 import groupEditor from './group-editor';
 import { getGroup } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';

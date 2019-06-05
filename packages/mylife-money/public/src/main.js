@@ -8,7 +8,7 @@ import { getAccounts, getGroups } from './actions/common';
 import { getOperations } from './actions/management';
 
 import icons from './components/icons';
-import Management from './components/management/index';
+import Management from './components/management';
 // import Reporting from './containers/reporting/index-container';
 
 services.initStore(reducers, dataService);

@@ -5,7 +5,7 @@ import { getOperations } from '../../selectors/reporting';
 import { getGroups, makeGetGroupBags, makeGetGroupStacks } from '../../selectors/groups';
 import { refreshOperations, resetOperations } from '../../actions/reporting';
 
-import Index from '../../components/reporting/index';
+import Index from '../../components/reporting';
 
 const mapStateToProps = () => {
   const getGroupBags   = makeGetGroupBags();

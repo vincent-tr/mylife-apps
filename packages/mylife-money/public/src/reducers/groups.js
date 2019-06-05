@@ -1,7 +1,7 @@
 'use strict';
 
 import { handleActions } from 'mylife-tools-ui';
-import { actionTypes } from '../constants/index';
+import { actionTypes } from '../constants';
 import { immutable } from 'mylife-tools-ui';
 
 const setGroup = {

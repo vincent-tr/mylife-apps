@@ -1,5 +1,5 @@
 import { React, PropTypes, mui, immutable, confirmable, createConfirmation } from 'mylife-tools-ui';
-import base from '../base/index';
+import base from '../base';
 import icons from '../icons';
 
 let idCounter = 0;
