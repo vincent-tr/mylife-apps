@@ -1,18 +1,16 @@
 'use strict';
 
 import React         from 'react';
-// import Busy          from './busy';
+import Busy          from './busy';
 // import Error         from './error';
-// import Info          from './info';
 // import Notifications from './notifications';
 
 const Dialogs = () => (
   <React.Fragment>
+    <Busy />
     {/*
-     <Busy />
-    <Error />
-    <Info />
-    <Notifications />
+      <Error />
+      <Notifications />
     */}
   </React.Fragment>
 );
