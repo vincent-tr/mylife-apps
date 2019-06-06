@@ -11,9 +11,13 @@ const NULL_VALUE='<null>';
 
 function renderList(accounts, allowNull) {
   if(allowNull) {
-    accounts = [{ id: NULL_VALUE, display: 'Tous' }].concat(accounts);
+    accounts = [ { id: NULL_VALUE, display: 'Tous' }, ...accounts ];
   }
-  return accounts.map(account => (<mui.MenuItem key={account.id} value={account.id} primaryText={account.display} />));
+  return accounts.map(account => (
+    <mui.MenuItem key={account.id} value={account.id}>
+      {account.display}
+    </mui.MenuItem>
+  ));
 }
 
 const AccountSelector = ({ allowNull, value, onChange, ...props }) => {
