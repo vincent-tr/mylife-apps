@@ -55,11 +55,11 @@ const Header = () => {
   const classes = useStyles();
 
   const editNote = async () => {
-    const value = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
-    if(value == null) {
+    const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
+    if(result !== 'ok') {
       return;
     }
-    onOperationsSetNote(value);
+    onOperationsSetNote(text);
   };
 
   return (
