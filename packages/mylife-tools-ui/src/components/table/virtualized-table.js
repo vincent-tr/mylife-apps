@@ -9,20 +9,22 @@ import { TableCell, makeStyles } from '@material-ui/core';
 const identity = x => x;
 
 const useStyles = makeStyles(() => ({
-  row: {
+  container: {
     display: 'flex',
     alignItems: 'center',
-    boxSizing: 'border-box',
+    boxSizing: 'border-box'
+  },
+  row: {
+    cursor: 'pointer'
   },
   cell: {
-    display: 'flex',
-    alignItems: 'center',
+    flex: 1
   }
 }));
 
 const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight, ...props }) => {
   const classes = useStyles();
-  const rowIndexClassName = (({ index }) => clsx(classes.row, runClassName(rowClassName, data[index], index)));
+  const rowIndexClassName = (({ index }) => clsx(classes.container, classes.row, runClassName(rowClassName, data[index], index)));
   const rowGetter = ({ index }) => data[index];
 
   return (
@@ -40,12 +42,12 @@ const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight
                   key={dataKey}
                   dataKey={dataKey}
                   headerRenderer={() => (
-                    <TableCell component='div' className={clsx(classes.cell, runClassName(headerClassName, dataKey))} variant='head'>
+                    <TableCell component='div' className={clsx(classes.container, classes.cell, runClassName(headerClassName, dataKey))} variant='head' style={{ height: headerHeight }}>
                       {runRenderer(headerRenderer, dataKey)}
                     </TableCell>
                   )}
                   cellRenderer={({ cellData }) => (
-                    <TableCell component='div' className={clsx(classes.cell, runClassName(cellClassName, cellData, dataKey))} variant='body'>
+                    <TableCell component='div' className={clsx(classes.container, classes.cell, runClassName(cellClassName, cellData, dataKey))} variant='body' style={{ height: rowHeight }}>
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </TableCell>
                   )}
