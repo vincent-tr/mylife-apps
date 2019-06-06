@@ -27,9 +27,6 @@ export const useConnect = () => {
 };
 
 export const useStyles = mui.makeStyles(() => ({
-  tableWrapper: {
-    height : 'calc(100% - 130px)',
-  },
   amountDebit: {
     backgroundColor: mui.colors.red[100]
   },
