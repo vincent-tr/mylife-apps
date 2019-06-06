@@ -9,7 +9,7 @@ exports.getAccounts = async () => {
   const accounts = getDatabaseCollection('accounts');
   const records = await accounts.find({});
   return await records.toArray();
-}
+};
 
 exports.createAccount = async (code, display) => {
   const accounts = getDatabaseCollection('accounts');
@@ -74,7 +74,7 @@ exports.getOperations = async (minDate, maxDate, account) => {
 
   const records = await operations.find(criteria);
   return await records.toArray();
-}
+};
 
 exports.operationsMove = async (groupId, operationIds) => {
   const operations = getDatabaseCollection('operations');
@@ -83,7 +83,7 @@ exports.operationsMove = async (groupId, operationIds) => {
     { $set: { group: groupId ? new ObjectID(groupId) : null } },
     { multi: true }
   );
-}
+};
 
 exports.operationsSetNote = async (note, operationIds) => {
   const operations = getDatabaseCollection('operations');
@@ -92,4 +92,4 @@ exports.operationsSetNote = async (note, operationIds) => {
     { $set: { note: note ? note : null } },
     { multi: true }
   );
-}
+};
