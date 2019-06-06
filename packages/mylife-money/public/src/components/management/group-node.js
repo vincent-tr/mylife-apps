@@ -6,8 +6,6 @@ import { makeGetSortedChildren } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
 import { selectGroup } from '../../actions/management';
 
-const { withTheme, makeStyles } = mui;
-
 const useConnect = ({ group }) => {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
   const dispatch = useDispatch();
@@ -22,7 +20,7 @@ const useConnect = ({ group }) => {
   };
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = mui.makeStyles(theme => ({
   listItem: props => ({
     paddingLeft: theme.spacing(2 * (props.level + 1))
   })
@@ -60,4 +58,4 @@ GroupNode.propTypes = {
   group : PropTypes.object.isRequired,
 };
 
-export default withTheme(GroupNode);
+export default GroupNode;
