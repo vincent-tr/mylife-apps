@@ -24,8 +24,8 @@ const Confirm = ({ show, proceed, options }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button color='primary' onClick={() => proceed(text)}>OK</Button>
-        <Button onClick={() => proceed()}>Annuler</Button>
+        <Button color='primary' onClick={() => proceed({ result: 'ok', text })}>OK</Button>
+        <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
       </DialogActions>
     </Dialog>
   );
