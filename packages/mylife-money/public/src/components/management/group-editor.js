@@ -160,7 +160,7 @@ class EditorDialog extends React.Component {
           </fieldset>
         </mui.DialogContent>
         <mui.DialogActions>
-          <mui.Button onClick={() => proceed({ group, rules })}>OK</mui.Button>
+          <mui.Button onClick={() => proceed({ group, rules })} color='primary'>OK</mui.Button>
           <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
         </mui.DialogActions>
       </mui.Dialog>
