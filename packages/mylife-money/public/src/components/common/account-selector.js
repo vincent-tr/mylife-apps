@@ -30,7 +30,6 @@ const AccountSelector = ({ allowNull, value, onChange, ...props }) => {
     <mui.Select value={value || NULL_VALUE} onChange={handleChange} {...props}>
       {renderList(accounts, allowNull)}
     </mui.Select>
-    </mui.FormControl>
   );
 };
 
