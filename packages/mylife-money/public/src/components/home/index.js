@@ -31,6 +31,10 @@ const Home = () => {
       <mui.Button onClick={() => notificationShow('warning')}>Notification Warning</mui.Button>
       <mui.Button onClick={() => notificationShow('error')}>Notification Error</mui.Button>
       <mui.Button>Custom dialog</mui.Button>
+      <mui.Typography>TODO</mui.Typography>
+      <mui.Typography>Graph with total operations count / +sum / -sum / balance per month for current year and past year</mui.Typography>
+      <mui.Typography>Total operations count</mui.Typography>
+      <mui.Typography>Last import date (= last operation date)</mui.Typography>
     </div>
   );
 };
