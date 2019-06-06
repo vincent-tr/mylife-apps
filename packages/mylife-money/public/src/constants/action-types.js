@@ -7,9 +7,6 @@ export default constants.wrap({
   GET_ACCOUNTS                              : null,
   QUERY_GROUPS                              : null,
   GET_GROUPS                                : null,
-  CLEAR_ERROR                               : null,
-  CLEAR_INFO                                : null,
-  SHOW_INFO                                 : null,
 
   MANAGEMENT_QUERY_DELETE_GROUP             : null,
   MANAGEMENT_DELETE_GROUP                   : null,
