@@ -22,10 +22,15 @@ function renderList(accounts, allowNull) {
 
 const AccountSelector = ({ allowNull, value, onChange, ...props }) => {
   const { accounts } = useConnect();
+  const handleChange = e => {
+    const { value } = e.target;
+    onChange(value === NULL_VALUE ? null : value);
+  };
   return (
-    <mui.Select value={value || NULL_VALUE} onChange={(event, index, value) => onChange(value === NULL_VALUE ? null : value)} {...props}>
+    <mui.Select value={value || NULL_VALUE} onChange={handleChange} {...props}>
       {renderList(accounts, allowNull)}
     </mui.Select>
+    </mui.FormControl>
   );
 };
 
