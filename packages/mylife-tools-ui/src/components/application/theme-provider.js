@@ -2,21 +2,17 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { colors, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { MuiThemeProvider } from '@material-ui/core';
+import { getTheme } from '../../services/theme-factory';
 
-const defaultThemeConfig = {
-  palette: {
-    primary: colors.blue,
-    secondary: colors.pink,
-  }
-};
-
-const ThemeProvider = ({ theme = createMuiTheme(defaultThemeConfig), ...props }) => (
-  <MuiThemeProvider theme={theme} {...props} />
+const ThemeProvider = ({ children }) => (
+  <MuiThemeProvider theme={getTheme()}>
+    {children}
+  </MuiThemeProvider>
 );
 
 ThemeProvider.propTypes = {
-  theme: PropTypes.object
+  children : PropTypes.node
 };
 
 export default ThemeProvider;

@@ -19,11 +19,11 @@ const Confirm = ({ show, proceed, options }) => (
       </DialogContent>
     )}
     <DialogActions>
-      {options.actions.map(({ text, value }, index) => (
-        <Button key={index} onClick={() => proceed(value)}>{text}</Button>
+      {options.actions.map(({ text, value, ...props }, index) => (
+        <Button key={index} color='primary' {...props} onClick={() => proceed(value)}>
+          {text}
+        </Button>
       ))}
-      <Button onClick={() => proceed(true)}>Oui</Button>
-      <Button onClick={() => proceed(false)}>Non</Button>
     </DialogActions>
   </Dialog>
 );
