@@ -3,16 +3,6 @@
 import { React, mui, VirtualizedTable } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 
-function rowSelectionPayload(tableSelection, operations) {
-  if(tableSelection === 'all') {
-    return { all: true, selected: true };
-  }
-  if(tableSelection === 'none') {
-    return { all: true, selected: false };
-  }
-  return { operations: tableSelection.map(index => operations[index].operation.id) };
-}
-
 const Table = (props) => {
   const { onSelect, operations } = useConnect();
   const classes = useStyles();
@@ -40,8 +30,6 @@ const Table = (props) => {
     { dataKey: 'label', headerRenderer: 'Libellé', cellDataGetter: ({ rowData }) => rowData.operation.label },
     { dataKey: 'note', headerRenderer: 'Note', cellDataGetter: ({ rowData }) => rowData.operation.note }
   ];
-
-  // multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}
 
   return (
     <VirtualizedTable data={operations} columns={columns} {...props} rowClassName={rowClassName} />
