@@ -15,7 +15,6 @@ const useStyles = makeStyles(() => ({
     boxSizing: 'border-box'
   },
   row: {
-    cursor: 'pointer'
   },
   cell: {
     flex: 1
