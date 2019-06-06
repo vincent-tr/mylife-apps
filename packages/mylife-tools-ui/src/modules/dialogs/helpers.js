@@ -1,19 +1,20 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { confirmable, createConfirmation } from 'react-confirm';
+import Confirm from './components/confirm';
 
-export async function showDialog(DialogComponent, props) {
-  return new Promise(accept => {
-    const node = document.createElement('div');
+export function create(Dialog) {
+  return createConfirmation(confirmable(Dialog));
+}
 
-    const onClose = (result) => {
-      ReactDOM.unmountComponentAtNode(node);
-      document.body.removeChild(node);
-      accept(result);
-    };
+const confirmDialog = create(Confirm);
 
-    document.body.appendChild(node);
-    ReactDOM.render(<DialogComponent open={true} onClose={onClose} {...props} />, node);
-  });
+const defaultActions = [
+  { text: 'Oui', value: true },
+  { text: 'Non', value: false }
+];
+
+export async function confirm(options) {
+  options.actions = options.actions || defaultActions;
+  return confirmDialog({ options });
 }
