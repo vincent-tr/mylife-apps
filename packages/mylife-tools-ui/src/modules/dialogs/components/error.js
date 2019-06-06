@@ -22,7 +22,11 @@ const Error = () => {
   const { error, clear } = useConnect();
   return (
     <Dialog open={!!error} onClose={clear} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description' fullWidth maxWidth='sm'>
-      <DialogTitle id='alert-dialog-title' disableTypography><Typography variant='h6' color='error'>{'Erreur'}</Typography></DialogTitle>
+      <DialogTitle id='alert-dialog-title' disableTypography>
+        <Typography variant='h6' color='error'>
+          {'Erreur'}
+        </Typography>
+      </DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-description'>
           {error && error.message}
