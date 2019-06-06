@@ -13,6 +13,10 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     boxSizing: 'border-box',
+  },
+  cell: {
+    display: 'flex',
+    alignItems: 'center',
   }
 }));
 
@@ -36,12 +40,12 @@ const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight
                   key={dataKey}
                   dataKey={dataKey}
                   headerRenderer={() => (
-                    <TableCell component='div' className={runClassName(headerClassName, dataKey)} variant='head'>
+                    <TableCell component='div' className={clsx(classes.cell, runClassName(headerClassName, dataKey))} variant='head'>
                       {runRenderer(headerRenderer, dataKey)}
                     </TableCell>
                   )}
                   cellRenderer={({ cellData }) => (
-                    <TableCell component='div' className={runClassName(cellClassName, dataKey)} variant='body'>
+                    <TableCell component='div' className={clsx(classes.cell, runClassName(cellClassName, cellData, dataKey))} variant='body'>
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </TableCell>
                   )}
