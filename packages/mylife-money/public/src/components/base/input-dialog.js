@@ -26,10 +26,9 @@ class InputDialog extends React.Component {
                   <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
                 </div>}
         modal={true}
-        open={show}
-        autoScrollBodyContent={true}>
+        open={show}>
         <mui.TextField
-          floatingLabelText={options.label}
+          label={options.label}
           id="text"
           value={text || ''}
           onChange={(event) => this.setState({ text: event.target.value })}

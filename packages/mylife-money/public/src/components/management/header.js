@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, dialogs } from 'mylife-tools-ui';
 import icons from '../icons';
 import base from '../base';
 import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
@@ -55,6 +55,14 @@ const Header = () => {
 
   const classes = useStyles();
 
+  const editNote = async () => {
+    const value = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
+    if(value == null) {
+      return;
+    }
+    onOperationsSetNote(value);
+  };
+
   return (
     <mui.Toolbar>
       <ImportButton accounts={accounts} onImport={onOperationsImport} />
@@ -77,7 +85,7 @@ const Header = () => {
       <mui.Tooltip title='Editer la note des opérations sélectionnées'>
         <div>
           <mui.IconButton
-            onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
+            onClick={editNote}
             disabled={!canProcessOperations}>
             <icons.actions.Comment />
           </mui.IconButton>
