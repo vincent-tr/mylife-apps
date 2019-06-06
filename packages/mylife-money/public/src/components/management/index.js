@@ -47,6 +47,7 @@ const Management = () => {
       <mui.Paper className={classes.tableContainer}>
         <Header />
         <Table className={classes.table}/>
+        <mui.Divider />
         <Footer />
       </mui.Paper>
     </div>
