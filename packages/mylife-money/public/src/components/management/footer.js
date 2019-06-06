@@ -1,36 +1,7 @@
 'use strict';
 
-import { React, mui, useSelector } from 'mylife-tools-ui';
-import { getSelectedGroupId, getSortedVisibleOperations, getSelectedOperationIds } from '../../selectors/management';
-import { getAccount } from '../../selectors/accounts';
-
-// TODO: copy/paste of table
-const useConnect = () => {
-  return useSelector(state => {
-    const selectedGroup = getSelectedGroupId(state) || null;
-    const selectedOperationIds = getSelectedOperationIds(state);
-    return {
-      operations: getSortedVisibleOperations(state).map(operation => ({
-        operation,
-        account        : getAccount(state, operation),
-        fromChildGroup : (operation.group || null) !== selectedGroup,
-        selected       : selectedOperationIds.includes(operation.id)
-      }))
-    };
-  });
-};
-
-const styles = {
-  amountDebit: {
-    backgroundColor: mui.colors.red[100]
-  },
-  amountCredit: {
-    backgroundColor: mui.colors.lightGreen[100]
-  },
-  total: {
-    width: 100
-  }
-};
+import { React, mui, clsx } from 'mylife-tools-ui';
+import { useConnect, useStyles } from './table-behaviors';
 
 function summaries(operations) {
   let totalDebit = 0;
@@ -45,20 +16,19 @@ function summaries(operations) {
   totalCredit = Math.round(totalCredit * 100) / 100;
   total = Math.round(total * 100) / 100;
 
-  return {
-    totalDebit, totalCredit, total
-  };
+  return { totalDebit, totalCredit, total };
 }
 
 const Table = (props) => {
+  const classes = useStyles();
   const { operations } = useConnect();
   const { totalDebit, totalCredit, total } = summaries(operations);
   return (
     <mui.Toolbar {...props}>
       <p>Total</p>
-      <p style={Object.assign({}, styles.amountDebit, styles.total)}>{totalDebit}</p>
-      <p style={Object.assign({}, styles.amountCredit, styles.total)}>{totalCredit}</p>
-      <p style={Object.assign({}, styles.total)}>{total}</p>
+      <p className={clsx(classes.amountDebit, classes.total)}>{totalDebit}</p>
+      <p className={clsx(classes.amountCredit, classes.total)}>{totalCredit}</p>
+      <p className={classes.total}>{total}</p>
     </mui.Toolbar>
   );
 };

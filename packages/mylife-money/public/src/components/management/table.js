@@ -1,30 +1,7 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, VirtualizedTable } from 'mylife-tools-ui';
-import { getSelectedGroupId, getSortedVisibleOperations, getSelectedOperationIds } from '../../selectors/management';
-import { getAccount } from '../../selectors/accounts';
-import { selectOperation } from '../../actions/management';
-
-const useConnect = () => {
-  const dispatch = useDispatch();
-  return {
-    ...useSelector(state => {
-      const selectedGroup = getSelectedGroupId(state) || null;
-      const selectedOperationIds = getSelectedOperationIds(state);
-      return {
-        operations: getSortedVisibleOperations(state).map(operation => ({
-          operation,
-          account        : getAccount(state, operation),
-          fromChildGroup : (operation.group || null) !== selectedGroup,
-          selected       : selectedOperationIds.includes(operation.id)
-        }))
-      };
-    }),
-    ...useMemo(() => ({
-      onSelect : (val) => dispatch(selectOperation(val))
-    }), [dispatch])
-  };
-};
+import { React, mui, VirtualizedTable } from 'mylife-tools-ui';
+import { useConnect, useStyles } from './table-behaviors';
 
 const styles = {
   tableWrapper: {
@@ -52,7 +29,6 @@ function rowSelectionPayload(tableSelection, operations) {
   }
   return { operations: tableSelection.map(index => operations[index].operation.id) };
 }
-
 
 const columns = [
   { dataKey: 'account', width: 150, headerRenderer: 'Compte', cellDataGetter: ({ rowData }) => rowData.account && rowData.account.display },
