@@ -1,8 +1,7 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, dialogs } from 'mylife-tools-ui';
 import icons from '../icons';
-import base from '../base';
 import groupEditor from './group-editor';
 import { getGroup } from '../../selectors/groups';
 import { getSelectedGroupId } from '../../selectors/management';
@@ -39,24 +38,30 @@ const styles = {
 
 const Toolbar = () => {
   const { group, onGroupCreate, onGroupEdit, onGroupDelete, canChange } = useConnect();
+
+  const handleDelete = async() => {
+    if(await dialogs.confirm({ title: 'Supprimer le groupe ?' })) {
+      onGroupDelete();
+    }
+  };
   return (
     <mui.Toolbar>
 
-      <mui.IconButton tooltip="Créer un groupe enfant"
+      <mui.IconButton tooltip='Créer un groupe enfant'
                       onClick={onGroupCreate}
                       style={styles.button}>
         <icons.actions.New />
       </mui.IconButton>
 
-      <mui.IconButton tooltip="Editer le groupe"
+      <mui.IconButton tooltip='Editer le groupe'
                       onClick={() => groupEditor(group, (err, group) => onGroupEdit(group))}
                       disabled={!canChange}
                       style={styles.button}>
         <icons.actions.Edit />
       </mui.IconButton>
 
-      <mui.IconButton tooltip="Supprimer le groupe"
-                      onClick={() => base.confirm({ lines: ['Supprimer le groupe ?'], proceed: onGroupDelete })}
+      <mui.IconButton tooltip='Supprimer le groupe'
+                      onClick={handleDelete}
                       disabled={!canChange}
                       style={styles.button}>
         <icons.actions.Delete />

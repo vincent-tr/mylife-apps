@@ -17,10 +17,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row'
   },
   treeContainer: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
   },
   tree: {
     overflowY: 'auto',
@@ -30,8 +29,6 @@ const useStyles = makeStyles(theme => ({
     flex: 5,
     display: 'flex',
     flexDirection: 'column',
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
   },
   table: {
     flex: '1 1 auto',
@@ -44,6 +41,7 @@ const Management = () => {
     <div className={classes.container}>
       <mui.Paper className={classes.treeContainer}>
         <GroupTree className={classes.tree}/>
+        <mui.Divider />
         <Toolbar />
       </mui.Paper>
       <mui.Paper className={classes.tableContainer}>
