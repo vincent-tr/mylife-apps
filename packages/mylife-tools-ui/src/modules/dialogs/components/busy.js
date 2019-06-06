@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { makeStyles, Dialog, DialogTitle, Typography, CircularProgress } from '@material-ui/core';
 import { getBusy } from '../selectors';
 
 const useConnect = () => {
@@ -11,11 +11,27 @@ const useConnect = () => {
   }));
 };
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  progress: {
+    marginRight: theme.spacing(2),
+  }
+}));
+
 const Busy = () => {
   const { busy } = useConnect();
+  const classes = useStyles();
   return (
     <Dialog disableBackdropClick disableEscapeKeyDown open={busy} aria-labelledby='alert-dialog-title'>
-      <DialogTitle id='alert-dialog-title'>{'Traitement en cours ...'}</DialogTitle>
+      <DialogTitle id='alert-dialog-title' disableTypography>
+        <Typography variant='h6' className={classes.container}>
+          <CircularProgress color='inherit' className={classes.progress} />
+          {'Traitement en cours ...'}
+        </Typography>
+      </DialogTitle>
     </Dialog>
   );
 };
