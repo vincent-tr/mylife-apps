@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator } from 'mylife-tools-ui';
 import icons from '../icons';
 import base from '../base';
 import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
@@ -38,32 +38,6 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles(theme => ({
-  separator: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    color: theme.palette.divider,
-    borderRight: '0.1em solid currentColor'
-  },
-  title: {
-    marginRight: theme.spacing(2),
-  }
-}));
-
-const Separator = () => {
-  const classes = useStyles();
-  return (
-    <mui.Typography className={classes.separator}>&nbsp;</mui.Typography>
-  );
-};
-
-const Title = ({ ...props }) => {
-  const classes = useStyles();
-  return (
-    <mui.Typography className={classes.title} {...props} />
-  );
-};
-
 const Header = () => {
   const {
     showExecuteRules, canProcessOperations,
@@ -93,19 +67,19 @@ const Header = () => {
         <icons.actions.Comment />
       </mui.IconButton>
 
-      <Separator />
+      <ToolbarSeparator />
 
-      <Title>Date début</Title>
+      <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
       <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='DD/MM/YYYY' />
 
-      <Separator />
+      <ToolbarSeparator />
 
-      <Title>Date fin</Title>
+      <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
       <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='DD/MM/YYYY' />
 
-      <Separator />
+      <ToolbarSeparator />
 
-      <Title>Compte</Title>
+      <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
       <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} width={200} />
     </mui.Toolbar>
   );
