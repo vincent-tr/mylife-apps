@@ -34,7 +34,7 @@ class EditorDialog extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { group, rules } = nextProps.options;
     this.setState({
       group,
