@@ -2,7 +2,6 @@
 
 import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, dialogs } from 'mylife-tools-ui';
 import icons from '../icons';
-import base from '../base';
 import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
 import { getSelectedOperations, getSelectedGroupId } from '../../selectors/management';
 import { getAccounts } from '../../selectors/accounts';

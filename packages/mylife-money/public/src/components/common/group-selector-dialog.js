@@ -1,24 +1,19 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
-import base from '../base';
 import GroupSelectorTree from './group-selector-tree';
 
 const SelectorDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ }) => (
-  <base.Theme>
-    <base.StoreProvider>
-      <mui.Dialog
-        title={'selectionnez un groupe'}
-        actions={
-          <div>
-            <mui.Button onClick={() => cancel()} >Annuler</mui.Button>
-          </div>
-        }
-        modal={true}
-        open={show}
-        autoScrollBodyContent={true}>
-        <GroupSelectorTree onSelect={proceed} />
-      </mui.Dialog>
-    </base.StoreProvider>
-  </base.Theme>
+  <mui.Dialog
+    title={'selectionnez un groupe'}
+    actions={
+      <div>
+        <mui.Button onClick={() => cancel()} >Annuler</mui.Button>
+      </div>
+    }
+    modal={true}
+    open={show}
+    autoScrollBodyContent={true}>
+    <GroupSelectorTree onSelect={proceed} />
+  </mui.Dialog>
 );
 
 SelectorDialog.propTypes = {
