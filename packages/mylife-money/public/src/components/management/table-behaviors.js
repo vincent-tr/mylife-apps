@@ -26,12 +26,15 @@ export const useConnect = () => {
   };
 };
 
-export const useStyles = mui.makeStyles(() => ({
+export const useStyles = mui.makeStyles(theme => ({
   amountDebit: {
     backgroundColor: mui.colors.red[100]
   },
   amountCredit: {
     backgroundColor: mui.colors.lightGreen[100]
+  },
+  amountTotal: {
+    backgroundColor: mui.colors.grey[300]
   },
   fromChild: {
     backgroundColor: mui.colors.grey[200]
@@ -39,6 +42,11 @@ export const useStyles = mui.makeStyles(() => ({
   normal: {
   },
   total: {
-    width: 100
+    width: 100,
+    marginLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   }
 }));

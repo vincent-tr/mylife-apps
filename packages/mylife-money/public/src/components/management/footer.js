@@ -25,10 +25,10 @@ const Table = (props) => {
   const { totalDebit, totalCredit, total } = summaries(operations);
   return (
     <mui.Toolbar {...props}>
-      <p>Total</p>
-      <p className={clsx(classes.amountDebit, classes.total)}>{totalDebit}</p>
-      <p className={clsx(classes.amountCredit, classes.total)}>{totalCredit}</p>
-      <p className={classes.total}>{total}</p>
+      <mui.Typography>Total</mui.Typography>
+      <mui.Typography className={clsx(classes.amountDebit, classes.total)}>{totalDebit}</mui.Typography>
+      <mui.Typography className={clsx(classes.amountCredit, classes.total)}>{totalCredit}</mui.Typography>
+      <mui.Typography className={clsx(classes.amountTotal, classes.total)}>{total}</mui.Typography>
     </mui.Toolbar>
   );
 };
