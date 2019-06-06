@@ -1,4 +1,4 @@
-import { React, PropTypes, mui, confirmable, createConfirmation } from 'mylife-tools-ui';
+import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 
 class InputDialog extends React.Component {
 
@@ -48,7 +48,7 @@ InputDialog.propTypes = {
   options: PropTypes.object        // arguments of your confirm function
 };
 
-const edit = createConfirmation(confirmable(InputDialog));
+const edit = dialogs.create(InputDialog);
 
 export default ({ title, label, text, ...options }) => {
   edit({ options: { title, label, text } }).then(

@@ -1,4 +1,4 @@
-import { React, PropTypes, mui, confirmable, createConfirmation } from 'mylife-tools-ui';
+import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import base from '../base';
 import GroupSelectorTree from './group-selector-tree';
 
@@ -30,7 +30,7 @@ SelectorDialog.propTypes = {
   options: PropTypes.object        // arguments of your confirm function
 };
 
-const edit = createConfirmation(confirmable(SelectorDialog));
+const edit = dialogs.create(SelectorDialog);
 
 export default (options) => {
   edit().then(

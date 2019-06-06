@@ -1,4 +1,4 @@
-import { React, PropTypes, mui, immutable, confirmable, createConfirmation } from 'mylife-tools-ui';
+import { React, PropTypes, mui, immutable, dialogs } from 'mylife-tools-ui';
 import base from '../base';
 import icons from '../icons';
 
@@ -259,7 +259,7 @@ EditorDialog.propTypes = {
   options: PropTypes.object        // arguments of your confirm function
 };
 
-const edit = createConfirmation(confirmable(EditorDialog));
+const edit = dialogs.create(EditorDialog);
 
 export default (group, done) => {
   group = JSON.parse(JSON.stringify(group));
