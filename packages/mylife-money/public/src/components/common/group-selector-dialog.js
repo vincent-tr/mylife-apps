@@ -1,5 +1,5 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
-import GroupSelectorTree from './group-selector-tree';
+import GroupTree from './group-tree';
 
 const SelectorDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ }) => (
   <mui.Dialog
@@ -12,7 +12,7 @@ const SelectorDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, op
     modal={true}
     open={show}
     autoScrollBodyContent={true}>
-    <GroupSelectorTree onSelect={proceed} />
+    <GroupTree onSelect={proceed} />
   </mui.Dialog>
 );
 

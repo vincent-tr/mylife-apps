@@ -2,7 +2,7 @@
 
 import { React, mui } from 'mylife-tools-ui';
 
-import GroupTree from './group-tree';
+import Tree from './tree';
 import Toolbar from './toolbar';
 import Header from './header';
 import Footer from './footer';
@@ -40,7 +40,7 @@ const Management = () => {
   return (
     <div className={classes.container}>
       <mui.Paper className={classes.treeContainer}>
-        <GroupTree className={classes.tree}/>
+        <Tree className={classes.tree}/>
         <mui.Divider />
         <Toolbar />
       </mui.Paper>
