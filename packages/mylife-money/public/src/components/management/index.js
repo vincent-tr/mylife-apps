@@ -10,7 +10,7 @@ import Table from './table';
 
 const { makeStyles } = mui;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     flex: '1 1 auto',
     display: 'flex',
@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
   table: {
     flex: '1 1 auto',
   }
-}));
+});
 
 const Management = () => {
   const classes = useStyles();
