@@ -33,7 +33,6 @@ class Header extends React.Component {
   }
 
   handleMenuClick(value) {
-    this.handleRequestChange(false);
     this.setState({ account: value, anchorEl: null });
     this.fileInput.click();
   }
