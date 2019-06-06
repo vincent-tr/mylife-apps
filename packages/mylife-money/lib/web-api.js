@@ -41,16 +41,10 @@ exports.createApi = async ({ app, express, apiHandler }) => {
     return await business.getOperations(minDate, maxDate, account);
   }));
 
-  router.route('/operations_move').post(apiHandler(async (request, response) => {
-    try {
-      const { group, operations } = request.body;
-      const status = await business.operationsMove(group, operations);
-      logger.info(`Operations moved: ${JSON.stringify({ group, operations })} -> ${JSON.stringify(status)}`);
-      response.json({});
-    } catch(err) {
-      logger.error(err);
-      return response.status(500).json(err.message);
-    }
+  router.route('/operations_move').post(apiHandler(async ({ group, operations }) => {
+    const status = await business.operationsMove(group, operations);
+    logger.info(`Operations moved: ${JSON.stringify({ group, operations })} -> ${JSON.stringify(status)}`);
+    return status;
   }));
 
   router.route('/operations_set_note').post(apiHandler(async ({ note, operations }) => {
