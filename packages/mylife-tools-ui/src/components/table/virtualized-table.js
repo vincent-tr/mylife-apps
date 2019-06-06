@@ -8,7 +8,7 @@ import { TableCell, makeStyles } from '@material-ui/core';
 
 const identity = x => x;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     display: 'flex',
     alignItems: 'center',
@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
   cell: {
     flex: 1
   }
-}));
+});
 
 const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight, ...props }) => {
   const classes = useStyles();
