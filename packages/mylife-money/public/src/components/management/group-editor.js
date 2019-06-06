@@ -20,59 +20,6 @@ const fields = {
   note   : { display : 'Note',        valueFormatter : val => val }
 };
 
-function parseRules(raw) {
-  if(!raw) {
-    return new immutable.Map();
-  }
-
-  return new immutable.Map(raw.map(rawRule => {
-    const id = ++idCounter;
-    return [ id, {
-      ... rawRule,
-      id,
-      conditions : parseConditions(rawRule.conditions)
-    }];
-  }));
-}
-
-function parseConditions(raw) {
-  if(!raw) {
-    return new immutable.Map();
-  }
-
-  return new immutable.Map(raw.map(rawCondition => {
-    const id = ++idCounter;
-    return [ id, {
-      id,
-      ... rawCondition
-    }];
-  }));
-}
-
-function serializeRules(map) {
-  return map.toArray().map((rule) => {
-    const { id, conditions, ...others } = rule;
-    void id;
-    return { conditions : serializeConditions(conditions), ...others };
-  });
-}
-
-function serializeConditions(map) {
-  return map.toArray().map(cond => {
-    const { id, ...others } = cond;
-    void id;
-    return { ...others };
-  });
-}
-
-function displayCondition(condition) {
-
-  const field = fields[condition.field].display;
-  const operator = operators[condition.operator].display;
-
-  return `${field} ${operator} ${condition.value}`;
-}
-
 class EditorDialog extends React.Component {
 
   constructor(props, context) {
@@ -158,94 +105,84 @@ class EditorDialog extends React.Component {
     const { group, rules, selectedRule, conditionField, conditionOperator, conditionValue } = this.state;
     const rule = rules.get(selectedRule);
     return (
-      <base.Theme>
-        <mui.Dialog
-          title="Editer le groupe"
-          actions={<div>
-                    <mui.Button onClick={() => proceed({ group, rules })}>OK</mui.Button>
-                    <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
-                  </div>}
-          modal={true}
-          open={show}
-          autoScrollBodyContent={true}>
-          <div>
+      <mui.Dialog aria-labelledby='dialog-title' open={show}>
+        <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
+        <mui.DialogContent dividers>
+          <mui.TextField
+            floatingLabelText="Nom du groupe"
+            id="display"
+            value={group.display}
+            onChange={(event) => this.setState({ group: { ...group, display: event.target.value }})}
+          />
+          <fieldset>
+            <legend>Règles</legend>
+            <mui.Select floatingLabelText='Règle' id='selectedRule' value={selectedRule} onChange={(event, index, value) => this.setState({ selectedRule : value })}>
+              {rules.toArray().map(rule => (
+                <mui.MenuItem key={rule.id} value={rule.id}>
+                  {rule.name}
+                </mui.MenuItem>
+              ))}
+            </mui.Select>
+            <mui.IconButton tooltip='Ajouter une règle' onClick={() => this.addRule()}>
+              <icons.actions.New />
+            </mui.IconButton>
+            <mui.IconButton tooltip='Supprimer la règle' disabled={!rule} onClick={() => this.deleteRule()}>
+              <icons.actions.Delete />
+            </mui.IconButton>
             <mui.TextField
-              floatingLabelText="Nom du groupe"
-              id="display"
-              value={group.display}
-              onChange={(event) => this.setState({ group: { ...group, display: event.target.value }})}
+              floatingLabelText='Nom de la règle'
+              id='ruleName'
+              disabled={!rule}
+              value={rule ? rule.name : ''}
+              onChange={(event) => this.updateRuleName(event.target.value)}
             />
             <fieldset>
-              <legend>Règles</legend>
-                <mui.Select
-                  floatingLabelText="Règle"
-                  id="selectedRule"
-                  value={selectedRule}
-                  onChange={(event, index, value) => this.setState({ selectedRule : value })}>
-                    {rules.toArray().map(rule => (<mui.MenuItem key={rule.id} value={rule.id} primaryText={rule.name} />))}
-                </mui.Select>
-                <mui.IconButton tooltip="Ajouter une règle"
-                                onClick={() => this.addRule()}>
-                  <icons.actions.New />
-                </mui.IconButton>
-                <mui.IconButton tooltip="Supprimer la règle"
-                                disabled={!rule}
-                                onClick={() => this.deleteRule()}>
-                  <icons.actions.Delete />
-                </mui.IconButton>
-                <mui.TextField
-                  floatingLabelText="Nom de la règle"
-                  id="ruleName"
-                  disabled={!rule}
-                  value={rule ? rule.name : ''}
-                  onChange={(event) => this.updateRuleName(event.target.value)}
-                />
-              <fieldset>
-                <legend>Conditions</legend>
-                <mui.List>
+              <legend>Conditions</legend>
+              <mui.List>
                 {rule && rule.conditions.toArray().map(condition => (
-                  <mui.ListItem key={condition.id}
-                                primaryText={displayCondition(condition)}
-                                rightIconButton={
-                                  <mui.IconButton onClick={() => this.deleteCondition(condition.id)}>
-                                    <icons.actions.Delete />
-                                  </mui.IconButton>
-                                }
-                />))}
-                </mui.List>
-                <mui.Select
-                  floatingLabelText="Champ"
-                  id="conditionField"
-                  disabled={!rule}
-                  value={conditionField}
-                  onChange={(event, index, value) => this.setState({ conditionField: value })} >
-                    {Object.keys(fields).map(field => (<mui.MenuItem key={field} value={field} primaryText={fields[field].display} />))}
-                </mui.Select>
-                <mui.Select
-                  floatingLabelText="Operateur"
-                  id="conditionOperator"
-                  disabled={!rule}
-                  value={conditionOperator}
-                  onChange={(event, index, value) => this.setState({ conditionOperator: value })} >
-                    {Object.keys(operators).map(operator => (<mui.MenuItem key={operator} value={operator} primaryText={operators[operator].display} />))}
-                </mui.Select>
-                <mui.TextField
-                  floatingLabelText="Valeur"
-                  id="conditionValue"
-                  disabled={!rule}
-                  value={conditionValue || ''}
-                  onChange={(event) => this.setState({ conditionValue: event.target.value })}
-                />
-                <mui.IconButton tooltip="Ajouter une condition"
-                                disabled={!rule || !conditionField || !conditionOperator || !conditionValue}
-                                onClick={() => this.addCondition()}>
-                  <icons.actions.New />
-                </mui.IconButton>
-              </fieldset>
+                  <mui.ListItem key={condition.id}>
+                    <mui.ListItemText primary={displayCondition(condition)} />
+                    <mui.ListItemSecondaryAction>
+                      <mui.IconButton onClick={() => this.deleteCondition(condition.id)}>
+                        <icons.actions.Delete />
+                      </mui.IconButton>
+                    </mui.ListItemSecondaryAction>
+                  </mui.ListItem>
+                ))}
+              </mui.List>
+              <mui.Select floatingLabelText='Champ' id='conditionField' disabled={!rule} value={conditionField} onChange={(event, index, value) => this.setState({ conditionField: value })}>
+                {Object.keys(fields).map(field => (
+                  <mui.MenuItem key={field} value={field}>
+                    {fields[field].display}
+                  </mui.MenuItem>
+                ))}
+              </mui.Select>
+              <mui.Select
+                floatingLabelText='Operateur'
+                id='conditionOperator'
+                disabled={!rule}
+                value={conditionOperator}
+                onChange={(event, index, value) => this.setState({ conditionOperator: value })} >
+                {Object.keys(operators).map(operator => (<mui.MenuItem key={operator} value={operator} primaryText={operators[operator].display} />))}
+              </mui.Select>
+              <mui.TextField
+                floatingLabelText='Valeur'
+                id='conditionValue'
+                disabled={!rule}
+                value={conditionValue || ''}
+                onChange={(event) => this.setState({ conditionValue: event.target.value })}
+              />
+              <mui.IconButton tooltip='Ajouter une condition' disabled={!rule || !conditionField || !conditionOperator || !conditionValue} onClick={() => this.addCondition()}>
+                <icons.actions.New />
+              </mui.IconButton>
             </fieldset>
-          </div>
-        </mui.Dialog>
-      </base.Theme>
+          </fieldset>
+        </mui.DialogContent>
+        <mui.DialogActions>
+          <mui.Button onClick={() => proceed({ group, rules })}>OK</mui.Button>
+          <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
+        </mui.DialogActions>
+      </mui.Dialog>
     );
   }
 }
@@ -267,3 +204,57 @@ export default (group, done) => {
     ({ group, rules }) => (done(null, { ...group , rules: serializeRules(rules)})),
     () => {});
 };
+
+
+function parseRules(raw) {
+  if(!raw) {
+    return new immutable.Map();
+  }
+
+  return new immutable.Map(raw.map(rawRule => {
+    const id = ++idCounter;
+    return [ id, {
+      ... rawRule,
+      id,
+      conditions : parseConditions(rawRule.conditions)
+    }];
+  }));
+}
+
+function parseConditions(raw) {
+  if(!raw) {
+    return new immutable.Map();
+  }
+
+  return new immutable.Map(raw.map(rawCondition => {
+    const id = ++idCounter;
+    return [ id, {
+      id,
+      ... rawCondition
+    }];
+  }));
+}
+
+function serializeRules(map) {
+  return map.toArray().map((rule) => {
+    const { id, conditions, ...others } = rule;
+    void id;
+    return { conditions : serializeConditions(conditions), ...others };
+  });
+}
+
+function serializeConditions(map) {
+  return map.toArray().map(cond => {
+    const { id, ...others } = cond;
+    void id;
+    return { ...others };
+  });
+}
+
+function displayCondition(condition) {
+
+  const field = fields[condition.field].display;
+  const operator = operators[condition.operator].display;
+
+  return `${field} ${operator} ${condition.value}`;
+}
