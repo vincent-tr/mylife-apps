@@ -100,11 +100,11 @@ class EditorDialog extends React.Component {
   }
 
   render() {
-    const { show, proceed, cancel } = this.props;
+    const { show, proceed } = this.props;
     const { group, rules, selectedRule, conditionField, conditionOperator, conditionValue } = this.state;
     const rule = rules.get(selectedRule);
     return (
-      <mui.Dialog aria-labelledby='dialog-title' open={show}>
+      <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='sm' fullWidth>
         <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
         <mui.DialogContent dividers>
           <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => this.setState({ group: { ...group, display: e.target.value }})} />
@@ -123,9 +123,11 @@ class EditorDialog extends React.Component {
               </mui.IconButton>
             </mui.Tooltip>
             <mui.Tooltip title='Supprimer la règle'>
-              <mui.IconButton disabled={!rule} onClick={() => this.deleteRule()}>
-                <icons.actions.Delete />
-              </mui.IconButton>
+              <div>
+                <mui.IconButton disabled={!rule} onClick={() => this.deleteRule()}>
+                  <icons.actions.Delete />
+                </mui.IconButton>
+              </div>
             </mui.Tooltip>
             <mui.TextField label='Nom de la règle' id='ruleName' disabled={!rule} value={rule ? rule.name : ''} onChange={e => this.updateRuleName(e.target.value)} />
             <fieldset>
@@ -135,9 +137,11 @@ class EditorDialog extends React.Component {
                   <mui.ListItem key={condition.id}>
                     <mui.ListItemText primary={displayCondition(condition)} />
                     <mui.ListItemSecondaryAction>
-                      <mui.IconButton onClick={() => this.deleteCondition(condition.id)}>
-                        <icons.actions.Delete />
-                      </mui.IconButton>
+                      <mui.Tooltip title='Supprimer la condition'>
+                        <mui.IconButton onClick={() => this.deleteCondition(condition.id)}>
+                          <icons.actions.Delete />
+                        </mui.IconButton>
+                      </mui.Tooltip>
                     </mui.ListItemSecondaryAction>
                   </mui.ListItem>
                 ))}
@@ -158,16 +162,18 @@ class EditorDialog extends React.Component {
               </mui.Select>
               <mui.TextField label='Valeur' id='conditionValue' disabled={!rule} value={conditionValue || ''} onChange={e => this.setState({ conditionValue: e.target.value })} />
               <mui.Tooltip title='Ajouter une condition'>
-                <mui.IconButton disabled={!rule || !conditionField || !conditionOperator || !conditionValue} onClick={() => this.addCondition()}>
-                  <icons.actions.New />
-                </mui.IconButton>
+                <div>
+                  <mui.IconButton disabled={!rule || !conditionField || !conditionOperator || !conditionValue} onClick={() => this.addCondition()}>
+                    <icons.actions.New />
+                  </mui.IconButton>
+                </div>
               </mui.Tooltip>
             </fieldset>
           </fieldset>
         </mui.DialogContent>
         <mui.DialogActions>
-          <mui.Button onClick={() => proceed({ group, rules })} color='primary'>OK</mui.Button>
-          <mui.Button onClick={() => cancel()}>Annuler</mui.Button>
+          <mui.Button onClick={() => proceed({ result: 'ok', group, rules })} color='primary'>OK</mui.Button>
+          <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
         </mui.DialogActions>
       </mui.Dialog>
     );
@@ -177,17 +183,18 @@ class EditorDialog extends React.Component {
 EditorDialog.propTypes = {
   show: PropTypes.bool,
   proceed: PropTypes.func,
-  cancel: PropTypes.func,
   options: PropTypes.object
 };
 
 const edit = dialogs.create(EditorDialog);
 
-export default (group, done) => {
+export default async (group) => {
   group = JSON.parse(JSON.stringify(group));
-  edit({ options: { group, rules: parseRules(group.rules) } }).then(
-    ({ group, rules }) => (done(null, { ...group , rules: serializeRules(rules)})),
-    () => {});
+  const res = await edit({ options: { group, rules: parseRules(group.rules) } });
+  if(res.result !== 'ok') {
+    return;
+  }
+  return { ...res.group , rules: serializeRules(res.rules) };
 };
 
 function parseRules(raw) {

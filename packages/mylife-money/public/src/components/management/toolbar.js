@@ -44,28 +44,38 @@ const Toolbar = () => {
       onGroupDelete();
     }
   };
+
+  const handleEdit = async() => {
+    const res = await groupEditor(group);
+    if(res) {
+      onGroupEdit(res);
+    }
+  };
+
   return (
     <mui.Toolbar>
 
-      <mui.IconButton tooltip='Créer un groupe enfant'
-                      onClick={onGroupCreate}
-                      style={styles.button}>
-        <icons.actions.New />
-      </mui.IconButton>
+      <mui.Tooltip title='Créer un groupe enfant'>
+        <mui.IconButton onClick={onGroupCreate} style={styles.button}>
+          <icons.actions.New />
+        </mui.IconButton>
+      </mui.Tooltip>
 
-      <mui.IconButton tooltip='Editer le groupe'
-                      onClick={() => groupEditor(group, (err, group) => onGroupEdit(group))}
-                      disabled={!canChange}
-                      style={styles.button}>
-        <icons.actions.Edit />
-      </mui.IconButton>
+      <mui.Tooltip title='Editer le groupe'>
+        <div>
+          <mui.IconButton onClick={handleEdit} disabled={!canChange} style={styles.button}>
+            <icons.actions.Edit />
+          </mui.IconButton>
+        </div>
+      </mui.Tooltip>
 
-      <mui.IconButton tooltip='Supprimer le groupe'
-                      onClick={handleDelete}
-                      disabled={!canChange}
-                      style={styles.button}>
-        <icons.actions.Delete />
-      </mui.IconButton>
+      <mui.Tooltip title='Supprimer le groupe'>
+        <div>
+          <mui.IconButton onClick={handleDelete} disabled={!canChange} style={styles.button}>
+            <icons.actions.Delete />
+          </mui.IconButton>
+        </div>
+      </mui.Tooltip>
 
     </mui.Toolbar>
   );
