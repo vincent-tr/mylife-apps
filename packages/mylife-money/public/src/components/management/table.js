@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, AutoSizer } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, VirtualizedTable } from 'mylife-tools-ui';
 import { getSelectedGroupId, getSortedVisibleOperations, getSelectedOperationIds } from '../../selectors/management';
 import { getAccount } from '../../selectors/accounts';
 import { selectOperation } from '../../actions/management';
@@ -53,13 +53,25 @@ function rowSelectionPayload(tableSelection, operations) {
   return { operations: tableSelection.map(index => operations[index].operation.id) };
 }
 
+
+const columns = [
+  { dataKey: 'account', width: 150, headerRenderer: 'Compte', cellDataGetter: ({ rowData }) => rowData.account && rowData.account.display },
+  { dataKey: 'amount', width: 100, headerRenderer: 'Montant', cellDataGetter: ({ rowData }) => rowData.operation.amount },
+  { dataKey: 'date', width: 100, headerRenderer: 'Date', cellDataGetter: ({ rowData }) => new Date(rowData.operation.date).toLocaleDateString('fr-FR') }, //TODO: formatter
+  { dataKey: 'label', headerRenderer: 'Libellé', cellDataGetter: ({ rowData }) => rowData.operation.label },
+  { dataKey: 'note', headerRenderer: 'Note', cellDataGetter: ({ rowData }) => rowData.operation.note }
+];
+
 const Table = (props) => {
   const { onSelect, operations } = useConnect();
+  // multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}
+
+  /*
   return (
     <div {...props}>
       <AutoSizer disableWidth>
         {({ height }) => (
-          <mui.Table height={height}>{/* multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}*/}
+          <mui.Table height={height}>
             <mui.TableHead>
               <mui.TableRow>
                 <mui.TableCell width={150}>Compte</mui.TableCell>
@@ -88,6 +100,11 @@ const Table = (props) => {
         )}
       </AutoSizer>
     </div>
+  );
+  */
+
+  return (
+    <VirtualizedTable data={operations} columns={columns} {...props} />
   );
 };
 
