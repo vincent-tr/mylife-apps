@@ -1,5 +1,4 @@
 import { React, PropTypes, mui, immutable, dialogs } from 'mylife-tools-ui';
-import base from '../base';
 import icons from '../icons';
 
 let idCounter = 0;
@@ -101,23 +100,18 @@ class EditorDialog extends React.Component {
   }
 
   render() {
-    const { show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ } = this.props;
+    const { show, proceed, cancel } = this.props;
     const { group, rules, selectedRule, conditionField, conditionOperator, conditionValue } = this.state;
     const rule = rules.get(selectedRule);
     return (
       <mui.Dialog aria-labelledby='dialog-title' open={show}>
         <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
         <mui.DialogContent dividers>
-          <mui.TextField
-            floatingLabelText="Nom du groupe"
-            id="display"
-            value={group.display}
-            onChange={(event) => this.setState({ group: { ...group, display: event.target.value }})}
-          />
+          <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => this.setState({ group: { ...group, display: e.target.value }})} />
           <fieldset>
             <legend>Règles</legend>
-            <mui.Select floatingLabelText='Règle' id='selectedRule' value={selectedRule} onChange={(event, index, value) => this.setState({ selectedRule : value })}>
-              {rules.toArray().map(rule => (
+            <mui.Select label='Règle' id='selectedRule' value={selectedRule || ''} onChange={e => this.setState({ selectedRule : e.target.value || null })}>
+              {rules.valueSeq().toArray().map(rule => (
                 <mui.MenuItem key={rule.id} value={rule.id}>
                   {rule.name}
                 </mui.MenuItem>
@@ -129,17 +123,11 @@ class EditorDialog extends React.Component {
             <mui.IconButton tooltip='Supprimer la règle' disabled={!rule} onClick={() => this.deleteRule()}>
               <icons.actions.Delete />
             </mui.IconButton>
-            <mui.TextField
-              floatingLabelText='Nom de la règle'
-              id='ruleName'
-              disabled={!rule}
-              value={rule ? rule.name : ''}
-              onChange={(event) => this.updateRuleName(event.target.value)}
-            />
+            <mui.TextField label='Nom de la règle' id='ruleName' disabled={!rule} value={rule ? rule.name : ''} onChange={e => this.updateRuleName(e.target.value)} />
             <fieldset>
               <legend>Conditions</legend>
               <mui.List>
-                {rule && rule.conditions.toArray().map(condition => (
+                {rule && rule.conditions.valueSeq().toArray().map(condition => (
                   <mui.ListItem key={condition.id}>
                     <mui.ListItemText primary={displayCondition(condition)} />
                     <mui.ListItemSecondaryAction>
@@ -150,28 +138,21 @@ class EditorDialog extends React.Component {
                   </mui.ListItem>
                 ))}
               </mui.List>
-              <mui.Select floatingLabelText='Champ' id='conditionField' disabled={!rule} value={conditionField} onChange={(event, index, value) => this.setState({ conditionField: value })}>
+              <mui.Select label='Champ' id='conditionField' disabled={!rule} value={conditionField || ''} onChange={e => this.setState({ conditionField: e.target.value || null })}>
                 {Object.keys(fields).map(field => (
                   <mui.MenuItem key={field} value={field}>
                     {fields[field].display}
                   </mui.MenuItem>
                 ))}
               </mui.Select>
-              <mui.Select
-                floatingLabelText='Operateur'
-                id='conditionOperator'
-                disabled={!rule}
-                value={conditionOperator}
-                onChange={(event, index, value) => this.setState({ conditionOperator: value })} >
-                {Object.keys(operators).map(operator => (<mui.MenuItem key={operator} value={operator} primaryText={operators[operator].display} />))}
+              <mui.Select label='Operateur' id='conditionOperator' disabled={!rule} value={conditionOperator || ''} onChange={e => this.setState({ conditionOperator: e.target.value || null })} >
+                {Object.keys(operators).map(operator => (
+                  <mui.MenuItem key={operator} value={operator}>
+                    {operators[operator].display}
+                  </mui.MenuItem>
+                ))}
               </mui.Select>
-              <mui.TextField
-                floatingLabelText='Valeur'
-                id='conditionValue'
-                disabled={!rule}
-                value={conditionValue || ''}
-                onChange={(event) => this.setState({ conditionValue: event.target.value })}
-              />
+              <mui.TextField label='Valeur' id='conditionValue' disabled={!rule} value={conditionValue || ''} onChange={e => this.setState({ conditionValue: e.target.value })} />
               <mui.IconButton tooltip='Ajouter une condition' disabled={!rule || !conditionField || !conditionOperator || !conditionValue} onClick={() => this.addCondition()}>
                 <icons.actions.New />
               </mui.IconButton>
@@ -188,12 +169,10 @@ class EditorDialog extends React.Component {
 }
 
 EditorDialog.propTypes = {
-  show: PropTypes.bool,            // from confirmable. indicates if the dialog is shown or not.
-  proceed: PropTypes.func,         // from confirmable. call to close the dialog with promise resolved.
-  cancel: PropTypes.func,          // from confirmable. call to close the dialog with promise rejected.
-  dismiss: PropTypes.func,         // from confirmable. call to only close the dialog.
-  confirmation: PropTypes.string,  // arguments of your confirm function
-  options: PropTypes.object        // arguments of your confirm function
+  show: PropTypes.bool,
+  proceed: PropTypes.func,
+  cancel: PropTypes.func,
+  options: PropTypes.object
 };
 
 const edit = dialogs.create(EditorDialog);
@@ -204,7 +183,6 @@ export default (group, done) => {
     ({ group, rules }) => (done(null, { ...group , rules: serializeRules(rules)})),
     () => {});
 };
-
 
 function parseRules(raw) {
   if(!raw) {
@@ -236,7 +214,7 @@ function parseConditions(raw) {
 }
 
 function serializeRules(map) {
-  return map.toArray().map((rule) => {
+  return map.valueSeq().toArray().map((rule) => {
     const { id, conditions, ...others } = rule;
     void id;
     return { conditions : serializeConditions(conditions), ...others };
@@ -244,7 +222,7 @@ function serializeRules(map) {
 }
 
 function serializeConditions(map) {
-  return map.toArray().map(cond => {
+  return map.valueSeq().toArray().map(cond => {
     const { id, ...others } = cond;
     void id;
     return { ...others };
