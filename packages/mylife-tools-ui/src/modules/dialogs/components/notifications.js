@@ -1,65 +1,106 @@
 'use strict';
 
-import React from 'react';
-import { Portal } from 'react-portal';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+//import { Portal } from 'react-portal';
+import { makeStyles, colors, Snackbar, IconButton } from '@material-ui/core';
+import * as icons from '@material-ui/icons';
 import { getNotifications } from '../selectors';
 import { notificationDismiss } from '../actions';
-import { Button } from '../../../components';
-import { createUseConnect } from 'react-use-redux';
 
-const Notification = ({ message, header, type, onCloseClick }) => {
+const typeIcons = {
+  success: icons.CheckCircle,
+  info: icons.Info,
+  warning: icons.Warning,
+  error: icons.Error
+};
 
-  if(typeof message === 'string') {
-    const messagePieces = message.split('\n');
-    message = messagePieces.map((piece, index) => (<div key={index}>{piece}</div>));
-  }
+const { Close: CloseIcon } = icons;
 
-  if(typeof header === 'string') {
-    header = (<h3>{header}</h3>);
-  }
+const useStyles = makeStyles(theme => ({
+  success: {
+    backgroundColor: colors.green[600],
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark,
+  },
+  warning: {
+    backgroundColor: colors.amber[700],
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark,
+  },
+  icon: {
+    fontSize: 20,
+    opacity: 0.9,
+    marginRight: theme.spacing(1),
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+}));
 
+
+const Notification = ({ message, type, onCloseClick }) => {
+  const classes = useStyles();
+  const typeValue = type.description;
+  console.log(typeValue)
+  const Icon = typeIcons[typeValue];
   return (
-    <div className={`notification ${type.description}`}>
-      <div className='action'>
-        <Button onClick={onCloseClick}>X</Button>
-      </div>
-      {header && <div className='title'>{header}</div>}
-      <div className='content'>{message}</div>
-    </div>
+    <Snackbar
+      open={true}
+      onClose={onCloseClick}
+      ContentProps={{
+        'aria-describedby': 'message-id',
+        className: classes[typeValue]
+      }}
+      message={
+        <span id='message-id' className={classes.message}>
+          <Icon className={classes.icon} />
+          {message}
+        </span>
+      }
+      action={[
+        <IconButton key='close' aria-label='Fermer' color='inherit' onClick={onCloseClick}>
+          <CloseIcon />
+        </IconButton>
+      ]}
+    />
   );
 };
 
 Notification.propTypes = {
   message: PropTypes.string.isRequired,
   onCloseClick: PropTypes.func.isRequired,
-  header: PropTypes.string,
   type: PropTypes.symbol.isRequired,
 };
 
-const useConnect = createUseConnect(
-  (state) => ({
-    notifications : getNotifications(state),
-  }),
-  (dispatch) => ({
-    dismiss : (id) => dispatch(notificationDismiss(id))
-  })
-);
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => ({
+      notifications: getNotifications(state)
+    })),
+    ...useMemo(() => ({
+      dismiss : (id) => dispatch(notificationDismiss(id))
+    }), [dispatch])
+  };
+};
 
 const Notifications = () => {
   const { dismiss, notifications } = useConnect();
   return (
-    <Portal isOpened={true} key='notificationsPortal'>
-      <div className='notifications-overlay'>
-        {notifications.map(notification => (
-          <Notification
-            key={notification.id}
-            onCloseClick={() => dismiss(notification.id)}
-            {...notification}
-          />
-        ))}
-      </div>
-    </Portal>
+    <React.Fragment>
+      {notifications.map(notification => (
+        <Notification
+          key={notification.id}
+          onCloseClick={() => dismiss(notification.id)}
+          {...notification}
+        />
+      ))}
+    </React.Fragment>
   );
 };
 
