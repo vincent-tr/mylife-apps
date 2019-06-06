@@ -26,6 +26,7 @@ const Home = () => {
     <div>
       <mui.Button onClick={onBusy}>Busy</mui.Button>
       <mui.Button onClick={onError}>Error</mui.Button>
+      <mui.Button onClick={() => notificationShow('success')}>Notification Success</mui.Button>
       <mui.Button onClick={() => notificationShow('info')}>Notification Info</mui.Button>
       <mui.Button onClick={() => notificationShow('warning')}>Notification Warning</mui.Button>
       <mui.Button onClick={() => notificationShow('error')}>Notification Error</mui.Button>
