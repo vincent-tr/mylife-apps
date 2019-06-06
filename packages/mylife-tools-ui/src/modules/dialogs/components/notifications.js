@@ -46,7 +46,6 @@ const useStyles = makeStyles(theme => ({
 const Notification = ({ message, type, onCloseClick }) => {
   const classes = useStyles();
   const typeValue = type.description;
-  console.log(typeValue)
   const Icon = typeIcons[typeValue];
   return (
     <Snackbar
