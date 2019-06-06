@@ -28,43 +28,6 @@ const Table = (props) => {
 
   // multiSelectable={true} onRowSelection={(val) => onSelect(rowSelectionPayload(val, operations))}
 
-  /*
-  return (
-    <div {...props}>
-      <AutoSizer disableWidth>
-        {({ height }) => (
-          <mui.Table height={height}>
-            <mui.TableHead>
-              <mui.TableRow>
-                <mui.TableCell width={150}>Compte</mui.TableCell>
-                <mui.TableCell width={100}>Montant</mui.TableCell>
-                <mui.TableCell width={100}>Date</mui.TableCell>
-                <mui.TableCell>Libellé</mui.TableCell>
-                <mui.TableCell>Note</mui.TableCell>
-              </mui.TableRow>
-            </mui.TableHead>
-            <mui.TableBody>
-              {operations.map(op => {
-                const rowStyle = op.fromChildGroup ? styles.fromChild : styles.normal;
-                const amountStyle = op.operation.amount < 0 ? styles.amountDebit : styles.amountCredit;
-                return (
-                  <mui.TableRow key={op.operation.id} style={rowStyle} selected={op.selected}>
-                    <mui.TableCell width={150}>{op.account && op.account.display}</mui.TableCell>
-                    <mui.TableCell width={100} style={amountStyle}>{op.operation.amount}</mui.TableCell>
-                    <mui.TableCell width={100}>{new Date(op.operation.date).toLocaleDateString('fr-FR')}</mui.TableCell>
-                    <mui.TableCell>{op.operation.label}</mui.TableCell>
-                    <mui.TableCell>{op.operation.note}</mui.TableCell>
-                  </mui.TableRow>
-                );
-              })}
-            </mui.TableBody>
-          </mui.Table>
-        )}
-      </AutoSizer>
-    </div>
-  );
-  */
-
   return (
     <VirtualizedTable data={operations} columns={columns} {...props} rowClassName={rowClassName} />
   );
