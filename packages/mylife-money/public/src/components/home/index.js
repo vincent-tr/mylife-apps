@@ -6,7 +6,7 @@ const useConnect = () => {
   const dispatch = useDispatch();
   return useMemo(() => ({
     busySet : (value) => dispatch(dialogs.busySet(value)),
-    notificationShow : (type) => dispatch(dialogs.notificationShow({ message: type, header: 'header', type : dialogs.notificationShow.types[type] })),
+    notificationShow : (type) => dispatch(dialogs.notificationShow({ message: type, type : dialogs.notificationShow.types[type] })),
   }), [dispatch]);
 };
 
