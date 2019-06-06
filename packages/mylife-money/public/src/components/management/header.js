@@ -38,6 +38,12 @@ const useConnect = () => {
   };
 };
 
+const useStyles = mui.makeStyles({
+  accountField: {
+    minWidth: 200
+  }
+});
+
 const Header = () => {
   const {
     showExecuteRules, canProcessOperations,
@@ -46,6 +52,8 @@ const Header = () => {
     noteText,
     onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
   } = useConnect();
+
+  const classes = useStyles();
 
   return (
     <mui.Toolbar>
@@ -80,7 +88,7 @@ const Header = () => {
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
-      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} width={200} />
+      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} className={classes.accountField} />
     </mui.Toolbar>
   );
 };
