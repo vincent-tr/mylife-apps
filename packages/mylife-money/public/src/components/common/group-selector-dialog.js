@@ -12,7 +12,7 @@ const SelectorDialog = ({ show, proceed }) => (
     </mui.DialogContent>
 
     <mui.DialogActions>
-      <mui.Button onClick={() => process({ result: 'cancel' })}>Annuler</mui.Button>
+      <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
     </mui.DialogActions>
 
   </mui.Dialog>
