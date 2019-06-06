@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useSelector } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
 import { getGroup } from '../../selectors/groups';
 
@@ -43,9 +43,11 @@ const GroupSelector = ({ onChange, value, ...props }) => {
   const { stack } = useConnect({ value });
   return (
     <div style={styles.mainWrapper} {...props}>
-      <GroupSelectorButton onSelect={onChange} style={styles.button} tooltip="Sélectionner">
-        <icons.actions.Move />
-      </GroupSelectorButton>
+      <mui.Tooltip title='Sélectionner'>
+        <GroupSelectorButton onSelect={onChange} style={styles.button}>
+          <icons.actions.Move />
+        </GroupSelectorButton>
+      </mui.Tooltip>
       <div style={styles.nodeListContainer}>
         {stack.map(node => (
           <div style={styles.nodeContainer} key={node.id}>

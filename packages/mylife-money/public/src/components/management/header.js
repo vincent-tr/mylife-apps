@@ -59,21 +59,26 @@ const Header = () => {
     <mui.Toolbar>
       <ImportButton accounts={accounts} onImport={onOperationsImport} />
       {showExecuteRules && (
-        <mui.IconButton onClick={onOperationsExecuteRules} tooltip="Executer les règles sur les opérations">
-          <icons.actions.Execute />
-        </mui.IconButton>
+        <mui.Tooltip title='Executer les règles sur les opérations'>
+          <mui.IconButton onClick={onOperationsExecuteRules}>
+            <icons.actions.Execute />
+          </mui.IconButton>
+        </mui.Tooltip>
       )}
 
-      <GroupSelectorButton onSelect={onOperationsMove} disabled={!canProcessOperations} tooltip="Déplacer">
-        <icons.actions.Move />
-      </GroupSelectorButton>
+      <mui.Tooltip title='Déplacer'>
+        <GroupSelectorButton onSelect={onOperationsMove} disabled={!canProcessOperations}>
+          <icons.actions.Move />
+        </GroupSelectorButton>
+      </mui.Tooltip>
 
-      <mui.IconButton
-        onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
-        disabled={!canProcessOperations}
-        tooltip="Editer la note des opérations sélectionnées">
-        <icons.actions.Comment />
-      </mui.IconButton>
+      <mui.Tooltip title='Editer la note des opérations sélectionnées'>
+        <mui.IconButton
+          onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
+          disabled={!canProcessOperations}>
+          <icons.actions.Comment />
+        </mui.IconButton>
+      </mui.Tooltip>
 
       <ToolbarSeparator />
 

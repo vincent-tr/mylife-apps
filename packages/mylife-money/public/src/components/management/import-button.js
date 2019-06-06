@@ -38,18 +38,18 @@ class Header extends React.Component {
   }
 
   render() {
-    const { accounts, style } = this.props;
+    const { accounts } = this.props;
     const { anchorEl } = this.state;
     return (
     <div>
-      <mui.IconButton
-        aria-owns={anchorEl ? 'simple-menu' : undefined}
-        aria-haspopup="true"
-        onClick={this.handleClick}
-        tooltip="Importer des opérations"
-        style={style}>
-        <icons.actions.Import />
-      </mui.IconButton>
+      <mui.Tooltip title='Importer des opérations'>
+        <mui.IconButton
+          aria-owns={anchorEl ? 'simple-menu' : undefined}
+          aria-haspopup='true'
+          onClick={this.handleClick}>
+          <icons.actions.Import />
+        </mui.IconButton>
+      </mui.Tooltip>
 
       <mui.Menu id="simple-menu" anchorEl={anchorEl} open={!!anchorEl} onClose={this.handleClose}>
         {accounts.map(account => (
@@ -76,7 +76,6 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  style    : PropTypes.object,
   accounts : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   onImport : PropTypes.func.isRequired
 };

@@ -117,12 +117,16 @@ class EditorDialog extends React.Component {
                 </mui.MenuItem>
               ))}
             </mui.Select>
-            <mui.IconButton tooltip='Ajouter une règle' onClick={() => this.addRule()}>
-              <icons.actions.New />
-            </mui.IconButton>
-            <mui.IconButton tooltip='Supprimer la règle' disabled={!rule} onClick={() => this.deleteRule()}>
-              <icons.actions.Delete />
-            </mui.IconButton>
+            <mui.Tooltip title='Ajouter une règle'>
+              <mui.IconButton onClick={() => this.addRule()}>
+                <icons.actions.New />
+              </mui.IconButton>
+            </mui.Tooltip>
+            <mui.Tooltip title='Supprimer la règle'>
+              <mui.IconButton disabled={!rule} onClick={() => this.deleteRule()}>
+                <icons.actions.Delete />
+              </mui.IconButton>
+            </mui.Tooltip>
             <mui.TextField label='Nom de la règle' id='ruleName' disabled={!rule} value={rule ? rule.name : ''} onChange={e => this.updateRuleName(e.target.value)} />
             <fieldset>
               <legend>Conditions</legend>
@@ -153,9 +157,11 @@ class EditorDialog extends React.Component {
                 ))}
               </mui.Select>
               <mui.TextField label='Valeur' id='conditionValue' disabled={!rule} value={conditionValue || ''} onChange={e => this.setState({ conditionValue: e.target.value })} />
-              <mui.IconButton tooltip='Ajouter une condition' disabled={!rule || !conditionField || !conditionOperator || !conditionValue} onClick={() => this.addCondition()}>
-                <icons.actions.New />
-              </mui.IconButton>
+              <mui.Tooltip title='Ajouter une condition'>
+                <mui.IconButton disabled={!rule || !conditionField || !conditionOperator || !conditionValue} onClick={() => this.addCondition()}>
+                  <icons.actions.New />
+                </mui.IconButton>
+              </mui.Tooltip>
             </fieldset>
           </fieldset>
         </mui.DialogContent>
