@@ -7,7 +7,7 @@ const useConnect = () => useSelector(state => ({
   accounts : getAccounts(state),
 }));
 
-const NULL_VALUE='<null>';
+const NULL_VALUE = '<null>';
 
 function renderList(accounts, allowNull) {
   if(allowNull) {
