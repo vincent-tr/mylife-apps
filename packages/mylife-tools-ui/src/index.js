@@ -7,7 +7,7 @@ export { default as React } from 'react';
 export * from 'react';
 export { default as PropTypes } from 'prop-types';
 export { default as clsx } from 'clsx';
-export { default as AutoSizer } from 'react-virtualized-auto-sizer';
+export { AutoSizer } from 'react-virtualized';
 
 export * as mui from './mui-components';
 export * as chart from 'recharts';
