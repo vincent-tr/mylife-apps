@@ -67,17 +67,21 @@ const Header = () => {
       )}
 
       <mui.Tooltip title='Déplacer'>
-        <GroupSelectorButton onSelect={onOperationsMove} disabled={!canProcessOperations}>
-          <icons.actions.Move />
-        </GroupSelectorButton>
+        <div>
+          <GroupSelectorButton onSelect={onOperationsMove} disabled={!canProcessOperations}>
+            <icons.actions.Move />
+          </GroupSelectorButton>
+        </div>
       </mui.Tooltip>
 
       <mui.Tooltip title='Editer la note des opérations sélectionnées'>
-        <mui.IconButton
-          onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
-          disabled={!canProcessOperations}>
-          <icons.actions.Comment />
-        </mui.IconButton>
+        <div>
+          <mui.IconButton
+            onClick={() => base.input({ title: 'Note des opérations', label: 'Note', text: noteText, proceed: onOperationsSetNote })}
+            disabled={!canProcessOperations}>
+            <icons.actions.Comment />
+          </mui.IconButton>
+        </div>
       </mui.Tooltip>
 
       <ToolbarSeparator />
