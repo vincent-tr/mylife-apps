@@ -6,12 +6,25 @@ import { mui } from 'mylife-tools-ui';
 
 import selectorDialog from './group-selector-dialog';
 
-const GroupSelectorDialog = React.forwardRef(({ onSelect, ...props }, ref) => (
-  <mui.IconButton ref={ref} onClick={() => selectorDialog({ proceed: onSelect})} {...props} />
-));
+const GroupSelectorButton = React.forwardRef(({ onSelect, ...props }, ref) => {
+  const clickHandler = async () => {
+    const { result, group } = await selectorDialog();
+    if(result !== 'ok') {
+      return;
+    }
 
-GroupSelectorDialog.propTypes = {
+    onSelect(group);
+  };
+
+  return (
+    <mui.IconButton ref={ref} onClick={clickHandler} {...props}/>
+  );
+});
+
+GroupSelectorButton.displayName = 'GroupSelectorButton';
+
+GroupSelectorButton.propTypes = {
   onSelect : PropTypes.func.isRequired,
 };
 
-export default GroupSelectorDialog;
+export default GroupSelectorButton;

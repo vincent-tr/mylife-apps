@@ -1,34 +1,27 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
 
-const SelectorDialog = ({ show, proceed, /*dismiss,*/ cancel, /*confirmation, options*/ }) => (
-  <mui.Dialog
-    title={'selectionnez un groupe'}
-    actions={
-      <div>
-        <mui.Button onClick={() => cancel()} >Annuler</mui.Button>
-      </div>
-    }
-    modal={true}
-    open={show}
-    autoScrollBodyContent={true}>
-    <GroupTree onSelect={proceed} />
+const SelectorDialog = ({ show, proceed }) => (
+  <mui.Dialog aria-labelledby='dialog-title' open={show}>
+    <mui.DialogTitle id='dialog-title'>
+      Sélectionnez un groupe
+    </mui.DialogTitle>
+
+    <mui.DialogContent dividers>
+      <GroupTree onSelect={group => proceed({ result: 'ok', group })} />
+    </mui.DialogContent>
+
+    <mui.DialogActions>
+      <mui.Button onClick={() => process({ result: 'cancel' })}>Annuler</mui.Button>
+    </mui.DialogActions>
+
   </mui.Dialog>
 );
 
 SelectorDialog.propTypes = {
-  show: PropTypes.bool,            // from confirmable. indicates if the dialog is shown or not.
-  proceed: PropTypes.func,         // from confirmable. call to close the dialog with promise resolved.
-  cancel: PropTypes.func,          // from confirmable. call to close the dialog with promise rejected.
-  dismiss: PropTypes.func,         // from confirmable. call to only close the dialog.
-  confirmation: PropTypes.string,  // arguments of your confirm function
-  options: PropTypes.object        // arguments of your confirm function
+  show: PropTypes.bool,
+  proceed: PropTypes.func,
+  cancel: PropTypes.func
 };
 
-const edit = dialogs.create(SelectorDialog);
-
-export default (options) => {
-  edit().then(
-    (group) => (options.proceed && options.proceed(group)),
-    () => (options.cancel && options.cancel()));
-};
+export default dialogs.create(SelectorDialog);
