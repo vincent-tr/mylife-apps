@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight, ...props }) => {
   const classes = useStyles();
-  const rowIndexClassName = (({ index }) => clsx(classes.container, classes.row, runClassName(rowClassName, data[index], index)));
+  const rowIndexClassName = (({ index }) => clsx(classes.container, classes.row, runPropGetter(rowClassName, data[index], index)));
   const rowGetter = ({ index }) => data[index];
 
   return (
@@ -31,7 +31,7 @@ const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight
       <AutoSizer>
         {({ height, width }) => (
           <Table height={height} width={width} rowClassName={rowIndexClassName} rowGetter={rowGetter} rowCount={data.length} rowHeight={rowHeight} headerHeight={headerHeight}>
-            {columns.map(({ dataKey, headerRenderer, headerClassName, cellRenderer, cellClassName, width: colWidth, ...props }) => {
+            {columns.map(({ dataKey, headerRenderer, headerClassName, cellRenderer, cellClassName, width: colWidth, headerProps, cellProps, ...props }) => {
               if (!colWidth) {
                 colWidth = computeColumnWidth(width, columns);
               }
@@ -41,12 +41,12 @@ const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight
                   key={dataKey}
                   dataKey={dataKey}
                   headerRenderer={() => (
-                    <TableCell component='div' className={clsx(classes.container, classes.cell, runClassName(headerClassName, dataKey))} variant='head' style={{ height: headerHeight }}>
+                    <TableCell component='div' className={clsx(classes.container, classes.cell, runPropGetter(headerClassName, dataKey))} variant='head' style={{ height: headerHeight }} {...runPropGetter(headerProps, dataKey)}>
                       {runRenderer(headerRenderer, dataKey)}
                     </TableCell>
                   )}
                   cellRenderer={({ cellData }) => (
-                    <TableCell component='div' className={clsx(classes.container, classes.cell, runClassName(cellClassName, cellData, dataKey))} variant='body' style={{ height: rowHeight }}>
+                    <TableCell component='div' className={clsx(classes.container, classes.cell, runPropGetter(cellClassName, cellData, dataKey))} variant='body' style={{ height: rowHeight }} {...runPropGetter(cellProps, cellData, dataKey)}>
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </TableCell>
                   )}
@@ -105,21 +105,19 @@ function computeColumnWidth(tableWidth, columns) {
 }
 
 function runRenderer(value, ...args) {
-  if(value instanceof Function) {
-    value = value(...args);
-  }
+  value = runPropGetter(value, ...args);
 
-  if(typeof value === 'string') {
-    return (
-      <React.Fragment>
-        {value}
-      </React.Fragment>
-    );
+  if(typeof value !== 'string') {
+    return value;
   }
-  return value;
+  return (
+    <React.Fragment>
+      {value}
+    </React.Fragment>
+  );
 }
 
-function runClassName(value, ...args) {
+function runPropGetter(value, ...args) {
   if(!value) {
     return;
   }
