@@ -57,11 +57,9 @@ export default handleActions({
     next : (state, action) => ({ ...state, operations: {
       ...state.operations,
       selected:
-        action.payload.all ?
-          (action.payload.selected ?
-            state.operations.selected.union(state.operations.visible) :
-            state.operations.selected.clear()) :
-          state.operations.selected.clear().union(action.payload.operations)
+        action.payload.id ?
+          (action.payload.selected ? state.operations.selected.add(action.payload.id) : state.operations.selected.remove(action.payload.id)) :
+          (action.payload.selected ? state.operations.selected.union(state.operations.visible) : state.operations.selected.clear())
     }})
   },
 
