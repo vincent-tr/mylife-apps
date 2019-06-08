@@ -152,16 +152,17 @@ class GroupAbsoluteByMonth extends React.Component {
     const onGroupChanged   = (index, value) => this.changeGroup(index, value);
     const onGroupDelete    = (index) => this.deleteGroup(index);
 
-    const arrays = groups.map((group, index) => [
-      <ToolbarSeparator key={`${index}-1`}/>,
-      <GroupSelector key={`${index}-2`} value={group} onChange={(value) => onGroupChanged(index, value)} />,
-      <mui.IconButton key={`${index}-3`} tooltip="Supprimer le groupe"
-                      onClick={() => onGroupDelete(index)}
-                      style={styles.button}>
-        <icons.actions.Delete />
-      </mui.IconButton>
-    ]);
-    return [].concat(...arrays);
+    return groups.map((group, index) => (
+      <React.Fragment key={index}>
+        <ToolbarSeparator />
+        <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />,
+        <mui.Tooltip title='Supprimer le groupe'>
+          <mui.IconButton onClick={() => onGroupDelete(index)} style={styles.button}>
+            <icons.actions.Delete />
+          </mui.IconButton>
+        </mui.Tooltip>
+      </React.Fragment>
+    ));
   }
 
   renderToolbar() {
@@ -176,8 +177,7 @@ class GroupAbsoluteByMonth extends React.Component {
     return (
       <mui.Toolbar>
         <ToolbarFieldTitle>Inverser montant</ToolbarFieldTitle>
-        <mui.Checkbox checked={reverse}
-                      onChange={e => onReverseChanged(e.target.checked)} />
+        <mui.Checkbox color='primary' checked={reverse} onChange={e => onReverseChanged(e.target.checked)} />
 
         <ToolbarSeparator />
 
@@ -197,11 +197,11 @@ class GroupAbsoluteByMonth extends React.Component {
         <ToolbarSeparator />
 
         <ToolbarFieldTitle>Groupes</ToolbarFieldTitle>
-        <mui.IconButton tooltip="Ajouter un groupe"
-                        onClick={() => onGroupAdd()}
-                        style={styles.button}>
-          <icons.actions.New />
-        </mui.IconButton>
+        <mui.Tooltip title='Ajouter un groupe'>
+          <mui.IconButton onClick={() => onGroupAdd()} style={styles.button}>
+            <icons.actions.New />
+          </mui.IconButton>
+        </mui.Tooltip>
         {this.renderGroups()}
       </mui.Toolbar>
     );
