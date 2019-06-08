@@ -31,5 +31,4 @@ export default constants.wrap({
 
   REPORTING_QUERY_OPERATIONS                   : null,
   REPORTING_GET_OPERATIONS                     : null,
-  REPORTING_RESET_OPERATIONS                   : null,
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-import { handleActions } from 'mylife-tools-ui';
+import { handleActions, routing } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { immutable } from 'mylife-tools-ui';
 
@@ -20,7 +20,7 @@ export default handleActions({
     })
   },
 
-  [actionTypes.REPORTING_RESET_OPERATIONS] : {
+  [routing.actionTypes.LOCATION_CHANGE] : {
     next : (state) => ({
       ...state,
       operations: state.operations.clear(),

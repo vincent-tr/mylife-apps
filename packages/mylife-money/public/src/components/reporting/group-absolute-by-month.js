@@ -1,14 +1,31 @@
 'use strict';
 
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
-import { chart } from 'mylife-tools-ui';
+import { React, useMemo, PropTypes, mui,  chart, ToolbarFieldTitle, ToolbarSeparator, useDispatch, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
 import tabStyles from '../base/tab-styles';
+import { getOperations } from '../../selectors/reporting';
+import { getGroups, makeGetGroupBags, makeGetGroupStacks } from '../../selectors/groups';
+import { refreshOperations } from '../../actions/reporting';
 
-import AccountSelectorContainer from '../../containers/common/account-selector-container';
-import GroupSelectorContainer from '../../containers/common/group-selector-container';
+import AccountSelector from '../common/account-selector';
+import GroupSelector from '../common/group-selector';
+
+const useConnect = () => {
+  const dispatch = useDispatch();
+  const getGroupBags = useMemo(makeGetGroupBags, []);
+  const getGroupStacks = useMemo(makeGetGroupStacks, []);
+  return {
+    ...useSelector(state => ({
+      operations  : getOperations(state),
+      groups      : getGroups(state),
+      groupBags   : getGroupBags(state),
+      groupStacks : getGroupStacks(state),
+    })),
+    ...useMemo(() => ({
+      onRefreshOperations : (minDate, maxDate, account) => dispatch(refreshOperations(minDate, maxDate, account))
+    }), [dispatch])
+  };
+};
 
 const styles = {
   button: {
@@ -136,12 +153,12 @@ class GroupAbsoluteByMonth extends React.Component {
     const onGroupDelete    = (index) => this.deleteGroup(index);
 
     const arrays = groups.map((group, index) => [
-      /* <mui.ToolbarSeparator key={`${index}-1`}/>, */
-      <GroupSelectorContainer key={`${index}-2`} value={group} onChange={(value) => onGroupChanged(index, value)} />,
+      <ToolbarSeparator key={`${index}-1`}/>,
+      <GroupSelector key={`${index}-2`} value={group} onChange={(value) => onGroupChanged(index, value)} />,
       <mui.IconButton key={`${index}-3`} tooltip="Supprimer le groupe"
                       onClick={() => onGroupDelete(index)}
                       style={styles.button}>
-        <icons.actions.Delete />,
+        <icons.actions.Delete />
       </mui.IconButton>
     ]);
     return [].concat(...arrays);
@@ -158,38 +175,28 @@ class GroupAbsoluteByMonth extends React.Component {
 
     return (
       <mui.Toolbar>
-        <p>Inverser montant</p>
+        <ToolbarFieldTitle>Inverser montant</ToolbarFieldTitle>
         <mui.Checkbox checked={reverse}
-                      onCheck={(evt, value) => onReverseChanged(value)} />
+                      onChange={e => onReverseChanged(e.target.checked)} />
 
-        {/* Separator */}
+        <ToolbarSeparator />
 
-        <p>Date début</p>
-        <mui.IconButton tooltip="Pas de date de début"
-                        onClick={() => onMinDateChanged(null)}
-                        style={styles.button}>
-          <icons.actions.Delete />
-        </mui.IconButton>
-        <mui.DatePicker value={minDate} onChange={onMinDateChanged} />
+        <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
+        <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='DD/MM/YYYY' />
 
-        {/* Separator */}
+        <ToolbarSeparator />
 
-        <p>Date fin</p>
-        <mui.IconButton tooltip="Pas de date de fin"
-                        onClick={() => onMaxDateChanged(null)}
-                        style={styles.button}>
-          <icons.actions.Delete />
-        </mui.IconButton>
-        <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} />
+        <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
+        <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='DD/MM/YYYY' />
 
-        {/* Separator */}
+        <ToolbarSeparator />
 
-        <p>Compte</p>
-        <AccountSelectorContainer allowNull={true} value={account} onChange={onAccountChanged} width={200} />
+        <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
+        <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} width={200} />
 
-        {/* Separator */}
+        <ToolbarSeparator />
 
-        <p>Groupes</p>
+        <ToolbarFieldTitle>Groupes</ToolbarFieldTitle>
         <mui.IconButton tooltip="Ajouter un groupe"
                         onClick={() => onGroupAdd()}
                         style={styles.button}>
@@ -253,4 +260,6 @@ GroupAbsoluteByMonth.propTypes = {
   onRefreshOperations : PropTypes.func.isRequired
 };
 
-export default GroupAbsoluteByMonth;
+const GroupAbsoluteByMonthWrapper = () => (<GroupAbsoluteByMonth {...useConnect()} />);
+
+export default GroupAbsoluteByMonthWrapper;
