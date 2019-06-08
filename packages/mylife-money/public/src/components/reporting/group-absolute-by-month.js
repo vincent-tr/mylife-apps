@@ -155,7 +155,7 @@ class GroupAbsoluteByMonth extends React.Component {
     return groups.map((group, index) => (
       <React.Fragment key={index}>
         <ToolbarSeparator />
-        <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />,
+        <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
         <mui.Tooltip title='Supprimer le groupe'>
           <mui.IconButton onClick={() => onGroupDelete(index)} style={styles.button}>
             <icons.actions.Delete />
