@@ -72,7 +72,11 @@ export default GroupSelector;
 
 function getStack(state, value) {
   if(!value) {
-    return [ getGroup(state, { group: value }) ]; // non tries
+    const group = getGroup(state, { group: value });
+    if(!group) {
+      return []; // not loaded
+    }
+    return [ group ]; // non tries
   }
 
   const ret = [];
