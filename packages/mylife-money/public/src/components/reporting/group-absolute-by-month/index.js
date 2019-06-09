@@ -1,39 +1,27 @@
 'use strict';
 
-import { React, useState, useMemo, PropTypes, mui,  chart, ToolbarFieldTitle, ToolbarSeparator, useDispatch, useSelector } from 'mylife-tools-ui';
+import { React, useState, useMemo, PropTypes, useDispatch, useSelector } from 'mylife-tools-ui';
 import tabStyles from '../../base/tab-styles';
 import { getOperations } from '../../../selectors/reporting';
-import { getGroups, makeGetGroupBags, makeGetGroupStacks } from '../../../selectors/groups';
+import { getGroups, makeGetGroupBags } from '../../../selectors/groups';
 import { refreshOperations } from '../../../actions/reporting';
 
 import Toolbar from './toolbar';
+import Chart from './chart';
 
 const useConnect = () => {
   const dispatch = useDispatch();
   const getGroupBags = useMemo(makeGetGroupBags, []);
-  const getGroupStacks = useMemo(makeGetGroupStacks, []);
   return {
     ...useSelector(state => ({
       operations  : getOperations(state),
       groups      : getGroups(state),
-      groupBags   : getGroupBags(state),
-      groupStacks : getGroupStacks(state),
+      groupBags   : getGroupBags(state)
     })),
     ...useMemo(() => ({
       onRefreshOperations : (minDate, maxDate, account) => dispatch(refreshOperations(minDate, maxDate, account))
     }), [dispatch])
   };
-};
-
-const styles = {
-  button: {
-    height: 56,
-    width: 56,
-    overflow: 'inherit'
-  },
-  chartWrapper: {
-    height: 'calc(100% - 60px)'
-  }
 };
 
 function leftPad(number, targetLength) {
@@ -43,39 +31,6 @@ function leftPad(number, targetLength) {
   }
   return output;
 }
-
-const Chart = ({ data, groups, groupStacks }) => {
-
-  // http://materialuicolors.co/
-  const colors = [
-    '#EF9A9A', '#90CAF9', '#C5E1A5', '#FFAB91',
-    '#F48FB1', '#81D4FA', '#E6EE9C', '#BCAAA4'
-  ];
-
-  if(!data.length) { return null; }
-
-  const series = groups.map((group, index) => ({
-    index,
-    group,
-    display : groupStacks.get(group).map(group => group.display).join('/'),
-    fill    : colors[index % colors.length]
-  }));
-
-  return (
-    <div style={styles.chartWrapper}>
-      <chart.ResponsiveContainer>
-        <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}}>
-          <chart.XAxis dataKey="date" name="Date" />
-          <chart.YAxis name="Montant" />
-          <chart.CartesianGrid strokeDasharray="3 3"/>
-          <chart.Tooltip/>
-          <chart.Legend />
-          {series.map(serie => (<chart.Bar key={serie.index} dataKey={`group-${serie.group}`} name={serie.display} fill={serie.fill} />))}
-        </chart.BarChart>
-      </chart.ResponsiveContainer>
-    </div>
-  );
-};
 
 class GroupAbsoluteByMonth extends React.Component {
 
@@ -150,12 +105,11 @@ class GroupAbsoluteByMonth extends React.Component {
   render() {
     const { criteria, data } = this.state;
     const { groups } = criteria;
-    const { groupStacks } = this.props;
 
     return (
       <div style={tabStyles.fullHeight}>
         <Toolbar onCriteriaChanged={(criteria) => this.changeCriteria(criteria)} />
-        <Chart data={data} groups={groups} groupStacks={groupStacks} />
+        <Chart data={data} groups={groups} />
       </div>
     );
   }
