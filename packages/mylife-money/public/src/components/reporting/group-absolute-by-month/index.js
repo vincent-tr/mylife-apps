@@ -1,7 +1,6 @@
 'use strict';
 
 import { React, useState, useMemo, PropTypes, useDispatch, useSelector } from 'mylife-tools-ui';
-import tabStyles from '../../base/tab-styles';
 import { getOperations } from '../../../selectors/reporting';
 import { getGroups, makeGetGroupBags } from '../../../selectors/groups';
 import { refreshOperations } from '../../../actions/reporting';
@@ -107,9 +106,9 @@ class GroupAbsoluteByMonth extends React.Component {
     const { groups } = criteria;
 
     return (
-      <div style={tabStyles.fullHeight}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Toolbar onCriteriaChanged={(criteria) => this.changeCriteria(criteria)} />
-        <Chart data={data} groups={groups} />
+        <Chart data={data} groups={groups} style={{ flex: '0 0 auto'}} />
       </div>
     );
   }
