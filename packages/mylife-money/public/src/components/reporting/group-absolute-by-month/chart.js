@@ -10,13 +10,7 @@ const useConnect = () => {
   }));
 };
 
-const styles = {
-  chartWrapper: {
-    height: 'calc(100% - 60px)'
-  }
-};
-
-const Chart = ({ data, groups }) => {
+const Chart = ({ data, groups, ...props }) => {
 
   const { groupStacks } = useConnect();
 
@@ -36,7 +30,7 @@ const Chart = ({ data, groups }) => {
   }));
 
   return (
-    <div style={styles.chartWrapper}>
+    <div {...props}>
       <chart.ResponsiveContainer>
         <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}}>
           <chart.XAxis dataKey="date" name="Date" />
