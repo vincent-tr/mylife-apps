@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, PropTypes, mui,  chart, ToolbarFieldTitle, ToolbarSeparator, useDispatch, useSelector } from 'mylife-tools-ui';
+import { React, useState, useMemo, PropTypes, mui,  chart, ToolbarFieldTitle, ToolbarSeparator, useDispatch, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
 import tabStyles from '../base/tab-styles';
 import { getOperations } from '../../selectors/reporting';
@@ -46,53 +46,119 @@ function leftPad(number, targetLength) {
   return output;
 }
 
+const Toolbar = ({ onCriteriaChanged }) => {
+
+  const [reverse, setReverse] = useState(true);
+  const [minDate, setMinDate] = useState(null);
+  const [maxDate, setMaxDate] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [groups, setGroups] = useState([ null ]);
+
+  const criteria = { reverse, minDate, maxDate, account, groups };
+
+  const onReverseChanged = (value) => {
+    setReverse(value);
+    onCriteriaChanged({ ...criteria, reverse: value });
+  };
+
+  const onMinDateChanged = (value) => {
+    setMinDate(value);
+    onCriteriaChanged({ ...criteria, minDate: value });
+  };
+
+  const onMaxDateChanged = (value) => {
+    setMaxDate(value);
+    onCriteriaChanged({ ...criteria, maxDate: value });
+  };
+
+  const onAccountChanged = (value)=> {
+    setAccount(value);
+    onCriteriaChanged({ ...criteria, account: value });
+  };
+
+  const onGroupAdd = () => {
+    const newGroups = [ ...groups, null ];
+    setGroups(newGroups);
+    onCriteriaChanged({ ...criteria, groups: newGroups });
+  };
+
+  const onGroupChanged = (index, value) =>  {
+    const newGroups = [ ...groups.slice(0, index), value, ...groups.slice(index + 1) ];
+    setGroups(newGroups);
+    onCriteriaChanged({ ...criteria, groups: newGroups });
+  };
+
+  const onGroupDelete = (index) => {
+    const newGroups = [ ...groups.slice(0, index), ...groups.slice(index + 1) ];
+    setGroups(newGroups);
+    onCriteriaChanged({ ...criteria, groups: newGroups });
+  };
+
+  return (
+    <mui.Toolbar>
+      <ToolbarFieldTitle>Inverser montant</ToolbarFieldTitle>
+      <mui.Checkbox color='primary' checked={reverse} onChange={e => onReverseChanged(e.target.checked)} />
+
+      <ToolbarSeparator />
+
+      <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
+      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='DD/MM/YYYY' />
+
+      <ToolbarSeparator />
+
+      <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
+      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='DD/MM/YYYY' />
+
+      <ToolbarSeparator />
+
+      <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
+      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} width={200} />
+
+      <ToolbarSeparator />
+
+      <ToolbarFieldTitle>Groupes</ToolbarFieldTitle>
+      <mui.Tooltip title='Ajouter un groupe'>
+        <mui.IconButton onClick={() => onGroupAdd()} style={styles.button}>
+          <icons.actions.New />
+        </mui.IconButton>
+      </mui.Tooltip>
+      {groups.map((group, index) => (
+        <React.Fragment key={index}>
+          <ToolbarSeparator />
+          <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
+          <mui.Tooltip title='Supprimer le groupe'>
+            <mui.IconButton onClick={() => onGroupDelete(index)} style={styles.button}>
+              <icons.actions.Delete />
+            </mui.IconButton>
+          </mui.Tooltip>
+        </React.Fragment>
+      ))}
+    </mui.Toolbar>
+  );
+};
+
+Toolbar.propTypes = {
+  onCriteriaChanged: PropTypes.func.isRequired
+};
+
 class GroupAbsoluteByMonth extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      reverse : true,
-      minDate : null,
-      maxDate : null,
-      account : null,
-      groups  : [ null ],
-      data    : [],
-      dates   : []
+      data : [],
+      criteria: {}
     };
   }
 
-  changeCriteria(newValues) {
-    this.setState(newValues);
+  changeCriteria(criteria) {
+    this.setState({ criteria });
 
     const { onRefreshOperations } = this.props;
-    const criteria = { ...this.state, ...newValues };
     const { minDate, maxDate, account } = criteria;
 
     onRefreshOperations(minDate, maxDate, account);
-  }
-
-  addGroup() {
-    const groups = [ ...this.state.groups, null ];
-    this.setState({ groups });
-    this.refreshData(null, { groups });
-  }
-
-  deleteGroup(index) {
-    const groups = [ ...this.state.groups.slice(0, index), ...this.state.groups.slice(index + 1) ];
-    this.setState({ groups });
-    this.refreshData(null, { groups });
-  }
-
-  changeGroup(index, value) {
-    const groups = [ ...this.state.groups.slice(0, index), value, ...this.state.groups.slice(index + 1) ];
-    this.setState({ groups });
-    this.refreshData(null, { groups });
-  }
-
-  setReverse(value) {
-    this.setState({ reverse: value });
-    this.refreshData(null, { reverse: value });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -104,10 +170,9 @@ class GroupAbsoluteByMonth extends React.Component {
     }
   }
 
-  refreshData(operations, newState) {
-    operations = operations || this.props.operations;
-    newState = { ...this.state, ...newState };
-    const { groups, reverse } = newState;
+  refreshData(operations) {
+    const { criteria } = this.state;
+    const { groups, reverse } = criteria;
     const { groupBags } = this.props;
     const map = new Map();
 
@@ -146,70 +211,10 @@ class GroupAbsoluteByMonth extends React.Component {
     this.setState({ data });
   }
 
-  renderGroups() {
-    const { groups } = this.state;
-
-    const onGroupChanged   = (index, value) => this.changeGroup(index, value);
-    const onGroupDelete    = (index) => this.deleteGroup(index);
-
-    return groups.map((group, index) => (
-      <React.Fragment key={index}>
-        <ToolbarSeparator />
-        <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
-        <mui.Tooltip title='Supprimer le groupe'>
-          <mui.IconButton onClick={() => onGroupDelete(index)} style={styles.button}>
-            <icons.actions.Delete />
-          </mui.IconButton>
-        </mui.Tooltip>
-      </React.Fragment>
-    ));
-  }
-
-  renderToolbar() {
-    const { reverse, minDate, maxDate, account } = this.state;
-
-    const onReverseChanged = (value) => this.setReverse(value);
-    const onMinDateChanged = (value) => this.changeCriteria({ minDate: value });
-    const onMaxDateChanged = (value) => this.changeCriteria({ maxDate: value });
-    const onAccountChanged = (value) => this.changeCriteria({ account: value });
-    const onGroupAdd       = () => this.addGroup();
-
-    return (
-      <mui.Toolbar>
-        <ToolbarFieldTitle>Inverser montant</ToolbarFieldTitle>
-        <mui.Checkbox color='primary' checked={reverse} onChange={e => onReverseChanged(e.target.checked)} />
-
-        <ToolbarSeparator />
-
-        <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-        <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='DD/MM/YYYY' />
-
-        <ToolbarSeparator />
-
-        <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
-        <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='DD/MM/YYYY' />
-
-        <ToolbarSeparator />
-
-        <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
-        <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} width={200} />
-
-        <ToolbarSeparator />
-
-        <ToolbarFieldTitle>Groupes</ToolbarFieldTitle>
-        <mui.Tooltip title='Ajouter un groupe'>
-          <mui.IconButton onClick={() => onGroupAdd()} style={styles.button}>
-            <icons.actions.New />
-          </mui.IconButton>
-        </mui.Tooltip>
-        {this.renderGroups()}
-      </mui.Toolbar>
-    );
-  }
-
   renderReport() {
     const { groupStacks } = this.props;
-    const { groups, data } = this.state;
+    const { criteria, data } = this.state;
+    const { groups } = criteria;
 
     // http://materialuicolors.co/
     const colors = [
@@ -245,7 +250,7 @@ class GroupAbsoluteByMonth extends React.Component {
   render() {
     return (
       <div style={tabStyles.fullHeight}>
-        {this.renderToolbar()}
+        <Toolbar onCriteriaChanged={(criteria) => this.changeCriteria(criteria)} />
         {this.renderReport()}
       </div>
     );
