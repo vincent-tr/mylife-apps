@@ -10,7 +10,7 @@ export { default as clsx } from 'clsx';
 export { AutoSizer } from 'react-virtualized';
 
 export * as mui from './mui-components';
-export * as chart from 'recharts';
+export * as chart from '@latticejs/mui-recharts';
 
 export { useSelector, useDispatch } from 'react-redux';
 export * from 'redux-actions';
