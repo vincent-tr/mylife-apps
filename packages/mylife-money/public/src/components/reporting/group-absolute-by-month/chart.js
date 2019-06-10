@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, PropTypes,  chart, useSelector } from 'mylife-tools-ui';
+import { React, useMemo, PropTypes,  chart, useSelector, useChartColors } from 'mylife-tools-ui';
 import { makeGetGroupStacks } from '../../../selectors/groups';
 
 const useConnect = () => {
@@ -13,12 +13,7 @@ const useConnect = () => {
 const Chart = ({ data, groups, ...props }) => {
 
   const { groupStacks } = useConnect();
-
-  // http://materialuicolors.co/
-  const colors = [
-    '#EF9A9A', '#90CAF9', '#C5E1A5', '#FFAB91',
-    '#F48FB1', '#81D4FA', '#E6EE9C', '#BCAAA4'
-  ];
+  const colors = useChartColors();
 
   if(!data.length || !groups) { return null; }
 
