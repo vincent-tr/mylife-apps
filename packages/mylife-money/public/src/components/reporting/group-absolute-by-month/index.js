@@ -14,7 +14,6 @@ const useConnect = () => {
   return {
     ...useSelector(state => ({
       operations  : getOperations(state),
-      groups      : getGroups(state),
       groupBags   : getGroupBags(state)
     })),
     ...useMemo(() => ({
@@ -67,7 +66,6 @@ class GroupAbsoluteByMonth extends React.Component {
 }
 
 GroupAbsoluteByMonth.propTypes = {
-  groups              : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   groupBags           : PropTypes.object.isRequired,
   operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   onRefreshOperations : PropTypes.func.isRequired
