@@ -56,50 +56,11 @@ class GroupAbsoluteByMonth extends React.Component {
     const { operations: oldOperations } = this.props;
 
     if(newOperations !== oldOperations) {
-      this.refreshData(newOperations);
+      const data = refreshData(this.props.groupBags, newOperations, this.state.criteria);
+      this.setState({ data });
     }
   }
 
-  refreshData(operations) {
-    const { criteria } = this.state;
-    const { groups, reverse } = criteria;
-    const { groupBags } = this.props;
-    const map = new Map();
-
-    for(const operation of operations) {
-      for(const group of groups) {
-        const bag = groupBags.get(group);
-        if(!bag.has(operation.group || null)) {
-          continue;
-        }
-
-        const opdate = new Date(operation.date);
-        const date = `${opdate.getFullYear()}-${leftPad(opdate.getMonth() + 1, 2)}`;
-
-        let item = map.get(date);
-        if(!item) {
-          item = { date , groups: new Map() };
-          for(const group of groups) {
-            item.groups.set(group, { value: 0 });
-          }
-          map.set(date, item);
-        }
-        item.groups.get(group).value += (reverse ? -operation.amount : operation.amount);
-      }
-    }
-
-    const data = Array.from(map.values()).map(item => {
-      const ret = { date: item.date };
-      for(const [group, val] of item.groups.entries()) {
-        ret[`group-${group}`] = Math.round(val.value * 100) / 100;
-      }
-      return ret;
-    });
-
-    data.sort((item1, item2) => item1.date < item2.date ? -1 : 1);
-
-    this.setState({ data });
-  }
 
   render() {
     const { criteria, data } = this.state;
@@ -124,3 +85,42 @@ GroupAbsoluteByMonth.propTypes = {
 const GroupAbsoluteByMonthWrapper = () => (<GroupAbsoluteByMonth {...useConnect()} />);
 
 export default GroupAbsoluteByMonthWrapper;
+
+function refreshData(groupBags, operations, criteria) {
+  const { groups, reverse } = criteria;
+  const map = new Map();
+
+  for(const operation of operations) {
+    for(const group of groups) {
+      const bag = groupBags.get(group);
+      if(!bag.has(operation.group || null)) {
+        continue;
+      }
+
+      const opdate = new Date(operation.date);
+      const date = `${opdate.getFullYear()}-${leftPad(opdate.getMonth() + 1, 2)}`;
+
+      let item = map.get(date);
+      if(!item) {
+        item = { date , groups: new Map() };
+        for(const group of groups) {
+          item.groups.set(group, { value: 0 });
+        }
+        map.set(date, item);
+      }
+      item.groups.get(group).value += (reverse ? -operation.amount : operation.amount);
+    }
+  }
+
+  const data = Array.from(map.values()).map(item => {
+    const ret = { date: item.date };
+    for(const [group, val] of item.groups.entries()) {
+      ret[`group-${group}`] = Math.round(val.value * 100) / 100;
+    }
+    return ret;
+  });
+
+  data.sort((item1, item2) => item1.date < item2.date ? -1 : 1);
+
+  return data;
+}
