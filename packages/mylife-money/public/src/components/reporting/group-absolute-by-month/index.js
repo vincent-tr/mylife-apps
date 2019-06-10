@@ -23,14 +23,6 @@ const useConnect = () => {
   };
 };
 
-function leftPad(number, targetLength) {
-  let output = number + '';
-  while (output.length < targetLength) {
-    output = '0' + output;
-  }
-  return output;
-}
-
 class GroupAbsoluteByMonth extends React.Component {
 
   constructor(props) {
@@ -60,7 +52,6 @@ class GroupAbsoluteByMonth extends React.Component {
       this.setState({ data });
     }
   }
-
 
   render() {
     const { criteria, data } = this.state;
@@ -123,4 +114,12 @@ function refreshData(groupBags, operations, criteria) {
   data.sort((item1, item2) => item1.date < item2.date ? -1 : 1);
 
   return data;
+}
+
+function leftPad(number, targetLength) {
+  let output = number + '';
+  while (output.length < targetLength) {
+    output = '0' + output;
+  }
+  return output;
 }
