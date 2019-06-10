@@ -8,4 +8,4 @@ export default wrap({
   LOCATION_CHANGE     : null,
   CALL_HISTORY_METHOD : null,
 
-}, STATE_PREFIX);
+}, STATE_PREFIX, 'routing');

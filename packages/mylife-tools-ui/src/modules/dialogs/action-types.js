@@ -11,4 +11,4 @@ export default wrap({
   NOTIFICATION_DISMISS : null,
   NOTIFICATION_CLEAR   : null,
 
-}, STATE_PREFIX);
+}, STATE_PREFIX, 'dialogs');
