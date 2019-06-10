@@ -1,8 +1,8 @@
 'use strict';
 
-import { React, useState, useMemo, PropTypes, useDispatch, useSelector } from 'mylife-tools-ui';
+import { React, useState, useMemo, mui, useDispatch, useSelector } from 'mylife-tools-ui';
 import { getOperations } from '../../../selectors/reporting';
-import { getGroups, makeGetGroupBags } from '../../../selectors/groups';
+import { makeGetGroupBags } from '../../../selectors/groups';
 import { refreshOperations } from '../../../actions/reporting';
 
 import Toolbar from './toolbar';
@@ -22,60 +22,47 @@ const useConnect = () => {
   };
 };
 
-class GroupAbsoluteByMonth extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      data : [],
-      criteria: {}
-    };
+const useStyles = mui.makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '1 1 auto'
+  },
+  chart: {
+    flex: '1 1 auto'
   }
+});
 
-  changeCriteria(criteria) {
-    this.setState({ criteria });
+const GroupAbsoluteByMonth = () => {
+  const [criteria, setCriteria] = useState({});
+  const { operations, groupBags, onRefreshOperations } = useConnect();
+  const data = useMemo(() => refreshData(groupBags, operations, criteria), [groupBags, operations, criteria]);
+  const classes = useStyles();
 
-    const { onRefreshOperations } = this.props;
+  const changeCriteria = (criteria) => {
+    setCriteria(criteria);
     const { minDate, maxDate, account } = criteria;
-
     onRefreshOperations(minDate, maxDate, account);
-  }
+  };
 
-  componentWillReceiveProps(nextProps) {
-    const { operations: newOperations } = nextProps;
-    const { operations: oldOperations } = this.props;
+  const { groups } = criteria;
 
-    if(newOperations !== oldOperations) {
-      const data = refreshData(this.props.groupBags, newOperations, this.state.criteria);
-      this.setState({ data });
-    }
-  }
-
-  render() {
-    const { criteria, data } = this.state;
-    const { groups } = criteria;
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', flex: '1 1 auto' }}>
-        <Toolbar onCriteriaChanged={(criteria) => this.changeCriteria(criteria)} />
-        <Chart data={data} groups={groups} style={{ flex: '1 1 auto'}} />
-      </div>
-    );
-  }
-}
-
-GroupAbsoluteByMonth.propTypes = {
-  groupBags           : PropTypes.object.isRequired,
-  operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  onRefreshOperations : PropTypes.func.isRequired
+  return (
+    <div className={classes.container}>
+      <Toolbar onCriteriaChanged={changeCriteria} />
+      <Chart data={data} groups={groups} className={classes.chart} />
+    </div>
+  );
 };
 
-const GroupAbsoluteByMonthWrapper = () => (<GroupAbsoluteByMonth {...useConnect()} />);
+export default GroupAbsoluteByMonth;
 
-export default GroupAbsoluteByMonthWrapper;
-
+// TODO: move server side
 function refreshData(groupBags, operations, criteria) {
+  if(!groupBags || !operations || !criteria) {
+    return [];
+  }
+
   const { groups, reverse } = criteria;
   const map = new Map();
 
