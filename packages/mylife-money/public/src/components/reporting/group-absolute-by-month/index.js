@@ -117,7 +117,6 @@ class GroupAbsoluteByMonth extends React.Component {
 GroupAbsoluteByMonth.propTypes = {
   groups              : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   groupBags           : PropTypes.object.isRequired,
-  groupStacks         : PropTypes.object.isRequired,
   operations          : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   onRefreshOperations : PropTypes.func.isRequired
 };

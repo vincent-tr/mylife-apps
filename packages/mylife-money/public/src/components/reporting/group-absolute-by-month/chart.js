@@ -20,7 +20,7 @@ const Chart = ({ data, groups, ...props }) => {
     '#F48FB1', '#81D4FA', '#E6EE9C', '#BCAAA4'
   ];
 
-  if(!data.length) { return null; }
+  if(!data.length || !groups) { return null; }
 
   const series = groups.map((group, index) => ({
     index,
@@ -47,7 +47,7 @@ const Chart = ({ data, groups, ...props }) => {
 
 Chart.propTypes = {
   data: PropTypes.array.isRequired,
-  groups: PropTypes.array.isRequired
+  groups: PropTypes.array
 };
 
 export default Chart;
