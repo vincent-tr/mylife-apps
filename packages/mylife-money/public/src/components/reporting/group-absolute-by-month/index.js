@@ -58,9 +58,9 @@ class GroupAbsoluteByMonth extends React.Component {
     const { groups } = criteria;
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: '1 1 auto' }}>
         <Toolbar onCriteriaChanged={(criteria) => this.changeCriteria(criteria)} />
-        <Chart data={data} groups={groups} style={{ flex: '0 0 auto'}} />
+        <Chart data={data} groups={groups} style={{ flex: '1 1 auto'}} />
       </div>
     );
   }
