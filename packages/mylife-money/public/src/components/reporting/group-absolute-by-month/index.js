@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useState, useMemo, mui, useDispatch, useSelector } from 'mylife-tools-ui';
+import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector } from 'mylife-tools-ui';
 import { getOperations } from '../../../selectors/reporting';
 import { makeGetGroupBags } from '../../../selectors/groups';
 import { refreshOperations } from '../../../actions/reporting';
@@ -34,7 +34,7 @@ const useStyles = mui.makeStyles({
 });
 
 const GroupAbsoluteByMonth = () => {
-  const [criteria, setCriteria] = useState({});
+  const [criteria, setCriteria] = useState({ reverse: true, minDate: null, maxDate: null, account: null, groups: [ null ] });
   const { operations, groupBags, onRefreshOperations } = useConnect();
   const data = useMemo(() => refreshData(groupBags, operations, criteria), [groupBags, operations, criteria]);
   const classes = useStyles();
@@ -44,6 +44,12 @@ const GroupAbsoluteByMonth = () => {
     const { minDate, maxDate, account } = criteria;
     onRefreshOperations(minDate, maxDate, account);
   };
+
+  // on mount run query
+  useEffect(() => {
+    const { minDate, maxDate, account } = criteria;
+    onRefreshOperations(minDate, maxDate, account);
+  }, []);
 
   const { groups } = criteria;
 
