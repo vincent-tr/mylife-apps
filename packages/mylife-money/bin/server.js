@@ -3,7 +3,7 @@
 'use strict';
 
 require('../lib/init');
-const { runServices, WebServer, Database } = require('mylife-tools-server');
+const { runServices, WebServer, IO, TaskQueue, ApiRegistry, Database } = require('mylife-tools-server');
 const { createApi } = require('../lib/web-api');
 
-runServices({ services: [Database, WebServer], apiCreator: createApi });
+runServices({ services: [WebServer, IO, TaskQueue, ApiRegistry, Database], apiCreator: createApi });
