@@ -2,7 +2,7 @@
 
 const { createLogger } = require('mylife-tools-server');
 const business = require('../business');
-const { base } = require('../registry').decorators;
+const { base } = require('./decorators');
 
 const logger = createLogger('mylife:money:api:management');
 
