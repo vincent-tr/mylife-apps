@@ -3,12 +3,12 @@
 'use strict';
 
 require('../lib/init');
-const { createLogger, runTask, Database } = require('mylife-tools-server');
+const { createLogger, runTask } = require('mylife-tools-server');
 const business = require('../lib/business');
 
 const logger = createLogger('mylife:money:create-account');
 
-runTask({ services: [Database], task: async () => {
+runTask({ services: ['database'], task: async () => {
   // TODO: rewrite with yargs
   const code    = process.argv[2];
   const display = process.argv[3];
