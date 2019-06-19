@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "MyLife Tools UI",
   "main": "src/index.js",
+  "sideEffects": false,
   "scripts": {
     "lint": "./node_modules/.bin/eslint src/ tools/"
   },
