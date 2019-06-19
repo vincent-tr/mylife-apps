@@ -10,7 +10,7 @@
     "start:dev": "MONGO_HOST=localhost ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
     "build": "mylife-build",
-    "links:dev": "npm link mylife-tools-common && npm link mylife-tools-server && npm link mylife-tools-ui"
+    "links:dev": "npm link mylife-tools-server && npm link mylife-tools-ui"
   },
   "dependencies": {
     "csv-parse": "^4.4.1",
