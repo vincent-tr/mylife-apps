@@ -1,6 +1,6 @@
 'use strict';
 
-exports.defer = () {
+exports.defer = () => {
 
 	const result = {
 		resolve: null,
