@@ -2,4 +2,4 @@
 
 const { decorators, createDecoratorGroup } = require('mylife-tools-server');
 
-exports.base = createDecoratorGroup(decorators.methodLogger);
+exports.base = createDecoratorGroup(/*decorators.methodLogger*/);
