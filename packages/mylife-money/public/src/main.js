@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, services } from 'mylife-tools-ui';
+import { React, services, io } from 'mylife-tools-ui';
 import dataService from './services/data-service';
 import reducers from './reducers';
 
@@ -34,8 +34,13 @@ services.render({
   menu
 });
 
-const store = services.getStore();
+services.observeStore(io.getOnline, value => {
+  if(!value) {
+    return;
+  }
 
-store.dispatch(getAccounts());
-store.dispatch(getGroups());
-store.dispatch(getOperations());
+  const store = services.getStore();
+  store.dispatch(getAccounts());
+  store.dispatch(getGroups());
+  store.dispatch(getOperations());
+});
