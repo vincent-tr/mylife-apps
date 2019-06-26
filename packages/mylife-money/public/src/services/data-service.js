@@ -1,6 +1,5 @@
 'use strict';
 
-import request from 'superagent';
 import { actionTypes } from '../constants';
 import {
   getAccounts,
