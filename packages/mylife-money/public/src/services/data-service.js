@@ -11,8 +11,6 @@ import {
 import { io } from 'mylife-tools-ui';
 
 const dataService = (/*store*/) => next => action => {
-  next(action);
-
   switch (action.type) {
     case actionTypes.QUERY_ACCOUNTS:
       next(io.call({
@@ -121,6 +119,8 @@ const dataService = (/*store*/) => next => action => {
       break;
     }
   }
+
+  return next(action);
 };
 
 export default dataService;
