@@ -9,11 +9,18 @@ import {
   reportingGetOperations
 } from '../actions/service';
 
+import { io } from 'mylife-tools-ui';
+
 const dataService = (/*store*/) => next => action => {
   next(action);
 
   switch (action.type) {
     case actionTypes.QUERY_ACCOUNTS:
+      next(io.call({
+        service: 'management',
+        method: 'getAccounts'
+      })).then(data => next(getAccounts(data)), err => next(getAccounts(err)));
+    /*
       request
         .get('/api/accounts')
         .end((err, res) => {
@@ -22,7 +29,7 @@ const dataService = (/*store*/) => next => action => {
           }
           const data = JSON.parse(res.text);
           return next(getAccounts(data));
-        });
+        });*/
       break;
 
     case actionTypes.QUERY_GROUPS:
