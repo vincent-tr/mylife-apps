@@ -3,9 +3,7 @@
 import { constants } from 'mylife-tools-ui';
 
 export default constants.wrap({
-  QUERY_ACCOUNTS                            : null,
   GET_ACCOUNTS                              : null,
-  QUERY_GROUPS                              : null,
   GET_GROUPS                                : null,
 
   MANAGEMENT_QUERY_DELETE_GROUP             : null,

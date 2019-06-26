@@ -1,9 +1,7 @@
 'use strict';
 
 import { actionTypes } from '../constants';
-import {
-  getAccounts,
-  getGroups, createGroup, updateGroup, deleteGroup,
+import {createGroup, updateGroup, deleteGroup,
   managementGetOperations, managementMoveOperations, managementOperationsSetNote, managementImportOperations, managementOperationsExecuteRules,
   reportingGetOperations
 } from '../actions/service';
@@ -12,20 +10,6 @@ import { io } from 'mylife-tools-ui';
 
 const dataService = (/*store*/) => next => action => {
   switch (action.type) {
-    case actionTypes.QUERY_ACCOUNTS:
-      next(io.call({
-        service: 'management',
-        method: 'getAccounts'
-      })).then(data => next(getAccounts(data)), err => next(getAccounts(err)));
-      break;
-
-    case actionTypes.QUERY_GROUPS:
-      next(io.call({
-        service: 'management',
-        method: 'getGroups'
-      })).then(data => next(getGroups(data)), err => next(getGroups(err)));
-      break;
-
     case actionTypes.MANAGEMENT_QUERY_CREATE_GROUP:
       next(io.call({
         service: 'management',
