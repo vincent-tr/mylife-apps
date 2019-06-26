@@ -65,7 +65,7 @@ class CallEngine {
     pending.reply(message);
   }
 
-  async call(message) {
+  async executeCall(message) {
     const transaction = ++this.transactionCounter;
     this.emitter({ ...message, transaction });
 

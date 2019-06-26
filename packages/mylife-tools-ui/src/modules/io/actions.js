@@ -6,3 +6,5 @@ import { createAction } from 'redux-actions';
 import actionTypes from './action-types';
 
 export const setOnline = createAction(actionTypes.SET_ONLINE);
+
+export const call = createAction(actionTypes.CALL);

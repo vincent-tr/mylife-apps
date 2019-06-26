@@ -5,14 +5,16 @@ import actionTypes from './action-types';
 import { setOnline } from './actions';
 import { serializer } from 'mylife-tools-common';
 import CallEngine from './engines/call';
+import NotificationEngine from './engines/notification';
 
 export default (/*store*/) => next => {
 
   const socket = io();
-  const emitter = (message) => socket.emit('message', serializer.serializer(message));
+  const emitter = (message) => socket.emit('message', serializer.serialize(message));
 
   const engines = {
-    call: new CallEngine(emitter)
+    call: new CallEngine(emitter, next),
+    notification: new NotificationEngine(emitter, next)
   };
 
   socket.on('connect', () => {
@@ -49,8 +51,11 @@ export default (/*store*/) => next => {
   });
 
   return action => {
-    // TODO: handle calls
-    
-    return next(action);
+    if (action.type !== actionTypes.CALL) {
+      return next(action);
+    }
+
+    next(action);
+    return engines.call.executeCall(action.payload);
   };
 };
