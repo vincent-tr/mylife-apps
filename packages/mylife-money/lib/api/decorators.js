@@ -9,6 +9,7 @@ const methodLogger = method => {
     logger.debug(`Calling ${service}.${name}`);
     const result = await callee(session, ...args);
     logger.debug(`Called ${service}.${name} : ${result}`);
+    return result;
   };
 };
 
