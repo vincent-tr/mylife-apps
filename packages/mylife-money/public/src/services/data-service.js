@@ -20,66 +20,37 @@ const dataService = (/*store*/) => next => action => {
         service: 'management',
         method: 'getAccounts'
       })).then(data => next(getAccounts(data)), err => next(getAccounts(err)));
-    /*
-      request
-        .get('/api/accounts')
-        .end((err, res) => {
-          if (err) {
-            return next(getAccounts(new Error(JSON.parse(res.text))));
-          }
-          const data = JSON.parse(res.text);
-          return next(getAccounts(data));
-        });*/
       break;
 
     case actionTypes.QUERY_GROUPS:
-      request
-        .get('/api/groups')
-        .end((err, res) => {
-          if (err) {
-            return next(getGroups(new Error(JSON.parse(res.text))));
-          }
-          const data = JSON.parse(res.text);
-          return next(getGroups(data));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'getGroups'
+      })).then(data => next(getGroups(data)), err => next(getGroups(err)));
       break;
 
     case actionTypes.MANAGEMENT_QUERY_CREATE_GROUP:
-      request
-        .put('/api/group')
-        .send(action.payload)
-        .end((err, res) => {
-          if (err) {
-            return next(createGroup(new Error(JSON.parse(res.text))));
-          }
-          const data = JSON.parse(res.text);
-          return next(createGroup(data));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'createGroup',
+        object: action.payload
+      })).then(data => next(createGroup(data)), err => next(createGroup(err)));
       break;
 
     case actionTypes.MANAGEMENT_QUERY_UPDATE_GROUP:
-      request
-        .post('/api/group')
-        .send(action.payload)
-        .end((err, res) => {
-          if (err) {
-            return next(updateGroup(new Error(JSON.parse(res.text))));
-          }
-          const data = JSON.parse(res.text);
-          return next(updateGroup(data));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'updateGroup',
+        object: action.payload
+      })).then(data => next(updateGroup(data)), err => next(updateGroup(err)));
       break;
 
     case actionTypes.MANAGEMENT_QUERY_DELETE_GROUP:
-      request
-        .delete('/api/group')
-        .send({ id: action.payload })
-        .end((err, res) => {
-          if (err) {
-            return next(deleteGroup(new Error(JSON.parse(res.text))));
-          }
-          return next(deleteGroup(action.payload));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'deleteGroup',
+        id: action.payload
+      })).then(() => next(deleteGroup(action.payload)), err => next(deleteGroup(err)));
       break;
 
     case actionTypes.MANAGEMENT_QUERY_OPERATIONS: {
@@ -93,69 +64,44 @@ const dataService = (/*store*/) => next => action => {
       if(action.payload.account) {
         query.account = action.payload.account;
       }
-      request
-        .get('/api/operations')
-        .query(query)
-        .end((err, res) => {
-          if (err) {
-            return next(managementGetOperations(new Error(JSON.parse(res.text))));
-          }
-          const data = JSON.parse(res.text);
-          return next(managementGetOperations(data));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'getOperations',
+        ... query
+      })).then(data => next(managementGetOperations(data)), err => next(managementGetOperations(err)));
       break;
     }
 
     case actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS:
-      request
-        .post('/api/operations_move')
-        .send(action.payload)
-        .end((err, res) => {
-          if (err) {
-            return next(managementMoveOperations(new Error(JSON.parse(res.text))));
-          }
-          return next(managementMoveOperations(action.payload));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'moveOperations',
+        ... action.payload
+      })).then(() => next(managementMoveOperations(action.payload)), err => next(managementMoveOperations(err)));
       break;
 
     case actionTypes.MANAGEMENT_QUERY_OPERATIONS_SET_NOTE:
-      request
-        .post('/api/operations_set_note')
-        .send(action.payload)
-        .end((err, res) => {
-          if (err) {
-            return next(managementOperationsSetNote(new Error(JSON.parse(res.text))));
-          }
-          return next(managementOperationsSetNote(action.payload));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'operationsSetNote',
+        ... action.payload
+      })).then(() => next(managementOperationsSetNote(action.payload)), err => next(managementOperationsSetNote(err)));
       break;
 
     case actionTypes.MANAGEMENT_QUERY_IMPORT_OPERATIONS:
-      request
-        .post('/api/operations_import')
-        .send(action.payload)
-        .end((err, res) => {
-          if (err) {
-            return next(managementImportOperations(new Error(JSON.parse(res.text))));
-          }
-          const count = JSON.parse(res.text);
-          return next(managementImportOperations(count));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'operationsImport',
+        ... action.payload
+      })).then(count => next(managementImportOperations(count)), err => next(managementImportOperations(err)));
       break;
 
     case actionTypes.MANAGEMENT_QUERY_OPERATIONS_EXECUTE_RULES:
-      request
-        .post('/api/operations_execute_rules')
-        .send({})
-        .end((err, res) => {
-          if (err) {
-            return next(managementOperationsExecuteRules(new Error(JSON.parse(res.text))));
-          }
-          const count = JSON.parse(res.text);
-          return next(managementOperationsExecuteRules(count));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'operationsExecuteRules'
+      })).then(count => next(managementOperationsExecuteRules(count)), err => next(managementOperationsExecuteRules(err)));
       break;
-
 
     case actionTypes.REPORTING_QUERY_OPERATIONS: {
       const query = {};
@@ -168,16 +114,11 @@ const dataService = (/*store*/) => next => action => {
       if(action.payload.account) {
         query.account = action.payload.account;
       }
-      request
-        .get('/api/operations')
-        .query(query)
-        .end((err, res) => {
-          if (err) {
-            return next(reportingGetOperations(new Error(JSON.parse(res.text))));
-          }
-          const data = JSON.parse(res.text);
-          return next(reportingGetOperations(data));
-        });
+      next(io.call({
+        service: 'management',
+        method: 'getOperations',
+        ... query
+      })).then(data => next(reportingGetOperations(data)), err => next(reportingGetOperations(err)));
       break;
     }
   }
