@@ -34,9 +34,8 @@ exports.updateGroup = [ base, async (session, message) => {
 
 exports.deleteGroup = [ base, async (session, message) => {
   const { id } = message;
-  const res = await business.deleteGroup(id);
+  await business.deleteGroup(id);
   logger.info(`group deleted: ${id}`);
-  return res;
 } ];
 
 exports.getOperations = [ base, async (session, message) => {
