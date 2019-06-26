@@ -67,7 +67,7 @@ class CallEngine {
 
   async executeCall(message) {
     const transaction = ++this.transactionCounter;
-    this.emitter({ ...message, transaction });
+    this.emitter({ ...message, transaction, engine: 'call' });
 
     const deferred = utils.defer();
     this.pendings.set(transaction, new Pending(this, transaction, deferred));
