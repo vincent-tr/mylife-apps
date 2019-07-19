@@ -9,6 +9,11 @@ export const getSelectedOperationIds = (state) => state.management.operations.se
 export const getSelectedOperations   = (state) => getSelectedOperationIds(state).map(id => state.management.operations.all.get(id));
 export const getSelectedGroupId      = (state) => state.management.selectedGroup;
 
+export const getFilters = (state) => {
+  const { minDate, maxDate, account } = state.management;
+  return { minDate, maxDate, account };
+};
+
 export const getSortedVisibleOperations = createSelector(
   [ getVisibleOperations ],
   (operations) => {

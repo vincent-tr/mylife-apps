@@ -5,7 +5,7 @@ let groupIdCount = 0;
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { getGroupAndChildrenIds } from '../selectors/groups';
-import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
+import { getFilters, getSelectedGroupId, getSelectedOperations } from '../selectors/management';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
@@ -83,8 +83,8 @@ export const updateGroup = (group) => {
 
 export const getOperations = () => {
   return async (dispatch, getState) => {
-    const management = getState().management;
-    const query = formatOperationsQuery(management);
+    const filters = getFilters(getState());
+    const query = formatOperationsQuery(filters);
 
     const data = await dispatch(io.call({
       service: 'management',
