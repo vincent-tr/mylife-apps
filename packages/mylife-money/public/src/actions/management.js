@@ -2,14 +2,16 @@
 
 let groupIdCount = 0;
 
-import { createAction } from 'mylife-tools-ui';
+import { createAction, io } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { getGroupAndChildrenIds } from '../selectors/groups';
 import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
 
 const querySelectGroup = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
-const queryCreateGroup = createAction(actionTypes.MANAGEMENT_QUERY_CREATE_GROUP);
-const queryDeleteGroup = createAction(actionTypes.MANAGEMENT_QUERY_DELETE_GROUP);
+
+export const createGroupData = createAction(actionTypes.MANAGEMENT_CREATE_GROUP);
+export const updateGroupData = createAction(actionTypes.MANAGEMENT_UPDATE_GROUP);
+export const deleteGroupData = createAction(actionTypes.MANAGEMENT_DELETE_GROUP);
 
 export const selectGroup = (id) => {
   return (dispatch) => {
@@ -19,24 +21,48 @@ export const selectGroup = (id) => {
 };
 
 export const createGroup = () => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const parentGroup = getSelectedGroupId(getState());
     const newGroup = {
       display: `group${++groupIdCount}`,
       parent: parentGroup
     };
-    dispatch(queryCreateGroup(newGroup));
+
+    const data = await dispatch(io.call({
+      service: 'management',
+      method: 'createGroup',
+      object: newGroup
+    }));
+
+    dispatch(createGroupData(data));
   };
 };
 
 export const deleteGroup = () => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const id = getSelectedGroupId(getState());
-    dispatch(queryDeleteGroup(id));
+
+    await dispatch(io.call({
+      service: 'management',
+      method: 'deleteGroup',
+      id
+    }));
+
+    dispatch(deleteGroupData(id));
   };
 };
 
-export const updateGroup = createAction(actionTypes.MANAGEMENT_QUERY_UPDATE_GROUP);
+export const updateGroup = (group) => {
+  return async (dispatch) => {
+    const data = await dispatch(io.call({
+      service: 'management',
+      method: 'updateGroup',
+      object: group
+    }));
+
+    dispatch(updateGroupData(data));
+  };
+};
 
 const queryOperations = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS);
 const queryMoveOperations = createAction(actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS);

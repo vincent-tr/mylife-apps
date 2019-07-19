@@ -6,14 +6,9 @@ import { refresh, getOperations } from './management';
 
 const showSuccess = message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success });
 
-export const createGroup   = createAction(actionTypes.MANAGEMENT_CREATE_GROUP);
-export const updateGroup   = createAction(actionTypes.MANAGEMENT_UPDATE_GROUP);
-export const deleteGroup   = createAction(actionTypes.MANAGEMENT_DELETE_GROUP);
-
 const internalManagementGetOperations = createAction(actionTypes.MANAGEMENT_GET_OPERATIONS);
 const internalManagementMoveOperations = createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS);
 const internalManagementOperationsSetNote = createAction(actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE);
-
 
 export const managementGetOperations = (value) => {
   return (dispatch) => {

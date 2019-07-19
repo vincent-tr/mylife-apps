@@ -6,11 +6,8 @@ export default constants.wrap({
   GET_ACCOUNTS                              : null,
   GET_GROUPS                                : null,
 
-  MANAGEMENT_QUERY_DELETE_GROUP             : null,
   MANAGEMENT_DELETE_GROUP                   : null,
-  MANAGEMENT_QUERY_UPDATE_GROUP             : null,
   MANAGEMENT_UPDATE_GROUP                   : null,
-  MANAGEMENT_QUERY_CREATE_GROUP             : null,
   MANAGEMENT_CREATE_GROUP                   : null,
   MANAGEMENT_SELECT_GROUP                   : null,
   MANAGEMENT_SET_MIN_DATE                   : null,

@@ -1,7 +1,7 @@
 'use strict';
 
 import { actionTypes } from '../constants';
-import {createGroup, updateGroup, deleteGroup,
+import {
   managementGetOperations, managementMoveOperations, managementOperationsSetNote, managementImportOperations, managementOperationsExecuteRules,
   reportingGetOperations
 } from '../actions/service';
@@ -10,30 +10,6 @@ import { io } from 'mylife-tools-ui';
 
 const dataService = (/*store*/) => next => action => {
   switch (action.type) {
-    case actionTypes.MANAGEMENT_QUERY_CREATE_GROUP:
-      next(io.call({
-        service: 'management',
-        method: 'createGroup',
-        object: action.payload
-      })).then(data => next(createGroup(data)), err => next(createGroup(err)));
-      break;
-
-    case actionTypes.MANAGEMENT_QUERY_UPDATE_GROUP:
-      next(io.call({
-        service: 'management',
-        method: 'updateGroup',
-        object: action.payload
-      })).then(data => next(updateGroup(data)), err => next(updateGroup(err)));
-      break;
-
-    case actionTypes.MANAGEMENT_QUERY_DELETE_GROUP:
-      next(io.call({
-        service: 'management',
-        method: 'deleteGroup',
-        id: action.payload
-      })).then(() => next(deleteGroup(action.payload)), err => next(deleteGroup(err)));
-      break;
-
     case actionTypes.MANAGEMENT_QUERY_OPERATIONS: {
       const query = {};
       if(action.payload.minDate) {
