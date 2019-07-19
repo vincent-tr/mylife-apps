@@ -1,7 +1,6 @@
 'use strict';
 
 import { React, services, io } from 'mylife-tools-ui';
-import dataService from './services/data-service';
 import reducers from './reducers';
 
 import { getAccounts, getGroups } from './actions/common';
@@ -12,7 +11,7 @@ import Home from './components/home';
 import Management from './components/management';
 import GroupAbsoluteByMonth from './components/reporting/group-absolute-by-month';
 
-services.initStore(reducers, dataService);
+services.initStore(reducers);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
