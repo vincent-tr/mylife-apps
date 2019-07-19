@@ -2,10 +2,12 @@
 
 let groupIdCount = 0;
 
-import { createAction, io } from 'mylife-tools-ui';
+import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { getGroupAndChildrenIds } from '../selectors/groups';
 import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
+
+const showSuccess = message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success });
 
 const querySelectGroup = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
 
@@ -129,21 +131,45 @@ export const refresh = () => {
 
 export const selectOperation = createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS);
 
-const queryImportOperations = createAction(actionTypes.MANAGEMENT_QUERY_IMPORT_OPERATIONS);
-
 export const importOperations = (account, file) => {
-  return (dispatch) => {
+  return async (dispatch) => {
+    const content = await readFile(file);
+
+    const count = await dispatch(io.call({
+      service: 'management',
+      method: 'operationsImport',
+      account,
+      content
+    }));
+
+    dispatch(getOperations());
+    dispatch(showSuccess(`${count} operation(s) importée(s)`));
+  };
+};
+
+
+export const operationsExecuteRules = () => {
+  return async (dispatch) => {
+    const count = await dispatch(io.call({
+      service: 'management',
+      method: 'operationsExecuteRules'
+    }));
+
+    dispatch(getOperations());
+    dispatch(showSuccess(`${count} operation(s) déplacée(s)`));
+  };
+};
+
+async function readFile(file) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
       const err = reader.error;
-      if(err) { return dispatch(queryImportOperations(err)); }
-      const content = reader.result;
-      dispatch(queryImportOperations({ account, content }));
+      if(err) { return reject(err); }
+      resolve(reader.result);
     };
 
     reader.readAsText(file);
-  };
-};
-
-export const operationsExecuteRules = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS_EXECUTE_RULES);
+  });
+}

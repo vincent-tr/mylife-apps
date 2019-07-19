@@ -1,10 +1,8 @@
 'use strict';
 
-import { createAction, dialogs } from 'mylife-tools-ui';
+import { createAction } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { refresh, getOperations } from './management';
-
-const showSuccess = message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success });
+import { refresh } from './management';
 
 const internalManagementGetOperations = createAction(actionTypes.MANAGEMENT_GET_OPERATIONS);
 const internalManagementMoveOperations = createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS);
@@ -28,20 +26,6 @@ export const managementOperationsSetNote = (value) => {
   return (dispatch) => {
     dispatch(internalManagementOperationsSetNote(value));
     dispatch(refresh());
-  };
-};
-
-export const managementImportOperations = (count) => {
-  return (dispatch) => {
-    dispatch(getOperations());
-    dispatch(showSuccess(`${count} operation(s) importée(s)`));
-  };
-};
-
-export const managementOperationsExecuteRules = (count) => {
-  return (dispatch) => {
-    dispatch(getOperations());
-    dispatch(showSuccess(`${count} operation(s) déplacée(s)`));
   };
 };
 

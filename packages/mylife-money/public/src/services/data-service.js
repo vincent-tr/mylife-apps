@@ -45,21 +45,6 @@ const dataService = (/*store*/) => next => action => {
       })).then(() => next(managementOperationsSetNote(action.payload)), err => next(managementOperationsSetNote(err)));
       break;
 
-    case actionTypes.MANAGEMENT_QUERY_IMPORT_OPERATIONS:
-      next(io.call({
-        service: 'management',
-        method: 'operationsImport',
-        ... action.payload
-      })).then(count => next(managementImportOperations(count)), err => next(managementImportOperations(err)));
-      break;
-
-    case actionTypes.MANAGEMENT_QUERY_OPERATIONS_EXECUTE_RULES:
-      next(io.call({
-        service: 'management',
-        method: 'operationsExecuteRules'
-      })).then(count => next(managementOperationsExecuteRules(count)), err => next(managementOperationsExecuteRules(err)));
-      break;
-
     case actionTypes.REPORTING_QUERY_OPERATIONS: {
       const query = {};
       if(action.payload.minDate) {
