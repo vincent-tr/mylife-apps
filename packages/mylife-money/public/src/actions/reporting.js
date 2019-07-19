@@ -3,7 +3,9 @@
 import { createAction, io } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 
-const getOperationsData = createAction(actionTypes.REPORTING_GET_OPERATIONS);
+const local = {
+  getOperations: createAction(actionTypes.REPORTING_GET_OPERATIONS)
+};
 
 export const refreshOperations = (minDate, maxDate, account) => {
   return async (dispatch) => {
@@ -15,7 +17,7 @@ export const refreshOperations = (minDate, maxDate, account) => {
       ... query
     }));
 
-    dispatch(getOperationsData(data));
+    dispatch(local.getOperations(data));
   };
 };
 

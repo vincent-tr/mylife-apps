@@ -7,17 +7,32 @@ import { actionTypes } from '../constants';
 import { getGroupAndChildrenIds } from '../selectors/groups';
 import { getSelectedGroupId, getSelectedOperations } from '../selectors/management';
 
-const showSuccess = message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success });
+const local = {
+  showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
+  selectGroup: createAction(actionTypes.MANAGEMENT_SELECT_GROUP),
+  createGroup: createAction(actionTypes.MANAGEMENT_CREATE_GROUP),
+  updateGroup: createAction(actionTypes.MANAGEMENT_UPDATE_GROUP),
+  deleteGroup: createAction(actionTypes.MANAGEMENT_DELETE_GROUP),
+  getOperations: createAction(actionTypes.MANAGEMENT_GET_OPERATIONS),
+  moveOperations: createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS),
+  operationsSetNote: createAction(actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE),
+  refresh: createAction(actionTypes.MANAGEMENT_REFRESH),
+  setMinDate: createAction(actionTypes.MANAGEMENT_SET_MIN_DATE),
+  setMaxDate: createAction(actionTypes.MANAGEMENT_SET_MAX_DATE),
+  setAccount: createAction(actionTypes.MANAGEMENT_SET_ACCOUNT)
+};
 
-const querySelectGroup = createAction(actionTypes.MANAGEMENT_SELECT_GROUP);
-
-export const createGroupData = createAction(actionTypes.MANAGEMENT_CREATE_GROUP);
-export const updateGroupData = createAction(actionTypes.MANAGEMENT_UPDATE_GROUP);
-export const deleteGroupData = createAction(actionTypes.MANAGEMENT_DELETE_GROUP);
+const refresh = () => {
+  return (dispatch, getState) => {
+    const state  = getState();
+    const groups = getGroupAndChildrenIds(state, { group: getSelectedGroupId(state) });
+    dispatch(local.refresh(groups));
+  };
+};
 
 export const selectGroup = (id) => {
   return (dispatch) => {
-    dispatch(querySelectGroup(id));
+    dispatch(local.selectGroup(id));
     dispatch(refresh());
   };
 };
@@ -36,7 +51,7 @@ export const createGroup = () => {
       object: newGroup
     }));
 
-    dispatch(createGroupData(data));
+    dispatch(local.createGroup(data));
   };
 };
 
@@ -50,7 +65,7 @@ export const deleteGroup = () => {
       id
     }));
 
-    dispatch(deleteGroupData(id));
+    dispatch(local.deleteGroup(id));
   };
 };
 
@@ -62,13 +77,9 @@ export const updateGroup = (group) => {
       object: group
     }));
 
-    dispatch(updateGroupData(data));
+    dispatch(local.updateGroup(data));
   };
 };
-
-const getOperationsData = createAction(actionTypes.MANAGEMENT_GET_OPERATIONS);
-const moveOperationsData = createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS);
-const operationsSetNoteData = createAction(actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE);
 
 export const getOperations = () => {
   return async (dispatch, getState) => {
@@ -81,24 +92,10 @@ export const getOperations = () => {
       ... query
     }));
 
-    dispatch(getOperationsData(data));
+    dispatch(local.getOperations(data));
     dispatch(refresh());
   };
 };
-
-function formatOperationsQuery({ minDate, maxDate, account }) {
-  const query = {};
-  if(minDate) {
-    query.minDate = minDate.valueOf();
-  }
-  if(maxDate) {
-    query.maxDate = maxDate.valueOf();
-  }
-  if(account) {
-    query.account = account;
-  }
-  return query;
-}
 
 export const moveOperations = (group) => {
   return async (dispatch, getState) => {
@@ -111,7 +108,7 @@ export const moveOperations = (group) => {
       operations
     }));
 
-    dispatch(moveOperationsData({ group, operations }));
+    dispatch(local.moveOperations({ group, operations }));
     dispatch(refresh());
   };
 };
@@ -127,42 +124,29 @@ export const operationsSetNote = (note) => {
       operations
     }));
 
-    dispatch(operationsSetNoteData({ note, operations }));
+    dispatch(local.operationsSetNote({ note, operations }));
     dispatch(refresh());
   };
 };
 
-const queryRefresh    = createAction(actionTypes.MANAGEMENT_REFRESH);
-const setMinDateData = createAction(actionTypes.MANAGEMENT_SET_MIN_DATE);
-const setMaxDateData = createAction(actionTypes.MANAGEMENT_SET_MAX_DATE);
-const setAccountData = createAction(actionTypes.MANAGEMENT_SET_ACCOUNT);
-
 export const setMinDate = (value) => {
   return (dispatch) => {
-    dispatch(setMinDateData(value));
+    dispatch(local.setMinDate(value));
     dispatch(getOperations());
   };
 };
 
 export const setMaxDate = (value) => {
   return (dispatch) => {
-    dispatch(setMaxDateData(value));
+    dispatch(local.setMaxDate(value));
     dispatch(getOperations());
   };
 };
 
 export const setAccount = (value) => {
   return (dispatch) => {
-    dispatch(setAccountData(value));
+    dispatch(local.setAccount(value));
     dispatch(getOperations());
-  };
-};
-
-export const refresh = () => {
-  return (dispatch, getState) => {
-    const state  = getState();
-    const groups = getGroupAndChildrenIds(state, { group: getSelectedGroupId(state) });
-    dispatch(queryRefresh(groups));
   };
 };
 
@@ -180,7 +164,7 @@ export const importOperations = (account, file) => {
     }));
 
     dispatch(getOperations());
-    dispatch(showSuccess(`${count} operation(s) importée(s)`));
+    dispatch(local.showSuccess(`${count} operation(s) importée(s)`));
   };
 };
 
@@ -192,9 +176,23 @@ export const operationsExecuteRules = () => {
     }));
 
     dispatch(getOperations());
-    dispatch(showSuccess(`${count} operation(s) déplacée(s)`));
+    dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
   };
 };
+
+function formatOperationsQuery({ minDate, maxDate, account }) {
+  const query = {};
+  if(minDate) {
+    query.minDate = minDate.valueOf();
+  }
+  if(maxDate) {
+    query.maxDate = maxDate.valueOf();
+  }
+  if(account) {
+    query.account = account;
+  }
+  return query;
+}
 
 async function readFile(file) {
   return new Promise((resolve, reject) => {
