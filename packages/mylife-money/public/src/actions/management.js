@@ -66,57 +66,94 @@ export const updateGroup = (group) => {
   };
 };
 
-const queryOperations = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS);
-const queryMoveOperations = createAction(actionTypes.MANAGEMENT_QUERY_MOVE_OPERATIONS);
-const queryOperationsSetNote = createAction(actionTypes.MANAGEMENT_QUERY_OPERATIONS_SET_NOTE);
+const getOperationsData = createAction(actionTypes.MANAGEMENT_GET_OPERATIONS);
+const moveOperationsData = createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS);
+const operationsSetNoteData = createAction(actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE);
 
 export const getOperations = () => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const management = getState().management;
-    dispatch(queryOperations({
-      minDate : management.minDate,
-      maxDate : management.maxDate,
-      account : management.account
+    const query = formatOperationsQuery(management);
+
+    const data = await dispatch(io.call({
+      service: 'management',
+      method: 'getOperations',
+      ... query
     }));
+
+    dispatch(getOperationsData(data));
+    dispatch(refresh());
   };
 };
 
+function formatOperationsQuery({ minDate, maxDate, account }) {
+  const query = {};
+  if(minDate) {
+    query.minDate = minDate.valueOf();
+  }
+  if(maxDate) {
+    query.maxDate = maxDate.valueOf();
+  }
+  if(account) {
+    query.account = account;
+  }
+  return query;
+}
+
 export const moveOperations = (group) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const operations = getSelectedOperations(getState()).map(op => op.id);
-    dispatch(queryMoveOperations({ group, operations }));
+
+    await dispatch(io.call({
+      service: 'management',
+      method: 'moveOperations',
+      group,
+      operations
+    }));
+
+    dispatch(moveOperationsData({ group, operations }));
+    dispatch(refresh());
   };
 };
 
 export const operationsSetNote = (note) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const operations = getSelectedOperations(getState()).map(op => op.id);
-    dispatch(queryOperationsSetNote({ note, operations }));
+
+    await dispatch(io.call({
+      service: 'management',
+      method: 'operationsSetNote',
+      note,
+      operations
+    }));
+
+    dispatch(operationsSetNoteData({ note, operations }));
+    dispatch(refresh());
   };
 };
 
 const queryRefresh    = createAction(actionTypes.MANAGEMENT_REFRESH);
-const querySetMinDate = createAction(actionTypes.MANAGEMENT_SET_MIN_DATE);
-const querySetMaxDate = createAction(actionTypes.MANAGEMENT_SET_MAX_DATE);
-const querySetAccount = createAction(actionTypes.MANAGEMENT_SET_ACCOUNT);
+const setMinDateData = createAction(actionTypes.MANAGEMENT_SET_MIN_DATE);
+const setMaxDateData = createAction(actionTypes.MANAGEMENT_SET_MAX_DATE);
+const setAccountData = createAction(actionTypes.MANAGEMENT_SET_ACCOUNT);
 
 export const setMinDate = (value) => {
   return (dispatch) => {
-    dispatch(querySetMinDate(value));
+    dispatch(setMinDateData(value));
     dispatch(getOperations());
   };
 };
 
 export const setMaxDate = (value) => {
   return (dispatch) => {
-    dispatch(querySetMaxDate(value));
+    dispatch(setMaxDateData(value));
     dispatch(getOperations());
   };
 };
 
 export const setAccount = (value) => {
   return (dispatch) => {
-    dispatch(querySetAccount(value));
+    dispatch(setAccountData(value));
     dispatch(getOperations());
   };
 };
@@ -146,7 +183,6 @@ export const importOperations = (account, file) => {
     dispatch(showSuccess(`${count} operation(s) importée(s)`));
   };
 };
-
 
 export const operationsExecuteRules = () => {
   return async (dispatch) => {
