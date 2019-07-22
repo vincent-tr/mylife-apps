@@ -8,7 +8,7 @@ const logger = createLogger('mylife:money:business');
 exports.getAccounts = async () => {
   const accounts = getDatabaseCollection('accounts');
   const records = await accounts.find({});
-  return await records.toArray();
+  return formatIds(await records.toArray());
 };
 
 exports.createAccount = async (code, display) => {
@@ -25,14 +25,14 @@ exports.createAccount = async (code, display) => {
 exports.getGroups = async () => {
   const groups = getDatabaseCollection('groups');
   const records = await groups.find({});
-  return await records.toArray();
+  return formatIds(await records.toArray());
 };
 
 exports.createGroup = async group => {
   group.parent = group.parent && new ObjectID(group.parent);
   const groups = getDatabaseCollection('groups');
   await groups.insertOne(group);
-  return group;
+  return formatId(group);
 };
 
 exports.updateGroup = async group => {
@@ -41,7 +41,7 @@ exports.updateGroup = async group => {
   delete group.id;
   const groups = getDatabaseCollection('groups');
   await groups.replaceOne({ _id: group._id }, group);
-  return group;
+  return formatId(group);
 };
 
 exports.deleteGroup = async id => {
@@ -73,7 +73,7 @@ exports.getOperations = async (minDate, maxDate, account) => {
   }
 
   const records = await operations.find(criteria);
-  return await records.toArray();
+  return formatIds(await records.toArray());
 };
 
 exports.operationsMove = async (groupId, operationIds) => {
@@ -93,3 +93,16 @@ exports.operationsSetNote = async (note, operationIds) => {
     { multi: true }
   );
 };
+
+function formatId(obj) {
+  for(const [key, value] of Object.entries(obj)) {
+    if(value instanceof ObjectID) {
+      obj[key] = value.toString();
+    }
+  }
+  return obj;
+}
+
+function formatIds(arr) {
+  return arr.map(formatId);
+}
