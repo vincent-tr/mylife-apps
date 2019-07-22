@@ -94,12 +94,12 @@ const Header = () => {
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='DD/MM/YYYY' />
+      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
-      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='DD/MM/YYYY' />
+      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
       <ToolbarSeparator />
 

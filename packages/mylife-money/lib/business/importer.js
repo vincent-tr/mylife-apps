@@ -7,7 +7,7 @@ const { createLogger, getDatabaseCollection, dbObjects } = require('mylife-tools
 const { ObjectID } = dbObjects;
 const logger = createLogger('mylife:money:importer');
 
-const parseDate   = (input) => moment(input, 'DD/MM/YYYY').toDate();
+const parseDate   = (input) => moment(input, 'dd/MM/yyyy').toDate();
 const parseNumber = (input) => parseFloat(input.replace(',','.'));
 
 exports.operationsImport = async (account, data) => {
