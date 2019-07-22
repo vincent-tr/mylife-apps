@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+import DateFnsUtils from '@date-io/date-fns';
 
 const MuiUtilsProvider = (props) => (
-  <MuiPickersUtilsProvider utils={MomentUtils} {...props} />
+  <MuiPickersUtilsProvider utils={DateFnsUtils} {...props} />
 );
 
 export default MuiUtilsProvider;
