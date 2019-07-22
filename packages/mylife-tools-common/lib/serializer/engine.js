@@ -1,6 +1,5 @@
 'use strict';
 
-
 exports.serialize = serialize;
 exports.deserialize = deserialize;
 exports.addPlugin = addPlugin;

@@ -19,6 +19,6 @@ addPlugin({
 addPlugin({
   name: 'date',
   is: payload => payload instanceof Date,
-  serialize: payload => payload.value,
+  serialize: payload => payload.valueOf(),
   deserialize: raw => new Date(raw)
 });
