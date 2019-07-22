@@ -27,8 +27,8 @@ export default handleActions({
       all: state.operations.all.withMutations(map => {
         map.clear();
         for(const raw of action.payload) {
-          const { _id: id, date, ...props } = raw;
-          const operation = Object.assign({ id, date: Date.parse(date) }, props);
+          const { _id: id, ...props } = raw;
+          const operation = { id, ...props };
           map.set(id, operation);
         }
       }),

@@ -83,8 +83,7 @@ export const updateGroup = (group) => {
 
 export const getOperations = () => {
   return async (dispatch, getState) => {
-    const filters = getFilters(getState());
-    const query = formatOperationsQuery(filters);
+    const query = getFilters(getState());
 
     const data = await dispatch(io.call({
       service: 'management',
@@ -179,20 +178,6 @@ export const operationsExecuteRules = () => {
     dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
   };
 };
-
-function formatOperationsQuery({ minDate, maxDate, account }) {
-  const query = {};
-  if(minDate) {
-    query.minDate = minDate.valueOf();
-  }
-  if(maxDate) {
-    query.maxDate = maxDate.valueOf();
-  }
-  if(account) {
-    query.account = account;
-  }
-  return query;
-}
 
 async function readFile(file) {
   return new Promise((resolve, reject) => {
