@@ -62,11 +62,11 @@ exports.getOperations = async (minDate, maxDate, account) => {
   const criteria = {};
   if(minDate) {
     criteria.date = criteria.date || {};
-    criteria.date.$gte = new Date(parseInt(minDate, 10));
+    criteria.date.$gte = minDate;
   }
   if(maxDate) {
     criteria.date = criteria.date || {};
-    criteria.date.$lte = new Date(parseInt(maxDate, 10));
+    criteria.date.$lte = maxDate;
   }
   if(account) {
     criteria.account = { $eq: new ObjectID(account) };
