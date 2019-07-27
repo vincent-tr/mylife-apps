@@ -34,4 +34,10 @@ function registerEntity(definition) {
 
   const entity = new Entity(definition);
   registry.registerEntity(entity);
+
+  registerDatatypeReference(entity);
 };
+
+function registerDatatypeReference(entity) {
+  // TODO
+}
