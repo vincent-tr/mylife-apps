@@ -2,8 +2,8 @@
 'use strict';
 
 const registry = require('./engine/registry');
-const Datatype = require('./engine/datatype');
-const Entity = require('./engine/entity');
+const { Datatype } = require('./engine/datatype');
+const { Entity } = require('./engine/entity');
 const builtinDatatypes = require('./builtins/datatypes'):
 
 exports.registerDatatype = registerDatatype;
