@@ -5,8 +5,8 @@ module.exports = {
   parent: 'base',
   name: 'Compte bancaire',
   fields: [
-    { id: 'code', name: 'Code', datatype: 'name' },
-    { id: 'display', name: 'Affichage', datatype: 'name' }
+    { id: 'code', name: 'Code', datatype: 'name', constraints: ['not-null', 'not-empty'] },
+    { id: 'display', name: 'Affichage', datatype: 'name', constraints: ['not-null', 'not-empty'] }
   ],
   display: obj => obj.display
 };
