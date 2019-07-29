@@ -55,6 +55,23 @@ exports.Validator = class Validator {
     return value;
   }
 
+  validateUnique(list, argumentName) {
+    const uniques = new Set();
+    const duplicates = new Set();
+    for(const value of list) {
+      if(uniques.has(value)) {
+        duplicates.add(value);
+        continue;
+      }
+      uniques.add(value);
+    }
+    if(!duplicates.size) {
+      return;
+    }
+    const duplicatesDisplay = Array.from(duplicates).join(', ');
+    throw new Error(`Metadata validation failed: ${argumentName} has duplicates (${duplicatesDisplay}) for ${this._objectString}`);
+  }
+
   validateConstraints(value) {
     return this.validate(value, 'constraints', { type: 'array', defaultValue: [] });
   }
