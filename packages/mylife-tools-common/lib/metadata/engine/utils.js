@@ -1,15 +1,15 @@
 'use strict';
 
-exports.lock = (object) => {
+exports.lock = (obj) => {
 
   const config = { enumerable: false };
   for (const propName of Object.getOwnPropertyNames(obj)) {
     if(propName.startsWith('_')) {
-      Object.defineProperty(obj, propName, { enumerable: false });
+      Object.defineProperty(obj, propName, config);
     }
   }
 
-  Object.freeze(this);
+  Object.freeze(obj);
 };
 
 exports.Validator = class Validator {
@@ -19,10 +19,10 @@ exports.Validator = class Validator {
 
   validateId(id) {
     if(!id) {
-      throw new Error(`Metadata validation failed: id is mandatory for ${objectType}`);
+      throw new Error(`Metadata validation failed: id is mandatory for ${this._objectType}`);
     }
     if(typeof id !== 'string') {
-      throw new Error(`Metadata validation failed: id must be 'string' for ${objectType}`);
+      throw new Error(`Metadata validation failed: id must be 'string' for ${this._objectType}`);
     }
     this._id = id;
     this._objectString = `${this._objectType}(${this._id})`;
@@ -43,7 +43,7 @@ exports.Validator = class Validator {
       const itemType = matchArray[1];
       this.validate(value, argumentName, { type: 'array', mandatory });
       for(const [i, item] of (value || []).entries()) {
-        this.validate(value, `${argumentName}[${i}]`, { type: itemType, mandatory: true });
+        this.validate(item, `${argumentName}[${i}]`, { type: itemType, mandatory: true });
       }
       return value;
     }

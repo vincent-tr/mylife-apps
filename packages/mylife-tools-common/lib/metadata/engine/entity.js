@@ -2,7 +2,7 @@
 
 const { Constraint } = require('./constraint');
 const registry = require('./registry');
-const { lock, Validator } = reqwuire('./utils');
+const { lock, Validator } = require('./utils');
 
 class Field {
   constructor(definition) {
@@ -38,7 +38,7 @@ class Field {
   get constraints() {
     return this._constraints;
   }
-};
+}
 
 exports.Entity = class Entity {
   constructor(definition) {
@@ -56,7 +56,7 @@ exports.Entity = class Entity {
     this._display = validator.validate(definition.display, 'display', { type: 'function' });
 
     const parentFields = this._parent ? this._parent.fields : [];
-    const localFields = validator.validate(value, 'fields', { type: 'array', defaultValue: [] }).map(fdef => new Field(fdef));
+    const localFields = validator.validate(definition.fields, 'fields', { type: 'array', defaultValue: [] }).map(fdef => new Field(fdef));
     this._fields = [...parentFields, ...localFields];
 
     const parentConstraints = this._parent ? this._parent.constraints : [];

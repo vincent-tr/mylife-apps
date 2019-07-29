@@ -4,7 +4,7 @@
 const registry = require('./engine/registry');
 const { Datatype } = require('./engine/datatype');
 const { Entity } = require('./engine/entity');
-const builtinDatatypes = require('./builtins/datatypes'):
+const builtins = require('./builtins');
 
 exports.registerDatatype = registerDatatype;
 exports.findDatatype = registry.findDatatype;
@@ -14,8 +14,12 @@ exports.registerEntity = registerEntity;
 exports.findEntity = registry.findEntity;
 exports.getEntity = registry.getEntity;
 
-for(const definition of builtinDatatypes) {
+for(const definition of builtins.datatypes) {
   registerDatatype(definition);
+}
+
+for(const definition of builtins.entities) {
+  registerEntity(definition);
 }
 
 function registerDatatype(definition) {
@@ -25,7 +29,7 @@ function registerDatatype(definition) {
 
   const datatype = new Datatype(definition);
   registry.registerDatatype(datatype);
-};
+}
 
 function registerEntity(definition) {
   if(registry.findEntity(definition.id)) {
@@ -35,9 +39,6 @@ function registerEntity(definition) {
   const entity = new Entity(definition);
   registry.registerEntity(entity);
 
-  registerDatatypeReference(entity);
-};
-
-function registerDatatypeReference(entity) {
-  // TODO
+  // register its reference type
+  registerDatatype({ id: entity.id, reference: entity.id });
 }

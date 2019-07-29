@@ -1,6 +1,6 @@
 'use strict';
 
-const { lock, Validator } = reqwuire('./utils');
+const { lock, Validator } = require('./utils');
 
 exports.Constraint = class Constraint {
   constructor(definition) {

@@ -2,14 +2,14 @@
 
 const { Constraint } = require('./constraint');
 const registry = require('./registry');
-const { lock, Validator } = reqwuire('./utils');
+const { lock, Validator } = require('./utils');
 
 exports.Datatype = class Datatype {
   constructor(definition) {
     const validator = new Validator(this);
 
     this._id = validator.validateId(definition.id);
-    this._primitive = definition.primitive:
+    this._primitive = definition.primitive;
 
     if(definition.enum) {
       this._primitive = 'enum'
