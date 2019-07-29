@@ -6,5 +6,6 @@ exports.datatypes = [
   { id: 'text', jstype: 'string' },
   { id: 'amount', jstype: 'number' },
   { id: 'date', jstype: 'timestamp' },
-  { id: 'datetime', jstype: 'timestamp' }
+  { id: 'datetime', jstype: 'timestamp' },
+  { id: 'any', jstype: 'any' }
 ];
