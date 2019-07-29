@@ -8,33 +8,27 @@ exports.Datatype = class Datatype {
   constructor(definition) {
     const validator = new Validator(this);
 
-    validator.validateId(definition.id);
-    this._id = definition.id;
-
+    this._id = validator.validateId(definition.id);
     this._primitive = definition.primitive:
 
     if(definition.enum) {
-      validator.validate(definition.enum, 'enum', { type: 'string-array', mandatory: true });
       this._primitive = 'enum'
-      this._values = definition.enum;
+      this._values = validator.validate(definition.enum, { type: 'string-array', mandatory: true });
     }
 
     if(definition.reference) {
-      validator.validate(definition.reference, 'reference', { type: 'string', mandatory: true });
       this._primitive = 'reference';
-      this._target = definition.reference;
+      this._target = validator.validate(definition.reference, 'reference', { type: 'string', mandatory: true });
     }
 
     if(definition.collection) {
-      validator.validate(definition.collection, 'reference', { type: 'string', mandatory: true });
       this._primitive = 'collection';
-      this._target = definition.collection;
+      this._target = validator.validate(definition.collection, 'reference', { type: 'string', mandatory: true });
     }
 
     validator.validate(this._primitive, 'primitive', { type: 'string', mandatory: true });
 
-    validator.validate(definition.constraints, 'constraints', { type: 'array' });
-    this._constraints = (definition.constraints || []).map(cdef => new Constraint(cdef));
+    this._constraints = validator.validate(definition.constraints, 'constraints', { type: 'array', defaultValue: [] }).map(cdef => new Constraint(cdef));
 
     Object.freeze(this._constraints);
     lock(this);

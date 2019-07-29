@@ -26,13 +26,16 @@ exports.Validator = class Validator {
     }
     this._id = id;
     this._objectString = `${this._objectType}(${this._id})`;
+
+    return id;
   }
 
-  validate(value, argumentName, { type, mandatory = false }) {
+  validate(value, argumentName, { type, mandatory = false, defaultValue }) {
     if(value === null || value === undefined) {
       if(mandatory) {
         throw new Error(`Metadata validation failed: ${argumentName} is mandatory for ${this._objectString}`);
       }
+      return defaultValue;
     }
 
     const matchArray = /^(.*)-array$/.exec(type);
@@ -42,12 +45,14 @@ exports.Validator = class Validator {
       for(const [i, item] of (value || []).entries()) {
         this.validate(value, `${argumentName}[${i}]`, { type: itemType, mandatory: true });
       }
-      return;
+      return value;
     }
 
     if(getType(value) !== type) {
       throw new Error(`Metadata validation failed: ${argumentName} must be '${type}' for ${this._objectString}`);
     }
+
+    return value;
   }
 };
 
