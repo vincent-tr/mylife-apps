@@ -28,7 +28,7 @@ exports.Datatype = class Datatype {
 
     validator.validate(this._primitive, 'primitive', { type: 'string', mandatory: true });
 
-    this._constraints = validator.validate(definition.constraints, 'constraints', { type: 'array', defaultValue: [] }).map(cdef => new Constraint(cdef));
+    this._constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
 
     Object.freeze(this._constraints);
     lock(this);

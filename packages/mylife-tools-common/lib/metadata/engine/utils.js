@@ -54,6 +54,10 @@ exports.Validator = class Validator {
 
     return value;
   }
+
+  validateConstraints(value) {
+    return this.validate(value, 'constraints', { type: 'array', defaultValue: [] });
+  }
 };
 
 function getType(obj) {
