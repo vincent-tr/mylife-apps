@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "sideEffects": false,
   "scripts": {
+    "lint": "./node_modules/.bin/eslint lib/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/vincent-tr/mylife-tools-common/issues"
   },
-  "homepage": "https://github.com/vincent-tr/mylife-tools-common#readme"
+  "homepage": "https://github.com/vincent-tr/mylife-tools-common#readme",
+  "dependencies": {
+    "eslint": "^6.1.0"
+  }
 }
