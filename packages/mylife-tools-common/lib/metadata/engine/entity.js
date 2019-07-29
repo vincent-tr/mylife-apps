@@ -45,13 +45,23 @@ exports.Entity = class Entity {
     const validator = new Validator(this);
 
     this._id = validator.validateId(definition.id);
-    this._parent = validator.validate(definition.parent, 'parent', { type: 'string' });
+
+    const parent = validator.validate(definition.parent, 'parent', { type: 'string' });
+    if(parent) {
+      this._parent = registry.getEntity(parent);
+    }
+
     this._name = validator.validate(definition.name, 'name', { type: 'string' }, this._id);
     this._description = validator.validate(definition.description, 'description', { type: 'string' });
     this._display = validator.validate(definition.display, 'display', { type: 'function' });
 
-    this._fields = validator.validate(value, 'fields', { type: 'array', defaultValue: [] }).map(fdef => new Field(fdef));
-    this._constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
+    const parentFields = this._parent ? this._parent.fields : [];
+    const localFields = validator.validate(value, 'fields', { type: 'array', defaultValue: [] }).map(fdef => new Field(fdef));
+    this._fields = [...parentFields, ...localFields];
+
+    const parentConstraints = this._parent ? this._parent.constraints : [];
+    const localConstraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
+    this._constraints = [...parentConstraints, ...localConstraints];
 
     validator.validateUnique(this._fields.map(({ id }) => id), 'fields');
     this._fieldsById = new Map();
@@ -70,10 +80,7 @@ exports.Entity = class Entity {
   }
 
   get parent() {
-    if(!this._parent) {
-      return;
-    }
-    return registry.getEntity(this._parent);
+    return this._parent;
   }
 
   get name() {
