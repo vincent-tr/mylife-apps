@@ -56,7 +56,7 @@ exports.Datatype = class Datatype {
     return registry.getEntity(this._target);
   }
 
-  constraints() {
+  get constraints() {
     return this._constraints;
   }
 };
