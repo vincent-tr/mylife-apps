@@ -2,78 +2,100 @@
 
 const csv    = require('csv-parse/lib/sync');
 const moment = require('moment');
-const { createLogger, getDatabaseCollection, dbObjects } = require('mylife-tools-server');
+const { createLogger, getStoreCollection } = require('mylife-tools-server');
 
-const { ObjectID } = dbObjects;
 const logger = createLogger('mylife:money:importer');
 
 const parseDate   = (input) => moment(input, 'dd/MM/yyyy').toDate();
 const parseNumber = (input) => parseFloat(input.replace(',','.'));
 
-exports.operationsImport = async (account, data) => {
+exports.operationsImport = (account, data) => {
 
+  let records = parseRecords(account, data);
+  records = filterExisting(records);
+  insertRecords(records);
+
+  logger.info(`Import done, ${records.length} operations added`);
+  return records.length;
+};
+
+function parseRecords(account, data) {
   const raw = csv(data, {
     delimiter : ';',
     columns   : ['operationDate', 'valueDate', 'debit', 'credit', 'label', 'balance'],
     from      : 2 // skip headers
   });
 
-  const operations = getDatabaseCollection('operations');
-
-  let records = raw.map(r => ({
+  return raw.map(r => ({
     date    : parseDate(r.operationDate),
     amount  : parseNumber(r.debit ? r.debit : r.credit),
     label   : r.label,
     account
   }));
+}
 
-  const lastOperation = await operations.findOne({}, { sort : { date : -1 }, fields: { date : 1 } });
+function findLastOperation() {
+  const operations = getStoreCollection('operations');
+  let lastOperation;
+  for(const operation of operations.list()) {
+    if(!lastOperation || operation.date > lastOperation.date) {
+      lastOperation = operation;
+    }
+  }
+  return lastOperation;
+}
 
-  if(lastOperation) {
-    // "merge" the day, then use all after
-    const lastOperationDate = lastOperation.date;
-    const lastDayOperations = await(await operations.find({ date: lastOperationDate })).toArray();
-    const opHashSet = new Set(lastDayOperations.map(op => `${op.amout}|${op.account}|${op.label}`));
+function filterExisting(records) {
+  const operations = getStoreCollection('operations');
+  const lastOperation = findLastOperation();
 
-    records = records.filter(rec => {
-      if(rec.date < lastOperationDate) {
-        return false;
-      }
-      if(rec.date > lastOperationDate) {
-        return true;
-      }
-
-      // lookup into lastDayOperations by amount/label/account
-      const recHash = `${rec.amout}|${rec.account}|${rec.label}`;
-      return !opHashSet.has(recHash);
-    });
+  if(!lastOperation) {
+    return records;
   }
 
-  if(records.length) {
-    await operations.insertMany(records);
+  // "merge" the day, then use all after
+  const lastOperationDate = lastOperation.date;
+  const lastDayOperations = operations.filter(operation => operation.date === lastOperationDate);
+  const opHashSet = new Set(lastDayOperations.map(op => `${op.amout}|${op.account}|${op.label}`));
+
+  return records.filter(rec => {
+    if(rec.date < lastOperationDate) {
+      return false;
+    }
+    if(rec.date > lastOperationDate) {
+      return true;
+    }
+
+    // lookup into lastDayOperations by amount/label/account
+    const recHash = `${rec.amout}|${rec.account}|${rec.label}`;
+    return !opHashSet.has(recHash);
+  });
+}
+
+function insertRecords(records) {
+  const operations = getStoreCollection('operations');
+  for(const record of records) {
+    operations.set(operations.entity.newObject(record));
   }
+}
 
-  logger.info(`Import done, ${records.length} operations added`);
-  return records.length;
-};
-
-exports.executeRules = async () => {
+exports.executeRules = () => {
   logger.info('Executing rules');
 
-  const operationCollection = getDatabaseCollection('operations');
-  const groupCollection = getDatabaseCollection('groups');
+  const operations = getStoreCollection('operations');
+  const groups = getStoreCollection('groups');
 
-  const operations = await(await operationCollection.find({ group : null })).toArray();
-  const groups = await(await groupCollection.find({})).toArray();
+  const unsortedOperations = operations.filter(operation => !operation.group);
+  const ruleExecutor = buildRulesExecutor(groups.list());
 
-  const ruleExecutor = buildRulesExecutor(groups);
-
+  const groupField = operations.entity.getField('group');
   let opCount = 0;
-  for(const operation of operations) {
+  for(const operation of unsortedOperations) {
     const group = ruleExecutor(operation);
     if(!group) { continue; }
+
     logger.info(`Moving operation ${operation._id} to group ${group._id} (${group.display})`);
-    await operationCollection.updateOne({ _id: operation._id}, { $set: { group: group._id } });
+    operations.set(groupField.setValue(operation, group._id));
     ++opCount;
   }
 
