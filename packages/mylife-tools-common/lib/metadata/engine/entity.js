@@ -163,10 +163,23 @@ exports.Entity = class Entity {
     return this._constraints;
   }
 
-  newObject() {
+  newObject(values = {}) {
     let object = { _entity: this._id };
     for(const field of this._fields) {
-      object = field.resetValue(object);
+      if(values.hasOwnProperty(field.id)) {
+        const value = values[field.id];
+        object = field.setValue(object, value);
+      } else {
+        object = field.resetValue(object);
+      }
+    }
+    return object;
+  }
+
+  setValues(object, values) {
+    for(const [key, value] of Object.entries(values)) {
+      const field = this.getField(key);
+      object = field.setValue(object, value);
     }
     return object;
   }
