@@ -83,7 +83,7 @@ class Field {
 function setValueImpl(object, propChain, value) {
   const [ prop, ... chain ] = propChain;
   if(chain.length) {
-    value = setNewValue(object[prop] || {}, chain, value);
+    value = setValueImpl(object[prop] || {}, chain, value);
   }
   return Object.freeze(Object.assign({}, object, { [prop] : value }));
 }
@@ -166,19 +166,22 @@ exports.Entity = class Entity {
   newObject(values = {}) {
     let object = { _entity: this._id };
     for(const field of this._fields) {
-      if(values.hasOwnProperty(field.id)) {
-        const value = values[field.id];
-        object = field.setValue(object, value);
-      } else {
+      const value = field.getValue(values);
+      if(value === undefined) {
         object = field.resetValue(object);
+      } else {
+        object = field.setValue(object, value);
       }
     }
     return object;
   }
 
   setValues(object, values) {
-    for(const [key, value] of Object.entries(values)) {
-      const field = this.getField(key);
+    for(const field of this._fields) {
+      const value = field.getValue(values);
+      if(value === undefined) {
+        continue;
+      }
       object = field.setValue(object, value);
     }
     return object;
