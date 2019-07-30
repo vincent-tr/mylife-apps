@@ -1,14 +1,13 @@
 'use strict';
 
-const { createLogger, getDatabaseCollection, dbObjects } = require('mylife-tools-server');
+const { createLogger, getDatabaseCollection, getStoreCollection, dbObjects } = require('mylife-tools-server');
 
 const { ObjectID } = dbObjects;
 const logger = createLogger('mylife:money:business');
 
 exports.getAccounts = async () => {
-  const accounts = getDatabaseCollection('accounts');
-  const records = await accounts.find({});
-  return formatIds(await records.toArray());
+  const accounts = getStoreCollection('accounts');
+  return accounts.list();
 };
 
 exports.createAccount = async (code, display) => {
@@ -23,9 +22,8 @@ exports.createAccount = async (code, display) => {
 };
 
 exports.getGroups = async () => {
-  const groups = getDatabaseCollection('groups');
-  const records = await groups.find({});
-  return formatIds(await records.toArray());
+  const groups = getStoreCollection('groups');
+  return groups.list();
 };
 
 exports.createGroup = async group => {
@@ -58,22 +56,19 @@ exports.deleteGroup = async id => {
 };
 
 exports.getOperations = async (minDate, maxDate, account) => {
-  const operations = getDatabaseCollection('operations');
-  const criteria = {};
-  if(minDate) {
-    criteria.date = criteria.date || {};
-    criteria.date.$gte = minDate;
-  }
-  if(maxDate) {
-    criteria.date = criteria.date || {};
-    criteria.date.$lte = maxDate;
-  }
-  if(account) {
-    criteria.account = { $eq: new ObjectID(account) };
-  }
-
-  const records = await operations.find(criteria);
-  return formatIds(await records.toArray());
+  const operations = getStoreCollection('operations');
+  return operations.filter(operation => {
+    if(minDate && operation.minDate < minDate) {
+      return false;
+    }
+    if(maxDate && operation.maxDate > maxDate) {
+      return false;
+    }
+    if(account && operation.account !== account) {
+      return false;
+    }
+    return true;
+  });
 };
 
 exports.operationsMove = async (groupId, operationIds) => {
