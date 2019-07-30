@@ -12,6 +12,7 @@ class Field {
     this._name = validator.validate(definition.name, 'name', { type: 'string' }, this._id);
     this._description = validator.validate(definition.description, 'description', { type: 'string' });
     this._datatype = validator.validate(definition.datatype, 'datatype', { type: 'string', mandatory: true });
+    this._initialValue = typeof definition.initial === undefined ? null : definition.initial;
 
     this._constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
 
@@ -37,12 +38,34 @@ class Field {
     return registry.getDatatype(this._datatype);
   }
 
+  get initialValue() {
+    return this._initialValue;
+  }
+
   get constraints() {
     return this._constraints;
   }
 
   setValue(object, value) {
     return setValueImpl(object, this._propChain, value);
+  }
+
+  resetValue(object) {
+    return this.setValue(object, this._initialValue);
+  }
+
+  setValueMutable(object, value) {
+    const chain = Array.from(this._propChain);
+    const last = chain.pop();
+    let current = object;
+    for(const part of chain) {
+      let val = current[part];
+      if(!val) {
+        current[part] = val = {};
+      }
+      current = value;
+    }
+    current[last] = value;
   }
 
   getValue(object) {
@@ -138,5 +161,13 @@ exports.Entity = class Entity {
 
   get constraints() {
     return this._constraints;
+  }
+
+  newObject() {
+    let object = { _entity: this._id };
+    for(const field of this._fields) {
+      object = field.resetValue(object);
+    }
+    return object;
   }
 };
