@@ -15,6 +15,8 @@ class Field {
 
     this._constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
 
+    this._propChain = this._id.split('.');
+
     Object.freeze(this._constraints);
     lock(this);
   }
@@ -38,6 +40,29 @@ class Field {
   get constraints() {
     return this._constraints;
   }
+
+  setValue(object, value) {
+    return setValueImpl(object, this._propChain, value);
+  }
+
+  getValue(object) {
+    let current = object;
+    for(const prop of this._propChain) {
+      current = current[prop];
+      if(current === undefined || current === null) {
+        break;
+      }
+    }
+    return current;
+  }
+}
+
+function setValueImpl(object, propChain, value) {
+  const [ prop, ... chain ] = propChain;
+  if(chain.length) {
+    value = setNewValue(object[prop] || {}, chain, value);
+  }
+  return Object.freeze(Object.assign({}, object, { [prop] : value }));
 }
 
 exports.Entity = class Entity {
