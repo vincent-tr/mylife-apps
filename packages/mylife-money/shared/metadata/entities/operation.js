@@ -9,7 +9,8 @@ module.exports = {
     { id: 'amount', name: 'Montant', datatype: 'amount', constraints: ['not-null'] },
     { id: 'label', name: 'Libellé', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'account', name: 'Compte', datatype: 'account', constraints: ['not-null'] },
-    { id: 'group', name: 'Groupe', datatype: 'group', constraints: ['not-null'] }
+    { id: 'group', name: 'Groupe', datatype: 'group', constraints: ['not-null'] },
+    { id: 'note', name: 'Note', datatype: 'text' }
   ],
   display: obj => `${obj.date} - ${obj.amount} (${obj.label})`
 };
