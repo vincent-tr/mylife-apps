@@ -1,61 +1,59 @@
 'use strict';
 
-const { createLogger, getDatabaseCollection, getStoreCollection, dbObjects } = require('mylife-tools-server');
+const { getStoreCollection } = require('mylife-tools-server');
 
-const { ObjectID } = dbObjects;
-const logger = createLogger('mylife:money:business');
-
-exports.getAccounts = async () => {
+exports.getAccounts = () => {
   const accounts = getStoreCollection('accounts');
   return accounts.list();
 };
 
-exports.createAccount = async (code, display) => {
-  const accounts = getDatabaseCollection('accounts');
+exports.createAccount = (code, display) => {
+  const accounts = getStoreCollection('accounts');
 
-  if(await accounts.findOne({ code }, { fields: { _id : 1 }})) {
+  if(accounts.exists(account => account.code === code)) {
     throw new Error(`Account already exists: ${code}`);
   }
 
-  const account = { code, display };
-  await accounts.insertOne(account);
+  const account = accounts.entity.newObject({ code, display });
+  accounts.set(account);
 };
 
-exports.getGroups = async () => {
+exports.getGroups = () => {
   const groups = getStoreCollection('groups');
   return groups.list();
 };
 
-exports.createGroup = async group => {
-  group.parent = group.parent && new ObjectID(group.parent);
-  const groups = getDatabaseCollection('groups');
-  await groups.insertOne(group);
-  return formatId(group);
+exports.createGroup = group => {
+  const groups = getStoreCollection('groups');
+  group = groups.entity.newObject(group);
+  group = groups.set(group);
+  return group;
 };
 
-exports.updateGroup = async group => {
-  group._id = new ObjectID(group.id);
-  group.parent = group.parent && new ObjectID(group.parent);
-  delete group.id;
-  const groups = getDatabaseCollection('groups');
-  await groups.replaceOne({ _id: group._id }, group);
-  return formatId(group);
+exports.updateGroup = group => {
+  // FIXME
+  group._id = group.id;
+  const groups = getStoreCollection('groups');
+  let existingGroup = groups.get(group._id);
+  existingGroup = groups.entity.setValues(existingGroup, group);
+  existingGroup = groups.set(existingGroup);
+  return existingGroup;
 };
 
-exports.deleteGroup = async id => {
-  const groups = getDatabaseCollection('groups');
-  const operations = getDatabaseCollection('operations');
+exports.deleteGroup = id => {
+  const groups = getStoreCollection('groups');
+  const operations = getStoreCollection('operations');
 
-  const child = await groups.findOne({ parent: new ObjectID(id) });
-  if(child) { throw new Error(`Cannot delete group '${id}' because it has children groups`); }
+  const hasChild = groups.exists(group => group.parent === id);
+  if(hasChild) { throw new Error(`Cannot delete group '${id}' because it has children groups`); }
 
-  const operation = await operations.findOne({ group: new ObjectID(id) });
-  if(operation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
+  const hasOperation = operations.exists(operation => operation.group === id);
+  if(hasOperation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
 
-  return await groups.deleteOne({ _id: new ObjectID(id) });
+  groups.delete(id);
 };
 
-exports.getOperations = async (minDate, maxDate, account) => {
+exports.getOperations = (minDate, maxDate, account) => {
   const operations = getStoreCollection('operations');
   return operations.filter(operation => {
     if(minDate && operation.minDate < minDate) {
@@ -71,33 +69,21 @@ exports.getOperations = async (minDate, maxDate, account) => {
   });
 };
 
-exports.operationsMove = async (groupId, operationIds) => {
-  const operations = getDatabaseCollection('operations');
-  return await operations.updateMany(
-    { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
-    { $set: { group: groupId ? new ObjectID(groupId) : null } },
-    { multi: true }
-  );
+exports.operationsMove = (groupId, operationIds) => {
+  return operationsSetField(operationIds, 'group', groupId);
 };
 
-exports.operationsSetNote = async (note, operationIds) => {
-  const operations = getDatabaseCollection('operations');
-  return await operations.updateMany(
-    { _id: { $in: operationIds.map(id => new ObjectID(id)) } },
-    { $set: { note: note ? note : null } },
-    { multi: true }
-  );
+exports.operationsSetNote = (note, operationIds) => {
+  return operationsSetField(operationIds, 'note', note);
 };
 
-function formatId(obj) {
-  for(const [key, value] of Object.entries(obj)) {
-    if(value instanceof ObjectID) {
-      obj[key] = value.toString();
-    }
+function operationsSetField(operationIds, fieldName, fieldValue) {
+  const operations = getStoreCollection('operations');
+  const field = operations.entity.getField(fieldName);
+  const ids = new Set(operationIds);
+  const list = operations.filter(operation => ids.has(operation._id));
+  for(const operation of list) {
+    operations.set(field.setValue(operation, fieldValue));
   }
-  return obj;
-}
-
-function formatIds(arr) {
-  return arr.map(formatId);
+  return list.length;
 }
