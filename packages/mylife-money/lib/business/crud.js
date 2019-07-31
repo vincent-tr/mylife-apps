@@ -41,8 +41,6 @@ exports.createGroup = group => {
 };
 
 exports.updateGroup = group => {
-  // FIXME
-  group._id = group.id;
   const groups = getStoreCollection('groups');
   let existingGroup = groups.get(group._id);
   existingGroup = groups.entity.setValues(existingGroup, group);

@@ -9,10 +9,10 @@ export const getGroup  = (state, { group }) => state.groups.get(group);
 export const getChildren = (state, props) => {
   if(!props.group) {
     return state.groups.filter(it => !it.parent); // Root elements
-  } else if (!props.group.id) {
+  } else if (!props.group._id) {
     return new immutable.Map(); // Non tries -> no children
   } else {
-    return state.groups.filter(it => it.parent === props.group.id);
+    return state.groups.filter(it => it.parent === props.group._id);
   }
 };
 
@@ -31,7 +31,7 @@ export const getGroupAndChildrenIds = (state, props) => {
 
   function children(id) {
     ids.push(id);
-    for(const child of groups.filter(g => g.parent === id).map(g => g.id)) {
+    for(const child of groups.filter(g => g.parent === id).map(g => g._id)) {
       children(child);
     }
   }
@@ -45,16 +45,16 @@ function createGroupBags(groups) {
   function children(bag, id) {
     bag.add(id);
     for(const child of groups.filter(g => g.parent === id)) {
-      children(bag, child.id);
+      children(bag, child._id);
     }
   }
 
   for(const group of groups) {
-    if(!group.id) { continue; }
+    if(!group._id) { continue; }
 
     const bag = new Set();
-    children(bag, group.id);
-    groupBags.set(group.id, bag);
+    children(bag, group._id);
+    groupBags.set(group._id, bag);
   }
 
   return groupBags;
@@ -66,22 +66,22 @@ export const makeGetGroupBags = () => createSelector([ getGroups ], createGroupB
 function createGroupStacks(groups) {
   const groupStacks = new Map();
 
-  groupStacks.set(null, [ groups.find(g => !g.id) ]);
+  groupStacks.set(null, [ groups.find(g => !g._id) ]);
 
   for(const group of groups) {
-    if(!group.id) { continue; }
+    if(!group._id) { continue; }
 
     const stack = [];
-    let value = group.id;
+    let value = group._id;
     while(value) {
-      const iterGroup = groups.find(g => g.id === value); // use map ?
+      const iterGroup = groups.find(g => g._id === value); // use map ?
       if(!iterGroup) { break; } // broken structure ?
       stack.push(iterGroup);
       value = iterGroup.parent;
     }
     stack.reverse();
 
-    groupStacks.set(group.id, stack);
+    groupStacks.set(group._id, stack);
   }
 
   return groupStacks;

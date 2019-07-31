@@ -16,6 +16,13 @@ export const getAccounts = () => async (dispatch) => {
   }));
 
   dispatch(local.getAccounts(data));
+
+  const viewId = await dispatch(io.call({
+    service: 'management',
+    method: 'notifyAccounts'
+  }));
+
+  console.log(viewId);
 };
 
 export const getGroups = () => async (dispatch) => {

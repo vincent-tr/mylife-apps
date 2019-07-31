@@ -6,10 +6,8 @@ import { immutable } from 'mylife-tools-ui';
 
 const setGroup = {
   next : (state, action) => {
-    const { _id: id, ...props } = action.payload;
-    const group = Object.assign({ id }, props);
-
-    return state.set(group.id, group);
+    const group = action.payload;
+    return state.set(group._id, group);
   }
 };
 
@@ -20,14 +18,12 @@ export default handleActions({
       map.clear();
 
       map.set(null, {
-        id      : null,
+        _id     : null,
         display : 'Non triés'
       });
 
-      for(const raw of action.payload) {
-        const { _id: id, ...props } = raw;
-        const group = Object.assign({ id }, props);
-        map.set(id, group);
+      for(const group of action.payload) {
+        map.set(group._id, group);
       }
     })
   },

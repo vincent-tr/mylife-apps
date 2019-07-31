@@ -98,7 +98,7 @@ export const getOperations = () => {
 
 export const moveOperations = (group) => {
   return async (dispatch, getState) => {
-    const operations = getSelectedOperations(getState()).map(op => op.id);
+    const operations = getSelectedOperations(getState()).map(op => op._id);
 
     await dispatch(io.call({
       service: 'management',
@@ -114,7 +114,7 @@ export const moveOperations = (group) => {
 
 export const operationsSetNote = (note) => {
   return async (dispatch, getState) => {
-    const operations = getSelectedOperations(getState()).map(op => op.id);
+    const operations = getSelectedOperations(getState()).map(op => op._id);
 
     await dispatch(io.call({
       service: 'management',

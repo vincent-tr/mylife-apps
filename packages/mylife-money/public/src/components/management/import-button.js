@@ -53,7 +53,7 @@ class Header extends React.Component {
 
       <mui.Menu id="simple-menu" anchorEl={anchorEl} open={!!anchorEl} onClose={this.handleClose}>
         {accounts.map(account => (
-          <mui.MenuItem key={account.id} onClick={() => this.handleMenuClick(account.id)}>
+          <mui.MenuItem key={account._id} onClick={() => this.handleMenuClick(account._id)}>
             <mui.ListItemIcon>
               <icons.Account />
             </mui.ListItemIcon>

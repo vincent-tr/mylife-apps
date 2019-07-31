@@ -26,10 +26,8 @@ export default handleActions({
       ...state.operations,
       all: state.operations.all.withMutations(map => {
         map.clear();
-        for(const raw of action.payload) {
-          const { _id: id, ...props } = raw;
-          const operation = { id, ...props };
-          map.set(id, operation);
+        for(const operation of action.payload) {
+          map.set(operation._id, operation);
         }
       }),
       visible: state.operations.visible.clear(),
@@ -45,7 +43,7 @@ export default handleActions({
         const groups = action.payload;
         for(const operation of state.operations.all.values()) {
           if(groups.includes(operation.group || null)) {
-            set.add(operation.id);
+            set.add(operation._id);
           }
         }
       }),
@@ -57,8 +55,8 @@ export default handleActions({
     next : (state, action) => ({ ...state, operations: {
       ...state.operations,
       selected:
-        action.payload.id ?
-          (action.payload.selected ? state.operations.selected.add(action.payload.id) : state.operations.selected.remove(action.payload.id)) :
+        action.payload._id ?
+          (action.payload.selected ? state.operations.selected.add(action.payload._id) : state.operations.selected.remove(action.payload._id)) :
           (action.payload.selected ? state.operations.selected.union(state.operations.visible) : state.operations.selected.clear())
     }})
   },

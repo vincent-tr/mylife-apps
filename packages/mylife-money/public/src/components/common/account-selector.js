@@ -9,10 +9,10 @@ const useConnect = () => useSelector(state => ({
 
 function renderList(accounts, allowNull) {
   if(allowNull) {
-    accounts = [ { id: '', display: 'Tous' }, ...accounts ];
+    accounts = [ { _id: '', display: 'Tous' }, ...accounts ];
   }
   return accounts.map(account => (
-    <mui.MenuItem key={account.id} value={account.id}>
+    <mui.MenuItem key={account._id} value={account._id}>
       {account.display}
     </mui.MenuItem>
   ));

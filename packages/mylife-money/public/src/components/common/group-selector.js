@@ -50,7 +50,7 @@ const GroupSelector = ({ onChange, value, ...props }) => {
       </mui.Tooltip>
       <div style={styles.nodeListContainer}>
         {stack.map(node => (
-          <div style={styles.nodeContainer} key={node.id}>
+          <div style={styles.nodeContainer} key={node._id}>
             <p style={styles.node}>
               {node.display}
             </p>

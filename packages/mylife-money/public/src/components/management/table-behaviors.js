@@ -16,7 +16,7 @@ export const useConnect = () => {
           operation,
           account        : getAccount(state, operation),
           fromChildGroup : (operation.group || null) !== selectedGroup,
-          selected       : selectedOperationIds.includes(operation.id)
+          selected       : selectedOperationIds.includes(operation._id)
         }))
       };
     }),

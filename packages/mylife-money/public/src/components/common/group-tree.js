@@ -16,7 +16,7 @@ const GroupTree = ({ onSelect, selectedGroupId, ...props }) => {
   return (
     <mui.List component='div' {...props}>
       {groups.map((group) => (
-        <GroupNode key={group.id} group={group} level={0} onSelect={onSelect} selectedGroupId={selectedGroupId} />
+        <GroupNode key={group._id} group={group} level={0} onSelect={onSelect} selectedGroupId={selectedGroupId} />
       ))}
     </mui.List>
   );

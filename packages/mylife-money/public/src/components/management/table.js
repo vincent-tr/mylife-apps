@@ -19,7 +19,7 @@ const Table = (props) => {
   );
 
   const cellCheckbox = (row) => (
-    <mui.Checkbox color='primary' checked={row.selected} onChange={e => onSelect({ id: row.operation.id, selected: e.target.checked })}/>
+    <mui.Checkbox color='primary' checked={row.selected} onChange={e => onSelect({ id: row.operation._id, selected: e.target.checked })}/>
   );
 
   const columns = [
