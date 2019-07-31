@@ -38,6 +38,12 @@ exports.deleteGroup = [ base, (session, message) => {
   logger.info(`group deleted: ${id}`);
 } ];
 
+exports.notifyOperations = [ base, (session, message) => {
+  const { minDate, maxDate, account, group } = message;
+  const criteria = { minDate, maxDate, account, group };
+  return business.notifyOperations(session, criteria);
+} ];
+
 exports.getOperations = [ base, (session, message) => {
   const { minDate, maxDate, account } = message;
   return business.getOperations(minDate, maxDate, account);

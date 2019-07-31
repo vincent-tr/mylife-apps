@@ -1,6 +1,7 @@
 'use strict';
 
 const { getStoreCollection, notifyView } = require('mylife-tools-server');
+const { OperationView } = require('./operation-view');
 
 exports.notifyAccounts = session => {
   const accounts = getStoreCollection('accounts');
@@ -49,6 +50,11 @@ exports.deleteGroup = id => {
   if(hasOperation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
 
   groups.delete(id);
+};
+
+exports.notifyOperations = (session, criteria) => {
+  const view = new OperationView(criteria);
+  return notifyView(session, view);
 };
 
 exports.getOperations = (minDate, maxDate, account) => {
