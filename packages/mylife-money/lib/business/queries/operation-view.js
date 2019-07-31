@@ -2,7 +2,6 @@
 
 const { StoreView, getStoreCollection } = require('mylife-tools-server');
 
-
 exports.OperationView = class OperationView extends StoreView {
   constructor(criteria) {
     super(getStoreCollection('operations'), createFilter(criteria));
