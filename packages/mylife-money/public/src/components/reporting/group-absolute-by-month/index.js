@@ -2,7 +2,7 @@
 
 import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector } from 'mylife-tools-ui';
 import { getOperations } from '../../../selectors/reporting';
-import { makeGetGroupBags } from '../../../selectors/groups';
+import { makeGetGroupBags } from '../../../selectors/reference';
 import { refreshOperations } from '../../../actions/reporting';
 
 import Toolbar from './toolbar';

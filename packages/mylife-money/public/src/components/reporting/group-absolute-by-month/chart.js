@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, useMemo, PropTypes,  chart, useSelector, useChartColors } from 'mylife-tools-ui';
-import { makeGetGroupStacks } from '../../../selectors/groups';
+import { makeGetGroupStacks } from '../../../selectors/reference';
 
 const useConnect = () => {
   const getGroupStacks = useMemo(makeGetGroupStacks, []);

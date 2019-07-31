@@ -3,7 +3,7 @@
 import { React, services, io } from 'mylife-tools-ui';
 import reducers from './reducers';
 
-import { getAccounts, getGroups } from './actions/common';
+import { getAccounts, getGroups } from './actions/reference';
 import { getOperations } from './actions/management';
 
 import icons from './components/icons';

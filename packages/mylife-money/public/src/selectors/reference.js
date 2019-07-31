@@ -2,12 +2,17 @@
 
 import { io, immutable, createSelector } from 'mylife-tools-ui';
 
+const getAccountViewId = state => state.reference.accounts;
+const getGroupViewId = state => state.reference.groups;
+
+export const getAccounts = (state) => io.getViewList(state, getAccountViewId(state));
+export const getAccount  = (state, { account }) => io.getViewItem(state, getAccountViewId(state), account);
+
 const defaultGroup = Object.freeze({
   _id     : null,
   display : 'Non triés'
 });
 
-const getGroupViewId = state => state.groups;
 const getGroupView = state => io.getView(state, getGroupViewId(state)).set(null, defaultGroup);
 
 export const getGroups = (state) => io.getViewList(state, getGroupViewId(state));

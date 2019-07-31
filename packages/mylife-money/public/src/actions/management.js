@@ -4,7 +4,7 @@ let groupIdCount = 0;
 
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getGroupAndChildrenIds } from '../selectors/groups';
+import { getGroupAndChildrenIds } from '../selectors/reference';
 import { getFilters, getSelectedGroupId, getSelectedOperations } from '../selectors/management';
 
 const local = {

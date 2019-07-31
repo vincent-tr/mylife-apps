@@ -1,6 +1,6 @@
 import { React, useState, useMemo, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
-import { makeGetSortedChildren } from '../../selectors/groups';
+import { makeGetSortedChildren } from '../../selectors/reference';
 
 const useConnect = ({ group }) => {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
