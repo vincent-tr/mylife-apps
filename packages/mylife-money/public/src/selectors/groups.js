@@ -11,7 +11,7 @@ const getGroupViewId = state => state.groups;
 const getGroupView = state => io.getView(state, getGroupViewId(state)).set(null, defaultGroup);
 
 export const getGroups = (state) => io.getViewList(state, getGroupViewId(state));
-export const getGroup  = (state, { account }) => io.getViewItem(state, getGroupViewId(state), account);
+export const getGroup  = (state, { group }) => io.getViewItem(state, getGroupViewId(state), group);
 
 export const getChildren = (state, props) => {
   if(!props.group) {
