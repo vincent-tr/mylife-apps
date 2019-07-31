@@ -14,6 +14,7 @@ exports.createGroup = [ base, (session, message) => {
   const { object } = message;
   const res = business.createGroup(object);
   logger.info(`group created: ${JSON.stringify(res)}`);
+  return res._id;
 } ];
 
 exports.updateGroup = [ base, (session, message) => {

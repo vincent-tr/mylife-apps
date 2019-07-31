@@ -42,11 +42,13 @@ export const createGroup = () => {
       parent: parentGroup
     };
 
-    await dispatch(io.call({
+    const id = await dispatch(io.call({
       service: 'management',
       method: 'createGroup',
       object: newGroup
     }));
+
+    dispatch(selectGroup(id));
   };
 };
 
@@ -59,6 +61,8 @@ export const deleteGroup = () => {
       method: 'deleteGroup',
       id
     }));
+
+    dispatch(selectGroup(null));
   };
 };
 
