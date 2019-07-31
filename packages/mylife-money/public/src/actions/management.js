@@ -77,7 +77,7 @@ export const getOperations = () => {
     const query = getFilters(getState());
 
     const data = await dispatch(io.call({
-      service: 'management',
+      service: 'reporting',
       method: 'getOperations',
       ... query
     }));

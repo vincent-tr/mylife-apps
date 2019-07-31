@@ -12,7 +12,7 @@ export const refreshOperations = (minDate, maxDate, account) => {
     const query = { minDate, maxDate, account };
 
     const data = await dispatch(io.call({
-      service: 'management',
+      service: 'reporting',
       method: 'getOperations',
       ... query
     }));

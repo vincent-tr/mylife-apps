@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, api } = require('mylife-tools-server');
+const { createLogger } = require('mylife-tools-server');
 const business = require('../business');
 const { base } = require('./decorators');
 
@@ -9,16 +9,6 @@ const logger = createLogger('mylife:money:api:management');
 exports.meta = {
   name : 'management'
 };
-
-exports.unnotify = [ base, api.services.createUnnotify() ];
-
-exports.notifyAccounts = [ base, (session, message) => {
-  return business.notifyAccounts(session);
-} ];
-
-exports.notifyGroups = [ base, (session, message) => {
-  return business.notifyGroups(session);
-} ];
 
 exports.createGroup = [ base, (session, message) => {
   const { object } = message;
@@ -44,11 +34,6 @@ exports.notifyOperations = [ base, (session, message) => {
   return business.notifyOperations(session, criteria);
 } ];
 
-exports.getOperations = [ base, (session, message) => {
-  const { minDate, maxDate, account } = message;
-  return business.getOperations(minDate, maxDate, account);
-} ];
-
 exports.moveOperations = [ base, (session, message) => {
   const { group, operations } = message;
   const status = business.operationsMove(group, operations);
@@ -69,6 +54,6 @@ exports.operationsImport = [ base, (session, message) => {
   return count;
 } ];
 
-exports.operationsExecuteRules = [ base, (session, message) => {
+exports.operationsExecuteRules = [ base, (/*session, message*/) => {
   return business.executeRules();
 } ];

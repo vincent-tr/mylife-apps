@@ -1,5 +1,7 @@
 'use strict';
 
 exports.apiServices = [
-  require('./management')
+  require('./common'),
+  require('./management'),
+  require('./reporting'),
 ];

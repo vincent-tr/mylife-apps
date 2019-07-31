@@ -11,7 +11,7 @@ const local = {
 
 export const getAccounts = () => async (dispatch) => {
   const viewId = await dispatch(io.call({
-    service: 'management',
+    service: 'common',
     method: 'notifyAccounts'
   }));
 
@@ -20,7 +20,7 @@ export const getAccounts = () => async (dispatch) => {
 
 export const getGroups = () => async (dispatch) => {
   const viewId = await dispatch(io.call({
-    service: 'management',
+    service: 'common',
     method: 'notifyGroups'
   }));
 
