@@ -3,12 +3,9 @@
 import { constants } from 'mylife-tools-ui';
 
 export default constants.wrap({
-  GET_ACCOUNTS                              : null,
-  GET_GROUPS                                : null,
+  SET_ACCOUNT_VIEW                          : null,
+  SET_GROUP_VIEW                            : null,
 
-  MANAGEMENT_DELETE_GROUP                   : null,
-  MANAGEMENT_UPDATE_GROUP                   : null,
-  MANAGEMENT_CREATE_GROUP                   : null,
   MANAGEMENT_SELECT_GROUP                   : null,
   MANAGEMENT_SET_MIN_DATE                   : null,
   MANAGEMENT_SET_MAX_DATE                   : null,

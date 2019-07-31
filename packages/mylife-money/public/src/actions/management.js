@@ -10,9 +10,6 @@ import { getFilters, getSelectedGroupId, getSelectedOperations } from '../select
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
   selectGroup: createAction(actionTypes.MANAGEMENT_SELECT_GROUP),
-  createGroup: createAction(actionTypes.MANAGEMENT_CREATE_GROUP),
-  updateGroup: createAction(actionTypes.MANAGEMENT_UPDATE_GROUP),
-  deleteGroup: createAction(actionTypes.MANAGEMENT_DELETE_GROUP),
   getOperations: createAction(actionTypes.MANAGEMENT_GET_OPERATIONS),
   moveOperations: createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS),
   operationsSetNote: createAction(actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE),
@@ -45,13 +42,11 @@ export const createGroup = () => {
       parent: parentGroup
     };
 
-    const data = await dispatch(io.call({
+    await dispatch(io.call({
       service: 'management',
       method: 'createGroup',
       object: newGroup
     }));
-
-    dispatch(local.createGroup(data));
   };
 };
 
@@ -64,20 +59,16 @@ export const deleteGroup = () => {
       method: 'deleteGroup',
       id
     }));
-
-    dispatch(local.deleteGroup(id));
   };
 };
 
 export const updateGroup = (group) => {
   return async (dispatch) => {
-    const data = await dispatch(io.call({
+    await dispatch(io.call({
       service: 'management',
       method: 'updateGroup',
       object: group
     }));
-
-    dispatch(local.updateGroup(data));
   };
 };
 

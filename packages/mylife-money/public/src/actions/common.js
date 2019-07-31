@@ -5,31 +5,24 @@ import { actionTypes } from '../constants';
 import { io } from 'mylife-tools-ui';
 
 const local = {
-  getAccounts: createAction(actionTypes.GET_ACCOUNTS),
-  getGroups: createAction(actionTypes.GET_GROUPS)
+  setAccountView: createAction(actionTypes.SET_ACCOUNT_VIEW),
+  setGroupView: createAction(actionTypes.SET_GROUP_VIEW),
 };
 
 export const getAccounts = () => async (dispatch) => {
-  const data = await dispatch(io.call({
-    service: 'management',
-    method: 'getAccounts'
-  }));
-
-  dispatch(local.getAccounts(data));
-
   const viewId = await dispatch(io.call({
     service: 'management',
     method: 'notifyAccounts'
   }));
 
-  console.log(viewId);
+  dispatch(local.setAccountView(viewId));
 };
 
 export const getGroups = () => async (dispatch) => {
-  const data = await dispatch(io.call({
+  const viewId = await dispatch(io.call({
     service: 'management',
-    method: 'getGroups'
+    method: 'notifyGroups'
   }));
 
-  dispatch(local.getGroups(data));
+  dispatch(local.setGroupView(viewId));
 };

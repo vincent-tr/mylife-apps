@@ -1,18 +1,25 @@
 'use strict';
 
-import { immutable } from 'mylife-tools-ui';
-import { createSelector } from 'mylife-tools-ui';
+import { io, immutable, createSelector } from 'mylife-tools-ui';
 
-export const getGroups = (state) => state.groups.valueSeq().toArray();
-export const getGroup  = (state, { group }) => state.groups.get(group);
+const defaultGroup = Object.freeze({
+  _id     : null,
+  display : 'Non triés'
+});
+
+const getGroupViewId = state => state.groups;
+const getGroupView = state => io.getView(state, getGroupViewId(state)).set(null, defaultGroup);
+
+export const getGroups = (state) => io.getViewList(state, getGroupViewId(state));
+export const getGroup  = (state, { account }) => io.getViewItem(state, getGroupViewId(state), account);
 
 export const getChildren = (state, props) => {
   if(!props.group) {
-    return state.groups.filter(it => !it.parent); // Root elements
+    return getGroupView(state).filter(it => !it.parent); // Root elements
   } else if (!props.group._id) {
     return new immutable.Map(); // Non tries -> no children
   } else {
-    return state.groups.filter(it => it.parent === props.group._id);
+    return getGroupView(state).filter(it => it.parent === props.group._id);
   }
 };
 
