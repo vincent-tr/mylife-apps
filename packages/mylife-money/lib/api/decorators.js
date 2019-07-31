@@ -1,5 +1,5 @@
 'use strict';
 
-const { decorators, createDecoratorGroup } = require('mylife-tools-server');
+const { api, createDecoratorGroup } = require('mylife-tools-server');
 
-exports.base = createDecoratorGroup(/*decorators.methodLogger*/);
+exports.base = createDecoratorGroup(/*api.decorators.methodLogger*/);
