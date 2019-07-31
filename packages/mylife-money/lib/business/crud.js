@@ -23,6 +23,11 @@ exports.createAccount = (code, display) => {
   accounts.set(account);
 };
 
+exports.notifyGroups = session => {
+  const groups = getStoreCollection('groups');
+  return notifyView(session, groups.createView());
+};
+
 exports.getGroups = () => {
   const groups = getStoreCollection('groups');
   return groups.list();

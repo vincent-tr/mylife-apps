@@ -20,6 +20,10 @@ exports.getAccounts = [ base, (session, message) => {
   return business.getAccounts();
 } ];
 
+exports.notifyGroups = [ base, (session, message) => {
+  return business.notifyGroups(session);
+} ];
+
 exports.getGroups = [ base, (session, message) => {
   return business.getGroups();
 } ];
