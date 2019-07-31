@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger } = require('mylife-tools-server');
+const { createLogger, api } = require('mylife-tools-server');
 const business = require('../business');
 const { base } = require('./decorators');
 
@@ -10,10 +10,7 @@ exports.meta = {
   name : 'management'
 };
 
-exports.unnotify = [ base, (session, message) => {
-  const { viewId } = message;
-  business.unnotify(session, viewId);
-} ];
+exports.unnotify = [ base, api.services.createUnnotify() ];
 
 exports.notifyAccounts = [ base, (session, message) => {
   return business.notifyAccounts(session);
