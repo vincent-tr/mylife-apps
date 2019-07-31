@@ -16,30 +16,20 @@ exports.notifyAccounts = [ base, (session, message) => {
   return business.notifyAccounts(session);
 } ];
 
-exports.getAccounts = [ base, (session, message) => {
-  return business.getAccounts();
-} ];
-
 exports.notifyGroups = [ base, (session, message) => {
   return business.notifyGroups(session);
-} ];
-
-exports.getGroups = [ base, (session, message) => {
-  return business.getGroups();
 } ];
 
 exports.createGroup = [ base, (session, message) => {
   const { object } = message;
   const res = business.createGroup(object);
   logger.info(`group created: ${JSON.stringify(res)}`);
-  return res;
 } ];
 
 exports.updateGroup = [ base, (session, message) => {
   const { object } = message;
   const res = business.updateGroup(object);
   logger.info(`group updated: ${JSON.stringify(res)}`);
-  return res;
 } ];
 
 exports.deleteGroup = [ base, (session, message) => {

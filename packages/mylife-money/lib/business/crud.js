@@ -7,11 +7,6 @@ exports.notifyAccounts = session => {
   return notifyView(session, accounts.createView());
 };
 
-exports.getAccounts = () => {
-  const accounts = getStoreCollection('accounts');
-  return accounts.list();
-};
-
 exports.createAccount = (code, display) => {
   const accounts = getStoreCollection('accounts');
 
@@ -26,11 +21,6 @@ exports.createAccount = (code, display) => {
 exports.notifyGroups = session => {
   const groups = getStoreCollection('groups');
   return notifyView(session, groups.createView());
-};
-
-exports.getGroups = () => {
-  const groups = getStoreCollection('groups');
-  return groups.list();
 };
 
 exports.createGroup = group => {
