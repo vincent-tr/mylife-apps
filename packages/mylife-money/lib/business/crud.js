@@ -1,6 +1,15 @@
 'use strict';
 
-const { getStoreCollection } = require('mylife-tools-server');
+const { getStoreCollection, notifyView, unnotifyView } = require('mylife-tools-server');
+
+exports.unnotify = (session, viewId) => {
+  return unnotifyView(session, viewId);
+};
+
+exports.notifyAccounts = session => {
+  const accounts = getStoreCollection('accounts');
+  return notifyView(session, accounts.createView());
+};
 
 exports.getAccounts = () => {
   const accounts = getStoreCollection('accounts');

@@ -10,6 +10,15 @@ exports.meta = {
   name : 'management'
 };
 
+exports.unnotify = [ base, (session, message) => {
+  const { viewId } = message;
+  business.unnotify(session, viewId);
+} ];
+
+exports.notifyAccounts = [ base, (session, message) => {
+  return business.notifyAccounts(session);
+} ];
+
 exports.getAccounts = [ base, (session, message) => {
   return business.getAccounts();
 } ];
