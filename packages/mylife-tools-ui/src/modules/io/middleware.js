@@ -5,7 +5,7 @@ import actionTypes from './action-types';
 import { setOnline } from './actions';
 import { serializer } from 'mylife-tools-common';
 import CallEngine from './engines/call';
-import NotificationEngine from './engines/notification';
+import NotifyEngine from './engines/notify';
 
 export default (/*store*/) => next => {
 
@@ -14,7 +14,7 @@ export default (/*store*/) => next => {
 
   const engines = {
     call: new CallEngine(emitter, next),
-    notification: new NotificationEngine(emitter, next)
+    notify: new NotifyEngine(emitter, next)
   };
 
   socket.on('connect', () => {
