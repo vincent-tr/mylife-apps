@@ -10,59 +10,59 @@ exports.meta = {
   name : 'management'
 };
 
-exports.getAccounts = [ base, async (session, message) => {
-  return await business.getAccounts();
+exports.getAccounts = [ base, (session, message) => {
+  return business.getAccounts();
 } ];
 
-exports.getGroups = [ base, async (session, message) => {
-  return await business.getGroups();
+exports.getGroups = [ base, (session, message) => {
+  return business.getGroups();
 } ];
 
-exports.createGroup = [ base, async (session, message) => {
+exports.createGroup = [ base, (session, message) => {
   const { object } = message;
-  const res = await business.createGroup(object);
+  const res = business.createGroup(object);
   logger.info(`group created: ${JSON.stringify(res)}`);
   return res;
 } ];
 
-exports.updateGroup = [ base, async (session, message) => {
+exports.updateGroup = [ base, (session, message) => {
   const { object } = message;
-  const res = await business.updateGroup(object);
+  const res = business.updateGroup(object);
   logger.info(`group updated: ${JSON.stringify(res)}`);
   return res;
 } ];
 
-exports.deleteGroup = [ base, async (session, message) => {
+exports.deleteGroup = [ base, (session, message) => {
   const { id } = message;
-  await business.deleteGroup(id);
+  business.deleteGroup(id);
   logger.info(`group deleted: ${id}`);
 } ];
 
-exports.getOperations = [ base, async (session, message) => {
+exports.getOperations = [ base, (session, message) => {
   const { minDate, maxDate, account } = message;
-  return await business.getOperations(minDate, maxDate, account);
+  return business.getOperations(minDate, maxDate, account);
 } ];
 
-exports.moveOperations = [ base, async (session, message) => {
+exports.moveOperations = [ base, (session, message) => {
   const { group, operations } = message;
-  const status = await business.operationsMove(group, operations);
+  const status = business.operationsMove(group, operations);
   logger.info(`Operations moved: ${JSON.stringify({ group, operations })} -> ${JSON.stringify(status)}`);
   return status;
 } ];
 
-exports.operationsSetNote = [ base, async (session, message) => {
+exports.operationsSetNote = [ base, (session, message) => {
   const { note, operations } = message;
-  const status = await business.operationsSetNote(note, operations);
+  const status = business.operationsSetNote(note, operations);
   logger.info(`Operations note set: ${JSON.stringify({ note, operations })} -> ${JSON.stringify(status)}`);
 } ];
 
-exports.operationsImport = [ base, async (session, message) => {
+exports.operationsImport = [ base, (session, message) => {
   const { account, content } = message;
-  const count = await business.operationsImport(account, content);
-  await business.executeRules();
+  const count = business.operationsImport(account, content);
+  business.executeRules();
   return count;
 } ];
 
-exports.operationsExecuteRules = [ base, async (session, message) => {
-  return await business.executeRules();
+exports.operationsExecuteRules = [ base, (session, message) => {
+  return business.executeRules();
 } ];
