@@ -2,6 +2,7 @@
 
 const { getStoreCollection, notifyView } = require('mylife-tools-server');
 const { OperationView } = require('./operation-view');
+const { OperationStats } = require('./operation-stats');
 
 exports.notifyOperations = (session, criteria) => {
   const view = new OperationView(criteria);
@@ -22,4 +23,9 @@ exports.getOperations = (minDate, maxDate, account) => {
     }
     return true;
   });
+};
+
+exports.notifyOperationStats = session => {
+  const view = new OperationStats();
+  return notifyView(session, view);
 };
