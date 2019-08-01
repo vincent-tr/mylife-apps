@@ -57,6 +57,8 @@ export const selectGroup = (id) => {
   };
 };
 
+let groupIdCount = 0;
+
 export const createGroup = () => {
   return async (dispatch, getState) => {
     const parentGroup = getSelectedGroupId(getState());
