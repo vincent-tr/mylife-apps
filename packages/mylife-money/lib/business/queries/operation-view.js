@@ -10,6 +10,8 @@ exports.OperationView = class OperationView extends StoreView {
     this._changeCallback = () => this._onGroupChange();
     this._groupCollection = getStoreCollection('groups');
     this._groupCollection.on('change', this._changeCallback);
+    
+    this._onGroupChange();
   }
 
   _onGroupChange() {

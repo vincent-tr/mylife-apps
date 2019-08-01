@@ -13,12 +13,8 @@ export const getSelectedOperations = state => {
   return getSelectedOperationIds(state).map(id => view.get(id));
 };
 
-export const getSelectedGroupId = (state) => state.management.group;
-
-export const getFilters = (state) => {
-  const { minDate, maxDate, account, group } = state.management;
-  return { minDate, maxDate, account, group };
-};
+export const getCriteria = state => state.management.criteria;
+export const getSelectedGroupId = state => getCriteria(state).group;
 
 export const getSortedOperations = createSelector(
   [ getOperationList ],
