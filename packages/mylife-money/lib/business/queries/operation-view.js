@@ -10,7 +10,7 @@ exports.OperationView = class OperationView extends StoreView {
     this._changeCallback = () => this._onGroupChange();
     this._groupCollection = getStoreCollection('groups');
     this._groupCollection.on('change', this._changeCallback);
-    
+
     this._onGroupChange();
   }
 
@@ -53,11 +53,22 @@ function createGroupHierarchy(groupCollection, groupId) {
   if(!groupId) {
     return new Set([null]);
   }
+
   const hierarchy = new Set();
-  while(groupId) {
-    hierarchy.add(groupId);
-    const group = groupCollection.get(groupId);
-    groupId = group.parent;
+  const groupIdsToProcess = new Set();
+  groupIdsToProcess.add(groupId);
+
+  while(groupIdsToProcess.size) {
+    const id = groupIdsToProcess.values().next().value;
+    groupIdsToProcess.delete(id);
+    hierarchy.add(id);
+
+    for(const group of groupCollection.list()) {
+      if(group.parent === id) {
+        groupIdsToProcess.add(group._id);
+      }
+    }
   }
+
   return hierarchy;
 }
