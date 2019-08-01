@@ -29,6 +29,17 @@ export const getOperations = () => async (dispatch, getState) => {
   dispatch(local.setOperationView(newViewId));
 };
 
+export const clearOperations = () => async (dispatch, getState) => {
+  const state = getState();
+  const oldViewId = getOperationViewId(state);
+  if(!oldViewId) {
+    return;
+  }
+  
+  await dispatch(io.unnotify(oldViewId));
+  dispatch(local.setOperationView(null));
+};
+
 export const setMinDate = (value) => {
   return (dispatch) => {
     dispatch(local.setCriteria({ minDate: value }));

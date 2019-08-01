@@ -4,7 +4,7 @@ import { React, services, io } from 'mylife-tools-ui';
 import reducers from './reducers';
 
 import { getAccounts, getGroups } from './actions/reference';
-import { getOperations } from './actions/management';
+import { getOperationStats } from './actions/reporting';
 
 import icons from './components/icons';
 import Home from './components/home';
@@ -41,5 +41,5 @@ services.observeStore(io.getOnline, value => {
   const store = services.getStore();
   store.dispatch(getAccounts());
   store.dispatch(getGroups());
-  store.dispatch(getOperations());
+  store.dispatch(getOperationStats());
 });

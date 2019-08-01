@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, mui } from 'mylife-tools-ui';
+import { React, mui, useMemo, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { getOperations, clearOperations } from '../../actions/management';
 
 import Tree from './tree';
 import Toolbar from './toolbar';
@@ -35,8 +36,19 @@ const useStyles = makeStyles({
   }
 });
 
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return useMemo(() => ({
+    init : () => dispatch(getOperations()),
+    terminate : () => dispatch(clearOperations()),
+  }), [dispatch]);
+};
+
 const Management = () => {
   const classes = useStyles();
+  const { init, terminate } = useConnect();
+  useLifecycle(init, terminate);
+
   return (
     <div className={classes.container}>
       <mui.Paper className={classes.treeContainer}>
