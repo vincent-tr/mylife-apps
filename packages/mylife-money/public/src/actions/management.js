@@ -1,7 +1,5 @@
 'use strict';
 
-let groupIdCount = 0;
-
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId } from '../selectors/management';
