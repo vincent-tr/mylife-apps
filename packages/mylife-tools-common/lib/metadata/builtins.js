@@ -5,6 +5,7 @@ exports.datatypes = [
   { id: 'name', primitive: 'string' },
   { id: 'text', primitive: 'string' },
   { id: 'amount', primitive: 'number' },
+  { id: 'count', primitive: 'number' },
   { id: 'date', primitive: 'timestamp' },
   { id: 'datetime', primitive: 'timestamp' },
   { id: 'any', primitive: 'any' }
