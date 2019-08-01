@@ -1,6 +1,6 @@
 'use strict';
 
-import { viewSet, viewUnset } from '../actions';
+import { viewChange } from '../actions';
 
 class NotifyEngine {
   constructor(emitter, dispatch) {
@@ -15,20 +15,8 @@ class NotifyEngine {
   }
 
   onMessage(message) {
-    const { type, view: viewId } = message;
-    switch(type) {
-      case 'set':
-        this.dispatch(viewSet({ viewId, object: message.object }));
-        break;
-
-      case 'unset':
-        this.dispatch(viewUnset({ viewId, objectId: message.objectId }));
-        break;
-
-      default:
-        console.log(`Message with unknown notification type '${message.type}', ignored`);
-        break;
-    }
+    const { view: viewId, list } = message;
+    this.dispatch(viewChange({ viewId, list }));
   }
 }
 

@@ -7,8 +7,7 @@ import actionTypes from './action-types';
 
 export const setOnline = createAction(actionTypes.SET_ONLINE);
 
-export const viewSet = createAction(actionTypes.VIEW_SET);
-export const viewUnset = createAction(actionTypes.VIEW_UNSET);
+export const viewChange = createAction(actionTypes.VIEW_CHANGE);
 const viewClose = createAction(actionTypes.VIEW_CLOSE);
 
 export const call = createAction(actionTypes.CALL);
