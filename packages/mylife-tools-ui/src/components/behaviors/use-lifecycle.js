@@ -6,5 +6,5 @@ export default function(init, terminate = () => {}) {
   useEffect(() => {
     init();
     return terminate;
-  });
+  }, []);
 }
