@@ -13,7 +13,7 @@ const viewClose = createAction(actionTypes.VIEW_CLOSE);
 
 export const call = createAction(actionTypes.CALL);
 
-export const unnotify = (service, viewId) => async dispatch => {
+export const unnotify = (viewId, service = 'common') => async dispatch => {
 
   await dispatch(call({
     service,
