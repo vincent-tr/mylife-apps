@@ -1,7 +1,7 @@
 'use strict';
 
 import { useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
-import { getSelectedGroupId, getSortedVisibleOperations, getSelectedOperationIds } from '../../selectors/management';
+import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../selectors/management';
 import { getAccount } from '../../selectors/reference';
 import { selectOperation } from '../../actions/management';
 
@@ -12,7 +12,7 @@ export const useConnect = () => {
       const selectedGroup = getSelectedGroupId(state) || null;
       const selectedOperationIds = getSelectedOperationIds(state);
       return {
-        operations: getSortedVisibleOperations(state).map(operation => ({
+        operations: getSortedOperations(state).map(operation => ({
           operation,
           account        : getAccount(state, operation),
           fromChildGroup : (operation.group || null) !== selectedGroup,

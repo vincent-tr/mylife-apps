@@ -4,33 +4,57 @@ let groupIdCount = 0;
 
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getGroupAndChildrenIds } from '../selectors/reference';
-import { getFilters, getSelectedGroupId, getSelectedOperations } from '../selectors/management';
+import { getFilters, getSelectedGroupId, getSelectedOperations, getOperationViewId } from '../selectors/management';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
-  selectGroup: createAction(actionTypes.MANAGEMENT_SELECT_GROUP),
-  getOperations: createAction(actionTypes.MANAGEMENT_GET_OPERATIONS),
-  moveOperations: createAction(actionTypes.MANAGEMENT_MOVE_OPERATIONS),
-  operationsSetNote: createAction(actionTypes.MANAGEMENT_OPERATIONS_SET_NOTE),
-  refresh: createAction(actionTypes.MANAGEMENT_REFRESH),
-  setMinDate: createAction(actionTypes.MANAGEMENT_SET_MIN_DATE),
-  setMaxDate: createAction(actionTypes.MANAGEMENT_SET_MAX_DATE),
-  setAccount: createAction(actionTypes.MANAGEMENT_SET_ACCOUNT)
+  setOperationView: createAction(actionTypes.MANAGEMENT_SET_OPERATION_VIEW),
+  setCriteria: createAction(actionTypes.MANAGEMENT_SET_CRITERIA),
 };
 
-const refresh = () => {
-  return (dispatch, getState) => {
-    const state  = getState();
-    const groups = getGroupAndChildrenIds(state, { group: getSelectedGroupId(state) });
-    dispatch(local.refresh(groups));
+export const getOperations = () => async (dispatch, getState) => {
+  const state = getState();
+
+  const query = getFilters(state);
+  const newViewId = await dispatch(io.call({
+    service: 'management',
+    method: 'notifyOperations',
+    ... query
+  }));
+
+  const oldViewId = getOperationViewId(state);
+  if(oldViewId) {
+    await dispatch(io.unnotify(oldViewId));
+  }
+
+  dispatch(local.setOperationView(newViewId));
+};
+
+export const setMinDate = (value) => {
+  return (dispatch) => {
+    dispatch(local.setCriteria({ minDate: value }));
+    dispatch(getOperations());
+  };
+};
+
+export const setMaxDate = (value) => {
+  return (dispatch) => {
+    dispatch(local.setCriteria({ maxDate: value }));
+    dispatch(getOperations());
+  };
+};
+
+export const setAccount = (value) => {
+  return (dispatch) => {
+    dispatch(local.setCriteria({ account: value }));
+    dispatch(getOperations());
   };
 };
 
 export const selectGroup = (id) => {
   return (dispatch) => {
-    dispatch(local.selectGroup(id));
-    dispatch(refresh());
+    dispatch(local.setCriteria({ group: id }));
+    dispatch(getOperations());
   };
 };
 
@@ -76,21 +100,6 @@ export const updateGroup = (group) => {
   };
 };
 
-export const getOperations = () => {
-  return async (dispatch, getState) => {
-    const query = getFilters(getState());
-
-    const data = await dispatch(io.call({
-      service: 'reporting',
-      method: 'getOperations',
-      ... query
-    }));
-
-    dispatch(local.getOperations(data));
-    dispatch(refresh());
-  };
-};
-
 export const moveOperations = (group) => {
   return async (dispatch, getState) => {
     const operations = getSelectedOperations(getState()).map(op => op._id);
@@ -101,9 +110,6 @@ export const moveOperations = (group) => {
       group,
       operations
     }));
-
-    dispatch(local.moveOperations({ group, operations }));
-    dispatch(refresh());
   };
 };
 
@@ -117,30 +123,6 @@ export const operationsSetNote = (note) => {
       note,
       operations
     }));
-
-    dispatch(local.operationsSetNote({ note, operations }));
-    dispatch(refresh());
-  };
-};
-
-export const setMinDate = (value) => {
-  return (dispatch) => {
-    dispatch(local.setMinDate(value));
-    dispatch(getOperations());
-  };
-};
-
-export const setMaxDate = (value) => {
-  return (dispatch) => {
-    dispatch(local.setMaxDate(value));
-    dispatch(getOperations());
-  };
-};
-
-export const setAccount = (value) => {
-  return (dispatch) => {
-    dispatch(local.setAccount(value));
-    dispatch(getOperations());
   };
 };
 
@@ -157,7 +139,6 @@ export const importOperations = (account, file) => {
       content
     }));
 
-    dispatch(getOperations());
     dispatch(local.showSuccess(`${count} operation(s) importée(s)`));
   };
 };
@@ -169,7 +150,6 @@ export const operationsExecuteRules = () => {
       method: 'operationsExecuteRules'
     }));
 
-    dispatch(getOperations());
     dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
   };
 };

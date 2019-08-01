@@ -33,22 +33,6 @@ export const makeGetSortedChildren = () => createSelector(
   (groups) => groups.valueSeq().sortBy(it => it.display).toArray()
 );
 
-export const getGroupAndChildrenIds = (state, props) => {
-  if(!props.group) { return [null]; }
-
-  const groups = getGroups(state);
-  const ids    = [];
-  children(props.group);
-  return ids;
-
-  function children(id) {
-    ids.push(id);
-    for(const child of groups.filter(g => g.parent === id).map(g => g._id)) {
-      children(child);
-    }
-  }
-};
-
 function createGroupBags(groups) {
   const groupBags = new Map();
 

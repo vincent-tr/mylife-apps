@@ -1,23 +1,29 @@
 'use strict';
 
-import { createSelector } from 'mylife-tools-ui';
+import { io, createSelector } from 'mylife-tools-ui';
 
-export const getAllOperations        = (state) => state.management.operations.all.valueSeq().toArray();
-export const getVisibleOperationIds  = (state) => state.management.operations.visible.valueSeq().toArray();
-export const getVisibleOperations    = (state) => getVisibleOperationIds(state).map(id => state.management.operations.all.get(id));
-export const getSelectedOperationIds = (state) => state.management.operations.selected.valueSeq().toArray();
-export const getSelectedOperations   = (state) => getSelectedOperationIds(state).map(id => state.management.operations.all.get(id));
-export const getSelectedGroupId      = (state) => state.management.selectedGroup;
+export const getOperationViewId = state => state.management.operations.view;
+const getOperationView = state => io.getView(state, getOperationViewId(state));
+const getOperationList = state => io.getViewList(state, getOperationViewId(state));
 
-export const getFilters = (state) => {
-  const { minDate, maxDate, account } = state.management;
-  return { minDate, maxDate, account };
+export const getSelectedOperationIds = state => state.management.operations.selected.valueSeq().toArray();
+
+export const getSelectedOperations = state => {
+  const view = getOperationView(state);
+  return getSelectedOperationIds(state).map(id => view.get(id));
 };
 
-export const getSortedVisibleOperations = createSelector(
-  [ getVisibleOperations ],
+export const getSelectedGroupId = (state) => state.management.group;
+
+export const getFilters = (state) => {
+  const { minDate, maxDate, account, group } = state.management;
+  return { minDate, maxDate, account, group };
+};
+
+export const getSortedOperations = createSelector(
+  [ getOperationList ],
   (operations) => {
-    const ret = operations.slice();
+    const ret = Array.from(operations);
     ret.sort((op1, op2) => {
       let comp = op1.date - op2.date;
       if(comp) { return comp; }
