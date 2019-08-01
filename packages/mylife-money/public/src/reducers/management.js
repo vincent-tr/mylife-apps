@@ -6,25 +6,38 @@ import { immutable } from 'mylife-tools-ui';
 
 export default handleActions({
   [actionTypes.MANAGEMENT_SET_CRITERIA] : {
-    next : (state, action) => ({ ...state, criteria: { ...state.criteria, ...action.payload } })
+    next : (state, action) => ({
+      ...state,
+      criteria: {
+        ...state.criteria,
+        ...action.payload
+      },
+      operations: {
+        ...state.operations,
+        // clear selection when criteria changes
+        selected: state.operations.selected.clear()
+      }
+    })
   },
 
   [actionTypes.MANAGEMENT_SET_OPERATION_VIEW] : {
-    next : (state, action) => ({ ...state, operations: {
-      ...state.operations,
-      view: action.payload,
-      selected: state.operations.selected.clear()
-    }})
+    next : (state, action) => ({
+      ...state,
+      operations: {
+        ...state.operations,
+        view: action.payload,
+        selected: state.operations.selected.clear()
+      }
+    })
   },
 
   [actionTypes.MANAGEMENT_SELECT_OPERATIONS] : {
-    next : (state, action) => ({ ...state, operations: {
-      ...state.operations,
-      selected:
-        action.payload._id ?
-          (action.payload.selected ? state.operations.selected.add(action.payload._id) : state.operations.selected.remove(action.payload._id)) :
-          (action.payload.selected ? state.operations.selected.union(state.operations.visible) : state.operations.selected.clear())
-    }})
+    next : (state, action) => ({
+      ...state, operations: {
+        ...state.operations,
+        selected: applySelection(state.operations.selected, action.payload)
+      }
+    })
   },
 
 }, {
@@ -39,3 +52,14 @@ export default handleActions({
     selected : new immutable.Set()
   }
 });
+
+function applySelection(set, { selected, id, ids }) {
+  if(!id) {
+    return set.clear().union(ids);
+  }
+
+  if(selected) {
+    return set.add(id);
+  }
+  return set.remove(id);
+}

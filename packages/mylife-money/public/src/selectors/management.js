@@ -6,7 +6,11 @@ export const getOperationViewId = state => state.management.operations.view;
 const getOperationView = state => io.getView(state, getOperationViewId(state));
 const getOperationList = state => io.getViewList(state, getOperationViewId(state));
 
-export const getSelectedOperationIds = state => state.management.operations.selected.valueSeq().toArray();
+// ensure that we only provide operations that are possible (selected operations are not refreshed when the operation view is)
+const getSelectedOperationSet = state => state.management.operations.selected.intersect(getOperationView(state).keySeq());
+
+export const getOperationIds = state => getOperationView(state).keySeq().toArray();
+export const getSelectedOperationIds = state => getSelectedOperationSet(state).valueSeq().toArray();
 
 export const getSelectedOperations = state => {
   const view = getOperationView(state);

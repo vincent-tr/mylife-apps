@@ -4,12 +4,13 @@ let groupIdCount = 0;
 
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationViewId } from '../selectors/management';
+import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId } from '../selectors/management';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
   setOperationView: createAction(actionTypes.MANAGEMENT_SET_OPERATION_VIEW),
   setCriteria: createAction(actionTypes.MANAGEMENT_SET_CRITERIA),
+  selectOperations: createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS)
 };
 
 export const getOperations = () => async (dispatch, getState) => {
@@ -126,7 +127,24 @@ export const operationsSetNote = (note) => {
   };
 };
 
-export const selectOperation = createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS);
+export const selectOperation = ({ id, selected }) => {
+  return (dispatch, getState) => {
+    if(id) {
+      dispatch(local.selectOperations({ id, selected }));
+      return;
+    }
+
+    // we are selecting/unselecting all
+    if(!selected) {
+      dispatch(local.selectOperations({ ids: [] }));
+      return;
+    }
+
+    const state = getState();
+    const ids = getOperationIds(state);
+    dispatch(local.selectOperations({ ids }));
+  };
+};
 
 export const importOperations = (account, file) => {
   return async (dispatch) => {
