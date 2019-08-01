@@ -2,7 +2,7 @@
 
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 
-exports.OperationCount = class OperationCount extends StoreContainer {
+exports.OperationStats = class OperationStats extends StoreContainer {
   constructor() {
     super();
     this.collection = getStoreCollection('operations');
@@ -38,5 +38,5 @@ exports.OperationCount = class OperationCount extends StoreContainer {
 
 function findLastDate(operations) {
   const result = operations.reduce((acc, op) => Math.max(acc, op.date), -Infinity);
-  return isFinite(result) ? result : null;
+  return isFinite(result) ? new Date(result) : null;
 }

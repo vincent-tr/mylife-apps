@@ -18,6 +18,13 @@ export default handleActions({
     })
   },
 
+  [actionTypes.REPORTING_SET_OPERATION_STATS_VIEW] : {
+    next : (state, action) => ({
+      ...state,
+      stats: action.payload
+    })
+  },
+
   [routing.actionTypes.LOCATION_CHANGE] : {
     next : (state) => ({
       ...state,
@@ -26,5 +33,6 @@ export default handleActions({
   },
 
 }, {
-  operations : new immutable.Map()
+  operations : new immutable.Map(),
+  stats: null
 });
