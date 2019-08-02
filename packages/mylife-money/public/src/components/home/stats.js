@@ -7,20 +7,33 @@ const useConnect = () => useSelector(state => ({
   stats : getOperationStatsView(state),
 }));
 
-const OperationStats = () => {
+
+const useStyles = mui.makeStyles({
+  container: {
+    marginTop: 20,
+    marginRight: 20,
+    marginLeft: 20,
+    marginBottom: 20
+  }
+});
+
+const Stats = (props) => {
+  const classes = useStyles();
   const { stats } = useConnect();
   const count = statValue(stats, 'count');
   const lastDate = statValue(stats, 'lastDate');
 
   return (
-    <React.Fragment>
-      <mui.Typography>{`Nombre total d'opérations : ${count}`}</mui.Typography>
-      <mui.Typography>{`Date de l'opération la plus récente : ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</mui.Typography>
-    </React.Fragment>
+    <div {...props}>
+      <div className={classes.container}>
+        <mui.Typography>{`Nombre total d'opérations : ${count}`}</mui.Typography>
+        <mui.Typography>{`Date de l'opération la plus récente : ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</mui.Typography>
+      </div>
+    </div>
   );
 };
 
-export default OperationStats;
+export default Stats;
 
 function statValue(stats, code) {
   const stat = stats.find(stat => stat.code === code);
