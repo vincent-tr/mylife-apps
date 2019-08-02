@@ -5,7 +5,7 @@ import { getOperations } from '../../../selectors/reporting';
 import { getGroupBags } from '../../../selectors/reference';
 import { refreshOperations } from '../../../actions/reporting';
 
-import Toolbar from './toolbar';
+import Criteria from './criteria';
 import Chart from './chart';
 
 const useConnect = () => {
@@ -58,11 +58,11 @@ const GroupAmountByMonth = () => {
     onRefreshOperations(minDate, maxDate, account);
   }, []);
 
-  const { groups } = criteria;
+  const groups = criteria.groups.toArray();
 
   return (
     <div className={classes.container}>
-      <Toolbar criteria={criteria} onCriteriaChanged={changeCriteria} />
+      <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} />
       <Chart data={data} groups={groups} className={classes.chart} />
     </div>
   );
