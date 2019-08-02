@@ -19,7 +19,7 @@ const Chart = ({ data, groups, ...props }) => {
   const series = groups.map((group, index) => ({
     index,
     group,
-    display : console.log(groupStacks.get(group)) || groupStacks.get(group).map(group => group.display).join('/'),
+    display : groupStacks.get(group).map(group => group.display).join('/'),
     fill    : colors[index % colors.length]
   }));
 
