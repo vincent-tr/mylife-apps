@@ -12,53 +12,37 @@ const useConnect = ({ value }) => {
   }));
 };
 
-const styles = {
+const useStyles = mui.makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   button: {
-    height   : 56,
-    width    : 56,
-    overflow : 'inherit',
   },
-  mainWrapper: {
-    display  : 'inline-block',
-    height   : 56,
-  },
-  nodeListContainer: {
-    display  : 'inline-block',
-    height   : 32,
-    padding  : 12
-  },
-  nodeContainer: {
-    display         : 'inline-block',
-    backgroundColor : 'rgba(0, 0, 0, 0.2)',
-    borderRadius    : 10,
-    padding         : '0px 10px',
-    margin          : '0px 2px',
-  },
-  node: {
-    margin: 6
+  breadcrumbs: {
+    flex: '1 1 auto',
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   }
-};
+}));
 
 const GroupSelector = ({ onChange, value, ...props }) => {
+  const classes = useStyles();
   const { stack } = useConnect({ value });
   return (
-    <div style={styles.mainWrapper} {...props}>
+    <div className={classes.container} {...props}>
       <mui.Tooltip title='Sélectionner'>
-        <GroupSelectorButton onSelect={onChange} style={styles.button}>
+        <GroupSelectorButton onSelect={onChange} className={classes.button}>
           <icons.actions.Move />
         </GroupSelectorButton>
       </mui.Tooltip>
-      <div style={styles.nodeListContainer}>
+      <mui.Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
         {stack.map(node => (
-          <div style={styles.nodeContainer} key={node._id}>
-            <p style={styles.node}>
-              {node.display}
-            </p>
-          </div>
+          <mui.Typography key={node._id} color='textPrimary'>{node.display}</mui.Typography>
         ))}
-      </div>
+      </mui.Breadcrumbs>
     </div>
-
   );
 };
 
