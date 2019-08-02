@@ -9,7 +9,7 @@ const local = {
   setGroupView: createAction(actionTypes.SET_GROUP_VIEW),
 };
 
-export const getAccounts = () => async (dispatch) => {
+const getAccounts = () => async (dispatch) => {
   const viewId = await dispatch(io.call({
     service: 'common',
     method: 'notifyAccounts'
@@ -18,11 +18,16 @@ export const getAccounts = () => async (dispatch) => {
   dispatch(local.setAccountView(viewId));
 };
 
-export const getGroups = () => async (dispatch) => {
+const getGroups = () => async (dispatch) => {
   const viewId = await dispatch(io.call({
     service: 'common',
     method: 'notifyGroups'
   }));
 
   dispatch(local.setGroupView(viewId));
+};
+
+export const referenceInit = () => async (dispatch) => {
+  await dispatch(getAccounts());
+  await dispatch(getGroups());
 };

@@ -3,8 +3,7 @@
 import { React, services, io } from 'mylife-tools-ui';
 import reducers from './reducers';
 
-import { getAccounts, getGroups } from './actions/reference';
-import { getOperationStats } from './actions/reporting';
+import { referenceInit } from './actions/reference';
 
 import icons from './components/icons';
 import Home from './components/home';
@@ -39,7 +38,5 @@ services.observeStore(io.getOnline, value => {
   }
 
   const store = services.getStore();
-  store.dispatch(getAccounts());
-  store.dispatch(getGroups());
-  store.dispatch(getOperationStats());
+  store.dispatch(referenceInit());
 });
