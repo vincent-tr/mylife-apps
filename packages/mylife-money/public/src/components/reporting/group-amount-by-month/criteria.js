@@ -24,10 +24,9 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
   return (
     <mui.ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
       <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
-        {expanded && (
+        {expanded ? (
           <mui.Typography>Critères de sélection</mui.Typography>
-        )}
-        {!expanded && (
+        ) : (
           <mui.Typography>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionnés`}</mui.Typography>
         )}
       </mui.ExpansionPanelSummary>
