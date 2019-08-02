@@ -9,6 +9,7 @@ import GroupSelector from '../../common/group-selector';
 const Toolbar = ({ criteria, onCriteriaChanged }) => {
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
+  const onChildrenChanged = (value) => setCriteria('children', value);
   const onReverseChanged = (value) => setCriteria('reverse', value);
   const onMinDateChanged = (value) => setCriteria('minDate', value);
   const onMaxDateChanged = (value) => setCriteria('maxDate', value);
@@ -22,6 +23,9 @@ const Toolbar = ({ criteria, onCriteriaChanged }) => {
     <mui.Toolbar>
       <ToolbarFieldTitle>Inverser montant</ToolbarFieldTitle>
       <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
+
+      <ToolbarFieldTitle>Afficher les groups enfants</ToolbarFieldTitle>
+      <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
 
       <ToolbarSeparator />
 

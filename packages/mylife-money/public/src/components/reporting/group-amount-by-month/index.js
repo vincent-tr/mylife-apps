@@ -32,9 +32,10 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const GroupAbsoluteByMonth = () => {
+const GroupAmountByMonth = () => {
   const [criteria, setCriteria] = useState({
     reverse: true,
+    children: false,
     minDate: null,
     maxDate: null,
     account: null,
@@ -67,7 +68,7 @@ const GroupAbsoluteByMonth = () => {
   );
 };
 
-export default GroupAbsoluteByMonth;
+export default GroupAmountByMonth;
 
 // TODO: move server side
 function refreshData(groupBags, operations, criteria) {
