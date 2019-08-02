@@ -18,13 +18,13 @@ const getGroupView = state => io.getView(state, getGroupViewId(state)).set(null,
 export const getGroups = (state) => io.getViewList(state, getGroupViewId(state));
 export const getGroup  = (state, { group }) => io.getViewItem(state, getGroupViewId(state), group);
 
-export const getChildren = (state, props) => {
-  if(!props.group) {
+export const getChildren = (state, { group }) => {
+  if(!group) {
     return getGroupView(state).filter(it => !it.parent); // Root elements
-  } else if (!props.group._id) {
+  } else if (!group._id) {
     return new immutable.Map(); // Non tries -> no children
   } else {
-    return getGroupView(state).filter(it => it.parent === props.group._id);
+    return getGroupView(state).filter(it => it.parent === group._id);
   }
 };
 
@@ -33,7 +33,8 @@ export const makeGetSortedChildren = () => createSelector(
   (groups) => groups.valueSeq().sortBy(it => it.display).toArray()
 );
 
-function createGroupBags(groups) {
+// bag of group children for each group
+export const getGroupBags = createSelector([ getGroups ], groups => {
   const groupBags = new Map();
 
   groupBags.set(null, new Set([ null ]));
@@ -53,13 +54,11 @@ function createGroupBags(groups) {
     groupBags.set(group._id, bag);
   }
 
-  return groupBags;
-}
+  return new immutable.Map(groupBags);
+});
 
-// bag of group children for each group
-export const makeGetGroupBags = () => createSelector([ getGroups ], createGroupBags);
-
-function createGroupStacks(groups) {
+// stack from root for each group
+export const getGroupStacks = createSelector([ getGroups ], groups => {
   const groupStacks = new Map();
 
   groupStacks.set(null, [ groups.find(g => !g._id) ]);
@@ -80,8 +79,5 @@ function createGroupStacks(groups) {
     groupStacks.set(group._id, stack);
   }
 
-  return groupStacks;
-}
-
-// stack from root for each group
-export const makeGetGroupStacks = () => createSelector([ getGroups ], createGroupStacks);
+  return new immutable.Map(groupStacks);
+});

@@ -1,10 +1,9 @@
 'use strict';
 
-import { React, useMemo, PropTypes,  chart, useSelector, useChartColors } from 'mylife-tools-ui';
-import { makeGetGroupStacks } from '../../../selectors/reference';
+import { React, PropTypes,  chart, useSelector, useChartColors } from 'mylife-tools-ui';
+import { getGroupStacks } from '../../../selectors/reference';
 
 const useConnect = () => {
-  const getGroupStacks = useMemo(makeGetGroupStacks, []);
   return useSelector(state => ({
     groupStacks : getGroupStacks(state),
   }));
@@ -20,7 +19,7 @@ const Chart = ({ data, groups, ...props }) => {
   const series = groups.map((group, index) => ({
     index,
     group,
-    display : groupStacks.get(group).map(group => group.display).join('/'),
+    display : console.log(groupStacks.get(group)) || groupStacks.get(group).map(group => group.display).join('/'),
     fill    : colors[index % colors.length]
   }));
 

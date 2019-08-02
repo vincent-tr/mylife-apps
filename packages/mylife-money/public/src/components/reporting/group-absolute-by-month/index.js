@@ -2,7 +2,7 @@
 
 import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector } from 'mylife-tools-ui';
 import { getOperations } from '../../../selectors/reporting';
-import { makeGetGroupBags } from '../../../selectors/reference';
+import { getGroupBags } from '../../../selectors/reference';
 import { refreshOperations } from '../../../actions/reporting';
 
 import Toolbar from './toolbar';
@@ -10,7 +10,6 @@ import Chart from './chart';
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  const getGroupBags = useMemo(makeGetGroupBags, []);
   return {
     ...useSelector(state => ({
       operations  : getOperations(state),
