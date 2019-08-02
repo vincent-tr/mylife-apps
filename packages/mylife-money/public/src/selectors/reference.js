@@ -62,7 +62,6 @@ export const getGroupStacks = createSelector([ getGroups ], groups => {
   const groupStacks = new Map();
 
   groupStacks.set(null, [ groups.find(g => !g._id) ]);
-  console.log(groupStacks);
 
   for(const group of groups) {
     if(!group._id) { continue; }
