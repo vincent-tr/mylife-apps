@@ -6,6 +6,91 @@ import icons from '../../icons';
 import AccountSelector from '../../common/account-selector';
 import GroupSelector from '../../common/group-selector';
 
+const useFieldStyles = mui.makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  label: {
+    marginRight: theme.spacing(1)
+  },
+  children: {
+  }
+}));
+
+const Field = ({ label, children }) => {
+  const classes = useFieldStyles();
+  return (
+    <div className={classes.container}>
+      <mui.Typography className={classes.label}>{label}</mui.Typography>
+      <div className={classes.children}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+Field.propTypes = {
+  label: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired
+};
+
+const useGroupFieldStyles = mui.makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  label: {
+    marginRight: theme.spacing(1)
+  },
+  addButton: {
+  },
+  item: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
+}));
+
+const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
+  const classes = useGroupFieldStyles();
+  return (
+    <div className={classes.container}>
+      <div className={classes.header}>
+        <mui.Typography className={classes.label}>Groupes</mui.Typography>
+        <mui.Tooltip title='Ajouter un groupe'>
+          <mui.IconButton onClick={() => onGroupAdd()} className={classes.addButton}>
+            <icons.actions.New />
+          </mui.IconButton>
+        </mui.Tooltip>
+      </div>
+      {groups.map((group, index) => (
+        <div key={index} className={classes.item}>
+          <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
+          <mui.Tooltip title='Supprimer le groupe'>
+            <mui.IconButton onClick={() => onGroupDelete(index)}>
+              <icons.actions.Delete />
+            </mui.IconButton>
+          </mui.Tooltip>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+GroupField.propTypes = {
+  groups: PropTypes.object.isRequired,
+  onGroupAdd: PropTypes.func.isRequired,
+  onGroupChanged: PropTypes.func.isRequired,
+  onGroupDelete: PropTypes.func.isRequired
+};
+
 const Criteria = ({ criteria, onCriteriaChanged }) => {
   const [expanded, setExpanded] = useState(true);
   const toggleExpanded = () => setExpanded(!expanded);
@@ -25,50 +110,40 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
     <mui.ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
       <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
         {expanded ? (
-          <mui.Typography>Critères de sélection</mui.Typography>
+          <mui.Typography variant='h6'>Critères de sélection</mui.Typography>
         ) : (
           <mui.Typography>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionnés`}</mui.Typography>
         )}
       </mui.ExpansionPanelSummary>
       <mui.ExpansionPanelDetails>
-        <mui.Grid container>
-          <mui.Grid item>
-            <mui.Typography>Inverser montant</mui.Typography>
-            <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
+        <mui.Grid container spacing={2}>
+          <mui.Grid item xs={3}>
+            <Field label='Date début'>
+              <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+            </Field>
           </mui.Grid>
-          <mui.Grid item>
-            <mui.Typography>Afficher les groups enfants</mui.Typography>
-            <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+          <mui.Grid item xs={3}>
+            <Field label='Date fin'>
+              <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
+            </Field>
           </mui.Grid>
-          <mui.Grid item>
-            <mui.Typography>Date début</mui.Typography>
-            <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+          <mui.Grid item xs={3}>
+            <Field label='Inverser montant'>
+              <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
+            </Field>
           </mui.Grid>
-          <mui.Grid item>
-            <mui.Typography>Date fin</mui.Typography>
-            <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
+          <mui.Grid item xs={3}>
+            <Field label='Afficher les groups enfants'>
+              <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+            </Field>
           </mui.Grid>
-          <mui.Grid item>
-            <mui.Typography>Compte</mui.Typography>
-            <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
+          <mui.Grid item xs={3}>
+            <Field label='Compte'>
+              <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
+            </Field>
           </mui.Grid>
-          <mui.Grid item>
-            <mui.Typography>Groupes</mui.Typography>
-            <mui.Tooltip title='Ajouter un groupe'>
-              <mui.IconButton onClick={() => onGroupAdd()}>
-                <icons.actions.New />
-              </mui.IconButton>
-            </mui.Tooltip>
-            {criteria.groups.map((group, index) => (
-              <React.Fragment key={index}>
-                <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
-                <mui.Tooltip title='Supprimer le groupe'>
-                  <mui.IconButton onClick={() => onGroupDelete(index)}>
-                    <icons.actions.Delete />
-                  </mui.IconButton>
-                </mui.Tooltip>
-              </React.Fragment>
-            ))}
+          <mui.Grid item xs={9}>
+            <GroupField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
           </mui.Grid>
         </mui.Grid>
 
