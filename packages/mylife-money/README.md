@@ -2,6 +2,8 @@
 MyLife Money
 
 TODO list
- - in-memory database with CRUD in queue for mongo
- - lookup management
- - entity management
+ - group editor
+ - reports
+   - panel with multiple group selection
+   - can show children of a group with stacked bar in bar charts (checkbox to activate it)
+ - mobile adaptations
