@@ -27,10 +27,10 @@ exports.OperationView = class OperationView extends StoreView {
 
 function createFilter(criteria) {
   return operation => {
-    if(criteria.minDate && operation.minDate < criteria.minDate) {
+    if(criteria.minDate && operation.date < criteria.minDate) {
       return false;
     }
-    if(criteria.maxDate && operation.maxDate > criteria.maxDate) {
+    if(criteria.maxDate && operation.date > criteria.maxDate) {
       return false;
     }
     if(criteria.account && operation.account !== criteria.account) {
