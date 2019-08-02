@@ -23,6 +23,7 @@ export const getOperations = () => async (dispatch, getState) => {
 
   const oldViewId = getOperationViewId(state);
   if(oldViewId) {
+    console.log('getOperations unnotify', oldViewId);
     await dispatch(io.unnotify(oldViewId));
   }
 
@@ -36,6 +37,7 @@ const clearOperations = () => async (dispatch, getState) => {
     return;
   }
 
+  console.log('clearOperations unnotify', oldViewId);
   await dispatch(io.unnotify(oldViewId));
   dispatch(local.setOperationView(null));
 };
@@ -43,33 +45,23 @@ const clearOperations = () => async (dispatch, getState) => {
 export const managementEnter = getOperations;
 export const managementLeave = clearOperations;
 
-export const setMinDate = (value) => {
-  return (dispatch) => {
-    dispatch(local.setCriteria({ minDate: value }));
-    dispatch(getOperations());
-  };
-};
+export const setMinDate = (value) => setCriteriaValue('minDate', value);
+export const setMaxDate = (value) => setCriteriaValue('maxDate', value);
+export const setAccount = (value) => setCriteriaValue('account', value);
+export const selectGroup = (value) => setCriteriaValue('group', value);
 
-export const setMaxDate = (value) => {
-  return (dispatch) => {
-    dispatch(local.setCriteria({ maxDate: value }));
-    dispatch(getOperations());
-  };
-};
+function setCriteriaValue(name, value) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const criteria = getCriteria(state);
+    if(criteria[name] === value) {
+      return;
+    }
 
-export const setAccount = (value) => {
-  return (dispatch) => {
-    dispatch(local.setCriteria({ account: value }));
+    dispatch(local.setCriteria({ [name]: value }));
     dispatch(getOperations());
   };
-};
-
-export const selectGroup = (id) => {
-  return (dispatch) => {
-    dispatch(local.setCriteria({ group: id }));
-    dispatch(getOperations());
-  };
-};
+}
 
 let groupIdCount = 0;
 
