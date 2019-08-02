@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useState, PropTypes, mui, ToolbarSeparator, formatDate } from 'mylife-tools-ui';
+import { React, useState, PropTypes, mui, formatDate } from 'mylife-tools-ui';
 import icons from '../../icons';
 
 import AccountSelector from '../../common/account-selector';
@@ -31,46 +31,47 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
         )}
       </mui.ExpansionPanelSummary>
       <mui.ExpansionPanelDetails>
-        <mui.Typography>Inverser montant</mui.Typography>
-        <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
-
-        <mui.Typography>Afficher les groups enfants</mui.Typography>
-        <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
-
-        <ToolbarSeparator />
-
-        <mui.Typography>Date début</mui.Typography>
-        <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
-
-        <ToolbarSeparator />
-
-        <mui.Typography>Date fin</mui.Typography>
-        <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
-
-        <ToolbarSeparator />
-
-        <mui.Typography>Compte</mui.Typography>
-        <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
-
-        <ToolbarSeparator />
-
-        <mui.Typography>Groupes</mui.Typography>
-        <mui.Tooltip title='Ajouter un groupe'>
-          <mui.IconButton onClick={() => onGroupAdd()}>
-            <icons.actions.New />
-          </mui.IconButton>
-        </mui.Tooltip>
-        {criteria.groups.map((group, index) => (
-          <React.Fragment key={index}>
-            <ToolbarSeparator />
-            <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
-            <mui.Tooltip title='Supprimer le groupe'>
-              <mui.IconButton onClick={() => onGroupDelete(index)}>
-                <icons.actions.Delete />
+        <mui.Grid container>
+          <mui.Grid item>
+            <mui.Typography>Inverser montant</mui.Typography>
+            <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
+          </mui.Grid>
+          <mui.Grid item>
+            <mui.Typography>Afficher les groups enfants</mui.Typography>
+            <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+          </mui.Grid>
+          <mui.Grid item>
+            <mui.Typography>Date début</mui.Typography>
+            <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+          </mui.Grid>
+          <mui.Grid item>
+            <mui.Typography>Date fin</mui.Typography>
+            <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
+          </mui.Grid>
+          <mui.Grid item>
+            <mui.Typography>Compte</mui.Typography>
+            <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
+          </mui.Grid>
+          <mui.Grid item>
+            <mui.Typography>Groupes</mui.Typography>
+            <mui.Tooltip title='Ajouter un groupe'>
+              <mui.IconButton onClick={() => onGroupAdd()}>
+                <icons.actions.New />
               </mui.IconButton>
             </mui.Tooltip>
-          </React.Fragment>
-        ))}
+            {criteria.groups.map((group, index) => (
+              <React.Fragment key={index}>
+                <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
+                <mui.Tooltip title='Supprimer le groupe'>
+                  <mui.IconButton onClick={() => onGroupDelete(index)}>
+                    <icons.actions.Delete />
+                  </mui.IconButton>
+                </mui.Tooltip>
+              </React.Fragment>
+            ))}
+          </mui.Grid>
+        </mui.Grid>
+
       </mui.ExpansionPanelDetails>
     </mui.ExpansionPanel>
   );
