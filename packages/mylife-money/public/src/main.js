@@ -15,13 +15,13 @@ services.initStore(reducers);
 const routes = [
   { location: '/', renderer: () => <Home /> },
   { location: '/management', name: 'Gestion', icon: icons.tabs.Management, renderer: () => <Management /> },
-  { location: '/reports/group-amount-by-month', name: 'Montant par mois de groupes', icon: icons.tabs.Reporting, renderer: () => <GroupAmountByMonth /> },
+  { location: '/reports/group-amount-by-month', name: 'Groupes par mois', icon: icons.tabs.Reporting, renderer: () => <GroupAmountByMonth /> },
   { location: '/reports/2', name: 'Rapport 2', icon: icons.tabs.Reporting, renderer: () => 'Report2' },
 ];
 
 const menu = [
   { id: 'management', text: 'Gestion', icon: icons.tabs.Management, location: '/management' },
-  { id: 'group-amount-by-month', text: 'Montant par mois de groupes', icon: icons.tabs.Reporting, location: '/reports/group-amount-by-month' },
+  { id: 'group-amount-by-month', text: 'Groupes par mois', icon: icons.tabs.Reporting, location: '/reports/group-amount-by-month' },
   { id: 'report2', text: 'Rapport 2', icon: icons.tabs.Reporting, location: '/reports/2' },
 ];
 
