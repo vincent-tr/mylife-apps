@@ -15,9 +15,9 @@ const Toolbar = ({ criteria, onCriteriaChanged }) => {
   const onMaxDateChanged = (value) => setCriteria('maxDate', value);
   const onAccountChanged = (value) => setCriteria('account', value);
 
-  const onGroupAdd = () => setCriteria('groups', [ ...criteria.groups, null ]);
-  const onGroupChanged = (index, value) => setCriteria('groups', [ ...criteria.groups.slice(0, index), value, ...criteria.groups.slice(index + 1) ]);
-  const onGroupDelete = (index) => setCriteria('groups', [ ...criteria.groups.slice(0, index), ...criteria.groups.slice(index + 1) ]);
+  const onGroupAdd = () => setCriteria('groups', criteria.groups.push(null));
+  const onGroupChanged = (index, value) => setCriteria('groups', criteria.groups.set(index, value));
+  const onGroupDelete = (index) => setCriteria('groups', criteria.groups.delete(index));
 
   return (
     <mui.Toolbar>

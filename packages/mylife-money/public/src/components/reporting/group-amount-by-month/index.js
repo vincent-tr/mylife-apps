@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector } from 'mylife-tools-ui';
+import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector, immutable } from 'mylife-tools-ui';
 import { getOperations } from '../../../selectors/reporting';
 import { getGroupBags } from '../../../selectors/reference';
 import { refreshOperations } from '../../../actions/reporting';
@@ -39,7 +39,7 @@ const GroupAmountByMonth = () => {
     minDate: null,
     maxDate: null,
     account: null,
-    groups: [ null ]
+    groups: new immutable.List([ null ])
   });
 
   const { operations, groupBags, onRefreshOperations } = useConnect();
