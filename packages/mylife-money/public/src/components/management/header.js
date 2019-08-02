@@ -3,7 +3,7 @@
 import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, dialogs } from 'mylife-tools-ui';
 import icons from '../icons';
 import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
-import { getSelectedOperations, getSelectedGroupId } from '../../selectors/management';
+import { getSelectedOperations, getCriteria } from '../../selectors/management';
 import { getAccounts } from '../../selectors/reference';
 
 import AccountSelector from '../common/account-selector';
@@ -15,13 +15,14 @@ const useConnect = () => {
   return {
     ...useSelector(state => {
       const selectedOperations = getSelectedOperations(state);
+      const criteria = getCriteria(state);
       return {
-        showExecuteRules     : !getSelectedGroupId(state),
+        showExecuteRules     : !criteria.group,
         canProcessOperations : !!selectedOperations.length,
         accounts             : getAccounts(state),
-        minDate              : state.management.minDate,
-        maxDate              : state.management.maxDate,
-        account              : state.management.account,
+        minDate              : criteria.minDate,
+        maxDate              : criteria.maxDate,
+        account              : criteria.account,
         noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
       };
     }),
@@ -94,7 +95,7 @@ const Header = () => {
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+      <mui.DatePicker value={console.log(minDate) || minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
       <ToolbarSeparator />
 
