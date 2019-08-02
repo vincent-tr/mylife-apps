@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 
-export default function(init, terminate = () => {}) {
+export default function(onMount, onUnmout = () => {}) {
   useEffect(() => {
-    init();
-    return terminate;
+    onMount();
+    return onUnmout;
   }, []);
 }
