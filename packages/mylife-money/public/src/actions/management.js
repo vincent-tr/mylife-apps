@@ -11,8 +11,8 @@ const local = {
   selectOperations: createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS)
 };
 
-export const enter = getOperations;
-export const leave = clearOperations;
+export const managementEnter = getOperations;
+export const managementLeave = clearOperations;
 
 export const getOperations = () => async (dispatch, getState) => {
   const state = getState();
