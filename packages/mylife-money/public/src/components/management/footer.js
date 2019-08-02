@@ -19,7 +19,7 @@ function summaries(operations) {
   return { totalDebit, totalCredit, total };
 }
 
-const Table = (props) => {
+const Footer = (props) => {
   const classes = useStyles();
   const { operations } = useConnect();
   const { totalDebit, totalCredit, total } = summaries(operations);
@@ -33,4 +33,4 @@ const Table = (props) => {
   );
 };
 
-export default Table;
+export default Footer;
