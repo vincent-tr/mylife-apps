@@ -3,7 +3,8 @@
 import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { homeEnter, homeLeave } from '../../actions/reporting';
 import Stats from './stats';
-import Chart from './chart';
+import ChartCount from './chart-count';
+import ChartAmount from './chart-amount';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -18,9 +19,6 @@ const useStyles = mui.makeStyles({
     display: 'flex',
     flexDirection: 'column',
     flex: '1 1 auto'
-  },
-  chart: {
-    flex: '1 1 auto'
   }
 });
 
@@ -31,8 +29,9 @@ const Home = () => {
 
   return (
     <div className={classes.container}>
-      <Stats />
-      <Chart className={classes.chart}/>
+      <Stats/>
+      <ChartCount/>
+      <ChartAmount/>
     </div>
   );
 };

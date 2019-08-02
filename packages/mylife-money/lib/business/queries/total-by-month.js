@@ -41,6 +41,10 @@ exports.TotalByMonth = class TotalByMonth extends StoreContainer {
     }
 
     for(const object of objects.values()) {
+      object.sumDebit = round(object.sumDebit);
+      object.sumCredit = round(object.sumCredit);
+      object.balance = round(object.balance);
+
       this._set(this.entity.newObject(object));
     }
   }
@@ -84,4 +88,11 @@ function dateToMonth(date) {
 
 function formatTwoDigits(number) {
   return number.toLocaleString(undefined, { minimumIntegerDigits: 2 });
+}
+
+function round(number) {
+  if(!isFinite(number)) {
+    return number;
+  }
+  return Math.round(number * 100) / 100;
 }
