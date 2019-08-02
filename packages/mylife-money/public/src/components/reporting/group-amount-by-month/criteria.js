@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useState, PropTypes, mui, ToolbarFieldTitle, ToolbarSeparator } from 'mylife-tools-ui';
+import { React, useState, PropTypes, mui, ToolbarSeparator, formatDate } from 'mylife-tools-ui';
 import icons from '../../icons';
 
 import AccountSelector from '../../common/account-selector';
@@ -27,32 +27,35 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
         {expanded && (
           <mui.Typography>Critères de sélection</mui.Typography>
         )}
+        {!expanded && (
+          <mui.Typography>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionnés`}</mui.Typography>
+        )}
       </mui.ExpansionPanelSummary>
       <mui.ExpansionPanelDetails>
-        <ToolbarFieldTitle>Inverser montant</ToolbarFieldTitle>
+        <mui.Typography>Inverser montant</mui.Typography>
         <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
 
-        <ToolbarFieldTitle>Afficher les groups enfants</ToolbarFieldTitle>
+        <mui.Typography>Afficher les groups enfants</mui.Typography>
         <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
 
         <ToolbarSeparator />
 
-        <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
+        <mui.Typography>Date début</mui.Typography>
         <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
         <ToolbarSeparator />
 
-        <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
+        <mui.Typography>Date fin</mui.Typography>
         <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
         <ToolbarSeparator />
 
-        <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
+        <mui.Typography>Compte</mui.Typography>
         <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
 
         <ToolbarSeparator />
 
-        <ToolbarFieldTitle>Groupes</ToolbarFieldTitle>
+        <mui.Typography>Groupes</mui.Typography>
         <mui.Tooltip title='Ajouter un groupe'>
           <mui.IconButton onClick={() => onGroupAdd()}>
             <icons.actions.New />
@@ -80,3 +83,10 @@ Criteria.propTypes = {
 };
 
 export default Criteria;
+
+function format(date) {
+  if(!date) {
+    return '<indéfini>';
+  }
+  return formatDate(date, 'dd/MM/yyyy');
+}
