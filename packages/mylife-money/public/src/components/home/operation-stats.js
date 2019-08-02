@@ -14,8 +14,8 @@ const OperationStats = () => {
 
   return (
     <React.Fragment>
-      <mui.Typography>{`Total operations count ${count}`}</mui.Typography>
-      <mui.Typography>{`Last import date (= last operation date) ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</mui.Typography>
+      <mui.Typography>{`Nombre total d'opérations : ${count}`}</mui.Typography>
+      <mui.Typography>{`Date de l'opération la plus récente : ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</mui.Typography>
     </React.Fragment>
   );
 };

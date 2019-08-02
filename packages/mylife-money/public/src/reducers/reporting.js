@@ -25,6 +25,13 @@ export default handleActions({
     })
   },
 
+  [actionTypes.REPORTING_SET_TOTAL_BY_MONTH_VIEW] : {
+    next : (state, action) => ({
+      ...state,
+      totalByMonth: action.payload
+    })
+  },
+
   [routing.actionTypes.LOCATION_CHANGE] : {
     next : (state) => ({
       ...state,
@@ -34,5 +41,6 @@ export default handleActions({
 
 }, {
   operations : new immutable.Map(),
-  stats: null
+  stats: null,
+  totalByMonth: null
 });

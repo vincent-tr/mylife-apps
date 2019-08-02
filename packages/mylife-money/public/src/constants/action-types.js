@@ -12,4 +12,5 @@ export default constants.wrap({
 
   REPORTING_GET_OPERATIONS           : null,
   REPORTING_SET_OPERATION_STATS_VIEW : null,
+  REPORTING_SET_TOTAL_BY_MONTH_VIEW  : null,
 });

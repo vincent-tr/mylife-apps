@@ -15,3 +15,7 @@ exports.getOperations = [ base, (session, message) => {
 exports.notifyOperationStats = [ base, (session/*, message*/) => {
   return business.notifyOperationStats(session);
 } ];
+
+exports.notifyTotalByMonth = [ base, (session/*, message*/) => {
+  return business.notifyTotalByMonth(session);
+} ];
