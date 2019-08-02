@@ -11,6 +11,9 @@ const local = {
   selectOperations: createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS)
 };
 
+export const enter = getOperations;
+export const leave = clearOperations;
+
 export const getOperations = () => async (dispatch, getState) => {
   const state = getState();
 
@@ -35,7 +38,7 @@ export const clearOperations = () => async (dispatch, getState) => {
   if(!oldViewId) {
     return;
   }
-  
+
   await dispatch(io.unnotify(oldViewId));
   dispatch(local.setOperationView(null));
 };
