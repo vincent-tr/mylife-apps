@@ -1,27 +1,14 @@
 'use strict';
 
-import { React, useState, PropTypes, mui, ToolbarFieldTitle, ToolbarSeparator } from 'mylife-tools-ui';
+import { React, PropTypes, mui, ToolbarFieldTitle, ToolbarSeparator } from 'mylife-tools-ui';
 import icons from '../../icons';
 
 import AccountSelector from '../../common/account-selector';
 import GroupSelector from '../../common/group-selector';
 
-const Toolbar = ({ onCriteriaChanged }) => {
+const Toolbar = ({ criteria, onCriteriaChanged }) => {
 
-  const [criteria, setRawCriteria] = useState({
-    reverse: true,
-    minDate: null,
-    maxDate: null,
-    account: null,
-    groups: [ null ]
-  });
-
-  const setCriteria = (name, value) => {
-    const newCriteria = { ...criteria, [name]: value };
-    setRawCriteria(newCriteria);
-    onCriteriaChanged(newCriteria);
-  };
-
+  const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
   const onReverseChanged = (value) => setCriteria('reverse', value);
   const onMinDateChanged = (value) => setCriteria('minDate', value);
   const onMaxDateChanged = (value) => setCriteria('maxDate', value);
@@ -75,6 +62,7 @@ const Toolbar = ({ onCriteriaChanged }) => {
 };
 
 Toolbar.propTypes = {
+  criteria: PropTypes.object.isRequired,
   onCriteriaChanged: PropTypes.func.isRequired
 };
 

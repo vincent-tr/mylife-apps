@@ -33,7 +33,14 @@ const useStyles = mui.makeStyles({
 });
 
 const GroupAbsoluteByMonth = () => {
-  const [criteria, setCriteria] = useState({ reverse: true, minDate: null, maxDate: null, account: null, groups: [ null ] });
+  const [criteria, setCriteria] = useState({
+    reverse: true,
+    minDate: null,
+    maxDate: null,
+    account: null,
+    groups: [ null ]
+  });
+
   const { operations, groupBags, onRefreshOperations } = useConnect();
   const data = useMemo(() => refreshData(groupBags, operations, criteria), [groupBags, operations, criteria]);
   const classes = useStyles();
@@ -54,7 +61,7 @@ const GroupAbsoluteByMonth = () => {
 
   return (
     <div className={classes.container}>
-      <Toolbar onCriteriaChanged={changeCriteria} />
+      <Toolbar criteria={criteria} onCriteriaChanged={changeCriteria} />
       <Chart data={data} groups={groups} className={classes.chart} />
     </div>
   );
