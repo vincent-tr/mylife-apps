@@ -13,10 +13,10 @@ const defaultGroup = Object.freeze({
   display : 'Non triés'
 });
 
-const getGroupView = state => io.getView(state, getGroupViewId(state)).set(null, defaultGroup);
+const getGroupView = createSelector([ state => io.getView(state, getGroupViewId(state)) ], view => view.set(null, defaultGroup));
 
-export const getGroups = (state) => io.getViewList(state, getGroupViewId(state));
-export const getGroup  = (state, { group }) => io.getViewItem(state, getGroupViewId(state), group);
+export const getGroups = (state) => getGroupView(state).valueSeq().toArray();
+export const getGroup  = (state, { group }) => getGroupView(state).get(group);
 
 export const getChildren = (state, { group }) => {
   if(!group) {
@@ -62,6 +62,7 @@ export const getGroupStacks = createSelector([ getGroups ], groups => {
   const groupStacks = new Map();
 
   groupStacks.set(null, [ groups.find(g => !g._id) ]);
+  console.log(groupStacks);
 
   for(const group of groups) {
     if(!group._id) { continue; }
