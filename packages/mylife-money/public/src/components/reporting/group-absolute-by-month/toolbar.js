@@ -8,71 +8,48 @@ import GroupSelector from '../../common/group-selector';
 
 const Toolbar = ({ onCriteriaChanged }) => {
 
-  const [reverse, setReverse] = useState(true);
-  const [minDate, setMinDate] = useState(null);
-  const [maxDate, setMaxDate] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [groups, setGroups] = useState([ null ]);
+  const [criteria, setRawCriteria] = useState({
+    reverse: true,
+    minDate: null,
+    maxDate: null,
+    account: null,
+    groups: [ null ]
+  });
 
-  const criteria = { reverse, minDate, maxDate, account, groups };
-
-  const onReverseChanged = (value) => {
-    setReverse(value);
-    onCriteriaChanged({ ...criteria, reverse: value });
+  const setCriteria = (name, value) => {
+    const newCriteria = { ...criteria, [name]: value };
+    setRawCriteria(newCriteria);
+    onCriteriaChanged(newCriteria);
   };
 
-  const onMinDateChanged = (value) => {
-    setMinDate(value);
-    onCriteriaChanged({ ...criteria, minDate: value });
-  };
+  const onReverseChanged = (value) => setCriteria('reverse', value);
+  const onMinDateChanged = (value) => setCriteria('minDate', value);
+  const onMaxDateChanged = (value) => setCriteria('maxDate', value);
+  const onAccountChanged = (value) => setCriteria('account', value);
 
-  const onMaxDateChanged = (value) => {
-    setMaxDate(value);
-    onCriteriaChanged({ ...criteria, maxDate: value });
-  };
-
-  const onAccountChanged = (value)=> {
-    setAccount(value);
-    onCriteriaChanged({ ...criteria, account: value });
-  };
-
-  const onGroupAdd = () => {
-    const newGroups = [ ...groups, null ];
-    setGroups(newGroups);
-    onCriteriaChanged({ ...criteria, groups: newGroups });
-  };
-
-  const onGroupChanged = (index, value) =>  {
-    const newGroups = [ ...groups.slice(0, index), value, ...groups.slice(index + 1) ];
-    setGroups(newGroups);
-    onCriteriaChanged({ ...criteria, groups: newGroups });
-  };
-
-  const onGroupDelete = (index) => {
-    const newGroups = [ ...groups.slice(0, index), ...groups.slice(index + 1) ];
-    setGroups(newGroups);
-    onCriteriaChanged({ ...criteria, groups: newGroups });
-  };
+  const onGroupAdd = () => setCriteria('groups', [ ...criteria.groups, null ]);
+  const onGroupChanged = (index, value) => setCriteria('groups', [ ...criteria.groups.slice(0, index), value, ...criteria.groups.slice(index + 1) ]);
+  const onGroupDelete = (index) => setCriteria('groups', [ ...criteria.groups.slice(0, index), ...criteria.groups.slice(index + 1) ]);
 
   return (
     <mui.Toolbar>
       <ToolbarFieldTitle>Inverser montant</ToolbarFieldTitle>
-      <mui.Checkbox color='primary' checked={reverse} onChange={e => onReverseChanged(e.target.checked)} />
+      <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
 
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+      <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
-      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
+      <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
-      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} width={200} />
+      <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
 
       <ToolbarSeparator />
 
@@ -82,7 +59,7 @@ const Toolbar = ({ onCriteriaChanged }) => {
           <icons.actions.New />
         </mui.IconButton>
       </mui.Tooltip>
-      {groups.map((group, index) => (
+      {criteria.groups.map((group, index) => (
         <React.Fragment key={index}>
           <ToolbarSeparator />
           <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
