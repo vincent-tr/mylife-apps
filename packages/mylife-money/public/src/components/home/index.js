@@ -2,6 +2,7 @@
 
 import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { homeEnter, homeLeave } from '../../actions/reporting';
+import OperationStats from './operation-stats';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -19,8 +20,7 @@ const Home = () => {
     <div>
       <mui.Typography>TODO</mui.Typography>
       <mui.Typography>Graph with total operations count / +sum / -sum / balance per month for current year and past year</mui.Typography>
-      <mui.Typography>Total operations count</mui.Typography>
-      <mui.Typography>Last import date (= last operation date)</mui.Typography>
+      <OperationStats />
     </div>
   );
 };
