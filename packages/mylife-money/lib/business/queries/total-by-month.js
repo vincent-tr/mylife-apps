@@ -1,6 +1,7 @@
 'use strict';
 
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const { dateToMonth, formatTwoDigits, roundCurrency, monthRange } = require('./tools');
 
 exports.TotalByMonth = class TotalByMonth extends StoreContainer {
   constructor() {
@@ -41,9 +42,9 @@ exports.TotalByMonth = class TotalByMonth extends StoreContainer {
     }
 
     for(const object of objects.values()) {
-      object.sumDebit = round(object.sumDebit);
-      object.sumCredit = round(object.sumCredit);
-      object.balance = round(object.balance);
+      object.sumDebit = roundCurrency(object.sumDebit);
+      object.sumCredit = roundCurrency(object.sumCredit);
+      object.balance = roundCurrency(object.balance);
 
       this._set(this.entity.newObject(object));
     }
@@ -56,21 +57,10 @@ exports.TotalByMonth = class TotalByMonth extends StoreContainer {
 };
 
 function createSkeletons(col) {
-  const months = [];
   const now = new Date();
-  const nowYear = now.getFullYear();
-  const nowMonth = now.getMonth();
+  const minDate = new Date(now.getFullYear() - 1, 0, 1);
 
-  // last year
-  for(let month = 1; month <= 12; ++month) {
-    months.push(`${nowYear-1}/${formatTwoDigits(month)}`);
-  }
-  // current year
-  for(let month = 1; month <= nowMonth + 1; ++month) {
-    months.push(`${nowYear}/${formatTwoDigits(month)}`);
-  }
-
-  return months.map(month => ({
+  return monthRange(minDate, now).map(month => ({
     _id: col.newId(),
     month,
     count: 0,
@@ -78,21 +68,4 @@ function createSkeletons(col) {
     sumCredit: 0,
     balance: 0
   }));
-}
-
-function dateToMonth(date) {
-  const year = date.getFullYear();
-  const month = formatTwoDigits(date.getMonth() + 1);
-  return `${year}/${month}`;
-}
-
-function formatTwoDigits(number) {
-  return number.toLocaleString(undefined, { minimumIntegerDigits: 2 });
-}
-
-function round(number) {
-  if(!isFinite(number)) {
-    return number;
-  }
-  return Math.round(number * 100) / 100;
 }
