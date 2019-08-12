@@ -4,6 +4,7 @@ const { getStoreCollection, notifyView } = require('mylife-tools-server');
 const { OperationView } = require('./operation-view');
 const { OperationStats } = require('./operation-stats');
 const { TotalByMonth } = require('./total-by-month');
+const { GroupByMonth } = require('./group-by-month');
 
 exports.notifyOperations = (session, criteria) => {
   const view = new OperationView(criteria);
@@ -33,5 +34,10 @@ exports.notifyOperationStats = session => {
 
 exports.notifyTotalByMonth = session => {
   const view = new TotalByMonth();
+  return notifyView(session, view);
+};
+
+exports.notifyGroupByMonth = (session, criteria) => {
+  const view = new GroupByMonth(criteria);
   return notifyView(session, view);
 };
