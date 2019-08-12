@@ -11,7 +11,7 @@ exports.TotalByMonth = class TotalByMonth extends StoreContainer {
     this._changeCallback = event => this._onCollectionChange(event);
     this.collection.on('change', this._changeCallback);
 
-    this._skeletons = createSkeletons(this.collection);
+    this._skeletons = createSkeletons();
     this._lastDateId = this.collection.newId();
     this.entity = getMetadataEntity('report-total-by-month');
 
@@ -56,12 +56,12 @@ exports.TotalByMonth = class TotalByMonth extends StoreContainer {
   }
 };
 
-function createSkeletons(col) {
+function createSkeletons() {
   const now = new Date();
   const minDate = new Date(now.getFullYear() - 1, 0, 1);
 
   return monthRange(minDate, now).map(month => ({
-    _id: col.newId(),
+    _id: month,
     month,
     count: 0,
     sumDebit: 0,
