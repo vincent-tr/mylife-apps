@@ -1,7 +1,7 @@
 'use strict';
 
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
-const { dateToMonth, formatTwoDigits, roundCurrency, monthRange } = require('./tools');
+const { dateToMonth, roundCurrency, monthRange } = require('./tools');
 
 exports.TotalByMonth = class TotalByMonth extends StoreContainer {
   constructor() {
