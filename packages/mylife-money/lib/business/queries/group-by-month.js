@@ -1,7 +1,8 @@
 'use strict';
 
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
-const { dateToMonth, formatTwoDigits, roundCurrency } = require('./tools');
+const { dateToMonth, formatTwoDigits, roundCurrency, monthRange } = require('./tools');
+const { createGroupHierarchy } = require('./tools');
 
 exports.GroupByMonth = class GroupByMonth extends StoreContainer {
   constructor(criteria) {
@@ -36,9 +37,44 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
     const { minDate, maxDate } = computeDateRange(this._criteria, this.operations);
     const { account, groups, invert, children } = this._criteria;
 
+    if(!groups.length) {
+      this._replaceAll([]);
+      return;
+    }
+
+    // TODO: children
+
     const items = new Map();
 
-    // TODO
+    for(const month of monthRange(minDate, maxDate)) {
+      for(const group of groups) {
+        const key = `${month}/${group}`;
+        const hierarchy = createGroupHierarchy(this.groups, group);
+        items.set(key, {
+          _id: key,
+          hierarchy,
+          stack: group,
+          amount: 0
+        });
+      }
+    }
+
+    for(const operation of this.operations.list()) {
+      if(account && operation.account !== account) {
+        continue;
+      }
+      if(operation.date < minDate || operation.date > maxDate) {
+        continue;
+      }
+
+      const key = `${dateToMonth(operation.date)}/${operation.group}`;
+      const item = items.get(key);
+      let amount = operation.amount;
+      if(invert) {
+        amount = -amount;
+      }
+      item.amount += amount;
+    }
 
     const objects = Array.from(items.values()).map(object => this.entity.newObject(object));
     this._replaceAll(objects);
@@ -64,18 +100,4 @@ function computeDateRange(criteria, operations) {
     maxDate = maxDate || new Date(computedMaxDate);
   }
   return { minDate, maxDate };
-}
-
-function createSkeletons() {
-  const now = new Date();
-  const minDate = new Date(now.getFullYear() - 1, 0, 1);
-
-  return monthRange(minDate, now).map(month => ({
-    _id: col.newId(),
-    month,
-    count: 0,
-    sumDebit: 0,
-    sumCredit: 0,
-    balance: 0
-  }));
 }
