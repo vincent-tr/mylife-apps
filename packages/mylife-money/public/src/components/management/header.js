@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, dialogs } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../icons';
 import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
 import { getSelectedOperations, getCriteria } from '../../selectors/management';
@@ -55,6 +55,8 @@ const Header = () => {
 
   const classes = useStyles();
 
+  const screenSize = useScreenSize();
+
   const editNote = async () => {
     const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
     if(result !== 'ok') {
@@ -63,8 +65,25 @@ const Header = () => {
     onOperationsSetNote(text);
   };
 
-  return (
-    <mui.Toolbar>
+  const selectors = (
+    <React.Fragment>
+      <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
+      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+
+      <ToolbarSeparator />
+
+      <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
+      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
+
+      <ToolbarSeparator />
+
+      <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
+      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} className={classes.accountField} />
+    </React.Fragment>
+  );
+
+  const toolbar = (
+    <React.Fragment>
       <ImportButton accounts={accounts} onImport={onOperationsImport} />
       {showExecuteRules && (
         <mui.Tooltip title='Executer les règles sur les opérations'>
@@ -91,23 +110,37 @@ const Header = () => {
           </mui.IconButton>
         </div>
       </mui.Tooltip>
+    </React.Fragment>
+  );
 
+  const oneRowHeader = (
+    <mui.Toolbar>
+      {toolbar}
       <ToolbarSeparator />
-
-      <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
-
-      <ToolbarSeparator />
-
-      <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
-      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
-
-      <ToolbarSeparator />
-
-      <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
-      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} className={classes.accountField} />
+      {selectors}
     </mui.Toolbar>
   );
+
+  const twoRowHeader = (
+    <React.Fragment>
+      <mui.Toolbar variant='dense'>
+        {selectors}
+      </mui.Toolbar>
+      <mui.Toolbar variant='dense'>
+        {toolbar}
+      </mui.Toolbar>
+    </React.Fragment>
+  );
+
+  switch(screenSize) {
+    case 'phone':
+    case 'tablet':
+    case 'laptop':
+      return twoRowHeader;
+
+    case 'wide':
+      return oneRowHeader;
+  }
 };
 
 export default Header;
