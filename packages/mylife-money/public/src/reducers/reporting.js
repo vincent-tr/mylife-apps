@@ -25,8 +25,14 @@ export default handleActions({
     })
   },
 
+  [actionTypes.REPORTING_SET_VIEW] : {
+    next : (state, action) => ({
+      ...state,
+      view: action.payload
+    })
+  },
+
 }, {
   operations : new immutable.Map(),
-  stats: null,
-  totalByMonth: null
+  view: null,
 });

@@ -2,12 +2,11 @@
 
 import { createAction, io } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getOperationStatsViewId, getTotalByMonthViewId } from '../selectors/reporting';
+import { getViewId } from '../selectors/reporting';
 
 const local = {
   getOperations: createAction(actionTypes.REPORTING_GET_OPERATIONS),
-  setOperationStatsView: createAction(actionTypes.REPORTING_SET_OPERATION_STATS_VIEW),
-  setTotalByMonthView: createAction(actionTypes.REPORTING_SET_TOTAL_BY_MONTH_VIEW),
+  setView: createAction(actionTypes.REPORTING_SET_VIEW),
 };
 
 export const refreshOperations = (minDate, maxDate, account) => {
@@ -24,52 +23,38 @@ export const refreshOperations = (minDate, maxDate, account) => {
   };
 };
 
-const getOperationStats = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
+export const getGroupByMonth = (criteria) => async (dispatch, getState) => {
+  const state = getState();
+
+  const newViewId = await dispatch(io.call({
     service: 'reporting',
-    method: 'notifyOperationStats',
+    method: 'notifyGroupByMonth',
+    ... criteria
   }));
 
-  dispatch(local.setOperationStatsView(viewId));
+  const oldViewId = getViewId(state);
+  if(oldViewId) {
+    await dispatch(io.unnotify(oldViewId));
+  }
+
+  dispatch(local.setView(newViewId));
 };
 
-const clearOperationStats = () => async (dispatch, getState) => {
+const clearReportingView = () => async (dispatch, getState) => {
   const state = getState();
-  const viewId = getOperationStatsViewId(state);
+  const viewId = getViewId(state);
   if(!viewId) {
     return;
   }
 
   await dispatch(io.unnotify(viewId));
-  dispatch(local.setOperationStatsView(null));
+  dispatch(local.setView(null));
 };
 
-const getTotalByMonth = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyTotalByMonth',
-  }));
-
-  dispatch(local.setTotalByMonthView(viewId));
+export const reportingEnter = () => async (dispatch) => {
+  void dispatch;
 };
 
-const clearTotalByMonth = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getTotalByMonthViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setTotalByMonthView(null));
-};
-
-export const homeEnter = () => async (dispatch) => {
-  await dispatch(getOperationStats());
-  await dispatch(getTotalByMonth());
-};
-
-export const homeLeave = () => async (dispatch) => {
-  await dispatch(clearOperationStats());
-  await dispatch(clearTotalByMonth());
+export const reportingLeave = () => async (dispatch) => {
+  await dispatch(clearReportingView());
 };

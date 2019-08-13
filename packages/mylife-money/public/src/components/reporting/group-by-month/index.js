@@ -1,9 +1,9 @@
 'use strict';
 
-import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector, immutable } from 'mylife-tools-ui';
+import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector, immutable, useLifecycle } from 'mylife-tools-ui';
 import { getOperations } from '../../../selectors/reporting';
 import { getGroupBags } from '../../../selectors/reference';
-import { refreshOperations } from '../../../actions/reporting';
+import { refreshOperations, reportingEnter, reportingLeave } from '../../../actions/reporting';
 
 import Criteria from './criteria';
 import Chart from './chart';
@@ -16,6 +16,8 @@ const useConnect = () => {
       groupBags   : getGroupBags(state)
     })),
     ...useMemo(() => ({
+      enter : () => dispatch(reportingEnter()),
+      leave : () => dispatch(reportingLeave()),
       onRefreshOperations : (minDate, maxDate, account) => dispatch(refreshOperations(minDate, maxDate, account))
     }), [dispatch])
   };
@@ -42,7 +44,8 @@ const GroupByMonth = () => {
     groups: new immutable.List([ null ])
   });
 
-  const { operations, groupBags, onRefreshOperations } = useConnect();
+  const { enter, leave, operations, groupBags, onRefreshOperations } = useConnect();
+  useLifecycle(enter, leave);
   const data = useMemo(() => refreshData(groupBags, operations, criteria), [groupBags, operations, criteria]);
   const classes = useStyles();
 
