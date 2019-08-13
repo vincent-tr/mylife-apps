@@ -4,6 +4,7 @@ exports.dateToMonth = dateToMonth;
 exports.formatTwoDigits = formatTwoDigits;
 exports.roundCurrency = roundCurrency;
 exports.monthRange = monthRange;
+exports.createGroupHierarchy = createGroupHierarchy;
 
 function dateToMonth(date) {
   const year = date.getFullYear();
@@ -43,4 +44,35 @@ function monthRange(minDate, maxDate) {
   }
 
   return months;
+}
+
+
+function createGroupHierarchy(groupCollection, groupId) {
+  // no criteria
+  if(groupId === undefined) {
+    return null;
+  }
+
+  // unsorted group
+  if(!groupId) {
+    return new Set([null]);
+  }
+
+  const hierarchy = new Set();
+  const groupIdsToProcess = new Set();
+  groupIdsToProcess.add(groupId);
+
+  while(groupIdsToProcess.size) {
+    const id = groupIdsToProcess.values().next().value;
+    groupIdsToProcess.delete(id);
+    hierarchy.add(id);
+
+    for(const group of groupCollection.list()) {
+      if(group.parent === id) {
+        groupIdsToProcess.add(group._id);
+      }
+    }
+  }
+
+  return hierarchy;
 }

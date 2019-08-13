@@ -1,6 +1,7 @@
 'use strict';
 
 const { StoreView, getStoreCollection } = require('mylife-tools-server');
+const { createGroupHierarchy } = require('./tools');
 
 exports.OperationView = class OperationView extends StoreView {
   constructor(criteria) {
@@ -41,34 +42,4 @@ function createFilter(criteria) {
     }
     return true;
   };
-}
-
-function createGroupHierarchy(groupCollection, groupId) {
-  // no criteria
-  if(groupId === undefined) {
-    return null;
-  }
-
-  // unsorted group
-  if(!groupId) {
-    return new Set([null]);
-  }
-
-  const hierarchy = new Set();
-  const groupIdsToProcess = new Set();
-  groupIdsToProcess.add(groupId);
-
-  while(groupIdsToProcess.size) {
-    const id = groupIdsToProcess.values().next().value;
-    groupIdsToProcess.delete(id);
-    hierarchy.add(id);
-
-    for(const group of groupCollection.list()) {
-      if(group.parent === id) {
-        groupIdsToProcess.add(group._id);
-      }
-    }
-  }
-
-  return hierarchy;
 }
