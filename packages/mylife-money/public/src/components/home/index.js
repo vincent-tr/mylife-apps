@@ -18,7 +18,8 @@ const useStyles = mui.makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    flex: '1 1 auto'
+    flex: '1 1 auto',
+    overflowY: 'auto'
   }
 });
 
