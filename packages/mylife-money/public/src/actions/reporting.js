@@ -51,10 +51,6 @@ const clearReportingView = () => async (dispatch, getState) => {
   dispatch(local.setView(null));
 };
 
-export const reportingEnter = () => async (dispatch) => {
-  void dispatch;
-};
-
 export const reportingLeave = () => async (dispatch) => {
   await dispatch(clearReportingView());
 };
