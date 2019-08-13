@@ -28,19 +28,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Menu = ({ items, open }) => {
+const Menu = ({ items, open, onSelect }) => {
   const classes = useStyles();
 
   return (
     <Drawer variant='permanent' open={open} classes={{paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
       <div className={classes.drawerHeader} />
       <List>
-        {items.map(({ id, text, icon: Icon, onClick }) => (
-          <ListItem button key={id} onClick={onClick}>
-            <ListItemIcon><Icon /></ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        {items.map(({ id, text, icon: Icon, onClick }) => {
+          const handler = () => {
+            onSelect();
+            onClick();
+          };
+          return (
+            <ListItem button key={id} onClick={handler}>
+              <ListItemIcon><Icon /></ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          );
+        })}
       </List>
     </Drawer>
   );
@@ -55,7 +61,8 @@ Menu.propTypes = {
       onClick : PropTypes.func
     }).isRequired
   ),
-  open: PropTypes.bool.isRequired
+  open: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired
 };
 
 export default Menu;

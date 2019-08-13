@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 
+import { useScreenSize } from '../behaviors';
 import Header from './header';
 import Menu from './menu';
 
@@ -32,15 +33,55 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const menuStates = {
+  HIDE: 0,
+  REDUCED: 1,
+  VISIBLE: 2
+};
+
+const initialMenuState = {
+  phone: menuStates.HIDE,
+  tablet: menuStates.HIDE,
+  laptop: menuStates.REDUCED,
+  wide: menuStates.VISIBLE
+};
+
+const afterSelectMenuState = {
+  phone: menuStates.HIDE,
+  tablet: menuStates.HIDE,
+  laptop: menuStates.REDUCED,
+  wide: null // = unchanged
+};
+
+const hideValueMenuState = {
+  phone: menuStates.HIDE,
+  tablet: menuStates.HIDE,
+  laptop: menuStates.REDUCED,
+  wide: menuStates.REDUCED
+};
+
 const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, menu, children }) => {
   const classes = useStyles();
-  const [menuOpen, setMenuOpen] = useState(true);
+  const screenSize = useScreenSize();
+  const [menuState, setMenuState] = useState(initialMenuState[screenSize]);
+
+  const menuSelect = () => {
+    const state = afterSelectMenuState[screenSize];
+    if(state !== null) {
+      setMenuState(state);
+    }
+  };
+
+  const menuButtonClick = () => {
+    const hideValue = hideValueMenuState[screenSize];
+    setMenuState(menuState === menuStates.VISIBLE ? hideValue : menuStates.VISIBLE);
+  };
 
   return (
     <div className={classes.root}>
 
       <Header
-        onMenuButtonClick={menu && (() => setMenuOpen(!menuOpen))}
+        onMenuButtonClick={menu && menuButtonClick}
         appName={appName}
         appIcon={appIcon}
         onMainClick={onMainClick}
@@ -48,8 +89,8 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, menu, child
         viewIcon={viewIcon}
         className={classes.appBar} />
 
-      {menu && (
-        <Menu items={menu} open={menuOpen} />
+      {menu && menuState !== menuStates.HIDE && (
+        <Menu items={menu} open={menuState === menuStates.VISIBLE} onSelect={menuSelect} />
       )}
 
       <main className={classes.content}>
