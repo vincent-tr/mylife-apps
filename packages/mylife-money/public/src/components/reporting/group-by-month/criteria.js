@@ -112,7 +112,7 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
         {expanded ? (
           <mui.Typography variant='h6'>Critères de sélection</mui.Typography>
         ) : (
-          <mui.Typography>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionnés`}</mui.Typography>
+          <mui.Typography>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</mui.Typography>
         )}
       </mui.ExpansionPanelSummary>
       <mui.ExpansionPanelDetails>
