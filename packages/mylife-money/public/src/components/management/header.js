@@ -95,7 +95,7 @@ const Header = () => {
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-      <mui.DatePicker value={console.log(minDate) || minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
 
       <ToolbarSeparator />
 
