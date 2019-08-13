@@ -1,7 +1,7 @@
 'use strict';
 
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
-const { dateToMonth, formatTwoDigits, roundCurrency, monthRange } = require('./tools');
+const { dateToMonth, roundCurrency, monthRange } = require('./tools');
 const { createGroupHierarchy } = require('./tools');
 
 exports.GroupByMonth = class GroupByMonth extends StoreContainer {
@@ -82,7 +82,11 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
       }
     }
 
-    const objects = Array.from(itemByMonth.values()).flat().map(object => this.entity.newObject(object));
+    const items = Array.from(itemByMonth.values()).flat();
+    for(const item of items) {
+      item.amount = roundCurrency(item.amount);
+    }
+    const objects = items.map(object => this.entity.newObject(object));
     this._replaceAll(objects);
   }
 
