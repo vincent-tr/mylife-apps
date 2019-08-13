@@ -32,7 +32,7 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const GroupAmountByMonth = () => {
+const GroupByMonth = () => {
   const [criteria, setCriteria] = useState({
     reverse: true,
     children: false,
@@ -68,7 +68,7 @@ const GroupAmountByMonth = () => {
   );
 };
 
-export default GroupAmountByMonth;
+export default GroupByMonth;
 
 // TODO: move server side
 function refreshData(groupBags, operations, criteria) {
