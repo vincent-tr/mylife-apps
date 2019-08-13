@@ -7,4 +7,5 @@ exports.entities = [
   require('./entities/operation'),
   require('./entities/report-operation-stat'),
   require('./entities/report-total-by-month'),
+  require('./entities/report-group-by-month'),
 ];
