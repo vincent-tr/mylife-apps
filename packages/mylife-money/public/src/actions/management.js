@@ -23,7 +23,6 @@ export const getOperations = () => async (dispatch, getState) => {
 
   const oldViewId = getOperationViewId(state);
   if(oldViewId) {
-    console.log('getOperations unnotify', oldViewId);
     await dispatch(io.unnotify(oldViewId));
   }
 
@@ -37,7 +36,6 @@ const clearOperations = () => async (dispatch, getState) => {
     return;
   }
 
-  console.log('clearOperations unnotify', oldViewId);
   await dispatch(io.unnotify(oldViewId));
   dispatch(local.setOperationView(null));
 };
