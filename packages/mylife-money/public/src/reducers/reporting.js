@@ -18,20 +18,6 @@ export default handleActions({
     })
   },
 
-  [actionTypes.REPORTING_SET_OPERATION_STATS_VIEW] : {
-    next : (state, action) => ({
-      ...state,
-      stats: action.payload
-    })
-  },
-
-  [actionTypes.REPORTING_SET_TOTAL_BY_MONTH_VIEW] : {
-    next : (state, action) => ({
-      ...state,
-      totalByMonth: action.payload
-    })
-  },
-
   [routing.actionTypes.LOCATION_CHANGE] : {
     next : (state) => ({
       ...state,
