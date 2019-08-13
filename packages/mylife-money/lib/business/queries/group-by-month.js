@@ -44,13 +44,15 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
 
     // TODO: children
 
-    const items = new Map();
+    const itemByMonth = new Map();
 
     for(const month of monthRange(minDate, maxDate)) {
+      const list = [];
+      itemByMonth.set(month, list);
       for(const group of groups) {
         const key = `${month}/${group}`;
         const hierarchy = createGroupHierarchy(this.groups, group);
-        items.set(key, {
+        list.push({
           _id: key,
           hierarchy,
           stack: group,
@@ -67,16 +69,20 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
         continue;
       }
 
-      const key = `${dateToMonth(operation.date)}/${operation.group}`;
-      const item = items.get(key);
       let amount = operation.amount;
       if(invert) {
         amount = -amount;
       }
-      item.amount += amount;
+
+      // find groups to put it
+      for(const item of itemByMonth.get(dateToMonth(operation.date))) {
+        if(!item.hierarchy.has(operation.group)) {
+          item.amount += amount;
+        }
+      }
     }
 
-    const objects = Array.from(items.values()).map(object => this.entity.newObject(object));
+    const objects = Array.from(itemByMonth.values()).flat().map(object => this.entity.newObject(object));
     this._replaceAll(objects);
   }
 
