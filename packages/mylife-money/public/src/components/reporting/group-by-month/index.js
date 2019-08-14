@@ -48,7 +48,7 @@ const GroupByMonth = () => {
   useLifecycle(refresh, leave);
 
   // on mount run query, on leave clean
-  useLifecycle(() => refresh(criteria), leave);
+  useLifecycle(() => refresh(formatCriteria(criteria)), leave);
 
   const data = useMemo(() => refreshData(groupBags, operations, criteria), [groupBags, operations, criteria]);
   const classes = useStyles();
@@ -128,4 +128,12 @@ function leftPad(number, targetLength) {
     output = '0' + output;
   }
   return output;
+}
+
+function formatCriteria(criteria) {
+  const { groups, ...props } = criteria;
+  return {
+    groups: groups.toArray(),
+    ...props
+  };
 }
