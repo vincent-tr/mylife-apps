@@ -31,7 +31,7 @@ function monthRange(minDate, maxDate) {
   const maxMonth = maxDate.getMonth();
 
   for(let year = minYear; year <= maxYear; ++year) {
-    for(let month = 0; month < 11; ++ month) {
+    for(let month = 0; month < 12; ++ month) {
       if(year === minYear && month < minMonth) {
         continue;
       }
