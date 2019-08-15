@@ -44,20 +44,23 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
 
     // TODO: children
 
-    const itemByMonth = new Map();
+    const hierarchies = groups.map(group => ({
+      group: group || 'null',
+      hierarchy: createGroupHierarchy(this.groups, group)
+    }));
+
+    const items = new Map();
 
     for(const month of monthRange(minDate, maxDate)) {
-      const list = [];
-      itemByMonth.set(month, list);
+      const item = {
+        _id: month,
+        month,
+        groups: {}
+      };
+
+      items.set(month, item);
       for(const group of groups) {
-        const key = `${month}/${group}`;
-        const hierarchy = createGroupHierarchy(this.groups, group);
-        list.push({
-          _id: key,
-          hierarchy,
-          stack: group,
-          amount: 0
-        });
+        item.groups[group || 'null'] = 0;
       }
     }
 
@@ -75,18 +78,22 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
       }
 
       // find groups to put it
-      for(const item of itemByMonth.get(dateToMonth(operation.date))) {
-        if(!item.hierarchy.has(operation.group)) {
-          item.amount += amount;
+      const item = items.get(dateToMonth(operation.date));
+      for(const { group, hierarchy } of hierarchies) {
+        if(hierarchy.has(operation.group)) {
+          item.groups[group] += amount;
         }
       }
     }
 
-    const items = Array.from(itemByMonth.values()).flat();
-    for(const item of items) {
-      item.amount = roundCurrency(item.amount);
+    const data = Array.from(items.values());
+    for(const item of data) {
+      for(const { group } of hierarchies) {
+        item.groups[group] = roundCurrency(item.groups[group]);
+      }
     }
-    const objects = items.map(object => this.entity.newObject(object));
+    
+    const objects = data.map(item => this.entity.newObject(item));
     this._replaceAll(objects);
   }
 
