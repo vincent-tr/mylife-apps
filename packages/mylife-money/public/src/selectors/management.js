@@ -27,7 +27,7 @@ export const getSortedOperations = createSelector(
     ret.sort((op1, op2) => {
       let comp = op1.date - op2.date;
       if(comp) { return comp; }
-      return op1._id - op2._id; // consistency
+      return op1._id < op2._id ? -1 : 1; // consistency
     });
     return ret;
   }
