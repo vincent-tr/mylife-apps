@@ -13,12 +13,12 @@
     "links:dev": "npm link mylife-tools-server && npm link mylife-tools-ui"
   },
   "dependencies": {
-    "csv-parse": "^4.4.1",
+    "csv-parse": "^4.4.5",
     "moment": "^2.24.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.13.0"
+    "eslint-plugin-react": "^7.14.3"
   },
   "license": "GPL-3.0+"
 }
