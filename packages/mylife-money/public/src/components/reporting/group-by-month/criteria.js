@@ -97,7 +97,7 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
   const onChildrenChanged = (value) => setCriteria('children', value);
-  const onReverseChanged = (value) => setCriteria('reverse', value);
+  const onInvertChanged = (value) => setCriteria('invert', value);
   const onMinDateChanged = (value) => setCriteria('minDate', value);
   const onMaxDateChanged = (value) => setCriteria('maxDate', value);
   const onAccountChanged = (value) => setCriteria('account', value);
@@ -129,7 +129,7 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
           </mui.Grid>
           <mui.Grid item xs={3}>
             <Field label='Inverser montant'>
-              <mui.Checkbox color='primary' checked={criteria.reverse} onChange={e => onReverseChanged(e.target.checked)} />
+              <mui.Checkbox color='primary' checked={criteria.invert} onChange={e => onInvertChanged(e.target.checked)} />
             </Field>
           </mui.Grid>
           <mui.Grid item xs={3}>

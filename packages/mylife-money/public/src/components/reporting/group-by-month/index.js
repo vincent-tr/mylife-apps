@@ -37,7 +37,7 @@ const useStyles = mui.makeStyles({
 
 const GroupByMonth = () => {
   const [criteria, setCriteria] = useState({
-    reverse: true,
+    invert: true,
     children: false,
     minDate: null,
     maxDate: null,
@@ -84,7 +84,7 @@ function refreshData(groupBags, operations, criteria) {
     return [];
   }
 
-  const { groups, reverse } = criteria;
+  const { groups, invert } = criteria;
   const map = new Map();
 
   for(const operation of operations) {
@@ -105,7 +105,7 @@ function refreshData(groupBags, operations, criteria) {
         }
         map.set(date, item);
       }
-      item.groups.get(group).value += (reverse ? -operation.amount : operation.amount);
+      item.groups.get(group).value += (invert ? -operation.amount : operation.amount);
     }
   }
 
