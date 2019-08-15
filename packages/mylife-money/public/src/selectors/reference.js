@@ -33,30 +33,6 @@ export const makeGetSortedChildren = () => createSelector(
   (groups) => groups.valueSeq().sortBy(it => it.display).toArray()
 );
 
-// bag of group children for each group
-export const getGroupBags = createSelector([ getGroups ], groups => {
-  const groupBags = new Map();
-
-  groupBags.set(null, new Set([ null ]));
-
-  function children(bag, id) {
-    bag.add(id);
-    for(const child of groups.filter(g => g.parent === id)) {
-      children(bag, child._id);
-    }
-  }
-
-  for(const group of groups) {
-    if(!group._id) { continue; }
-
-    const bag = new Set();
-    children(bag, group._id);
-    groupBags.set(group._id, bag);
-  }
-
-  return new immutable.Map(groupBags);
-});
-
 // stack from root for each group
 export const getGroupStacks = createSelector([ getGroups ], groups => {
   const groupStacks = new Map();

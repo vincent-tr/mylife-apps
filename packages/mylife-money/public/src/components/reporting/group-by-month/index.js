@@ -1,9 +1,8 @@
 'use strict';
 
 import { React, useState, useMemo, mui, useDispatch, useSelector, immutable, useLifecycle } from 'mylife-tools-ui';
-import { getOperations, getSortedViewList } from '../../../selectors/reporting';
-import { getGroupBags } from '../../../selectors/reference';
-import { refreshOperations, getGroupByMonth, reportingLeave } from '../../../actions/reporting';
+import { getSortedViewList } from '../../../selectors/reporting';
+import { getGroupByMonth, reportingLeave } from '../../../actions/reporting';
 
 import Criteria from './criteria';
 import Chart from './chart';
