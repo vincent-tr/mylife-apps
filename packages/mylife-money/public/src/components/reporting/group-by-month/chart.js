@@ -28,12 +28,12 @@ const Chart = ({ data, groups, ...props }) => {
       <AutoSizer>
         {({ height, width }) => (
           <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-            <chart.XAxis dataKey="date" name="Date" />
+            <chart.XAxis dataKey="month" name="Date" />
             <chart.YAxis name="Montant" />
             <chart.CartesianGrid strokeDasharray="3 3"/>
             <chart.Tooltip/>
             <chart.Legend />
-            {series.map(serie => (<chart.Bar key={serie.index} dataKey={`group-${serie.group}`} name={serie.display} fill={serie.fill} />))}
+            {series.map(serie => (<chart.Bar key={serie.index} dataKey={item => item.groups[serie.group]} name={serie.display} fill={serie.fill} />))}
           </chart.BarChart>
         )}
       </AutoSizer>

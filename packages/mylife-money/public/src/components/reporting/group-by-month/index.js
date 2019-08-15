@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, useState, useMemo, useEffect, mui, useDispatch, useSelector, immutable, useLifecycle } from 'mylife-tools-ui';
-import { getOperations } from '../../../selectors/reporting';
+import { getOperations, getSortedViewList } from '../../../selectors/reporting';
 import { getGroupBags } from '../../../selectors/reference';
 import { refreshOperations, getGroupByMonth, reportingLeave } from '../../../actions/reporting';
 
@@ -13,7 +13,8 @@ const useConnect = () => {
   return {
     ...useSelector(state => ({
       operations  : getOperations(state),
-      groupBags   : getGroupBags(state)
+      groupBags   : getGroupBags(state),
+      data        : getSortedViewList(state)
     })),
     ...useMemo(() => ({
       refresh : (criteria) => dispatch(getGroupByMonth(criteria)),
@@ -44,17 +45,17 @@ const GroupByMonth = () => {
     groups: new immutable.List([ null ])
   });
 
-  const { refresh, leave, operations, groupBags, onRefreshOperations } = useConnect();
+  const { refresh, leave, operations, groupBags, onRefreshOperations, data } = useConnect();
 
   // on mount run query, on leave clean
   useLifecycle(() => refresh(formatCriteria(criteria)), leave);
 
-  const data = useMemo(() => refreshData(groupBags, operations, criteria), [groupBags, operations, criteria]);
+  const dataOld = useMemo(() => refreshData(groupBags, operations, criteria), [groupBags, operations, criteria]);
   const classes = useStyles();
 
   const changeCriteria = (criteria) => {
     setCriteria(criteria);
-    refresh(criteria);
+    refresh(formatCriteria(criteria));
     const { minDate, maxDate, account } = criteria;
     onRefreshOperations(minDate, maxDate, account);
   };
