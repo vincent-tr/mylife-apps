@@ -5,22 +5,7 @@ import { actionTypes } from '../constants';
 import { getViewId } from '../selectors/reporting';
 
 const local = {
-  getOperations: createAction(actionTypes.REPORTING_GET_OPERATIONS),
   setView: createAction(actionTypes.REPORTING_SET_VIEW),
-};
-
-export const refreshOperations = (minDate, maxDate, account) => {
-  return async (dispatch) => {
-    const query = { minDate, maxDate, account };
-
-    const data = await dispatch(io.call({
-      service: 'reporting',
-      method: 'getOperations',
-      ... query
-    }));
-
-    dispatch(local.getOperations(data));
-  };
 };
 
 export const getGroupByMonth = (criteria) => async (dispatch, getState) => {

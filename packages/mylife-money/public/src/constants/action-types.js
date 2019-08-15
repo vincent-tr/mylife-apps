@@ -13,6 +13,5 @@ export default constants.wrap({
   MANAGEMENT_SET_CRITERIA       : null,
   MANAGEMENT_SELECT_OPERATIONS  : null,
 
-  REPORTING_GET_OPERATIONS      : null,
   REPORTING_SET_VIEW            : null,
 });
