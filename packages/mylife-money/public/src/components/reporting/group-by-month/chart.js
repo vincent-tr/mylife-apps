@@ -17,16 +17,7 @@ const Chart = ({ data, groups, childrenGroups, ...props }) => {
 
   if(!data.length || !groups) { return null; }
 
-  const stacks = createStacks(groups, childrenGroups, groupStacks, groupChildren, colors);
-
-  console.log(stacks);
-
-  const series = groups.map((group, index) => ({
-    index,
-    group,
-    display : groupStacks.get(group).map(group => group.display).join('/'),
-    fill    : colors[index % colors.length]
-  }));
+  const bars = createBars(groups, childrenGroups, groupStacks, groupChildren, colors);
 
   return (
     <div {...props}>
@@ -38,7 +29,7 @@ const Chart = ({ data, groups, childrenGroups, ...props }) => {
             <chart.CartesianGrid strokeDasharray="3 3"/>
             <chart.Tooltip/>
             <chart.Legend />
-            {series.map(serie => (<chart.Bar key={serie.index} dataKey={item => amount(item, serie.group)} name={serie.display} fill={serie.fill} />))}
+            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amount(item, serie)} name={serie.display} fill={serie.fill} />))}
           </chart.BarChart>
         )}
       </AutoSizer>
@@ -54,9 +45,18 @@ Chart.propTypes = {
 
 export default Chart;
 
-function amount(monthItem, group) {
-  const item = monthItem.groups[group];
-  return item && item.amount;
+function amount(monthItem, serie) {
+  const item = monthItem.groups[serie.stackId];
+  if(!item) {
+    return;
+  }
+
+  if(serie.root) {
+    return item.amount;
+  }
+
+  const childItem = item[serie.group];
+  return childItem && childItem.amount;
 }
 
 function getChildren(state, childrenGroups, groups) {
@@ -73,31 +73,27 @@ function getChildren(state, childrenGroups, groups) {
   return result;
 }
 
-function createStacks(groups, childrenGroups, groupStacks, groupChildren, colors) {
-  let counter = 0;
-  return groups.map((group, index) => {
-    const bars = [];
-    bars.push({
-      group,
-      display : groupStacks.get(group).map(group => group.display).join('/'),
-      fill    : colors[counter++ % colors.length],
-      root    : true
-    });
-
+function createBars(groups, childrenGroups, groupStacks, groupChildren, colors) {
+  const bars = [];
+  let index = 0;
+  for(const group of groups) {
+    bars.push(createBar(colors, groupStacks, group, group, index++, true));
     if(childrenGroups) {
       for(const child of groupChildren[group]) {
-        bars.push({
-          group   : child,
-          display : groupStacks.get(child).map(group => group.display).join('/'),
-          fill    : colors[counter++ % colors.length]
-        });
+        bars.push(createBar(colors, groupStacks, group, child, index++, false));
       }
     }
+  }
+  return bars;
+}
 
-    return {
-      index,
-      stackId: group,
-      bars
-    };
-  });
+function createBar(colors, groupStacks, stackId, group, index, root) {
+  return {
+    index,
+    stackId,
+    group,
+    display : groupStacks.get(group).map(group => group.display).join('/'),
+    fill    : colors[index % colors.length],
+    root
+  };
 }
