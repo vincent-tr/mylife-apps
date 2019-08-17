@@ -43,8 +43,6 @@ const GroupByMonth = () => {
 
   const { refresh, leave, data } = useConnect();
 
-  console.log(data);
-
   // on mount run query, on leave clean
   useLifecycle(() => refresh(formatCriteria(criteria)), leave);
 
