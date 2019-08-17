@@ -6,7 +6,7 @@ import { getGroupStacks, getChildrenList } from '../../../selectors/reference';
 const useConnect = ({ childrenGroups, groups }) => {
   return useSelector(state => ({
     groupStacks : getGroupStacks(state),
-    groupChildren: getChildren(state, { childrenGroups, groups })
+    groupChildren: getChildren(state, childrenGroups, groups)
   }));
 };
 
@@ -17,8 +17,9 @@ const Chart = ({ data, groups, childrenGroups, ...props }) => {
 
   if(!data.length || !groups) { return null; }
 
-  console.log(groupChildren);
-  //childrenGroups
+  const stacks = createStacks(groups, childrenGroups, groupStacks, groupChildren, colors);
+
+  console.log(stacks);
 
   const series = groups.map((group, index) => ({
     index,
@@ -58,7 +59,7 @@ function amount(monthItem, group) {
   return item && item.amount;
 }
 
-function getChildren(state, { childrenGroups, groups }) {
+function getChildren(state, childrenGroups, groups) {
   if(!childrenGroups || !groups) {
     return {};
   }
@@ -70,4 +71,33 @@ function getChildren(state, { childrenGroups, groups }) {
     result[group] = getChildrenList(state, { group });
   }
   return result;
+}
+
+function createStacks(groups, childrenGroups, groupStacks, groupChildren, colors) {
+  let counter = 0;
+  return groups.map((group, index) => {
+    const bars = [];
+    bars.push({
+      group,
+      display : groupStacks.get(group).map(group => group.display).join('/'),
+      fill    : colors[counter++ % colors.length],
+      root    : true
+    });
+
+    if(childrenGroups) {
+      for(const child of groupChildren[group]) {
+        bars.push({
+          group   : child,
+          display : groupStacks.get(child).map(group => group.display).join('/'),
+          fill    : colors[counter++ % colors.length]
+        });
+      }
+    }
+
+    return {
+      index,
+      stackId: group,
+      bars
+    };
+  });
 }
