@@ -123,7 +123,7 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
       for(const { group, children } of groupInfo) {
         const item = monthItem.groups[group || 'null'] = {
           amount: 0,
-          children: []
+          children: {}
         };
         for(const { group } of children) {
           item.children[group] = { amount: 0 };
