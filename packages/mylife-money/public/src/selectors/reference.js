@@ -18,7 +18,7 @@ const getGroupView = createSelector([ state => io.getView(state, getGroupViewId(
 export const getGroups = (state) => getGroupView(state).valueSeq().toArray();
 export const getGroup  = (state, { group }) => getGroupView(state).get(group);
 
-export const getChildren = (state, { group }) => {
+const getChildren = (state, { group }) => {
   if(!group) {
     return getGroupView(state).filter(it => !it.parent); // Root elements
   } else if (!group._id) {
@@ -32,6 +32,13 @@ export const makeGetSortedChildren = () => createSelector(
   [ getChildren ],
   (groups) => groups.valueSeq().sortBy(it => it.display).toArray()
 );
+
+export const getChildrenList = (state, { group }) => {
+  if(!group) {
+    return [];
+  }
+  return getGroupView(state).filter(it => it.parent === group).keySeq().toArray();
+};
 
 // stack from root for each group
 export const getGroupStacks = createSelector([ getGroups ], groups => {

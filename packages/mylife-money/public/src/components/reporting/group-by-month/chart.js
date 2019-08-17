@@ -1,21 +1,23 @@
 'use strict';
 
 import { React, PropTypes,  chart, useSelector, useChartColors, AutoSizer } from 'mylife-tools-ui';
-import { getGroupStacks } from '../../../selectors/reference';
+import { getGroupStacks, getChildrenList } from '../../../selectors/reference';
 
-const useConnect = () => {
+const useConnect = ({ childrenGroups, groups }) => {
   return useSelector(state => ({
     groupStacks : getGroupStacks(state),
+    groupChildren: getChildren(state, { childrenGroups, groups })
   }));
 };
 
 const Chart = ({ data, groups, childrenGroups, ...props }) => {
 
-  const { groupStacks } = useConnect();
+  const { groupStacks, groupChildren } = useConnect({ childrenGroups, groups });
   const colors = useChartColors();
 
   if(!data.length || !groups) { return null; }
 
+  console.log(groupChildren);
   //childrenGroups
 
   const series = groups.map((group, index) => ({
@@ -54,4 +56,18 @@ export default Chart;
 function amount(monthItem, group) {
   const item = monthItem.groups[group];
   return item && item.amount;
+}
+
+function getChildren(state, { childrenGroups, groups }) {
+  if(!childrenGroups || !groups) {
+    return {};
+  }
+  const result = {};
+  for(const group of groups) {
+    if(!group) {
+      continue;
+    }
+    result[group] = getChildrenList(state, { group });
+  }
+  return result;
 }
