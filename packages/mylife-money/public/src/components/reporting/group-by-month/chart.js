@@ -48,15 +48,18 @@ export default Chart;
 function amount(monthItem, serie) {
   const item = monthItem.groups[serie.stackId];
   if(!item) {
-    return;
+    return 0;
   }
 
   if(serie.root) {
     return item.amount;
   }
 
-  const childItem = item[serie.group];
-  return childItem && childItem.amount;
+  const childItem = item.children[serie.group];
+  if(!childItem) {
+    return  0;
+  }
+  return childItem.amount;
 }
 
 function getChildren(state, childrenGroups, groups) {
