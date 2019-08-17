@@ -81,7 +81,7 @@ function createBars(groups, childrenGroups, groupStacks, groupChildren, colors) 
   let index = 0;
   for(const group of groups) {
     bars.push(createBar(colors, groupStacks, group, group, index++, true));
-    if(childrenGroups) {
+    if(childrenGroups && group) {
       for(const child of groupChildren[group]) {
         bars.push(createBar(colors, groupStacks, group, child, index++, false));
       }
