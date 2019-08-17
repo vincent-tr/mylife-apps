@@ -43,6 +43,8 @@ const GroupByMonth = () => {
 
   const { refresh, leave, data } = useConnect();
 
+  console.log(data);
+
   // on mount run query, on leave clean
   useLifecycle(() => refresh(formatCriteria(criteria)), leave);
 
@@ -58,7 +60,7 @@ const GroupByMonth = () => {
   return (
     <div className={classes.container}>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} />
-      <Chart data={data} groups={groups} className={classes.chart} />
+      <Chart data={data} groups={groups} childrenGroups={criteria.children} className={classes.chart} />
     </div>
   );
 };

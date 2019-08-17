@@ -34,35 +34,16 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
   }
 
   _compute() {
-    const { minDate, maxDate } = computeDateRange(this._criteria, this.operations);
-    const { account, groups, invert, children } = this._criteria;
+    const { account, groups, invert } = this._criteria;
 
     if(!groups.length) {
       this._replaceAll([]);
       return;
     }
 
-    // TODO: children
-
-    const hierarchies = groups.map(group => ({
-      group: group || 'null',
-      hierarchy: createGroupHierarchy(this.groups, group)
-    }));
-
-    const items = new Map();
-
-    for(const month of monthRange(minDate, maxDate)) {
-      const item = {
-        _id: month,
-        month,
-        groups: {}
-      };
-
-      items.set(month, item);
-      for(const group of groups) {
-        item.groups[group || 'null'] = 0;
-      }
-    }
+    const { minDate, maxDate } = computeDateRange(this._criteria, this.operations);
+    const groupInfo = this._groupInfo();
+    const items = this._createSkeleton(groupInfo, minDate, maxDate);
 
     for(const operation of this.operations.list()) {
       if(account && operation.account !== account) {
@@ -78,23 +59,79 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
       }
 
       // find groups to put it
-      const item = items.get(dateToMonth(operation.date));
-      for(const { group, hierarchy } of hierarchies) {
-        if(hierarchy.has(operation.group)) {
-          item.groups[group] += amount;
+      const monthItem = items.get(dateToMonth(operation.date));
+      for(const { group, hierarchy, children: childrenInfo } of groupInfo) {
+        if(!hierarchy.has(operation.group)) {
+          continue;
+        }
+
+        const item = monthItem.groups[group];
+        let inChildren = false;
+
+        for(const { hierarchy, group: child } of childrenInfo) {
+          if(!hierarchy.has(operation.group)) {
+            continue;
+          }
+
+          item.children[child].amount += amount;
+          inChildren = true;
+          break;
+        }
+
+        if(!inChildren) {
+          item.amount += amount;
         }
       }
     }
 
     const data = Array.from(items.values());
-    for(const item of data) {
-      for(const { group } of hierarchies) {
-        item.groups[group] = roundCurrency(item.groups[group]);
+    for(const monthItem of data) {
+      for(const { group, children: childrenInfo } of groupInfo) {
+        const item = monthItem.groups[group];
+        item.amount = roundCurrency(item.amount);
+        for(const { group: childGroup } of childrenInfo) {
+          const child = item.children[childGroup];
+          child.amount = roundCurrency(child.amount);
+        }
       }
     }
-    
+
     const objects = data.map(item => this.entity.newObject(item));
     this._replaceAll(objects);
+  }
+
+  _groupInfo() {
+    const { groups, children } = this._criteria;
+
+    return groups.map(group => ({
+      group: group || 'null',
+      hierarchy: createGroupHierarchy(this.groups, group),
+      children: children ? getGroupChildren(this.groups, group) : []
+    }));
+  }
+
+  _createSkeleton(groupInfo, minDate, maxDate) {
+    const items = new Map();
+    for(const month of monthRange(minDate, maxDate)) {
+      const monthItem = {
+        _id: month,
+        month,
+        groups: {}
+      };
+
+      items.set(month, monthItem);
+      for(const { group, children } of groupInfo) {
+        const item = monthItem.groups[group || 'null'] = {
+          amount: 0,
+          children: []
+        };
+        for(const { group } of children) {
+          item.children[group] = { amount: 0 };
+        }
+      }
+    }
+
+    return items;
   }
 
   close() {
@@ -117,4 +154,17 @@ function computeDateRange(criteria, operations) {
     maxDate = maxDate || new Date(computedMaxDate);
   }
   return { minDate, maxDate };
+}
+
+function getGroupChildren(groupCollection, groupId) {
+  const results = [];
+  for(const group of groupCollection.list()) {
+    if(group.parent === groupId) {
+      results.push({
+        group: group._id,
+        hierarchy: createGroupHierarchy(groupCollection, group._id)
+      });
+    }
+  }
+  return results;
 }

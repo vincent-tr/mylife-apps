@@ -9,12 +9,14 @@ const useConnect = () => {
   }));
 };
 
-const Chart = ({ data, groups, ...props }) => {
+const Chart = ({ data, groups, childrenGroups, ...props }) => {
 
   const { groupStacks } = useConnect();
   const colors = useChartColors();
 
   if(!data.length || !groups) { return null; }
+
+  //childrenGroups
 
   const series = groups.map((group, index) => ({
     index,
@@ -33,7 +35,7 @@ const Chart = ({ data, groups, ...props }) => {
             <chart.CartesianGrid strokeDasharray="3 3"/>
             <chart.Tooltip/>
             <chart.Legend />
-            {series.map(serie => (<chart.Bar key={serie.index} dataKey={item => item.groups[serie.group]} name={serie.display} fill={serie.fill} />))}
+            {series.map(serie => (<chart.Bar key={serie.index} dataKey={item => amount(item, serie.group)} name={serie.display} fill={serie.fill} />))}
           </chart.BarChart>
         )}
       </AutoSizer>
@@ -43,7 +45,13 @@ const Chart = ({ data, groups, ...props }) => {
 
 Chart.propTypes = {
   data: PropTypes.array.isRequired,
-  groups: PropTypes.array
+  groups: PropTypes.array,
+  childrenGroups: PropTypes.bool
 };
 
 export default Chart;
+
+function amount(monthItem, group) {
+  const item = monthItem.groups[group];
+  return item && item.amount;
+}
