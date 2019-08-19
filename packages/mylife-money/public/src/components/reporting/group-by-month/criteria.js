@@ -91,16 +91,19 @@ GroupField.propTypes = {
   onGroupDelete: PropTypes.func.isRequired
 };
 
-const Criteria = ({ criteria, onCriteriaChanged }) => {
+const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) => {
   const [expanded, setExpanded] = useState(true);
   const toggleExpanded = () => setExpanded(!expanded);
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
   const onChildrenChanged = (value) => setCriteria('children', value);
-  const onInvertChanged = (value) => setCriteria('invert', value);
   const onMinDateChanged = (value) => setCriteria('minDate', value);
   const onMaxDateChanged = (value) => setCriteria('maxDate', value);
   const onAccountChanged = (value) => setCriteria('account', value);
+
+  const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
+  const onInvertChanged = (value) => setDisplay('invert', value);
+  const onFullnamesChanged = (value) => setDisplay('fullnames', value);
 
   const onGroupAdd = () => setCriteria('groups', criteria.groups.push(null));
   const onGroupChanged = (index, value) => setCriteria('groups', criteria.groups.set(index, value));
@@ -117,32 +120,37 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
       </mui.ExpansionPanelSummary>
       <mui.ExpansionPanelDetails>
         <mui.Grid container spacing={2}>
-          <mui.Grid item xs={3}>
+          <mui.Grid item xs={4}>
             <Field label='Date début'>
               <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
             </Field>
           </mui.Grid>
-          <mui.Grid item xs={3}>
+          <mui.Grid item xs={4}>
             <Field label='Date fin'>
               <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
             </Field>
           </mui.Grid>
-          <mui.Grid item xs={3}>
-            <Field label='Inverser montant'>
-              <mui.Checkbox color='primary' checked={criteria.invert} onChange={e => onInvertChanged(e.target.checked)} />
-            </Field>
-          </mui.Grid>
-          <mui.Grid item xs={3}>
-            <Field label='Afficher les groups enfants'>
-              <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
-            </Field>
-          </mui.Grid>
-          <mui.Grid item xs={3}>
+          <mui.Grid item xs={4}>
             <Field label='Compte'>
               <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
             </Field>
           </mui.Grid>
-          <mui.Grid item xs={9}>
+          <mui.Grid item xs={4}>
+            <Field label='Inverser montant'>
+              <mui.Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
+            </Field>
+          </mui.Grid>
+          <mui.Grid item xs={4}>
+            <Field label='Afficher les groupes enfants'>
+              <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+            </Field>
+          </mui.Grid>
+          <mui.Grid item xs={4}>
+            <Field label='Afficher les noms complets'>
+              <mui.Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
+            </Field>
+          </mui.Grid>
+          <mui.Grid item xs={12}>
             <GroupField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
           </mui.Grid>
         </mui.Grid>
@@ -154,7 +162,9 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
 
 Criteria.propTypes = {
   criteria: PropTypes.object.isRequired,
-  onCriteriaChanged: PropTypes.func.isRequired
+  onCriteriaChanged: PropTypes.func.isRequired,
+  display: PropTypes.object.isRequired,
+  onDisplayChanged: PropTypes.func.isRequired
 };
 
 export default Criteria;

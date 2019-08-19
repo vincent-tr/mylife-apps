@@ -33,12 +33,16 @@ const useStyles = mui.makeStyles({
 
 const GroupByMonth = () => {
   const [criteria, setCriteria] = useState({
-    invert: true,
     children: false,
     minDate: null,
     maxDate: null,
     account: null,
     groups: new immutable.List([ null ])
+  });
+
+  const [display, setDisplay] = useState({
+    invert: true,
+    fullnames: false,
   });
 
   const { refresh, leave, data } = useConnect();
@@ -55,10 +59,15 @@ const GroupByMonth = () => {
 
   const groups = criteria.groups.toArray();
 
+  const chartDisplay = {
+    ...display,
+    children: criteria.children,
+  };
+
   return (
     <div className={classes.container}>
-      <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} />
-      <Chart data={data} groups={groups} childrenGroups={criteria.children} className={classes.chart} />
+      <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} />
+      <Chart data={data} groups={groups} display={chartDisplay} className={classes.chart} />
     </div>
   );
 };
@@ -66,7 +75,8 @@ const GroupByMonth = () => {
 export default GroupByMonth;
 
 function formatCriteria(criteria) {
-  const { groups, ...props } = criteria;
+  const { groups, fullnames, ...props } = criteria;
+  void fullnames;
   return {
     groups: groups.toArray(),
     ...props

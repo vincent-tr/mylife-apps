@@ -3,21 +3,20 @@
 import { React, PropTypes,  chart, useSelector, useChartColors, AutoSizer } from 'mylife-tools-ui';
 import { getGroupStacks, getChildrenList } from '../../../selectors/reference';
 
-const useConnect = ({ childrenGroups, groups }) => {
+const useConnect = ({ display, groups }) => {
   return useSelector(state => ({
     groupStacks : getGroupStacks(state),
-    groupChildren: getChildren(state, childrenGroups, groups)
+    groupChildren: getChildren(state, display, groups)
   }));
 };
 
-const Chart = ({ data, groups, childrenGroups, ...props }) => {
-
-  const { groupStacks, groupChildren } = useConnect({ childrenGroups, groups });
+const Chart = ({ data, groups, display, ...props }) => {
+  const { groupStacks, groupChildren } = useConnect({ display, groups });
   const colors = useChartColors();
 
   if(!data.length || !groups) { return null; }
 
-  const bars = createBars(groups, childrenGroups, groupStacks, groupChildren, colors);
+  const bars = createBars(groups, display, groupStacks, groupChildren, colors);
 
   return (
     <div {...props}>
@@ -29,7 +28,7 @@ const Chart = ({ data, groups, childrenGroups, ...props }) => {
             <chart.CartesianGrid strokeDasharray="3 3"/>
             <chart.Tooltip/>
             <chart.Legend />
-            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amount(item, serie)} name={serie.display} fill={serie.fill} />))}
+            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amount(item, serie, display)} name={serie.name} fill={serie.fill} />))}
           </chart.BarChart>
         )}
       </AutoSizer>
@@ -40,12 +39,17 @@ const Chart = ({ data, groups, childrenGroups, ...props }) => {
 Chart.propTypes = {
   data: PropTypes.array.isRequired,
   groups: PropTypes.array,
-  childrenGroups: PropTypes.bool
+  display: PropTypes.object.isRequired
 };
 
 export default Chart;
 
-function amount(monthItem, serie) {
+function amount(monthItem, serie, display) {
+  const value = findAmount(monthItem, serie);
+  return display.invert ? - value : value;
+}
+
+function findAmount(monthItem, serie) {
   const item = monthItem.groups[serie.stackId];
   if(!item) {
     return 0;
@@ -62,8 +66,8 @@ function amount(monthItem, serie) {
   return childItem.amount;
 }
 
-function getChildren(state, childrenGroups, groups) {
-  if(!childrenGroups || !groups) {
+function getChildren(state, display, groups) {
+  if(!display.children || !groups) {
     return {};
   }
   const result = {};
@@ -76,27 +80,29 @@ function getChildren(state, childrenGroups, groups) {
   return result;
 }
 
-function createBars(groups, childrenGroups, groupStacks, groupChildren, colors) {
+function createBars(groups, display, groupStacks, groupChildren, colors) {
   const bars = [];
   let index = 0;
   for(const group of groups) {
-    bars.push(createBar(colors, groupStacks, group, group, index++, true));
-    if(childrenGroups && group) {
+    bars.push(createBar(colors, display, groupStacks, group, group, index++, true));
+    if(display.children && group) {
       for(const child of groupChildren[group]) {
-        bars.push(createBar(colors, groupStacks, group, child, index++, false));
+        bars.push(createBar(colors, display, groupStacks, group, child, index++, false));
       }
     }
   }
   return bars;
 }
 
-function createBar(colors, groupStacks, stackId, group, index, root) {
+function createBar(colors, display, groupStacks, stackId, group, index, root) {
+  const path = groupStacks.get(group).map(group => group.display);
+  const name = display.fullnames ? path.join('/') : path[path.length - 1];
   return {
     index,
     stackId,
     group,
-    display : groupStacks.get(group).map(group => group.display).join('/'),
-    fill    : colors[index % colors.length],
+    name,
+    fill: colors[index % colors.length],
     root
   };
 }

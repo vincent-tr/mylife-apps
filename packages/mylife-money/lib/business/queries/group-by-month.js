@@ -34,7 +34,7 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
   }
 
   _compute() {
-    const { account, groups, invert } = this._criteria;
+    const { account, groups } = this._criteria;
 
     if(!groups.length) {
       this._replaceAll([]);
@@ -53,11 +53,6 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
         continue;
       }
 
-      let amount = operation.amount;
-      if(invert) {
-        amount = -amount;
-      }
-
       // find groups to put it
       const monthItem = items.get(dateToMonth(operation.date));
       for(const { group, hierarchy, children: childrenInfo } of groupInfo) {
@@ -73,13 +68,13 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
             continue;
           }
 
-          item.children[child].amount += amount;
+          item.children[child].amount += operation.amount;
           inChildren = true;
           break;
         }
 
         if(!inChildren) {
-          item.amount += amount;
+          item.amount += operation.amount;
         }
       }
     }
