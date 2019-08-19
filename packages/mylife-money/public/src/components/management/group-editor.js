@@ -104,6 +104,66 @@ ConditionsEditor.propTypes = {
   onConditionsChanged: PropTypes.func.isRequired
 };
 
+const RulesEditor = ({ rules, onRulesChanged }) => {
+
+  const [selectedRule, setSelectedRule] = useState(firstRuleId(rules));
+  const rule = rules.get(selectedRule);
+
+  const addRule = () => {
+    const rule   = {
+      id         : createId(),
+      conditions : new immutable.Map(),
+      name       : 'newRule'
+    };
+
+    onRulesChanged(rules.set(rule.id, rule));
+    setSelectedRule(rule.id);
+  };
+
+  const deleteRule = () => {
+    const newRules = rules.delete(selectedRule);
+    onRulesChanged(newRules);
+    setSelectedRule(firstRuleId(newRules));
+  };
+
+  const updateRule = (prop, value) => {
+    onRulesChanged(rules.update(rule.id, rule => ({ ...rule, [prop]: value })));
+  };
+
+  return (
+    <fieldset>
+      <legend>Règles</legend>
+      <mui.Select label='Règle' id='selectedRule' value={selectedRule || ''} onChange={e => setSelectedRule(e.target.value || null)}>
+        {rules.valueSeq().toArray().map(rule => (
+          <mui.MenuItem key={rule.id} value={rule.id}>
+            {rule.name}
+          </mui.MenuItem>
+        ))}
+      </mui.Select>
+      <mui.Tooltip title='Ajouter une règle'>
+        <mui.IconButton onClick={addRule}>
+          <icons.actions.New />
+        </mui.IconButton>
+      </mui.Tooltip>
+      <mui.Tooltip title='Supprimer la règle'>
+        <div>
+          <mui.IconButton disabled={!rule} onClick={deleteRule}>
+            <icons.actions.Delete />
+          </mui.IconButton>
+        </div>
+      </mui.Tooltip>
+      <mui.TextField label='Nom de la règle' id='ruleName' disabled={!rule} value={rule ? rule.name : ''} onChange={e => updateRule('name', e.target.value)} />
+
+      <ConditionsEditor disabled={!rule} conditions={rule && rule.conditions} onConditionsChanged={conditions => updateRule('conditions', conditions)} />
+    </fieldset>
+  );
+};
+
+RulesEditor.propTypes = {
+  rules: PropTypes.object.isRequired,
+  onRulesChanged: PropTypes.func.isRequired
+};
+
 class EditorDialog extends React.Component {
 
   constructor(props, context) {
@@ -114,8 +174,7 @@ class EditorDialog extends React.Component {
 
     this.state = {
       group,
-      rules,
-      selectedRule: (rules && rules.first() && rules.first().id) || null
+      rules
     };
   }
 
@@ -123,81 +182,22 @@ class EditorDialog extends React.Component {
     const { group, rules } = nextProps.options;
     this.setState({
       group,
-      rules,
-      selectedRule: (rules && rules.first() && rules.first().id) || null
-    });
-  }
-
-  addRule() {
-    const { rules } = this.state;
-    const newRule   = {
-      id         : createId(),
-      conditions : new immutable.Map(),
-      name       : 'newRule'
-    };
-
-    this.setState({
-      rules        : rules.set(newRule.id, newRule),
-      selectedRule : newRule.id
-    });
-  }
-
-  deleteRule() {
-    const { rules, selectedRule } = this.state;
-    this.setState({
-      rules        : rules.delete(selectedRule),
-      selectedRule : null
-    });
-  }
-
-  updateRuleName(value) {
-    const { rules, selectedRule } = this.state;
-    this.setState({
-      rules: rules.update(selectedRule, rule => ({ ...rule, name: value }))
-    });
-  }
-
-  updateRuleConditions(conditions) {
-    const { rules, selectedRule } = this.state;
-    this.setState({
-      rules: rules.update(selectedRule, rule => ({ ...rule, conditions }))
+      rules
     });
   }
 
   render() {
     const { show, proceed } = this.props;
-    const { group, rules, selectedRule } = this.state;
-    const rule = rules.get(selectedRule);
+    const { group, rules } = this.state;
+
     return (
       <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='sm' fullWidth>
         <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
         <mui.DialogContent dividers>
           <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => this.setState({ group: { ...group, display: e.target.value }})} />
-          <fieldset>
-            <legend>Règles</legend>
-            <mui.Select label='Règle' id='selectedRule' value={selectedRule || ''} onChange={e => this.setState({ selectedRule : e.target.value || null })}>
-              {rules.valueSeq().toArray().map(rule => (
-                <mui.MenuItem key={rule.id} value={rule.id}>
-                  {rule.name}
-                </mui.MenuItem>
-              ))}
-            </mui.Select>
-            <mui.Tooltip title='Ajouter une règle'>
-              <mui.IconButton onClick={() => this.addRule()}>
-                <icons.actions.New />
-              </mui.IconButton>
-            </mui.Tooltip>
-            <mui.Tooltip title='Supprimer la règle'>
-              <div>
-                <mui.IconButton disabled={!rule} onClick={() => this.deleteRule()}>
-                  <icons.actions.Delete />
-                </mui.IconButton>
-              </div>
-            </mui.Tooltip>
-            <mui.TextField label='Nom de la règle' id='ruleName' disabled={!rule} value={rule ? rule.name : ''} onChange={e => this.updateRuleName(e.target.value)} />
 
-            <ConditionsEditor disabled={!rule} conditions={rule && rule.conditions} onConditionsChanged={conditions => this.updateRuleConditions(conditions)} />
-          </fieldset>
+          <RulesEditor rules={rules} onRulesChanged={rules => this.setState({ rules })}/>
+
         </mui.DialogContent>
         <mui.DialogActions>
           <mui.Button onClick={() => proceed({ result: 'ok', group, rules })} color='primary'>OK</mui.Button>
@@ -280,4 +280,9 @@ function displayCondition(condition) {
 
 function createId() {
   return Math.random().toString(36).substr(2, 9);
+}
+
+function firstRuleId(rules) {
+  const firstRule = rules.first();
+  return firstRule ? firstRule.id : null;
 }
