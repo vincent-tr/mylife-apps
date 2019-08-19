@@ -1,4 +1,4 @@
-import { React, useState, PropTypes, mui, immutable, dialogs } from 'mylife-tools-ui';
+import { React, useState, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import icons from '../icons';
 
 const operators = {
@@ -24,7 +24,6 @@ const ConditionEditor = ({ disabled, onAddCondition }) => {
 
   const onAdd = () => {
     const condition = {
-      id       : createId(),
       field    : field,
       operator : operator,
       value    : fields[field].format(value)
@@ -71,19 +70,19 @@ ConditionEditor.propTypes = {
 };
 
 const ConditionsEditor = ({ disabled, conditions, onConditionsChanged }) => {
-  const deleteCondition = condition => onConditionsChanged(conditions.delete(condition.id));
-  const addCondition = condition => onConditionsChanged(conditions.set(condition.id, condition));
+  const deleteCondition = index => onConditionsChanged(arrayDelete(conditions, index));
+  const addCondition = condition => onConditionsChanged([...conditions, condition]);
 
   return (
     <fieldset>
       <legend>Conditions</legend>
       <mui.List>
-        {conditions && conditions.valueSeq().toArray().map(condition => (
+        {conditions && conditions.map((condition, index) => (
           <mui.ListItem key={condition.id}>
             <mui.ListItemText primary={displayCondition(condition)} />
             <mui.ListItemSecondaryAction>
               <mui.Tooltip title='Supprimer la condition'>
-                <mui.IconButton onClick={() => deleteCondition(condition)}>
+                <mui.IconButton onClick={() => deleteCondition(index)}>
                   <icons.actions.Delete />
                 </mui.IconButton>
               </mui.Tooltip>
@@ -106,36 +105,38 @@ ConditionsEditor.propTypes = {
 
 const RulesEditor = ({ rules, onRulesChanged }) => {
 
-  const [selectedRule, setSelectedRule] = useState(firstRuleId(rules));
-  const rule = rules.get(selectedRule);
+  const [selectedRuleIndex, setSelectedRuleIndex] = useState(firstRuleIndex(rules));
+  const rule = selectedRuleIndex === null ? null : rules[selectedRuleIndex];
+  const selectedRuleValue = selectedRuleIndex === null ? '' : selectedRuleIndex.toString();
 
   const addRule = () => {
     const rule   = {
-      id         : createId(),
-      conditions : new immutable.Map(),
-      name       : 'newRule'
+      conditions : [],
+      name       : 'Nouvelle règle'
     };
 
-    onRulesChanged(rules.set(rule.id, rule));
-    setSelectedRule(rule.id);
+    const newRules = [...rules, rule];
+
+    onRulesChanged(newRules);
+    setSelectedRuleIndex(newRules.length - 1);
   };
 
   const deleteRule = () => {
-    const newRules = rules.delete(selectedRule);
+    const newRules = arrayDelete(rules, selectedRuleIndex);
     onRulesChanged(newRules);
-    setSelectedRule(firstRuleId(newRules));
+    setSelectedRuleIndex(firstRuleIndex(newRules));
   };
 
   const updateRule = (prop, value) => {
-    onRulesChanged(rules.update(rule.id, rule => ({ ...rule, [prop]: value })));
+    onRulesChanged(arrayUpdate(rules, selectedRuleIndex, ({ ...rule, [prop]: value })));
   };
 
   return (
     <fieldset>
       <legend>Règles</legend>
-      <mui.Select label='Règle' id='selectedRule' value={selectedRule || ''} onChange={e => setSelectedRule(e.target.value || null)}>
-        {rules.valueSeq().toArray().map(rule => (
-          <mui.MenuItem key={rule.id} value={rule.id}>
+      <mui.Select label='Règle' id='selectedRule' value={selectedRuleValue} onChange={e => setSelectedRuleIndex(e.target.value || null)}>
+        {rules.map((rule, index) => (
+          <mui.MenuItem key={index} value={index.toString()}>
             {rule.name}
           </mui.MenuItem>
         ))}
@@ -166,19 +167,19 @@ RulesEditor.propTypes = {
 
 const EditorDialog = ({ options, show, proceed }) => {
   const [group, setGroup] = useState(options.group);
-  const [rules, setRules] = useState(options.rules);
+  const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
 
   return (
     <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='sm' fullWidth>
       <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
       <mui.DialogContent dividers>
-        <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => setGroup({ ...group, display: e.target.value })} />
+        <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => updateGroup('display', e.target.value)} />
 
-        <RulesEditor rules={rules} onRulesChanged={rules => setRules(rules)}/>
+        <RulesEditor rules={group.rules} onRulesChanged={rules => updateGroup('rules', rules)}/>
 
       </mui.DialogContent>
       <mui.DialogActions>
-        <mui.Button onClick={() => proceed({ result: 'ok', group, rules })} color='primary'>OK</mui.Button>
+        <mui.Button onClick={() => proceed({ result: 'ok', group })} color='primary'>OK</mui.Button>
         <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
       </mui.DialogActions>
     </mui.Dialog>
@@ -195,75 +196,32 @@ const edit = dialogs.create(EditorDialog);
 
 export default async (group) => {
   group = clone(group);
-  const res = await edit({ options: { group, rules: parseRules(group.rules) } });
+  const res = await edit({ options: { group } });
   if(res.result !== 'ok') {
     return;
   }
-  return { ...res.group , rules: serializeRules(res.rules) };
+  return res.group;
 };
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function parseRules(raw) {
-  if(!raw) {
-    return new immutable.Map();
-  }
-
-  return new immutable.Map(raw.map(rawRule => {
-    const id = createId();
-    return [ id, {
-      ... rawRule,
-      id,
-      conditions : parseConditions(rawRule.conditions)
-    }];
-  }));
+function arrayUpdate(array, index, newItem) {
+  return [...array.slice(0, index), newItem, ...array.slice(index + 1)];
 }
 
-function parseConditions(raw) {
-  if(!raw) {
-    return new immutable.Map();
-  }
-
-  return new immutable.Map(raw.map(rawCondition => {
-    const id = createId();
-    return [ id, {
-      id,
-      ... rawCondition
-    }];
-  }));
-}
-
-function serializeRules(map) {
-  return map.valueSeq().toArray().map((rule) => {
-    const { id, conditions, ...others } = rule;
-    void id;
-    return { conditions : serializeConditions(conditions), ...others };
-  });
-}
-
-function serializeConditions(map) {
-  return map.valueSeq().toArray().map(cond => {
-    const { id, ...others } = cond;
-    void id;
-    return { ...others };
-  });
+function arrayDelete(array, index) {
+  return [...array.slice(0, index), ...array.slice(index + 1)];
 }
 
 function displayCondition(condition) {
-
   const field = fields[condition.field].display;
   const operator = operators[condition.operator].display;
 
   return `${field} ${operator} ${condition.value}`;
 }
 
-function createId() {
-  return Math.random().toString(36).substr(2, 9);
-}
-
-function firstRuleId(rules) {
-  const firstRule = rules.first();
-  return firstRule ? firstRule.id : null;
+function firstRuleIndex(rules) {
+  return rules.length ? 0 : null;
 }
