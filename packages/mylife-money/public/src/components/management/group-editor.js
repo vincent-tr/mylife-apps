@@ -164,66 +164,47 @@ RulesEditor.propTypes = {
   onRulesChanged: PropTypes.func.isRequired
 };
 
-class EditorDialog extends React.Component {
+const EditorDialog = ({ options, show, proceed }) => {
+  const [group, setGroup] = useState(options.group);
+  const [rules, setRules] = useState(options.rules);
 
-  constructor(props, context) {
-    super(props, context);
+  return (
+    <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='sm' fullWidth>
+      <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
+      <mui.DialogContent dividers>
+        <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => setGroup({ ...group, display: e.target.value })} />
 
-    const group = props && props.options && props.options.group;
-    const rules = props && props.options && props.options.rules;
+        <RulesEditor rules={rules} onRulesChanged={rules => setRules(rules)}/>
 
-    this.state = {
-      group,
-      rules
-    };
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { group, rules } = nextProps.options;
-    this.setState({
-      group,
-      rules
-    });
-  }
-
-  render() {
-    const { show, proceed } = this.props;
-    const { group, rules } = this.state;
-
-    return (
-      <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='sm' fullWidth>
-        <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
-        <mui.DialogContent dividers>
-          <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => this.setState({ group: { ...group, display: e.target.value }})} />
-
-          <RulesEditor rules={rules} onRulesChanged={rules => this.setState({ rules })}/>
-
-        </mui.DialogContent>
-        <mui.DialogActions>
-          <mui.Button onClick={() => proceed({ result: 'ok', group, rules })} color='primary'>OK</mui.Button>
-          <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
-        </mui.DialogActions>
-      </mui.Dialog>
-    );
-  }
-}
+      </mui.DialogContent>
+      <mui.DialogActions>
+        <mui.Button onClick={() => proceed({ result: 'ok', group, rules })} color='primary'>OK</mui.Button>
+        <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
+      </mui.DialogActions>
+    </mui.Dialog>
+  );
+};
 
 EditorDialog.propTypes = {
-  show: PropTypes.bool,
-  proceed: PropTypes.func,
-  options: PropTypes.object
+  options: PropTypes.object.isRequired,
+  show: PropTypes.bool.isRequired,
+  proceed: PropTypes.func.isRequired
 };
 
 const edit = dialogs.create(EditorDialog);
 
 export default async (group) => {
-  group = JSON.parse(JSON.stringify(group));
+  group = clone(group);
   const res = await edit({ options: { group, rules: parseRules(group.rules) } });
   if(res.result !== 'ok') {
     return;
   }
   return { ...res.group , rules: serializeRules(res.rules) };
 };
+
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
 
 function parseRules(raw) {
   if(!raw) {
