@@ -1,6 +1,7 @@
 'use strict';
 
 import { utils } from 'mylife-tools-common';
+import { busySet } from '../../dialogs';
 
 const CALL_TIMEOUT = 5000;
 
@@ -14,7 +15,7 @@ class Pending {
 
   finish(error, result) {
     clearTimeout(this.timeout);
-    this.engine.pendings.delete(this.transaction);
+    this.engine.removePending(this);
     if(error) {
       this.deferred.reject(error);
     } else {
@@ -65,12 +66,26 @@ class CallEngine {
     pending.reply(message);
   }
 
+  addPending(pending) {
+    this.pendings.set(pending.transaction, pending);
+    if(this.pendings.size === 1) {
+      this.dispatch(busySet(true));
+    }
+  }
+
+  removePending(pending) {
+    this.pendings.delete(pending.transaction);
+    if(this.pendings.size === 0) {
+      this.dispatch(busySet(false));
+    }
+  }
+
   async executeCall(message) {
     const transaction = ++this.transactionCounter;
     this.emitter({ ...message, transaction, engine: 'call' });
 
     const deferred = utils.defer();
-    this.pendings.set(transaction, new Pending(this, transaction, deferred));
+    this.addPending(new Pending(this, transaction, deferred));
 
     return await deferred.promise;
   }
