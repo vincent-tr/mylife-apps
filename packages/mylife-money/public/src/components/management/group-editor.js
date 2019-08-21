@@ -17,7 +17,7 @@ const fields = {
   note   : { display : 'Note',        format : val => val }
 };
 
-const ConditionEditor = ({ disabled, onAddCondition }) => {
+const ConditionEditor = ({ onAddCondition }) => {
   const [field, setField] = useState(null);
   const [operator, setOperator] = useState(null);
   const [value, setValue] = useState(null);
@@ -38,24 +38,24 @@ const ConditionEditor = ({ disabled, onAddCondition }) => {
 
   return (
     <React.Fragment>
-      <mui.Select label='Champ' id='conditionField' disabled={disabled} value={field || ''} onChange={e => setField(e.target.value || null)}>
+      <mui.Select label='Champ' id='conditionField' value={field || ''} onChange={e => setField(e.target.value || null)}>
         {Object.keys(fields).map(field => (
           <mui.MenuItem key={field} value={field}>
             {fields[field].display}
           </mui.MenuItem>
         ))}
       </mui.Select>
-      <mui.Select label='Operateur' id='conditionOperator' disabled={disabled} value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
+      <mui.Select label='Operateur' id='conditionOperator' value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
         {Object.keys(operators).map(operator => (
           <mui.MenuItem key={operator} value={operator}>
             {operators[operator].display}
           </mui.MenuItem>
         ))}
       </mui.Select>
-      <mui.TextField label='Valeur' id='conditionValue' disabled={disabled} value={value || ''} onChange={e => setValue(e.target.value)} />
+      <mui.TextField label='Valeur' id='conditionValue' value={value || ''} onChange={e => setValue(e.target.value)} />
       <mui.Tooltip title='Ajouter une condition'>
         <div>
-          <mui.IconButton disabled={disabled || !field || !operator || !value} onClick={onAdd}>
+          <mui.IconButton disabled={!field || !operator || !value} onClick={onAdd}>
             <icons.actions.New />
           </mui.IconButton>
         </div>
@@ -65,11 +65,10 @@ const ConditionEditor = ({ disabled, onAddCondition }) => {
 };
 
 ConditionEditor.propTypes = {
-  disabled: PropTypes.bool,
   onAddCondition: PropTypes.func.isRequired
 };
 
-const ConditionsEditor = ({ disabled, conditions, onConditionsChanged }) => {
+const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
   const deleteCondition = index => onConditionsChanged(arrayDelete(conditions, index));
   const addCondition = condition => onConditionsChanged([...conditions, condition]);
 
@@ -77,8 +76,8 @@ const ConditionsEditor = ({ disabled, conditions, onConditionsChanged }) => {
     <fieldset>
       <legend>Conditions</legend>
       <mui.List>
-        {conditions && conditions.map((condition, index) => (
-          <mui.ListItem key={condition.id}>
+        {conditions.map((condition, index) => (
+          <mui.ListItem key={index}>
             <mui.ListItemText primary={displayCondition(condition)} />
             <mui.ListItemSecondaryAction>
               <mui.Tooltip title='Supprimer la condition'>
@@ -91,23 +90,50 @@ const ConditionsEditor = ({ disabled, conditions, onConditionsChanged }) => {
         ))}
       </mui.List>
 
-      <ConditionEditor disabled={disabled} onAddCondition={addCondition} />
+      <ConditionEditor onAddCondition={addCondition} />
 
     </fieldset>
   );
 };
 
 ConditionsEditor.propTypes = {
-  disabled: PropTypes.bool,
-  conditions: PropTypes.object,
+  conditions: PropTypes.array.isRequired,
   onConditionsChanged: PropTypes.func.isRequired
 };
 
-const RulesEditor = ({ rules, onRulesChanged }) => {
+const RuleRow = ({ rule, onRuleChanged, onDeleteRule }) => {
+  const updateRule = (prop, value) => onRuleChanged({ ...rule, [prop]: value });
 
-  const [selectedRuleIndex, setSelectedRuleIndex] = useState(firstRuleIndex(rules));
-  const rule = selectedRuleIndex === null ? null : rules[selectedRuleIndex];
-  const selectedRuleValue = selectedRuleIndex === null ? '' : selectedRuleIndex.toString();
+  return (
+    <mui.TableRow>
+      <mui.TableCell>
+        <mui.Tooltip title='Supprimer la règle'>
+          <div>
+            <mui.IconButton onClick={onDeleteRule}>
+              <icons.actions.Delete />
+            </mui.IconButton>
+          </div>
+        </mui.Tooltip>
+      </mui.TableCell>
+      <mui.TableCell>
+        <mui.TextField label='Nom de la règle' value={rule.name || ''} onChange={e => updateRule('name', e.target.value)} />
+      </mui.TableCell>
+      <mui.TableCell>
+        <ConditionsEditor conditions={rule.conditions} onConditionsChanged={conditions => updateRule('conditions', conditions)} />
+      </mui.TableCell>
+    </mui.TableRow>
+  );
+};
+
+RuleRow.propTypes = {
+  rule: PropTypes.object.isRequired,
+  onRuleChanged: PropTypes.func.isRequired,
+  onDeleteRule: PropTypes.func.isRequired,
+};
+
+const EditorDialog = ({ options, show, proceed }) => {
+  const [group, setGroup] = useState(options.group);
+  const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
 
   const addRule = () => {
     const rule   = {
@@ -115,67 +141,39 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
       name       : 'Nouvelle règle'
     };
 
-    const newRules = [...rules, rule];
-
-    onRulesChanged(newRules);
-    setSelectedRuleIndex(newRules.length - 1);
-  };
-
-  const deleteRule = () => {
-    const newRules = arrayDelete(rules, selectedRuleIndex);
-    onRulesChanged(newRules);
-    setSelectedRuleIndex(firstRuleIndex(newRules));
-  };
-
-  const updateRule = (prop, value) => {
-    onRulesChanged(arrayUpdate(rules, selectedRuleIndex, ({ ...rule, [prop]: value })));
+    updateGroup('rules', [...group.rules, rule]);
   };
 
   return (
-    <fieldset>
-      <legend>Règles</legend>
-      <mui.Select label='Règle' id='selectedRule' value={selectedRuleValue} onChange={e => setSelectedRuleIndex(e.target.value || null)}>
-        {rules.map((rule, index) => (
-          <mui.MenuItem key={index} value={index.toString()}>
-            {rule.name}
-          </mui.MenuItem>
-        ))}
-      </mui.Select>
-      <mui.Tooltip title='Ajouter une règle'>
-        <mui.IconButton onClick={addRule}>
-          <icons.actions.New />
-        </mui.IconButton>
-      </mui.Tooltip>
-      <mui.Tooltip title='Supprimer la règle'>
-        <div>
-          <mui.IconButton disabled={!rule} onClick={deleteRule}>
-            <icons.actions.Delete />
-          </mui.IconButton>
-        </div>
-      </mui.Tooltip>
-      <mui.TextField label='Nom de la règle' id='ruleName' disabled={!rule} value={rule ? rule.name : ''} onChange={e => updateRule('name', e.target.value)} />
-
-      <ConditionsEditor disabled={!rule} conditions={rule && rule.conditions} onConditionsChanged={conditions => updateRule('conditions', conditions)} />
-    </fieldset>
-  );
-};
-
-RulesEditor.propTypes = {
-  rules: PropTypes.object.isRequired,
-  onRulesChanged: PropTypes.func.isRequired
-};
-
-const EditorDialog = ({ options, show, proceed }) => {
-  const [group, setGroup] = useState(options.group);
-  const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
-
-  return (
-    <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='sm' fullWidth>
+    <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='lg' fullWidth>
       <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
       <mui.DialogContent dividers>
         <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => updateGroup('display', e.target.value)} />
 
-        <RulesEditor rules={group.rules} onRulesChanged={rules => updateGroup('rules', rules)}/>
+        <mui.Table>
+          <mui.TableHead>
+            <mui.TableRow>
+              <mui.TableCell>Règles</mui.TableCell>
+              <mui.TableCell>
+                <mui.Tooltip title='Ajouter une règle'>
+                  <mui.IconButton onClick={addRule}>
+                    <icons.actions.New />
+                  </mui.IconButton>
+                </mui.Tooltip>
+              </mui.TableCell>
+            </mui.TableRow>
+          </mui.TableHead>
+          <mui.TableBody>
+            {group.rules.map((rule, index) => {
+              const deleteRule = () => updateGroup('rules', arrayDelete(group.rules, index));
+              const changeRule = (rule) => updateGroup('rules', arrayUpdate(group.rules, index, rule));
+
+              return (
+                <RuleRow key={index} rule={rule} onRuleChanged={changeRule} onDeleteRule={deleteRule} />
+              );
+            })}
+          </mui.TableBody>
+        </mui.Table>
 
       </mui.DialogContent>
       <mui.DialogActions>
@@ -220,8 +218,4 @@ function displayCondition(condition) {
   const operator = operators[condition.operator].display;
 
   return `${field} ${operator} ${condition.value}`;
-}
-
-function firstRuleIndex(rules) {
-  return rules.length ? 0 : null;
 }
