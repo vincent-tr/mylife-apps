@@ -151,7 +151,6 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
         <mui.Table>
           <mui.TableHead>
             <mui.TableRow>
-              <mui.TableCell>Règles</mui.TableCell>
               <mui.TableCell>
                 <mui.Tooltip title='Ajouter une règle'>
                   <mui.IconButton onClick={addRule}>
