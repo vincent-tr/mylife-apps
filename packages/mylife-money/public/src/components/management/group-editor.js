@@ -131,9 +131,7 @@ RuleRow.propTypes = {
   onDeleteRule: PropTypes.func.isRequired,
 };
 
-const EditorDialog = ({ options, show, proceed }) => {
-  const [group, setGroup] = useState(options.group);
-  const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
+const RulesEditor = ({ rules, onRulesChanged }) => {
 
   const addRule = () => {
     const rule   = {
@@ -141,15 +139,15 @@ const EditorDialog = ({ options, show, proceed }) => {
       name       : 'Nouvelle règle'
     };
 
-    updateGroup('rules', [...group.rules, rule]);
+    onRulesChanged([...rules, rule]);
   };
 
   return (
-    <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='lg' fullWidth>
-      <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
-      <mui.DialogContent dividers>
-        <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => updateGroup('display', e.target.value)} />
-
+    <mui.ExpansionPanel>
+      <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
+        <mui.Typography>Règles</mui.Typography>
+      </mui.ExpansionPanelSummary>
+      <mui.ExpansionPanelDetails>
         <mui.Table>
           <mui.TableHead>
             <mui.TableRow>
@@ -164,9 +162,9 @@ const EditorDialog = ({ options, show, proceed }) => {
             </mui.TableRow>
           </mui.TableHead>
           <mui.TableBody>
-            {group.rules.map((rule, index) => {
-              const deleteRule = () => updateGroup('rules', arrayDelete(group.rules, index));
-              const changeRule = (rule) => updateGroup('rules', arrayUpdate(group.rules, index, rule));
+            {rules.map((rule, index) => {
+              const deleteRule = () => onRulesChanged(arrayDelete(rules, index));
+              const changeRule = (rule) => onRulesChanged(arrayUpdate(rules, index, rule));
 
               return (
                 <RuleRow key={index} rule={rule} onRuleChanged={changeRule} onDeleteRule={deleteRule} />
@@ -174,6 +172,29 @@ const EditorDialog = ({ options, show, proceed }) => {
             })}
           </mui.TableBody>
         </mui.Table>
+      </mui.ExpansionPanelDetails>
+    </mui.ExpansionPanel>
+  );
+};
+
+RulesEditor.propTypes = {
+  rules: PropTypes.array.isRequired,
+  onRulesChanged: PropTypes.func.isRequired,
+};
+
+const EditorDialog = ({ options, show, proceed }) => {
+  const [group, setGroup] = useState(options.group);
+  const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
+
+  return (
+    <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='lg' fullWidth>
+      <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
+      <mui.DialogContent dividers>
+        <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => updateGroup('display', e.target.value)} />
+
+        {/* TODO: move */}
+
+        <RulesEditor rules={group.rules} onRulesChanged={rules => updateGroup('rules', rules)} />
 
       </mui.DialogContent>
       <mui.DialogActions>
