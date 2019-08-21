@@ -145,7 +145,7 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
   return (
     <mui.ExpansionPanel>
       <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
-        <mui.Typography>Règles</mui.Typography>
+        <mui.Typography>{`Règles (${rules.length})`}</mui.Typography>
       </mui.ExpansionPanelSummary>
       <mui.ExpansionPanelDetails>
         <mui.Table>
