@@ -2,7 +2,6 @@
 MyLife Money
 
 TODO list
- - group editor
  - recherche par libelle ???
  - mobile adaptations
    - breadcrumb for group on mobile
