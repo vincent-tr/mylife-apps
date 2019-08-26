@@ -2,7 +2,6 @@
 MyLife Money
 
 TODO list
- - supprimer les id de views sur déco dans reducers + supprimer les données de views dans le reducer de views
  - group editor
  - mobile adaptations
    - breadcrumb for group on mobile
