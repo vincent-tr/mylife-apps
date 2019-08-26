@@ -5,7 +5,7 @@ import icons from '../icons';
 
 
 const YearSelectorDialog = ({ show, proceed, options }) => (
-  <mui.Dialog aria-labelledby='dialog-title' open={show}>
+  <mui.Dialog aria-labelledby='dialog-title' open={show} onClose={() => proceed({ result: 'cancel' })} >
     <mui.DialogTitle id='dialog-title'>
       Sélectionnez un groupe
     </mui.DialogTitle>
