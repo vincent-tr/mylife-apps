@@ -5,6 +5,7 @@ import icons from '../../icons';
 
 import AccountSelector from '../../common/account-selector';
 import GroupSelector from '../../common/group-selector';
+import DateSelector from '../../common/date-selector';
 
 const useFieldStyles = mui.makeStyles(theme => ({
   container: {
@@ -122,12 +123,12 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) =>
         <mui.Grid container spacing={2}>
           <mui.Grid item xs={4}>
             <Field label='Date début'>
-              <mui.DatePicker value={criteria.minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+              <DateSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
             </Field>
           </mui.Grid>
           <mui.Grid item xs={4}>
             <Field label='Date fin'>
-              <mui.DatePicker value={criteria.maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
+              <DateSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
             </Field>
           </mui.Grid>
           <mui.Grid item xs={4}>

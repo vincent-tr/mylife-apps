@@ -9,6 +9,7 @@ import { getAccounts } from '../../selectors/reference';
 import AccountSelector from '../common/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../common/group-selector-button';
+import DateSelector from '../common/date-selector';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -68,12 +69,12 @@ const Header = () => {
   const selectors = (
     <React.Fragment>
       <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-      <mui.DatePicker value={minDate} onChange={onMinDateChanged} clearable autoOk format='dd/MM/yyyy' />
+      <DateSelector value={minDate} onChange={onMinDateChanged} showYearSelector />
 
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
-      <mui.DatePicker value={maxDate} onChange={onMaxDateChanged} clearable autoOk format='dd/MM/yyyy' />
+      <DateSelector value={maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
 
       <ToolbarSeparator />
 

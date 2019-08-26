@@ -5,11 +5,7 @@ import icons from '../icons';
 
 
 const YearSelectorDialog = ({ show, proceed, options }) => (
-  <mui.Dialog aria-labelledby='dialog-title' open={show} onClose={() => proceed({ result: 'cancel' })} >
-    <mui.DialogTitle id='dialog-title'>
-      Sélectionnez un groupe
-    </mui.DialogTitle>
-
+  <mui.Dialog open={show} onClose={() => proceed({ result: 'cancel' })} >
     <mui.DialogContent dividers>
       <mui.DatePicker autoOk variant='static' views={['year']} value={options.value} onChange={selectedValue => proceed({ result: 'ok', selectedValue })} />
     </mui.DialogContent>
