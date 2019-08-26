@@ -13,7 +13,6 @@ const useConnect = () => {
 
 const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }) => {
   const { groups } = useConnect();
-  console.log(selectedGroupId, disabledGroupIds);
   return (
     <mui.List component='div' {...props}>
       {groups.map((group) => (
