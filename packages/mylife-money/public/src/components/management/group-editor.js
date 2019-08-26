@@ -85,26 +85,30 @@ const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
   const addCondition = condition => onConditionsChanged([...conditions, condition]);
 
   return (
-    <fieldset>
-      <legend>Conditions</legend>
-      <mui.List>
-        {conditions.map((condition, index) => (
-          <mui.ListItem key={index}>
-            <mui.ListItemText primary={displayCondition(condition)} />
-            <mui.ListItemSecondaryAction>
-              <mui.Tooltip title='Supprimer la condition'>
-                <mui.IconButton onClick={() => deleteCondition(index)}>
-                  <icons.actions.Delete />
-                </mui.IconButton>
-              </mui.Tooltip>
-            </mui.ListItemSecondaryAction>
-          </mui.ListItem>
-        ))}
-      </mui.List>
+    <mui.Card>
+      <mui.CardContent>
+        <mui.Typography color='textSecondary' gutterBottom>
+          Conditions
+        </mui.Typography>
+        <mui.List>
+          {conditions.map((condition, index) => (
+            <mui.ListItem key={index}>
+              <mui.ListItemText primary={displayCondition(condition)} />
+              <mui.ListItemSecondaryAction>
+                <mui.Tooltip title='Supprimer la condition'>
+                  <mui.IconButton onClick={() => deleteCondition(index)}>
+                    <icons.actions.Delete />
+                  </mui.IconButton>
+                </mui.Tooltip>
+              </mui.ListItemSecondaryAction>
+            </mui.ListItem>
+          ))}
+        </mui.List>
 
-      <ConditionEditor onAddCondition={addCondition} />
+        <ConditionEditor onAddCondition={addCondition} />
 
-    </fieldset>
+      </mui.CardContent>
+    </mui.Card>
   );
 };
 
