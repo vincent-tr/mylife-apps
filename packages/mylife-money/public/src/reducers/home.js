@@ -1,6 +1,6 @@
 'use strict';
 
-import { handleActions } from 'mylife-tools-ui';
+import { handleActions, io } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 
 export default handleActions({
@@ -14,6 +14,12 @@ export default handleActions({
     ...state,
     totalByMonth: action.payload
   }),
+
+  [io.actionTypes.SET_ONLINE] : (state) => ({
+    ...state,
+    stats: null,
+    totalByMonth: null
+  })
 
 }, {
   stats: null,

@@ -1,6 +1,6 @@
 'use strict';
 
-import { handleActions } from 'mylife-tools-ui';
+import { handleActions, io } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { immutable } from 'mylife-tools-ui';
 
@@ -33,6 +33,15 @@ export default handleActions({
       selected: applySelection(state.operations.selected, action.payload)
     }
   }),
+
+  [io.actionTypes.SET_ONLINE] : (state) => ({
+    ...state,
+    operations: {
+      ...state.operations,
+      view: null,
+      selected: state.operations.selected.clear()
+    }
+  })
 
 }, {
   criteria: {
