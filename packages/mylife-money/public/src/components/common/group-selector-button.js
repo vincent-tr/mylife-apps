@@ -1,8 +1,32 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
+import GroupTree from './group-tree';
 
-import selectorDialog from './group-selector-dialog';
+const GroupSelectorDialog = ({ show, proceed, options }) => (
+  <mui.Dialog aria-labelledby='dialog-title' open={show}>
+    <mui.DialogTitle id='dialog-title'>
+      Sélectionnez un groupe
+    </mui.DialogTitle>
+
+    <mui.DialogContent dividers>
+      <GroupTree onSelect={group => proceed({ result: 'ok', group })} {...options} />
+    </mui.DialogContent>
+
+    <mui.DialogActions>
+      <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
+    </mui.DialogActions>
+
+  </mui.Dialog>
+);
+
+GroupSelectorDialog.propTypes = {
+  show: PropTypes.bool,
+  proceed: PropTypes.func,
+  options: PropTypes.object
+};
+
+const selectorDialog = dialogs.create(GroupSelectorDialog);
 
 const GroupSelectorButton = React.forwardRef(({ onSelect, options, ...props }, ref) => {
   const clickHandler = async () => {
