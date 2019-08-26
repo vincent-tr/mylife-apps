@@ -17,10 +17,22 @@ const fields = {
   note   : { display : 'Note',        format : val => val }
 };
 
+const useStyles = mui.makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  field: {
+    marginLeft: theme.spacing(1),
+  }
+}));
+
 const ConditionEditor = ({ onAddCondition }) => {
   const [field, setField] = useState(null);
   const [operator, setOperator] = useState(null);
   const [value, setValue] = useState(null);
+  const classes = useStyles();
 
   const onAdd = () => {
     const condition = {
@@ -37,22 +49,22 @@ const ConditionEditor = ({ onAddCondition }) => {
   };
 
   return (
-    <React.Fragment>
-      <mui.Select label='Champ' id='conditionField' value={field || ''} onChange={e => setField(e.target.value || null)}>
+    <div className={classes.container}>
+      <mui.Select className={classes.field} value={field || ''} onChange={e => setField(e.target.value || null)}>
         {Object.keys(fields).map(field => (
           <mui.MenuItem key={field} value={field}>
             {fields[field].display}
           </mui.MenuItem>
         ))}
       </mui.Select>
-      <mui.Select label='Operateur' id='conditionOperator' value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
+      <mui.Select className={classes.field} value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
         {Object.keys(operators).map(operator => (
           <mui.MenuItem key={operator} value={operator}>
             {operators[operator].display}
           </mui.MenuItem>
         ))}
       </mui.Select>
-      <mui.TextField label='Valeur' id='conditionValue' value={value || ''} onChange={e => setValue(e.target.value)} />
+      <mui.TextField className={classes.field} value={value || ''} onChange={e => setValue(e.target.value)} />
       <mui.Tooltip title='Ajouter une condition'>
         <div>
           <mui.IconButton disabled={!field || !operator || !value} onClick={onAdd}>
@@ -60,7 +72,7 @@ const ConditionEditor = ({ onAddCondition }) => {
           </mui.IconButton>
         </div>
       </mui.Tooltip>
-    </React.Fragment>
+    </div>
   );
 };
 
