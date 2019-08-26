@@ -14,7 +14,8 @@ const {
   FolderOpen,
   Close,
   ExpandLess,
-  ExpandMore
+  ExpandMore,
+  CalendarToday
 } = mui.icons;
 
 const Money = (props) => (
@@ -35,6 +36,7 @@ export default {
     Import  : OpenInBrowser,
     Execute : Settings,
     Comment : ModeComment,
+    Date    : CalendarToday
   },
 
   tabs: {
