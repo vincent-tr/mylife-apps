@@ -6,6 +6,7 @@ import groupEditor from './group-editor';
 import { getGroup } from '../../selectors/reference';
 import { getSelectedGroupId } from '../../selectors/management';
 import { createGroup, updateGroup, deleteGroup } from '../../actions/management';
+import GroupSelectorButton from '../common/group-selector-button';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,15 @@ const Toolbar = () => {
     }
   };
 
+  const handleMove = (parent) => {
+    onGroupEdit({ ... group, parent });
+  };
+
+  const moveOptions = group && {
+    selectedGroupId: group.parent,
+    disabledGroupIds: [group._id]
+  };
+
   return (
     <mui.Toolbar>
 
@@ -66,6 +76,14 @@ const Toolbar = () => {
           <mui.IconButton onClick={handleEdit} disabled={!canChange} style={styles.button}>
             <icons.actions.Edit />
           </mui.IconButton>
+        </div>
+      </mui.Tooltip>
+
+      <mui.Tooltip title='Déplacer le groupe'>
+        <div>
+          <GroupSelectorButton onSelect={handleMove} disabled={!canChange} style={styles.button} options={moveOptions}>
+            <icons.actions.Move />
+          </GroupSelectorButton>
         </div>
       </mui.Tooltip>
 

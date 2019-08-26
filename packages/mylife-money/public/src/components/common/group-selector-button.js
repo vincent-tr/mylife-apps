@@ -6,9 +6,9 @@ import { mui } from 'mylife-tools-ui';
 
 import selectorDialog from './group-selector-dialog';
 
-const GroupSelectorButton = React.forwardRef(({ onSelect, ...props }, ref) => {
+const GroupSelectorButton = React.forwardRef(({ onSelect, options, ...props }, ref) => {
   const clickHandler = async () => {
-    const { result, group } = await selectorDialog();
+    const { result, group } = await selectorDialog({ options });
     if(result !== 'ok') {
       return;
     }
@@ -25,6 +25,7 @@ GroupSelectorButton.displayName = 'GroupSelectorButton';
 
 GroupSelectorButton.propTypes = {
   onSelect : PropTypes.func.isRequired,
+  options: PropTypes.object
 };
 
 export default GroupSelectorButton;

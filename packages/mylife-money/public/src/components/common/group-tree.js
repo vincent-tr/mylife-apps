@@ -11,12 +11,13 @@ const useConnect = () => {
   }));
 };
 
-const GroupTree = ({ onSelect, selectedGroupId, ...props }) => {
+const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }) => {
   const { groups } = useConnect();
+  console.log(selectedGroupId, disabledGroupIds);
   return (
     <mui.List component='div' {...props}>
       {groups.map((group) => (
-        <GroupNode key={group._id} group={group} level={0} onSelect={onSelect} selectedGroupId={selectedGroupId} />
+        <GroupNode key={group._id} group={group} level={0} onSelect={onSelect} selectedGroupId={selectedGroupId} disabledGroupIds={disabledGroupIds} />
       ))}
     </mui.List>
   );
@@ -24,7 +25,8 @@ const GroupTree = ({ onSelect, selectedGroupId, ...props }) => {
 
 GroupTree.propTypes = {
   onSelect: PropTypes.func.isRequired,
-  selectedGroupId: PropTypes.string
+  selectedGroupId: PropTypes.string,
+  disabledGroupIds: PropTypes.array,
 };
 
 export default GroupTree;

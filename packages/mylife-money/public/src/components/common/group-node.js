@@ -15,15 +15,16 @@ const useStyles = mui.makeStyles(theme => ({
   })
 }));
 
-const GroupNode = ({ level, group, selectedGroupId, onSelect }) => {
+const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, parentDisabled }) => {
   const [open, setOpen] = useState(true);
   const classes = useStyles({ level });
   const { children } = useConnect({ group });
   const selected = selectedGroupId === group._id;
+  const disabled = parentDisabled || !!(disabledGroupIds && disabledGroupIds.includes(group._id));
   const hasChildren = children.length > 0;
   return (
     <React.Fragment>
-      <mui.ListItem button onClick={() => onSelect(group._id)} className={classes.listItem} selected={selected}>
+      <mui.ListItem button onClick={() => onSelect(group._id)} className={classes.listItem} selected={selected} disabled={disabled}>
         <mui.ListItemIcon><icons.Group /></mui.ListItemIcon>
         <mui.ListItemText primary={group.display} />
         {hasChildren && (
@@ -35,7 +36,7 @@ const GroupNode = ({ level, group, selectedGroupId, onSelect }) => {
       {hasChildren && (
         <mui.Collapse in={open} timeout="auto" unmountOnExit>
           <mui.List component="div" disablePadding>
-            {children.map((child) => (<GroupNode key={child._id} group={child} level={level+1} onSelect={onSelect} selectedGroupId={selectedGroupId} />))}
+            {children.map((child) => (<GroupNode key={child._id} group={child} level={level+1} onSelect={onSelect} selectedGroupId={selectedGroupId} disabledGroupIds={disabledGroupIds} parentDisabled={disabled} />))}
           </mui.List>
         </mui.Collapse>
       )}
@@ -47,7 +48,9 @@ GroupNode.propTypes = {
   level : PropTypes.number.isRequired,
   group : PropTypes.object.isRequired,
   onSelect: PropTypes.func.isRequired,
-  selectedGroupId: PropTypes.string
+  selectedGroupId: PropTypes.string,
+  disabledGroupIds: PropTypes.array,
+  parentDisabled: PropTypes.bool
 };
 
 export default GroupNode;

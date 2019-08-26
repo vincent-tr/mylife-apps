@@ -1,14 +1,14 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
 
-const SelectorDialog = ({ show, proceed }) => (
+const SelectorDialog = ({ show, proceed, options }) => (
   <mui.Dialog aria-labelledby='dialog-title' open={show}>
     <mui.DialogTitle id='dialog-title'>
       Sélectionnez un groupe
     </mui.DialogTitle>
 
     <mui.DialogContent dividers>
-      <GroupTree onSelect={group => proceed({ result: 'ok', group })} />
+      <GroupTree onSelect={group => proceed({ result: 'ok', group })} {...options} />
     </mui.DialogContent>
 
     <mui.DialogActions>
@@ -21,7 +21,7 @@ const SelectorDialog = ({ show, proceed }) => (
 SelectorDialog.propTypes = {
   show: PropTypes.bool,
   proceed: PropTypes.func,
-  cancel: PropTypes.func
+  options: PropTypes.object
 };
 
 export default dialogs.create(SelectorDialog);
