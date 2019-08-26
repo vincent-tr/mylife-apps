@@ -234,7 +234,8 @@ export default async (group) => {
   if(res.result !== 'ok') {
     return;
   }
-  return res.group;
+
+  return cleanGroup(res.group);
 };
 
 function clone(value) {
@@ -254,4 +255,8 @@ function displayCondition(condition) {
   const operator = operators[condition.operator].display;
 
   return `${field} ${operator} ${condition.value}`;
+}
+
+function cleanGroup(group) {
+  return { ...group, rules : group.rules.filter(rule => rule.conditions.length) };
 }
