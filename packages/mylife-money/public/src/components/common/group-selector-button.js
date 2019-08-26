@@ -1,8 +1,6 @@
 'use strict';
 
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui } from 'mylife-tools-ui';
 
 import selectorDialog from './group-selector-dialog';
 
