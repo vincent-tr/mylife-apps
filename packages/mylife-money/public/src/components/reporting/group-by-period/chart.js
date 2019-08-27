@@ -10,7 +10,7 @@ const useConnect = ({ display, groups }) => {
   }));
 };
 
-const Chart = ({ data, groups, display, ...props }) => {
+const Chart = ({ data, groups, display, periodKey, ...props }) => {
   const { groupStacks, groupChildren } = useConnect({ display, groups });
   const colors = useChartColors();
 
@@ -23,9 +23,9 @@ const Chart = ({ data, groups, display, ...props }) => {
       <AutoSizer>
         {({ height, width }) => (
           <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-            <chart.XAxis dataKey="month" name="Date" />
-            <chart.YAxis name="Montant" />
-            <chart.CartesianGrid strokeDasharray="3 3"/>
+            <chart.XAxis dataKey={periodKey} name='Date' />
+            <chart.YAxis name='Montant' />
+            <chart.CartesianGrid strokeDasharray='3 3'/>
             <chart.Tooltip/>
             <chart.Legend />
             {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amount(item, serie, display)} name={serie.name} fill={serie.fill} />))}
@@ -39,7 +39,8 @@ const Chart = ({ data, groups, display, ...props }) => {
 Chart.propTypes = {
   data: PropTypes.array.isRequired,
   groups: PropTypes.array,
-  display: PropTypes.object.isRequired
+  display: PropTypes.object.isRequired,
+  periodKey: PropTypes.string.isRequired,
 };
 
 export default Chart;

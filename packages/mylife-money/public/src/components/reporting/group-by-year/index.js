@@ -2,7 +2,7 @@
 
 import { React, useState, useMemo, mui, useDispatch, useSelector, immutable, useLifecycle } from 'mylife-tools-ui';
 import { getSortedViewList } from '../../../selectors/reporting';
-import { getGroupByMonth, reportingLeave } from '../../../actions/reporting';
+import { getGroupByYear, reportingLeave } from '../../../actions/reporting';
 
 import Criteria from './criteria';
 import Chart from '../group-by-period/chart';
@@ -14,7 +14,7 @@ const useConnect = () => {
       data : getSortedViewList(state)
     })),
     ...useMemo(() => ({
-      refresh : (criteria) => dispatch(getGroupByMonth(criteria)),
+      refresh : (criteria) => dispatch(getGroupByYear(criteria)),
       leave : () => dispatch(reportingLeave()),
     }), [dispatch])
   };
@@ -31,7 +31,7 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const GroupByMonth = () => {
+const GroupByYear = () => {
   const [criteria, setCriteria] = useState({
     children: false,
     minDate: null,
@@ -67,12 +67,12 @@ const GroupByMonth = () => {
   return (
     <div className={classes.container}>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} />
-      <Chart periodKey='month' data={data} groups={groups} display={chartDisplay} className={classes.chart} />
+      <Chart periodKey='year' data={data} groups={groups} display={chartDisplay} className={classes.chart} />
     </div>
   );
 };
 
-export default GroupByMonth;
+export default GroupByYear;
 
 function formatCriteria(criteria) {
   const { groups, fullnames, ...props } = criteria;
