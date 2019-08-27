@@ -15,16 +15,24 @@ export const getOperations = () => async (dispatch, getState) => {
   const state = getState();
 
   const criteria = getCriteria(state);
+  const viewId = getOperationViewId(state);
+
+  if(viewId) {
+    await dispatch(io.call({
+      service: 'management',
+      method: 'renotifyOperations',
+      viewId,
+      ... criteria
+    }));
+
+    return;
+  }
+
   const newViewId = await dispatch(io.call({
     service: 'management',
     method: 'notifyOperations',
     ... criteria
   }));
-
-  const oldViewId = getOperationViewId(state);
-  if(oldViewId) {
-    await dispatch(io.unnotify(oldViewId));
-  }
 
   dispatch(local.setOperationView(newViewId));
 };
