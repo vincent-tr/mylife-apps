@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, immutable } from 'mylife-tools-ui';
-import { getGroupByMonth } from '../../actions/reporting';
+import { getGroupByMonth, exportGroupByMonth } from '../../actions/reporting';
 import GroupByPeriod from './group-by-period';
 import { findAmount } from './group-by-period/tools';
 
@@ -21,6 +21,7 @@ const initialDisplay = {
 const GroupByMonth = () => (
   <GroupByPeriod
     refreshAction={getGroupByMonth}
+    exportAction={exportGroupByMonth}
     initialCriteria={initialCriteria}
     initialDisplay={initialDisplay}
     additionalCriteriaFactory={additionalCriteriaFactory}

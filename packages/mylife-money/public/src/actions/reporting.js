@@ -33,3 +33,11 @@ const clearReportingView = () => deleteView({
 export const reportingLeave = () => async (dispatch) => {
   await dispatch(clearReportingView());
 };
+
+export const exportGroupByMonth = (criteria, display) => async (dispatch, getState) => {
+  console.log('export', criteria, display);
+};
+
+export const exportGroupByYear = (criteria, display) => async (dispatch, getState) => {
+  console.log('export', criteria, display);
+};

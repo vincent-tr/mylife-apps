@@ -15,7 +15,8 @@ const {
   Close,
   ExpandLess,
   ExpandMore,
-  CalendarToday
+  CalendarToday,
+  SaveAlt
 } = mui.icons;
 
 const Money = (props) => (
@@ -36,7 +37,8 @@ export default {
     Import  : OpenInBrowser,
     Execute : Settings,
     Comment : ModeComment,
-    Date    : CalendarToday
+    Date    : CalendarToday,
+    Export  : SaveAlt
   },
 
   tabs: {
