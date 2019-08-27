@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  id: 'report-group-by-month',
+  id: 'report-group-by-year',
   parent: 'base',
   fields: [
     { id: 'year', datatype: 'name' },
