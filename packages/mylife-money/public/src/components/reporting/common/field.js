@@ -2,7 +2,7 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 
-const useFieldStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -16,7 +16,7 @@ const useFieldStyles = mui.makeStyles(theme => ({
 }));
 
 const Field = ({ label, children }) => {
-  const classes = useFieldStyles();
+  const classes = useStyles();
   return (
     <div className={classes.container}>
       <mui.Typography className={classes.label}>{label}</mui.Typography>

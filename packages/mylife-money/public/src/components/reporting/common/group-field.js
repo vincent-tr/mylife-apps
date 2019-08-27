@@ -5,7 +5,7 @@ import icons from '../../icons';
 
 import GroupSelector from '../../common/group-selector';
 
-const useGroupFieldStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column'
@@ -28,7 +28,7 @@ const useGroupFieldStyles = mui.makeStyles(theme => ({
 }));
 
 const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
-  const classes = useGroupFieldStyles();
+  const classes = useStyles();
   return (
     <div className={classes.container}>
       <div className={classes.header}>
