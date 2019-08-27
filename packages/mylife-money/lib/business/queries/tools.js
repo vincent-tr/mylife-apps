@@ -1,15 +1,22 @@
 'use strict';
 
 exports.dateToMonth = dateToMonth;
+exports.dateToYear = dateToYear;
 exports.formatTwoDigits = formatTwoDigits;
 exports.roundCurrency = roundCurrency;
 exports.monthRange = monthRange;
+exports.yearRange = yearRange;
 exports.createGroupHierarchy = createGroupHierarchy;
+exports.computeDateRange = computeDateRange;
 
 function dateToMonth(date) {
   const year = date.getFullYear();
   const month = formatTwoDigits(date.getMonth() + 1);
   return `${year}/${month}`;
+}
+
+function dateToYear(date) {
+  return `${date.getFullYear()}`;
 }
 
 function formatTwoDigits(number) {
@@ -46,6 +53,17 @@ function monthRange(minDate, maxDate) {
   return months;
 }
 
+function yearRange(minDate, maxDate) {
+  const years = [];
+  const minYear = minDate.getFullYear();
+  const maxYear = maxDate.getFullYear();
+
+  for(let year = minYear; year <= maxYear; ++year) {
+    years.push(`${year}`);
+  }
+
+  return years;
+}
 
 function createGroupHierarchy(groupCollection, groupId) {
   // no criteria
@@ -75,4 +93,19 @@ function createGroupHierarchy(groupCollection, groupId) {
   }
 
   return hierarchy;
+}
+
+function computeDateRange(criteria, operations) {
+  let { minDate, maxDate } = criteria;
+  if((!minDate || !maxDate) && operations.size) {
+    let computedMinDate = Infinity;
+    let computedMaxDate = -Infinity;
+    for(const operation of operations.list()) {
+      computedMinDate = Math.min(computedMinDate, operation.date);
+      computedMaxDate = Math.max(computedMaxDate, operation.date);
+    }
+    minDate = minDate || new Date(computedMinDate);
+    maxDate = maxDate || new Date(computedMaxDate);
+  }
+  return { minDate, maxDate };
 }
