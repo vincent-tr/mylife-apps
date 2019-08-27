@@ -1,8 +1,7 @@
 'use strict';
 
-import { handleActions, io } from 'mylife-tools-ui';
+import { handleActions, io, immutable } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { immutable } from 'mylife-tools-ui';
 
 export default handleActions({
   [actionTypes.MANAGEMENT_SET_CRITERIA] : (state, action) => ({
