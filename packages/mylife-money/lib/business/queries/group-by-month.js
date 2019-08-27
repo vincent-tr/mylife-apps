@@ -5,7 +5,7 @@ const { dateToMonth, roundCurrency, monthRange } = require('./tools');
 const { createGroupHierarchy } = require('./tools');
 
 exports.GroupByMonth = class GroupByMonth extends StoreContainer {
-  constructor(criteria) {
+  constructor() {
     super();
     this.groups = getStoreCollection('groups');
     this._groupChangeCallback = event => this._onGroupChange(event);
@@ -15,9 +15,11 @@ exports.GroupByMonth = class GroupByMonth extends StoreContainer {
     this._operationChangeCallback = event => this._operationChangeCallback(event);
     this.operations.on('change', this._operationChangeCallback);
 
-    this._criteria = criteria;
     this.entity = getMetadataEntity('report-group-by-month');
+  }
 
+  setCriteria(criteria) {
+    this._criteria = criteria;
     this._compute();
   }
 

@@ -28,6 +28,12 @@ exports.notifyTotalByMonth = session => {
 };
 
 exports.notifyGroupByMonth = (session, criteria) => {
-  const view = new GroupByMonth(criteria);
+  const view = new GroupByMonth();
+  view.setCriteria(criteria);
   return notifyView(session, view);
+};
+
+exports.renotifyGroupByMonth = (session, viewId, criteria) => {
+  const view = getNotifiedView(session, viewId);
+  view.setCriteria(criteria);
 };
