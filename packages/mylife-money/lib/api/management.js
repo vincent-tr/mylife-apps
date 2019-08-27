@@ -30,8 +30,8 @@ exports.deleteGroup = [ base, (session, message) => {
 } ];
 
 exports.notifyOperations = [ base, (session, message) => {
-  const { minDate, maxDate, account, group } = message;
-  const criteria = { minDate, maxDate, account, group };
+  const { minDate, maxDate, account, group, lookupText } = message;
+  const criteria = { minDate, maxDate, account, group, lookupText };
   return business.notifyOperations(session, criteria);
 } ];
 

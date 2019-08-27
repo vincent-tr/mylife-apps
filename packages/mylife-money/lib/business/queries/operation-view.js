@@ -14,7 +14,12 @@ exports.OperationView = class OperationView extends StoreView {
 
   setCriteria(criteria) {
     this._criteria = criteria;
+
     this._criteria.groupHierarchy = createGroupHierarchy(this._groupCollection, this._criteria.group);
+    if(this._criteria.lookupText) {
+      this._criteria.lookupText = this._criteria.lookupText.toLowerCase();
+    }
+
     this.setFilter(operation => this._filterCallback(operation));
   }
 
@@ -31,6 +36,9 @@ exports.OperationView = class OperationView extends StoreView {
     if(this._criteria.groupHierarchy && !this._criteria.groupHierarchy.has(operation.group)) {
       return false;
     }
+    if(this._criteria.lookupText && !filterOperationByText(operation, this._criteria.lookupText)) {
+      return false;
+    }
     return true;
   }
 
@@ -44,3 +52,15 @@ exports.OperationView = class OperationView extends StoreView {
     super.close();
   }
 };
+
+function filterOperationByText(operation, text) {
+  return matchText(operation.label, text) || matchText(operation.note, text);
+}
+
+function matchText(value, text) {
+  if(!value) {
+    return false;
+  }
+
+  return value.toLowerCase().includes(text);
+}

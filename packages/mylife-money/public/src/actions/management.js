@@ -32,6 +32,7 @@ export const setMinDate = (value) => setCriteriaValue('minDate', value);
 export const setMaxDate = (value) => setCriteriaValue('maxDate', value);
 export const setAccount = (value) => setCriteriaValue('account', value);
 export const selectGroup = (value) => setCriteriaValue('group', value);
+export const setLookupText = (value) => setCriteriaValue('lookupText', value);
 
 function setCriteriaValue(name, value) {
   return (dispatch, getState) => {

@@ -2,7 +2,7 @@
 
 import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../icons';
-import { setMinDate, setMaxDate, setAccount, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
+import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
 import { getSelectedOperations, getCriteria } from '../../selectors/management';
 import { getAccounts } from '../../selectors/reference';
 
@@ -24,6 +24,7 @@ const useConnect = () => {
         minDate              : criteria.minDate,
         maxDate              : criteria.maxDate,
         account              : criteria.account,
+        lookupText           : criteria.lookupText,
         noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
       };
     }),
@@ -31,6 +32,7 @@ const useConnect = () => {
       onMinDateChanged         : (value) => dispatch(setMinDate(value)),
       onMaxDateChanged         : (value) => dispatch(setMaxDate(value)),
       onAccountChanged         : (value) => dispatch(setAccount(value)),
+      onLookupTextChanged      : (value) => dispatch(setLookupText(value)),
       onOperationsImport       : (account, file) => dispatch(importOperations(account, file)),
       onOperationsExecuteRules : () => dispatch(operationsExecuteRules()),
       onOperationsSetNote      : (note) => dispatch(operationsSetNote(note)),
@@ -49,9 +51,9 @@ const Header = () => {
   const {
     showExecuteRules, canProcessOperations,
     accounts,
-    minDate, maxDate, account,
+    minDate, maxDate, account, lookupText,
     noteText,
-    onMinDateChanged, onMaxDateChanged, onAccountChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
+    onMinDateChanged, onMaxDateChanged, onAccountChanged, onLookupTextChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
   } = useConnect();
 
   const classes = useStyles();
@@ -80,6 +82,9 @@ const Header = () => {
 
       <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
       <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} className={classes.accountField} />
+
+      <ToolbarFieldTitle>Libellé ou note</ToolbarFieldTitle>
+      <mui.TextField value={lookupText || ''} onChange={e => onLookupTextChanged(e.target.value)} type='search' />
     </React.Fragment>
   );
 
