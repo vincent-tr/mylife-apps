@@ -3,4 +3,5 @@
 Object.assign(exports,
   require('./crud'),
   require('./importer'),
-  require('./queries'));
+  require('./queries'),
+  require('./exports'));
