@@ -1,98 +1,13 @@
 'use strict';
 
 import { React, useState, PropTypes, mui, formatDate } from 'mylife-tools-ui';
-import icons from '../../icons';
 
 import AccountSelector from '../../common/account-selector';
-import GroupSelector from '../../common/group-selector';
 import DateSelector from '../../common/date-selector';
+import Field from '../common/field';
+import GroupField from '../common/group-field';
 
-const useFieldStyles = mui.makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  label: {
-    marginRight: theme.spacing(1)
-  },
-  children: {
-  }
-}));
-
-const Field = ({ label, children }) => {
-  const classes = useFieldStyles();
-  return (
-    <div className={classes.container}>
-      <mui.Typography className={classes.label}>{label}</mui.Typography>
-      <div className={classes.children}>
-        {children}
-      </div>
-    </div>
-  );
-};
-
-Field.propTypes = {
-  label: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired
-};
-
-const useGroupFieldStyles = mui.makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  label: {
-    marginRight: theme.spacing(1)
-  },
-  addButton: {
-  },
-  item: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-}));
-
-const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
-  const classes = useGroupFieldStyles();
-  return (
-    <div className={classes.container}>
-      <div className={classes.header}>
-        <mui.Typography className={classes.label}>Groupes</mui.Typography>
-        <mui.Tooltip title='Ajouter un groupe'>
-          <mui.IconButton onClick={() => onGroupAdd()} className={classes.addButton}>
-            <icons.actions.New />
-          </mui.IconButton>
-        </mui.Tooltip>
-      </div>
-      {groups.map((group, index) => (
-        <div key={index} className={classes.item}>
-          <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
-          <mui.Tooltip title='Supprimer le groupe'>
-            <mui.IconButton onClick={() => onGroupDelete(index)}>
-              <icons.actions.Delete />
-            </mui.IconButton>
-          </mui.Tooltip>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-GroupField.propTypes = {
-  groups: PropTypes.object.isRequired,
-  onGroupAdd: PropTypes.func.isRequired,
-  onGroupChanged: PropTypes.func.isRequired,
-  onGroupDelete: PropTypes.func.isRequired
-};
-
-const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) => {
+const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, additionalComponents }) => {
   const [expanded, setExpanded] = useState(true);
   const toggleExpanded = () => setExpanded(!expanded);
 
@@ -151,6 +66,7 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) =>
               <mui.Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
             </Field>
           </mui.Grid>
+          {additionalComponents}
           <mui.Grid item xs={12}>
             <GroupField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
           </mui.Grid>
@@ -165,7 +81,8 @@ Criteria.propTypes = {
   criteria: PropTypes.object.isRequired,
   onCriteriaChanged: PropTypes.func.isRequired,
   display: PropTypes.object.isRequired,
-  onDisplayChanged: PropTypes.func.isRequired
+  onDisplayChanged: PropTypes.func.isRequired,
+  additionalComponents: PropTypes.node
 };
 
 export default Criteria;

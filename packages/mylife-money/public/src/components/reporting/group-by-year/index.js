@@ -1,11 +1,12 @@
 'use strict';
 
-import { React, useState, useMemo, mui, useDispatch, useSelector, immutable, useLifecycle } from 'mylife-tools-ui';
+import { React, PropTypes, useState, useMemo, mui, useDispatch, useSelector, immutable, useLifecycle } from 'mylife-tools-ui';
 import { getSortedViewList } from '../../../selectors/reporting';
 import { getGroupByYear, reportingLeave } from '../../../actions/reporting';
 
-import Criteria from './criteria';
+import Criteria from '../group-by-period/criteria';
 import Chart from '../group-by-period/chart';
+import Field from '../common/field';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,27 @@ const useStyles = mui.makeStyles({
   }
 });
 
+const AdditionalCriteria = ({ display, onDisplayChanged }) => {
+  const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
+  const onMonthAverageChanged = (value) => setDisplay('monthAverage', value);
+
+  return (
+    <React.Fragment>
+      <mui.Grid item xs={4}>
+        <Field label='Moyenne par mois'>
+          <mui.Checkbox color='primary' checked={display.monthAverage} onChange={e => onMonthAverageChanged(e.target.checked)} />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={8} />
+    </React.Fragment>
+  );
+};
+
+AdditionalCriteria.propTypes = {
+  display: PropTypes.object.isRequired,
+  onDisplayChanged: PropTypes.func.isRequired
+};
+
 const GroupByYear = () => {
   const [criteria, setCriteria] = useState({
     children: false,
@@ -43,6 +65,7 @@ const GroupByYear = () => {
   const [display, setDisplay] = useState({
     invert: true,
     fullnames: false,
+    monthAverage: false
   });
 
   const { refresh, leave, data } = useConnect();
@@ -64,9 +87,13 @@ const GroupByYear = () => {
     children: criteria.children,
   };
 
+  const additionalCriteria = (
+    <AdditionalCriteria display={display} onDisplayChanged={setDisplay} />
+  );
+
   return (
     <div className={classes.container}>
-      <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} />
+      <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} additionalComponents={additionalCriteria} />
       <Chart periodKey='year' data={data} groups={groups} display={chartDisplay} className={classes.chart} />
     </div>
   );

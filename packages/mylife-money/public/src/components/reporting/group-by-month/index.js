@@ -4,7 +4,7 @@ import { React, useState, useMemo, mui, useDispatch, useSelector, immutable, use
 import { getSortedViewList } from '../../../selectors/reporting';
 import { getGroupByMonth, reportingLeave } from '../../../actions/reporting';
 
-import Criteria from './criteria';
+import Criteria from '../group-by-period/criteria';
 import Chart from '../group-by-period/chart';
 
 const useConnect = () => {
