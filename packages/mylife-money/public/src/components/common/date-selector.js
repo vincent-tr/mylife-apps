@@ -10,6 +10,7 @@ const useStyles = mui.makeStyles({
     alignItems: 'center'
   },
   input: {
+    width: 100
   },
   button: {
   }
