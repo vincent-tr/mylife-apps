@@ -7,6 +7,7 @@ import { getGroupByYear, reportingLeave } from '../../actions/reporting';
 import Criteria from './group-by-period/criteria';
 import Chart from './group-by-period/chart';
 import Field from './common/field';
+import { findAmount, formatCriteria, roundCurrency } from './group-by-period/tools';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -94,18 +95,22 @@ const GroupByYear = () => {
   return (
     <div className={classes.container}>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} additionalComponents={additionalCriteria} />
-      <Chart periodKey='year' data={data} groups={groups} display={chartDisplay} className={classes.chart} />
+      <Chart periodKey='year' data={data} groups={groups} display={chartDisplay} className={classes.chart} amountSelector={createAmountSelector(display)} />
     </div>
   );
 };
 
 export default GroupByYear;
 
-function formatCriteria(criteria) {
-  const { groups, fullnames, ...props } = criteria;
-  void fullnames;
-  return {
-    groups: groups.toArray(),
-    ...props
+function createAmountSelector(display) {
+  return (periodItem, serie) => {
+    let value = findAmount(periodItem, serie);
+    if(display.invert) {
+      value = -value;
+    }
+    if(display.monthAverage) {
+      value = roundCurrency(value / 12);
+    }
+    return value;
   };
 }

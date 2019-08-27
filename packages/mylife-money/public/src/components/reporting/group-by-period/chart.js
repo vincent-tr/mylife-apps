@@ -10,7 +10,7 @@ const useConnect = ({ display, groups }) => {
   }));
 };
 
-const Chart = ({ data, groups, display, periodKey, ...props }) => {
+const Chart = ({ data, groups, display, periodKey, amountSelector, ...props }) => {
   const { groupStacks, groupChildren } = useConnect({ display, groups });
   const colors = useChartColors();
 
@@ -28,7 +28,7 @@ const Chart = ({ data, groups, display, periodKey, ...props }) => {
             <chart.CartesianGrid strokeDasharray='3 3'/>
             <chart.Tooltip/>
             <chart.Legend />
-            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amount(item, serie, display)} name={serie.name} fill={serie.fill} />))}
+            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
           </chart.BarChart>
         )}
       </AutoSizer>
@@ -41,31 +41,10 @@ Chart.propTypes = {
   groups: PropTypes.array,
   display: PropTypes.object.isRequired,
   periodKey: PropTypes.string.isRequired,
+  amountSelector: PropTypes.func.isRequired,
 };
 
 export default Chart;
-
-function amount(periodItem, serie, display) {
-  const value = findAmount(periodItem, serie);
-  return display.invert ? - value : value;
-}
-
-function findAmount(periodItem, serie) {
-  const item = periodItem.groups[serie.stackId];
-  if(!item) {
-    return 0;
-  }
-
-  if(serie.root) {
-    return item.amount;
-  }
-
-  const childItem = item.children[serie.group];
-  if(!childItem) {
-    return  0;
-  }
-  return childItem.amount;
-}
 
 function getChildren(state, display, groups) {
   if(!display.children || !groups) {

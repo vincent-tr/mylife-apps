@@ -6,6 +6,7 @@ import { getGroupByMonth, reportingLeave } from '../../actions/reporting';
 
 import Criteria from './group-by-period/criteria';
 import Chart from './group-by-period/chart';
+import { findAmount, formatCriteria } from './group-by-period/tools';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -67,18 +68,16 @@ const GroupByMonth = () => {
   return (
     <div className={classes.container}>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} />
-      <Chart periodKey='month' data={data} groups={groups} display={chartDisplay} className={classes.chart} />
+      <Chart periodKey='month' data={data} groups={groups} display={chartDisplay} className={classes.chart} amountSelector={createAmountSelector(display)}/>
     </div>
   );
 };
 
 export default GroupByMonth;
 
-function formatCriteria(criteria) {
-  const { groups, fullnames, ...props } = criteria;
-  void fullnames;
-  return {
-    groups: groups.toArray(),
-    ...props
+function createAmountSelector(display) {
+  return (periodItem, serie) => {
+    const value = findAmount(periodItem, serie);
+    return display.invert ? - value : value;
   };
 }
