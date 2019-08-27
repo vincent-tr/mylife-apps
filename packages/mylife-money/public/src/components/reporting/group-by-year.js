@@ -1,12 +1,12 @@
 'use strict';
 
 import { React, PropTypes, useState, useMemo, mui, useDispatch, useSelector, immutable, useLifecycle } from 'mylife-tools-ui';
-import { getSortedViewList } from '../../../selectors/reporting';
-import { getGroupByYear, reportingLeave } from '../../../actions/reporting';
+import { getSortedViewList } from '../../selectors/reporting';
+import { getGroupByYear, reportingLeave } from '../../actions/reporting';
 
-import Criteria from '../group-by-period/criteria';
-import Chart from '../group-by-period/chart';
-import Field from '../common/field';
+import Criteria from './group-by-period/criteria';
+import Chart from './group-by-period/chart';
+import Field from './common/field';
 
 const useConnect = () => {
   const dispatch = useDispatch();
