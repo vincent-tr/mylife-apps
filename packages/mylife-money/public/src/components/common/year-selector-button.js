@@ -3,7 +3,6 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import icons from '../icons';
 
-
 const YearSelectorDialog = ({ show, proceed, options }) => (
   <mui.Dialog open={show} onClose={() => proceed({ result: 'cancel' })} >
     <mui.DialogContent dividers>
