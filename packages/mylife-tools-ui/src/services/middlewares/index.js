@@ -2,7 +2,8 @@
 
 import thunk            from './thunk';
 import { createLogger } from 'redux-logger';
-import routing          from '../../modules/routing/middleware';
+import download         from '../../modules/download/middleware';
 import io               from '../../modules/io/middleware';
+import routing          from '../../modules/routing/middleware';
 
-export default [routing, io, thunk, createLogger()];
+export default [download, routing, io, thunk, createLogger()];
