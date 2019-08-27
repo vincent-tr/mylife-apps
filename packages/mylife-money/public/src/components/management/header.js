@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, dialogs, useScreenSize } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../icons';
 import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
 import { getSelectedOperations, getCriteria } from '../../selectors/management';
@@ -83,8 +83,6 @@ const Header = () => {
       <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
       <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} className={classes.accountField} />
 
-      <ToolbarFieldTitle>Libellé ou note</ToolbarFieldTitle>
-      <mui.TextField value={lookupText || ''} onChange={e => onLookupTextChanged(e.target.value)} type='search' />
     </React.Fragment>
   );
 
@@ -119,11 +117,20 @@ const Header = () => {
     </React.Fragment>
   );
 
+  const search = (
+    <React.Fragment>
+      <ToolbarFieldTitle>Libellé ou note</ToolbarFieldTitle>
+      <DebouncedTextField value={lookupText} onChange={onLookupTextChanged} type='search' />
+    </React.Fragment>
+  );
+
   const oneRowHeader = (
     <mui.Toolbar>
       {toolbar}
       <ToolbarSeparator />
       {selectors}
+      <ToolbarSeparator />
+      {search}
     </mui.Toolbar>
   );
 
@@ -134,6 +141,8 @@ const Header = () => {
       </mui.Toolbar>
       <mui.Toolbar variant='dense'>
         {toolbar}
+        <ToolbarSeparator />
+        {search}
       </mui.Toolbar>
     </React.Fragment>
   );
