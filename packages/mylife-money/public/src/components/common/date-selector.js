@@ -15,11 +15,19 @@ const useStyles = mui.makeStyles({
   }
 });
 
+const pickerOptions = {
+  clearable: true,
+  autoOk: true,
+  format: 'dd/MM/yyyy',
+  cancelLabel: 'Annuler',
+  clearLabel: 'Aucun'
+};
+
 const DateSelector = ({ onChange, value, showYearSelector, selectLastDay, ...props }) => {
   const classes = useStyles();
   return (
     <div className={classes.container} {...props}>
-      <mui.DatePicker className={classes.input} value={value} onChange={onChange} clearable autoOk format='dd/MM/yyyy' />
+      <mui.DatePicker className={classes.input} value={value} onChange={onChange} {...pickerOptions} />
       {showYearSelector && (<YearSelectorButton className={classes.button} value={value} onChange={onChange} selectLastDay={selectLastDay} />)}
     </div>
   );

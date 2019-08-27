@@ -3,19 +3,35 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import icons from '../icons';
 
-const YearSelectorDialog = ({ show, proceed, options }) => (
-  <mui.Dialog open={show} onClose={() => proceed({ result: 'cancel' })} >
-    <mui.DialogContent dividers>
-      <mui.DatePicker autoOk variant='static' views={['year']} value={options.value} onChange={selectedValue => proceed({ result: 'ok', selectedValue })} />
-    </mui.DialogContent>
 
-    <mui.DialogActions>
-      <mui.Button onClick={() => proceed({ result: 'ok', selectedValue: null })}>Aucun</mui.Button>
-      <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
-    </mui.DialogActions>
+const useStyles = mui.makeStyles({
+  actions: {
+    // https://github.com/mui-org/material-ui-pickers/blob/next/lib/src/_shared/ModalDialog.tsx
+    justifyContent: 'flex-start',
 
-  </mui.Dialog>
-);
+    '& > *:first-child': {
+      marginRight: 'auto',
+    },
+  },
+});
+
+const YearSelectorDialog = ({ show, proceed, options }) => {
+  const classes = useStyles();
+  return (
+    <mui.Dialog open={show} onClose={() => proceed({ result: 'cancel' })} >
+      <mui.DialogContent dividers>
+        <mui.DatePicker autoOk variant='static' views={['year']} value={options.value} onChange={selectedValue => proceed({ result: 'ok', selectedValue })} />
+      </mui.DialogContent>
+
+      <mui.DialogActions classes={{ root: classes.actions }}>
+        <mui.Button onClick={() => proceed({ result: 'ok', selectedValue: null })} color='primary'>Aucun</mui.Button>
+        <mui.Button onClick={() => proceed({ result: 'cancel' })} color='primary'>Annuler</mui.Button>
+        <mui.Button onClick={() => proceed({ result: 'ok', selectedValue: options.value })} color='primary'>OK</mui.Button>
+      </mui.DialogActions>
+
+    </mui.Dialog>
+  );
+};
 
 YearSelectorDialog.propTypes = {
   show: PropTypes.bool,
