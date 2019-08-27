@@ -5,6 +5,7 @@ const { OperationView } = require('./operation-view');
 const { OperationStats } = require('./operation-stats');
 const { TotalByMonth } = require('./total-by-month');
 const { GroupByMonth } = require('./group-by-month');
+const { GroupByYear } = require('./group-by-year');
 
 exports.renotifyWithCriteria = (session, viewId, criteria) => {
   const view = getNotifiedView(session, viewId);
@@ -29,6 +30,12 @@ exports.notifyTotalByMonth = session => {
 
 exports.notifyGroupByMonth = (session, criteria) => {
   const view = new GroupByMonth();
+  view.setCriteria(criteria);
+  return notifyView(session, view);
+};
+
+exports.notifyGroupByYear = (session, criteria) => {
+  const view = new GroupByYear();
   view.setCriteria(criteria);
   return notifyView(session, view);
 };

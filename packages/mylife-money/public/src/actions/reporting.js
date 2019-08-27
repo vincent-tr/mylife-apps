@@ -17,6 +17,14 @@ export const getGroupByMonth = (criteria) => createOrUpdateView({
   method: 'notifyGroupByMonth'
 });
 
+export const getGroupByYear = (criteria) => createOrUpdateView({
+  criteriaSelector: () => criteria,
+  viewSelector: getViewId,
+  setViewAction: local.setView,
+  service: 'reporting',
+  method: 'notifyGroupByYear'
+});
+
 const clearReportingView = () => deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView

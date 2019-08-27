@@ -20,3 +20,9 @@ exports.notifyGroupByMonth = [ base, (session, message) => {
   const criteria = { minDate, maxDate, account, groups, invert, children };
   return business.notifyGroupByMonth(session, criteria);
 } ];
+
+exports.notifyGroupByYear = [ base, (session, message) => {
+  const { minDate, maxDate, account, groups, invert, children } = message;
+  const criteria = { minDate, maxDate, account, groups, invert, children };
+  return business.notifyGroupByYear(session, criteria);
+} ];
