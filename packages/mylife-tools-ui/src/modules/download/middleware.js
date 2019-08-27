@@ -14,12 +14,11 @@ const download = (name, link) => {
 };
 
 export default (/*store*/) => next => action => {
-  next(action);
 
-  if(action.type !== actionTypes.FILE) {
-    return;
+  if(action.type === actionTypes.FILE) {
+    const { name, mime, content } = action.payload;
+    download(name, `data:${mime};base64,${toBase64(content)}`);
   }
 
-  const { name, mime, content } = action.payload;
-  download(name, `data:${mime};base64,${toBase64(content)}`);
+  return next(action);
 };
