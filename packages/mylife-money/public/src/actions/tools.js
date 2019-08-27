@@ -38,7 +38,7 @@ export function deleteView({ viewSelector, setViewAction }) {
       return;
     }
 
-    await dispatch(io.unnotify(oldViewId));
     dispatch(setViewAction(null));
+    await dispatch(io.unnotify(oldViewId));
   };
 }
