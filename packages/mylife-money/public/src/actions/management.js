@@ -3,6 +3,7 @@
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
 import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId } from '../selectors/management';
+import { createOrUpdateView, deleteView } from './tools';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
@@ -11,42 +12,18 @@ const local = {
   selectOperations: createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS)
 };
 
-export const getOperations = () => async (dispatch, getState) => {
-  const state = getState();
+export const getOperations = () => createOrUpdateView({
+  criteriaSelector: getCriteria,
+  viewSelector: getOperationViewId,
+  setViewAction: local.setOperationView,
+  service: 'management',
+  method: 'notifyOperations'
+});
 
-  const criteria = getCriteria(state);
-  const viewId = getOperationViewId(state);
-
-  if(viewId) {
-    await dispatch(io.call({
-      service: 'management',
-      method: 'renotifyOperations',
-      viewId,
-      ... criteria
-    }));
-
-    return;
-  }
-
-  const newViewId = await dispatch(io.call({
-    service: 'management',
-    method: 'notifyOperations',
-    ... criteria
-  }));
-
-  dispatch(local.setOperationView(newViewId));
-};
-
-const clearOperations = () => async (dispatch, getState) => {
-  const state = getState();
-  const oldViewId = getOperationViewId(state);
-  if(!oldViewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(oldViewId));
-  dispatch(local.setOperationView(null));
-};
+const clearOperations = () => deleteView({
+  viewSelector: getOperationViewId,
+  setViewAction: local.setOperationView
+});
 
 export const managementEnter = getOperations;
 export const managementLeave = clearOperations;

@@ -35,12 +35,6 @@ exports.notifyOperations = [ base, (session, message) => {
   return business.notifyOperations(session, criteria);
 } ];
 
-exports.renotifyOperations = [ base, (session, message) => {
-  const { viewId, minDate, maxDate, account, group } = message;
-  const criteria = { minDate, maxDate, account, group };
-  return business.renotifyOperations(session, viewId, criteria);
-} ];
-
 exports.moveOperations = [ base, (session, message) => {
   const { group, operations } = message;
   const status = business.operationsMove(group, operations);

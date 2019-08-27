@@ -17,3 +17,8 @@ exports.notifyAccounts = [ base, (session/*, message*/) => {
 exports.notifyGroups = [ base, (session/*, message*/) => {
   return business.notifyGroups(session);
 } ];
+
+exports.renotifyWithCriteria = [ base, (session, message) => {
+  const { viewId, ...criteria } = message;
+  return business.renotifyWithCriteria(session, viewId, criteria);
+} ];
