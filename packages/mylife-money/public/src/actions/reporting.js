@@ -56,8 +56,6 @@ function createExportAction({ service, method, fileName }) {
       display
     }));
 
-console.log(content)
-
     dispatch(download.file({ name: fileName, mime: 'text/plain', content }));
   };
 
