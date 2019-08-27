@@ -4,15 +4,34 @@ const { StoreView, getStoreCollection } = require('mylife-tools-server');
 const { createGroupHierarchy } = require('./tools');
 
 exports.OperationView = class OperationView extends StoreView {
-  constructor(criteria) {
-    super(getStoreCollection('operations'), createFilter(criteria));
-    this._criteria = criteria;
+  constructor() {
+    super(getStoreCollection('operations'));
 
     this._changeCallback = () => this._onGroupChange();
     this._groupCollection = getStoreCollection('groups');
     this._groupCollection.on('change', this._changeCallback);
+  }
 
-    this._onGroupChange();
+  setCriteria(criteria) {
+    this._criteria = criteria;
+    this._criteria.groupHierarchy = createGroupHierarchy(this._groupCollection, this._criteria.group);
+    this.setFilter(operation => this._filterCallback(operation));
+  }
+
+  _filterCallback(operation) {
+    if(this._criteria.minDate && operation.date < this._criteria.minDate) {
+      return false;
+    }
+    if(this._criteria.maxDate && operation.date > this._criteria.maxDate) {
+      return false;
+    }
+    if(this._criteria.account && operation.account !== this._criteria.account) {
+      return false;
+    }
+    if(this._criteria.groupHierarchy && !this._criteria.groupHierarchy.has(operation.group)) {
+      return false;
+    }
+    return true;
   }
 
   _onGroupChange() {
@@ -25,21 +44,3 @@ exports.OperationView = class OperationView extends StoreView {
     super.close();
   }
 };
-
-function createFilter(criteria) {
-  return operation => {
-    if(criteria.minDate && operation.date < criteria.minDate) {
-      return false;
-    }
-    if(criteria.maxDate && operation.date > criteria.maxDate) {
-      return false;
-    }
-    if(criteria.account && operation.account !== criteria.account) {
-      return false;
-    }
-    if(criteria.groupHierarchy && !criteria.groupHierarchy.has(operation.group)) {
-      return false;
-    }
-    return true;
-  };
-}
