@@ -2,7 +2,6 @@
 MyLife Money
 
 TODO list
- - recherche par libelle ???
  - mobile adaptations
    - breadcrumb for group on mobile
    - operation detail view to edit it easily
