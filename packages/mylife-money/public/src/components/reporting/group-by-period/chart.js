@@ -45,13 +45,13 @@ Chart.propTypes = {
 
 export default Chart;
 
-function amount(monthItem, serie, display) {
-  const value = findAmount(monthItem, serie);
+function amount(periodItem, serie, display) {
+  const value = findAmount(periodItem, serie);
   return display.invert ? - value : value;
 }
 
-function findAmount(monthItem, serie) {
-  const item = monthItem.groups[serie.stackId];
+function findAmount(periodItem, serie) {
+  const item = periodItem.groups[serie.stackId];
   if(!item) {
     return 0;
   }
