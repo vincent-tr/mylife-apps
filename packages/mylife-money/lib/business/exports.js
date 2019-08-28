@@ -1,6 +1,8 @@
 'use strict';
 
 const { xlsx } = require('mylife-tools-server');
+const { GroupByMonth } = require('./views/group-by-month');
+const { GroupByYear } = require('./views/group-by-year');
 
 exports.exportGroupByMonth = (session, criteria, display) => {
   return newWorkbook();
