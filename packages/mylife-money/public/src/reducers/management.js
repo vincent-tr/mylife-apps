@@ -33,12 +33,21 @@ export default handleActions({
     }
   }),
 
+  [actionTypes.MANAGEMENT_SET_DETAIL] : (state, action) => ({
+    ...state,
+    operations: {
+      ...state.operations,
+      detail: action.payload
+    }
+  }),
+
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
     operations: {
       ...state.operations,
       view: null,
-      selected: state.operations.selected.clear()
+      selected: state.operations.selected.clear(),
+      detail: null
     }
   })
 
@@ -51,7 +60,8 @@ export default handleActions({
   },
   operations : {
     view     : null,
-    selected : new immutable.Set()
+    selected : new immutable.Set(),
+    detail   : null
   }
 });
 

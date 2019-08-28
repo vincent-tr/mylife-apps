@@ -12,6 +12,7 @@ export default constants.wrap({
   MANAGEMENT_SET_OPERATION_VIEW : null,
   MANAGEMENT_SET_CRITERIA       : null,
   MANAGEMENT_SELECT_OPERATIONS  : null,
+  MANAGEMENT_SET_DETAIL         : null,
 
   REPORTING_SET_VIEW            : null,
 });

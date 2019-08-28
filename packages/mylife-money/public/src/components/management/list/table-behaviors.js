@@ -3,7 +3,7 @@
 import { useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../../selectors/management';
 import { getAccount } from '../../../selectors/reference';
-import { selectOperation } from '../../../actions/management';
+import { selectOperation, showDetail } from '../../../actions/management';
 
 export const useConnect = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,8 @@ export const useConnect = () => {
       };
     }),
     ...useMemo(() => ({
-      onSelect : (val) => dispatch(selectOperation(val))
+      onSelect : (val) => dispatch(selectOperation(val)),
+      onDetail : (val) => dispatch(showDetail(val))
     }), [dispatch])
   };
 };

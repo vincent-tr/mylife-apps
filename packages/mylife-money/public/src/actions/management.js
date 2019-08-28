@@ -9,7 +9,8 @@ const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
   setOperationView: createAction(actionTypes.MANAGEMENT_SET_OPERATION_VIEW),
   setCriteria: createAction(actionTypes.MANAGEMENT_SET_CRITERIA),
-  selectOperations: createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS)
+  selectOperations: createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS),
+  setDetail: createAction(actionTypes.MANAGEMENT_SET_DETAIL),
 };
 
 export const getOperations = () => createOrUpdateView({
@@ -25,14 +26,24 @@ const clearOperations = () => deleteView({
   setViewAction: local.setOperationView
 });
 
+export const showDetail = operationId => local.setDetail(operationId);
+export const closeDetail = () => local.setDetail(null);
+
 export const managementEnter = getOperations;
-export const managementLeave = clearOperations;
+export const managementLeave = () => async (dispatch) => {
+  await dispatch(clearOperations());
+  dispatch(closeDetail());
+};
 
 export const setMinDate = (value) => setCriteriaValue('minDate', value);
 export const setMaxDate = (value) => setCriteriaValue('maxDate', value);
 export const setAccount = (value) => setCriteriaValue('account', value);
-export const selectGroup = (value) => setCriteriaValue('group', value);
 export const setLookupText = (value) => setCriteriaValue('lookupText', value);
+
+export const selectGroup = (value) => (dispatch) => {
+  dispatch(setCriteriaValue('group', value));
+  dispatch(closeDetail());
+};
 
 function setCriteriaValue(name, value) {
   return (dispatch, getState) => {

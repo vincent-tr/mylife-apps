@@ -4,7 +4,7 @@ import { React, mui, VirtualizedTable } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 
 const Table = (props) => {
-  const { onSelect, operations } = useConnect();
+  const { onSelect, onDetail, operations } = useConnect();
   const classes = useStyles();
   const rowClassName = (row) => row && row.fromChildGroup ? classes.fromChild : classes.normal; // row undefined => header
 
@@ -18,8 +18,13 @@ const Table = (props) => {
       onChange={e => onSelect({ selected: e.target.checked })}/>
   );
 
+
   const cellCheckbox = (row) => (
-    <mui.Checkbox color='primary' checked={row.selected} onChange={e => onSelect({ id: row.operation._id, selected: e.target.checked })}/>
+    <mui.Checkbox
+      color='primary'
+      checked={row.selected}
+      onChange={e => onSelect({ id: row.operation._id, selected: e.target.checked })}
+      onClick={e => e.stopPropagation()}/>
   );
 
   const columns = [
@@ -32,7 +37,7 @@ const Table = (props) => {
   ];
 
   return (
-    <VirtualizedTable data={operations} columns={columns} {...props} rowClassName={rowClassName} />
+    <VirtualizedTable data={operations} columns={columns} {...props} rowClassName={rowClassName} onRowClick={row => onDetail(row.operation._id)} />
   );
 };
 
