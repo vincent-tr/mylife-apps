@@ -29,10 +29,50 @@ const useConnect = () => {
   };
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
+    padding: theme.spacing(2),
+  },
+  groupContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  breadcrumbs: {
+    flex: '1 1 auto',
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  grid: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  row: {
+    height: 64,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  label: {
+    width: 100
+  },
+  content: {
   }
-});
+}));
+
+const Row = ({ label, children }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.row}>
+      <mui.Typography className={classes.label}>
+        {label}
+      </mui.Typography>
+
+      <div className={classes.content}>
+        {children}
+      </div>
+    </div>
+  );
+};
 
 const DetailContainer = ({ className }) => {
   const classes = useStyles();
@@ -42,42 +82,63 @@ const DetailContainer = ({ className }) => {
     <mui.Paper className={clsx(classes.container, className)}>
       <mui.Typography variant='h6' className={classes.title}>{'Detail de l\'opération'}</mui.Typography>
       <mui.Button onClick={close}>Back</mui.Button>
-      <mui.Tooltip title='Déplacer'>
-        <div>
-          <GroupSelectorButton onSelect={onMove}>
-            <icons.actions.Move />
-          </GroupSelectorButton>
-        </div>
-      </mui.Tooltip>
-      <mui.Grid container spacing={2}>
-        <mui.Grid item xs={4}>Montant</mui.Grid>
-        <mui.Grid item xs={8}>{operation.amount}</mui.Grid>
-        <mui.Grid item xs={4}>Date</mui.Grid>
-        <mui.Grid item xs={8}>{new Date(operation.date).toLocaleDateString('fr-FR')}</mui.Grid>
-        <mui.Grid item xs={4}>Libellé</mui.Grid>
-        <mui.Grid item xs={8}>{operation.label}</mui.Grid>
-        <mui.Grid item xs={4}>Notes</mui.Grid>
-        <mui.Grid item xs={8}><DebouncedTextField value={operation.note} onChange={onSetNote} /></mui.Grid>
-        <mui.Grid item xs={4}>Groupe</mui.Grid>
-        <mui.Grid item xs={8}>
-          <mui.Breadcrumbs aria-label='breadcrumb'>
-            {groupStack.map(group => {
-              const handleClick = e => {
-                e.preventDefault();
-                onOpenGroup(group._id);
-              };
 
-              return (
-                <mui.Link key={group._id} color="inherit" href='#' onClick={handleClick}>
-                  {group.display}
-                </mui.Link>
-              );
-            })}
-          </mui.Breadcrumbs>
-        </mui.Grid>
-        <mui.Grid item xs={4}>Compte</mui.Grid>
-        <mui.Grid item xs={8}>{account.display}</mui.Grid>
-      </mui.Grid>
+      <div className={classes.grid}>
+        <Row label='Montant'>
+          <mui.Typography>
+            {operation.amount}
+          </mui.Typography>
+        </Row>
+
+        <Row label='Date'>
+          <mui.Typography>
+            {new Date(operation.date).toLocaleDateString('fr-FR')}
+          </mui.Typography>
+        </Row>
+
+        <Row label='Libellé'>
+          <mui.Typography>
+            {operation.label}
+          </mui.Typography>
+        </Row>
+
+        <Row label='Notes'>
+          <DebouncedTextField value={operation.note} onChange={onSetNote} fullWidth />
+        </Row>
+
+        <Row label='Groupe'>
+          <div className={classes.groupContainer}>
+            <mui.Tooltip title={'Déplacer l\'opération'}>
+              <div>
+                <GroupSelectorButton onSelect={onMove}>
+                  <icons.actions.Move />
+                </GroupSelectorButton>
+              </div>
+            </mui.Tooltip>
+
+            <mui.Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
+              {groupStack.map(group => {
+                const handleClick = e => {
+                  e.preventDefault();
+                  onOpenGroup(group._id);
+                };
+
+                return (
+                  <mui.Link key={group._id} color='textPrimary' href='#' onClick={handleClick}>
+                    {group.display}
+                  </mui.Link>
+                );
+              })}
+            </mui.Breadcrumbs>
+          </div>
+        </Row>
+
+        <Row label='Compte'>
+          <mui.Typography>
+            {account.display}
+          </mui.Typography>
+        </Row>
+      </div>
     </mui.Paper>
   );
 };
