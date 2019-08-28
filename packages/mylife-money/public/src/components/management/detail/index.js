@@ -33,6 +33,13 @@ const useStyles = makeStyles(theme => ({
   container: {
     padding: theme.spacing(2),
   },
+  title: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  titleTypo: {
+    marginLeft: theme.spacing(2)
+  },
   groupContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -90,8 +97,18 @@ const DetailContainer = ({ className }) => {
 
   return (
     <mui.Paper className={clsx(classes.container, className)}>
-      <mui.Typography variant='h6' className={classes.title}>{'Detail de l\'opération'}</mui.Typography>
-      <mui.Button onClick={close}>Back</mui.Button>
+      <div className={classes.title}>
+        <mui.Tooltip title='Retour'>
+          <div>
+            <mui.IconButton onClick={close}>
+              <icons.actions.Back />
+            </mui.IconButton>
+          </div>
+        </mui.Tooltip>
+
+        <mui.Typography variant='h6' className={classes.titleTypo}>{'Detail de l\'opération'}</mui.Typography>
+      </div>
+
 
       <div className={classes.grid}>
         <Row label='Montant'>

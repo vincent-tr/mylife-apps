@@ -16,7 +16,8 @@ const {
   ExpandLess,
   ExpandMore,
   CalendarToday,
-  SaveAlt
+  SaveAlt,
+  ArrowBack,
 } = mui.icons;
 
 const Money = (props) => (
@@ -38,7 +39,8 @@ export default {
     Execute : Settings,
     Comment : ModeComment,
     Date    : CalendarToday,
-    Export  : SaveAlt
+    Export  : SaveAlt,
+    Back    : ArrowBack,
   },
 
   tabs: {
