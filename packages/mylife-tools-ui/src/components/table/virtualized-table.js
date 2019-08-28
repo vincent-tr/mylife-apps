@@ -8,7 +8,7 @@ import { TableCell, makeStyles } from '@material-ui/core';
 
 const identity = x => x;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     alignItems: 'center',
@@ -16,14 +16,24 @@ const useStyles = makeStyles({
   },
   row: {
   },
+  clickableRow: {
+    // https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/TableRow/TableRow.js
+    '&:hover': {
+      cursor: 'pointer',
+      backgroundColor:
+        theme.palette.type === 'light'
+          ? 'rgba(0, 0, 0, 0.07)' // grey[200]
+          : 'rgba(255, 255, 255, 0.14)',
+    }
+  },
   cell: {
     flex: 1
   }
-});
+}));
 
-const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight, ...props }) => {
+const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight, onRowClick, ...props }) => {
   const classes = useStyles();
-  const rowIndexClassName = (({ index }) => clsx(classes.container, classes.row, runPropGetter(rowClassName, data[index], index)));
+  const rowIndexClassName = (({ index }) => clsx(classes.container, classes.row, classes.clickableRow, runPropGetter(rowClassName, data[index], index)));
   const rowGetter = ({ index }) => data[index];
 
   return (
@@ -45,8 +55,8 @@ const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight
                       {runRenderer(headerRenderer, dataKey)}
                     </TableCell>
                   )}
-                  cellRenderer={({ cellData }) => (
-                    <TableCell component='div' className={clsx(classes.container, classes.cell, runPropGetter(cellClassName, cellData, dataKey))} variant='body' style={{ height: rowHeight }} {...runPropGetter(cellProps, cellData, dataKey)}>
+                  cellRenderer={({ rowData, cellData, rowIndex }) => (
+                    <TableCell onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} component='div' className={clsx(classes.container, classes.cell, runPropGetter(cellClassName, cellData, dataKey))} variant='body' style={{ height: rowHeight }} {...runPropGetter(cellProps, cellData, dataKey)}>
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </TableCell>
                   )}
@@ -78,7 +88,8 @@ VirtualizedTable.propTypes = {
     }).isRequired
   ).isRequired,
   rowHeight: PropTypes.number,
-  headerHeight: PropTypes.number
+  headerHeight: PropTypes.number,
+  onRowClick: PropTypes.func
 };
 
 VirtualizedTable.defaultProps = {
