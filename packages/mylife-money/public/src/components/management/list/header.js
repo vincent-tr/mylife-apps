@@ -1,15 +1,15 @@
 'use strict';
 
 import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, dialogs, useScreenSize } from 'mylife-tools-ui';
-import icons from '../icons';
-import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions/management';
-import { getSelectedOperations, getCriteria } from '../../selectors/management';
-import { getAccounts } from '../../selectors/reference';
+import icons from '../../icons';
+import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../../actions/management';
+import { getSelectedOperations, getCriteria } from '../../../selectors/management';
+import { getAccounts } from '../../../selectors/reference';
 
-import AccountSelector from '../common/account-selector';
+import AccountSelector from '../../common/account-selector';
 import ImportButton from './import-button';
-import GroupSelectorButton from '../common/group-selector-button';
-import DateSelector from '../common/date-selector';
+import GroupSelectorButton from '../../common/group-selector-button';
+import DateSelector from '../../common/date-selector';
 
 const useConnect = () => {
   const dispatch = useDispatch();

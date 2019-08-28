@@ -1,5 +1,5 @@
 import { React, useState, PropTypes, mui, dialogs } from 'mylife-tools-ui';
-import icons from '../icons';
+import icons from '../../icons';
 
 const operators = {
   $eq       : { display : 'Egal à' },

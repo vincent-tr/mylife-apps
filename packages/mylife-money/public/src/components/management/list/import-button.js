@@ -1,9 +1,7 @@
 'use strict';
 
-import { React } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
-import icons from '../icons';
+import { React, mui, PropTypes } from 'mylife-tools-ui';
+import icons from '../../icons';
 
 class Header extends React.Component {
 
