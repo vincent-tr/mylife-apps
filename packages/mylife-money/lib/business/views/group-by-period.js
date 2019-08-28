@@ -74,7 +74,7 @@ exports.GroupByPeriod = class GroupByPeriod extends StoreContainer {
           break;
         }
 
-        if(!inChildren) {
+        if(this._criteria.noChildSub || !inChildren) {
           item.amount += operation.amount;
         }
       }
