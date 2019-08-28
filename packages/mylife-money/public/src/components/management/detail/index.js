@@ -56,7 +56,17 @@ const useStyles = makeStyles(theme => ({
     width: 100
   },
   content: {
-  }
+  },
+  amount: {
+    width: 100,
+    paddingLeft: theme.spacing(1)
+  },
+  amountDebit: {
+    backgroundColor: mui.colors.red[100]
+  },
+  amountCredit: {
+    backgroundColor: mui.colors.lightGreen[100]
+  },
 }));
 
 const Row = ({ label, children }) => {
@@ -85,7 +95,7 @@ const DetailContainer = ({ className }) => {
 
       <div className={classes.grid}>
         <Row label='Montant'>
-          <mui.Typography>
+          <mui.Typography className={clsx(classes.amount, operation.amount < 0 ? classes.amountDebit : classes.amountCredit)}>
             {operation.amount}
           </mui.Typography>
         </Row>
