@@ -115,6 +115,20 @@ export const moveOperations = (group) => {
   };
 };
 
+export const operationMoveDetail = (group) => {
+  return async (dispatch, getState) => {
+    const operations = [getOperationIdDetail(getState())];
+
+    dispatch(closeDetail());
+    await dispatch(io.call({
+      service: 'management',
+      method: 'moveOperations',
+      group,
+      operations
+    }));
+  };
+};
+
 export const operationsSetNote = (note) => {
   return async (dispatch, getState) => {
     const operations = getSelectedOperations(getState()).map(op => op._id);
