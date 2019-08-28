@@ -37,14 +37,16 @@ export const reportingLeave = () => async (dispatch) => {
 export const exportGroupByMonth = createExportAction({
   service: 'reporting',
   method: 'exportGroupByMonth',
-  fileName: 'groupes-par-mois.txt'
+  fileName: 'groupes-par-mois.xlsx'
 });
 
 export const exportGroupByYear = createExportAction({
   service: 'reporting',
   method: 'exportGroupByYear',
-  fileName: 'groupes-par-an.txt'
+  fileName: 'groupes-par-an.xlsx'
 });
+
+const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 function createExportAction({ service, method, fileName }) {
   return (criteria, display) => async (dispatch) => {
@@ -56,7 +58,6 @@ function createExportAction({ service, method, fileName }) {
       display
     }));
 
-    dispatch(download.file({ name: fileName, mime: 'text/plain', content }));
+    dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
   };
-
 }
