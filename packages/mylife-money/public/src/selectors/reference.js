@@ -64,3 +64,5 @@ export const getGroupStacks = createSelector([ getGroups ], groups => {
 
   return new immutable.Map(groupStacks);
 });
+
+export const getGroupStack = (state, { group }) => getGroupStacks(state).get(group);

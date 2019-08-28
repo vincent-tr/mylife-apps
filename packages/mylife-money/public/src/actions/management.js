@@ -2,7 +2,7 @@
 
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId } from '../selectors/management';
+import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId, getOperationIdDetail } from '../selectors/management';
 import { createOrUpdateView, deleteView } from './tools';
 
 const local = {
@@ -118,6 +118,19 @@ export const moveOperations = (group) => {
 export const operationsSetNote = (note) => {
   return async (dispatch, getState) => {
     const operations = getSelectedOperations(getState()).map(op => op._id);
+
+    await dispatch(io.call({
+      service: 'management',
+      method: 'operationsSetNote',
+      note,
+      operations
+    }));
+  };
+};
+
+export const operationSetNoteDetail = (note) => {
+  return async (dispatch, getState) => {
+    const operations = [getOperationIdDetail(getState())];
 
     await dispatch(io.call({
       service: 'management',

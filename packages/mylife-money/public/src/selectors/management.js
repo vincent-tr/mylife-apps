@@ -6,6 +6,7 @@ export const getOperationViewId = state => state.management.operations.view;
 const getOperationView = state => io.getView(state, getOperationViewId(state));
 const getOperationList = state => io.getViewList(state, getOperationViewId(state));
 export const isOperationDetail = state => !!state.management.operations.detail;
+export const getOperationIdDetail = state => state.management.operations.detail;
 export const getOperationDetail = state => getOperationView(state).get(state.management.operations.detail);
 
 // ensure that we only provide operations that are possible (selected operations are not refreshed when the operation view is)
