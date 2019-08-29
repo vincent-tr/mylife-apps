@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, mui, clsx } from 'mylife-tools-ui';
+import { React, mui, clsx, useScreenPhone } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 
 function summaries(operations) {
@@ -21,14 +21,17 @@ function summaries(operations) {
 
 const Footer = (props) => {
   const classes = useStyles();
+  const isPhone = useScreenPhone();
   const { operations } = useConnect();
   const { totalDebit, totalCredit, total } = summaries(operations);
+  const totalClasses = [classes.total, isPhone ? classes.totalDense : classes.totalNormal];
+
   return (
     <mui.Toolbar {...props}>
       <mui.Typography>Total</mui.Typography>
-      <mui.Typography className={clsx(classes.amountDebit, classes.total)}>{totalDebit}</mui.Typography>
-      <mui.Typography className={clsx(classes.amountCredit, classes.total)}>{totalCredit}</mui.Typography>
-      <mui.Typography className={clsx(classes.amountTotal, classes.total)}>{total}</mui.Typography>
+      <mui.Typography className={clsx(classes.amountDebit, ...totalClasses)}>{totalDebit}</mui.Typography>
+      <mui.Typography className={clsx(classes.amountCredit, ...totalClasses)}>{totalCredit}</mui.Typography>
+      <mui.Typography className={clsx(classes.amountTotal, ...totalClasses)}>{total}</mui.Typography>
     </mui.Toolbar>
   );
 };

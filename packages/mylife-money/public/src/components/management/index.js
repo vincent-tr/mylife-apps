@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, mui, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, mui, useMemo, useSelector, useDispatch, useLifecycle, useScreenSize } from 'mylife-tools-ui';
 import { managementEnter, managementLeave } from '../../actions/management';
 import { isOperationDetail } from '../../selectors/management';
 
@@ -42,19 +42,38 @@ const useConnect = () => {
 
 const Management = () => {
   const classes = useStyles();
+  const screenSize = useScreenSize();
   const { enter, leave, detail } = useConnect();
   useLifecycle(enter, leave);
 
-  return (
+  const main = detail ? (
+    <Detail className={classes.detail} />
+  ) : (
+    <List className={classes.list} />
+  );
+
+  const normalLayout = (
     <div className={classes.container}>
       <Tree className={classes.tree} />
-      {detail ? (
-        <Detail className={classes.detail} />
-      ) : (
-        <List className={classes.list} />
-      )}
+      {main}
     </div>
   );
+
+  const smallLayout = (
+    <div className={classes.container}>
+      {main}
+    </div>
+  );
+
+  switch(screenSize) {
+    case 'phone':
+      return smallLayout;
+
+    case 'tablet':
+    case 'laptop':
+    case 'wide':
+      return normalLayout;
+  }
 };
 
 export default Management;

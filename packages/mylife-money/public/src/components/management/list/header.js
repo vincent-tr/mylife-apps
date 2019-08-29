@@ -10,6 +10,7 @@ import AccountSelector from '../../common/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../../common/group-selector-button';
 import DateSelector from '../../common/date-selector';
+import GroupDenseSelector from './group-dense-selector';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -57,7 +58,6 @@ const Header = () => {
   } = useConnect();
 
   const classes = useStyles();
-
   const screenSize = useScreenSize();
 
   const editNote = async () => {
@@ -68,15 +68,23 @@ const Header = () => {
     onOperationsSetNote(text);
   };
 
+  const minDateSelector = (
+    <DateSelector value={minDate} onChange={onMinDateChanged} showYearSelector />
+  );
+
+  const maxDateSelector = (
+    <DateSelector value={maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
+  );
+
   const selectors = (
     <React.Fragment>
       <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
-      <DateSelector value={minDate} onChange={onMinDateChanged} showYearSelector />
+      {minDateSelector}
 
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
-      <DateSelector value={maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
+      {maxDateSelector}
 
       <ToolbarSeparator />
 
@@ -147,8 +155,31 @@ const Header = () => {
     </React.Fragment>
   );
 
+  const fourRowHeader = (
+    <React.Fragment>
+      <mui.Toolbar variant='dense'>
+        <ToolbarFieldTitle>Du</ToolbarFieldTitle>
+        {minDateSelector}
+        <ToolbarFieldTitle>Au</ToolbarFieldTitle>
+        {maxDateSelector}
+      </mui.Toolbar>
+      <mui.Toolbar variant='dense'>
+        <ToolbarFieldTitle>Groupe</ToolbarFieldTitle>
+        <GroupDenseSelector />
+      </mui.Toolbar>
+      <mui.Toolbar variant='dense'>
+        {search}
+      </mui.Toolbar>
+      <mui.Toolbar variant='dense'>
+        {toolbar}
+      </mui.Toolbar>
+    </React.Fragment>
+  );
+
   switch(screenSize) {
     case 'phone':
+      return fourRowHeader;
+
     case 'tablet':
     case 'laptop':
       return twoRowHeader;

@@ -46,8 +46,17 @@ export const useStyles = mui.makeStyles(theme => ({
     width: 100,
     marginLeft: theme.spacing(2),
     paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
+  },
+  totalNormal: {
+    width: 100,
+    marginLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+  },
+  totalDense: {
+    width: 80,
+    marginLeft: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
   }
 }));
