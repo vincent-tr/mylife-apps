@@ -1,11 +1,14 @@
 'use strict';
 
 import { React, mui, useMemo, useSelector, useDispatch, PropTypes, clsx, DebouncedTextField } from 'mylife-tools-ui';
-import icons from '../../icons';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../../actions/management';
 import { getOperationDetail } from '../../../selectors/management';
 import { getAccount, getGroupStack } from '../../../selectors/reference';
-import GroupSelectorButton from '../../common/group-selector-button';
+
+import Title from './title';
+import Row from './row';
+import GroupBreadcrumbs from './group-breadcrumbs';
+import AmountValue from './amount-value';
 
 const { makeStyles } = mui;
 
@@ -33,63 +36,11 @@ const useStyles = makeStyles(theme => ({
   container: {
     padding: theme.spacing(2),
   },
-  title: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  titleTypo: {
-    marginLeft: theme.spacing(2)
-  },
-  groupContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  breadcrumbs: {
-    flex: '1 1 auto',
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
   grid: {
     display: 'flex',
     flexDirection: 'column'
   },
-  row: {
-    height: 64,
-    display: 'flex',
-    alignItems: 'center',
-  },
-  label: {
-    width: 100
-  },
-  content: {
-  },
-  amount: {
-    width: 100,
-    paddingLeft: theme.spacing(1)
-  },
-  amountDebit: {
-    backgroundColor: mui.colors.red[100]
-  },
-  amountCredit: {
-    backgroundColor: mui.colors.lightGreen[100]
-  },
 }));
-
-const Row = ({ label, children }) => {
-  const classes = useStyles();
-  return (
-    <div className={classes.row}>
-      <mui.Typography className={classes.label}>
-        {label}
-      </mui.Typography>
-
-      <div className={classes.content}>
-        {children}
-      </div>
-    </div>
-  );
-};
 
 const DetailContainer = ({ className }) => {
   const classes = useStyles();
@@ -97,24 +48,11 @@ const DetailContainer = ({ className }) => {
 
   return (
     <mui.Paper className={clsx(classes.container, className)}>
-      <div className={classes.title}>
-        <mui.Tooltip title='Retour'>
-          <div>
-            <mui.IconButton onClick={close}>
-              <icons.actions.Back />
-            </mui.IconButton>
-          </div>
-        </mui.Tooltip>
-
-        <mui.Typography variant='h6' className={classes.titleTypo}>{'Detail de l\'opération'}</mui.Typography>
-      </div>
-
+      <Title onClose={close} />
 
       <div className={classes.grid}>
         <Row label='Montant'>
-          <mui.Typography className={clsx(classes.amount, operation.amount < 0 ? classes.amountDebit : classes.amountCredit)}>
-            {operation.amount}
-          </mui.Typography>
+          <AmountValue value={operation.amount} />
         </Row>
 
         <Row label='Date'>
@@ -134,30 +72,7 @@ const DetailContainer = ({ className }) => {
         </Row>
 
         <Row label='Groupe'>
-          <div className={classes.groupContainer}>
-            <mui.Tooltip title={'Déplacer l\'opération'}>
-              <div>
-                <GroupSelectorButton onSelect={onMove}>
-                  <icons.actions.Move />
-                </GroupSelectorButton>
-              </div>
-            </mui.Tooltip>
-
-            <mui.Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
-              {groupStack.map(group => {
-                const handleClick = e => {
-                  e.preventDefault();
-                  onOpenGroup(group._id);
-                };
-
-                return (
-                  <mui.Link key={group._id} color='textPrimary' href='#' onClick={handleClick}>
-                    {group.display}
-                  </mui.Link>
-                );
-              })}
-            </mui.Breadcrumbs>
-          </div>
+          <GroupBreadcrumbs groupStack={groupStack} onMove={onMove} onOpenGroup={onOpenGroup} />
         </Row>
 
         <Row label='Compte'>
