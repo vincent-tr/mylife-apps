@@ -1,9 +1,9 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import icons from '../../icons';
+import icons from '../../../components/icons';
 
-import GroupSelector from '../../common/group-selector';
+import GroupSelector from '../../../components/common/group-selector';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {

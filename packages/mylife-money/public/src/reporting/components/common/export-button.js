@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import icons from '../../icons';
+import icons from '../../../components/icons';
 
 const ExportButton = ({ onClick, ...props }) => (
   <mui.Tooltip title='Exporter les données'>

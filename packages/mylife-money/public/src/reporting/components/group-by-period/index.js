@@ -1,8 +1,8 @@
 'use strict';
 
 import { React, PropTypes, useState, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
-import { getSortedViewList } from '../../../selectors/reporting';
-import { reportingLeave } from '../../../actions/reporting';
+import { getSortedViewList } from '../../selectors';
+import { reportingLeave } from '../../actions';
 
 import Criteria from './criteria';
 import Chart from './chart';

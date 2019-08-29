@@ -2,8 +2,8 @@
 
 import { createAction, io, download } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getViewId } from '../selectors/reporting';
-import { createOrUpdateView, deleteView } from './tools';
+import { getViewId } from './selectors';
+import { createOrUpdateView, deleteView } from '../actions/tools';
 
 const local = {
   setView: createAction(actionTypes.REPORTING_SET_VIEW),

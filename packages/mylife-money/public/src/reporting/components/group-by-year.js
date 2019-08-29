@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, immutable, mui } from 'mylife-tools-ui';
-import { getGroupByYear, exportGroupByYear } from '../../actions/reporting';
+import { getGroupByYear, exportGroupByYear } from '../actions';
 import GroupByPeriod from './group-by-period';
 import { findAmount, roundCurrency } from './group-by-period/tools';
 import Field from './common/field';
