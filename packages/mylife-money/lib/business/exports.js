@@ -21,7 +21,7 @@ exports.exportGroupByYear = (session, criteria, display) => {
 function exportGroupByPeriodView(view, displayOptions, periodKey, amountTransform = x => x) {
   const periodItems = view.list();
   if(!periodItems.length) {
-    return createWorkbook([[]]);
+    return xlsx.createSimpleWorkbookAOA([[]]);
   }
 
   const groups = [];
@@ -55,7 +55,7 @@ function exportGroupByPeriodView(view, displayOptions, periodKey, amountTransfor
     }
   }
 
-  return createWorkbook(data);
+  return xlsx.createSimpleWorkbookAOA(data);
 }
 
 function groupDisplay(id, withParent, { fullnames }) {
@@ -85,11 +85,4 @@ function groupDisplay(id, withParent, { fullnames }) {
 
   const parent = groupCollection.get(group.parent);
   return parent.display + '/' + group.display;
-}
-
-function createWorkbook(aoa) {
-  const workbook = xlsx.utils.book_new();
-  const sheet = xlsx.utils.aoa_to_sheet(aoa);
-  xlsx.utils.book_append_sheet(workbook, sheet, 'Export');
-  return xlsx.write(workbook, { type: 'buffer' });
 }
