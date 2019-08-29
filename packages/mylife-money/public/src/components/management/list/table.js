@@ -1,11 +1,12 @@
 'use strict';
 
-import { React, mui, VirtualizedTable } from 'mylife-tools-ui';
+import { React, mui, VirtualizedTable, useScreenPhone } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 
 const Table = (props) => {
   const { onSelect, onDetail, operations } = useConnect();
   const classes = useStyles();
+  const isPhone = useScreenPhone();
   const rowClassName = (row) => row && row.fromChildGroup ? classes.fromChild : classes.normal; // row undefined => header
 
   const selectedCount = operations.reduce(((acc, op) => op.selected ? acc + 1 : acc), 0);
@@ -28,13 +29,15 @@ const Table = (props) => {
   );
 
   const columns = [
-    { dataKey: 'checkbox', width: 80, headerRenderer: headerCheckbox, cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellCheckbox },
+    { dataKey: 'checkbox', width: isPhone ? 60 : 80, headerRenderer: headerCheckbox, cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellCheckbox },
     //{ dataKey: 'account', width: 150, headerRenderer: 'Compte', cellDataGetter: ({ rowData }) => rowData.account && rowData.account.display },
-    { dataKey: 'amount', width: 100, headerRenderer: 'Montant', cellDataGetter: ({ rowData }) => rowData.operation.amount, cellClassName: value => value < 0 ? classes.amountDebit : classes.amountCredit },
+    { dataKey: 'amount', width: 80, headerRenderer: 'Montant', cellDataGetter: ({ rowData }) => rowData.operation.amount, cellClassName: value => value < 0 ? classes.amountDebit : classes.amountCredit },
     { dataKey: 'date', width: 100, headerRenderer: 'Date', cellDataGetter: ({ rowData }) => new Date(rowData.operation.date).toLocaleDateString('fr-FR') }, // TODO: formatter
-    { dataKey: 'label', headerRenderer: 'Libellé', cellDataGetter: ({ rowData }) => rowData.operation.label },
-    { dataKey: 'note', headerRenderer: 'Note', cellDataGetter: ({ rowData }) => rowData.operation.note }
+    { dataKey: 'label', headerRenderer: 'Libellé', cellDataGetter: ({ rowData }) => rowData.operation.label }
   ];
+  if(!isPhone) {
+    columns.push({ dataKey: 'note', headerRenderer: 'Note', cellDataGetter: ({ rowData }) => rowData.operation.note });
+  }
 
   return (
     <VirtualizedTable data={operations} columns={columns} {...props} rowClassName={rowClassName} onRowClick={row => onDetail(row.operation._id)} />
