@@ -1,7 +1,7 @@
 'use strict';
 
 import { createAction } from 'mylife-tools-ui';
-import { actionTypes } from '../constants';
+import actionTypes from './action-types';
 import { io } from 'mylife-tools-ui';
 
 const local = {

@@ -4,7 +4,7 @@ import { React, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarField
 import icons from '../../../components/icons';
 import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
 import { getSelectedOperations, getCriteria } from '../../selectors';
-import { getAccounts, getGroup } from '../../../selectors/reference';
+import { getAccounts, getGroup } from '../../../reference/selectors';
 
 import AccountSelector from '../../../components/common/account-selector';
 import ImportButton from './import-button';

@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, useMemo, PropTypes, mui, useSelector } from 'mylife-tools-ui';
-import { makeGetSortedChildren } from '../../selectors/reference';
+import { makeGetSortedChildren } from '../../reference/selectors';
 import GroupNode from './group-node';
 
 const useConnect = () => {

@@ -3,7 +3,7 @@
 import { React, useMemo, mui, useSelector, useDispatch, dialogs } from 'mylife-tools-ui';
 import icons from '../../../components/icons';
 import groupEditor from './group-editor';
-import { getGroup } from '../../../selectors/reference';
+import { getGroup } from '../../../reference/selectors';
 import { getSelectedGroupId } from '../../selectors';
 import { createGroup, updateGroup, deleteGroup } from '../../actions';
 import GroupSelectorButton from '../../../components/common/group-selector-button';

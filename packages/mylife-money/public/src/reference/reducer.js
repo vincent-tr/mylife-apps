@@ -1,7 +1,7 @@
 'use strict';
 
 import { handleActions, io } from 'mylife-tools-ui';
-import { actionTypes } from '../constants';
+import actionTypes from './action-types';
 
 export default handleActions({
 

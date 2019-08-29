@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes,  chart, useSelector, useChartColors, AutoSizer } from 'mylife-tools-ui';
-import { getGroupStacks, getChildrenList } from '../../../selectors/reference';
+import { getGroupStacks, getChildrenList } from '../../../reference/selectors';
 
 const useConnect = ({ display, groups }) => {
   return useSelector(state => ({

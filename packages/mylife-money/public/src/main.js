@@ -3,7 +3,7 @@
 import { React, services, io } from 'mylife-tools-ui';
 import reducers from './reducers';
 
-import { referenceInit } from './actions/reference';
+import { referenceInit } from './reference/actions';
 
 import icons from './components/icons';
 import Home from './home/components';

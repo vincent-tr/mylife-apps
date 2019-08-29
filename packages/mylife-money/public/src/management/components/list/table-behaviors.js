@@ -2,7 +2,7 @@
 
 import { useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../selectors';
-import { getAccount } from '../../../selectors/reference';
+import { getAccount } from '../../../reference/selectors';
 import { selectOperation, showDetail } from '../../actions';
 
 export const useConnect = () => {

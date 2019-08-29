@@ -2,7 +2,7 @@
 
 import { React, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
-import { getGroup } from '../../selectors/reference';
+import { getGroup } from '../../reference/selectors';
 
 import GroupSelectorButton from './group-selector-button';
 

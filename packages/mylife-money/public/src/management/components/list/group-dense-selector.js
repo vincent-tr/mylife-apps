@@ -3,7 +3,7 @@
 import { React, PropTypes, mui, useMemo, useSelector, useDispatch, clsx } from 'mylife-tools-ui';
 import icons from '../../../components/icons';
 import { getSelectedGroupId } from '../../selectors';
-import { getGroup } from '../../../selectors/reference';
+import { getGroup } from '../../../reference/selectors';
 import { selectGroup } from '../../actions';
 import GroupSelectorButton from '../../../components/common/group-selector-button';
 

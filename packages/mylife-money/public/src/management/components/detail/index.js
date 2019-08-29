@@ -3,7 +3,7 @@
 import { React, mui, useMemo, useSelector, useDispatch, PropTypes, clsx, DebouncedTextField } from 'mylife-tools-ui';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../actions';
 import { getOperationDetail } from '../../selectors';
-import { getAccount, getGroupStack } from '../../../selectors/reference';
+import { getAccount, getGroupStack } from '../../../reference/selectors';
 
 import Title from './title';
 import Row from './row';
