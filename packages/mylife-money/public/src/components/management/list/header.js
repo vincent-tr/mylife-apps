@@ -1,10 +1,10 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, dialogs, useScreenSize } from 'mylife-tools-ui';
+import { React, useState, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryExpansionPanel, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../icons';
 import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../../actions/management';
 import { getSelectedOperations, getCriteria } from '../../../selectors/management';
-import { getAccounts } from '../../../selectors/reference';
+import { getAccounts, getGroup } from '../../../selectors/reference';
 
 import AccountSelector from '../../common/account-selector';
 import ImportButton from './import-button';
@@ -24,6 +24,7 @@ const useConnect = () => {
         accounts             : getAccounts(state),
         minDate              : criteria.minDate,
         maxDate              : criteria.maxDate,
+        selectedGroup        : getGroup(state, { group: criteria.group }),
         account              : criteria.account,
         lookupText           : criteria.lookupText,
         noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
@@ -45,6 +46,10 @@ const useConnect = () => {
 const useStyles = mui.makeStyles({
   accountField: {
     minWidth: 200
+  },
+  expansionPanelContainer: {
+    display: 'flex',
+    flexDirection: 'column'
   }
 });
 
@@ -52,7 +57,7 @@ const Header = () => {
   const {
     showExecuteRules, canProcessOperations,
     accounts,
-    minDate, maxDate, account, lookupText,
+    minDate, maxDate, selectedGroup, account, lookupText,
     noteText,
     onMinDateChanged, onMaxDateChanged, onAccountChanged, onLookupTextChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
   } = useConnect();
@@ -132,7 +137,7 @@ const Header = () => {
     </React.Fragment>
   );
 
-  const oneRowHeader = (
+  const wideHeader = (
     <mui.Toolbar>
       {toolbar}
       <ToolbarSeparator />
@@ -142,7 +147,7 @@ const Header = () => {
     </mui.Toolbar>
   );
 
-  const twoRowHeader = (
+  const normalHeader = (
     <React.Fragment>
       <mui.Toolbar variant='dense'>
         {selectors}
@@ -155,21 +160,25 @@ const Header = () => {
     </React.Fragment>
   );
 
-  const fourRowHeader = (
+  const denseHeader = (
     <React.Fragment>
-      <mui.Toolbar variant='dense'>
-        <ToolbarFieldTitle>Du</ToolbarFieldTitle>
-        {minDateSelector}
-        <ToolbarFieldTitle>Au</ToolbarFieldTitle>
-        {maxDateSelector}
-      </mui.Toolbar>
-      <mui.Toolbar variant='dense'>
-        <ToolbarFieldTitle>Groupe</ToolbarFieldTitle>
-        <GroupDenseSelector />
-      </mui.Toolbar>
-      <mui.Toolbar variant='dense'>
-        {search}
-      </mui.Toolbar>
+      <SummaryExpansionPanel
+        collapsedSummary={<mui.Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup.display}`}</mui.Typography>}
+        expandedSummary={<mui.Typography>{'Critères d\'affichage'}</mui.Typography>}>
+        <div className={classes.expansionPanelContainer}>
+          <mui.Toolbar variant='dense'>
+            {minDateSelector}
+            {maxDateSelector}
+          </mui.Toolbar>
+          <mui.Toolbar variant='dense'>
+            <ToolbarFieldTitle>Groupe</ToolbarFieldTitle>
+            <GroupDenseSelector />
+          </mui.Toolbar>
+          <mui.Toolbar variant='dense'>
+            {search}
+          </mui.Toolbar>
+        </div>
+      </SummaryExpansionPanel>
       <mui.Toolbar variant='dense'>
         {toolbar}
       </mui.Toolbar>
@@ -178,15 +187,22 @@ const Header = () => {
 
   switch(screenSize) {
     case 'phone':
-      return fourRowHeader;
+      return denseHeader;
 
     case 'tablet':
     case 'laptop':
-      return twoRowHeader;
+      return normalHeader;
 
     case 'wide':
-      return oneRowHeader;
+      return wideHeader;
   }
 };
 
 export default Header;
+
+function format(date) {
+  if(!date) {
+    return '<indéfini>';
+  }
+  return formatDate(date, 'dd/MM/yyyy');
+}
