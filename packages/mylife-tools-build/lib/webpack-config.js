@@ -6,15 +6,12 @@ const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
-const { getDefine } = require('../defines');
-const { getArg } = require('../cli');
-
 exports.createWebpackConfig = function ({
   baseDirectory,
   outputPath = path.join(baseDirectory, 'public'),
   entryPoint = path.join(baseDirectory, 'public/src/main.js'),
   htmlTemplate = path.join(baseDirectory, 'public/src/index.html'),
-  dev = getArg('dev')
+  dev = false
 } = {}) {
 
   const common = {
