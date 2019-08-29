@@ -70,10 +70,10 @@ exports.createWebpackConfig = function ({
       new ProgressBarPlugin()
     ],
     resolve: {
-      modules: ['node_modules', path.resolve(__dirname, '../../node_modules')]
+      modules: ['node_modules', path.resolve(__dirname, '../node_modules')]
     },
     resolveLoader: {
-      modules: ['node_modules', path.resolve(__dirname, '../../node_modules')]
+      modules: ['node_modules', path.resolve(__dirname, '../node_modules')]
     }
   };
 
