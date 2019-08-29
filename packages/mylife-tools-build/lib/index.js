@@ -9,9 +9,9 @@ exports.setupDevMiddleware = (app, webpackConfig, baseDirectory) => {
   webpackConfig = webpackConfig || createWebpackConfig({ baseDirectory, dev: true });
 
   const compiler = webpack(webpackConfig);
-  const devMiddleware = webpackDevMiddleware(compiler, { publicPath: webpackConfig.output.publicPath });
+  const middleware = webpackDevMiddleware(compiler, { publicPath: webpackConfig.output.publicPath });
 
-  app.use(devMiddleware);
+  app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
 
   return { webpackConfig, compiler, middleware };
