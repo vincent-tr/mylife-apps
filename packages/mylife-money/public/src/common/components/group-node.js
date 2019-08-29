@@ -29,7 +29,7 @@ const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, 
         <mui.ListItemText primary={group.display} />
         {hasChildren && (
           <mui.IconButton size='small' onClick={(e) => { e.stopPropagation(); setOpen(!open); } }>
-            {open ? <icons.tree.ExpandLess /> : <icons.tree.ExpandMore />}
+            {open ? <mui.icons.ExpandLess /> : <mui.icons.ExpandMore />}
           </mui.IconButton>
         )}
       </mui.ListItem>

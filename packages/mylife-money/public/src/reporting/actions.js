@@ -3,7 +3,7 @@
 import { createAction, io, download } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
-import { createOrUpdateView, deleteView } from '../actions/tools';
+import { createOrUpdateView, deleteView } from '../common/action-tools';
 
 const local = {
   setView: createAction(actionTypes.SET_VIEW),

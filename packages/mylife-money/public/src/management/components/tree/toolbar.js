@@ -1,12 +1,12 @@
 'use strict';
 
 import { React, useMemo, mui, useSelector, useDispatch, dialogs } from 'mylife-tools-ui';
-import icons from '../../../components/icons';
+import icons from '../../../common/icons';
 import groupEditor from './group-editor';
 import { getGroup } from '../../../reference/selectors';
 import { getSelectedGroupId } from '../../selectors';
 import { createGroup, updateGroup, deleteGroup } from '../../actions';
-import GroupSelectorButton from '../../../components/common/group-selector-button';
+import GroupSelectorButton from '../../../common/components/group-selector-button';
 
 const useConnect = () => {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, useMemo, useSelector, useDispatch, AutoSizer } from 'mylife-tools-ui';
-import GroupTree from '../../../components/common/group-tree';
+import GroupTree from '../../../common/components/group-tree';
 import { getSelectedGroupId } from '../../selectors';
 import { selectGroup } from '../../actions';
 

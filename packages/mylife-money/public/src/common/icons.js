@@ -49,7 +49,5 @@ export default {
   },
 
   Account : AccountBalance,
-  Group   : FolderOpen,
-
-  tree : { ExpandLess, ExpandMore  }
+  Group   : FolderOpen
 };

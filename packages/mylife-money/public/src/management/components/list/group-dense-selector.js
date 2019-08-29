@@ -1,11 +1,11 @@
 'use strict';
 
 import { React, PropTypes, mui, useMemo, useSelector, useDispatch, clsx } from 'mylife-tools-ui';
-import icons from '../../../components/icons';
+import icons from '../../../common/icons';
 import { getSelectedGroupId } from '../../selectors';
 import { getGroup } from '../../../reference/selectors';
 import { selectGroup } from '../../actions';
-import GroupSelectorButton from '../../../components/common/group-selector-button';
+import GroupSelectorButton from '../../../common/components/group-selector-button';
 
 const { makeStyles } = mui;
 

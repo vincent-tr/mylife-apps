@@ -2,11 +2,11 @@
 
 import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, useScreenPhone } from 'mylife-tools-ui';
 
-import AccountSelector from '../../../components/common/account-selector';
-import DateSelector from '../../../components/common/date-selector';
-import Field from '../../components/common/field';
-import GroupField from '../../components/common/group-field';
-import ExportButton from '../../components/common/export-button';
+import AccountSelector from '../../../common/components/account-selector';
+import DateSelector from '../../../common/components/date-selector';
+import Field from '../common/field';
+import GroupField from '../common/group-field';
+import ExportButton from '../common/export-button';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
