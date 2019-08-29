@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate, SummaryExpansionPanel } from 'mylife-tools-ui';
+import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, useScreenPhone } from 'mylife-tools-ui';
 
 import AccountSelector from '../../common/account-selector';
 import DateSelector from '../../common/date-selector';
@@ -51,6 +51,8 @@ CollapsedSummary.propTypes = {
 };
 
 const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }) => {
+  const isPhone = useScreenPhone();
+
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
   const onChildrenChanged = (value) => setCriteria('children', value);
   const onMinDateChanged = (value) => setCriteria('minDate', value);
@@ -65,46 +67,87 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
   const onGroupChanged = (index, value) => setCriteria('groups', criteria.groups.set(index, value));
   const onGroupDelete = (index) => setCriteria('groups', criteria.groups.delete(index));
 
+  const grid = isPhone ? (
+    <mui.Grid container spacing={2}>
+      <mui.Grid item xs={6}>
+        <Field label='Du'>
+          <DateSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={6}>
+        <Field label='Au'>
+          <DateSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={6}>
+        <Field label='Compte'>
+          <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={6}>
+        <Field label='Inverser montant'>
+          <mui.Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={6}>
+        <Field label='Afficher les groupes enfants'>
+          <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={6}>
+        <Field label='Afficher les noms complets'>
+          <mui.Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
+        </Field>
+      </mui.Grid>
+      {additionalComponents}
+      <mui.Grid item xs={12}>
+        <GroupField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
+      </mui.Grid>
+    </mui.Grid>
+  ) : (
+    <mui.Grid container spacing={2}>
+      <mui.Grid item xs={4}>
+        <Field label='Date début'>
+          <DateSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={4}>
+        <Field label='Date fin'>
+          <DateSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={4}>
+        <Field label='Compte'>
+          <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={4}>
+        <Field label='Inverser montant'>
+          <mui.Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={4}>
+        <Field label='Afficher les groupes enfants'>
+          <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+        </Field>
+      </mui.Grid>
+      <mui.Grid item xs={4}>
+        <Field label='Afficher les noms complets'>
+          <mui.Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
+        </Field>
+      </mui.Grid>
+      {additionalComponents}
+      <mui.Grid item xs={12}>
+        <GroupField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
+      </mui.Grid>
+    </mui.Grid>
+  );
+
   return (
     <SummaryExpansionPanel
       expandedSummary={<ExpandedSummary criteria={criteria} display={display} onExport={onExport} />}
       collapsedSummary={<CollapsedSummary criteria={criteria} display={display} onExport={onExport} />}>
-      <mui.Grid container spacing={2}>
-        <mui.Grid item xs={4}>
-          <Field label='Date début'>
-            <DateSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
-          </Field>
-        </mui.Grid>
-        <mui.Grid item xs={4}>
-          <Field label='Date fin'>
-            <DateSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
-          </Field>
-        </mui.Grid>
-        <mui.Grid item xs={4}>
-          <Field label='Compte'>
-            <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
-          </Field>
-        </mui.Grid>
-        <mui.Grid item xs={4}>
-          <Field label='Inverser montant'>
-            <mui.Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
-          </Field>
-        </mui.Grid>
-        <mui.Grid item xs={4}>
-          <Field label='Afficher les groupes enfants'>
-            <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
-          </Field>
-        </mui.Grid>
-        <mui.Grid item xs={4}>
-          <Field label='Afficher les noms complets'>
-            <mui.Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
-          </Field>
-        </mui.Grid>
-        {additionalComponents}
-        <mui.Grid item xs={12}>
-          <GroupField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
-        </mui.Grid>
-      </mui.Grid>
+      {grid}
     </SummaryExpansionPanel>
   );
 };
