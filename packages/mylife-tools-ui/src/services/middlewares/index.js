@@ -6,4 +6,10 @@ import download         from '../../modules/download/middleware';
 import io               from '../../modules/io/middleware';
 import routing          from '../../modules/routing/middleware';
 
-export default [download, routing, io, thunk, createLogger()];
+const middlewares = [download, routing, io, thunk];
+
+if(process.env.NODE_ENV !== 'production') {
+  middlewares.push(createLogger());
+}
+
+export default middlewares;
