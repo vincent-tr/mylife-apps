@@ -1,16 +1,16 @@
 'use strict';
 
 import { createAction, io, dialogs } from 'mylife-tools-ui';
-import { actionTypes } from '../constants';
+import actionTypes from './action-types';
 import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId, getOperationIdDetail } from './selectors';
 import { createOrUpdateView, deleteView } from '../actions/tools';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
-  setOperationView: createAction(actionTypes.MANAGEMENT_SET_OPERATION_VIEW),
-  setCriteria: createAction(actionTypes.MANAGEMENT_SET_CRITERIA),
-  selectOperations: createAction(actionTypes.MANAGEMENT_SELECT_OPERATIONS),
-  setDetail: createAction(actionTypes.MANAGEMENT_SET_DETAIL),
+  setOperationView: createAction(actionTypes.SET_OPERATION_VIEW),
+  setCriteria: createAction(actionTypes.SET_CRITERIA),
+  selectOperations: createAction(actionTypes.SELECT_OPERATIONS),
+  setDetail: createAction(actionTypes.SET_DETAIL),
 };
 
 export const getOperations = () => createOrUpdateView({
