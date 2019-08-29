@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useState, PropTypes, mui, formatDate } from 'mylife-tools-ui';
+import { React, PropTypes, mui, formatDate, SummaryExpansionPanel } from 'mylife-tools-ui';
 
 import AccountSelector from '../../common/account-selector';
 import DateSelector from '../../common/date-selector';
@@ -50,36 +50,6 @@ CollapsedSummary.propTypes = {
   onExport: PropTypes.func.isRequired
 };
 
-const Panel = ({ criteria, display, onExport, children }) => {
-  const [expanded, setExpanded] = useState(true);
-  const toggleExpanded = () => setExpanded(!expanded);
-
-  return (
-    <mui.ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
-      <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
-        {expanded ? (
-          <ExpandedSummary criteria={criteria} display={display} onExport={onExport} />
-        ) : (
-          <CollapsedSummary criteria={criteria} display={display} onExport={onExport} />
-        )}
-      </mui.ExpansionPanelSummary>
-      <mui.ExpansionPanelDetails>
-        {children}
-      </mui.ExpansionPanelDetails>
-    </mui.ExpansionPanel>
-  );
-};
-
-Panel.propTypes = {
-  criteria: PropTypes.object.isRequired,
-  display: PropTypes.object.isRequired,
-  onExport: PropTypes.func.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
-};
-
 const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }) => {
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
   const onChildrenChanged = (value) => setCriteria('children', value);
@@ -96,7 +66,9 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
   const onGroupDelete = (index) => setCriteria('groups', criteria.groups.delete(index));
 
   return (
-    <Panel criteria={criteria} display={display} onExport={onExport}>
+    <SummaryExpansionPanel
+      expandedSummary={<ExpandedSummary criteria={criteria} display={display} onExport={onExport} />}
+      collapsedSummary={<CollapsedSummary criteria={criteria} display={display} onExport={onExport} />}>
       <mui.Grid container spacing={2}>
         <mui.Grid item xs={4}>
           <Field label='Date début'>
@@ -133,7 +105,7 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
           <GroupField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
         </mui.Grid>
       </mui.Grid>
-    </Panel>
+    </SummaryExpansionPanel>
   );
 };
 
