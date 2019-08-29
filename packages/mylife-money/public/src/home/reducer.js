@@ -1,16 +1,16 @@
 'use strict';
 
 import { handleActions, io } from 'mylife-tools-ui';
-import { actionTypes } from '../constants';
+import actionTypes from './action-types';
 
 export default handleActions({
 
-  [actionTypes.HOME_SET_OPERATION_STATS_VIEW] : (state, action) => ({
+  [actionTypes.SET_OPERATION_STATS_VIEW] : (state, action) => ({
     ...state,
     stats: action.payload
   }),
 
-  [actionTypes.HOME_SET_TOTAL_BY_MONTH_VIEW] : (state, action) => ({
+  [actionTypes.SET_TOTAL_BY_MONTH_VIEW] : (state, action) => ({
     ...state,
     totalByMonth: action.payload
   }),

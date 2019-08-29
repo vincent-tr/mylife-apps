@@ -1,12 +1,12 @@
 'use strict';
 
 import { createAction, io } from 'mylife-tools-ui';
-import { actionTypes } from '../constants';
+import actionTypes from './action-types';
 import { getOperationStatsViewId, getTotalByMonthViewId } from './selectors';
 
 const local = {
-  setOperationStatsView: createAction(actionTypes.HOME_SET_OPERATION_STATS_VIEW),
-  setTotalByMonthView: createAction(actionTypes.HOME_SET_TOTAL_BY_MONTH_VIEW),
+  setOperationStatsView: createAction(actionTypes.SET_OPERATION_STATS_VIEW),
+  setTotalByMonthView: createAction(actionTypes.SET_TOTAL_BY_MONTH_VIEW),
 };
 
 const getOperationStats = () => async (dispatch) => {

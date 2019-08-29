@@ -1,12 +1,12 @@
 'use strict';
 
 import { createAction, io, download } from 'mylife-tools-ui';
-import { actionTypes } from '../constants';
+import actionTypes from './action-types';
 import { getViewId } from './selectors';
 import { createOrUpdateView, deleteView } from '../actions/tools';
 
 const local = {
-  setView: createAction(actionTypes.REPORTING_SET_VIEW),
+  setView: createAction(actionTypes.SET_VIEW),
 };
 
 export const getGroupByMonth = (criteria) => createOrUpdateView({
