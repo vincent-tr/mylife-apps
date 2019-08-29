@@ -2,7 +2,7 @@
 
 import { createAction, io } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getOperationStatsViewId, getTotalByMonthViewId } from '../selectors/home';
+import { getOperationStatsViewId, getTotalByMonthViewId } from './selectors';
 
 const local = {
   setOperationStatsView: createAction(actionTypes.HOME_SET_OPERATION_STATS_VIEW),

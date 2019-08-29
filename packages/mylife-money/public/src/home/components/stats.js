@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, mui, useSelector, formatDate } from 'mylife-tools-ui';
-import { getOperationStatsView } from '../../selectors/home';
+import { getOperationStatsView } from '../selectors';
 
 const useConnect = () => useSelector(state => ({
   stats : getOperationStatsView(state),

@@ -6,7 +6,7 @@ import reducers from './reducers';
 import { referenceInit } from './actions/reference';
 
 import icons from './components/icons';
-import Home from './components/home';
+import Home from './home/components';
 import Management from './components/management';
 import GroupByMonth from './components/reporting/group-by-month';
 import GroupByYear from './components/reporting/group-by-year';

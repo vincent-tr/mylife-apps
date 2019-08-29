@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
-import { homeEnter, homeLeave } from '../../actions/home';
+import { homeEnter, homeLeave } from '../actions';
 import Stats from './stats';
 import ChartCount from './chart-count';
 import ChartAmount from './chart-amount';
