@@ -2,8 +2,8 @@
 
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import { actionTypes } from '../constants';
-import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId, getOperationIdDetail } from '../selectors/management';
-import { createOrUpdateView, deleteView } from './tools';
+import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId, getOperationIdDetail } from './selectors';
+import { createOrUpdateView, deleteView } from '../actions/tools';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),

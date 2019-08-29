@@ -1,9 +1,9 @@
 'use strict';
 
 import { React, useMemo, useSelector, useDispatch, AutoSizer } from 'mylife-tools-ui';
-import GroupTree from '../../common/group-tree';
-import { getSelectedGroupId } from '../../../selectors/management';
-import { selectGroup } from '../../../actions/management';
+import GroupTree from '../../../components/common/group-tree';
+import { getSelectedGroupId } from '../../selectors';
+import { selectGroup } from '../../actions';
 
 const useConnect = () => {
   const dispatch = useDispatch();

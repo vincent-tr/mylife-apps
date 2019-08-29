@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, mui, PropTypes } from 'mylife-tools-ui';
-import icons from '../../icons';
+import icons from '../../../components/icons';
 
 const { makeStyles } = mui;
 

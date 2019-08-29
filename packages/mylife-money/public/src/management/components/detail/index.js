@@ -1,8 +1,8 @@
 'use strict';
 
 import { React, mui, useMemo, useSelector, useDispatch, PropTypes, clsx, DebouncedTextField } from 'mylife-tools-ui';
-import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../../actions/management';
-import { getOperationDetail } from '../../../selectors/management';
+import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../actions';
+import { getOperationDetail } from '../../selectors';
 import { getAccount, getGroupStack } from '../../../selectors/reference';
 
 import Title from './title';

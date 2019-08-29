@@ -1,9 +1,9 @@
 'use strict';
 
 import { useMemo, mui, useSelector, useDispatch } from 'mylife-tools-ui';
-import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../../selectors/management';
+import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../selectors';
 import { getAccount } from '../../../selectors/reference';
-import { selectOperation, showDetail } from '../../../actions/management';
+import { selectOperation, showDetail } from '../../actions';
 
 export const useConnect = () => {
   const dispatch = useDispatch();

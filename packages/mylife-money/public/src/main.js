@@ -7,7 +7,7 @@ import { referenceInit } from './actions/reference';
 
 import icons from './components/icons';
 import Home from './home/components';
-import Management from './components/management';
+import Management from './management/components';
 import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
 

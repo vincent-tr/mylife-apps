@@ -2,7 +2,7 @@
 
 import reference from './reference';
 import home from '../home/reducer';
-import management from './management';
+import management from '../management/reducer';
 import reporting from '../reporting/reducer';
 
 export default {

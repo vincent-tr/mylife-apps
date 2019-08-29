@@ -1,8 +1,8 @@
 'use strict';
 
 import { React, mui, useMemo, useSelector, useDispatch, useLifecycle, useScreenSize } from 'mylife-tools-ui';
-import { managementEnter, managementLeave } from '../../actions/management';
-import { isOperationDetail } from '../../selectors/management';
+import { managementEnter, managementLeave } from '../actions';
+import { isOperationDetail } from '../selectors';
 
 import Tree from './tree';
 import List from './list';

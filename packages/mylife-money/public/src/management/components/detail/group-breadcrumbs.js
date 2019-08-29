@@ -1,8 +1,8 @@
 'use strict';
 
 import { React, mui, PropTypes } from 'mylife-tools-ui';
-import icons from '../../icons';
-import GroupSelectorButton from '../../common/group-selector-button';
+import icons from '../../../components/icons';
+import GroupSelectorButton from '../../../components/common/group-selector-button';
 
 const { makeStyles } = mui;
 

@@ -1,15 +1,15 @@
 'use strict';
 
 import { React, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryExpansionPanel, dialogs, useScreenSize } from 'mylife-tools-ui';
-import icons from '../../icons';
-import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../../actions/management';
-import { getSelectedOperations, getCriteria } from '../../../selectors/management';
+import icons from '../../../components/icons';
+import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
+import { getSelectedOperations, getCriteria } from '../../selectors';
 import { getAccounts, getGroup } from '../../../selectors/reference';
 
-import AccountSelector from '../../common/account-selector';
+import AccountSelector from '../../../components/common/account-selector';
 import ImportButton from './import-button';
-import GroupSelectorButton from '../../common/group-selector-button';
-import DateSelector from '../../common/date-selector';
+import GroupSelectorButton from '../../../components//common/group-selector-button';
+import DateSelector from '../../../components//common/date-selector';
 import GroupDenseSelector from './group-dense-selector';
 
 const useConnect = () => {
