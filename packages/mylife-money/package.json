@@ -20,7 +20,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.14.3",
-    "mylife-tools-build": "^1.1.0",
+    "mylife-tools-build": "^1.1.1",
     "mylife-tools-ui": "^1.0.2"
   },
   "license": "GPL-3.0+"
