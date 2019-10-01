@@ -7,7 +7,7 @@
   "author": "Vincent Trumpff",
   "scripts": {
     "lint": "eslint lib/* public/app/*",
-    "start:dev": "MONGO_HOST=localhost WEB_PORT=8003 ./bin/server.js --dev --loglevel=debug",
+    "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
     "build": "mylife-build-docker",
     "links:dev": "npm link mylife-tools-server && npm link mylife-tools-ui && npm link mylife-tools-build"

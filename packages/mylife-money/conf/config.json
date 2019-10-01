@@ -1,4 +1,4 @@
 {
-  "mongo": "mongodb://%{MONGO_HOST|mongo}:27017/mylife-money",
+  "mongo": "%{MONGO_URL}",
   "webServer": { "port": "%{WEB_PORT|80}" }
 }
