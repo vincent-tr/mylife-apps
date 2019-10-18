@@ -2,18 +2,17 @@
 
 //const { ObjectID } = require('mongodb');
 const monk         = require('monk');
-const config       = require('../conf/config');
 const coMonk       = require('co-monk');
 const co           = require('co');
 const log4js       = require('log4js');
 const logger       = log4js.getLogger('mylife:wine:crud');
 
-const db = monk(config.mongo);
-
 // ex:
-// create(router, 'capacity', 'capacities', (id) => [{ store: 'article', find: { capacity: id }}]);
+// create(config, router, 'capacity', 'capacities', (id) => [{ store: 'article', find: { capacity: id }}]);
 
-module.exports.create = (router, routerName, storeName, constraintChecker = () => [], itemFormatter = item => item) => {
+module.exports.create = (config, router, routerName, storeName, constraintChecker = () => [], itemFormatter = item => item) => {
+
+  const db = monk(config.mongo);
 
   router.route(`/${routerName}`).get(function(request, response) {
     getItems((err, res) => {
@@ -100,4 +99,3 @@ module.exports.create = (router, routerName, storeName, constraintChecker = () =
     }).then((value) => done(null, value), (err) => done(err));
   }
 };
-

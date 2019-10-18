@@ -26,13 +26,13 @@ module.exports = class {
       app.use(webpackMiddleware(webpack(webpackConfig), { publicPath: webpackConfig.output.publicPath }));
     }
     app.use(favicon(path.join(publicDirectory, 'images/favicon.ico')));
-    app.use('/api', createApi());
+    app.use('/api', createApi(config));
     app.use(serveStatic(publicDirectory));
 
     this._server = http.Server(app);
     enableDestroy(this._server);
 
-    this._server.listen(config.port);
+    this._server.listen(config.webServer.port);
   }
 
   close(done) {
