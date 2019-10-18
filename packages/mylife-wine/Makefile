@@ -18,3 +18,7 @@ start:
 
 bundle:
 	$(BIN)/webpack -d
+
+build-docker:
+	$(eval package_version := $(shell node -p "require(path.join(process.cwd(), './package.json')).version"))
+	docker build -t "vincenttr/mylife-wine:$(package_version)" --build-arg "package_version=$(package_version)" - < "tools/Dockerfile"
