@@ -56,7 +56,7 @@
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-wine} WEB_PORT=8004 node ./bin/server.js --dev --loglevel=debug",
     "start": "node ./bin/server.js",
     "bundle": "webpack -d",
-    "build": "package_version=$(node -p \"require(path.join(process.cwd(), './package.json')).version\") docker build -t \"vincenttr/mylife-wine:$(package_version)\" --build-arg \"package_version=$(package_version)\" - < \"tools/Dockerfile\""
+    "build": "./bin/build-docker.sh"
   },
   "license": "GPL-3.0+"
 }
