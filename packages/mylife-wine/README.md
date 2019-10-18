@@ -8,5 +8,5 @@ TODO:
  - npm update
  - npm version major|minor|patch
  - git push && git push --tags
- - make build-docker
+ - npm run build
  - docker push vincenttr/mylife-wine
