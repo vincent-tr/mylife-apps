@@ -1,6 +1,7 @@
 'use strict';
 
-const config = require('../conf/config');
+const readConfig = require('read-config');
+const config = readConfig('../conf/config');
 const Server = require('../lib/server');
 
 const dev = process.argv.includes('--dev');
