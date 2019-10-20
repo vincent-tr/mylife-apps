@@ -1,7 +1,7 @@
 {
-  "port" : 8013,
+  "port" : 80,
   "roots" : [
-    { "name" : "Share", "path" : "/Volumes/share" },
-    { "name" : "Users", "path" : "/Users", "hidden" : true }
+    { "name" : "Share", "path" : "/mnt/files-share" },
+    { "name" : "Q", "path" : "/mnt/files-q", "hidden" : true }
   ]
 }
