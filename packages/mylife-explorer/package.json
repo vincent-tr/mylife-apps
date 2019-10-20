@@ -8,7 +8,7 @@
     "lint": "eslint lib/* public/app/*",
     "bundle": "webpack --config webpack.config.js --mode=production",
     "start:dev": "DEBUG=mylife:gallery:* node bin/server.js --dev",
-    "start:docker": "DEBUG=mylife:gallery:* node bin/server.js"
+    "start": "DEBUG=mylife:gallery:* node ./bin/server.js"
   },
   "repository": {
     "type": "git",
