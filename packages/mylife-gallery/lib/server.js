@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('../conf/config');
+const config = require('./config');
 const WebServer = require('./web/server');
 const SyncServer = require('./sync/server');
 

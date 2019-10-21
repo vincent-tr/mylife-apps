@@ -5,7 +5,7 @@ const fs                     = require('fs').promises;
 const express                = require('express');
 const asyncHandler           = require('express-async-handler');
 const LRU                    = require('lru-cache');
-const config                 = require('../../conf/config');
+const config                 = require('../config');
 const { images, thumbnails, unwrapBinary } = require('../repository');
 
 const debug = require('debug')('mylife:gallery:web:image-routes');

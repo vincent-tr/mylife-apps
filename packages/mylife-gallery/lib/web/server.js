@@ -8,7 +8,7 @@ const enableDestroy      = require('server-destroy');
 const createIndexRoutes  = require('./index-routes');
 const createImagesRoutes = require('./images-routes');
 const createApiRoutes    = require('./api-routes');
-const config             = require('../../conf/config');
+const config             = require('../config');
 
 const debug = require('debug')('mylife:gallery:web:server');
 
@@ -39,8 +39,8 @@ module.exports = class Server {
     this._server = http.Server(app);
     enableDestroy(this._server);
 
-    debug(`Start listening on port ${config.port}`);
-    this._server.listen(config.port);
+    debug(`Start listening on port ${config.webServer.port}`);
+    this._server.listen(config.webServer.port);
   }
 
   async close() {

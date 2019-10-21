@@ -3,7 +3,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { images, thumbnails, wrapBinary } = require('../repository');
-const config = require('../../conf/config');
+const config = require('../config');
 const { supportedExtensions, arrayDiff, directoryList } = require('./common');
 const { load } = require('./image-loader');
 

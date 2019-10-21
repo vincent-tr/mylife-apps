@@ -3,7 +3,7 @@
 const { URL }                           = require('url');
 const { MongoClient, ObjectID, Binary } = require('mongodb');
 const debug                             = require('debug')('mylife:gallery:repository:data');
-const config                            = require('../../conf/config');
+const config                            = require('../config');
 
 let client = null;
 let db = null;

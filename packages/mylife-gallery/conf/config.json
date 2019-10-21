@@ -1,8 +1,7 @@
 {
-  "port" : 8012,
-  "gallery" : "/Volumes/share/Photos",
-  "__gallery" : "/Users/vincent/Desktop/gallery/source",
-  "mongo": "mongodb://localhost:27017/mylife-gallery",
+  "webServer": { "port": "%{WEB_PORT|80}" },
+  "gallery" : "/mnt/files-share/Photos",
+  "mongo": "%{MONGO_URL}",
   "rawCacheSize" : 100000000,
   "thumbnailCacheSize" : 10000000,
   "useSyncServer" : false
