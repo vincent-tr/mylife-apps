@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint lib/* public/app/*",
     "bundle": "webpack --config webpack.config.js --mode=production",
+    "build": "./bin/build-docker.sh",
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} WEB_PORT=8012 node ./bin/server.js --dev --loglevel=debug",
     "start": "DEBUG=mylife:gallery:* node ./bin/server.js",
     "sync": "DEBUG=mylife:gallery:* node ./bin/sync.js"
