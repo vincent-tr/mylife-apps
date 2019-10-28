@@ -34,12 +34,8 @@ async function setupServer({ config = getConfig('webServer') }) {
 
   logger.info(`using public directoy : ${publicDirectory}`);
 
-  app.use(favicon(path.resolve(publicDirectory, 'images/favicon.svg')));
+  app.use(favicon(path.resolve(publicDirectory, 'favicon.ico')));
   app.use(express.static(publicDirectory));
-
-  const indexReference = { content: null };
-  loadDefaultIndex(publicDirectory, indexReference);
-  app.use(historyApiFallback(indexReference));
 
   const server = http.createServer(app);
   enableDestroy(server);
