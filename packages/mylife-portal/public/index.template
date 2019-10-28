@@ -4,253 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MyLife Apps</title>
-
-    <!-- Bootstrap -->
     <link href="dist/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-	<div class="page-header">
-		<h1 class="text-center">MyLife Apps</h1>
-	</div>
+  {{#sections}}
+  	<div class="page-header">
+  		<h1 class="text-center">{{display}}</h1>
+  	</div>
 
-	<div class="container">
-		<div class="row">
+  	<div class="container">
+      {{#items}}
+  		<div class="row">
 
-			<div class="col-sm-4 col-md-3 col-lg-2">
-				<a target="_blank" href="https://home-ui.mylife.ovh" class="btn thumbnail">
-					<img src="images/mylife.png" alt="...">
-					<div class="caption">
-						<h3>MyLife-Home</h3>
-					</div>
-				</a>
-			</div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="https://money.mylife.ovh" class="btn thumbnail">
-                                        <img src="images/mylife-money.svg" alt="...">
-                                        <div class="caption">
-                                                <h3>Money</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                         <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="https://wine.mylife.ovh" class="btn thumbnail">
-                                        <img src="images/mylife-wine.png" alt="...">
-                                        <div class="caption">
-                                                <h3>Wine</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="https://gallery.mylife.ovh" class="btn thumbnail">
-                                        <img src="images/camera.png" alt="...">
-                                        <div class="caption">
-                                                <h3>Photos</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://rpi-mpd-sdb.mti-team2.dyndns.org/" class="btn thumbnail">
-                                        <img src="images/mpd.png" alt="...">
-                                        <div class="caption">
-                                                <h3>MPD SDB</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://rpi2-mpd-eleonore.mti-team2.dyndns.org/" class="btn thumbnail">
-                                        <img src="images/mpd.png" alt="...">
-                                        <div class="caption">
-                                                <h3>MPD Eleo</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://rpi-mpd-sdbp.mti-team2.dyndns.org/" class="btn thumbnail">
-                                        <img src="images/mpd.png" alt="...">
-                                        <div class="caption">
-                                                <h3>MPD SDB P</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-			<div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://plex.mti-team2.dyndns.org:32400/" class="btn thumbnail">
-                                        <img style="width:155px;height:155px;" src="images/plex.svg" alt="...">
-                                        <div class="caption">
-                                                <h3>Plex</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-			<div class="col-sm-4 col-md-3 col-lg-2">
-				<a target="_blank" href="http://htpc-salon.mti-team2.dyndns.org/" class="btn thumbnail">
-					<img src="images/htpc.jpg" alt="...">
-					<div class="caption">
-						<h3>HTPC Salon</h3>
-					</div>
-				</a>
-			</div>
-
-			<div class="col-sm-4 col-md-3 col-lg-2">
-				<a target="_blank" href="http://rpi-htpc.mti-team2.dyndns.org:8080/" class="btn thumbnail">
-					<img src="images/htpc.jpg" alt="...">
-					<div class="caption">
-						<h3>HTPC Ch3</h3>
-					</div>
-				</a>
-			</div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://printer1.mti-team2.dyndns.org" class="btn thumbnail">
-                                        <img style="width:155px;height:155px;" src="images/printer.png" alt="...">
-                                        <div class="caption">
-                                                <h3>printer1</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://rpi-printer1.mti-team2.dyndns.org:631" class="btn thumbnail">
-                                        <img style="width:155px;height:155px;" src="images/printer.png" alt="...">
-                                        <div class="caption">
-                                                <h3>rpi-printer1</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="https://explorer.mylife.ovh" class="btn thumbnail">
-                                        <img style="width:155px;height:155px;" src="images/explorer.png" alt="...">
-                                        <div class="caption">
-                                                <h3>Explorer</h3>
-                                        </div>
-                                </a>
-                        </div>
-		</div>
-	</div>
-
-	<div class="page-header">
-		<h1 class="text-center">Admin Apps</h1>
-	</div>
-
-	<div class="container">
-		<div class="row">
-
-	                <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://nagios.mti-team2.dyndns.org/" class="btn thumbnail">
-                                        <img src="images/nagios.jpg" alt="...">
-                                        <div class="caption">
-                                                <h3>Nagios</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-			<div class="col-sm-4 col-md-3 col-lg-2">
-				<a target="_blank" href="http://wiki.apps.mti-team2.dyndns.org" class="btn thumbnail">
-					<img src="images/wiki.jpg" alt="...">
-					<div class="caption">
-						<h3>Wiki</h3>
-					</div>
-				</a>
-			</div>
-
-			<div class="col-sm-4 col-md-3 col-lg-2">
-				<a target="_blank" href="http://forum.apps.mti-team2.dyndns.org" class="btn thumbnail">
-					<img src="images/forum.jpg" alt="...">
-					<div class="caption">
-						<h3>Forum</h3>
-					</div>
-				</a>
-			</div>
-
-			<div class="col-sm-4 col-md-3 col-lg-2">
-				<a target="_blank" href="http://remote.mti-team2.dyndns.org/guacamole" class="btn thumbnail">
-					<img src="images/guacamole.png" alt="...">
-					<div class="caption">
-						<h3>Remote</h3>
-					</div>
-				</a>
-			</div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="https://k3s.mylife.ovh" class="btn thumbnail">
-                                        <img src="images/kubernetes.svg" alt="...">
-                                        <div class="caption">
-                                                <h3>Kubernetes</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="https://sso.mylife.ovh" class="btn thumbnail">
-                                        <img src="images/keycloak.svg" alt="...">
-                                        <div class="caption">
-                                                <h3>Keycloak</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://data.mti-team2.dyndns.org:9000/" class="btn thumbnail">
-                                        <img src="images/portainer.jpg" alt="...">
-                                        <div class="caption">
-                                                <h3>data portainer</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://data.mti-team2.dyndns.org:8081/" class="btn thumbnail">
-                                        <img src="images/mongodb.png" alt="...">
-                                        <div class="caption">
-                                                <h3>data mongodb</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://app-lamp.mti-team2.dyndns.org/phpMyAdmin" class="btn thumbnail">
-                                        <img src="images/phpmyadmin.png" alt="...">
-                                        <div class="caption">
-                                                <h3>phpMyAdmin</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://gateway.mti-team2.dyndns.org" class="btn thumbnail">
-                                        <img style="width:155px;height:155px;" src="images/openwrt.png" alt="...">
-                                        <div class="caption">
-                                                <h3>gateway</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://mylife-home-studio.apps.mti-team2.dyndns.org" class="btn thumbnail">
-                                        <img src="images/home-studio.png" alt="...">
-                                        <div class="caption">
-                                                <h3>Home Studio</h3>
-                                        </div>
-                                </a>
-                        </div>
-
-                        <div class="col-sm-4 col-md-3 col-lg-2">
-                                <a target="_blank" href="http://mylife-home-deploy.apps.mti-team2.dyndns.org" class="btn thumbnail">
-                                        <img style="width:155px;height:155px;" src="images/home-deploy.png" alt="...">
-                                        <div class="caption">
-                                                <h3>Home Deploy</h3>
-                                        </div>
-                                </a>
-                        </div>
- 		</div>
-	</div>
+  			<div class="col-sm-4 col-md-3 col-lg-2">
+  				<a target="_blank" href="{{target}}" class="btn thumbnail">
+  					<img style="width:155px;height:155px;" src="images/{{code}}" alt="...">
+  					<div class="caption">
+  						<h3>{{display}}</h3>
+  					</div>
+  				</a>
+  			</div>
+        {{/items}}
+      </div>
+    {{/sections}}
 
     <script src="dist/jquery/jquery.slim.min.js"></script>
     <script src="dist/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -62,7 +62,6 @@ function createIndexRenderer(templateFile) {
   const update = () => {
     logger.info('rebuilding index');
     const context = buildContext();
-    console.log(JSON.stringify(context, null, 2));
     content = template(context);
   };
 
