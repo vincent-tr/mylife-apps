@@ -30,11 +30,16 @@ registerService(PortalWebServer);
 
 async function setupServer({ config = getConfig('webServer') }) {
   const app = express();
-  const publicDirectory = path.resolve(getDefine('baseDirectory'), 'public');
+  const baseDirectory = getDefine('baseDirectory');
+  const publicDirectory = path.resolve(baseDirectory, 'public');
   logger.info(`using public directoy : ${publicDirectory}`);
 
   app.use(favicon(path.resolve(publicDirectory, 'favicon.ico')));
+  app.use('/dist/bootstrap', express.static(path.resolve(baseDirectory, 'node_modules/bootstrap/dist')));
+  app.use('/dist/jquery', express.static(path.resolve(baseDirectory, 'node_modules/jquery/dist')));
   app.get('/', createIndexRenderer(path.resolve(publicDirectory, 'index.template')));
+
+  app.get('/images/*', (req, res) => res.status(200).sendFile(path.resolve(publicDirectory, 'favicon.ico')));
 
   // TODO: images
 
