@@ -1,0 +1,29 @@
+{
+  "name": "mylife-portal",
+  "version": "1.0.0",
+  "description": "MyLife Portal",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint lib/*",
+    "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8015 ./bin/server.js --dev --loglevel=debug",
+    "start": "./bin/server.js",
+    "build": "mylife-build-docker"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vincent-tr/mylife-portal.git"
+  },
+  "author": "Vincent Trumpff",
+  "license": "GPL-3.0+",
+  "bugs": {
+    "url": "https://github.com/vincent-tr/mylife-portal/issues"
+  },
+  "homepage": "https://github.com/vincent-tr/mylife-portal#readme",
+  "dependencies": {
+    "mylife-tools-server": "^1.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "mylife-tools-build": "^1.2.0"
+  }
+}
