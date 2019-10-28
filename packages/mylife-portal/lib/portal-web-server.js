@@ -108,14 +108,13 @@ function createImagesRenderer() {
       if(!icon || !iconMime) {
         continue;
       }
-      console.log(icon.buffer)
 
       images[code] = { buffer: icon, mime: iconMime };
     }
   }
 
   update();
-  
+
   const items = getStoreCollection('items');
   items.on('change', update);
 
@@ -123,6 +122,7 @@ function createImagesRenderer() {
     const { code } = req.params;
     const image = images[code];
     if(!image) {
+      logger.debug(`image not found for code '${code}'`);
       return res.status(404).end();
     }
 
