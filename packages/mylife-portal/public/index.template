@@ -6,7 +6,7 @@
     <title>MyLife Portal</title>
   </head>
   <body>
-    Hello!
+    {{body}}
   </body>
 
 </html>

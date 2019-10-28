@@ -6,6 +6,7 @@ const http          = require('http');
 const express       = require('express'); // use from mylife-tools-server
 const favicon       = require('serve-favicon'); // use from mylife-tools-server
 const enableDestroy = require('server-destroy'); // use from mylife-tools-server
+const Handlebars    = require('handlebars');
 
 const { createLogger, getDefine, getConfig, registerService, getService } = require('mylife-tools-server');
 
@@ -29,13 +30,13 @@ registerService(PortalWebServer);
 
 async function setupServer({ config = getConfig('webServer') }) {
   const app = express();
-
   const publicDirectory = path.resolve(getDefine('baseDirectory'), 'public');
-
   logger.info(`using public directoy : ${publicDirectory}`);
 
   app.use(favicon(path.resolve(publicDirectory, 'favicon.ico')));
-  app.use(express.static(publicDirectory));
+  app.get('/', createIndexRenderer(path.resolve(publicDirectory, 'index.template')));
+
+  // TODO: images
 
   const server = http.createServer(app);
   enableDestroy(server);
@@ -50,10 +51,17 @@ async function asyncCall(target) {
   return new Promise((resolve, reject) => target((err, res) => (err ? reject(err) : resolve(res))));
 }
 
-function loadDefaultIndex(publicDirectory, indexReference) {
-  indexReference.content = fs.readFileSync(path.join(publicDirectory, 'index.html'));
-}
+function createIndexRenderer(templateFile) {
+  const template = Handlebars.compile(fs.readFileSync(templateFile, 'utf-8'));
 
-function historyApiFallback(indexReference) {
-  return (req, res) => res.end(indexReference.content);
+  // TODO
+  const context = { body: 'Hello!' };
+  const content = template(context);
+
+  return (req, res) => {
+    res.status(200)
+       .set('Content-Type', 'text/html')
+       .send(content)
+       .end();
+  };
 }

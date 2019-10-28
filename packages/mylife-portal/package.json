@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/vincent-tr/mylife-portal#readme",
   "dependencies": {
+    "handlebars": "^4.4.5",
     "mylife-tools-server": "^1.0.4"
   },
   "devDependencies": {
