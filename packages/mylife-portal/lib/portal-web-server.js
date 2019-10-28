@@ -8,7 +8,7 @@ const favicon       = require('serve-favicon'); // use from mylife-tools-server
 const enableDestroy = require('server-destroy'); // use from mylife-tools-server
 const Handlebars    = require('handlebars');
 
-const { createLogger, getDefine, getConfig, registerService, getService } = require('mylife-tools-server');
+const { createLogger, getDefine, getConfig, registerService, getStoreCollection } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:portal:portal-web-server');
 
@@ -58,10 +58,21 @@ async function asyncCall(target) {
 
 function createIndexRenderer(templateFile) {
   const template = Handlebars.compile(fs.readFileSync(templateFile, 'utf-8'));
+  let content;
 
-  // TODO
-  const context = { body: 'Hello!' };
-  const content = template(context);
+  const update = () => {
+    logger.info('rebuilding index');
+    const context = buildContext();
+    console.log(JSON.stringify(context, null, 2));
+    content = template(context);
+  };
+
+  update();
+
+  const sections = getStoreCollection('sections');
+  const items = getStoreCollection('items');
+  sections.on('change', update);
+  items.on('change', update);
 
   return (req, res) => {
     res.status(200)
@@ -69,4 +80,25 @@ function createIndexRenderer(templateFile) {
        .send(content)
        .end();
   };
+}
+
+function buildContext() {
+  const sections = getStoreCollection('sections').list();
+  const items = getStoreCollection('items').list();
+
+  return { sections: sections.map(section => ({
+    display: section.display,
+    items: section.items.map(code => {
+      const item = items.find(item => item.code === code);
+      if(!item) {
+        return;
+      }
+
+      return {
+        code: item.code,
+        display: item.display,
+        target: item.target
+      };
+    }).filter(x => x)
+  }))};
 }
