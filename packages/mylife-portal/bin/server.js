@@ -9,5 +9,5 @@ const metadataDefintions = require('../lib/metadata');
 const storeConfiguration = require('../lib/store-configuration');
 
 const services = ['portal-web-server'];
-const parameters = { apiServices, metadataDefintions, storeConfiguration };
+const parameters = { metadataDefintions, storeConfiguration };
 runServices({ services, ... parameters });
