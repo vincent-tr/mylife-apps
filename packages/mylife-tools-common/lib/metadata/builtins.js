@@ -8,7 +8,8 @@ exports.datatypes = [
   { id: 'count', primitive: 'number' },
   { id: 'date', primitive: 'timestamp' },
   { id: 'datetime', primitive: 'timestamp' },
-  { id: 'any', primitive: 'any' }
+  { id: 'any', primitive: 'any' },
+  { id: 'binary', primitive: 'binary' }
 ];
 
 exports.entities = [
