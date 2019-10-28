@@ -3,7 +3,7 @@
 'use strict';
 
 const path = require('path');
-const { buildWeb } = require('./lib/build-web');
+const { buildWeb } = require('../lib/build-web');
 
 main();
 

@@ -4,7 +4,7 @@
   "description": "MyLife Tools Build",
   "main": "lib/index.js",
   "bin": {
-    "mylife-build-web": "./bin/build-web.js",
+    "mylife-build": "./bin/build.js",
     "mylife-build-docker": "./bin/build-docker.sh"
   },
   "scripts": {
