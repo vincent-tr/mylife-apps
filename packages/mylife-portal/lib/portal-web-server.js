@@ -38,9 +38,7 @@ async function setupServer({ config = getConfig('webServer') }) {
   app.use('/dist/bootstrap', express.static(path.resolve(baseDirectory, 'node_modules/bootstrap/dist')));
   app.use('/dist/jquery', express.static(path.resolve(baseDirectory, 'node_modules/jquery/dist')));
   app.get('/', createIndexRenderer(path.resolve(publicDirectory, 'index.template')));
-
-  // TODO: images
-  app.get('/images/*', (req, res) => res.status(200).sendFile(path.resolve(publicDirectory, 'favicon.ico')));
+  app.get('/images/:code', createImagesRenderer());
 
   const server = http.createServer(app);
   enableDestroy(server);
@@ -99,4 +97,38 @@ function buildContext() {
       };
     }).filter(x => x)
   }))};
+}
+
+function createImagesRenderer() {
+  let images = {};
+  const update = () => {
+    const items = getStoreCollection('items').list();
+    images = {};
+    for(const { code, icon, iconMime } of items) {
+      if(!icon || !iconMime) {
+        continue;
+      }
+      console.log(icon.buffer)
+
+      images[code] = { buffer: icon, mime: iconMime };
+    }
+  }
+
+  update();
+  
+  const items = getStoreCollection('items');
+  items.on('change', update);
+
+  return (req, res) => {
+    const { code } = req.params;
+    const image = images[code];
+    if(!image) {
+      return res.status(404).end();
+    }
+
+    res.status(200)
+       .set('Content-Type', image.mime)
+       .send(image.buffer)
+       .end();
+  };
 }
