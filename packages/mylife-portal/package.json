@@ -23,7 +23,8 @@
     "bootstrap": "^3.4.1",
     "handlebars": "^4.4.5",
     "jquery": "^3.4.1",
-    "mylife-tools-server": "^1.0.5"
+    "mylife-tools-server": "^1.0.5",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
