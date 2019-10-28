@@ -1,6 +1,6 @@
 {
   "name": "mylife-portal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MyLife Portal",
   "main": "index.js",
   "scripts": {
