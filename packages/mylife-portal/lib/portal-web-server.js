@@ -39,9 +39,8 @@ async function setupServer({ config = getConfig('webServer') }) {
   app.use('/dist/jquery', express.static(path.resolve(baseDirectory, 'node_modules/jquery/dist')));
   app.get('/', createIndexRenderer(path.resolve(publicDirectory, 'index.template')));
 
-  app.get('/images/*', (req, res) => res.status(200).sendFile(path.resolve(publicDirectory, 'favicon.ico')));
-
   // TODO: images
+  app.get('/images/*', (req, res) => res.status(200).sendFile(path.resolve(publicDirectory, 'favicon.ico')));
 
   const server = http.createServer(app);
   enableDestroy(server);
