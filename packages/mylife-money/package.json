@@ -13,15 +13,15 @@
     "links:dev": "npm link mylife-tools-server && npm link mylife-tools-ui && npm link mylife-tools-build"
   },
   "dependencies": {
-    "csv-parse": "^4.4.7",
+    "csv-parse": "^4.6.5",
     "moment": "^2.24.0",
-    "mylife-tools-server": "^1.0.3"
+    "mylife-tools-server": "^1.0.6"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.15.0",
-    "mylife-tools-build": "^1.1.2",
-    "mylife-tools-ui": "^1.0.2"
+    "eslint-plugin-react": "^7.16.0",
+    "mylife-tools-build": "^1.2.0",
+    "mylife-tools-ui": "^1.0.3"
   },
   "license": "GPL-3.0+",
   "mylifeBuild": {
