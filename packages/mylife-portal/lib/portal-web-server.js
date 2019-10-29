@@ -79,7 +79,7 @@ function createIndexRenderer(templateFile) {
 }
 
 function buildContext() {
-  const sections = getStoreCollection('sections').list();
+  const sections = getStoreCollection('sections').list().sort((s1, s2) => s1.order - s2.order);
   const items = getStoreCollection('items').list();
 
   return { sections: sections.map(section => ({
