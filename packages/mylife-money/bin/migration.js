@@ -55,6 +55,7 @@ function transformOperation(operation) {
   changed |= stringToOid(operation, 'account');
   changed |= nullToUndefined(operation, 'group');
   changed |= nullToUndefined(operation, 'note');
+  changed |= stringToDate(operation, 'date');
 
   return changed && operation;
 }
@@ -69,6 +70,15 @@ function stringToOid(record, prop) {
   }
 
   record[prop] = newObjectID(record[prop]);
+  return true;
+}
+
+function stringToDate(record, prop) {
+  if(typeof record[prop] !== 'string') {
+    return false;
+  }
+
+  record[prop] = new Date(record[prop]);
   return true;
 }
 
