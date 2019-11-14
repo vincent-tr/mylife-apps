@@ -56,7 +56,7 @@ function filterExisting(records) {
   // "merge" the day, then use all after
   const lastOperationDate = lastOperation.date;
   const lastDayOperations = operations.filter(operation => operation.date === lastOperationDate);
-  const opHashSet = new Set(lastDayOperations.map(op => `${op.amout}|${op.account}|${op.label}`));
+  const opHashSet = new Set(lastDayOperations.map(op => `${op.amount}|${op.account}|${op.label}`));
 
   return records.filter(rec => {
     if(rec.date < lastOperationDate) {
@@ -67,7 +67,7 @@ function filterExisting(records) {
     }
 
     // lookup into lastDayOperations by amount/label/account
-    const recHash = `${rec.amout}|${rec.account}|${rec.label}`;
+    const recHash = `${rec.amount}|${rec.account}|${rec.label}`;
     return !opHashSet.has(recHash);
   });
 }
