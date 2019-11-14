@@ -6,9 +6,6 @@ const { createLogger, getStoreCollection } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:money:importer');
 
-const parseDate   = (input) => moment(input, 'dd/MM/yyyy').toDate();
-const parseNumber = (input) => parseFloat(input.replace(',','.'));
-
 exports.operationsImport = (account, data) => {
 
   let records = parseRecords(account, data);
@@ -32,6 +29,18 @@ function parseRecords(account, data) {
     label   : r.label,
     account
   }));
+}
+
+function parseDate(input) {
+  const momentDate = moment(input, 'DD/MM/YYYY', true);
+  if(!momentDate.isValid()) {
+    throw new Error(`Date '${input}' could not be parsed`);
+  }
+  return momentDate.toDate();
+}
+
+function parseNumber(input) {
+  return parseFloat(input.replace(',','.'));
 }
 
 function findLastOperation() {
