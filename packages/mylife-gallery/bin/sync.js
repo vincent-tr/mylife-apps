@@ -1,4 +1,8 @@
+#!/usr/bin/env node
+
 'use strict';
+
+require('../lib/init');
 
 const { sync } = require('../lib/sync');
 const { close } = require('../lib/repository');

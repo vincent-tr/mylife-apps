@@ -1,6 +1,9 @@
+#!/usr/bin/env node
+
 'use strict';
 
 const debug = require('debug')('mylife:gallery:bin:server');
+require('../lib/init');
 const Server = require('../lib/server');
 
 const dev = process.argv.includes('--dev');
