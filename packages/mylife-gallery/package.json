@@ -7,7 +7,6 @@
     "lint": "eslint lib/* public/app/*",
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
-    "sync": "./bin/sync.js",
     "build": "mylife-build-docker",
     "links:dev": "npm link mylife-tools-server && npm link mylife-tools-ui && npm link mylife-tools-build"
   },
