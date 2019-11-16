@@ -1,6 +1,5 @@
 'use strict';
 
-const config = require('./config');
 const WebServer = require('./web/server');
 const SyncServer = require('./sync/server');
 
@@ -8,9 +7,7 @@ module.exports = class Server {
 
   async init(options) {
     this._web = new WebServer(options);
-    if(config.useSyncServer) {
-      this._sync = new SyncServer();
-    }
+    this._sync = new SyncServer();
   }
 
   async close() {
