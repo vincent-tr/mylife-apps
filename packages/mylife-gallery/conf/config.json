@@ -1,8 +1,5 @@
 {
   "webServer": { "port": "%{WEB_PORT|80}" },
   "gallery" : "%{GALLERY_PATH}",
-  "mongo": "%{MONGO_URL}",
-  "rawCacheSize" : 100000000,
-  "thumbnailCacheSize" : 10000000,
-  "useSyncServer" : false
+  "mongo": "%{MONGO_URL}"
 }
