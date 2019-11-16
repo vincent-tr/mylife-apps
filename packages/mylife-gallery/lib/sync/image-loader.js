@@ -2,7 +2,7 @@
 
 const fs    = require('fs').promises;
 const jimp = require('jimp');
-const ExifImage = require('exif').ExifImage;
+const exifParser = require('exif-parser');
 const { createLogger } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:gallery:sync:image-loader');
@@ -17,10 +17,11 @@ exports.load = async function load(fullPath) {
     const content = await fs.readFile(fullPath);
 
     try {
-      const { image, exif, gps } = await runExif(content);
-      metadata.from = image.Model;
-      metadata.date = exif.DateTimeOriginal || exif.CreateDate || exif.ModifyDate;
-      metadata.gps = formatGPS(gps);
+      const parser = exifParser.create(content);
+      const { tags } = parser.parse();
+      metadata.from = tags.Model;
+      metadata.date = formatDate(tags.DateTimeOriginal || tags.CreateDate || tags.ModifyDate);
+      metadata.gps = formatGPS(tags);
     } catch(err) {
       logger.error(`Error loading image metadata '${fullPath}': ${err.stack}`);
     }
@@ -40,14 +41,8 @@ exports.load = async function load(fullPath) {
   }
 };
 
-async function runExif(...args) {
-  return new Promise((resolve, reject) => {
-    try {
-      new ExifImage(...args, (err, data) => (err ? reject(err) : resolve(data)));
-    } catch(err) {
-      reject(err);
-    }
-  });
+function formatDate(value) {
+  return new Date(value * 1000);
 }
 
 function formatGPS(gps) {
@@ -66,19 +61,15 @@ function formatGPS(gps) {
     return;
   }
 
-  let latitude = timeToDec(GPSLatitude);
+  let latitude = /*timeToDec*/(GPSLatitude);
   if(GPSLatitudeRef === 'W') {
     latitude *= -1;
   }
 
-  let longitude = timeToDec(GPSLongitude);
+  let longitude = /*timeToDec*/(GPSLongitude);
   if(GPSLongitudeRef === 'W') {
     longitude *= -1;
   }
 
   return { latitude, longitude };
-}
-
-function timeToDec([ h, m, s ]) {
-  return h + m / 60 + s / 3600;
 }
