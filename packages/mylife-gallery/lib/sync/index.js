@@ -1,35 +1,44 @@
 'use strict';
 
-const albums = require('./albums');
-const images = require('./images');
+const { createLogger, registerService } = require('mylife-tools-server');
 
-exports.sync = async function() {
-  const { add, remove, keep } = await albums.diff();
+const logger = createLogger('mylife:gallery:sync:server');
 
-  for(const name of remove) {
-    await albums.delete(name);
-  }
-  for(const name of keep) {
-    const album = await albums.update(name);
-    await syncAlbum(album);
-  }
-  for(const name of add) {
-    const album = await albums.create(name);
-    await syncAlbum(album);
-  }
-};
+const { sync } = require('./api');
 
-async function syncAlbum(album) {
-  const { add, remove } = await images.diff(album);
-
-  for(const ipath of remove) {
-    await images.delete(album, ipath);
-  }
-  for(const ipath of add) {
-    await images.create(album, ipath);
+class SyncServer {
+  async init() {
+    this._running = false;
+    this._timer = setInterval(() => this._run(), 10 * 60 * 1000);
   }
 
-  if(add.length || remove.length) {
-    await albums.aggregate(album);
+  async terminate() {
+    clearInterval(this._timer);
+    this._timer = null;
+    // TODO: must wait for/kill current run ?
+  }
+
+  async _run() {
+    if(this._running) {
+      return;
+    }
+    this._running = true;
+
+    logger.debug('Starting sync');
+    const startTime = Date.now();
+
+    try {
+      await sync();
+    } catch(err) {
+      logger.error(err.stack);
+    } finally {
+      const elapsedTime = Date.now() - startTime;
+      logger.debug(`Sync done (${(elapsedTime / 1000).toFixed(3)})`);
+      this._running = false;
+    }
   }
 }
+
+SyncServer.serviceName = 'sync-server';
+
+registerService(SyncServer);
