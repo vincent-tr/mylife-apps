@@ -2,9 +2,8 @@
 
 const fs = require('fs').promises;
 const path = require('path');
-const { createLogger } = require('mylife-tools-server');
+const { createLogger, getConfig } = require('mylife-tools-server');
 const { albums, images, thumbnails } = require('../repository');
-const config = require('../config');
 const { supportedExtensions, arrayDiff, directoryList } = require('./common');
 
 
@@ -13,7 +12,7 @@ const logger = createLogger('mylife:gallery:sync:albums');
 async function fsList() {
   const list = [];
   // a directory with at least one image inside
-  for(const item of await directoryList(config.gallery)) {
+  for(const item of await directoryList(getConfig('gallery'))) {
     const stat = await fs.lstat(item);
     if(!stat.isDirectory()) {
       continue;

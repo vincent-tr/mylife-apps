@@ -2,9 +2,8 @@
 
 const fs = require('fs').promises;
 const path = require('path');
-const { createLogger } = require('mylife-tools-server');
+const { createLogger, getConfig } = require('mylife-tools-server');
 const { images, thumbnails, wrapBinary } = require('../repository');
-const config = require('../config');
 const { supportedExtensions, arrayDiff, directoryList } = require('./common');
 const { load } = require('./image-loader');
 
@@ -12,7 +11,7 @@ const logger = createLogger('mylife:gallery:sync:images');
 
 async function fsList(album) {
   const list = [];
-  const albumDirectory = path.join(config.gallery, album.name);
+  const albumDirectory = path.join(getConfig('gallery'), album.name);
   await fsListDir(list, albumDirectory);
   return list;
 }
@@ -36,7 +35,7 @@ async function fsListDir(list, directory) {
     const stat = await fs.lstat(item);
 
     if(stat.isFile() && ext && supportedExtensions.has(ext.toLowerCase())) {
-      list.push(path.relative(config.gallery, item));
+      list.push(path.relative(getConfig('gallery'), item));
       continue;
     }
 
@@ -59,7 +58,7 @@ exports.delete = async function delete_(album, ipath) {
 exports.create = async function create(album, ipath) {
   logger.info(`Create image '${ipath}' of album '${album.name}'`);
 
-  const result = await load(path.join(config.gallery, ipath));
+  const result = await load(path.join(getConfig('gallery'), ipath));
   if(!result) {
     // loading failed
     return;

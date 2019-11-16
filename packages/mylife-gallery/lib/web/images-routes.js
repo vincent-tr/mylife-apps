@@ -1,7 +1,8 @@
 'use strict';
 
-const path                   = require('path');
-const config                 = require('../config');
+const path = require('path');
+const { getConfig } = require('mylife-tools-server');
+
 const { images, thumbnails, unwrapBinary } = require('../repository');
 
 module.exports = ({ express, asyncHandler }) => {
@@ -11,7 +12,7 @@ module.exports = ({ express, asyncHandler }) => {
     const { iid } = req.params;
     const { ipath, mime } = await images.getByIId(iid);
     res.contentType(mime);
-    res.sendFile(path.join(config.gallery, ipath));
+    res.sendFile(path.join(getConfig('gallery'), ipath));
   }));
 
   router.route('/thumbnail/:iid').get(asyncHandler(async (req, res) => {
