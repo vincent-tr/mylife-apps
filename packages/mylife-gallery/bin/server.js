@@ -2,8 +2,10 @@
 
 'use strict';
 
-const debug = require('debug')('mylife:gallery:bin:server');
 require('../lib/init');
+const { createLogger } = require('mylife-tools-server');
+
+const logger = createLogger('mylife:gallery:bin:server');
 const Server = require('../lib/server');
 
 const dev = process.argv.includes('--dev');
@@ -13,7 +15,7 @@ let server;
 
 async function start() {
 
-  debug(`Starting server (options=${JSON.stringify(options)})`);
+  logger.info(`Starting server (options=${JSON.stringify(options)})`);
 
   try {
     server = new Server();
