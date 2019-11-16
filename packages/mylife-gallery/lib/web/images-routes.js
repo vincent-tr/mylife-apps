@@ -1,20 +1,11 @@
 'use strict';
 
 const path                   = require('path');
-const fs                     = require('fs').promises;
-const express                = require('express');
-const asyncHandler           = require('express-async-handler');
-const LRU                    = require('lru-cache');
 const config                 = require('../config');
 const { images, thumbnails, unwrapBinary } = require('../repository');
 
-const debug = require('debug')('mylife:gallery:web:image-routes');
-
-module.exports = () => {
+module.exports = ({ express, asyncHandler }) => {
   const router = express.Router();
-
-  //const rawCache = LRU({ max : config.rawCacheSize, length : cachenEntryLength });
-  //const thumbnailCache = LRU({ max : config.thumbnailCacheSize, length : cachenEntryLength });
 
   router.route('/raw/:iid').get(asyncHandler(async (req, res) => {
     const { iid } = req.params;
@@ -32,20 +23,3 @@ module.exports = () => {
 
   return router;
 };
-/*
-async function sendImage(res, cache, id, path, mime) {
-  let content = cache.get(id);
-  if(!content) {
-    debug(`Loading image file '${path}'`);
-    content = await fs.readFile(path);
-    cache.set(id, content);
-  }
-
-  res.contentType(mime);
-  res.send(content);
-}
-
-function cachenEntryLength(item) {
-  return item.length;
-}
-*/

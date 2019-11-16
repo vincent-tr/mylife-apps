@@ -1,10 +1,9 @@
 'use strict';
 
-const express = require('express');
-const asyncHandler = require('express-async-handler');
 const { albums, images } = require('../repository');
 
-module.exports = () => {
+// TODO: use webApiHandler
+module.exports = ({ express, asyncHandler, webApiHandler }) => {
   const router = express.Router();
 
   router.route('/albums').get(asyncHandler(async (req, res) => {
