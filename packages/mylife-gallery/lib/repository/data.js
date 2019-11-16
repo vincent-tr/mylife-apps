@@ -16,9 +16,9 @@ exports.set = async function set(name, object) {
     return await collection.replaceOne({ _id : object._id }, object);
   }
 
-  object._id = wrapObjectID();
+  const result = await collection.insertOne(object);
   logger.info(`Insert ${name} (id: ${object._id})`);
-  return await collection.insertOne(object);
+  return result;
 };
 
 exports.delete = async function delete_(name, id) {
@@ -37,10 +37,9 @@ async function find(name, query, options) {
   return await objects.toArray();
 }
 
-exports.wrapObjectID = wrapObjectID;
-function wrapObjectID(value) {
+exports.wrapObjectID = function wrapObjectID(value) {
   getService('database').newObjectID(value);
-}
+};
 
 exports.wrapBinary = function wrapBinary(buffer) {
   getService('database').newBinary(buffer);
