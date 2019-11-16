@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, getStoreCollection, getService } = require('mylife-tools-server');
+const { createLogger, getDatabaseCollection, getService } = require('mylife-tools-server');
 const logger = createLogger('mylife:gallery:repository:data');
 
 exports.get = async function get(name, id) {
@@ -9,7 +9,7 @@ exports.get = async function get(name, id) {
 };
 
 exports.set = async function set(name, object) {
-  const collection = getStoreCollection(name);
+  const collection = getDatabaseCollection(name);
 
   if(object._id) {
     logger.info(`Update ${name} (id: ${object._id})`);
@@ -22,7 +22,7 @@ exports.set = async function set(name, object) {
 };
 
 exports.delete = async function delete_(name, id) {
-  const collection = getStoreCollection(name);
+  const collection = getDatabaseCollection(name);
 
   logger.info(`Delete ${name} (id: ${id})`);
   return await collection.deleteOne({ _id : id });
@@ -30,7 +30,7 @@ exports.delete = async function delete_(name, id) {
 
 exports.find = find;
 async function find(name, query, options) {
-  const collection = getStoreCollection(name);
+  const collection = getDatabaseCollection(name);
 
   logger.debug(`Find ${name} (query: ${JSON.stringify(query)}, options: ${JSON.stringify(options)})`);
   const objects = await collection.find(query, options);
