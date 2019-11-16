@@ -3,12 +3,13 @@
 const fs    = require('fs').promises;
 const jimp = require('jimp');
 const ExifImage = require('exif').ExifImage;
+const { createLogger } = require('mylife-tools-server');
 
-const debug = require('debug')('mylife:gallery:sync:image-loader');
+const logger = createLogger('mylife:gallery:sync:image-loader');
 
 exports.load = async function load(fullPath) {
 
-  debug(`Loading file '${fullPath}'`);
+  logger.debug(`Loading file '${fullPath}'`);
   try {
 
     const metadata = {};
@@ -21,7 +22,7 @@ exports.load = async function load(fullPath) {
       metadata.date = exif.DateTimeOriginal || exif.CreateDate || exif.ModifyDate;
       metadata.gps = formatGPS(gps);
     } catch(err) {
-      console.error(`Error loading image metadata '${fullPath}'`, err);
+      logger.error(`Error loading image metadata '${fullPath}': ${err.stack}`);
     }
 
     const image = await jimp.read(content);
@@ -30,12 +31,12 @@ exports.load = async function load(fullPath) {
 
     const thumbnail = await image.scaleToFit(200, 200).getBufferAsync(jimp.MIME_PNG);
 
-    debug(`File loaded (iid=${iid})`);
+    logger.debug(`File loaded (iid=${iid})`);
 
     return { metadata, iid, mime, thumbnail };
 
   } catch(err) {
-    console.error(`Error loading image '${fullPath}'`, err);
+    logger.error(`Error loading image '${fullPath}': ${err.stack}`);
   }
 };
 
@@ -81,4 +82,3 @@ function formatGPS(gps) {
 function timeToDec([ h, m, s ]) {
   return h + m / 60 + s / 3600;
 }
-

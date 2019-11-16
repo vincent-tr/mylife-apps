@@ -2,12 +2,13 @@
 
 const fs = require('fs').promises;
 const path = require('path');
+const { createLogger } = require('mylife-tools-server');
 const { images, thumbnails, wrapBinary } = require('../repository');
 const config = require('../config');
 const { supportedExtensions, arrayDiff, directoryList } = require('./common');
 const { load } = require('./image-loader');
 
-const debug = require('debug')('mylife:gallery:sync:images');
+const logger = createLogger('mylife:gallery:sync:images');
 
 async function fsList(album) {
   const list = [];
@@ -46,7 +47,7 @@ async function fsListDir(list, directory) {
 }
 
 exports.delete = async function delete_(album, ipath) {
-  debug(`Delete image '${ipath}' of album '${album.name}'`);
+  logger.info(`Delete image '${ipath}' of album '${album.name}'`);
 
   const img = await images.getByPath(ipath);
   const thm = await thumbnails.getByIId(img.iid);
@@ -56,7 +57,7 @@ exports.delete = async function delete_(album, ipath) {
 };
 
 exports.create = async function create(album, ipath) {
-  debug(`Create image '${ipath}' of album '${album.name}'`);
+  logger.info(`Create image '${ipath}' of album '${album.name}'`);
 
   const result = await load(path.join(config.gallery, ipath));
   if(!result) {

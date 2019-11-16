@@ -1,6 +1,8 @@
 'use strict';
 
-const debug = require('debug')('mylife:gallery:sync:server');
+const { createLogger } = require('mylife-tools-server');
+
+const logger = createLogger('mylife:gallery:sync:server');
 
 const { sync } = require('./index');
 
@@ -16,7 +18,7 @@ module.exports = class Server {
       await this._run();
       this._timer = setInterval(() => this._run(), 10 * 60 * 1000);
     } catch(err) {
-      console.error(err);
+      logger.error(err.stack);
     }
   }
 
@@ -31,16 +33,16 @@ module.exports = class Server {
     }
     this._running = true;
 
-    debug('Starting sync');
+    logger.debug('Starting sync');
     const startTime = Date.now();
 
     try {
       await sync();
     } catch(err) {
-      console.error(err);
+      logger.error(err.stack);
     } finally {
       const elapsedTime = Date.now() - startTime;
-      debug(`Sync done (${(elapsedTime / 1000).toFixed(3)})`);
+      logger.debug(`Sync done (${(elapsedTime / 1000).toFixed(3)})`);
       this._running = false;
     }
   }

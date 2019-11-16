@@ -2,7 +2,8 @@
 
 const { URL }                           = require('url');
 const { MongoClient, ObjectID, Binary } = require('mongodb');
-const debug                             = require('debug')('mylife:gallery:repository:data');
+const { createLogger } = require('mylife-tools-server');
+const logger = createLogger('mylife:gallery:repository:data');
 const config                            = require('../config');
 
 let client = null;
@@ -26,7 +27,7 @@ async function checkDb() {
 
   if(!client.isConnected()) {
     db = null;
-    debug(`Connecting to ${dbUrl} (database: ${getDbName()})`);
+    logger.debug(`Connecting to ${dbUrl} (database: ${getDbName()})`);
     await client.connect();
   }
 
@@ -51,12 +52,12 @@ exports.set = async function set(name, object) {
   const collection = db.collection(name);
 
   if(object._id) {
-    debug(`Update ${name} (id: ${object._id})`);
+    logger.info(`Update ${name} (id: ${object._id})`);
     return await collection.replaceOne({ _id : object._id }, object);
   }
 
   object._id = new ObjectID();
-  debug(`Insert ${name} (id: ${object._id})`);
+  logger.info(`Insert ${name} (id: ${object._id})`);
   return await collection.insertOne(object);
 };
 
@@ -64,7 +65,7 @@ exports.delete = async function delete_(name, id) {
   await checkDb();
   const collection = db.collection(name);
 
-  debug(`Delete ${name} (id: ${id})`);
+  logger.info(`Delete ${name} (id: ${id})`);
   return await collection.deleteOne({ _id : id });
 };
 
@@ -73,7 +74,7 @@ async function find(name, query, options) {
   await checkDb();
   const collection = db.collection(name);
 
-  debug(`Find ${name} (query: ${JSON.stringify(query)}, options: ${JSON.stringify(options)})`);
+  logger.debug(`Find ${name} (query: ${JSON.stringify(query)}, options: ${JSON.stringify(options)})`);
   const objects = await collection.find(query, options);
   return await objects.toArray();
 }

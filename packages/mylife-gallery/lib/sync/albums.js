@@ -2,11 +2,13 @@
 
 const fs = require('fs').promises;
 const path = require('path');
+const { createLogger } = require('mylife-tools-server');
 const { albums, images, thumbnails } = require('../repository');
 const config = require('../config');
 const { supportedExtensions, arrayDiff, directoryList } = require('./common');
 
-const debug = require('debug')('mylife:gallery:sync:albums');
+
+const logger = createLogger('mylife:gallery:sync:albums');
 
 async function fsList() {
   const list = [];
@@ -65,7 +67,7 @@ async function findImage(dir) {
 }
 
 exports.delete = async function delete_(name) {
-  debug(`Delete album ${name}`);
+  logger.info(`Delete album ${name}`);
 
   const album = await albums.getByName(name);
   const imgs = await images.listByAlbum(album._id);
@@ -82,12 +84,12 @@ exports.delete = async function delete_(name) {
 };
 
 exports.update = async function update(name) {
-  debug(`Update album ${name}`);
+  logger.info(`Update album ${name}`);
   return await albums.getByName(name);
 };
 
 exports.create = async function create(name) {
-  debug(`Create album ${name}`);
+  logger.info(`Create album ${name}`);
 
   const album = { name };
   await albums.set(album);
@@ -95,7 +97,7 @@ exports.create = async function create(name) {
 };
 
 exports.aggregate = async function aggregate(album) {
-  debug(`Aggregate album ${album.name}`);
+  logger.info(`Aggregate album ${album.name}`);
 
   const imgs = await images.listByAlbum(album._id);
   const first = imgs[0];
