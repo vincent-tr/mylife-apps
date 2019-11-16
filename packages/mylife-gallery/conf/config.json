@@ -1,6 +1,6 @@
 {
   "webServer": { "port": "%{WEB_PORT|80}" },
-  "gallery" : "/mnt/files-share/Photos",
+  "gallery" : "%{GALLERY_PATH}",
   "mongo": "%{MONGO_URL}",
   "rawCacheSize" : 100000000,
   "thumbnailCacheSize" : 10000000,

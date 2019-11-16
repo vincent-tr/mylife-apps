@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, registerService } = require('mylife-tools-server');
+const { createLogger, registerService, getConfig } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:gallery:sync:server');
 
@@ -10,12 +10,14 @@ class SyncServer {
   async init() {
     this._running = false;
     this._timer = setInterval(() => this._run(), 60 * 1000);
+    logger.debug(`Sync server started (gallery path='${getConfig('gallery')}')`);
   }
 
   async terminate() {
     clearInterval(this._timer);
     this._timer = null;
     // TODO: must wait for/kill current run ?
+    logger.debug('Sync server stopped');
   }
 
   async _run() {
