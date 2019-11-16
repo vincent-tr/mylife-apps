@@ -28,13 +28,16 @@
     "mylife-tools-server": "^1.0.8"
   },
   "devDependencies": {
+    "connected-react-router": "^6.5.2",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.16.0",
     "exif-js": "^2.3.0",
     "exif2css": "^1.2.0",
     "history": "^4.7.2",
     "mylife-tools-build": "^1.2.0",
-    "mylife-tools-ui": "^1.0.3"
+    "mylife-tools-ui": "^1.0.3",
+    "react-router-dom": "^5.1.2",
+    "redux-thunk": "^2.3.0"
   },
   "mylifeBuild": {
     "web": true

@@ -13,3 +13,5 @@ ReactDOM.render(
   <Application/>,
   document.getElementById('content')
 );
+
+// TODO: remove npm i -D connected-react-router react-router-dom redux-thunk
