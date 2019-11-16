@@ -55,10 +55,6 @@ exports.thumbnails = new class Thumbnails extends CRUDBase {
   // prefetchAlbum ?
 };
 
-exports.close = async function close() {
-  await data.close();
-};
-
 exports.wrapBinary = function wrapBinary(buffer) {
   return data.wrapBinary(buffer);
 };

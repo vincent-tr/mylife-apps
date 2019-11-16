@@ -1,46 +1,7 @@
 'use strict';
 
-const { URL }                           = require('url');
-const { MongoClient, ObjectID, Binary } = require('mongodb');
-const { createLogger } = require('mylife-tools-server');
+const { createLogger, getStoreCollection, getService } = require('mylife-tools-server');
 const logger = createLogger('mylife:gallery:repository:data');
-const config                            = require('../config');
-
-let client = null;
-let db = null;
-
-async function checkDb() {
-  const dbUrl = config.mongo;
-  let dbName;
-
-  function getDbName() {
-    if(!dbName) {
-      dbName = new URL(dbUrl).pathname.substring(1);
-    }
-    return dbName;
-  }
-
-  if(!client) {
-    db = null;
-    client = new MongoClient(dbUrl, { useNewUrlParser: true });
-  }
-
-  if(!client.isConnected()) {
-    db = null;
-    logger.debug(`Connecting to ${dbUrl} (database: ${getDbName()})`);
-    await client.connect();
-  }
-
-  if(!db) {
-    db = client.db(getDbName());
-  }
-}
-
-exports.close = async function close() {
-  if(!client) { return; }
-  await client.close();
-  client = null;
-};
 
 exports.get = async function get(name, id) {
   const [ object ] = await find(name, { _id : id });
@@ -48,22 +9,20 @@ exports.get = async function get(name, id) {
 };
 
 exports.set = async function set(name, object) {
-  await checkDb();
-  const collection = db.collection(name);
+  const collection = getStoreCollection(name);
 
   if(object._id) {
     logger.info(`Update ${name} (id: ${object._id})`);
     return await collection.replaceOne({ _id : object._id }, object);
   }
 
-  object._id = new ObjectID();
+  object._id = wrapObjectID();
   logger.info(`Insert ${name} (id: ${object._id})`);
   return await collection.insertOne(object);
 };
 
 exports.delete = async function delete_(name, id) {
-  await checkDb();
-  const collection = db.collection(name);
+  const collection = getStoreCollection(name);
 
   logger.info(`Delete ${name} (id: ${id})`);
   return await collection.deleteOne({ _id : id });
@@ -71,23 +30,22 @@ exports.delete = async function delete_(name, id) {
 
 exports.find = find;
 async function find(name, query, options) {
-  await checkDb();
-  const collection = db.collection(name);
+  const collection = getStoreCollection(name);
 
   logger.debug(`Find ${name} (query: ${JSON.stringify(query)}, options: ${JSON.stringify(options)})`);
   const objects = await collection.find(query, options);
   return await objects.toArray();
 }
 
-exports.wrapObjectID = function wrapObjectID(value) {
-  return new ObjectID(value);
-};
+exports.wrapObjectID = wrapObjectID;
+function wrapObjectID(value) {
+  getService('database').newObjectID(value);
+}
 
 exports.wrapBinary = function wrapBinary(buffer) {
-  return new Binary(buffer, Binary.SUBTYPE_BYTE_ARRAY);
+  getService('database').newBinary(buffer);
 };
 
 exports.unwrapBinary = function unwrapBinary(binary) {
-  const len = binary.length();
-  return binary.read(0, len);
+  return binary && binary.buffer;
 };
