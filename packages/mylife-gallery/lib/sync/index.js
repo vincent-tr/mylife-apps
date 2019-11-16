@@ -9,7 +9,7 @@ const { sync } = require('./api');
 class SyncServer {
   async init() {
     this._running = false;
-    this._timer = setInterval(() => this._run(), 10 * 60 * 1000);
+    this._timer = setInterval(() => this._run(), 60 * 1000);
   }
 
   async terminate() {
