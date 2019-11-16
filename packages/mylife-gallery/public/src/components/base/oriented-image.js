@@ -7,13 +7,14 @@ import EXIF from 'exif-js';
 import exif2css from 'exif2css';
 
 class OrientedImage extends Component {
+  /*
   props: Object;
   state: {
     orientation: ?number,
   } = {
     orientation: null,
   };
-
+*/
   _onImageLoaded(...args) {
     const [event, ...otherArgs] = args;
     const imageElement = event.target;
