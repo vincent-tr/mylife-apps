@@ -6,10 +6,11 @@ exports.datatypes = [
   { id: 'text', primitive: 'string' },
   { id: 'amount', primitive: 'number' },
   { id: 'count', primitive: 'number' },
+  { id: 'real', primitive: 'number' },
   { id: 'date', primitive: 'timestamp' },
   { id: 'datetime', primitive: 'timestamp' },
   { id: 'any', primitive: 'any' },
-  { id: 'binary', primitive: 'binary' }
+  { id: 'binary', primitive: 'binary' },
 ];
 
 exports.entities = [
