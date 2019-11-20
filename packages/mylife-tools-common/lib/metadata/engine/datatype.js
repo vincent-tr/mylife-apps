@@ -4,6 +4,35 @@ const { Constraint } = require('./constraint');
 const registry = require('./registry');
 const { lock, Validator } = require('./utils');
 
+class StructureField {
+  constructor(definition) {
+    const validator = new Validator(this);
+
+    this._id = validator.validateId(definition.id);
+    this._name = validator.validate(definition.name, 'name', { type: 'string' }, this._id);
+    this._description = validator.validate(definition.description, 'description', { type: 'string' });
+    this._datatype = validator.validate(definition.datatype, 'datatype', { type: 'string', mandatory: true });
+
+    lock(this);
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  get description() {
+    return this._description;
+  }
+
+  get datatype() {
+    return registry.getDatatype(this._datatype);
+  }
+}
+
 exports.Datatype = class Datatype {
   constructor(definition) {
     const validator = new Validator(this);
@@ -21,9 +50,19 @@ exports.Datatype = class Datatype {
       this._target = validator.validate(definition.reference, 'reference', { type: 'string', mandatory: true });
     }
 
-    if(definition.collection) {
-      this._primitive = 'collection';
-      this._target = validator.validate(definition.collection, 'reference', { type: 'string', mandatory: true });
+    if(definition.list) {
+      this._primitive = 'list';
+      this._item = validator.validate(definition.list, 'list', { type: 'string', mandatory: true });
+    }
+
+    if(definition.map) {
+      this._primitive = 'map';
+      this._item = validator.validate(definition.map, 'map', { type: 'string', mandatory: true });
+    }
+
+    if(definition.structure) {
+      this._primitive = 'structure';
+      this._fields = validator.validate(definition.structure, 'structure', { type: 'array', defaultValue: [] }).map(fdef => new StructureField(fdef));
     }
 
     validator.validate(this._primitive, 'primitive', { type: 'string', mandatory: true });
@@ -54,6 +93,20 @@ exports.Datatype = class Datatype {
       throw new Error(`Cannot access target on '${this.id}' datatype`);
     }
     return registry.getEntity(this._target);
+  }
+
+  get item() {
+    if(!this._item) {
+      throw new Error(`Cannot access item on '${this.id}' datatype`);
+    }
+    return registry.getEntity(this._item);
+  }
+
+  get fields() {
+    if(!this._fields) {
+      throw new Error(`Cannot access fields on '${this.id}' datatype`);
+    }
+    return this._fields;
   }
 
   get constraints() {
