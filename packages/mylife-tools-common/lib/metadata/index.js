@@ -29,6 +29,9 @@ function registerDatatype(definition) {
 
   const datatype = new Datatype(definition);
   registry.registerDatatype(datatype);
+
+  registry.registerDatatype(new Datatype({ id: `list:${datatype.id}`, list: datatype.id }));
+  registry.registerDatatype(new Datatype({ id: `map:${datatype.id}`, map: datatype.id }));
 }
 
 function registerEntity(definition) {
