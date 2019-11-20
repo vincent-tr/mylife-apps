@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = {
-  id: 'video',
+  id: 'image',
   parent: 'document',
-  name: 'Video',
+  name: 'Image',
   fields: [
     { id: 'perceptualHash', name: 'Hash perception', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'thumbnail', name: 'Miniature', datatype: 'identifier' }, // we do not directly reference thumbnail because it is not loaded as store collection
