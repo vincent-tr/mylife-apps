@@ -7,7 +7,7 @@ module.exports = {
   fields: [
     { id: 'lastName', name: 'Nom', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'firstName', name: 'Prénom', datatype: 'text', constraints: ['not-null', 'not-empty'] },
-    { id: 'thumbnails', name: 'Miniatures', datatype: 'any' }, // id array
+    { id: 'thumbnails', name: 'Miniatures', datatype: 'list:identifier' }, // we do not directly reference thumbnail because it is not loaded as store collection
   ],
   display: obj => `${obj.firstName} ${obj.lastName}`
 };
