@@ -2,6 +2,7 @@
 
 const { createLogger, registerService, getConfig } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
+const { SyncTask } = require('./task');
 
 const logger = createLogger('mylife:gallery:sync:server');
 
@@ -68,7 +69,7 @@ registerService(SyncServer);
 
 class Interval {
   constructor(callback) {
-    this.timer = setInterval(callback, /*60 * 10 * */ 7 * 1000);
+    this.timer = setInterval(callback, 60 * 10 * 1000);
   }
 
   stop() {
@@ -84,17 +85,5 @@ class PerfTimer {
   elapsed() {
     const elapsedTime = Date.now() - this.startTime;
     return elapsedTime / 1000;
-  }
-}
-
-class SyncTask {
-  constructor() {
-    this.count = 0;
-  }
-
-  async runStep() {
-    console.log('run', this.count);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return ++this.count < 10;
   }
 }
