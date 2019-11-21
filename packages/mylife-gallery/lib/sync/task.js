@@ -2,6 +2,7 @@
 
 const path = require('path');
 const fs = require('fs').promises;
+const crypto = require('crypto');
 const { createLogger, getConfig } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:gallery:sync:task');
@@ -53,11 +54,11 @@ class FsListTask {
   }
 
   createNextTask() {
-    return null;
+    return new ProcessorTask(this.list);
   }
 
   shouldContinue() {
-    const result = this.pendingItems.length || this.pendingDirectories.length;
+    const result = !!this.pendingItems.length || !!this.pendingDirectories.length;
     if(!result) {
       logger.debug(`Listing files done, ${this.list.length} items listed`);
     }
@@ -74,19 +75,57 @@ class FsListTask {
   async processDirectory(directory) {
     const names = await fs.readdir(directory);
     for(const name of names) {
-      const fullName =  path.join(directory, name);
-      this.pendingItems.push(fullName);
+      const fullPath =  path.join(directory, name);
+      this.pendingItems.push(fullPath);
     }
   }
 
-  async processItem(fullName) {
-    const stats = await fs.lstat(fullName);
+  async processItem(fullPath) {
+    const stats = await fs.lstat(fullPath);
 
     if(stats.isDirectory()) {
-      this.pendingDirectories.push(fullName);
+      this.pendingDirectories.push(fullPath);
       return;
     }
 
-    this.list.push({ path: fullName, updateDate: stats.mtime, size: stats.size });
+    this.list.push({ fullPath, updateDate: stats.mtime, size: stats.size });
   }
+}
+
+class ProcessorTask {
+  constructor(list) {
+    this.list = list;
+  }
+
+  async runStep() {
+    const item = this.list.shift();
+
+    try {
+      await this.processFile(item);
+    } catch(err) {
+      logger.error(`Error processing file '${item.fullPath}': ${err.stack}`);
+    }
+
+    return !!this.list.length;
+  }
+
+  createNextTask() {
+    return null;
+  }
+
+  async processFile({ fullPath, updateDate, size }) {
+    // look if it exists in collection with same update date and same size. If so, skip it
+
+    logger.info(`Processing file '${fullPath}'`);
+    const content = await fs.readFile(fullPath);
+    const hash = createHash(content);
+
+    console.log(fullPath, updateDate, size, hash);
+  }
+}
+
+function createHash(content) {
+  const hasher = crypto.createHash('sha1');
+  hasher.update(content);
+  return hasher.digest('hex');
 }
