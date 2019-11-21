@@ -9,8 +9,8 @@ const metadataDefintions = require('../shared/metadata');
 const storeConfiguration = require('../lib/store-configuration');
 require('../lib/sync');
 
-const runWeb = !!getArg('--web');
-const runSync = !!getArg('--sync');
+const runWeb = !!getArg('web');
+const runSync = !!getArg('sync');
 
 const services = ['store', 'database'];
 const parameters = { webApiFactory, metadataDefintions, storeConfiguration };
