@@ -12,7 +12,7 @@ require('../lib/sync');
 const runWeb = !!getArg('--web');
 const runSync = !!getArg('--sync');
 
-const services = ['database', 'store', 'database'];
+const services = ['store', 'database'];
 const parameters = { webApiFactory, metadataDefintions, storeConfiguration };
 
 if(runWeb) {
