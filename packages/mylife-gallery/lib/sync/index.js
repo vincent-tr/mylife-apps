@@ -55,7 +55,7 @@ class SyncServer {
     } catch(err) {
       logger.error(err.stack);
     } finally {
-      logger.debug(`Sync done (${(perf.elapsed()).toFixed(3)})`);
+      logger.debug(`Sync done in ${(perf.elapsed()).toFixed(3)}s`);
 
       this.running = null;
       deferred.resolve();
