@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, registerService, getConfig } = require('mylife-tools-server');
+const { createLogger, registerService } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const { SyncTask } = require('./task');
 
@@ -13,7 +13,7 @@ class SyncServer {
     this.running = null;
     this.stopping = false;
 
-    logger.debug(`Sync server started (gallery path='${getConfig('gallery')}')`);
+    logger.debug('Sync server started');
   }
 
   async terminate() {
