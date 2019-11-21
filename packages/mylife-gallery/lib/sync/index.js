@@ -2,7 +2,7 @@
 
 const { createLogger, registerService } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
-const { SyncTask } = require('./task');
+const { ManagerTask } = require('./manager-task');
 
 const logger = createLogger('mylife:gallery:sync:server');
 
@@ -39,7 +39,7 @@ class SyncServer {
     const perf = new PerfTimer();
 
     try {
-      const task = new SyncTask();
+      const task = new ManagerTask();
 
       for(;;) {
         if(this.stopping) {

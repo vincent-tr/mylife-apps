@@ -2,28 +2,12 @@
 
 const path = require('path');
 const fs = require('fs').promises;
-const crypto = require('crypto');
 const { createLogger, getConfig } = require('mylife-tools-server');
+const { FileProcessorTask } = require('./file-processor-task');
 
-const logger = createLogger('mylife:gallery:sync:task');
+const logger = createLogger('mylife:gallery:sync:fs-list-task');
 
-exports.SyncTask = class SyncTask {
-  constructor() {
-    this.current = new FsListTask();
-  }
-
-  async runStep() {
-    const shouldContinue = await this.current.runStep();
-    if(shouldContinue) {
-      return true;
-    }
-
-    this.current = this.current.createNextTask();
-    return !!this.current;
-  }
-};
-
-class FsListTask {
+exports.FsListTask = class FsListTask {
   constructor() {
     this.started = false;
     this.pendingItems = [];
@@ -54,7 +38,7 @@ class FsListTask {
   }
 
   createNextTask() {
-    return new ProcessorTask(this.list);
+    return new FileProcessorTask(this.list);
   }
 
   shouldContinue() {
@@ -90,42 +74,4 @@ class FsListTask {
 
     this.list.push({ fullPath, updateDate: stats.mtime, size: stats.size });
   }
-}
-
-class ProcessorTask {
-  constructor(list) {
-    this.list = list;
-  }
-
-  async runStep() {
-    const item = this.list.shift();
-
-    try {
-      await this.processFile(item);
-    } catch(err) {
-      logger.error(`Error processing file '${item.fullPath}': ${err.stack}`);
-    }
-
-    return !!this.list.length;
-  }
-
-  createNextTask() {
-    return null;
-  }
-
-  async processFile({ fullPath, updateDate, size }) {
-    // look if it exists in collection with same update date and same size. If so, skip it
-
-    logger.info(`Processing file '${fullPath}'`);
-    const content = await fs.readFile(fullPath);
-    const hash = createHash(content);
-
-    console.log(fullPath, updateDate, size, hash);
-  }
-}
-
-function createHash(content) {
-  const hasher = crypto.createHash('sha1');
-  hasher.update(content);
-  return hasher.digest('hex');
-}
+};
