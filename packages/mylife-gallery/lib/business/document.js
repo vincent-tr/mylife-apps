@@ -4,6 +4,7 @@ const { createLogger, getStoreCollection } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const logger = createLogger('mylife:gallery:business:document');
 
+
 exports.documentRemovePath = (type, id, path) => {
   logger.info(`Deleting path '${path}' on document '${type}:${id}'`);
 
@@ -18,7 +19,7 @@ exports.documentRemovePath = (type, id, path) => {
     throwRemovePathError(type, id, path, 'path not found on document');
   }
 
-  const newPaths = utils.immutable.removeItem(document.paths, pathIndex);
+  const newPaths = utils.immutable.arrayRemove(document.paths, pathIndex);
   if(newPaths.length > 0) {
     const newDocument = document.setValue('paths', newPaths);
     collection.set(newDocument);
@@ -37,26 +38,44 @@ function throwRemovePathError(type, id, path, reason) {
   throw new Error(`Cannot delete path '${path}' on document '${id}' (type='${type}'): ${reason}`);
 }
 
-exports.documentAddPath = (document, path) => {
-  
+exports.documentAddPath = (document, path, updateDate) => {
+  logger.info(`Adding path '${path}' on document '${document._entity}:${document._id}'`);
 
+  const collection = getDocumentStoreCollection(document._entity);
+  const newPaths = utils.immutable.arrayPush(document.paths, { path, updateDate });
+  const newDocument = document.setValue('paths', newPaths);
+  collection.set(newDocument);
 };
 
 exports.documentFindByHash = (hash) => {
   const filterFunc = document => document.hash === hash;
-
-  const image = getStoreCollection('images').filter(filterFunc)[0];
-  if (image) {
-    return image;
-  }
-
-  const video = getStoreCollection('videos').filter(filterFunc)[0];
-  if (video) {
-    return video;
-  }
-
-  const other = getStoreCollection('others').filter(filterFunc)[0];
-  if (other) {
-    return other;
+  for(const collection of getDocumentStoreCollections()) {
+    const document = collection.filter(filterFunc)[0];
+    if (document) {
+      return document;
+    }
   }
 };
+
+const ENTITY_TO_COLLECTION = {
+  image: 'images',
+  video: 'videos',
+  other: 'others'
+};
+
+function getDocumentStoreCollection(entityId) {
+  const collectionName = ENTITY_TO_COLLECTION[entityId];
+  if(!collectionName) {
+    throw new Error(`Unknown document type: '${entityId}'`);
+  }
+
+  return getStoreCollection(collectionName);
+}
+
+function getDocumentStoreCollections() {
+  return [
+    getStoreCollection('images'),
+    getStoreCollection('videos'),
+    getStoreCollection('others')
+  ];
+}
