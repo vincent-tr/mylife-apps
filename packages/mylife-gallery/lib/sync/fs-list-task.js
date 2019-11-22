@@ -3,7 +3,7 @@
 const path = require('path');
 const fs = require('fs').promises;
 const { createLogger, getConfig } = require('mylife-tools-server');
-const { FileProcessorTask } = require('./file-processor-task');
+const { DocumentRemoveTask } = require('./document-remove-task');
 
 const logger = createLogger('mylife:gallery:sync:fs-list-task');
 
@@ -38,7 +38,7 @@ exports.FsListTask = class FsListTask {
   }
 
   createNextTask() {
-    return new FileProcessorTask(this.list);
+    return new DocumentRemoveTask(this.list);
   }
 
   shouldContinue() {
@@ -72,6 +72,8 @@ exports.FsListTask = class FsListTask {
       return;
     }
 
-    this.list.push({ fullPath, updateDate: stats.mtime, size: stats.size });
+    const basePath = getConfig('gallery');
+    const relativePath = path.relative(basePath, fullPath);
+    this.list.push({ fullPath, relativePath, updateDate: stats.mtime, size: stats.size });
   }
 };
