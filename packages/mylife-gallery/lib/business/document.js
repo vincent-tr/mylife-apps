@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, getStoreCollection } = require('mylife-tools-server');
+const { createLogger, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const logger = createLogger('mylife:gallery:business:document');
 
@@ -55,6 +55,13 @@ exports.documentFindByHash = (hash) => {
       return document;
     }
   }
+};
+
+exports.documentCreate = (type, values) => {
+  const entity = getMetadataEntity(type);
+  const collection = getDocumentStoreCollection(type);
+  const newDocument = entity.newObject(values);
+  return collection.set(newDocument);
 };
 
 const ENTITY_TO_COLLECTION = {
