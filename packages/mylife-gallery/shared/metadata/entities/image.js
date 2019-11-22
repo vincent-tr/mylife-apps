@@ -11,6 +11,6 @@ module.exports = {
     { id: 'gps', name: 'Coordonnées GPS', datatype: 'gps' },
     { id: 'width', name: 'Largeur', datatype: 'count' },
     { id: 'height', name: 'Hauteur', datatype: 'count' },
-    { id: 'persons', name: 'Personnes', datatype: 'list:image-tag' },
+    { id: 'persons', name: 'Personnes', datatype: 'list:image-tag', constraints: ['not-null'], initial: [] },
   ]
 };
