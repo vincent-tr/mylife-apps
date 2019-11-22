@@ -39,4 +39,24 @@ function throwRemovePathError(type, id, path, reason) {
 
 exports.documentAddPath = (document, path) => {
   
+
+};
+
+exports.documentFindByHash = (hash) => {
+  const filterFunc = document => document.hash === hash;
+
+  const image = getStoreCollection('images').filter(filterFunc)[0];
+  if (image) {
+    return image;
+  }
+
+  const video = getStoreCollection('videos').filter(filterFunc)[0];
+  if (video) {
+    return video;
+  }
+
+  const other = getStoreCollection('others').filter(filterFunc)[0];
+  if (other) {
+    return other;
+  }
 };
