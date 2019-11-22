@@ -2,6 +2,7 @@
 
 const { createLogger, getStoreCollection } = require('mylife-tools-server');
 const { FileProcessorTask } = require('./file-processor-task');
+const business = require('../business');
 
 const logger = createLogger('mylife:gallery:sync:document-updater-task');
 
@@ -10,8 +11,6 @@ exports.DocumentUpdaterTask = class DocumentUpdaterTask {
     this.fileList = new Map(list.map(item => [item.relativePath, item]));
   }
 
-  // TODO: delete documents that does not exist anymore or with updateDate or size changed
-  // TODO: remove from list paths that are same (same path, updateDate, fileSize)
   async runStep() {
 
     logger.debug('Updating documents');
@@ -21,9 +20,7 @@ exports.DocumentUpdaterTask = class DocumentUpdaterTask {
     processCollection(pathsToDelete, 'videos');
     processCollection(pathsToDelete, 'others');
 
-    for(const item of pathsToDelete) {
-      removePath(item);
-    }
+    removePaths(pathsToDelete);
 
     logger.debug(`Done updating documents: ${pathsToDelete.length} paths deleted`);
 
@@ -58,6 +55,12 @@ function processCollection(pathsToDelete, type) {
   }
 }
 
-function removePath({ type, id, path }) {
-  logger.info(`Deleting path '${path}'`);
+function removePaths(pathsToDelete) {
+  for(const { type, id, path } of pathsToDelete) {
+    try {
+      business.documentRemovePath(type, id, path);
+    } catch(err) {
+      logger.error(err.stack);
+    }
+  }
 }
