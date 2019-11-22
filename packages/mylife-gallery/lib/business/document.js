@@ -36,3 +36,7 @@ exports.documentRemovePath = (type, id, path) => {
 function throwRemovePathError(type, id, path, reason) {
   throw new Error(`Cannot delete path '${path}' on document '${id}' (type='${type}'): ${reason}`);
 }
+
+exports.documentAddPath = (document, path) => {
+  
+};
