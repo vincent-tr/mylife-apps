@@ -29,11 +29,6 @@ exports.FileProcessorTask = class FileProcessorTask {
 
   async processFile({ fullPath, relativePath, updateDate, size }) {
 
-    // look if it exists in collection. If so, skip it
-    if (findDocument(relativePath)) {
-      return;
-    }
-
     logger.info(`Processing file '${relativePath}'`);
     const content = await fs.readFile(fullPath);
     const hash = createHash(content);
@@ -46,25 +41,4 @@ function createHash(content) {
   const hasher = crypto.createHash('sha1');
   hasher.update(content);
   return hasher.digest('hex');
-}
-
-function findDocument(path) {
-  const image = findDocumentByType(path, 'images');
-  if (image) {
-    return image;
-  }
-  const video = findDocumentByType(path, 'videos');
-  if (video) {
-    return video;
-  }
-  const other = findDocumentByType(path, 'others');
-  if (other) {
-    return other;
-  }
-}
-
-function findDocumentByType(path, type) {
-  const collection = getStoreCollection(type);
-  const [ item ] = collection.filter(item => item.paths.find(fsitem => fsitem.path === path));
-  return item;
 }
