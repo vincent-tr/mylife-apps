@@ -3,7 +3,7 @@
 const path = require('path');
 const fs = require('fs').promises;
 const { createLogger, getConfig } = require('mylife-tools-server');
-const { DocumentRemoveTask } = require('./document-remove-task');
+const { DocumentUpdaterTask } = require('./document-updater-task');
 
 const logger = createLogger('mylife:gallery:sync:fs-list-task');
 
@@ -38,7 +38,7 @@ exports.FsListTask = class FsListTask {
   }
 
   createNextTask() {
-    return new DocumentRemoveTask(this.list);
+    return new DocumentUpdaterTask(this.list);
   }
 
   shouldContinue() {
