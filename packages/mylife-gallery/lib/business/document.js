@@ -37,12 +37,12 @@ exports.documentRemove = (type, id) => {
   throw new Error('TODO');
 };
 
-exports.documentAddPath = (document, path, updateDate) => {
+exports.documentAddPath = (document, path, fileUpdateDate) => {
   logger.info(`Adding path '${path}' on document '${document._entity}:${document._id}'`);
 
   const collection = getDocumentStoreCollection(document._entity);
   const entity = getMetadataEntity(document._entity);
-  const newPaths = utils.immutable.arrayPush(document.paths, { path, updateDate });
+  const newPaths = utils.immutable.arrayPush(document.paths, { path, fileUpdateDate });
   const newDocument = entity.setValues(document, { paths: newPaths });
   collection.set(newDocument);
 };
