@@ -1,4 +1,5 @@
 'use sitrct';
 
 Object.assign(exports,
-  require('./document'));
+  require('./document'),
+  require('./thumbnail'));
