@@ -33,7 +33,7 @@ function listPathsToDelete(fileList) {
   const pathsToDelete = [];
 
   for(const document of business.documentList()) {
-    for (const { path, updateDate } of document.paths) {
+    for (const { path, fileUpdateDate } of document.paths) {
       const item = fileList.get(path);
       if(!item) {
         // path has been deleted
@@ -41,7 +41,7 @@ function listPathsToDelete(fileList) {
         continue;
       }
 
-      if(item.updateDate !== updateDate || item.size !== document.fileSize) {
+      if(item.fileUpdateDate !== fileUpdateDate || item.size !== document.fileSize) {
         // path has been changed, let's delete it
         pathsToDelete.push({ type: document._entity, id: document._id, path });
       }

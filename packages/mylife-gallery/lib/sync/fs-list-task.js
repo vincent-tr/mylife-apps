@@ -74,6 +74,6 @@ exports.FsListTask = class FsListTask {
 
     const basePath = getConfig('gallery');
     const relativePath = path.relative(basePath, fullPath);
-    this.list.push({ fullPath, relativePath, updateDate: stats.mtime, size: stats.size });
+    this.list.push({ fullPath, relativePath, fileUpdateDate: stats.mtime, size: stats.size });
   }
 };

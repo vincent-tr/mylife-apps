@@ -53,7 +53,7 @@ exports.FileProcessorTask = class FileProcessorTask {
     return new DocumentCleanupTask();
   }
 
-  async processFile({ fullPath, relativePath, updateDate, size }) {
+  async processFile({ fullPath, relativePath, fileUpdateDate, size }) {
 
     logger.info(`Processing file '${relativePath}'`);
     const content = await fs.readFile(fullPath);
@@ -72,7 +72,7 @@ exports.FileProcessorTask = class FileProcessorTask {
 
     const documentValues = {
       hash,
-      paths: [{ path: relativePath, updateDate }],
+      paths: [{ path: relativePath, fileUpdateDate }],
       integrationDate: new Date(),
       fileSize: size
     };
