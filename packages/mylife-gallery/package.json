@@ -8,7 +8,7 @@
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --web --sync",
     "start": "./bin/server.js",
     "build": "mylife-build-docker",
-    "links:dev": "npm link mylife-tools-server && npm link mylife-tools-ui && npm link mylife-tools-build"
+    "links:dev": "npm link mylife-tools-common && npm link mylife-tools-server && npm link mylife-tools-ui && npm link mylife-tools-build"
   },
   "repository": {
     "type": "git",
