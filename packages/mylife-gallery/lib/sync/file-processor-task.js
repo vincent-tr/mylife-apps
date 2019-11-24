@@ -68,7 +68,7 @@ exports.FileProcessorTask = class FileProcessorTask {
     if(existingDocument) {
       // only add the other path
       logger.info(`Added path '${relativePath}' to document '${existingDocument._entity}:${existingDocument._id}'`);
-      business.documentAddPath(existingDocument, relativePath);
+      business.documentAddPath(existingDocument, relativePath, fileUpdateDate);
       return;
     }
 
