@@ -41,8 +41,9 @@ exports.documentAddPath = (document, path, updateDate) => {
   logger.info(`Adding path '${path}' on document '${document._entity}:${document._id}'`);
 
   const collection = getDocumentStoreCollection(document._entity);
+  const entity = getMetadataEntity(document._entity);
   const newPaths = utils.immutable.arrayPush(document.paths, { path, updateDate });
-  const newDocument = document.setValue('paths', newPaths);
+  const newDocument = entity.setValue(document, 'paths', newPaths);
   collection.set(newDocument);
 };
 
@@ -50,6 +51,7 @@ exports.documentRemovePath = (type, id, path) => {
   logger.info(`Deleting path '${path}' on document '${type}:${id}'`);
 
   const collection = getDocumentStoreCollection(type);
+  const entity = getMetadataEntity(type);
   const document = collection.get(id);
   if(!document) {
     throwRemovePathError(type, id, path, 'document not found in collection');
@@ -61,7 +63,7 @@ exports.documentRemovePath = (type, id, path) => {
   }
 
   const newPaths = utils.immutable.arrayRemove(document.paths, pathIndex);
-  const newDocument = document.setValue('paths', newPaths);
+  const newDocument = entity.setValue(document, 'paths', newPaths);
   collection.set(newDocument);
 };
 
