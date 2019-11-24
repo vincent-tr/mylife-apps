@@ -43,7 +43,7 @@ exports.documentAddPath = (document, path, updateDate) => {
   const collection = getDocumentStoreCollection(document._entity);
   const entity = getMetadataEntity(document._entity);
   const newPaths = utils.immutable.arrayPush(document.paths, { path, updateDate });
-  const newDocument = entity.setValue(document, 'paths', newPaths);
+  const newDocument = entity.setValues(document, { paths: newPaths });
   collection.set(newDocument);
 };
 
@@ -63,7 +63,7 @@ exports.documentRemovePath = (type, id, path) => {
   }
 
   const newPaths = utils.immutable.arrayRemove(document.paths, pathIndex);
-  const newDocument = entity.setValue(document, 'paths', newPaths);
+  const newDocument = entity.setValues(document, { paths: newPaths });
   collection.set(newDocument);
 };
 
