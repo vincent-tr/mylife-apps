@@ -24,9 +24,11 @@ module.exports = [
     ]
   },
   {
-    id: 'gps', structure: [
-      { id: 'latitude', name: 'Latitude', datatype: 'real' },
-      { id: 'longitude', name: 'Longitude', datatype: 'real' },
+    id: 'image-metadata', structure: [
+      { id: 'date', name: 'Date de prise', datatype: 'datetime' },
+      { id: 'gpsLatitude', name: 'GPS Latitude', datatype: 'real' },
+      { id: 'gpsLongitude', name: 'GPS Longitude', datatype: 'real' },
+      { id: 'model', name: 'Modèle', datatype: 'name' },
     ]
-  }
+  },
 ];
