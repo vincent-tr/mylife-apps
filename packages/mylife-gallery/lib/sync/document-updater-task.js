@@ -42,7 +42,7 @@ function listPathsToDelete(fileList) {
         continue;
       }
 
-      if(item.fileUpdateDate !== fileUpdateDate || item.size !== document.fileSize) {
+      if(item.fileUpdateDate/*.valueOf()*/ !== fileUpdateDate/*.valueOf()*/ || item.size !== document.fileSize) {
         // path has been changed, let's delete it
         logger.debug(`Adding path '${path}' for deletion '${document._entity}:${document._id}' because its update date or size has changed`);
         pathsToDelete.push({ type: document._entity, id: document._id, path });
