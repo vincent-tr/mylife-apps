@@ -34,7 +34,6 @@ exports.documentRemove = (type, id) => {
   }
 
   // TODO: delete thumbnails (image, video) if not used anymore
-  throw new Error('TODO');
 };
 
 exports.documentAddPath = (document, path, fileUpdateDate) => {
