@@ -5,6 +5,7 @@ const fs = require('fs').promises;
 const crypto = require('crypto');
 const { createLogger } = require('mylife-tools-server');
 const { DocumentCleanupTask } = require('./document-cleanup-task');
+const { processFile } = require('./loaders');
 const business = require('../business');
 
 const logger = createLogger('mylife:gallery:sync:file-processor-task');
@@ -82,28 +83,12 @@ exports.FileProcessorTask = class FileProcessorTask {
       fileSize: size
     };
 
-    switch(type) {
-      case 'image':
-        processImage(content, documentValues);
-        break;
-
-      case 'video':
-        processVideo(content, documentValues);
-        break;
-    }
+    processFile(type, content, documentValues);
 
     const newDocument = business.documentCreate(type, documentValues);
     logger.info(`Create document '${newDocument._entity}:${newDocument._id}' from path '${relativePath}'`);
   }
 };
-
-function processImage(content, documentValues) {
-  // TODO
-}
-
-function processVideo(content, documentValues) {
-  // TODO
-}
 
 function createHash(content) {
   const hasher = crypto.createHash('sha1');
