@@ -38,6 +38,11 @@ exports.FileProcessorTask = class FileProcessorTask {
   }
 
   async runStep() {
+    // in case there are no items at all
+    if(this.list.length === 0) {
+      return false;
+    }
+
     const item = this.list.shift();
 
     try {
