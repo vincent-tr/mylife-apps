@@ -9,6 +9,10 @@ function documentList() {
   return getDocumentStoreCollections().map(collection => collection.list()).flat();
 }
 
+exports.documentGet = (type, id) => {
+  return getDocumentStoreCollection(type).get(id);
+};
+
 exports.documentFilter = documentFilter;
 function documentFilter(predicate) {
   return getDocumentStoreCollections().map(collection => collection.filter(predicate)).flat();
