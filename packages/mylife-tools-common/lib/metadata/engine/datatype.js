@@ -3,6 +3,7 @@
 const { Constraint } = require('./constraint');
 const registry = require('./registry');
 const { lock, Validator } = require('./utils');
+const utils = require('../../utils');
 
 class StructureField {
   constructor(definition) {
@@ -63,6 +64,9 @@ exports.Datatype = class Datatype {
     if(definition.structure) {
       this._primitive = 'structure';
       this._fields = validator.validate(definition.structure, 'structure', { type: 'array', defaultValue: [] }).map(fdef => new StructureField(fdef));
+      this._fieldMap = utils.indexBy(this._fields, 'id');
+      Object.freeze(this._fields);
+      Object.freeze(this._fieldMap);
     }
 
     validator.validate(this._primitive, 'primitive', { type: 'string', mandatory: true });
@@ -99,7 +103,7 @@ exports.Datatype = class Datatype {
     if(!this._item) {
       throw new Error(`Cannot access item on '${this.id}' datatype`);
     }
-    return registry.getEntity(this._item);
+    return registry.getDatatype(this._item);
   }
 
   get fields() {
@@ -107,6 +111,14 @@ exports.Datatype = class Datatype {
       throw new Error(`Cannot access fields on '${this.id}' datatype`);
     }
     return this._fields;
+  }
+
+  getField(id) {
+    this.fields; // access check
+    const field = this._fieldMap[id];
+    if(!field) {
+      throw new Error(`Field not found '${id}' on '${this.id}' datatype`)
+    }
   }
 
   get constraints() {
