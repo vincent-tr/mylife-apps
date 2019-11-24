@@ -15,7 +15,7 @@ exports.DocumentUpdaterTask = class DocumentUpdaterTask {
 
     logger.debug('Updating documents');
 
-    const pathsToDelete = listPathsToDelete();
+    const pathsToDelete = listPathsToDelete(this.fileList);
     removePaths(pathsToDelete);
 
     logger.debug(`Done updating documents: ${pathsToDelete.length} paths deleted`);
@@ -29,12 +29,12 @@ exports.DocumentUpdaterTask = class DocumentUpdaterTask {
   }
 };
 
-function listPathsToDelete() {
+function listPathsToDelete(fileList) {
   const pathsToDelete = [];
 
   for(const document of business.documentList()) {
     for (const { path, updateDate } of document.paths) {
-      const item = this.fileList.get(path);
+      const item = fileList.get(path);
       if(!item) {
         // path has been deleted
         pathsToDelete.push('images', document._id, path);
@@ -47,7 +47,7 @@ function listPathsToDelete() {
       }
 
       // path is identical, let's drop it from the process list
-      this.fileList.delete(path);
+      fileList.delete(path);
     }
   }
 
