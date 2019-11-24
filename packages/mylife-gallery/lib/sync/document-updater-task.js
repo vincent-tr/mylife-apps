@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, getStoreCollection } = require('mylife-tools-server');
+const { createLogger } = require('mylife-tools-server');
 const { FileProcessorTask } = require('./file-processor-task');
 const business = require('../business');
 
@@ -15,11 +15,7 @@ exports.DocumentUpdaterTask = class DocumentUpdaterTask {
 
     logger.debug('Updating documents');
 
-    const pathsToDelete = [];
-    processCollection(pathsToDelete, 'images');
-    processCollection(pathsToDelete, 'videos');
-    processCollection(pathsToDelete, 'others');
-
+    const pathsToDelete = listPathsToDelete();
     removePaths(pathsToDelete);
 
     logger.debug(`Done updating documents: ${pathsToDelete.length} paths deleted`);
@@ -33,9 +29,10 @@ exports.DocumentUpdaterTask = class DocumentUpdaterTask {
   }
 };
 
-function processCollection(pathsToDelete, type) {
-  const collection = getStoreCollection(type);
-  for(const document of collection.list()) {
+function listPathsToDelete() {
+  const pathsToDelete = [];
+
+  for(const document of business.documentList()) {
     for (const { path, updateDate } of document.paths) {
       const item = this.fileList.get(path);
       if(!item) {
@@ -46,13 +43,15 @@ function processCollection(pathsToDelete, type) {
 
       if(item.updateDate !== updateDate || item.size !== document.fileSize) {
         // path has been changed, let's delete it
-        pathsToDelete.push({ type, id: document._id, path });
+        pathsToDelete.push({ type: document._entity, id: document._id, path });
       }
 
       // path is identical, let's drop it from the process list
       this.fileList.delete(path);
     }
   }
+
+  return pathsToDelete;
 }
 
 function removePaths(pathsToDelete) {

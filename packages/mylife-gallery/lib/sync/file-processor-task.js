@@ -3,7 +3,8 @@
 const path = require('path');
 const fs = require('fs').promises;
 const crypto = require('crypto');
-const { createLogger, getMetadataEntity } = require('mylife-tools-server');
+const { createLogger } = require('mylife-tools-server');
+const { DocumentCleanupTask } = require('./document-cleanup-task');
 const business = require('../business');
 
 const logger = createLogger('mylife:gallery:sync:file-processor-task');
@@ -49,7 +50,7 @@ exports.FileProcessorTask = class FileProcessorTask {
   }
 
   createNextTask() {
-    return null;
+    return new DocumentCleanupTask();
   }
 
   async processFile({ fullPath, relativePath, updateDate, size }) {
