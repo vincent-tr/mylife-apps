@@ -72,7 +72,7 @@ exports.FileProcessorTask = class FileProcessorTask {
 
     const documentValues = {
       hash,
-      paths: [{ path, updateDate }],
+      paths: [{ path: relativePath, updateDate }],
       integrationDate: new Date(),
       fileSize: size
     };
