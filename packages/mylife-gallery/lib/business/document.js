@@ -28,7 +28,7 @@ exports.documentCreate = (type, values) => {
 exports.documentRemove = (type, id) => {
   logger.info(`Deleting document '${type}:${id}'`);
 
-  const collection = getStoreCollection(type);
+  const collection = getDocumentStoreCollection(type);
   if(!collection.delete(id)) {
     throw new Error(`Cannot delete document '${id}' (type='${type}'): document not found in collection`);
   }
@@ -49,7 +49,7 @@ exports.documentAddPath = (document, path, updateDate) => {
 exports.documentRemovePath = (type, id, path) => {
   logger.info(`Deleting path '${path}' on document '${type}:${id}'`);
 
-  const collection = getStoreCollection(type);
+  const collection = getDocumentStoreCollection(type);
   const document = collection.get(id);
   if(!document) {
     throwRemovePathError(type, id, path, 'document not found in collection');
