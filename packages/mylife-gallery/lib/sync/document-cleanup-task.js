@@ -5,7 +5,7 @@ const business = require('../business');
 
 const logger = createLogger('mylife:gallery:sync:document-cleanup-task');
 
-exports.DocumentUpdaterTask = class DocumentUpdaterTask {
+exports.DocumentCleanupTask = class DocumentCleanupTask {
   async runStep() {
 
     logger.debug('Cleaning documents');
