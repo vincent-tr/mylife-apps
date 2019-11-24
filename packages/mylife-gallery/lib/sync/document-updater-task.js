@@ -37,15 +37,13 @@ function listPathsToDelete(fileList) {
       const item = fileList.get(path);
       if(!item) {
         // path has been deleted
-        logger.debug(`Adding path '${path}' for deletion '${document._entity}:${document._id}' because it does not exist anymore`);
-        pathsToDelete.push(document._entity, document._id, path);
+        pushPathToDelete(pathsToDelete, document, path, 'it does not exist anymore');
         continue;
       }
 
       if(item.fileUpdateDate.valueOf() !== fileUpdateDate.valueOf() || item.size !== document.fileSize) {
         // path has been changed, let's delete it
-        logger.debug(`Adding path '${path}' for deletion '${document._entity}:${document._id}' because its update date or size has changed`);
-        pathsToDelete.push({ type: document._entity, id: document._id, path });
+        pushPathToDelete(pathsToDelete, document, path, 'its update date or size has changed');
         continue;
       }
 
@@ -55,6 +53,11 @@ function listPathsToDelete(fileList) {
   }
 
   return pathsToDelete;
+}
+
+function pushPathToDelete(pathsToDelete, document, path, reason) {
+  logger.debug(`Adding path '${path}' for deletion '${document._entity}:${document._id}' because ${reason}`);
+  pathsToDelete.push({ type: document._entity, id: document._id, path });
 }
 
 function removePaths(pathsToDelete) {
