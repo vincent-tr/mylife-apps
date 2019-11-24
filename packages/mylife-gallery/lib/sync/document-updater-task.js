@@ -46,6 +46,7 @@ function listPathsToDelete(fileList) {
         // path has been changed, let's delete it
         logger.debug(`Adding path '${path}' for deletion '${document._entity}:${document._id}' because its update date or size has changed`);
         pathsToDelete.push({ type: document._entity, id: document._id, path });
+        continue;
       }
 
       // path is identical, let's drop it from the process list
