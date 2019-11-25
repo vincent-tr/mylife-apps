@@ -31,4 +31,9 @@ module.exports = [
       { id: 'model', name: 'Modèle', datatype: 'name' },
     ]
   },
+  {
+    id: 'video-metadata', structure: [
+      { id: 'date', name: 'Date de prise', datatype: 'datetime' }
+    ]
+  },
 ];
