@@ -1,5 +1,5 @@
 'use strict';
 
-exports.processImage = (content, documentValues) => {
   // TODO
+exports.processImage = async (content, documentValues) => {
 };

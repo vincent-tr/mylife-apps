@@ -1,5 +1,5 @@
 'use strict';
 
-exports.processVideo = (content, documentValues) => {
+exports.processVideo = async (content, documentValues) => {
   // TODO
 };
