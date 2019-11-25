@@ -22,6 +22,11 @@ exports.processVideo = async (content, documentValues) => {
     // do not catch here, video metadata are mandatory for thumbnails
     await extractMetadata(contentFile, documentValues);
 
+    // set date if found in metadata
+    if(documentValues.metadata.date) {
+      documentValues.date = documentValues.metadata.date;
+    }
+
     await createThumbnails(fsh, contentFile, documentValues);
 
     logger.debug(`Video loaded '${getPath(documentValues)}'`);
@@ -36,6 +41,8 @@ function getPath(documentValues) {
 }
 
 async function extractMetadata(fullPath, documentValues) {
+  documentValues.metadata = {};
+
   const meta = await getRawMetadata(fullPath);
 
   const videoStream = meta.streams.find(stream => stream.codec_type === 'video');
@@ -43,7 +50,7 @@ async function extractMetadata(fullPath, documentValues) {
   documentValues.height = videoStream.height;
   documentValues.width = videoStream.width;
   const creationDate = (meta.format.tags && meta.format.tags.creation_time) || null;
-  documentValues.metadata = { date: creationDate };
+  documentValues.metadata.date = creationDate;
 }
 
 async function getRawMetadata(fullPath) {

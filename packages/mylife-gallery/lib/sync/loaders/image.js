@@ -16,6 +16,11 @@ exports.processImage = async (content, documentValues) => {
     documentValues.metadata = {};
   }
 
+  // set date if found in metadata
+  if(documentValues.metadata.date) {
+    documentValues.date = documentValues.metadata.date;
+  }
+
   // do not try/catch if we could not read the image
   Object.assign(documentValues, await loadImage(content));
 
