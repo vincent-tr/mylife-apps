@@ -35,7 +35,7 @@ function loadMetadata(content) {
   const parser = exifParser.create(content);
   const { tags } = parser.parse();
   const model = tags.Model;
-  const date = formatExifDate(tags.DateTimeOriginal || tags.CreateDate || tags.ModifyDate);
+  const date = formatExifDate(tags.DateTimeOriginal) || formatExifDate(tags.CreateDate) || formatExifDate(tags.ModifyDate);
   const gps = formatExifGPS(tags);
 
   const metadata = { model, date };
@@ -61,6 +61,11 @@ async function loadImage(content) {
 }
 
 function formatExifDate(value) {
+  if(value < 0) {
+    // got -2211753600 for null values
+    // consider all pre-epoch as nulls
+    return null;
+  }
   return new Date(value * 1000);
 }
 
