@@ -23,7 +23,9 @@
   "dependencies": {
     "exif-parser": "^0.1.12",
     "ffmpeg-static": "^2.7.0",
+    "ffprobe-static": "^3.0.0",
     "fluent-ffmpeg": "^2.1.2",
+    "fs-extra": "^8.1.0",
     "jimp": "^0.3.11",
     "mylife-tools-server": "^1.0.8"
   },
