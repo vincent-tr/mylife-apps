@@ -19,7 +19,7 @@ exports.processImage = async (content, documentValues) => {
   // do not try/catch if we could not read the image
   Object.assign(documentValues, await loadImage(content));
 
-  logger.debug(`File loaded '${getPath(documentValues)}'`);
+  logger.debug(`Image loaded '${getPath(documentValues)}'`);
 };
 
 function getPath(documentValues) {
