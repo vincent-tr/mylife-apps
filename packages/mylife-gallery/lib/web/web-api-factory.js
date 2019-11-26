@@ -6,7 +6,7 @@ const business = require('../business');
 
 const logger = createLogger('mylife:gallery:web:content-routes');
 
-exports.webApiFactory = ({ express, asyncHandler }) => {
+exports.webApiFactory = ({ app, express, asyncHandler }) => {
   const router = express.Router();
 
   router.route('/image/:id').get(asyncHandler(async (req, res) => {
@@ -15,7 +15,7 @@ exports.webApiFactory = ({ express, asyncHandler }) => {
     const fullPath = getFullPath(document);
     logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
     res.contentType(document.mime);
-    res.sendFile();
+    res.sendFile(fullPath);
   }));
 
   router.route('/thumbnail/:id').get(asyncHandler(async (req, res) => {
@@ -26,7 +26,7 @@ exports.webApiFactory = ({ express, asyncHandler }) => {
     res.send(content);
   }));
 
-  return router;
+  app.use('/content', router);
 };
 
 function getFullPath(document) {
