@@ -5,8 +5,7 @@
   "main": "src/index.js",
   "sideEffects": false,
   "scripts": {
-    "lint": "./node_modules/.bin/eslint src/ tools/",
-    "links:dev": "npm link mylife-tools-common"
+    "lint": "./node_modules/.bin/eslint src/ tools/"
   },
   "repository": {
     "type": "git",
