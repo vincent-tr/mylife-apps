@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint lib/* public/app/*",
-    "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --sync",
-    "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --web",
+    "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --web",
+    "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --sync",
     "start": "./bin/server.js",
     "build": "mylife-build-docker",
     "links:dev": "mylife-dev-links",
