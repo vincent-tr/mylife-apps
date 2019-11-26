@@ -27,18 +27,18 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^8.1.0",
     "jimp": "^0.3.11",
-    "mylife-tools-server": "^1.0.8"
+    "mylife-tools-server": "^1.0.9"
   },
   "devDependencies": {
-    "connected-react-router": "^6.5.2",
+    "connected-react-router": "^6.6.1",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.16.0",
     "exif-js": "^2.3.0",
-    "exif2css": "^1.2.0",
+    "exif2css": "^1.3.0",
     "google-map-react": "^1.1.5",
-    "history": "^4.7.2",
-    "mylife-tools-build": "^1.2.0",
-    "mylife-tools-ui": "^1.0.3",
+    "history": "^4.10.1",
+    "mylife-tools-build": "^1.2.1",
+    "mylife-tools-ui": "^1.0.4",
     "react-router-dom": "^5.1.2",
     "redux-thunk": "^2.3.0"
   },
