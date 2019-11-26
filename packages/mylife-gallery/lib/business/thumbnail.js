@@ -20,7 +20,7 @@ exports.thumbnailCreate = async (content) => {
 };
 
 exports.thumbnailRemove = async (id) => {
-  const collection = getDatabaseCollection(name);
+  const collection = getDatabaseCollection('thumbnails');
 
   logger.info(`Delete thumbnail (id: '${id}')`);
   const result = await collection.deleteOne({ _id : newObjectID(id) });
@@ -28,7 +28,7 @@ exports.thumbnailRemove = async (id) => {
 };
 
 exports.thumbnailGet = async (id) => {
-  const collection = getDatabaseCollection(name);
+  const collection = getDatabaseCollection('thumbnails');
 
   const record = await collection.findOne({ _id : newObjectID(id) });
   if(!record) {
