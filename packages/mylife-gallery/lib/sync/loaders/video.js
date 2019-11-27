@@ -77,15 +77,17 @@ async function createThumbnails(fsh, contentPath, documentValues) {
 async function createRawThumbnails(baseDirectory, fullPath, { duration, height, width }) {
 
   const timestamps = [];
-  if(duration < 25) {
+  // seems that if duration is eg 5.001 we cannot take a screenshot a 5
+  const floorDuration = Math.floor(duration);
+  if(floorDuration < 25) {
     // every 5 secs
-    for(let current = 0; current < duration; current += 5) {
+    for(let current = 0; current < floorDuration; current += 5) {
       timestamps.push(current);
     }
   } else {
     // take 5 thumbnails
     for(let i=0; i<5; ++i) {
-      timestamps.push(i * duration / 5);
+      timestamps.push(i * floorDuration / 5);
     }
   }
 
