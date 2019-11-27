@@ -61,9 +61,14 @@ async function getRawMetadata(fullPath) {
 
 async function createThumbnails(fsh, contentPath, documentValues) {
   const names = await createRawThumbnails(fsh.baseDirectory, contentPath, documentValues);
-  documentValues.thumbnails = [];
+  const thumbnailContents = [];
+  // first read all thumbnails, then create all: in case there is a read error (=> thumbnails creation error), nothing is created
   for(const name of names) {
-    const thumbnailContent = await fsh.fromFileRelative(name);
+    thumbnailContents.push(await fsh.fromFileRelative(name));
+  }
+
+  documentValues.thumbnails = [];
+  for(const thumbnailContent of thumbnailContents) {
     const thumbnail = await business.thumbnailCreate(thumbnailContent);
     documentValues.thumbnails.push(thumbnail);
   }
