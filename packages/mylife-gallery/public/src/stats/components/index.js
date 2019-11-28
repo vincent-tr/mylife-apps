@@ -2,6 +2,7 @@
 
 import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { statsEnter, statsLeave } from '../actions';
+import Values from './values';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const Stats = () => {
 
   return (
     <div className={classes.container}>
-      Stats
+      <Values />
     </div>
   );
 };

@@ -1,60 +1,37 @@
 'use strict';
-/*
+
 import { createAction, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getOperationStatsViewId, getTotalByMonthViewId } from './selectors';
+import { getViewId } from './selectors';
 
 const local = {
-  setOperationStatsView: createAction(actionTypes.SET_OPERATION_STATS_VIEW),
-  setTotalByMonthView: createAction(actionTypes.SET_TOTAL_BY_MONTH_VIEW),
+  setView: createAction(actionTypes.SET_VIEW),
 };
 
-const getOperationStats = () => async (dispatch) => {
+const getStats = () => async (dispatch) => {
   const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyOperationStats',
+    service: 'stats',
+    method: 'notifyStats',
   }));
 
-  dispatch(local.setOperationStatsView(viewId));
+  dispatch(local.setView(viewId));
 };
 
-const clearOperationStats = () => async (dispatch, getState) => {
+const clearStats = () => async (dispatch, getState) => {
   const state = getState();
-  const viewId = getOperationStatsViewId(state);
+  const viewId = getViewId(state);
   if(!viewId) {
     return;
   }
 
   await dispatch(io.unnotify(viewId));
-  dispatch(local.setOperationStatsView(null));
+  dispatch(local.setView(null));
 };
 
-const getTotalByMonth = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyTotalByMonth',
-  }));
-
-  dispatch(local.setTotalByMonthView(viewId));
-};
-
-const clearTotalByMonth = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getTotalByMonthViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setTotalByMonthView(null));
-};
-*/
 export const statsEnter = () => async (dispatch) => {
-//  await dispatch(getOperationStats());
-//  await dispatch(getTotalByMonth());
+  await dispatch(getStats());
 };
 
 export const statsLeave = () => async (dispatch) => {
-//  await dispatch(clearOperationStats());
-//  await dispatch(clearTotalByMonth());
+  await dispatch(clearStats());
 };
