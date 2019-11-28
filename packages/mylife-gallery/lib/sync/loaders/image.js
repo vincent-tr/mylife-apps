@@ -7,29 +7,28 @@ const business = require('../../business');
 
 const logger = createLogger('mylife:gallery:sync:loaders:image');
 
-exports.processImage = async (content, documentValues) => {
+exports.processImage = async (content, relativePath) => {
 
+  const values = {};
   try {
-    documentValues.metadata = loadMetadata(content);
+    values.metadata = loadMetadata(content);
   } catch(err) {
-    logger.error(`Error loading image metadata '${getPath(documentValues)}': ${err.stack}`);
-    documentValues.metadata = {};
+    // this is not a fatal error, we can keep going without metadata
+    logger.error(`Error loading image metadata '${relativePath}': ${err.stack}`);
+    values.metadata = {};
   }
 
   // set date if found in metadata
-  if(documentValues.metadata.date) {
-    documentValues.date = documentValues.metadata.date;
+  if(values.metadata.date) {
+    values.date = values.metadata.date;
   }
 
   // do not try/catch if we could not read the image
-  Object.assign(documentValues, await loadImage(content));
+  Object.assign(values, await loadImage(content));
 
-  logger.debug(`Image loaded '${getPath(documentValues)}'`);
+  logger.debug(`Image loaded '${relativePath}'`);
+  return values;
 };
-
-function getPath(documentValues) {
-  return documentValues.paths[0].path;
-}
 
 function loadMetadata(content) {
   const parser = exifParser.create(content);

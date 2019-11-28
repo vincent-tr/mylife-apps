@@ -14,43 +14,44 @@ ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 const logger = createLogger('mylife:gallery:sync:loaders:video');
 
-exports.processVideo = async (content, documentValues) => {
+exports.processVideo = async (content, relativePath) => {
   const fsh = new FsHelper();
   await fsh.init();
   try {
     const contentFile = await fsh.toFile(content);
     // do not catch here, video metadata are mandatory for thumbnails
-    await extractMetadata(contentFile, documentValues);
+    const values = await extractMetadata(contentFile);
 
     // set date if found in metadata
-    if(documentValues.metadata.date) {
-      documentValues.date = documentValues.metadata.date;
+    if(values.metadata.date) {
+      values.date = values.metadata.date;
     }
 
-    await createThumbnails(fsh, contentFile, documentValues);
+    await createThumbnails(fsh, contentFile, values);
 
-    logger.debug(`Video loaded '${getPath(documentValues)}'`);
+    logger.debug(`Video loaded '${relativePath}'`);
+    return values;
 
   } finally {
     await fsh.terminate();
   }
 };
 
-function getPath(documentValues) {
-  return documentValues.paths[0].path;
-}
-
-async function extractMetadata(fullPath, documentValues) {
-  documentValues.metadata = {};
+async function extractMetadata(fullPath) {
+  const values = {
+    metadata: {}
+  };
 
   const meta = await getRawMetadata(fullPath);
 
   const videoStream = meta.streams.find(stream => stream.codec_type === 'video');
-  documentValues.duration = meta.format.duration;
-  documentValues.height = videoStream.height;
-  documentValues.width = videoStream.width;
+  values.duration = meta.format.duration;
+  values.height = videoStream.height;
+  values.width = videoStream.width;
   const creationDate = (meta.format.tags && meta.format.tags.creation_time) || null;
-  documentValues.metadata.date = creationDate;
+  values.metadata.date = creationDate;
+
+  return values;
 }
 
 async function getRawMetadata(fullPath) {
@@ -59,18 +60,18 @@ async function getRawMetadata(fullPath) {
   });
 }
 
-async function createThumbnails(fsh, contentPath, documentValues) {
-  const names = await createRawThumbnails(fsh.baseDirectory, contentPath, documentValues);
+async function createThumbnails(fsh, contentPath, values) {
+  const names = await createRawThumbnails(fsh.baseDirectory, contentPath, values);
   const thumbnailContents = [];
   // first read all thumbnails, then create all: in case there is a read error (=> thumbnails creation error), nothing is created
   for(const name of names) {
     thumbnailContents.push(await fsh.fromFileRelative(name));
   }
 
-  documentValues.thumbnails = [];
+  values.thumbnails = [];
   for(const thumbnailContent of thumbnailContents) {
     const thumbnail = await business.thumbnailCreate(thumbnailContent);
-    documentValues.thumbnails.push(thumbnail);
+    values.thumbnails.push(thumbnail);
   }
 }
 

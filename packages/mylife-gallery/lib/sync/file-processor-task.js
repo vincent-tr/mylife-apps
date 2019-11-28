@@ -74,16 +74,24 @@ exports.FileProcessorTask = class FileProcessorTask {
     }
 
     // new document
-    const type = getDocumentType(relativePath);
+    let type = getDocumentType(relativePath);
+    let additionalValues;
+
+    try {
+      additionalValues = await processFileWithLoader(type, content, relativePath);
+    } catch(err) {
+      logger.error(`Error processing file '${relativePath}', adding it as other: ${err.stack}`);
+      type = 'other';
+      additionalValues = { loadingError: err.stack };
+    }
 
     const documentValues = {
       hash,
       paths: [{ path: relativePath, fileUpdateDate }],
       integrationDate: new Date(),
-      fileSize: size
+      fileSize: size,
+      ... additionalValues
     };
-
-    await processFileWithLoader(type, content, documentValues);
 
     const newDocument = business.documentCreate(type, documentValues);
     logger.info(`Create document '${newDocument._entity}:${newDocument._id}' from path '${relativePath}'`);
