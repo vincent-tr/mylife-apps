@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, registerService } = require('mylife-tools-server');
+const { createLogger, registerService, getConfig } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const { ManagerTask } = require('./manager-task');
 
@@ -8,12 +8,13 @@ const logger = createLogger('mylife:gallery:sync:server');
 
 class SyncServer {
   async init() {
-    this.timer = new Interval(() => this._run());
+    const interval = getConfig('syncInterval');
+    this.timer = new Interval(interval, () => this._run());
 
     this.running = null;
     this.stopping = false;
 
-    logger.debug('Sync server started');
+    logger.debug(`Sync server started (interval = ${interval})`);
   }
 
   async terminate() {
@@ -68,8 +69,8 @@ SyncServer.serviceName = 'sync-server';
 registerService(SyncServer);
 
 class Interval {
-  constructor(callback) {
-    this.timer = setInterval(callback, 60 * 10 * 1000);
+  constructor(interval, callback) {
+    this.timer = setInterval(callback, interval * 1000);
   }
 
   stop() {
