@@ -27,7 +27,7 @@ class StatsView extends StoreContainer {
     this._onCollectionChange();
   }
 
-  _createSubscriptions(collectionNames) {
+  _createSubscriptions(...collectionNames) {
     this.subscriptions = [];
     this.collections = {};
 
@@ -38,10 +38,10 @@ class StatsView extends StoreContainer {
     }
   }
 
-  _createIds(codes) {
+  _createIds(...codes) {
     this.ids = {};
     for(const code of codes) {
-      this.ids[code] = this._viewId();
+      this.ids[code] = this._newId();
     }
   }
 

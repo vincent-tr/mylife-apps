@@ -17,7 +17,7 @@ const services = ['store', 'database'];
 const parameters = { webApiFactory, apiServices, metadataDefintions, storeConfiguration };
 
 if(runWeb) {
-  services.push('web-server');
+  services.push('web-server', 'notification-service');
 }
 
 if(runSync) {

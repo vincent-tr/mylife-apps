@@ -8,4 +8,5 @@ exports.entities = [
   require('./entities/other'),
   require('./entities/album'),
   require('./entities/person'),
+  require('./entities/stat'),
 ];
