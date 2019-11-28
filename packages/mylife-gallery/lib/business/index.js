@@ -2,4 +2,6 @@
 
 Object.assign(exports,
   require('./document'),
-  require('./thumbnail'));
+  require('./thumbnail'),
+  require('./stats')
+);
