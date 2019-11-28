@@ -7,7 +7,6 @@ const useConnect = () => useSelector(state => ({
   stats : getView(state),
 }));
 
-
 const useStyles = mui.makeStyles({
   container: {
     marginTop: 20,
