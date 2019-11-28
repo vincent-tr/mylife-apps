@@ -5,7 +5,7 @@ import actionTypes from './action-types';
 
 export default handleActions({
 
-  [actionTypes.SET_OPERATION_STATS_VIEW] : (state, action) => ({
+  [actionTypes.SET_VIEW] : (state, action) => ({
     ...state,
     viewId: action.payload
   }),
