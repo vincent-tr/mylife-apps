@@ -8,8 +8,6 @@ exports.meta = {
   name : 'document'
 };
 
-exports.unnotify = [ base, api.services.createUnnotify() ];
-
 exports.notifyDocument = [ base, (session, message) => {
   const { type, id } = message;
   return business.notifyAccounts(session, type, id);
