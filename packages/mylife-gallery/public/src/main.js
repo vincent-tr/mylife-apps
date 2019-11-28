@@ -7,16 +7,19 @@ import * as reducers from './reducers';
 
 import icons from './common/icons';
 import Home from './home/components';
+import Browse from './browse/components';
 import Stats from './stats/components';
 
 services.initStore(reducers);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
+  { location: '/browse', renderer: () => <Browse /> },
   { location: '/stats', renderer: () => <Stats /> },
 ];
 
 const menu = [
+  { id: 'browse', text: 'Parcourir', icon: icons.menu.Browse, location: '/browse' },
   { id: 'stats', text: 'Statistics', icon: icons.menu.Stats, location: '/stats' },
 ];
 

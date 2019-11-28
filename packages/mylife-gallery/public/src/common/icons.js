@@ -3,6 +3,7 @@
 import { React, mui } from 'mylife-tools-ui';
 
 const {
+  Explore,
   Equalizer
 } = mui.icons;
 
@@ -21,6 +22,7 @@ export default {
   Gallery,
 
   menu: {
+    Browse: Explore,
     Stats : Equalizer
   },
 };
