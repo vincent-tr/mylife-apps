@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const { createLogger, getStoreCollection, getMetadataEntity, notifyView } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const logger = createLogger('mylife:gallery:business:document');
 
@@ -20,6 +20,11 @@ function documentFilter(predicate) {
 
 exports.documentFindByHash = (hash) => {
   return documentFilter(document => document.hash === hash)[0];
+};
+
+exports.documentNotify = (session, type, id) => {
+  const collection = getDocumentStoreCollection(type);
+  return notifyView(session, collection.createView(document => document._id === id));
 };
 
 exports.documentCreate = (type, values) => {
