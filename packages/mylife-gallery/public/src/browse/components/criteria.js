@@ -29,7 +29,7 @@ const CollapsedSummary = ({ criteria }) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <mui.Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</mui.Typography>
+      <mui.Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}`}</mui.Typography>
     </div>
   );
 };
