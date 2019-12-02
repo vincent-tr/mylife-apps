@@ -27,15 +27,27 @@ const useStyles = mui.makeStyles({
   }
 });
 
+// empty list means all
 const initialCriteria = {
-  children: false,
   minDate: null,
   maxDate: null,
-  account: null,
-  groups: new immutable.List([ null ])
+  minIntegrationDate: null,
+  maxIntegrationDate: null,
+  type: new immutable.List(),
+  albums: new immutable.List(),
+  persons: new immutable.List(),
+  keywords: null,
+  caption: null,
+  path: null,
+
+  // old
+  children: false
 };
 
 const initialDisplay = {
+  sort: null,
+
+  // old
   invert: true,
   fullnames: false,
 };

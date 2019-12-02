@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, DateOrYearSelector } from 'mylife-tools-ui';
-import CriteriaField from './criteria-field';
+import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, DateOrYearSelector, CriteriaField } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -42,10 +41,20 @@ CollapsedSummary.propTypes = {
 const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayChanged }) => {
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
-  const onChildrenChanged = (value) => setCriteria('children', value);
   const onMinDateChanged = (value) => setCriteria('minDate', value);
   const onMaxDateChanged = (value) => setCriteria('maxDate', value);
-  const onAccountChanged = (value) => setCriteria('account', value);
+  const onMinIntegrationDateChanged = (value) => setCriteria('minIntegrationDate', value);
+  const onMaxIntegrationDateChanged = (value) => setCriteria('maxIntegrationDate', value);
+  //type: new immutable.List(),
+  //albums: new immutable.List(),
+  //persons: new immutable.List(),
+  //keywords: null,
+  //caption: null,
+  //path: null,
+
+
+  // old
+  const onChildrenChanged = (value) => setCriteria('children', value);
 
   const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
   const onInvertChanged = (value) => setDisplay('invert', value);
@@ -53,21 +62,36 @@ const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayCh
 
   const grid = (
     <mui.Grid container spacing={2}>
-      <mui.Grid item xs={4}>
-        <CriteriaField label='Date début'>
+      <mui.Grid item xs={2}>
+        <CriteriaField label='Date du document' />
+      </mui.Grid>
+      <mui.Grid item xs={2}>
+        <CriteriaField label='Début'>
           <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
         </CriteriaField>
       </mui.Grid>
-      <mui.Grid item xs={4}>
-        <CriteriaField label='Date fin'>
+      <mui.Grid item xs={2}>
+        <CriteriaField label='Fin'>
           <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
         </CriteriaField>
       </mui.Grid>
-      <mui.Grid item xs={4}>
-        <CriteriaField label='Compte'>
-          Empty
+
+      <mui.Grid item xs={2}>
+        <CriteriaField label="Date d'intégration" />
+      </mui.Grid>
+      <mui.Grid item xs={2}>
+        <CriteriaField label='Début'>
+          <DateOrYearSelector value={criteria.minIntegrationDate} onChange={onMinIntegrationDateChanged} showYearSelector />
         </CriteriaField>
       </mui.Grid>
+      <mui.Grid item xs={2}>
+        <CriteriaField label='Fin'>
+          <DateOrYearSelector value={criteria.maxIntegrationDate} onChange={onMaxIntegrationDateChanged} showYearSelector selectLastDay />
+        </CriteriaField>
+      </mui.Grid>
+
+
+
       <mui.Grid item xs={4}>
         <CriteriaField label='Inverser montant'>
           <mui.Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
