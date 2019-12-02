@@ -57,6 +57,15 @@ const GridSimpleField = ({ object, onObjectChanged, propName, label, editor, wid
   );
 };
 
+GridSimpleField.propTypes = {
+  width: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+  editor: PropTypes.elementType,
+  object: PropTypes.object,
+  onObjectChanged: PropTypes.func,
+  propName: PropTypes.string
+};
+
 const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayChanged }) => {
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
