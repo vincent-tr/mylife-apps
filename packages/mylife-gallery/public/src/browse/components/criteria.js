@@ -74,7 +74,7 @@ const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayCh
   //persons: new immutable.List(),
 
   const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
-  // TODO display options
+  // TODO display options (sort)
 
   const grid = (
     <mui.Grid container spacing={2}>

@@ -39,17 +39,10 @@ const initialCriteria = {
   keywords: null,
   caption: null,
   path: null,
-
-  // old
-  children: false
 };
 
 const initialDisplay = {
   sort: null,
-
-  // old
-  invert: true,
-  fullnames: false,
 };
 
 const Browse = () => {
