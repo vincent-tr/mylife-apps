@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout } from '../../../components';
+import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';
 
 const defaultRouteData = { name: null, icon: null };
