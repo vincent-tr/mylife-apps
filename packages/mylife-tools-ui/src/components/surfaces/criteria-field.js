@@ -32,7 +32,7 @@ const CriteriaField = ({ label, children }) => {
 
 CriteriaField.propTypes = {
   label: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 
 export default CriteriaField;
