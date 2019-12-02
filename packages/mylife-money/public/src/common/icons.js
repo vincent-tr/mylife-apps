@@ -13,7 +13,6 @@ const {
   Edit,
   FolderOpen,
   Close,
-  CalendarToday,
   SaveAlt,
   ArrowBack,
 } = mui.icons;
@@ -36,7 +35,6 @@ export default {
     Import  : OpenInBrowser,
     Execute : Settings,
     Comment : ModeComment,
-    Date    : CalendarToday,
     Export  : SaveAlt,
     Back    : ArrowBack,
   },
