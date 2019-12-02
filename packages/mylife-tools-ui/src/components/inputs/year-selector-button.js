@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import * as dialogs from '../../modules/dialogs/helpers';
 import { makeStyles, Dialog, DialogContent, DialogActions, Button, Tooltip, IconButton } from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
-import { CalendarTodayIcon } from '@material-ui/icons';
+import { CalendarToday } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   actions: {
@@ -59,7 +59,7 @@ const YearSelectorButton = React.forwardRef(({ value, onChange, selectLastDay, .
     <Tooltip title='Sélection par année'>
       <div>
         <IconButton ref={ref} onClick={clickHandler} {...props}>
-          <CalendarTodayIcon />
+          <CalendarToday />
         </IconButton>
       </div>
     </Tooltip>
