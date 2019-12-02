@@ -1,9 +1,8 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, useScreenPhone } from 'mylife-tools-ui';
+import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, DateOrYearSelector, useScreenPhone } from 'mylife-tools-ui';
 
 import AccountSelector from '../../../common/components/account-selector';
-import DateSelector from '../../../common/components/date-selector';
 import Field from '../common/field';
 import GroupField from '../common/group-field';
 import ExportButton from '../common/export-button';
@@ -71,12 +70,12 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
     <mui.Grid container spacing={2}>
       <mui.Grid item xs={6}>
         <Field label='Du'>
-          <DateSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
+          <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
         </Field>
       </mui.Grid>
       <mui.Grid item xs={6}>
         <Field label='Au'>
-          <DateSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
+          <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
         </Field>
       </mui.Grid>
       <mui.Grid item xs={6}>
@@ -108,12 +107,12 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
     <mui.Grid container spacing={2}>
       <mui.Grid item xs={4}>
         <Field label='Date début'>
-          <DateSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
+          <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
         </Field>
       </mui.Grid>
       <mui.Grid item xs={4}>
         <Field label='Date fin'>
-          <DateSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
+          <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
         </Field>
       </mui.Grid>
       <mui.Grid item xs={4}>

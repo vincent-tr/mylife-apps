@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryExpansionPanel, dialogs, useScreenSize } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryExpansionPanel, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
 import { getSelectedOperations, getCriteria } from '../../selectors';
@@ -9,7 +9,6 @@ import { getAccounts, getGroup } from '../../../reference/selectors';
 import AccountSelector from '../../../common/components/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import DateSelector from '../../../common/components/date-selector';
 import GroupDenseSelector from './group-dense-selector';
 
 const useConnect = () => {
@@ -74,11 +73,11 @@ const Header = () => {
   };
 
   const minDateSelector = (
-    <DateSelector value={minDate} onChange={onMinDateChanged} showYearSelector />
+    <DateOrYearSelector value={minDate} onChange={onMinDateChanged} showYearSelector />
   );
 
   const maxDateSelector = (
-    <DateSelector value={maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
+    <DateOrYearSelector value={maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
   );
 
   const selectors = (
