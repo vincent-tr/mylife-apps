@@ -82,7 +82,7 @@ const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayCh
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
-      <GridSimpleField width={2} label="Date d'intégration" />
+      <GridSimpleField width={2} label={'Date d\'intégration'} />
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
