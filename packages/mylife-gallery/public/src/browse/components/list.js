@@ -2,11 +2,11 @@
 
 import { React } from 'mylife-tools-ui';
 
-const List = () => {
+const List = ({ data }) => {
 
   return (
     <div>
-      Browse
+      {`Browse (data = ${data ? data.size : null})`}
     </div>
   );
 };
