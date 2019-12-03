@@ -1,6 +1,7 @@
 'use strict';
 
-import { createAction, io } from 'mylife-tools-ui';
+import { createAction } from 'mylife-tools-ui';
+import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
 
@@ -8,25 +9,18 @@ const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-const getStats = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'stats',
-    method: 'notifyStats',
-  }));
+const getStats = () => createOrUpdateView({
+  criteriaSelector: () => null,
+  viewSelector: getViewId,
+  setViewAction: local.setView,
+  service: 'stats',
+  method: 'notifyStats'
+});
 
-  dispatch(local.setView(viewId));
-};
-
-const clearStats = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setView(null));
-};
+const clearStats = () => deleteView({
+  viewSelector: getViewId,
+  setViewAction: local.setView
+});
 
 export const enter = () => async (dispatch) => {
   await dispatch(getStats());
