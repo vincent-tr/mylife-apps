@@ -10,8 +10,8 @@ const local = {
   setDisplay: createAction(actionTypes.SET_DISPLAY)
 };
 
-const getDocuments = (criteria) => createOrUpdateView({
-  criteriaSelector: () => ({ criteria }),
+const getDocuments = (criteria = {}) => createOrUpdateView({
+  criteriaSelector: () => ({ criteria: formatCriteria(criteria) }),
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'document',
@@ -42,3 +42,19 @@ export const changeDisplay = (changes) => async (dispatch, getState) => {
   const newDisplay = { ...display, ...changes };
   dispatch(local.setDisplay(newDisplay));
 };
+
+function formatCriteria(criteria) {
+  return {
+    ...criteria,
+    type: formatSet(criteria.type),
+    albums: formatSet(criteria.albums),
+    persons: formatSet(criteria.persons),
+  };
+}
+
+function formatSet(set) {
+  if(!set || set.size === 0) {
+    return;
+  }
+  return set.toArray();
+}
