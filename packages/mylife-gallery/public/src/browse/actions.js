@@ -44,12 +44,21 @@ export const changeDisplay = (changes) => async (dispatch, getState) => {
 };
 
 function formatCriteria(criteria) {
-  return {
-    ...criteria,
-    type: formatSet(criteria.type),
-    albums: formatSet(criteria.albums),
-    persons: formatSet(criteria.persons),
+  const { type, albums, persons, ...others } = criteria;
+  const newCriteria = {
+    type: formatSet(type),
+    albums: formatSet(albums),
+    persons: formatSet(persons),
   };
+
+  // only pick non-default values (lets consider falsy are default)
+  for(const [key, value] of Object.entries(others)) {
+    if(value) {
+      newCriteria[key] = value;
+    }
+  }
+
+  return newCriteria;
 }
 
 function formatSet(set) {
