@@ -11,7 +11,7 @@ class StatsView extends StoreContainer {
     this._createIds('image-count', 'video-count', 'other-count', 'last-integration');
 
     this.entity = getMetadataEntity('stat');
-    this._onCollectionChange();
+    this.onCollectionChange();
   }
 
   _createSubscriptions() {
@@ -45,10 +45,10 @@ class StatsView extends StoreContainer {
   }
 
   refresh() {
-    this._onCollectionChange();
+    this.onCollectionChange();
   }
 
-  _onCollectionChange() {
+  onCollectionChange() {
     this._setValue('image-count', this.collections.image.size);
     this._setValue('video-count', this.collections.video.size);
     this._setValue('other-count', this.collections.other.size);

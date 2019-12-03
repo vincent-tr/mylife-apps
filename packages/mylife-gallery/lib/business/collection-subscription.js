@@ -1,10 +1,10 @@
 'use strict';
 
 exports.CollectionSubscription = class CollectionSubscription {
-  constructor(view, collection) {
+  constructor(view, collection, changeCallback = event => this.view.onCollectionChange(this.collection, event)) {
     this.view = view;
     this.collection = collection;
-    this.changeCallback = event => this.view._onCollectionChange(this.collection, event);
+    this.changeCallback = changeCallback;
     this.collection.on('change', this.changeCallback);
   }
 

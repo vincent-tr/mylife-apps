@@ -50,12 +50,12 @@ class DocumentView extends StoreContainer {
   refresh() {
     for(const collection of Object.values(this.collections)) {
       for(const object of collection.list()) {
-        this._onCollectionChange(collection, { type: 'update', before: object, after: object });
+        this.onCollectionChange(collection, { type: 'update', before: object, after: object });
       }
     }
   }
 
-  _onCollectionChange(collection, { before, after, type }) {
+  onCollectionChange(collection, { before, after, type }) {
     switch(type) {
       case 'create': {
         if(this._filter(after)) {
