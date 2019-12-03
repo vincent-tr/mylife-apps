@@ -14,7 +14,7 @@ const getDocuments = (criteria) => createOrUpdateView({
   criteriaSelector: () => criteria,
   viewSelector: getViewId,
   setViewAction: local.setView,
-  service: 'documents',
+  service: 'document',
   method: 'notifyDocuments'
 });
 
@@ -22,7 +22,6 @@ const clearDocuments = () => deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });
-
 
 export const enter = () => async (dispatch) => {
   await dispatch(getDocuments());
