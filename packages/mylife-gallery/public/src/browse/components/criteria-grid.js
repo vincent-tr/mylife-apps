@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, DateOrYearSelector, CriteriaField, DebouncedTextField } from 'mylife-tools-ui';
+import { React, PropTypes, mui, DateOrYearSelector, CriteriaField } from 'mylife-tools-ui';
 import TypeSelector from './type-selector';
 import SortFieldSelector from './sort-field-selector';
 import SortOrderSelector from './sort-order-selector';
@@ -11,6 +11,15 @@ const WrappedCheckbox = ({ value, onChange, ...props }) => (
 
 WrappedCheckbox.propTypes = {
   value: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired
+};
+
+const WrappedTextField = ({ value, onChange, ...props }) => (
+  <mui.TextField value={value || ''} onChange={e => onChange(e.target.value)} {...props} />
+);
+
+WrappedTextField.propTypes = {
+  value: PropTypes.string,
   onChange: PropTypes.func.isRequired
 };
 
@@ -64,9 +73,9 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={4} label='Albums' />
       <GridSimpleField width={4} label='Personnes' />
 
-      <GridSimpleField width={4} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} />
-      <GridSimpleField width={4} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} />
-      <GridSimpleField width={3} label='Chemin du fichier' editor={DebouncedTextField} propName='path' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={4} label='Mots clés' editor={WrappedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={4} label='Légende' editor={WrappedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={3} label='Chemin du fichier' editor={WrappedTextField} propName='path' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={1} label='Doublons' editor={WrappedCheckbox} propName='pathDuplicate' object={criteria} onObjectChanged={onCriteriaChanged} />
 
       <GridSimpleField width={2} label='Tri' editor={SortFieldSelector} propName='sortField' object={display} onObjectChanged={onDisplayChanged} className={classes.selector}/>
