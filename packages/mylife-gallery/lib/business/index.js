@@ -5,4 +5,5 @@ Object.assign(exports,
   require('./document'),
   require('./thumbnail'),
   require('./stats'),
+  require('./collection-subscription'),
 );

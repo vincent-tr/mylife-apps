@@ -91,6 +91,7 @@ const ENTITY_TO_COLLECTION = {
   other: 'others'
 };
 
+exports.getDocumentStoreCollection = getDocumentStoreCollection;
 function getDocumentStoreCollection(entityId) {
   const collectionName = ENTITY_TO_COLLECTION[entityId];
   if(!collectionName) {
@@ -100,6 +101,7 @@ function getDocumentStoreCollection(entityId) {
   return getStoreCollection(collectionName);
 }
 
+exports.getDocumentStoreCollections = getDocumentStoreCollections;
 function getDocumentStoreCollections() {
   return [
     getStoreCollection('images'),

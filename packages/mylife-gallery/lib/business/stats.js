@@ -1,40 +1,27 @@
 'use strict';
 
-const { StoreContainer, getStoreCollection, getMetadataEntity, notifyView } = require('mylife-tools-server');
+const { StoreContainer, getMetadataEntity, notifyView } = require('mylife-tools-server');
 const business = require('.');
-
-class CollectionSubscription {
-  constructor(view, collectionName) {
-    this.view = view;
-    this.collection = getStoreCollection(collectionName);
-    this.changeCallback = event => this.view._onCollectionChange(this.collection, event);
-    this.collection.on('change', this.changeCallback);
-  }
-
-  unsubscribe() {
-    this.collection.off('change', this.changeCallback);
-  }
-}
 
 class StatsView extends StoreContainer {
   constructor() {
     super();
 
-    this._createSubscriptions('images', 'videos', 'others');
+    this._createSubscriptions();
     this._createIds('image-count', 'video-count', 'other-count', 'last-integration');
 
     this.entity = getMetadataEntity('stat');
     this._onCollectionChange();
   }
 
-  _createSubscriptions(...collectionNames) {
+  _createSubscriptions() {
     this.subscriptions = [];
     this.collections = {};
 
-    for(const collectionName of collectionNames) {
-      const subscription = new CollectionSubscription(this, collectionName);
+    for(const collection of business.getDocumentStoreCollections()) {
+      const subscription = new business.CollectionSubscription(this, collection);
       this.subscriptions.push(subscription);
-      this.collections[collectionName] = subscription.collection;
+      this.collections[collection.entity.id] = collection;
     }
   }
 
@@ -62,9 +49,9 @@ class StatsView extends StoreContainer {
   }
 
   _onCollectionChange() {
-    this._setValue('image-count', this.collections.images.size);
-    this._setValue('video-count', this.collections.videos.size);
-    this._setValue('other-count', this.collections.others.size);
+    this._setValue('image-count', this.collections.image.size);
+    this._setValue('video-count', this.collections.video.size);
+    this._setValue('other-count', this.collections.other.size);
     this._setValue('last-integration', findLastIntegration());
   }
 
