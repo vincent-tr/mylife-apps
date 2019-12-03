@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, notifyView, StoreContainer } = require('mylife-tools-server');
+const { createLogger, notifyView, StoreContainer, getStoreCollection } = require('mylife-tools-server');
 const business = require('.');
 
 const logger = createLogger('mylife:gallery:business:document-view');
@@ -32,6 +32,11 @@ class DocumentView extends StoreContainer {
       this.subscriptions.push(subscription);
       this.collections[collection.entity.id] = collection;
     }
+
+    // add subscription on albums to reset filtering on albums
+    const albums = getStoreCollection('albums');
+    const subscription = new business.CollectionSubscription(this, albums, () => this.refresh());
+    this.subscriptions.push(subscription);
   }
 
   close() {
