@@ -27,7 +27,7 @@ const useStyles = mui.makeStyles({
   }
 });
 
-// empty list means all
+// empty set means all
 const initialCriteria = {
   minDate: null,
   maxDate: null,
