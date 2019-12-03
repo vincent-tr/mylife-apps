@@ -14,5 +14,5 @@ exports.notifyDocument = [ base, (session, message) => {
 
 exports.notifyDocuments = [ base, (session, message) => {
   const { criteria } = message;
-  return business.documentNotify(session, criteria);
+  return business.documentsNotify(session, criteria);
 } ];

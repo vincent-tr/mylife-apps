@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, getStoreCollection, getMetadataEntity, notifyView } = require('mylife-tools-server');
+const { createLogger, getStoreCollection, getMetadataEntity, notifyView, StoreContainer } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const logger = createLogger('mylife:gallery:business:document');
 
@@ -109,6 +109,20 @@ function getDocumentStoreCollections() {
 }
 
 class DocumentView extends StoreContainer {
+
   setCriteria(criteria) {
+    this._criteria = criteria;
+    this._compute();
+  }
+
+  refresh() {
+    this._compute();
+  }
+
+  close() {
+  }
+
+  _compute() {
+
   }
 }
