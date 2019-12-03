@@ -16,10 +16,9 @@ WrappedCheckbox.propTypes = {
 
 const GridSimpleField = ({ object, onObjectChanged, propName, label, editor, width, ...props }) => {
   let editorNode = null;
-  const objectRef = { object };
   if(editor) {
     const EditorComponent = editor;
-    const setValue = (value) => onObjectChanged({ ...objectRef.object, [propName]: value });
+    const setValue = (value) => onObjectChanged({ [propName]: value });
     editorNode = (
       <EditorComponent value={object[propName]} onChange={setValue} {...props} />
     );
