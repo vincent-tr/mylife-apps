@@ -115,11 +115,22 @@ class DocumentView extends StoreContainer {
       parts.push(document => types.has(document._entity));
     }
 
-    /*
-    TODO:
-      albums: new immutable.Set(),
-      persons: new immutable.Set(),
-    */
+    if(criteria.albums) {
+      const references = new Set();
+      for(const albumId of criteria.albums) {
+        const album = business.albumGet(albumId);
+        for(const albumDocument of album.documents) {
+          references.add(`${albumDocument.type}:${albumDocument.id}`);
+        }
+      }
+
+      parts.push(document => references.has(`${document._entity}:${document._id}`));
+    }
+
+    if(criteria.persons) {
+      const personIds = new Set(criteria.persons);
+      parts.push(document => hasPerson(document, personIds));
+    }
 
     if(criteria.keywords) {
       const criteriaKeywords = criteria.keywords.split(/(\s+)/);
@@ -140,6 +151,18 @@ class DocumentView extends StoreContainer {
 
     this._filter = document => parts.every(part => part(document));
   }
+}
+
+function hasPerson(document, personIds) {
+  switch(document.type) {
+    case 'image':
+      return document.persons.some(tag => personIds.has(tag.person));
+
+    case 'video':
+      return document.persons.some(person => personIds.has(person));
+  }
+
+  return false;
 }
 
 function hasKeyword(document, criteriaKeywords) {
