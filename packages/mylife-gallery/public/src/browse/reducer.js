@@ -1,27 +1,31 @@
 'use strict';
 
 import { handleActions, io } from 'mylife-tools-ui';
-//import actionTypes from './action-types';
+import actionTypes from './action-types';
+
+const initialDisplay = {
+  sortField: null,
+  sortOrder: 'asc'
+};
 
 export default handleActions({
-/*
-  [actionTypes.SET_OPERATION_STATS_VIEW] : (state, action) => ({
+
+  [actionTypes.SET_VIEW] : (state, action) => ({
     ...state,
-    stats: action.payload
+    viewId: action.payload
   }),
 
-  [actionTypes.SET_TOTAL_BY_MONTH_VIEW] : (state, action) => ({
+  [actionTypes.SET_DISPLAY] : (state, action) => ({
     ...state,
-    totalByMonth: action.payload
+    display: action.payload || initialDisplay
   }),
 
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
-    stats: null,
-    totalByMonth: null
+    viewId: null
   })
-*/
+
 }, {
-  //stats: null,
-  //totalByMonth: null
+  viewId: null,
+  display: initialDisplay
 });

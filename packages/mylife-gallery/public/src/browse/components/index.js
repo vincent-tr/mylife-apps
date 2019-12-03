@@ -1,16 +1,25 @@
 'use strict';
 
-import { React, useMemo, useState, mui, useDispatch, useLifecycle, immutable } from 'mylife-tools-ui';
-import { browseEnter, browseLeave } from '../actions';
+import { React, useMemo, useState, mui, useDispatch, useSelector, useLifecycle, immutable } from 'mylife-tools-ui';
+import { enter, leave, changeCriteria, changeDisplay } from '../actions';
+import { getDisplay, getDisplayView } from '../selectors';
 import Criteria from './criteria';
 import List from './list';
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return useMemo(() => ({
-    enter : () => dispatch(browseEnter()),
-    leave : () => dispatch(browseLeave()),
-  }), [dispatch]);
+  return {
+    ...useSelector(state => ({
+      display: getDisplay(state),
+      data: getDisplayView(state)
+    })),
+    ...useMemo(() => ({
+      enter: () => dispatch(enter()),
+      leave: () => dispatch(leave()),
+      changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
+      changeDisplay: (criteria) => dispatch(changeDisplay(criteria)),
+    }), [dispatch])
+  };
 };
 
 const useStyles = mui.makeStyles({
@@ -42,27 +51,24 @@ const initialCriteria = {
   pathDuplicate: false
 };
 
-const initialDisplay = {
-  sortField: null,
-  sortOrder: 'asc'
-};
-
 const Browse = () => {
   const classes = useStyles();
-  const { enter, leave } = useConnect();
+  const { display, data, enter, leave, changeCriteria, changeDisplay } = useConnect();
   useLifecycle(enter, leave);
 
   const [criteria, setCriteria] = useState(initialCriteria);
-  const [display, setDisplay] = useState(initialDisplay);
 
   // https://stackoverflow.com/questions/58193166/usestate-hook-setter-incorrectly-overwrites-state
-  const onCriteriaChanged = newCriteria => setCriteria(criteria => ({ ...criteria, ... newCriteria }));
-  const onDisplayChanged = newDisplay => setDisplay(display => ({ ...display, ... newDisplay }));
+  const onCriteriaChanged = changes => setCriteria(criteria => {
+    const newCriteria = ({ ...criteria, ... changes });
+    changeCriteria(newCriteria);
+    return newCriteria;
+  });
 
   return (
     <div className={classes.container}>
-      <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={onDisplayChanged} />
-      <List className={classes.list} display={display}  />
+      <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={changeDisplay} />
+      <List className={classes.list} display={display} data={data}  />
     </div>
   );
 };

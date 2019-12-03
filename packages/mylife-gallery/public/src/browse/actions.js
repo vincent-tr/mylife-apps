@@ -1,60 +1,45 @@
 'use strict';
-/*
-import { createAction, io } from 'mylife-tools-ui';
+
+import { createAction } from 'mylife-tools-ui';
+import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
-import { getOperationStatsViewId, getTotalByMonthViewId } from './selectors';
+import { getDisplay, getViewId } from './selectors';
 
 const local = {
-  setOperationStatsView: createAction(actionTypes.SET_OPERATION_STATS_VIEW),
-  setTotalByMonthView: createAction(actionTypes.SET_TOTAL_BY_MONTH_VIEW),
+  setView: createAction(actionTypes.SET_VIEW),
+  setDisplay: createAction(actionTypes.SET_DISPLAY)
 };
 
-const getOperationStats = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyOperationStats',
-  }));
+const getDocuments = (criteria) => createOrUpdateView({
+  criteriaSelector: () => criteria,
+  viewSelector: getViewId,
+  setViewAction: local.setView,
+  service: 'documents',
+  method: 'notifyDocuments'
+});
 
-  dispatch(local.setOperationStatsView(viewId));
+const clearDocuments = () => deleteView({
+  viewSelector: getViewId,
+  setViewAction: local.setView
+});
+
+
+export const enter = () => async (dispatch) => {
+  await dispatch(getDocuments());
 };
 
-const clearOperationStats = () => async (dispatch, getState) => {
+export const leave = () => async (dispatch) => {
+  dispatch(local.setDisplay(null));
+  await dispatch(clearDocuments());
+};
+
+export const changeCriteria = (criteria) => async (dispatch) => {
+  await dispatch(getDocuments(criteria));
+};
+
+export const changeDisplay = (changes) => async (dispatch, getState) => {
   const state = getState();
-  const viewId = getOperationStatsViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setOperationStatsView(null));
-};
-
-const getTotalByMonth = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyTotalByMonth',
-  }));
-
-  dispatch(local.setTotalByMonthView(viewId));
-};
-
-const clearTotalByMonth = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getTotalByMonthViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setTotalByMonthView(null));
-};
-*/
-export const browseEnter = () => async (dispatch) => {
-//  await dispatch(getOperationStats());
-//  await dispatch(getTotalByMonth());
-};
-
-export const browseLeave = () => async (dispatch) => {
-//  await dispatch(clearOperationStats());
-//  await dispatch(clearTotalByMonth());
+  const display = getDisplay(state);
+  const newDisplay = { ...display, ...changes };
+  dispatch(local.setDisplay(newDisplay));
 };
