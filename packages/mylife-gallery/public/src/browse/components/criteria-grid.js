@@ -64,10 +64,10 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={4} label='Albums' />
       <GridSimpleField width={4} label='Personnes' />
 
-      <GridSimpleField width={4} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} />
-      <GridSimpleField width={4} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={3} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={3} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={3} label='Chemin du fichier' editor={DebouncedTextField} propName='path' object={criteria} onObjectChanged={onCriteriaChanged} />
-      <GridSimpleField width={1} label='Doublons' editor={WrappedCheckbox} propName='pathDuplicate' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={3} label='Doublons' editor={WrappedCheckbox} propName='pathDuplicate' object={criteria} onObjectChanged={onCriteriaChanged} />
 
       <GridSimpleField width={2} label='Tri' editor={SortFieldSelector} propName='sortField' object={display} onObjectChanged={onDisplayChanged} className={classes.selector}/>
       <GridSimpleField width={3} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector}/>
