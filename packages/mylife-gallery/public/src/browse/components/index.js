@@ -55,9 +55,13 @@ const Browse = () => {
   const [criteria, setCriteria] = useState(initialCriteria);
   const [display, setDisplay] = useState(initialDisplay);
 
+  // https://stackoverflow.com/questions/58193166/usestate-hook-setter-incorrectly-overwrites-state
+  const onCriteriaChanged = newCriteria => setCriteria(criteria => ({ ...criteria, ... newCriteria }));
+  const onDisplayChanged = newDisplay => setDisplay(display => ({ ...display, ... newDisplay }));
+
   return (
     <div className={classes.container}>
-      <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={setCriteria} display={display} onDisplayChanged={setDisplay} />
+      <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={onDisplayChanged} />
       <List className={classes.list} display={display}  />
     </div>
   );
