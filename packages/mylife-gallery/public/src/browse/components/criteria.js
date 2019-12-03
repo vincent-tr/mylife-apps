@@ -69,9 +69,9 @@ GridSimpleField.propTypes = {
 const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayChanged }) => {
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
-  //type: new immutable.List(),
-  //albums: new immutable.List(),
-  //persons: new immutable.List(),
+  //type: new immutable.Set(),
+  //albums: new immutable.Set(),
+  //persons: new immutable.Set(),
 
   const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
   // TODO display options (sort)
