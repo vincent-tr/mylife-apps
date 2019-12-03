@@ -11,6 +11,6 @@ exports.meta = {
 exports.unnotify = [ base, api.services.createUnnotify() ];
 
 exports.renotifyWithCriteria = [ base, (session, message) => {
-  const { viewId, ...criteria } = message;
+  const { viewId, criteria } = message;
   return business.renotifyWithCriteria(session, viewId, criteria);
 } ];
