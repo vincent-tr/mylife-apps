@@ -27,6 +27,12 @@ exports.documentNotify = (session, type, id) => {
   return notifyView(session, collection.createView(document => document._id === id));
 };
 
+exports.documentsNotify = (session, criteria) => {
+  const view = new DocumentView();
+  view.setCriteria(criteria);
+  return notifyView(session, view);
+};
+
 exports.documentCreate = (type, values) => {
   const entity = getMetadataEntity(type);
   const collection = getDocumentStoreCollection(type);
@@ -100,4 +106,9 @@ function getDocumentStoreCollections() {
     getStoreCollection('videos'),
     getStoreCollection('others')
   ];
+}
+
+class DocumentView extends StoreContainer {
+  setCriteria(criteria) {
+  }
 }
