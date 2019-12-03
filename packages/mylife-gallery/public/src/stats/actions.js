@@ -28,10 +28,10 @@ const clearStats = () => async (dispatch, getState) => {
   dispatch(local.setView(null));
 };
 
-export const statsEnter = () => async (dispatch) => {
+export const enter = () => async (dispatch) => {
   await dispatch(getStats());
 };
 
-export const statsLeave = () => async (dispatch) => {
+export const leave = () => async (dispatch) => {
   await dispatch(clearStats());
 };
