@@ -3,7 +3,7 @@
 import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, DateOrYearSelector, CriteriaField, DebouncedTextField } from 'mylife-tools-ui';
 import TypeSelector from './type-selector';
 
-const useStyles = mui.makeStyles(theme => ({
+const useSummaryStyles = mui.makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -15,7 +15,7 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const ExpandedSummary = () => {
-  const classes = useStyles();
+  const classes = useSummaryStyles();
   return (
     <div className={classes.container}>
       <mui.Typography variant='h6' className={classes.title}>Critères de sélection</mui.Typography>
@@ -27,7 +27,7 @@ ExpandedSummary.propTypes = {
 };
 
 const CollapsedSummary = ({ criteria }) => {
-  const classes = useStyles();
+  const classes = useSummaryStyles();
   return (
     <div className={classes.container}>
       <mui.Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}`}</mui.Typography>
@@ -67,7 +67,14 @@ GridSimpleField.propTypes = {
   propName: PropTypes.string
 };
 
+const useStyles = mui.makeStyles({
+  selector: {
+    minWidth: 160
+  }
+});
+
 const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayChanged }) => {
+  const classes = useStyles();
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
   //type: new immutable.Set(),
@@ -87,7 +94,7 @@ const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayCh
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
-      <GridSimpleField width={12} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={12} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector}/>
 
       <GridSimpleField width={4} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={4} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} />

@@ -1,14 +1,14 @@
 import { React, PropTypes, mui, immutable } from 'mylife-tools-ui';
 
-const useStyles = mui.makeStyles({
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-});
+const types = [
+  { id: 'image', text: 'Image' },
+  { id: 'video', text: 'Vidéo' },
+  { id: 'other', text: 'Autre' }
+];
+
+const typeMap = new Map(types.map(type => [type.id, type.text]));
+
+const emptySelectorValue = Object.freeze(['image', 'video', 'other']);
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -21,33 +21,22 @@ const MenuProps = {
   },
 };
 
-const types = [
-  { id: 'image', text: 'Image' },
-  { id: 'video', text: 'Vidéo' },
-  { id: 'other', text: 'Autre' }
-];
-
-const TypeSelector = ({ value, onChange }) => {
-  const classes = useStyles();
-  const handleChange = event => onChange(new immutable.Set(event.target.value));
+const TypeSelector = ({ value, onChange, ...props }) => {
+  const handleChange = event => onChange(valueFromSelector(event.target.value));
+  const selectorValue = valueToSelector(value);
   return (
     <mui.Select
       multiple
-      value={value.toArray()}
+      value={selectorValue}
       onChange={handleChange}
       input={<mui.Input />}
-      renderValue={selected => (
-        <div className={classes.chips}>
-          {selected.map(value => (
-            <mui.Chip key={value} label={value} className={classes.chip} />
-          ))}
-        </div>
-      )}
+      renderValue={renderSelectorValue}
       MenuProps={MenuProps}
+      {...props}
     >
       {types.map(type => (
         <mui.MenuItem key={type.id} value={type.id}>
-          <mui.Checkbox checked={value.has(type.id)} />
+          <mui.Checkbox checked={selectorValue === emptySelectorValue || value.has(type.id)} />
           <mui.ListItemText primary={type.text} />
         </mui.MenuItem>
       ))}
@@ -61,3 +50,26 @@ TypeSelector.propTypes = {
 };
 
 export default TypeSelector;
+
+function valueToSelector(value) {
+  if(value.size === 0) {
+    return emptySelectorValue;
+  }
+
+  return value.toArray();
+}
+
+function valueFromSelector(value) {
+  if(value.length === emptySelectorValue.length) {
+    return new immutable.Set();
+  }
+
+  return new immutable.Set(value);
+}
+
+function renderSelectorValue(selection) {
+  if(selection === emptySelectorValue) {
+    return '';
+  }
+  return selection.map(typeId => typeMap.get(typeId)).join(', ');
+}
