@@ -11,7 +11,7 @@ const local = {
 };
 
 const getDocuments = (criteria) => createOrUpdateView({
-  criteriaSelector: () => criteria,
+  criteriaSelector: () => ({ criteria }),
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'document',
