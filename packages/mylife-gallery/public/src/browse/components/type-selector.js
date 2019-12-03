@@ -1,14 +1,7 @@
 import { React, PropTypes, mui, immutable } from 'mylife-tools-ui';
+import { DOCUMENT_TYPES, DOCUMENT_TYPE_MAP } from '../../common/document-type';
 
-const types = [
-  { id: 'image', text: 'Image' },
-  { id: 'video', text: 'Vidéo' },
-  { id: 'other', text: 'Autre' }
-];
-
-const typeMap = new Map(types.map(type => [type.id, type.text]));
-
-const emptySelectorValue = Object.freeze(['image', 'video', 'other']);
+const emptySelectorValue = DOCUMENT_TYPES.map(type => type.id);
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -34,7 +27,7 @@ const TypeSelector = ({ value, onChange, ...props }) => {
       MenuProps={MenuProps}
       {...props}
     >
-      {types.map(type => (
+      {DOCUMENT_TYPES.map(type => (
         <mui.MenuItem key={type.id} value={type.id}>
           <mui.Checkbox checked={selectorValue === emptySelectorValue || value.has(type.id)} />
           <mui.ListItemText primary={type.text} />
@@ -71,5 +64,5 @@ function renderSelectorValue(selection) {
   if(selection === emptySelectorValue) {
     return '';
   }
-  return selection.map(typeId => typeMap.get(typeId)).join(', ');
+  return selection.map(typeId => DOCUMENT_TYPE_MAP.get(typeId)).join(', ');
 }
