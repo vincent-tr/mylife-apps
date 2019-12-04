@@ -127,9 +127,17 @@ class DocumentView extends StoreContainer {
       parts.push(document => references.has(`${document._entity}:${document._id}`));
     }
 
+    if(criteria.noAlbum) {
+      // TODO
+    }
+
     if(criteria.persons) {
       const personIds = new Set(criteria.persons);
       parts.push(document => hasPerson(document, personIds));
+    }
+
+    if(criteria.noPerson) {
+      // TODO
     }
 
     if(criteria.keywords) {
