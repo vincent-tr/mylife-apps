@@ -8,6 +8,8 @@ const useStyles = mui.makeStyles({
     height: 200,
     width: 200
   },
+  image: {
+  },
   icon: {
     color: 'rgba(255, 255, 255, 0.5)',
   },
@@ -18,11 +20,12 @@ const MAX_SIZE = 100;
 const List = ({ data }) => {
 
   const classes = useStyles();
+  const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
 
   return (
-    <mui.GridList cols={0}>
+    <mui.GridList cols={0} cellHeight={200}>
       {data.slice(0, MAX_SIZE).map(document => (
-        <mui.GridListTile key={document._id} classes={{root: classes.tile}}>
+        <mui.GridListTile key={document._id} classes={tileClasses}>
           <img src={thumbnailUrl(document)} />
           <mui.GridListTileBar
             title={document.caption}
