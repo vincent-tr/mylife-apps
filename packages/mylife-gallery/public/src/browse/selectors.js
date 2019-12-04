@@ -25,7 +25,7 @@ export const getDisplayView = createSelector(
     if(order === undefined) {
       throw new Error(`Unsupported sort order: '${sortOrder}'`);
     }
-    console.log('computing', display)
+
     const comparer = comparerFactory(sortField, order);
     const array = Array.from(sourceArray);
     array.sort(comparer);
