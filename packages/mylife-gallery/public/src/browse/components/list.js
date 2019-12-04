@@ -33,20 +33,23 @@ const List = ({ data }) => {
 
   return (
     <mui.GridList cols={0} cellHeight={THUMBNAIL_SIZE}>
-      {data.slice(0, MAX_SIZE).map(document => (
-        <mui.GridListTile key={document._id} classes={tileClasses}>
-          <img src={thumbnailUrl(document)} />
-          <mui.GridListTileBar
-            title={document.caption}
-            subtitle={document.keywords.join(' ')}
-            actionIcon={
-              <mui.IconButton className={classes.icon}>
-                <icons.actions.Fullscreen />
-              </mui.IconButton>
-            }
-          />
-        </mui.GridListTile>
-      ))}
+      {data.slice(0, MAX_SIZE).map(document => {
+        const { thumbnailUrl, title, subtitle } = getDocumentInfo(document);
+        return (
+          <mui.GridListTile key={document._id} classes={tileClasses}>
+            <img src={thumbnailUrl} />
+            <mui.GridListTileBar
+              title={title}
+              subtitle={subtitle}
+              actionIcon={
+                <mui.IconButton className={classes.icon}>
+                  <icons.actions.Fullscreen />
+                </mui.IconButton>
+              }
+            />
+          </mui.GridListTile>
+        );
+      })}
     </mui.GridList>
   );
 };
@@ -57,7 +60,15 @@ List.propTypes = {
 
 export default List;
 
-function thumbnailUrl(document) {
+function getDocumentInfo(document) {
+  return {
+    thumbnailUrl: getThumbnailUrl(document),
+    title: getTitle(document),
+    subtitle: getSubtitle(document),
+  };
+}
+
+function getThumbnailUrl(document) {
   switch(document._entity) {
     case 'image':
       return `/content/thumbnail/${document.thumbnail}`;
@@ -66,4 +77,21 @@ function thumbnailUrl(document) {
     default:
       return null;
   }
+}
+
+function getTitle(document) {
+  if(document.caption) {
+    return document.caption;
+  }
+  const path = document.paths[0].path;
+  const fileName = path.replace(/^.*[\\/]/, '');
+  return fileName;
+}
+
+function getSubtitle(document) {
+  if(document.keywords.length) {
+    return document.keywords.join(' ');
+  }
+
+  return document.paths[0].path;
 }
