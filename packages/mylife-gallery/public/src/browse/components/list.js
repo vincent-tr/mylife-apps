@@ -3,15 +3,23 @@
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 
-const MAX_SIZE = 100;
+const MAX_SIZE = 1000;
 const THUMBNAIL_SIZE = 200;
 
 const useStyles = mui.makeStyles({
   tile: {
     height: THUMBNAIL_SIZE,
-    width: THUMBNAIL_SIZE
+    width: THUMBNAIL_SIZE,
+    textAlign:'center'
   },
   image: {
+    // reset base style
+    top: 'unset',
+    left: 'unset',
+    height: 'unset',
+    width: 'unset',
+    transform: 'unset',
+    position: 'relative'
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.5)',
