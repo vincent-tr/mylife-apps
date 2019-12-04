@@ -117,7 +117,7 @@ class CollapsedTitleFormatter {
   }
 
   result() {
-    return this.parts.join(', ');
+    return this.parts.length ? this.parts.join(', ') : '<Aucun critère>';
   }
 
   formatDateRange(min, max) {
