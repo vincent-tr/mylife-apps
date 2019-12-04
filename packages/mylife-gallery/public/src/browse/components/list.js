@@ -3,10 +3,13 @@
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 
+const MAX_SIZE = 100;
+const THUMBNAIL_SIZE = 200;
+
 const useStyles = mui.makeStyles({
   tile: {
-    height: 200,
-    width: 200
+    height: THUMBNAIL_SIZE,
+    width: THUMBNAIL_SIZE
   },
   image: {
   },
@@ -15,15 +18,13 @@ const useStyles = mui.makeStyles({
   },
 });
 
-const MAX_SIZE = 100;
-
 const List = ({ data }) => {
 
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
 
   return (
-    <mui.GridList cols={0} cellHeight={200}>
+    <mui.GridList cols={0} cellHeight={THUMBNAIL_SIZE}>
       {data.slice(0, MAX_SIZE).map(document => (
         <mui.GridListTile key={document._id} classes={tileClasses}>
           <img src={thumbnailUrl(document)} />
