@@ -4,7 +4,8 @@ import { React, mui } from 'mylife-tools-ui';
 
 const {
   Explore,
-  Equalizer
+  Equalizer,
+  Fullscreen,
 } = mui.icons;
 
 const Gallery = (props) => (
@@ -25,4 +26,8 @@ export default {
     Browse: Explore,
     Stats : Equalizer
   },
+
+  actions: {
+    Fullscreen
+  }
 };
