@@ -61,8 +61,8 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
       <GridSimpleField width={4} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector}/>
-      <GridSimpleField width={4} label='Albums' />
-      <GridSimpleField width={4} label='Personnes' />
+      <GridSimpleField width={4} label='Albums (TODO: ajouter une checkbox pour : aucun album)' />
+      <GridSimpleField width={4} label='Personnes (TODO: ajouter une checkbox pour : aucune personne)' />
 
       <GridSimpleField width={3} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={3} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} />
