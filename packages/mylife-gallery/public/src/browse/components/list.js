@@ -3,7 +3,6 @@
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 
-const MAX_SIZE = 1000;
 const THUMBNAIL_SIZE = 200;
 
 const useStyles = mui.makeStyles({
@@ -33,7 +32,7 @@ const List = ({ data }) => {
 
   return (
     <mui.GridList cols={0} cellHeight={THUMBNAIL_SIZE}>
-      {data.slice(0, MAX_SIZE).map(document => {
+      {data.map(document => {
         const { thumbnailUrl, title, subtitle } = getDocumentInfo(document);
         return (
           <mui.GridListTile key={document._id} classes={tileClasses}>
