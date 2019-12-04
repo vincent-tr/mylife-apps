@@ -61,13 +61,6 @@ Criteria.propTypes = {
 
 export default Criteria;
 
-function formatNullableDate(date) {
-  if(!date) {
-    return '<indéfini>';
-  }
-  return formatDate(date, 'dd/MM/yyyy');
-}
-
 class CollapsedTitleFormatter {
 
   static generate(criteria) {
@@ -83,6 +76,8 @@ class CollapsedTitleFormatter {
     // albums
     // persons
     this.addTexts();
+
+    this.addDefault();
   }
 
   addDates() {
@@ -116,11 +111,24 @@ class CollapsedTitleFormatter {
     }
   }
 
+  addDefault() {
+    if(this.parts.length === 0) {
+      this.parts.push('<Aucun critère>');
+    }
+  }
+
   result() {
-    return this.parts.length ? this.parts.join(', ') : '<Aucun critère>';
+    return this.parts.join(', ');
   }
 
   formatDateRange(min, max) {
-    return `Du ${formatNullableDate(min)} au ${formatNullableDate(max)}`;
+    return `Du ${this.formatNullableDate(min)} au ${this.formatNullableDate(max)}`;
+  }
+
+  formatNullableDate(date) {
+    if(!date) {
+      return '<indéfini>';
+    }
+    return formatDate(date, 'dd/MM/yyyy');
   }
 }
