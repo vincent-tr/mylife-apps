@@ -61,10 +61,10 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
       <GridSimpleField width={4} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector}/>
-      <GridSimpleField width={4} label='Albums (TODO)' />
-      <GridSimpleField width={3} label='Aucun' editor={WrappedCheckbox} propName='noAlbum' object={criteria} onObjectChanged={onCriteriaChanged} />
-      <GridSimpleField width={4} label='Personnes (TODO)' />
-      <GridSimpleField width={3} label='Aucun' editor={WrappedCheckbox} propName='noPerson' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={2} label='Albums (TODO)' />
+      <GridSimpleField width={2} label='Aucun' editor={WrappedCheckbox} propName='noAlbum' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={2} label='Personnes (TODO)' />
+      <GridSimpleField width={2} label='Aucun' editor={WrappedCheckbox} propName='noPerson' object={criteria} onObjectChanged={onCriteriaChanged} />
 
       <GridSimpleField width={3} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={3} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} />
