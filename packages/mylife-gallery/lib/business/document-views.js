@@ -128,7 +128,15 @@ class DocumentView extends StoreContainer {
     }
 
     if(criteria.noAlbum) {
-      // TODO
+      // all documents that are in some album
+      const references = new Set();
+      for(const album of business.albumList()) {
+        for(const albumDocument of album.documents) {
+          references.add(`${albumDocument.type}:${albumDocument.id}`);
+        }
+      }
+
+      parts.push(document => !references.has(`${document._entity}:${document._id}`));
     }
 
     if(criteria.persons) {
@@ -137,7 +145,7 @@ class DocumentView extends StoreContainer {
     }
 
     if(criteria.noPerson) {
-      // TODO
+      parts.push(hasNoPerson);
     }
 
     if(criteria.keywords) {
@@ -171,6 +179,16 @@ function hasPerson(document, personIds) {
   }
 
   return false;
+}
+
+function hasNoPerson(document) {
+  switch(document.type) {
+    case 'image':
+    case 'video':
+      return document.persons.length === 0;
+  }
+
+  return true;
 }
 
 function hasKeyword(document, criteriaKeywords) {

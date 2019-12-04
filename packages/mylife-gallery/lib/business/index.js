@@ -5,6 +5,7 @@ Object.assign(exports,
   require('./document'),
   require('./document-views'),
   require('./thumbnail'),
+  require('./album'),
   require('./stats'),
   require('./collection-subscription'),
 );
