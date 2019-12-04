@@ -1,3 +1,5 @@
+'use strict';
+
 import { React, PropTypes, mui, immutable } from 'mylife-tools-ui';
 import { DOCUMENT_TYPES, DOCUMENT_TYPE_MAP } from '../../common/document-type';
 

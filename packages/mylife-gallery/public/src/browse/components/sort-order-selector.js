@@ -1,3 +1,5 @@
+'use strict';
+
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 
 const orders = [
