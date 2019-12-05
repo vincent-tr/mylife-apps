@@ -83,14 +83,14 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={3} label='Chemin du fichier' editor={DebouncedTextField} propName='path' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={3} label='Doublons' editor={WrappedCheckbox} propName='pathDuplicate' object={criteria} onObjectChanged={onCriteriaChanged} />
 
-      <GridSimpleField width={2} label='Largueur (image/vidéo)' />
+      <GridSimpleField width={2} label='Image/Vidéo' />
+      <GridSimpleField width={1} label='Largueur' />
       <GridSimpleField width={1} label='Min' editor={DebouncedTextField} propName='minWidth' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
       <GridSimpleField width={1} label='Max' editor={DebouncedTextField} propName='maxWidth' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
-
-      <GridSimpleField width={2} label='Hauteur (image/vidéo)' />
+      <GridSimpleField width={1} label='Hauteur' />
       <GridSimpleField width={1} label='Min' editor={DebouncedTextField} propName='minHeight' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
       <GridSimpleField width={1} label='Max' editor={DebouncedTextField} propName='maxHeight' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
-      <GridSimpleField width={3} label='Orientation' editor={ListSelector} propName='orientation' object={criteria} onObjectChanged={onCriteriaChanged} list={orientationFields} className={classes.selector} />
+      <GridSimpleField width={4} label='Orientation' editor={ListSelector} propName='orientation' object={criteria} onObjectChanged={onCriteriaChanged} list={orientationFields} className={classes.selector} />
 
       <GridSimpleField width={2} label='Tri' editor={ListSelector} propName='sortField' object={display} onObjectChanged={onDisplayChanged} list={sortFields} className={classes.selector} />
       <GridSimpleField width={3} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector} />
