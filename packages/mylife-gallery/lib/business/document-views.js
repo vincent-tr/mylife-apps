@@ -94,21 +94,8 @@ class DocumentView extends StoreContainer {
 
     const parts = [];
 
-    if(criteria.minDate) {
-      parts.push(document => document.date && document.date >= criteria.minDate);
-    }
-
-    if(criteria.maxDate) {
-      parts.push(document => document.date && document.date <= criteria.maxDate);
-    }
-
-    if(criteria.minIntegrationDate) {
-      parts.push(document => document.integrationDat && document.integrationDate >= criteria.minIntegrationDate);
-    }
-
-    if(criteria.maxIntegrationDate) {
-      parts.push(document => document.integrationDat && document.integrationDate <= criteria.maxIntegrationDate);
-    }
+    createIntervalFilterPart(criteria, parts, 'minDate', 'maxDate', 'date');
+    createIntervalFilterPart(criteria, parts, 'minIntegrationDate', 'maxIntegrationDate', 'integrationDate');
 
     if(criteria.type) {
       const types = new Set(criteria.type);
@@ -165,7 +152,50 @@ class DocumentView extends StoreContainer {
       parts.push(document => document.paths.length > 1);
     }
 
+    createIntervalFilterPart(criteria, parts, 'minWidth', 'maxWidth', 'width');
+    createIntervalFilterPart(criteria, parts, 'minHeight', 'maxHeight', 'height');
+
+    switch(criteria.orientation) {
+      case 'landscape':
+        parts.push(document => document.width && document.height && document.height < document.width);
+        break;
+
+      case 'portrait':
+        parts.push(document => document.width && document.height && document.width < document.height);
+        break;
+
+    }
+
     this._filter = document => parts.every(part => part(document));
+  }
+}
+
+function createIntervalFilterPart(criteria, parts, minName, maxName, propName) {
+  // optimize if both min and max are defined
+  const min = criteria[minName];
+  const max = criteria[maxName];
+  if(min && max) {
+    parts.push(document => {
+      const value = document[propName];
+      return value && value >= min && value <= max;
+    });
+    return;
+  }
+
+  if(min) {
+    parts.push(document => {
+      const value = document[propName];
+      return value && value >= min;
+    });
+    return;
+  }
+
+  if(max) {
+    parts.push(document => {
+      const value = document[propName];
+      return value && value <= max;
+    });
+    return;
   }
 }
 
