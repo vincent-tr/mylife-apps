@@ -27,7 +27,11 @@ const Home = () => {
 
   return (
     <div className={classes.container}>
-      Home
+      Home <br/>
+      Suggestions: <br/>
+       - propose to create album of a root folder if none of the documents inside are in an album <br/>
+       - propose to create script (win/*nix) to remove duplicates (for each select the one to keep) <br/>
+       - propose to create script to remove other (select with criteria) <br/>
     </div>
   );
 };
