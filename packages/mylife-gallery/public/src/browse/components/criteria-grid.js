@@ -2,7 +2,6 @@
 
 import { React, PropTypes, mui, DateOrYearSelector, CriteriaField, DebouncedTextField } from 'mylife-tools-ui';
 import TypeSelector from './type-selector';
-import SortFieldSelector from './sort-field-selector';
 import SortOrderSelector from './sort-order-selector';
 
 const WrappedCheckbox = ({ value, onChange, ...props }) => (
@@ -13,6 +12,13 @@ WrappedCheckbox.propTypes = {
   value: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired
 };
+
+const sortFields = [
+  { id: null, text: '<Aucun>' },
+  { id: 'date', text: 'Date' },
+  { id: 'integrationDate', text: 'Date d\'intégration' },
+  { id: 'path', text: 'Chemin du fichier' }
+];
 
 const GridSimpleField = ({ object, onObjectChanged, propName, label, editor, width, ...props }) => {
   let editorNode = null;
@@ -60,7 +66,7 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
-      <GridSimpleField width={4} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector}/>
+      <GridSimpleField width={4} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} />
       <GridSimpleField width={2} label='Albums (TODO)' />
       <GridSimpleField width={2} label='Aucun' editor={WrappedCheckbox} propName='noAlbum' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={2} label='Personnes (TODO)' />
@@ -71,8 +77,8 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={3} label='Chemin du fichier' editor={DebouncedTextField} propName='path' object={criteria} onObjectChanged={onCriteriaChanged} />
       <GridSimpleField width={3} label='Doublons' editor={WrappedCheckbox} propName='pathDuplicate' object={criteria} onObjectChanged={onCriteriaChanged} />
 
-      <GridSimpleField width={2} label='Tri' editor={SortFieldSelector} propName='sortField' object={display} onObjectChanged={onDisplayChanged} className={classes.selector}/>
-      <GridSimpleField width={3} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector}/>
+      <GridSimpleField width={2} label='Tri' editor={ListSelector} propName='sortField' object={display} onObjectChanged={onDisplayChanged} list={sortFields} className={classes.selector} />
+      <GridSimpleField width={3} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector} />
     </mui.Grid>
   );
 };
