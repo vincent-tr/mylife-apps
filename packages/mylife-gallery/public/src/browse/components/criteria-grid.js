@@ -60,11 +60,11 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
     <mui.Grid container spacing={2}>
       <GridSimpleField width={2} label='Date du document' />
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
-      <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
+      <GridSimpleField width={2} label='Fin' editor={DateOrYearSelector} propName='maxDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
       <GridSimpleField width={2} label={'Date d\'intégration'} />
       <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
-      <GridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
+      <GridSimpleField width={2} label='Fin' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
       <GridSimpleField width={4} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} />
       <GridSimpleField width={2} label='Albums (TODO)' />
