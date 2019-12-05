@@ -53,7 +53,11 @@ const initialCriteria = {
   keywords: null,
   caption: null,
   path: null,
-  pathDuplicate: false
+  pathDuplicate: false,
+  minWidth: null,
+  maxWidth: null,
+  minHeight: null,
+  maxHeight: null,
 };
 
 const Browse = () => {
