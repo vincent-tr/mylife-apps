@@ -5,6 +5,7 @@ import { React, mui } from 'mylife-tools-ui';
 const {
   Explore,
   Equalizer,
+  Close,
   Fullscreen,
 } = mui.icons;
 
@@ -28,6 +29,7 @@ export default {
   },
 
   actions: {
+    Close,
     Fullscreen
   }
 };
