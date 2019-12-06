@@ -40,9 +40,7 @@ const useStyles = mui.makeStyles(theme => ({
 const Tile = ({ document }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
-  const thumbnailUrl = getThumbnailUrl(document);
-  const title = getTitle(document);
-  const subtitle = getSubtitle(document);
+  const { thumbnailUrl, title, subtitle } = documentViewer.getInfo(document);
 
   return (
     <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document)}>
@@ -69,31 +67,3 @@ List.propTypes = {
 };
 
 export default List;
-
-function getThumbnailUrl(document) {
-  switch(document._entity) {
-    case 'image':
-      return `/content/thumbnail/${document.thumbnail}`;
-    case 'video':
-      return `/content/thumbnail/${document.thumbnails[0]}`;
-    default:
-      return null;
-  }
-}
-
-function getTitle(document) {
-  if(document.caption) {
-    return document.caption;
-  }
-  const path = document.paths[0].path;
-  const fileName = path.replace(/^.*[\\/]/, '');
-  return fileName;
-}
-
-function getSubtitle(document) {
-  if(document.keywords.length) {
-    return document.keywords.join(' ');
-  }
-
-  return document.paths[0].path;
-}

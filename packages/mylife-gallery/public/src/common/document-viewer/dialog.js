@@ -2,6 +2,7 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import icons from '../icons';
+import * as utils from './utils';
 
 const useStyles = mui.makeStyles(theme => ({
   appBar: {
@@ -20,19 +21,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Dialog = ({ show, proceed, options }) => {
   const classes = useStyles();
   const { document } = options;
+  const info = utils.getInfo(document);
+
   return (
     <mui.Dialog open={show} onClose={proceed} fullScreen TransitionComponent={Transition}>
       <mui.AppBar className={classes.appBar}>
         <mui.Toolbar>
-          <mui.IconButton edge="start" color="inherit" onClick={proceed} aria-label="close">
+          <mui.IconButton edge='start' color='inherit' onClick={proceed} aria-label='close'>
             <icons.actions.Close />
           </mui.IconButton>
-          <mui.Typography variant="h6" className={classes.title}>
-            Sound
+          <mui.Typography variant='h6' className={classes.title}>
+            {info.title}
           </mui.Typography>
-          <mui.Button autoFocus color="inherit" onClick={proceed}>
-            cya!
-          </mui.Button>
+          <mui.IconButton color='inherit' onClick={proceed} aria-label='close'>
+            <icons.actions.Download />
+          </mui.IconButton>
+          <mui.IconButton edge='end' color='inherit' onClick={proceed} aria-label='close'>
+            <icons.actions.Detail />
+          </mui.IconButton>
         </mui.Toolbar>
       </mui.AppBar>
       <mui.DialogTitle disableTypography>

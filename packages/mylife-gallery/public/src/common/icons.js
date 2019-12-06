@@ -7,6 +7,8 @@ const {
   Equalizer,
   Close,
   Fullscreen,
+  CloudDownload,
+  Info,
 } = mui.icons;
 
 const Gallery = (props) => (
@@ -30,6 +32,8 @@ export default {
 
   actions: {
     Close,
+    Detail: Info,
+    Download: CloudDownload,
     Fullscreen
   }
 };

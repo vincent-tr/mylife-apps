@@ -3,6 +3,8 @@
 import { dialogs } from 'mylife-tools-ui';
 import Dialog from './dialog';
 
+export * from './utils';
+
 const dialog = dialogs.create(Dialog);
 
 export async function showDialog(document) {
