@@ -2,6 +2,7 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import icons from '../../common/icons';
+import * as documentViewer from '../../common/document-viewer';
 
 const THUMBNAIL_SIZE = 200;
 
@@ -41,8 +42,8 @@ const List = ({ data }) => {
               title={title}
               subtitle={subtitle}
               actionIcon={
-                <mui.IconButton className={classes.icon}>
-                  <icons.actions.Fullscreen />
+                <mui.IconButton className={classes.icon} onClick={() => documentViewer.showDialog(document)}>
+                  <icons.actions.Fullscreen/>
                 </mui.IconButton>
               }
             />
