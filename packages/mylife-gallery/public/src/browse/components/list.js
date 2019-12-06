@@ -6,11 +6,15 @@ import * as documentViewer from '../../common/document-viewer';
 
 const THUMBNAIL_SIZE = 200;
 
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   tile: {
     height: THUMBNAIL_SIZE,
     width: THUMBNAIL_SIZE,
-    textAlign:'center'
+    textAlign:'center',
+    margin: theme.spacing(1),
+    borderWidth: 1,
+    borderColor: mui.colors.grey[300],
+    borderStyle: 'solid',
   },
   image: {
     // reset base style
@@ -19,37 +23,44 @@ const useStyles = mui.makeStyles({
     height: 'unset',
     width: 'unset',
     transform: 'unset',
-    position: 'relative'
+    position: 'relative',
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.5)',
   },
-});
+}));
 
-const List = ({ data }) => {
-
+const Tile = ({ document }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
+  const thumbnailUrl = getThumbnailUrl(document);
+  const title = getTitle(document);
+  const subtitle = getSubtitle(document);
 
   return (
+    <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document)}>
+      <img src={thumbnailUrl} />
+      <mui.GridListTileBar
+        title={title}
+        subtitle={subtitle}
+        actionIcon={
+          <mui.IconButton className={classes.icon} onClick={() => documentViewer.showDialog(document)}>
+            <icons.actions.Fullscreen/>
+          </mui.IconButton>
+        }
+      />
+    </mui.GridListTile>
+  );
+};
+
+Tile.propTypes = {
+  document: PropTypes.object.isRequired
+};
+
+const List = ({ data }) => {
+  return (
     <mui.GridList cols={0} cellHeight={THUMBNAIL_SIZE}>
-      {data.map(document => {
-        const { thumbnailUrl, title, subtitle } = getDocumentInfo(document);
-        return (
-          <mui.GridListTile key={document._id} classes={tileClasses}>
-            <img src={thumbnailUrl} />
-            <mui.GridListTileBar
-              title={title}
-              subtitle={subtitle}
-              actionIcon={
-                <mui.IconButton className={classes.icon} onClick={() => documentViewer.showDialog(document)}>
-                  <icons.actions.Fullscreen/>
-                </mui.IconButton>
-              }
-            />
-          </mui.GridListTile>
-        );
-      })}
+      {data.map(document => (<Tile key={document._id} document={document}/>))}
     </mui.GridList>
   );
 };
@@ -59,14 +70,6 @@ List.propTypes = {
 };
 
 export default List;
-
-function getDocumentInfo(document) {
-  return {
-    thumbnailUrl: getThumbnailUrl(document),
-    title: getTitle(document),
-    subtitle: getSubtitle(document),
-  };
-}
 
 function getThumbnailUrl(document) {
   switch(document._entity) {
