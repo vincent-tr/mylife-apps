@@ -4,7 +4,7 @@ import { React, PropTypes, mui } from 'mylife-tools-ui';
 
 const NavBar = ({ open, document, info, ...props }) => {
   return (
-    <mui.Slide direction='left' in={open}>
+    <mui.Slide direction='left' in={open} mountOnEnter unmountOnExit>
       <div {...props}>
         Detail
       </div>
