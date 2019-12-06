@@ -1,8 +1,9 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useState } from 'mylife-tools-ui';
 import * as utils from './utils';
 import NavBar from './nav-bar';
+import Detail from './detail';
 import ViewerImage from './viewer-image';
 import ViewerVideo from './viewer-video';
 import ViewerOther from './viewer-other';
@@ -16,6 +17,8 @@ const useStyles = mui.makeStyles({
   },
   viewer: {
     flex: 1,
+  },
+  detail: {
   }
 });
 
@@ -42,12 +45,15 @@ const Dialog = ({ show, proceed, options }) => {
   const classes = useStyles();
   const { document } = options;
   const info = utils.getInfo(document);
+  const [showDetail, setShowDetail] = useState(false);
+  const toggleShowDetail = () => setShowDetail(value => !value);
 
   return (
     <mui.Dialog open={show} onClose={proceed} fullScreen TransitionComponent={Transition}>
-      <NavBar className={classes.appBar} document={document} info={info} onClose={proceed} onDetail={() => console.log('onDetail')} />
+      <NavBar className={classes.appBar} document={document} info={info} onClose={proceed} onDetail={toggleShowDetail} />
       <mui.DialogContent className={classes.viewerContainer}>
         <Viewer document={document} info={info} className={classes.viewer}/>
+        <Detail document={document} info={info} className={classes.detail} open={showDetail} />
       </mui.DialogContent>
     </mui.Dialog>
   );
