@@ -3,14 +3,12 @@
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 
 const NavBar = ({ open, document, info, ...props }) => {
-  if(!open) {
-    return null;
-  }
-
   return (
-    <div {...props}>
-      Detail
-    </div>
+    <mui.Slide direction='left' in={open}>
+      <div {...props}>
+        Detail
+      </div>
+    </mui.Slide>
   );
 };
 
