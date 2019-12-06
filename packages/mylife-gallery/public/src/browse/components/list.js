@@ -1,20 +1,27 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import icons from '../../common/icons';
 import * as documentViewer from '../../common/document-viewer';
 
 const THUMBNAIL_SIZE = 200;
 
 const useStyles = mui.makeStyles(theme => ({
   tile: {
+    // size + image position
     height: THUMBNAIL_SIZE,
     width: THUMBNAIL_SIZE,
     textAlign:'center',
+
+    // spacing
     margin: theme.spacing(1),
+
+    // border
     borderWidth: 1,
     borderColor: mui.colors.grey[300],
     borderStyle: 'solid',
+
+    // cursor
+    cursor: 'pointer',
   },
   image: {
     // reset base style
@@ -40,15 +47,7 @@ const Tile = ({ document }) => {
   return (
     <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document)}>
       <img src={thumbnailUrl} />
-      <mui.GridListTileBar
-        title={title}
-        subtitle={subtitle}
-        actionIcon={
-          <mui.IconButton className={classes.icon} onClick={() => documentViewer.showDialog(document)}>
-            <icons.actions.Fullscreen/>
-          </mui.IconButton>
-        }
-      />
+      <mui.GridListTileBar title={title} subtitle={subtitle} />
     </mui.GridListTile>
   );
 };
