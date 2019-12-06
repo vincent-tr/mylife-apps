@@ -1,22 +1,42 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import icons from '../icons';
 import * as utils from './utils';
+import NavBar from './nav-bar';
+import ViewerImage from './viewer-image';
+import ViewerVideo from './viewer-video';
+import ViewerOther from './viewer-other';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles({
   appBar: {
     position: 'relative',
   },
-  title: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
+  viewerContainer: {
+    display: 'flex'
   },
-}));
+  viewer: {
+    flex: 1,
+  }
+});
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <mui.Slide direction='up' ref={ref} {...props} />;
 });
+
+const Viewer = ({ document, ...props }) => {
+  switch(document._entity) {
+    case 'image':
+      return (<ViewerImage document={document} {...props} />);
+    case 'video':
+      return (<ViewerVideo document={document} {...props} />);
+    case 'other':
+      return (<ViewerOther document={document} {...props} />);
+  }
+};
+
+Viewer.propTypes = {
+  document: PropTypes.object.isRequired,
+};
 
 const Dialog = ({ show, proceed, options }) => {
   const classes = useStyles();
@@ -25,37 +45,10 @@ const Dialog = ({ show, proceed, options }) => {
 
   return (
     <mui.Dialog open={show} onClose={proceed} fullScreen TransitionComponent={Transition}>
-      <mui.AppBar className={classes.appBar}>
-        <mui.Toolbar>
-          <mui.IconButton edge='start' color='inherit' onClick={proceed} aria-label='close'>
-            <icons.actions.Close />
-          </mui.IconButton>
-          <mui.Typography variant='h6' className={classes.title}>
-            {info.title}
-          </mui.Typography>
-          <mui.IconButton color='inherit' onClick={proceed} aria-label='close'>
-            <icons.actions.Download />
-          </mui.IconButton>
-          <mui.IconButton edge='end' color='inherit' onClick={proceed} aria-label='close'>
-            <icons.actions.Detail />
-          </mui.IconButton>
-        </mui.Toolbar>
-      </mui.AppBar>
-      <mui.DialogTitle disableTypography>
-        <mui.Typography variant='h6' color='error'>
-          {'Erreur'}
-        </mui.Typography>
-      </mui.DialogTitle>
-      <mui.DialogContent>
-        <mui.DialogContentText id='alert-dialog-description'>
-          {JSON.stringify(document)}
-        </mui.DialogContentText>
+      <NavBar className={classes.appBar} document={document} info={info} onClose={proceed} onInfo={() => console.log('onInfo')} />
+      <mui.DialogContent className={classes.viewerContainer}>
+        <Viewer document={document} info={info} className={classes.viewer}/>
       </mui.DialogContent>
-      <mui.DialogActions>
-        <mui.Button onClick={proceed} color='primary' autoFocus>
-          Close
-        </mui.Button>
-      </mui.DialogActions>
     </mui.Dialog>
   );
 };

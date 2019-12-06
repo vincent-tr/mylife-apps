@@ -2,10 +2,23 @@
 
 export function getInfo(document) {
   return {
+    contentUrl: getContentUrl(document),
     thumbnailUrl: getThumbnailUrl(document),
     title: getTitle(document),
     subtitle: getSubtitle(document)
   };
+}
+
+function getContentUrl(document) {
+  switch(document._entity) {
+    case 'image':
+      return `/content/image/${document._id}`;
+    case 'video':
+    case 'other':
+    default:
+      return null;
+  }
+
 }
 
 function getThumbnailUrl(document) {
