@@ -45,7 +45,7 @@ const Dialog = ({ show, proceed, options }) => {
 
   return (
     <mui.Dialog open={show} onClose={proceed} fullScreen TransitionComponent={Transition}>
-      <NavBar className={classes.appBar} document={document} info={info} onClose={proceed} onInfo={() => console.log('onInfo')} />
+      <NavBar className={classes.appBar} document={document} info={info} onClose={proceed} onDetail={() => console.log('onDetail')} />
       <mui.DialogContent className={classes.viewerContainer}>
         <Viewer document={document} info={info} className={classes.viewer}/>
       </mui.DialogContent>
