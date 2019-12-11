@@ -7,8 +7,6 @@ MyLife Applications
  - lerna bootstrap
 
 ## Build
- - lerna version
- - do "update packages"
  - lerna publish
 
 ## Docker Build
