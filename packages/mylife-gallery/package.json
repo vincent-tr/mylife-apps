@@ -8,9 +8,8 @@
     "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --web",
     "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --sync",
     "start": "./bin/server.js",
-    "build": "mylife-build-docker",
-    "links:dev": "mylife-dev-links",
-    "refresh:dev": "mylife-dev-refresh"
+    "build:bundle": "mylife-build-bundle",
+    "build:docker": "mylife-build-docker"
   },
   "repository": {
     "type": "git",

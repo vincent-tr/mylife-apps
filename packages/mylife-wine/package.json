@@ -54,8 +54,8 @@
     "lint": "eslint lib/* public/app/*",
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-wine} WEB_PORT=8004 node ./bin/server.js --dev --loglevel=debug",
     "start": "node ./bin/server.js",
-    "bundle": "webpack -d",
-    "build": "./bin/build-docker.sh"
+    "build:bundle": "webpack -d",
+    "build:docker": "./bin/build-docker.sh"
   },
   "license": "GPL-3.0+"
 }

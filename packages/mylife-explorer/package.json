@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint lib/* public/app/*",
-    "bundle": "webpack --config webpack.config.js --mode=production",
+    "build:bundle": "webpack --config webpack.config.js --mode=production",
+    "build:docker": "./bin/build-docker.sh",
     "start:dev": "DEBUG=mylife:gallery:* node bin/server.js --dev",
-    "start": "DEBUG=mylife:gallery:* node ./bin/server.js",
-    "build": "./bin/build-docker.sh"
+    "start": "DEBUG=mylife:gallery:* node ./bin/server.js"
   },
   "repository": {
     "type": "git",

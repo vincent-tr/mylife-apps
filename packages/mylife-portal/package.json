@@ -7,7 +7,8 @@
     "lint": "eslint lib/*",
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8015 ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
-    "build": "mylife-build-docker"
+    "build:bundle": "mylife-build-bundle",
+    "build:docker": "mylife-build-docker"
   },
   "repository": {
     "type": "git",
