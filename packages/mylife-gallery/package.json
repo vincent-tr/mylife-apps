@@ -9,7 +9,9 @@
     "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --sync",
     "start": "./bin/server.js",
     "build:bundle": "mylife-build-bundle",
-    "build:docker": "mylife-build-docker"
+    "build:docker": "mylife-build-docker",
+    "prepack": "npm run build:bundle",
+    "postpack": "find ./public -maxdepth 1 -type f -not -name 'index.html' -not -name '.npmignore' -delete"
   },
   "repository": {
     "type": "git",

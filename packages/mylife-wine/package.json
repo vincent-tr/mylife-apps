@@ -55,7 +55,9 @@
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-wine} WEB_PORT=8004 node ./bin/server.js --dev --loglevel=debug",
     "start": "node ./bin/server.js",
     "build:bundle": "webpack -d",
-    "build:docker": "./bin/build-docker.sh"
+    "build:docker": "./bin/build-docker.sh",
+    "prepack": "npm run build:bundle",
+    "postpack": "find ./public -maxdepth 1 -type f -not -name 'index.html' -not -name '.npmignore' -delete"
   },
   "license": "GPL-3.0+"
 }
