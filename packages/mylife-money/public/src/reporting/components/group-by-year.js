@@ -1,10 +1,9 @@
 'use strict';
 
-import { React, PropTypes, immutable, mui } from 'mylife-tools-ui';
+import { React, PropTypes, immutable, mui, CriteriaField } from 'mylife-tools-ui';
 import { getGroupByYear, exportGroupByYear } from '../actions';
 import GroupByPeriod from './group-by-period';
 import { findAmount, roundCurrency } from './group-by-period/tools';
-import Field from './common/field';
 
 const initialCriteria = {
   children: false,
@@ -27,9 +26,9 @@ const AdditionalCriteria = ({ display, onDisplayChanged }) => {
   return (
     <React.Fragment>
       <mui.Grid item xs={4}>
-        <Field label='Moyenne par mois'>
+        <CriteriaField label='Moyenne par mois'>
           <mui.Checkbox color='primary' checked={display.monthAverage} onChange={e => onMonthAverageChanged(e.target.checked)} />
-        </Field>
+        </CriteriaField>
       </mui.Grid>
       <mui.Grid item xs={8} />
     </React.Fragment>
