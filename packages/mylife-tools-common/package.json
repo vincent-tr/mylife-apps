@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/vincent-tr/mylife-tools-common#readme",
   "dependencies": {
-    "eslint": "^6.7.1"
+    "eslint": "^6.7.2"
   }
 }
