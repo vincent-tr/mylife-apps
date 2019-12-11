@@ -2,10 +2,10 @@ const path    = require('path');
 const webpack = require('webpack');
 
 const BUILD_DIR = path.resolve(__dirname, 'public');
-const APP_DIR   = path.resolve(__dirname, 'public/app');
+const SRC_DIR   = path.resolve(__dirname, 'public/src');
 
 const config = {
-  entry: APP_DIR + '/main.js',
+  entry: SRC_DIR + '/main.js',
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -14,7 +14,7 @@ const config = {
     loaders : [
       {
         test : /\.jsx?/,
-        include : APP_DIR,
+        include : SRC_DIR,
         loader : 'babel',
         query: {
           presets:[ 'es2015', 'react', 'stage-2' ]

@@ -4,10 +4,10 @@ const path            = require('path');
 const webpack         = require('webpack');
 
 const BUILD_DIR = path.resolve(__dirname, 'public');
-const APP_DIR   = path.resolve(__dirname, 'public/app');
+const SRC_DIR   = path.resolve(__dirname, 'public/src');
 
 module.exports = {
-  entry: [ 'babel-polyfill', APP_DIR + '/main.js' ],
+  entry: [ 'babel-polyfill', SRC_DIR + '/main.js' ],
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -16,7 +16,7 @@ module.exports = {
     rules : [
       {
         test : /\.jsx?/,
-        include : [ APP_DIR ],
+        include : [ SRC_DIR ],
         loader : 'babel-loader',
         query : {
           presets: [
