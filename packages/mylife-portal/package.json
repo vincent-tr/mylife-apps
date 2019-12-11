@@ -1,6 +1,6 @@
 {
   "name": "mylife-portal",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "MyLife Portal",
   "main": "index.js",
   "scripts": {
@@ -26,11 +26,11 @@
     "bootstrap": "^3.4.1",
     "handlebars": "^4.4.5",
     "jquery": "^3.4.1",
-    "mylife-tools-server": "^1.0.6",
+    "mylife-tools-server": "^1.0.10",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
-    "mylife-tools-build": "^1.2.0"
+    "mylife-tools-build": "^1.2.2"
   }
 }
