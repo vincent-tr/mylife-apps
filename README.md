@@ -7,7 +7,6 @@ MyLife Applications
  - lerna bootstrap
 
 ## Build
- - lerna run build:bundle
  - lerna version
  - lerna publish
 
