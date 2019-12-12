@@ -12,6 +12,4 @@ or without bump version
  - lerna publish from-package
 
 ## Docker Build
- - TODO
  - lerna run build:docker
- - docker push vincenttr/mylife-explorer
