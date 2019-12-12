@@ -31,5 +31,8 @@
     "winston": "^3.2.1",
     "xlsx": "^0.15.3",
     "yargs": "^13.3.0"
+  },
+  "devDependencies": {
+    "mylife-tools-build": "^1.2.5"
   }
 }
