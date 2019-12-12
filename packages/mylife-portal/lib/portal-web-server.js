@@ -77,9 +77,9 @@ function createIndexRenderer(templateFile) {
 
   return (req, res) => {
     res.status(200)
-       .set('Content-Type', 'text/html')
-       .send(content)
-       .end();
+      .set('Content-Type', 'text/html')
+      .send(content)
+      .end();
   };
 }
 
