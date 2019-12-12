@@ -8,6 +8,8 @@ MyLife Applications
 
 ## Build
  - lerna publish
+or without bump version
+ - lerna publish from-package
 
 ## Docker Build
  - TODO
