@@ -37,8 +37,5 @@
     "eslint-plugin-react": "^7.16.0",
     "mylife-tools-build": "^1.2.2",
     "mylife-tools-ui": "^1.0.6"
-  },
-  "mylifeBuild": {
-    "web": true
   }
 }

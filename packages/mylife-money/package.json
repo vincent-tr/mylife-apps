@@ -25,8 +25,5 @@
     "mylife-tools-build": "^1.2.2",
     "mylife-tools-ui": "^1.0.6"
   },
-  "license": "GPL-3.0+",
-  "mylifeBuild": {
-    "web": true
-  }
+  "license": "GPL-3.0+"
 }
