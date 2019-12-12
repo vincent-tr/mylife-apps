@@ -1,6 +1,6 @@
 {
   "name": "mylife-gallery",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.16.0",
-    "mylife-tools-build": "^1.2.4",
+    "mylife-tools-build": "^1.2.5",
     "mylife-tools-ui": "^1.0.6"
   }
 }
