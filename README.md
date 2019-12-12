@@ -2,7 +2,7 @@
 MyLife Applications
 
 ## Update packages
- - lerna exec -- rm -rf ./node_modules
+ - lerna clean
  - lerna exec -- npm update
  - lerna bootstrap
 
