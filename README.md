@@ -13,3 +13,5 @@ or without bump version
 
 ## Docker Build
  - lerna run build:docker
+or for one repository
+ - cd repo; npm run build:docker
