@@ -3,17 +3,14 @@ FROM node:alpine
 ARG package_name
 ARG package_version
 
-WORKDIR /$package_name
+ENV NODE_ENV production
 
 RUN echo "package_name = $package_name" \
  && echo "package_version = $package_version" \
- && apk add --no-cache --virtual .build-deps git \
- && git clone https://github.com/vincent-tr/$package_name.git --branch v$package_version --single-branch --depth 1 . \
- && apk del .build-deps \
- && npm install \
- && ./node_modules/.bin/mylife-build \
- && rm -rf node_modules \
- && npm install --production
+ && npm install $package_name@$package_version --no-audit
+ && npm cache clear
+
+WORKDIR /node_modules/$package_name
 
 EXPOSE 80
-CMD [ "npm", "start" ]
+CMD [ "./bin/server.js" ]
