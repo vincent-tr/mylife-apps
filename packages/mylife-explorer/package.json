@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint lib/* public/app/*",
     "start:dev": "DEBUG=mylife:gallery:* node bin/server.js --dev",
-    "start": "DEBUG=mylife:gallery:* node ./bin/server.js",
+    "start": "./bin/server.js",
     "build:bundle": "webpack --config webpack.config.js --mode=production",
-    "build:docker": "./bin/build-docker.sh",
+    "build:docker": "mylife-build-docker",
     "prepack": "npm run build:bundle",
     "postpack": "find ./public -maxdepth 1 -type f -not -name 'index.html' -not -name '.npmignore' -delete"
   },

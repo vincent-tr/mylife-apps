@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 'use strict';
 
 const debug = require('debug')('mylife:explorer:bin:server');
