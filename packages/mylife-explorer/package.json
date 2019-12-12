@@ -1,6 +1,6 @@
 {
   "name": "mylife-explorer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "MyLife Explorer",
   "main": "index.js",
   "scripts": {
