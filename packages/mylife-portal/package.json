@@ -29,5 +29,10 @@
   "devDependencies": {
     "eslint": "^6.6.0",
     "mylife-tools-build": "^1.2.5"
+  },
+  "peerDependencies": {
+    "express": "*",
+    "serve-favicon": "*",
+    "server-destroy": "*"
   }
 }
