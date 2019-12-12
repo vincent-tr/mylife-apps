@@ -35,8 +35,8 @@ async function setupServer({ config = getConfig('webServer') }) {
   logger.info(`using public directoy : ${publicDirectory}`);
 
   app.use(favicon(path.resolve(publicDirectory, 'favicon.ico')));
-  app.use('/dist/bootstrap', express.static(path.resolve(baseDirectory, 'node_modules/bootstrap/dist')));
-  app.use('/dist/jquery', express.static(path.resolve(baseDirectory, 'node_modules/jquery/dist')));
+  app.use('/dist/bootstrap', express.static(resolveModule('bootstrap/dist')));
+  app.use('/dist/jquery', express.static(resolveModule('jquery/dist')));
   app.get('/', createIndexRenderer(path.resolve(publicDirectory, 'index.template')));
   app.get('/images/:code', createImagesRenderer());
 
@@ -47,6 +47,11 @@ async function setupServer({ config = getConfig('webServer') }) {
   logger.info(`server created : ${JSON.stringify(config)}`);
 
   return server;
+}
+
+function resolveModule(request) {
+  const baseDirectory = getDefine('baseDirectory');
+  return require.resolve(request, { paths: [baseDirectory] });
 }
 
 async function asyncCall(target) {
