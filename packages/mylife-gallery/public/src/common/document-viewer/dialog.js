@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, useState } from 'mylife-tools-ui';
-import * as utils from './utils';
+import { getInfo } from '../document-utils';
 import NavBar from './nav-bar';
 import Detail from './detail';
 import ViewerImage from './viewer-image';
@@ -45,7 +45,7 @@ Viewer.propTypes = {
 const Dialog = ({ show, proceed, options }) => {
   const classes = useStyles();
   const { document } = options;
-  const info = utils.getInfo(document);
+  const info = getInfo(document);
   const [showDetail, setShowDetail] = useState(false);
   const toggleShowDetail = () => setShowDetail(value => !value);
 

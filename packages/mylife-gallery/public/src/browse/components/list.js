@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
+import * as documentUtils from '../../common/document-utils';
 import * as documentViewer from '../../common/document-viewer';
 
 const THUMBNAIL_SIZE = 200;
@@ -40,7 +41,7 @@ const useStyles = mui.makeStyles(theme => ({
 const Tile = ({ document }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
-  const { thumbnailUrl, title, subtitle } = documentViewer.getInfo(document);
+  const { thumbnailUrl, title, subtitle } = documentUtils.getInfo(document);
 
   return (
     <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document)}>
