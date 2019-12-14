@@ -11,7 +11,6 @@ export const DOCUMENT_TYPE_MAP = new Map(DOCUMENT_TYPES.map(type => [type.id, ty
 export function getInfo(document) {
   return {
     contentUrl: getContentUrl(document),
-    thumbnailUrl: getThumbnailUrl(document),
     title: getTitle(document),
     subtitle: getSubtitle(document)
   };
@@ -27,17 +26,6 @@ function getContentUrl(document) {
       return null;
   }
 
-}
-
-function getThumbnailUrl(document) {
-  switch(document._entity) {
-    case 'image':
-      return `/content/thumbnail/${document.thumbnail}`;
-    case 'video':
-      return `/content/thumbnail/${document.thumbnails[0]}`;
-    default:
-      return null;
-  }
 }
 
 function getTitle(document) {

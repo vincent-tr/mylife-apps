@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
+import { SIZE } from './utils';
 import ThumbnailImage from './image';
 import ThumbnailVideo from './video';
 import ThumbnailOther from './other';
@@ -19,5 +20,7 @@ const Thumbnail = ({ document, ...props }) => {
 Thumbnail.propTypes = {
   document: PropTypes.object.isRequired,
 };
+
+Thumbnail.SIZE = SIZE;
 
 export default Thumbnail;

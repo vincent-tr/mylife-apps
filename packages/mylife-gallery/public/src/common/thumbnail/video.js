@@ -1,12 +1,13 @@
 'use strict';
 
 import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
+import { getThumbnailUrl, SIZE } from './utils';
 import icons from '../icons';
 
 const useStyles = mui.makeStyles({
   container: {
-    height: 200,
-    width: 200
+    height: SIZE,
+    width: SIZE
   },
   imageFallback: {
     height: '100%',
@@ -16,7 +17,7 @@ const useStyles = mui.makeStyles({
 
 // TODO
 const ThumbnailVideo = ({ document, className, ...props }) => {
-  void document;
+  void document, getThumbnailUrl;
   const classes = useStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>

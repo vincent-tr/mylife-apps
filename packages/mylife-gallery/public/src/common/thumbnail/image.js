@@ -1,13 +1,13 @@
 'use strict';
 
 import { React, PropTypes, mui, clsx, useState } from 'mylife-tools-ui';
-import { getThumbnailUrl } from './utils';
+import { getThumbnailUrl, SIZE } from './utils';
 import icons from '../icons';
 
 const useStyles = mui.makeStyles({
   container: {
-    height: 200,
-    width: 200
+    height: SIZE,
+    width: SIZE
   },
   imageLoading: {
     display: 'none'
