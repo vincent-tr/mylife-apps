@@ -1,12 +1,15 @@
 'use strict';
 
-import { React, PropTypes, clsx, useState } from 'mylife-tools-ui';
+import { React, PropTypes, clsx, useState, useEffect } from 'mylife-tools-ui';
 import { getThumbnailUrl, useCommonStyles } from './utils';
 import icons from '../icons';
 
 const ThumbnailImage = ({ document, className, ...props }) => {
   const classes = useCommonStyles();
   const [loading, setLoading] = useState(false);
+
+  // onLoadStart not fired on chrome
+  useEffect(() => setLoading(true), [document.thumbnail]);
 
   let content;
 
@@ -17,10 +20,9 @@ const ThumbnailImage = ({ document, className, ...props }) => {
         <img
           className={clsx({ [classes.imageLoading]: loading })}
           src={thumbnailUrl}
-          onLoadStart={() => setLoading(true)}
-          onLoadEnd={() => setLoading(false)} />
+          onLoad={() => setLoading(false)} />
         {loading && (
-          <icons.documents.Unknow className={classes.imageFallback}n />
+          <icons.documents.Unknown className={classes.imageFallback} />
         )}
       </React.Fragment>
     );
