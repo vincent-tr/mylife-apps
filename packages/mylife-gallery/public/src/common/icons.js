@@ -9,6 +9,9 @@ const {
   Fullscreen,
   CloudDownload,
   Info,
+  Help,
+  Block,
+  PlayCircleOutline
 } = mui.icons;
 
 const Gallery = (props) => (
@@ -35,5 +38,11 @@ export default {
     Detail: Info,
     Download: CloudDownload,
     Fullscreen
+  },
+
+  documents: {
+    Unknown: Help,
+    None: Block,
+    Video: PlayCircleOutline
   }
 };

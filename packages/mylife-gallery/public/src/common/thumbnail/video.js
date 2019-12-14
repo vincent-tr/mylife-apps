@@ -1,16 +1,33 @@
 'use strict';
 
-import { React, PropTypes } from 'mylife-tools-ui';
+import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
+import icons from '../icons';
 
-const ThumbnailVideo = ({ document, ...props }) => {
+const useStyles = mui.makeStyles({
+  container: {
+    height: 200,
+    width: 200
+  },
+  imageFallback: {
+    height: '100%',
+    width: '100%'
+  }
+});
+
+// TODO
+const ThumbnailVideo = ({ document, className, ...props }) => {
   void document;
+  const classes = useStyles();
   return (
-    <img src={'TODO'} {...props}/>
+    <div className={clsx(classes.container, className)} {...props}>
+      <icons.documents.None className={classes.imageFallback} />
+    </div>
   );
 };
 
 ThumbnailVideo.propTypes = {
   document: PropTypes.object.isRequired,
+  className: PropTypes.string
 };
 
 export default ThumbnailVideo;
