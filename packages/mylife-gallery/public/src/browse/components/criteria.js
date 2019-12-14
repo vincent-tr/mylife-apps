@@ -2,7 +2,7 @@
 
 import { React, PropTypes, mui, formatDate, SummaryExpansionPanel } from 'mylife-tools-ui';
 import CriteriaGrid from './criteria-grid';
-import { DOCUMENT_TYPE_MAP } from '../../common/document-type';
+import { DOCUMENT_TYPE_MAP } from '../../common/document-utils';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
