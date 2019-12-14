@@ -5,8 +5,9 @@ import { getInfo } from '../document-utils';
 
 const ThumbnailImage = ({ document, ...props }) => {
   const { thumbnailUrl } = getInfo(document);
+  const tmp = () => {};
   return (
-    <img src={thumbnailUrl} {...props}/>
+    <img src={thumbnailUrl} onLoadStart={tmp} onLoadEnd={tmp} {...props}/>
   );
 };
 
