@@ -3,14 +3,13 @@
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import * as documentUtils from '../../common/document-utils';
 import * as documentViewer from '../../common/document-viewer';
-
-const THUMBNAIL_SIZE = 200;
+import Thumbnail from '../../common/thumbnail';
 
 const useStyles = mui.makeStyles(theme => ({
   tile: {
     // size + image position
-    height: THUMBNAIL_SIZE,
-    width: THUMBNAIL_SIZE,
+    height: Thumbnail.SIZE,
+    width: Thumbnail.SIZE,
     textAlign:'center',
 
     // spacing
@@ -41,11 +40,11 @@ const useStyles = mui.makeStyles(theme => ({
 const Tile = ({ document }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
-  const { thumbnailUrl, title, subtitle } = documentUtils.getInfo(document);
+  const { title, subtitle } = documentUtils.getInfo(document);
 
   return (
     <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document)}>
-      <img src={thumbnailUrl} />
+      <Thumbnail document={document} />
       <mui.GridListTileBar title={title} subtitle={subtitle} />
     </mui.GridListTile>
   );
@@ -57,7 +56,7 @@ Tile.propTypes = {
 
 const List = ({ data }) => {
   return (
-    <mui.GridList cols={0} cellHeight={THUMBNAIL_SIZE}>
+    <mui.GridList cols={0} cellHeight={Thumbnail.SIZE}>
       {data.map(document => (<Tile key={document._id} document={document}/>))}
     </mui.GridList>
   );
