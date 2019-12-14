@@ -1,25 +1,11 @@
 'use strict';
 
-import { React, PropTypes, mui, clsx, useState } from 'mylife-tools-ui';
-import { getThumbnailUrl, SIZE } from './utils';
+import { React, PropTypes, clsx, useState } from 'mylife-tools-ui';
+import { getThumbnailUrl, useCommonStyles } from './utils';
 import icons from '../icons';
 
-const useStyles = mui.makeStyles({
-  container: {
-    height: SIZE,
-    width: SIZE
-  },
-  imageLoading: {
-    display: 'none'
-  },
-  imageFallback: {
-    height: '100%',
-    width: '100%'
-  }
-});
-
 const ThumbnailImage = ({ document, className, ...props }) => {
-  const classes = useStyles();
+  const classes = useCommonStyles();
   const [loading, setLoading] = useState(false);
 
   let content;

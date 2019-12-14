@@ -1,23 +1,12 @@
 'use strict';
 
-import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
-import { SIZE } from './utils';
+import { React, PropTypes, clsx } from 'mylife-tools-ui';
+import { useCommonStyles } from './utils';
 import icons from '../icons';
-
-const useStyles = mui.makeStyles({
-  container: {
-    height: SIZE,
-    width: SIZE
-  },
-  imageFallback: {
-    height: '100%',
-    width: '100%'
-  }
-});
 
 const ThumbnailOther = ({ document, className, ...props }) => {
   void document;
-  const classes = useStyles();
+  const classes = useCommonStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>
       <icons.documents.None className={classes.imageFallback} />
