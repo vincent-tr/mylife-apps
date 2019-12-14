@@ -22,7 +22,7 @@ const ThumbnailImage = ({ document, className, ...props }) => {
           src={thumbnailUrl}
           onLoad={() => setLoading(false)} />
         {loading && (
-          <icons.documents.Unknown className={classes.imageFallback} />
+          <icons.documents.Pending className={classes.imageFallback} />
         )}
       </React.Fragment>
     );

@@ -41,7 +41,7 @@ export default {
   },
 
   documents: {
-    Unknown: Help,
+    Pending: Help,
     None: Block,
     Video: PlayCircleOutline
   }
