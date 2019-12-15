@@ -20,3 +20,4 @@ MyLife photo gallery
 
  - browse:
    - criteria: video duration (+ sort order ?)
+   - sort: file size
