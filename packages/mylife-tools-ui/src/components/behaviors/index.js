@@ -1,4 +1,5 @@
 'use strict';
 
-export useLifecycle from './use-lifecycle';
 export * from './responsive';
+export * from './timers';
+export * from './lifecycle';

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function(onMount, onUnmout = () => {}) {
+export function useLifecycle(onMount, onUnmout = () => {}) {
   useEffect(() => {
     onMount();
     return onUnmout;
