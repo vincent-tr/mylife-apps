@@ -7,8 +7,7 @@ MyLife photo gallery
  - google maps : https://www.npmjs.com/package/google-maps-react
 
 # TODO:
- - thumbnail component (with image/video/other sub-component)
- - viewer component (same)
+ - viewer component (with image/video/other sub-component)
  - image orientation
  - video stream
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
