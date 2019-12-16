@@ -96,6 +96,7 @@ class DocumentView extends StoreContainer {
 
     createIntervalFilterPart(criteria, parts, 'minDate', 'maxDate', 'date');
     createIntervalFilterPart(criteria, parts, 'minIntegrationDate', 'maxIntegrationDate', 'integrationDate');
+    createIntervalFilterPart(criteria, parts, 'minDuration', 'maxDuration', null, document => (document._entity === 'video' ? document.duration : null));
 
     if(criteria.type) {
       const types = new Set(criteria.type);
@@ -170,13 +171,13 @@ class DocumentView extends StoreContainer {
   }
 }
 
-function createIntervalFilterPart(criteria, parts, minName, maxName, propName) {
+function createIntervalFilterPart(criteria, parts, minName, maxName, propName, propAccessor = document => document[propName]) {
   // optimize if both min and max are defined
   const min = criteria[minName];
   const max = criteria[maxName];
   if(min && max) {
     parts.push(document => {
-      const value = document[propName];
+      const value = propAccessor(document);
       return value && value >= min && value <= max;
     });
     return;
@@ -184,7 +185,7 @@ function createIntervalFilterPart(criteria, parts, minName, maxName, propName) {
 
   if(min) {
     parts.push(document => {
-      const value = document[propName];
+      const value = propAccessor(document);
       return value && value >= min;
     });
     return;
@@ -192,7 +193,7 @@ function createIntervalFilterPart(criteria, parts, minName, maxName, propName) {
 
   if(max) {
     parts.push(document => {
-      const value = document[propName];
+      const value = propAccessor(document);
       return value && value <= max;
     });
     return;
