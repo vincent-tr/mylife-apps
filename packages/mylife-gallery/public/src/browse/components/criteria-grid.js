@@ -17,7 +17,8 @@ const sortFields = [
   { id: null, text: '<Aucun>' },
   { id: 'date', text: 'Date' },
   { id: 'integrationDate', text: 'Date d\'intégration' },
-  { id: 'path', text: 'Chemin du fichier' }
+  { id: 'path', text: 'Chemin du fichier' },
+  { id: 'fileSize', text: 'Taille du fichier' }
 ];
 
 const orientationFields = [
@@ -91,6 +92,12 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={1} label='Min' editor={DebouncedTextField} propName='minHeight' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
       <GridSimpleField width={1} label='Max' editor={DebouncedTextField} propName='maxHeight' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
       <GridSimpleField width={4} label='Orientation' editor={ListSelector} propName='orientation' object={criteria} onObjectChanged={onCriteriaChanged} list={orientationFields} className={classes.selector} />
+
+      <GridSimpleField width={2} label='Vidéo' />
+      <GridSimpleField width={1} label='Durée (sec)' />
+      <GridSimpleField width={1} label='Min' editor={DebouncedTextField} propName='minDuration' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+      <GridSimpleField width={1} label='Max' editor={DebouncedTextField} propName='maxDuration' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+      <mui.Grid item xs={7} />
 
       <GridSimpleField width={2} label='Tri' editor={ListSelector} propName='sortField' object={display} onObjectChanged={onDisplayChanged} list={sortFields} className={classes.selector} />
       <GridSimpleField width={3} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector} />
