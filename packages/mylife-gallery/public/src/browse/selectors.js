@@ -42,6 +42,7 @@ const comparerFactories = {
   date: createSimpleFieldComparer,
   integrationDate: createSimpleFieldComparer,
   path: createPathComparer,
+  fileSize: createSimpleFieldComparer,
 };
 
 function createSimpleFieldComparer(field, order) {
