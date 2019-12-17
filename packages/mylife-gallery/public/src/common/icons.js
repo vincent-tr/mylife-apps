@@ -3,6 +3,7 @@
 import { React, mui } from 'mylife-tools-ui';
 
 const {
+  Announcement,
   Explore,
   Equalizer,
   Close,
@@ -29,6 +30,7 @@ export default {
   Gallery,
 
   menu: {
+    Suggestions: Announcement,
     Browse: Explore,
     Stats : Equalizer
   },

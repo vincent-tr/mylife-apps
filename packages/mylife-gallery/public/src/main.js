@@ -7,6 +7,7 @@ import * as reducers from './reducers';
 
 import icons from './common/icons';
 import Home from './home/components';
+import Suggestions from './suggestions/components';
 import Browse from './browse/components';
 import Stats from './stats/components';
 
@@ -14,11 +15,13 @@ services.initStore(reducers);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
+  { location: '/suggestions', renderer: () => <Suggestions /> },
   { location: '/browse', renderer: () => <Browse /> },
   { location: '/stats', renderer: () => <Stats /> },
 ];
 
 const menu = [
+  { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions' },
   { id: 'browse', text: 'Parcourir', icon: icons.menu.Browse, location: '/browse' },
   { id: 'stats', text: 'Statistics', icon: icons.menu.Stats, location: '/stats' },
 ];
