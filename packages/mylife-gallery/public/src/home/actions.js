@@ -49,12 +49,12 @@ const clearTotalByMonth = () => async (dispatch, getState) => {
   dispatch(local.setTotalByMonthView(null));
 };
 */
-export const homeEnter = () => async (dispatch) => {
+export const enter = () => async (dispatch) => {
 //  await dispatch(getOperationStats());
 //  await dispatch(getTotalByMonth());
 };
 
-export const homeLeave = () => async (dispatch) => {
+export const leave = () => async (dispatch) => {
 //  await dispatch(clearOperationStats());
 //  await dispatch(clearTotalByMonth());
 };

@@ -1,13 +1,13 @@
 'use strict';
 
 import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
-import { homeEnter, homeLeave } from '../actions';
+import { enter, leave } from '../actions';
 
 const useConnect = () => {
   const dispatch = useDispatch();
   return useMemo(() => ({
-    enter : () => dispatch(homeEnter()),
-    leave : () => dispatch(homeLeave()),
+    enter : () => dispatch(enter()),
+    leave : () => dispatch(leave()),
   }), [dispatch]);
 };
 
