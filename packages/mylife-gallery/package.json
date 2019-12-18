@@ -36,6 +36,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.16.0",
+    "exif2css": "^1.3.0",
     "mylife-tools-build": "^1.2.5",
     "mylife-tools-ui": "^1.0.6"
   }
