@@ -21,10 +21,6 @@ const useStyles = mui.makeStyles({
   }
 });
 
-Viewer.propTypes = {
-  document: PropTypes.object.isRequired,
-};
-
 const ImageDialogContent = ({ document, onClose }) => {
   const classes = useStyles();
   const info = getInfo(document);
