@@ -2,14 +2,14 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 
-const ViewerImage = ({ document }) => (
+const OtherViewer = ({ document }) => (
   <div>
-    OTHER {JSON.stringify(document)}
+    VIDEO {JSON.stringify(document)}
   </div>
 );
 
-ViewerImage.propTypes = {
+OtherViewer.propTypes = {
   document: PropTypes.object.isRequired,
 };
 
-export default ViewerImage;
+export default OtherViewer;

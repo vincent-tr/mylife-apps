@@ -14,7 +14,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const ViewerImage = ({ info, className, ...props }) => {
+const ImageViewer = ({ info, className, ...props }) => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>
@@ -23,9 +23,9 @@ const ViewerImage = ({ info, className, ...props }) => {
   );
 };
 
-ViewerImage.propTypes = {
+ImageViewer.propTypes = {
   info: PropTypes.object.isRequired,
   className: PropTypes.string,
 };
 
-export default ViewerImage;
+export default ImageViewer;
