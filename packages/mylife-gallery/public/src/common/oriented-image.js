@@ -2,62 +2,39 @@
 
 // https://github.com/rricard/react-exif-orientation-img/blob/master/src/ExifOrientationImg.js
 
-import { React, PropTypes } from 'mylife-tools-ui';
+import { React, PropTypes, useState, useEffect, fireAsync } from 'mylife-tools-ui';
 import exifParser from 'exif-parser';
 import exif2css from 'exif2css';
 
-class OrientedImage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      orientation : null
-    };
-  }
+const OrientedImage = ({ src, style, ...props}) => {
+  const [orientationStyle, setOrientationStyle] = useState(null);
 
-  async _onImageLoaded(event, ...otherArgs) {
-    const imageElement = event.target;
-    const { onLoad } = this.props;
+  useEffect(() => {
+    if(!src) {
+      setOrientationStyle(null);
+      return;
+    }
 
-    const orientation = await getOrientation(imageElement.src);
-    console.log('orientation', orientation);
-    this.setState({ orientation });
+    fireAsync(async () => {
+      const orientation = await safeGetOrientation(src);
+      const style = orientationToStyle(orientation);
+      setOrientationStyle(style);
+    });
+  }, [src]);
 
-    onLoad && onLoad(event, ...otherArgs);
-  }
+  return (
+    <img src={src} style={{...orientationStyle, ...style}} {...props} />
+  );
+};
 
-  render() {
-    const {
-      src,
-      alt,
-      style = {},
-      onLoad,
-      ...imgProps
-    } = this.props;
-
-    const {
-      orientation,
-    } = this.state;
-
-    void onLoad;
-
-    return (
-      <img
-        onLoad={(...args) => this._onImageLoaded(...args)}
-        src={src}
-        alt={alt}
-        style={{
-          ...orientationToStyle(orientation),
-          ...style,
-        }}
-        {...imgProps}
-      />
-    );
-  }
-}
+OrientedImage.propTypes = {
+  src: PropTypes.string,
+  style: PropTypes.object
+};
 
 export default OrientedImage;
 
-async function getOrientation(url) {
+async function safeGetOrientation(url) {
   try {
     // hope we will use browser cache
     const response = await fetch(url);
@@ -68,23 +45,23 @@ async function getOrientation(url) {
     const content = await response.arrayBuffer();
     const parser = exifParser.create(content);
     const { tags } = parser.parse();
-    return tags.Orientation || null;
+    return tags.Orientation;
   } catch(err) {
-    console.error(`Error loading image '${url}'`, err);
+    console.error(`Error loading image '${url}'`, err); // eslint-disable-line no-console
     return null;
   }
 }
 
 function orientationToStyle(orientation) {
   if(!orientation) {
-    return {};
+    return null;
   }
 
   // only keep rotate
   const style = exif2css(orientation);
   const rotate = style.transformStrings && style.transformStrings.rotate;
   if(!rotate) {
-    return {};
+    return null;
   }
 
   return { transform : rotate };
