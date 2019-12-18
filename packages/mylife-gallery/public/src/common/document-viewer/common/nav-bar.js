@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import icons from '../icons';
+import icons from '../../icons';
 
 const useStyles = mui.makeStyles(theme => ({
   title: {
@@ -39,7 +39,7 @@ NavBar.propTypes = {
   info: PropTypes.object.isRequired,
   showDetail: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
-  onDetail: PropTypes.func.isRequired,
+  onDetail: PropTypes.func,
 };
 
 export default NavBar;

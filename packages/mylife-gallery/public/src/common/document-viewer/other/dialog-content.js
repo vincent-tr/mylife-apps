@@ -1,38 +1,20 @@
 'use strict';
 
-import { React, PropTypes, mui, useState } from 'mylife-tools-ui';
+import { React, PropTypes, mui } from 'mylife-tools-ui';
 import { getInfo } from '../../document-utils';
-import NavBar from '../nav-bar';
-import Detail from '../detail';
+import { useCommonStyles } from '../common/styles';
+import NavBar from '../common/nav-bar';
 import Viewer from './viewer';
 
-const useStyles = mui.makeStyles({
-  appBar: {
-    position: 'relative',
-  },
-  viewerContainer: {
-    display: 'flex'
-  },
-  viewer: {
-    flex: 1,
-  },
-  detail: {
-    width: 200
-  }
-});
-
 const OtherDialogContent = ({ document, onClose }) => {
-  const classes = useStyles();
+  const classes = useCommonStyles();
   const info = getInfo(document);
-  const [showDetail, setShowDetail] = useState(false);
-  const toggleShowDetail = () => setShowDetail(value => !value);
 
   return (
     <React.Fragment>
-      <NavBar className={classes.appBar} document={document} info={info} onClose={onClose} onDetail={toggleShowDetail} />
+      <NavBar className={classes.appBar} document={document} info={info} onClose={onClose} />
       <mui.DialogContent className={classes.viewerContainer}>
         <Viewer document={document} info={info} className={classes.viewer}/>
-        <Detail document={document} info={info} className={classes.detail} open={showDetail} />
       </mui.DialogContent>
     </React.Fragment>
   );
