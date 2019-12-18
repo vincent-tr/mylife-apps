@@ -10,7 +10,7 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const NavBar = ({ document, info, onClose, onDetail, ...props }) => {
+const NavBar = ({ document, info, showDetail, onClose, onDetail, ...props }) => {
   const classes = useStyles();
   return (
     <mui.AppBar {...props}>
@@ -21,11 +21,13 @@ const NavBar = ({ document, info, onClose, onDetail, ...props }) => {
         <mui.Typography variant='h6' className={classes.title}>
           {info.title}
         </mui.Typography>
-        <mui.IconButton color='inherit' onClick={() => console.log('DOWNLOAD')}>
+        {showDetail && (
+          <mui.IconButton color='inherit' onClick={onDetail}>
+            <icons.actions.Detail />
+          </mui.IconButton>
+        )}
+        <mui.IconButton edge='end' color='inherit' onClick={() => console.log('DOWNLOAD', document.paths[0].path)}>
           <icons.actions.Download />
-        </mui.IconButton>
-        <mui.IconButton edge='end' color='inherit' onClick={onDetail}>
-          <icons.actions.Detail />
         </mui.IconButton>
       </mui.Toolbar>
     </mui.AppBar>
@@ -35,6 +37,7 @@ const NavBar = ({ document, info, onClose, onDetail, ...props }) => {
 NavBar.propTypes = {
   document: PropTypes.object.isRequired,
   info: PropTypes.object.isRequired,
+  showDetail: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onDetail: PropTypes.func.isRequired,
 };
