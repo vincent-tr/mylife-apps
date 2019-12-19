@@ -17,7 +17,7 @@ const useStyles = mui.makeStyles(theme => ({
   imageLoading: {
     display: 'none'
   },
-  imageFallback: {
+  imagePending: {
     position: 'absolute',
     right: 0,
     left: 0,
@@ -44,7 +44,7 @@ const ImageViewer = ({ info, className, ...props }) => {
         onLoad={() => setLoading(false)}
         className={clsx(classes.image, { [classes.imageLoading]: loading })} />
       {loading && (
-        <icons.documents.Pending className={classes.imageFallback} />
+        <icons.documents.Pending className={classes.imagePending} />
       )}
     </div>
   );
