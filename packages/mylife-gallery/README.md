@@ -11,6 +11,6 @@ MyLife photo gallery
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
 
  - suggestions:
-   - propose to create album of a root folder if none of the documents inside are in an album <br/>
-   - propose to create script (win/\*nix) to remove duplicates (for each select the one to keep) <br/>
-   - propose to create script to remove other (select with criteria) <br/>
+   - propose to create album of a root folder if none of the documents inside are in an album
+   - propose to create script (win/\*nix) to remove duplicates (for each select the one to keep)
+   - propose to create script to remove other (select with criteria)
