@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const { prepareImage } = require('./image-utils');
 const { getConfig, createLogger } = require('mylife-tools-server');
 const business = require('../business');
 
@@ -14,8 +15,9 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     const document = business.documentGet('image', id);
     const fullPath = getFullPath(document);
     logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
-    res.contentType(document.mime);
-    res.sendFile(fullPath);
+    const content = await prepareImage(fullPath);
+    res.contentType('image/jpeg');
+    res.send(content);
   }));
 
   router.route('/thumbnail/:id').get(asyncHandler(async (req, res) => {
