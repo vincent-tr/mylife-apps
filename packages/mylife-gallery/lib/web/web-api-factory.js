@@ -26,6 +26,14 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     res.send(content);
   }));
 
+  router.route('/raw/:type/:id').get(asyncHandler(async (req, res) => {
+    const { type, id } = req.params;
+    const document = business.documentGet(type, id);
+    const fullPath = getFullPath(document);
+    logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
+    res.sendFile(fullPath);
+  }));
+
   app.use('/content', router);
 };
 
