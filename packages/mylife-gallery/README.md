@@ -11,6 +11,7 @@ MyLife photo gallery
  - image orientation
  - video stream
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
+ - browse virtual list : https://virtuoso.dev/grid-responsive-columns/ https://github.com/petyosi/react-virtuoso
 
  - suggestions:
    - propose to create album of a root folder if none of the documents inside are in an album <br/>
