@@ -1,11 +1,18 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, VirtuosoGrid, AutoSizer, clsx } from 'mylife-tools-ui';
 import * as documentUtils from '../../common/document-utils';
 import * as documentViewer from '../../common/document-viewer';
 import Thumbnail from '../../common/thumbnail';
 
 const useStyles = mui.makeStyles(theme => ({
+  list: {
+    overflowY: 'visible'
+  },
+  tileContainer: {
+    height: Thumbnail.SIZE,
+    width: Thumbnail.SIZE,
+  },
   tile: {
     // size + image position
     height: Thumbnail.SIZE,
@@ -35,7 +42,11 @@ const useStyles = mui.makeStyles(theme => ({
   icon: {
     color: 'rgba(255, 255, 255, 0.5)',
   },
+  empty: {
+  }
 }));
+
+const PADDING = 2*8;
 
 const Tile = ({ document }) => {
   const classes = useStyles();
@@ -54,15 +65,62 @@ Tile.propTypes = {
   document: PropTypes.object.isRequired
 };
 
-const List = ({ data }) => {
+const TileContainer = ({ className, ...props }) => {
+  const classes = useStyles();
   return (
-    <mui.GridList cols={0} cellHeight={Thumbnail.SIZE}>
-      {data.map(document => (<Tile key={document._id} document={document}/>))}
-    </mui.GridList>
+    <div className={clsx(classes.tileContainer, className)} {...props} />
+  );
+};
+
+TileContainer.propTypes = {
+  className: PropTypes.string
+};
+
+const GridList = ({ listRef, className, ...props }) => {
+  const classes = useStyles();
+  return (
+    <mui.GridList ref={listRef} cols={0} cellHeight={Thumbnail.SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
+  );
+};
+
+GridList.propTypes = {
+  // https://stackoverflow.com/questions/48007326/what-is-the-correct-proptype-for-a-ref-in-react
+  listRef: PropTypes.oneOfType([ PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
+  className: PropTypes.string
+};
+
+const List = ({ className, data }) => {
+  const classes = useStyles();
+
+  if(!data.length) {
+    return (
+      <GridList className={className}>
+        {[]}
+      </GridList>
+    );
+  }
+
+  return (
+    <div className={className}>
+      <AutoSizer>
+        {({ height, width }) => (
+          <VirtuosoGrid
+            totalCount={data.length}
+            overscan={200}
+            ListContainer={GridList}
+            ItemContainer={TileContainer}
+            item={index => (<Tile document={data[index]} />)}
+            listClassName={classes.empty}
+            itemClassName={classes.empty}
+            style={{ height, width}} />
+        )}
+      </AutoSizer>
+    </div>
   );
 };
 
 List.propTypes = {
+  className: PropTypes.string,
   data: PropTypes.array.isRequired
 };
 
