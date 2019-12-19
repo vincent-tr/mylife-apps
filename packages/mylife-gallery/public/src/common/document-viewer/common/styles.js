@@ -13,6 +13,5 @@ export const useCommonStyles = mui.makeStyles({
     flex: 1,
   },
   detail: {
-    width: 200
   }
 });
