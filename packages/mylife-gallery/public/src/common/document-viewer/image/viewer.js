@@ -1,7 +1,6 @@
 'use strict';
 
 import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
-import OrientedImage from '../../oriented-image';
 
 const useStyles = mui.makeStyles(theme => ({
   container : {
@@ -19,7 +18,7 @@ const ImageViewer = ({ info, className, ...props }) => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>
-      <OrientedImage src={info.contentUrl} className={classes.image} />
+      <img src={info.contentUrl} className={classes.image} />
     </div>
   );
 };
