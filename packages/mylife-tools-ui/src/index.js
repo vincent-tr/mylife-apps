@@ -8,6 +8,7 @@ export * from 'react';
 export { default as PropTypes } from 'prop-types';
 export { default as clsx } from 'clsx';
 export { AutoSizer } from 'react-virtualized';
+export * from 'react-virtuoso';
 export { format as formatDate } from 'date-fns';
 
 export * as mui from './mui-components';
