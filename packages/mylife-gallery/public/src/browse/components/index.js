@@ -7,8 +7,6 @@ import Criteria from './criteria';
 import List from './list';
 import Footer from './footer';
 
-const LIST_MAX_SIZE = 1000;
-
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
@@ -74,13 +72,11 @@ const Browse = () => {
     return newCriteria;
   });
 
-  const displayData = data.slice(0, LIST_MAX_SIZE);
-
   return (
     <div className={classes.container}>
       <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={changeDisplay} />
-      <List className={classes.list} display={display} data={displayData}  />
-      <Footer fullSize={data.length} displayedSize={displayData.length} />
+      <List className={classes.list} display={display} data={data}  />
+      <Footer size={data.length} />
     </div>
   );
 };

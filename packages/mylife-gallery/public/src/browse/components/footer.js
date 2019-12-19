@@ -8,20 +8,18 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const Footer = ({ fullSize, displayedSize, className, ...props }) => {
+const Footer = ({ size, className, ...props }) => {
   const classes = useStyles();
-  const text = displayedSize === fullSize ? `${displayedSize} document(s)` : `${displayedSize} documents affichés sur ${fullSize}`;
   return (
     <mui.Toolbar className={clsx(classes.toolbar, className)} {...props}>
-      <mui.Typography>{text}</mui.Typography>
+      <mui.Typography>{`${size} document(s)`}</mui.Typography>
     </mui.Toolbar>
   );
 };
 
 Footer.propTypes = {
   className: PropTypes.string,
-  fullSize: PropTypes.number.isRequired,
-  displayedSize: PropTypes.number.isRequired
+  size: PropTypes.number.isRequired
 };
 
 export default Footer;
