@@ -15,8 +15,8 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     const document = business.documentGet('image', id);
     const fullPath = getFullPath(document);
     logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
-    const content = await prepareImage(fullPath);
-    res.contentType('image/jpeg');
+    const { content, mime } = await prepareImage(fullPath);
+    res.contentType(mime);
     res.send(content);
   }));
 
