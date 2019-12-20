@@ -40,6 +40,9 @@ exports.videoToWebMStream = function (fullPath, outputStream) {
   const command = ffmpeg(fullPath);
   command.format('webm');
 
+  // https://superuser.com/questions/525928/ffmpeg-keeping-quality-during-conversion
+  command.addOptions(['-lossless 1'])
+
   command.on('error', err => {
     logger.error(err.stack);
   });
