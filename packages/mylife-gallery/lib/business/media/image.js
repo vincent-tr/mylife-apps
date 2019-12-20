@@ -6,23 +6,30 @@ const fs = require('fs-extra');
 const jimp = require('jimp');
 const cwebp = require('webp-converter/cwebp');
 const child_process = require('child_process');
+const exifParser = require('exif-parser');
 
 fixJimpRotate();
+const converterPath = cwebp();
 
-exports.prepareImage = async function (fullPath) {
-  const source = await fs.readFile(fullPath);
-  const rotated = await rotateIfNeeded(source);
-  const target = await toWebP(rotated);
-  return { content: target, mime: 'image/webp' };
+exports.imageLoad = async function(content) {
+  const image = await jimp.read(content);
+
+  const perceptualHash = image.hash();
+  const mime = image.getMIME();
+  const { width, height } = image.bitmap;
+
+  const thumbnailContent = await image.scaleToFit(200, 200).getBufferAsync(jimp.MIME_PNG);
+
+  return { perceptualHash, mime, thumbnailContent, width, height };
 };
 
-async function rotateIfNeeded(content) {
+exports.imageRotateIfNeeded = async function(content) {
   // jpeg rotation if needed
   const image = await jimp.read(content);
   return await image.getBufferAsync(jimp.MIME_PNG);
-}
+};
 
-async function toWebP(source) {
+exports.imageToWebP = async function(source) {
   const fsh = new FsHelper();
   await fsh.init();
   try {
@@ -33,9 +40,7 @@ async function toWebP(source) {
   } finally {
     await fsh.terminate();
   }
-}
-
-const converterPath = cwebp();
+};
 
 async function callWebpConverter(...args) {
   return new Promise((resolve, reject) => {
@@ -76,6 +81,51 @@ class FsHelper {
     };
   }
 }
+
+exports.imageLoadMetadata = function (content) {
+  const parser = exifParser.create(content);
+  const { tags } = parser.parse();
+  const model = tags.Model;
+  const date = formatExifDate(tags.DateTimeOriginal) || formatExifDate(tags.CreateDate) || formatExifDate(tags.ModifyDate);
+  const gps = formatExifGPS(tags);
+
+  const metadata = { model, date };
+  if(gps) {
+    metadata.gpsLatitude = gps.latitude;
+    metadata.gpsLongitude = gps.longitude;
+  }
+
+  return metadata;
+};
+
+function formatExifDate(value) {
+  if(value < 0) {
+    // got -2211753600 for null values
+    // consider all pre-epoch as nulls
+    return null;
+  }
+  return new Date(value * 1000);
+}
+
+function formatExifGPS(tags) {
+  let { GPSLatitude: latitude, GPSLongitude: longitude } = tags;
+  const { GPSLatitudeRef, GPSLongitudeRef } = tags;
+
+  if(!latitude || !longitude) {
+    return;
+  }
+
+  if(GPSLatitudeRef === 'S') {
+    latitude *= -1;
+  }
+  if(GPSLongitudeRef === 'W') {
+    longitude *= -1;
+  }
+
+  return { latitude, longitude };
+}
+
+////// fixJimpRotate //////
 
 function fixJimpRotate() {
   // https://github.com/oliver-moran/jimp/issues/721

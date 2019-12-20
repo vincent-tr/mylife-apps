@@ -8,4 +8,5 @@ Object.assign(exports,
   require('./album'),
   require('./stats'),
   require('./collection-subscription'),
+  require('./media'),
 );
