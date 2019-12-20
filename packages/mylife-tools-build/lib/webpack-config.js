@@ -68,16 +68,12 @@ exports.createWebpackConfig = function ({
         template: htmlTemplate
       }),
       new ProgressBarPlugin()
-    ],
-    resolve: {
-      modules: ['node_modules', path.resolve(__dirname, '../node_modules')]
-    },
-    resolveLoader: {
-      modules: ['node_modules', path.resolve(__dirname, '../node_modules')]
-    }
+    ]
   };
 
   if(dev) {
+    const resolverPaths = ['node_modules', mpath('mylife-tools-ui'), mpath('mylife-tools-build')];
+
     return merge(common, {
       mode: 'development',
       entry: ['webpack-hot-middleware/client'],
@@ -88,7 +84,13 @@ exports.createWebpackConfig = function ({
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
       ],
-      devtool: 'inline-cheap-module-source-map'
+      devtool: 'inline-cheap-module-source-map',
+      resolve: {
+        modules: resolverPaths
+      },
+      resolveLoader: {
+        modules: resolverPaths
+      }
     });
   }
 
@@ -99,4 +101,9 @@ exports.createWebpackConfig = function ({
     },
     devtool: 'source-map'
   });
+
+  // in dev mode, we are linked with lerna, so we need to add modules to dependency lookup
+  function mpath(moduleName) {
+    return path.join(baseDirectory, 'node_modules', moduleName, 'node_modules');
+  }
 };
