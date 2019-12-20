@@ -39,7 +39,9 @@
     "eslint-plugin-react": "^7.16.0",
     "humanize": "0.0.9",
     "humanize-duration": "^3.21.0",
+    "leaflet": "^1.6.0",
     "mylife-tools-build": "^1.2.5",
-    "mylife-tools-ui": "^1.0.6"
+    "mylife-tools-ui": "^1.0.6",
+    "react-leaflet": "^2.6.1"
   }
 }

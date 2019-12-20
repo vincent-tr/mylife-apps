@@ -4,6 +4,7 @@ import { React, PropTypes, mui } from 'mylife-tools-ui';
 import DetailItem from '../common/detail-item';
 import DetailAdvanced from '../common/detail-advanced';
 import DocumentValue from '../common/document-value';
+import DetailLocation from './detail-location';
 
 const ImageDetail = ({ open, document, info, ...props }) => {
   void info;
@@ -15,7 +16,7 @@ const ImageDetail = ({ open, document, info, ...props }) => {
         <DetailItem name='Date de prise' value={document.date} />
         <DetailItem name='Albums' value={'TODO'} />
         <DetailItem name='Personnes' value={'TODO document.persons'} />
-        <DetailItem name='Localisation' value={`TODO ${document.metadata.gpsLatitude} ${document.metadata.gpsLongitude}`} />
+        <DetailLocation location={getLocation(document)} />
         <DetailItem name='Dimensions' value={`${document.width} x ${document.height}`} />
         <DetailItem name={'Modèle d\'appareil'} value={document.metadata.model} />
 
@@ -38,3 +39,13 @@ ImageDetail.propTypes = {
 };
 
 export default ImageDetail;
+
+function getLocation(document) {
+  const latitude = document.metadata.gpsLatitude;
+  const longitude = document.metadata.gpsLongitude;
+  if(!latitude || !longitude) {
+    return null;
+  }
+
+  return { latitude, longitude };
+}
