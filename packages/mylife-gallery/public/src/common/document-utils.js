@@ -21,6 +21,7 @@ function getContentUrl(document) {
     case 'image':
       return `/content/image/${document._id}`;
     case 'video':
+      return `/content/video/${document._id}`;
     case 'other':
     default:
       return null;

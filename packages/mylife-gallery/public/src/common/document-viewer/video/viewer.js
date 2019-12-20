@@ -1,15 +1,35 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 
-const OtherViewer = ({ document }) => (
-  <div>
-    VIDEO {JSON.stringify(document)}
-  </div>
-);
+const useStyles = mui.makeStyles(theme => ({
+  container : {
+    backgroundColor : theme.palette.background,
+    position: 'relative'
+  },
+  video : {
+    position  : 'relative',
+    height    : '100%',
+    width     : '100%',
+    objectFit : 'scale-down',
+  }
+}));
 
-OtherViewer.propTypes = {
-  document: PropTypes.object.isRequired,
+const VideoViewer = ({ info, className, ...props }) => {
+  const classes = useStyles();
+
+  return (
+    <div className={clsx(classes.container, className)} {...props}>
+      <video controls
+        src={info.contentUrl}
+        className={classes.video} />
+    </div>
+  );
 };
 
-export default OtherViewer;
+VideoViewer.propTypes = {
+  info: PropTypes.object.isRequired,
+  className: PropTypes.string,
+};
+
+export default VideoViewer;
