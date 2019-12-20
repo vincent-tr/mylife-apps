@@ -2,6 +2,7 @@
 
 import { React, PropTypes, mui, formatDate } from 'mylife-tools-ui';
 import humanize from 'humanize';
+import humanizeDuration from 'humanize-duration';
 
 const DetailItem = ({ name, value, type }) =>  {
   if (!value) {
@@ -33,6 +34,11 @@ const DetailItem = ({ name, value, type }) =>  {
 
     case 'filesize': {
       value = humanize.filesize(value);
+      break;
+    }
+
+    case 'duration': {
+      value = humanizeDuration(value * 1000);
       break;
     }
 
