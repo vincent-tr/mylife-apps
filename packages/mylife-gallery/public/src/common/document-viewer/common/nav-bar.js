@@ -11,6 +11,7 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const NavBar = ({ document, info, showDetail, onClose, onDetail, ...props }) => {
+  void document;
   const classes = useStyles();
   return (
     <mui.AppBar {...props}>
@@ -26,7 +27,7 @@ const NavBar = ({ document, info, showDetail, onClose, onDetail, ...props }) => 
             <icons.actions.Detail />
           </mui.IconButton>
         )}
-        <mui.IconButton edge='end' color='inherit' onClick={() => console.log('DOWNLOAD', document.paths[0].path)}>
+        <mui.IconButton edge='end' color='inherit' component={mui.Link} download={info.downloadFilename} href={info.downloadUrl}>
           <icons.actions.Download />
         </mui.IconButton>
       </mui.Toolbar>

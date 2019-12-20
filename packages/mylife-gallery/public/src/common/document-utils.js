@@ -9,10 +9,13 @@ export const DOCUMENT_TYPES = [
 export const DOCUMENT_TYPE_MAP = new Map(DOCUMENT_TYPES.map(type => [type.id, type.text]));
 
 export function getInfo(document) {
+  const title = getTitle(document);
   return {
     contentUrl: getContentUrl(document),
-    title: getTitle(document),
-    subtitle: getSubtitle(document)
+    title,
+    subtitle: getSubtitle(document),
+    downloadUrl: `/content/raw/${document._entity}/${document._id}`,
+    downloadFilename: title
   };
 }
 
@@ -26,7 +29,6 @@ function getContentUrl(document) {
     default:
       return null;
   }
-
 }
 
 function getTitle(document) {
