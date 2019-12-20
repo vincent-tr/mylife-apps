@@ -12,11 +12,11 @@ const ImageDetail = ({ open, document, info, ...props }) => {
       <mui.List {...props}>
         <DocumentValue document={document} field='caption' />
         <DocumentValue document={document} field='keywords' />
-        <DetailItem name='Date de prise de photo' value={document.date} />
+        <DetailItem name='Date de prise' value={document.date} />
         <DetailItem name='Albums' value={'TODO'} />
         <DetailItem name='Personnes' value={'TODO document.persons'} />
         <DetailItem name='Localisation' value={`TODO ${document.metadata.gpsLatitude} ${document.metadata.gpsLongitude}`} />
-        <DetailItem name={'Dimensions de l\'image'} value={`${document.width} x ${document.height}`} />
+        <DetailItem name='Dimensions' value={`${document.width} x ${document.height}`} />
         <DetailItem name={'Modèle d\'appareil'} value={document.metadata.model} />
 
         <DetailAdvanced>

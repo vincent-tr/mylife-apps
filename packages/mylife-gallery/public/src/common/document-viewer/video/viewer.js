@@ -20,7 +20,7 @@ const VideoViewer = ({ info, className, ...props }) => {
 
   return (
     <div className={clsx(classes.container, className)} {...props}>
-      <video controls playsinline
+      <video controls playsInline
         src={info.contentUrl}
         className={classes.video} />
     </div>
