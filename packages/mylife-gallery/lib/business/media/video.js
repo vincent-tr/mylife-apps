@@ -3,9 +3,12 @@
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegStatic = require('ffmpeg-static');
 const ffprobeStatic = require('ffprobe-static');
+const { createLogger } = require('mylife-tools-server');
 
 ffmpeg.setFfmpegPath(ffmpegStatic.path);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
+
+const logger = createLogger('mylife:gallery:business:media:video');
 
 
 exports.videoGetMetadata = async function(fullPath) {
@@ -31,4 +34,15 @@ exports.videoCreateThumbnails = async function(baseDirectory, fullPath, { timest
   });
 
   return filenames;
+};
+
+exports.videoToWebMStream = function (fullPath, outputStream) {
+  const command = ffmpeg(fullPath);
+  command.format('webm');
+
+  command.on('error', err => {
+    logger.error(err.stack);
+  });
+
+  command.pipe(outputStream, { end: true });
 };
