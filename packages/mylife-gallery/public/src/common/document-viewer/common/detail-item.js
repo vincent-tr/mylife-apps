@@ -37,7 +37,7 @@ const DetailItem = ({ name, value, type }) =>  {
     }
 
     default: {
-      value = `${value}`;
+      value = addLineBreaks(`${value}`.split('\n'));
       break;
     }
   }
