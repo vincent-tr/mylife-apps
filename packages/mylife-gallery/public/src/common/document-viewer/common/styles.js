@@ -13,5 +13,6 @@ export const useCommonStyles = mui.makeStyles({
     flex: 1,
   },
   detail: {
+    overflowY: 'auto'
   }
 });
