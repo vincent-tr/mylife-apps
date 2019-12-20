@@ -1,6 +1,8 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs-extra');
+const { sendVideo } = require('./video-utils');
 const { getConfig, createLogger } = require('mylife-tools-server');
 const business = require('../business');
 
@@ -21,6 +23,14 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
 
     res.contentType('image/webp');
     res.send(target);
+  }));
+
+  router.route('/video/:id').get(asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const document = business.documentGet('video', id);
+    const fullPath = getFullPath(document);
+    logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
+    sendVideo(fullPath, res);
   }));
 
   router.route('/thumbnail/:id').get(asyncHandler(async (req, res) => {

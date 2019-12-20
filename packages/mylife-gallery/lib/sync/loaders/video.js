@@ -3,14 +3,9 @@
 const path = require('path');
 const os = require('os');
 const fs = require('fs-extra');
-const ffmpeg = require('fluent-ffmpeg');
-const ffmpegStatic = require('ffmpeg-static');
-const ffprobeStatic = require('ffprobe-static');
+
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
-
-ffmpeg.setFfmpegPath(ffmpegStatic.path);
-ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 const logger = createLogger('mylife:gallery:sync:loaders:video');
 
@@ -42,7 +37,7 @@ async function extractMetadata(fullPath) {
     metadata: {}
   };
 
-  const meta = await getRawMetadata(fullPath);
+  const meta = await business.videoGetMetadata(fullPath);
 
   const videoStream = meta.streams.find(stream => stream.codec_type === 'video');
   values.duration = meta.format.duration;
@@ -54,14 +49,11 @@ async function extractMetadata(fullPath) {
   return values;
 }
 
-async function getRawMetadata(fullPath) {
-  return new Promise((resolve, reject) => {
-    ffmpeg.ffprobe(fullPath, (err, metadata) => (err ? reject(err) : resolve(metadata)));
-  });
-}
-
 async function createThumbnails(fsh, contentPath, values) {
-  const names = await createRawThumbnails(fsh.baseDirectory, contentPath, values);
+
+  const { duration, height, width } = values;
+  const timestamps = computeTimeStamps(duration);
+  const names = await business.videoCreateThumbnails(fsh.baseDirectory, contentPath, { timestamps, height, width });
   const thumbnailContents = [];
   // first read all thumbnails, then create all: in case there is a read error (=> thumbnails creation error), nothing is created
   for(const name of names) {
@@ -75,8 +67,7 @@ async function createThumbnails(fsh, contentPath, values) {
   }
 }
 
-async function createRawThumbnails(baseDirectory, fullPath, { duration, height, width }) {
-
+function computeTimeStamps(duration) {
   const timestamps = [];
   // seems that if duration is eg 5.001 we cannot take a screenshot a 5
   const floorDuration = Math.floor(duration);
@@ -92,21 +83,7 @@ async function createRawThumbnails(baseDirectory, fullPath, { duration, height, 
     }
   }
 
-  // scale to fit 200x200
-  const size = width > height ? '200x?' : '?x200';
-
-  let filenames;
-
-  const command = ffmpeg(fullPath);
-  command.thumbnails({ folder: baseDirectory, filename: '%b-thumbnail-%i', timestamps, size });
-  command.on('filenames', value => (filenames = value));
-
-  await new Promise((resolve, reject) => {
-    command.on('end', resolve);
-    command.on('error', reject);
-  });
-
-  return filenames;
+  return timestamps;
 }
 
 class FsHelper {
