@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate as formatDateImpl } from 'mylife-tools-ui';
-import humanize from 'humanize';
+import { React, PropTypes, mui } from 'mylife-tools-ui';
 import DetailItem from '../common/detail-item';
 import DocumentValue from '../common/document-value';
 
@@ -21,7 +20,7 @@ const ImageDetail = ({ open, document, info, ...props }) => {
         <DetailItem name={'Modèle d\'appareil'} value={document.metadata.model} />
         <DetailItem name='Localisation' value={`TODO ${document.metadata.gpsLatitude} ${document.metadata.gpsLongitude}`} />
         <DetailItem name={'Dimensions de l\'image'} value={`${document.width} x ${document.height}`} />
-        <DetailItem name='Date de prise de photo' value={formatDate(document.date)} />
+        <DetailItem name='Date de prise de photo' value={document.date} />
         <DetailItem name='Personnes' value={'TODO document.persons'} />
         <DetailItem name='Albums' value={'TODO'} />
       </mui.List>
@@ -36,21 +35,3 @@ ImageDetail.propTypes = {
 };
 
 export default ImageDetail;
-
-function formatDate(date) {
-  if(!date) {
-    return '<indéfini>';
-  }
-  return formatDateImpl(date, 'dd/MM/yyyy');
-}
-
-function addLineBreaks(values) {
-  return values.map((text, index) => (
-    <React.Fragment key={index}>
-      {text}
-      {index < values.length -1 && (
-        <br />
-      )}
-    </React.Fragment>
-  ));
-}
