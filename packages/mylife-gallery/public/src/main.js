@@ -2,6 +2,7 @@
 
 import { React, services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
+import metadataDefintions from '../../shared/metadata';
 
 import icons from './common/icons';
 import Home from './home/components';
@@ -10,6 +11,7 @@ import Browse from './browse/components';
 import Stats from './stats/components';
 
 services.initStore(reducers);
+services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
