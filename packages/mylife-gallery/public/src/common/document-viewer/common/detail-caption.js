@@ -2,6 +2,7 @@
 
 import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField } from 'mylife-tools-ui';
 import { updateDocument } from '../actions';
+import { getFieldName } from '../../metadata-utils';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const DetailCaption = ({ document }) => {
       <mui.ListItemText
         disableTypography
         primary={
-          <mui.Typography>Légende</mui.Typography>
+          <mui.Typography>{getFieldName('document', 'caption')}</mui.Typography>
         }
         secondary={
           <DebouncedTextField value={document.caption} onChange={onChanged} />
