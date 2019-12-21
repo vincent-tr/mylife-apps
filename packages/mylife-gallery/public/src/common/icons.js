@@ -6,6 +6,7 @@ const {
   Announcement,
   Explore,
   Equalizer,
+  AddCircle,
   Close,
   Fullscreen,
   CloudDownload,
@@ -36,6 +37,7 @@ export default {
   },
 
   actions: {
+    Add: AddCircle,
     Close,
     Detail: Info,
     Download: CloudDownload,
