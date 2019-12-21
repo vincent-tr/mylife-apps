@@ -2,6 +2,8 @@
 
 import { React, PropTypes } from 'mylife-tools-ui';
 import DetailItem from './detail-item';
+import DetailCaption from './detail-caption';
+import DetailKeywords from './detail-keywords';
 
 const DocumentValue = ({ document, field }) => {
   switch(field) {
@@ -14,9 +16,9 @@ const DocumentValue = ({ document, field }) => {
     case 'fileSize':
       return (<DetailItem name='Taille du fichier' value={document.fileSize} type='filesize' />);
     case 'caption':
-      return (<DetailItem name='Titre' value={document.caption} />);
+      return (<DetailCaption document={document} />);
     case 'keywords':
-      return (<DetailItem name='Mots clés' value={document.keywords} />);
+      return (<DetailKeywords document={document} />);
     default:
       throw new Error(`Unknown document field: '${field}'`);
   }
