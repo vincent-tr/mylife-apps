@@ -112,7 +112,7 @@ const List = ({ className, data }) => {
             item={index => (<Tile document={data[index]} />)}
             listClassName={classes.empty}
             itemClassName={classes.empty}
-            style={{ height, width}} />
+            style={{ height, width, overflowX: 'hidden' }} />
         )}
       </AutoSizer>
     </div>
