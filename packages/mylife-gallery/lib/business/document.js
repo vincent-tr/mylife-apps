@@ -42,8 +42,9 @@ exports.documentRemove = (type, id) => {
 
 exports.documentUpdate = (type, id, values) => {
 
-  const collection = getDocumentStoreCollection(document._entity);
-  const entity = getMetadataEntity(document._entity);
+  const collection = getDocumentStoreCollection(type);
+  const entity = getMetadataEntity(type);
+  const document = collection.get(id);
   const newDocument = entity.setValues(document, values);
 
   logger.info(`Setting values '${JSON.stringify(values)}' on document '${document._entity}:${document._id}'`);
