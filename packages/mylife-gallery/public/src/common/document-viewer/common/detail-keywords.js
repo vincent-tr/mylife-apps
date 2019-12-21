@@ -12,50 +12,35 @@ const useConnect = () => {
   }), [dispatch]);
 };
 
-const useStyles = mui.makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'left',
-    flexWrap: 'wrap',
-    padding: theme.spacing(0.5),
-  },
-  chip: {
-    margin: theme.spacing(0.5),
-  },
-}));
+const TODO_Options = ['chip1', 'chip2', 'chip3', 'chip4'];
 
-
-const values = ['chip1', 'chip2', 'chip3', 'chip4'];
-
-const ChipList = ({ /*values, onDelete, onAdd*/ }) => {
-  const [values, setValues] = useState([]);
-  return (
-    <mui.Autocomplete
-      multiple
-      options={values}
-      freeSolo
-      renderTags={(values, getTagProps) =>
-        values.map((value, index) => (
-          <mui.Chip key={index} variant="outlined" label={value} {...getTagProps({ index })} />
-        ))
-      }
-      renderInput={params => (
-        <mui.TextField
-          {...params}
-          variant="filled"
-          placeholder="Mot clé"
-          fullWidth
-        />
-      )}
-      value={values}
-      onChange={(e, values) => setValues(values)}
-    />
-  );
-};
+const ChipList = ({ values, onChange }) => (
+  <mui.Autocomplete
+    multiple
+    options={TODO_Options}
+    freeSolo
+    disableClearable
+    renderTags={(values, getTagProps) =>
+      values.map((value, index) => (
+        <mui.Chip key={index} variant='outlined' label={value} {...getTagProps({ index })} />
+      ))
+    }
+    renderInput={params => (
+      <mui.TextField
+        {...params}
+        variant='filled'
+        placeholder='Mot clé'
+        fullWidth
+      />
+    )}
+    value={values}
+    onChange={(e, values) => onChange(values)}
+  />
+);
 
 const DetailKeywords = ({ document }) => {
   const { updateDocument } = useConnect();
-  const onChanged = value => updateDocument(document, { keywords: value });
+  const onChange = values => updateDocument(document, { keywords: values });
 
   return (
     <mui.ListItem>
@@ -65,7 +50,7 @@ const DetailKeywords = ({ document }) => {
           <mui.Typography>{getFieldName('document', 'keywords')}</mui.Typography>
         }
         secondary={
-          <ChipList values={values} onDelete={(index) => console.log('delete', index)} onAdd={(value) => console.log('add', value)} />
+          <ChipList values={document.keywords} onChange={onChange} />
         } />
     </mui.ListItem>
   );
