@@ -1,11 +1,32 @@
 'use strict';
 
-import { React, PropTypes } from 'mylife-tools-ui';
-import DetailItem from './detail-item';
+import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField } from 'mylife-tools-ui';
+import { updateDocument } from '../actions';
 
-const DetailCaption = ({ document }) => (
-  <DetailItem name='Titre' value={document.caption} />
-);
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return useMemo(() => ({
+    updateDocument : (document, values) => dispatch(updateDocument(document, values)),
+  }), [dispatch]);
+};
+
+const DetailCaption = ({ document }) => {
+  const { updateDocument } = useConnect();
+  const onChanged = value => updateDocument(document, { caption: value });
+
+  return (
+    <mui.ListItem>
+      <mui.ListItemText
+        disableTypography
+        primary={
+          <mui.Typography>Légende</mui.Typography>
+        }
+        secondary={
+          <DebouncedTextField value={document.caption} onChange={onChanged} />
+        } />
+    </mui.ListItem>
+  );
+};
 
 DetailCaption.propTypes = {
   document: PropTypes.object.isRequired
