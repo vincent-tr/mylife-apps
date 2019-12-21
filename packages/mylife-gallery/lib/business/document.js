@@ -40,6 +40,16 @@ exports.documentRemove = (type, id) => {
   // TODO: delete thumbnails (image, video) if not used anymore
 };
 
+exports.documentUpdate = (type, id, values) => {
+
+  const collection = getDocumentStoreCollection(document._entity);
+  const entity = getMetadataEntity(document._entity);
+  const newDocument = entity.setValues(document, values);
+
+  logger.info(`Setting values '${JSON.stringify(values)}' on document '${document._entity}:${document._id}'`);
+  collection.set(newDocument);
+};
+
 exports.documentAddPath = (document, path, fileUpdateDate) => {
   logger.info(`Adding path '${path}' on document '${document._entity}:${document._id}'`);
 

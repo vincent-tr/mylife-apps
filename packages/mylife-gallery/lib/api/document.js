@@ -16,3 +16,8 @@ exports.notifyDocuments = [ base, (session, message) => {
   const { criteria } = message;
   return business.documentsNotify(session, criteria);
 } ];
+
+exports.updateDocument = [ base, (session, message) => {
+  const { type, id, values } = message;
+  return business.documentUpdate(type, id, values);
+} ];
