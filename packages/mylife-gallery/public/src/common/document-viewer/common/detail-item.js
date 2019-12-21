@@ -38,7 +38,7 @@ const DetailItem = ({ name, value, type }) =>  {
     }
 
     case 'duration': {
-      value = humanizeDuration(value * 1000);
+      value = humanizeDuration(value * 1000, { language: 'fr' });
       break;
     }
 
