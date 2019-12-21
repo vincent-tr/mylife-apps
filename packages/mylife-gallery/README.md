@@ -6,7 +6,6 @@ MyLife photo gallery
 
 # TODO:
  - document:
-   - modifier legende (meme si null)
    - modifier mots clés (meme si null)
    - ajouter/supprimer album
    - ajouter/supprimer persone
