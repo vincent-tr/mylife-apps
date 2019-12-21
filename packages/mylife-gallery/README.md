@@ -2,7 +2,6 @@
 MyLife photo gallery
 
 ## Notes
- - google maps : https://www.npmjs.com/package/google-maps-react
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
 
 # TODO:
