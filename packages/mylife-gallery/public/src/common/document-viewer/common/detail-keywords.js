@@ -1,10 +1,11 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
+import { getFieldName } from '../../metadata-utils';
 import DetailItem from './detail-item';
 
 const DetailKeywords = ({ document }) => (
-  <DetailItem name='Mots clés' value={document.keywords} />
+  <DetailItem name={getFieldName('document', 'keywords')} value={document.keywords} />
 );
 
 DetailKeywords.propTypes = {

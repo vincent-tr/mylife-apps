@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { getFieldName } from '../../metadata-utils';
 import DetailItem from '../common/detail-item';
 import DetailAdvanced from '../common/detail-advanced';
 import DocumentValue from '../common/document-value';
@@ -13,8 +14,8 @@ const VideoDetail = ({ open, document, ...props }) => {
         <DocumentValue document={document} field='keywords' />
         <DetailItem name='Date de prise' value={document.date} />
         <DetailItem name='Albums' value={'TODO'} />
-        <DetailItem name='Personnes' value={'TODO document.persons'} />
-        <DetailItem name='Durée' value={document.duration} type='duration' />
+        <DetailItem name={getFieldName('video', 'persons')} value={'TODO document.persons'} />
+        <DetailItem name={getFieldName('video', 'duration')} value={document.duration} type='duration' />
         <DetailItem name='Dimensions' value={`${document.width} x ${document.height}`} />
 
         <DetailAdvanced>

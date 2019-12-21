@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
+import { getFieldName } from '../../metadata-utils';
 import DetailItem from './detail-item';
 import DetailCaption from './detail-caption';
 import DetailKeywords from './detail-keywords';
@@ -8,13 +9,13 @@ import DetailKeywords from './detail-keywords';
 const DocumentValue = ({ document, field }) => {
   switch(field) {
     case 'hash':
-      return (<DetailItem name='Hash du fichier' value={document.hash} />);
+      return (<DetailItem name={getFieldName('document', 'hash')} value={document.hash} />);
     case 'paths':
-      return (<DetailItem name='Chemins du fichier' value={document.paths.map(item => item.path)} />);
+      return (<DetailItem name={getFieldName('document', 'paths')} value={document.paths.map(item => item.path)} />);
     case 'integrationDate':
-      return (<DetailItem name={'Date d\'intégration'} value={document.integrationDate} />);
+      return (<DetailItem name={getFieldName('document', 'integrationDate')} value={document.integrationDate} />);
     case 'fileSize':
-      return (<DetailItem name='Taille du fichier' value={document.fileSize} type='filesize' />);
+      return (<DetailItem name={getFieldName('document', 'fileSize')} value={document.fileSize} type='filesize' />);
     case 'caption':
       return (<DetailCaption document={document} />);
     case 'keywords':
