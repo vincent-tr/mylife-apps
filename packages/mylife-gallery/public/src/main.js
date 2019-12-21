@@ -1,9 +1,7 @@
 'use strict';
 
-import { React, services, io } from 'mylife-tools-ui';
+import { React, services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
-
-// import { referenceInit } from './reference/actions';
 
 import icons from './common/icons';
 import Home from './home/components';
@@ -31,13 +29,4 @@ services.render({
   appName: 'Gallery',
   routes,
   menu
-});
-
-services.observeStore(io.getOnline, value => {
-  if(!value) {
-    return;
-  }
-
-  const store = services.getStore();
-  //store.dispatch(referenceInit());
 });
