@@ -6,7 +6,9 @@ MyLife photo gallery
 
 # TODO:
  - document:
-   - modifier mots clés (meme si null)
+   - modifier mots clés
+    - mettre a jour le document-viewer de suite apres MAJ de la vue
+    - voir comment faire la liste de recherche de l'Autocomplete
    - ajouter/supprimer album
    - ajouter/supprimer persone
  - suggestions:
