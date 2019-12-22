@@ -1,9 +1,10 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import DialogContentImage from './image/dialog-content';
 import DialogContentVideo from './video/dialog-content';
 import DialogContentOther from './other/dialog-content';
+import { getDocument } from '../selectors';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <mui.Slide direction='up' ref={ref} {...props} />;
@@ -24,8 +25,17 @@ DialogContent.propTypes = {
   document: PropTypes.object.isRequired,
 };
 
+
+const useConnect = (viewId, documentId) => {
+  return useSelector(state => ({
+    document: getDocument(state, { viewId, documentId })
+  }));
+};
+
+
 const Dialog = ({ show, proceed, options }) => {
-  const { document } = options;
+  const { document } = useConnect(options);
+  console.log(options, document);
 
   return (
     <mui.Dialog open={show} onClose={proceed} fullScreen TransitionComponent={Transition}>
