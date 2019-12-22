@@ -2,7 +2,7 @@
 
 import { React, PropTypes, mui, VirtuosoGrid, AutoSizer, clsx } from 'mylife-tools-ui';
 import * as documentUtils from '../../common/document-utils';
-import * as documentViewer from '../../common/document-viewer';
+import * as documentViewer from '../../document-viewer';
 import Thumbnail from '../../common/thumbnail';
 
 const useStyles = mui.makeStyles(theme => ({

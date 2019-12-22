@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import { getInfo } from '../../document-utils';
+import { getInfo } from '../../../common/document-utils';
 import { useCommonStyles } from '../common/styles';
 import NavBar from '../common/nav-bar';
 import Viewer from './viewer';

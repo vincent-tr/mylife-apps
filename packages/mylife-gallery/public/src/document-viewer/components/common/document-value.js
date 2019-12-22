@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
-import { getFieldName } from '../../metadata-utils';
+import { getFieldName } from '../../../common/metadata-utils';
 import DetailItem from './detail-item';
 import DetailCaption from './detail-caption';
 import DetailKeywords from './detail-keywords';

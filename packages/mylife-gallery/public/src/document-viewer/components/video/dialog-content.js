@@ -1,13 +1,13 @@
 'use strict';
 
 import { React, PropTypes, mui, useState } from 'mylife-tools-ui';
-import { getInfo } from '../../document-utils';
+import { getInfo } from '../../../common/document-utils';
 import { useCommonStyles } from '../common/styles';
 import NavBar from '../common/nav-bar';
 import Detail from './detail';
 import Viewer from './viewer';
 
-const ImageDialogContent = ({ document, onClose }) => {
+const VideoDialogContent = ({ document, onClose }) => {
   const classes = useCommonStyles();
   const info = getInfo(document);
   const [showDetail, setShowDetail] = useState(false);
@@ -24,9 +24,9 @@ const ImageDialogContent = ({ document, onClose }) => {
   );
 };
 
-ImageDialogContent.propTypes = {
+VideoDialogContent.propTypes = {
   document: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired
 };
 
-export default ImageDialogContent;
+export default VideoDialogContent;

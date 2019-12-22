@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import icons from '../../icons';
+import icons from '../../../common/icons';
 
 const useStyles = mui.makeStyles(theme => ({
   title: {

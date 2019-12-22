@@ -1,9 +1,8 @@
 'use strict';
 
 import { React, PropTypes, useMemo, mui, useDispatch, useState } from 'mylife-tools-ui';
-import { updateDocument } from '../actions';
-import { getFieldName } from '../../metadata-utils';
-import icons from '../../icons';
+import { updateDocument } from '../../actions';
+import { getFieldName } from '../../../common/metadata-utils';
 
 const useConnect = () => {
   const dispatch = useDispatch();
