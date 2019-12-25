@@ -13,7 +13,9 @@ const {
   Info,
   Help,
   Block,
-  PlayCircleOutline
+  PlayCircleOutline,
+  ChevronLeft,
+  ChevronRight
 } = mui.icons;
 
 const Gallery = (props) => (
@@ -41,7 +43,9 @@ export default {
     Close,
     Detail: Info,
     Download: CloudDownload,
-    Fullscreen
+    Fullscreen,
+    Previous: ChevronLeft,
+    Next: ChevronRight,
   },
 
   documents: {
