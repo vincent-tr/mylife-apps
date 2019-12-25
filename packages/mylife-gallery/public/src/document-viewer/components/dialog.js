@@ -35,14 +35,14 @@ const useConnect = () => {
   };
 };
 
-const DialogContainer = ({ documentType, documentId, onPrev: prev, onNext: next, ...props }) => {
+const DialogContainer = ({ documentType, documentId, onPrev: prev, onNext: next, canPrev, canNext, ...props }) => {
   const { fetchDocumentView, clearView, document } = useConnect();
   const enter = () => fetchDocumentView(documentType, documentId);
   const leave = clearView;
   useLifecycle(enter, leave);
 
-  const onPrev = createViewFetcher(fetchDocumentView, prev);
-  const onNext = createViewFetcher(fetchDocumentView, next);
+  const onPrev = createViewFetcher(fetchDocumentView, prev, canPrev);
+  const onNext = createViewFetcher(fetchDocumentView, next, canNext);
 
   if(!document) {
     return null;
@@ -56,10 +56,16 @@ DialogContainer.propTypes = {
   documentId: PropTypes.string.isRequired,
   onPrev: PropTypes.func,
   onNext: PropTypes.func,
+  canPrev: PropTypes.func,
+  canNext: PropTypes.func,
 };
 
-function createViewFetcher(fetchDocumentView, documentSelector) {
-  if(!documentSelector) {
+function createViewFetcher(fetchDocumentView, documentSelector, checkEnabled) {
+  if(!documentSelector || !checkEnabled) {
+    return null;
+  }
+
+  if(!checkEnabled()) {
     return null;
   }
 

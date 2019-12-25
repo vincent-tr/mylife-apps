@@ -1,7 +1,7 @@
 'use strict';
 
 import { createAction, io } from 'mylife-tools-ui';
-import { createOrUpdateView, deleteView } from '../common/action-tools';
+import { createOrRenewView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
 
@@ -9,7 +9,8 @@ const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-export const fetchDocumentView = (type, id) => createOrUpdateView({
+// notifyDocument views cannot be updated (because type can change)
+export const fetchDocumentView = (type, id) => createOrRenewView({
   criteriaSelector: () => ({ type, id }),
   viewSelector: getViewId,
   setViewAction: local.setView,

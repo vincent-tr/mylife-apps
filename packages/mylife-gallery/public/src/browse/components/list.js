@@ -53,11 +53,9 @@ const Tile = ({ data, index }) => {
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const document = data[index];
   const { title, subtitle } = documentUtils.getInfo(document);
-  const onPrev = createDocumentShifter(data, index - 1);
-  const onNext = createDocumentShifter(data, index + 1);
 
   return (
-    <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document._entity, document._id, { onPrev, onNext })}>
+    <mui.GridListTile classes={tileClasses} onClick={() => showViewer(data, index)}>
       <Thumbnail document={document} />
       <mui.GridListTileBar title={title} subtitle={subtitle} />
     </mui.GridListTile>
@@ -69,13 +67,24 @@ Tile.propTypes = {
   index: PropTypes.number.isRequired
 };
 
-function createDocumentShifter(data, index) {
+function showViewer(data, index) {
+  const canPrev = () => index > 0;
+  const canNext = () => index < data.length - 1;
+
+  const onPrev = () => {
+    --index;
+    const document = data[index];
+    return { type: document._entity, id: document._id };
+  };
+
+  const onNext = () => {
+    ++index;
+    const document = data[index];
+    return { type: document._entity, id: document._id };
+  };
+
   const document = data[index];
-  if(!document) {
-    // index out of range
-    return null;
-  }
-  return () => ({ type: document._entity, id: document._id });
+  documentViewer.showDialog(document._entity, document._id, { onPrev, onNext, canPrev, canNext });
 }
 
 const TileContainer = ({ className, ...props }) => {
