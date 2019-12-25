@@ -2,4 +2,7 @@
 
 import { io } from 'mylife-tools-ui';
 
-export const getDocument = (state, { viewId, documentId }) => io.getView(state, viewId).get(documentId);
+const getDocumentViewer = state => state.documentViewer;
+export const getViewId = state => getDocumentViewer(state).viewId;
+const getView = state => io.getView(state, getViewId(state));
+export const getDocument = state => getView(state).first();

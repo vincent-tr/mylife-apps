@@ -1,16 +1,35 @@
 'use strict';
 
-import { React, PropTypes, mui, useSelector } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import DialogContentImage from './image/dialog-content';
 import DialogContentVideo from './video/dialog-content';
 import DialogContentOther from './other/dialog-content';
 import { getDocument } from '../selectors';
+import { fetchDocumentView, clearView } from '../actions';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <mui.Slide direction='up' ref={ref} {...props} />;
-});
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => ({
+      document: getDocument(state)
+    })),
+    ...useMemo(() => ({
+      fetchDocumentView : (type, id) => dispatch(fetchDocumentView(type, id)),
+      clearView : () => dispatch(clearView()),
+    }), [dispatch])
+  };
+};
 
-const DialogContent = ({ document, ...props }) => {
+const DialogContent = ({ documentType, documentId, ...props }) => {
+  const { fetchDocumentView, clearView, document } = useConnect();
+  const enter = () => fetchDocumentView(documentType, documentId);
+  const leave = clearView;
+  useLifecycle(enter, leave);
+
+  if(!document) {
+    return null;
+  }
+
   switch(document._entity) {
     case 'image':
       return (<DialogContentImage document={document} {...props} />);
@@ -22,24 +41,19 @@ const DialogContent = ({ document, ...props }) => {
 };
 
 DialogContent.propTypes = {
-  document: PropTypes.object.isRequired,
+  documentType: PropTypes.string.isRequired,
+  documentId: PropTypes.string.isRequired,
 };
 
-
-const useConnect = (viewId, documentId) => {
-  return useSelector(state => ({
-    document: getDocument(state, { viewId, documentId })
-  }));
-};
-
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <mui.Slide direction='up' ref={ref} {...props} />;
+});
 
 const Dialog = ({ show, proceed, options }) => {
-  const { document } = useConnect(options);
-  console.log(options, document);
-
+  const { documentType, documentId } = options;
   return (
     <mui.Dialog open={show} onClose={proceed} fullScreen TransitionComponent={Transition}>
-      <DialogContent document={document} onClose={proceed} />
+      <DialogContent documentType={documentType} documentId={documentId} onClose={proceed} />
     </mui.Dialog>
   );
 };

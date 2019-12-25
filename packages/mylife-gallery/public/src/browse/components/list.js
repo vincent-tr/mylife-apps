@@ -54,7 +54,7 @@ const Tile = ({ viewId, document }) => {
   const { title, subtitle } = documentUtils.getInfo(document);
 
   return (
-    <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(viewId, document._id)}>
+    <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document._entity, document._id)}>
       <Thumbnail document={document} />
       <mui.GridListTileBar title={title} subtitle={subtitle} />
     </mui.GridListTile>

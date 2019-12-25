@@ -5,6 +5,6 @@ import Dialog from './components/dialog';
 
 const dialog = dialogs.create(Dialog);
 
-export async function showDialog(viewId, documentId) {
-  await dialog({ options: { viewId, documentId } });
+export async function showDialog(documentType, documentId) {
+  await dialog({ options: { documentType, documentId } });
 }
