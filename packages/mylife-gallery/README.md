@@ -13,7 +13,6 @@ MyLife photo gallery
      - voir comment faire la liste de recherche de l'Autocomplete
    - ajouter/supprimer album
    - ajouter/supprimer persone
-   - next/prev buttons with callbacks in dialog to fetch next/prev document and hide if cb undefined
  - suggestions:
    - propose to create album of a root folder if none of the documents inside are in an album
    - propose to create script (win/\*nix) to remove duplicates (for each select the one to keep)
