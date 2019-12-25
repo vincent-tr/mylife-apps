@@ -10,7 +10,7 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const NavBar = ({ document, info, showDetail, onClose, onDetail, ...props }) => {
+const NavBar = ({ document, info, showDetail, onClose, onDetail, onPrev, onNext, ...props }) => {
   void document;
   const classes = useStyles();
   return (
@@ -19,6 +19,16 @@ const NavBar = ({ document, info, showDetail, onClose, onDetail, ...props }) => 
         <mui.IconButton edge='start' color='inherit' onClick={onClose}>
           <icons.actions.Close />
         </mui.IconButton>
+        {onPrev && (
+          <mui.IconButton color='inherit' onClick={onPrev}>
+            <icons.actions.Detail />
+          </mui.IconButton>
+        )}
+        {onNext && (
+          <mui.IconButton color='inherit' onClick={onNext}>
+            <icons.actions.Detail />
+          </mui.IconButton>
+        )}
         <mui.Typography variant='h6' className={classes.title}>
           {info.title}
         </mui.Typography>
@@ -41,6 +51,8 @@ NavBar.propTypes = {
   showDetail: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onDetail: PropTypes.func,
+  onPrev: PropTypes.func,
+  onNext: PropTypes.func,
 };
 
 export default NavBar;

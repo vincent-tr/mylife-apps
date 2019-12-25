@@ -48,13 +48,16 @@ const useStyles = mui.makeStyles(theme => ({
 
 const PADDING = 2*8;
 
-const Tile = ({ viewId, document }) => {
+const Tile = ({ data, index }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
+  const document = data[index];
   const { title, subtitle } = documentUtils.getInfo(document);
+  const onPrev = createDocumentShifter(data, index - 1);
+  const onNext = createDocumentShifter(data, index + 1);
 
   return (
-    <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document._entity, document._id)}>
+    <mui.GridListTile classes={tileClasses} onClick={() => documentViewer.showDialog(document._entity, document._id, { onPrev, onNext })}>
       <Thumbnail document={document} />
       <mui.GridListTileBar title={title} subtitle={subtitle} />
     </mui.GridListTile>
@@ -62,9 +65,18 @@ const Tile = ({ viewId, document }) => {
 };
 
 Tile.propTypes = {
-  viewId: PropTypes.number.isRequired,
-  document: PropTypes.object.isRequired
+  data: PropTypes.array.isRequired,
+  index: PropTypes.number.isRequired
 };
+
+function createDocumentShifter(data, index) {
+  const document = data[index];
+  if(!document) {
+    // index out of range
+    return null;
+  }
+  return () => ({ type: document._entity, id: document._id });
+}
 
 const TileContainer = ({ className, ...props }) => {
   const classes = useStyles();
@@ -90,7 +102,7 @@ GridList.propTypes = {
   className: PropTypes.string
 };
 
-const List = ({ className, viewId, data }) => {
+const List = ({ className, data }) => {
   const classes = useStyles();
 
   if(!data.length) {
@@ -110,7 +122,7 @@ const List = ({ className, viewId, data }) => {
             overscan={200}
             ListContainer={GridList}
             ItemContainer={TileContainer}
-            item={index => (<Tile viewId={viewId} document={data[index]} />)}
+            item={index => (<Tile data={data} index={index} />)}
             listClassName={classes.empty}
             itemClassName={classes.empty}
             style={{ height, width, overflowX: 'hidden' }} />
@@ -122,7 +134,6 @@ const List = ({ className, viewId, data }) => {
 
 List.propTypes = {
   className: PropTypes.string,
-  viewId: PropTypes.number,
   data: PropTypes.array.isRequired
 };
 

@@ -2,7 +2,7 @@
 
 import { React, useMemo, useState, mui, useDispatch, useSelector, useLifecycle, immutable } from 'mylife-tools-ui';
 import { enter, leave, changeCriteria, changeDisplay } from '../actions';
-import { getDisplay, getDisplayView, getViewId } from '../selectors';
+import { getDisplay, getDisplayView } from '../selectors';
 import Criteria from './criteria';
 import List from './list';
 import Footer from './footer';
@@ -12,8 +12,7 @@ const useConnect = () => {
   return {
     ...useSelector(state => ({
       display: getDisplay(state),
-      data: getDisplayView(state),
-      viewId: getViewId(state)
+      data: getDisplayView(state)
     })),
     ...useMemo(() => ({
       enter: () => dispatch(enter()),
@@ -61,7 +60,7 @@ const initialCriteria = {
 
 const Browse = () => {
   const classes = useStyles();
-  const { display, data, viewId, enter, leave, changeCriteria, changeDisplay } = useConnect();
+  const { display, data, enter, leave, changeCriteria, changeDisplay } = useConnect();
   useLifecycle(enter, leave);
 
   const [criteria, setCriteria] = useState(initialCriteria);
@@ -76,7 +75,7 @@ const Browse = () => {
   return (
     <div className={classes.container}>
       <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={changeDisplay} />
-      <List className={classes.list} display={display} viewId={viewId} data={data}  />
+      <List className={classes.list} display={display} data={data}  />
       <Footer size={data.length} />
     </div>
   );
