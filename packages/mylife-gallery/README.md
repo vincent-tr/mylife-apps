@@ -5,7 +5,6 @@ MyLife photo gallery
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
 
 # TODO:
- - server : transform stream to check to size of data at the end
  - server : pipe data properly
  - spinner instead of pending image
  - thumbnail: use https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL with always 1 img tag instead of x img and css to hide
