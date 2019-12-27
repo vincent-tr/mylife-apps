@@ -7,6 +7,7 @@ const MemoryStream = require('memorystream');
 
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
+const tools = require('./video-tools');
 
 const logger = createLogger('mylife:gallery:sync:loaders:video');
 
@@ -26,7 +27,7 @@ exports.processVideo = async (content, relativePath) => {
     await createThumbnails(fsh, contentFile, values);
 
     const ms = new MemoryStream();
-    business.videoToWebMStream(contentFile, ms);
+    tools.videoToWebMStream(contentFile, ms);
     const mediaId = await business.mediaCreate(ms, 'video/webm');
     values.media = { id: mediaId, size: 0 }; // TODO size
 
@@ -43,7 +44,7 @@ async function extractMetadata(fullPath) {
     metadata: {}
   };
 
-  const meta = await business.videoGetMetadata(fullPath);
+  const meta = await tools.videoGetMetadata(fullPath);
 
   const videoStream = meta.streams.find(stream => stream.codec_type === 'video');
   values.duration = meta.format.duration;
@@ -59,7 +60,7 @@ async function createThumbnails(fsh, contentPath, values) {
 
   const { duration, height, width } = values;
   const timestamps = computeTimeStamps(duration);
-  const names = await business.videoCreateThumbnails(fsh.baseDirectory, contentPath, { timestamps, height, width });
+  const names = await tools.videoCreateThumbnails(fsh.baseDirectory, contentPath, { timestamps, height, width });
   const thumbnailContents = [];
   // first read all thumbnails, then create all: in case there is a read error (=> thumbnails creation error), nothing is created
   for(const name of names) {
@@ -68,7 +69,7 @@ async function createThumbnails(fsh, contentPath, values) {
 
   values.thumbnails = [];
   for(const thumbnailContent of thumbnailContents) {
-    const thumbnailWebp = await business.imageToWebP(thumbnailContent);
+    const thumbnailWebp = await tools.imageToWebP(thumbnailContent);
     const thumbnail = await business.thumbnailCreate(thumbnailWebp);
     values.thumbnails.push(thumbnail);
   }

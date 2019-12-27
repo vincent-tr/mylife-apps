@@ -3,6 +3,7 @@
 const MemoryStream = require('memorystream');
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
+const tools = require('./image-tools');
 
 const logger = createLogger('mylife:gallery:sync:loaders:image');
 
@@ -10,7 +11,7 @@ exports.processImage = async (content, relativePath) => {
 
   const values = {};
   try {
-    values.metadata = business.imageLoadMetadata(content);
+    values.metadata = tools.imageLoadMetadata(content);
   } catch(err) {
     // this is not a fatal error, we can keep going without metadata
     logger.error(`Error loading image metadata '${relativePath}': ${err.stack}`);
@@ -23,12 +24,12 @@ exports.processImage = async (content, relativePath) => {
   }
 
   // do not try/catch if we could not read the image
-  const { thumbnailContent, ...otherValues } = await business.imageLoad(content);
-  const thumbnailWebp = await business.imageToWebP(thumbnailContent);
+  const { thumbnailContent, ...otherValues } = await tools.imageLoad(content);
+  const thumbnailWebp = await tools.imageToWebP(thumbnailContent);
   const thumbnail = await business.thumbnailCreate(thumbnailWebp);
 
-  const rotated = await business.imageRotateIfNeeded(content);
-  const target = await business.imageToWebP(rotated);
+  const rotated = await tools.imageRotateIfNeeded(content);
+  const target = await tools.imageToWebP(rotated);
   const mediaId = await business.mediaCreate(new MemoryStream(target), 'image/webp');
   const media = { id: mediaId, size: target.length };
 

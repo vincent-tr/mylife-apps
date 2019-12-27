@@ -8,8 +8,7 @@ const { createLogger } = require('mylife-tools-server');
 ffmpeg.setFfmpegPath(ffmpegStatic.path);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
-const logger = createLogger('mylife:gallery:business:media:video');
-
+const logger = createLogger('mylife:gallery:sync:loaders:video');
 
 exports.videoGetMetadata = async function(fullPath) {
   return new Promise((resolve, reject) => {
