@@ -3,6 +3,7 @@
 const path = require('path');
 const os = require('os');
 const fs = require('fs-extra');
+const MemoryStream = require('memorystream');
 
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
@@ -23,6 +24,11 @@ exports.processVideo = async (content, relativePath) => {
     }
 
     await createThumbnails(fsh, contentFile, values);
+
+    const ms = new MemoryStream();
+    business.videoToWebMStream(contentFile, ms);
+    const mediaId = await business.mediaCreate(ms, 'video/webm');
+    values.media = { id: mediaId, size: 0 }; // TODO size
 
     logger.debug(`Video loaded '${relativePath}'`);
     return values;
@@ -62,7 +68,8 @@ async function createThumbnails(fsh, contentPath, values) {
 
   values.thumbnails = [];
   for(const thumbnailContent of thumbnailContents) {
-    const thumbnail = await business.thumbnailCreate(thumbnailContent);
+    const thumbnailWebp = await business.imageToWebP(thumbnailContent);
+    const thumbnail = await business.thumbnailCreate(thumbnailWebp);
     values.thumbnails.push(thumbnail);
   }
 }

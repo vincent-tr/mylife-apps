@@ -1,5 +1,6 @@
 'use strict';
 
+const MemoryStream = require('memorystream');
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
 
@@ -23,9 +24,15 @@ exports.processImage = async (content, relativePath) => {
 
   // do not try/catch if we could not read the image
   const { thumbnailContent, ...otherValues } = await business.imageLoad(content);
-  const thumbnail = await business.thumbnailCreate(thumbnailContent);
+  const thumbnailWebp = await business.imageToWebP(thumbnailContent);
+  const thumbnail = await business.thumbnailCreate(thumbnailWebp);
 
-  Object.assign(values, { thumbnail, ...otherValues });
+  const rotated = await business.imageRotateIfNeeded(content);
+  const target = await business.imageToWebP(rotated);
+  const mediaId = await business.mediaCreate(new MemoryStream(target), 'image/webp');
+  const media = { id: mediaId, size: target.length };
+
+  Object.assign(values, { thumbnail, media, ...otherValues });
 
   logger.debug(`Image loaded '${relativePath}'`);
   return values;
