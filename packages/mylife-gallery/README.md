@@ -6,7 +6,7 @@ MyLife photo gallery
 
 # TODO:
  - server : sync loaders dans webworkers
- - server : pipe data properly
+ - server : pipe data properly (video media create)
  - spinner instead of pending image
  - thumbnail: use https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL with always 1 img tag instead of x img and css to hide
  - document:
