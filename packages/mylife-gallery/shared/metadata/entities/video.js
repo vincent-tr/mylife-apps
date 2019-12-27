@@ -6,6 +6,7 @@ module.exports = {
   name: 'Video',
   fields: [
     { id: 'thumbnails', name: 'Miniatures', datatype: 'list:identifier', constraints: ['not-null'], initial: [] },
+    { id: 'media', name: 'Média', datatype: 'media' },
     { id: 'metadata', name: 'Métadonnées', datatype: 'video-metadata' },
     { id: 'width', name: 'Largeur', datatype: 'count' },
     { id: 'height', name: 'Hauteur', datatype: 'count' },

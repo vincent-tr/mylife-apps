@@ -15,6 +15,12 @@ module.exports = [
     ]
   },
   {
+    id: 'media', structure: [
+      { id: 'id', name: 'Identifiant', datatype: 'identifier' }, // we do not directly reference gridfs file because it is not loaded as store collection
+      { id: 'size', name: 'Taille', datatype: 'count' }
+    ]
+  },
+  {
     id: 'image-tag', structure: [
       { id: 'person', name: 'Personne', datatype: 'person' },
       { id: 'left', name: 'Placement gauche', datatype: 'count' },
