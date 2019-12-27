@@ -6,8 +6,6 @@ const fs = require('fs-extra');
 const cwebp = require('webp-converter/cwebp');
 const child_process = require('child_process');
 
-require('./tools/jimp-fix-rotate');
-
 const converterPath = cwebp();
 
 exports.imageToWebP = async function(source) {
