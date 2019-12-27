@@ -5,8 +5,8 @@ const logger = createLogger('mylife:gallery:business:media');
 
 exports.mediaCreate = async (inputStream, contentType) => {
   const bucket = getBucket();
-  const bucketStream = bucket.openUploadStream(null, { contentType });
-  const id = bucketStream.id;
+  const id = newObjectID().toString();
+  const bucketStream = bucket.openUploadStreamWithId(newObjectID(id), null, { contentType });
 
   logger.info(`Insert media (id: '${id}')`);
   const { length } = await pipeAndWait(inputStream, bucketStream);
@@ -17,13 +17,17 @@ exports.mediaRemove = async (id) => {
   const bucket = getBucket();
 
   logger.info(`Delete media (id: '${id}')`);
-  await bucket.delete(id);
+  await bucket.delete(newObjectID(id));
 };
 
 exports.mediaGet = (id) => {
   const bucket = getBucket();
-  return bucket.openDownloadStream(id);
+  return bucket.openDownloadStream(newObjectID(id));
 };
+
+function newObjectID(id) {
+  return getService('database').newObjectID(id);
+}
 
 function getBucket() {
   return getService('database').gridFSBucket('media');
