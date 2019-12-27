@@ -27,11 +27,11 @@ exports.processImage = async (content, relativePath) => {
   // do not try/catch if we could not read the image
   const image = await Image.load(content);
 
-  const thumbnailContent = convertBufferToWebpBuffer(await image.thumbnailPngBuffer());
+  const thumbnailContent = await convertBufferToWebpBuffer(await image.thumbnailPngBuffer());
   const thumbnail = await business.thumbnailCreate(thumbnailContent);
 
   // from image to keep proper rotation
-  const imageStream = convertBufferToWebpStream(await image.pngBuffer());
+  const imageStream = await convertBufferToWebpStream(await image.pngBuffer());
   const mediaId = await business.mediaCreate(imageStream, 'image/webp');
   const media = { id: mediaId, size: 0 }; // TODO size
 
