@@ -2,7 +2,7 @@
 
 const exifParser = require('exif-parser');
 
-exports.getExifMetadata = function (content) {
+exports.getMetadata = function (content) {
   const parser = exifParser.create(content);
   const { tags } = parser.parse();
   const model = tags.Model;
