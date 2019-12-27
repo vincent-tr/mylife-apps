@@ -1,7 +1,7 @@
 'use strict';
 
 const { URL } = require('url');
-const { MongoClient, ObjectID, Binary } = require('mongodb');
+const { MongoClient, ObjectID, Binary, GridFSBucket } = require('mongodb');
 
 const { createLogger } = require('./logging');
 const { getConfig } = require('./config');
@@ -45,6 +45,10 @@ class Database {
 
   collection(name) {
     return this._db.collection(name);
+  }
+
+  gridFSBucket(name, options) {
+    return new GridFSBucket(this._db, { bucketName : name, ...options });
   }
 
   newObjectID(id) {
