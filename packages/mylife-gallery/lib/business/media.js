@@ -21,7 +21,10 @@ exports.mediaRemove = async (id) => {
 };
 
 exports.mediaGet = async (id) => {
-  // TODO
+  const bucket = getBucket();
+  const stream = bucket.openDownloadStream(id);
+  const { contentType, length } = await waitFile(stream);
+  return { stream, contentType, length };
 };
 
 function getBucket() {
@@ -47,5 +50,27 @@ async function pipeAndWait(input, output) {
     input.addEventListener('error', end);
     output.addEventListener('error', end);
     output.addEventListener('finish', end);
+  });
+}
+
+async function waitFile(stream) {
+  return new Promise((resolve, reject) => {
+    const onSuccess = (file) => {
+      removeListeners();
+      resolve(file);
+    };
+
+    const onError = (err) => {
+      removeListeners();
+      reject(err);
+    };
+
+    stream.addEventListener('error', onError);
+    stream.addEventListener('file', onSuccess);
+
+    function removeListeners() {
+      stream.removeEventListener('error', onError);
+      stream.removeEventListener('file', onSuccess);
+    }
   });
 }
