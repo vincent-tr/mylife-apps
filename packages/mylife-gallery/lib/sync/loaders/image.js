@@ -4,6 +4,7 @@ const MemoryStream = require('memorystream');
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
 const tools = require('./image-tools');
+const { getMetadata } = require('./tools/exif');
 
 const logger = createLogger('mylife:gallery:sync:loaders:image');
 
@@ -11,7 +12,7 @@ exports.processImage = async (content, relativePath) => {
 
   const values = {};
   try {
-    values.metadata = tools.imageLoadMetadata(content);
+    values.metadata = getMetadata(content);
   } catch(err) {
     // this is not a fatal error, we can keep going without metadata
     logger.error(`Error loading image metadata '${relativePath}': ${err.stack}`);
