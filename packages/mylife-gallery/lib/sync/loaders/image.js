@@ -32,8 +32,7 @@ exports.processImage = async (content, relativePath) => {
 
   // from image to keep proper rotation
   const imageStream = await convertBufferToWebpStream(await image.pngBuffer());
-  const mediaId = await business.mediaCreate(imageStream, 'image/webp');
-  const media = { id: mediaId, size: 0 }; // TODO size
+  const media = await business.mediaCreate(imageStream, 'image/webp');
 
   const metadata = image.getMetadata();
   Object.assign(values, { thumbnail, media, ...metadata });

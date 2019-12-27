@@ -29,8 +29,7 @@ exports.processVideo = async (content, relativePath) => {
 
     const ms = new MemoryStream();
     toWebMStream(contentFile, ms);
-    const mediaId = await business.mediaCreate(ms, 'video/webm');
-    values.media = { id: mediaId, size: 0 }; // TODO size
+    values.media = await business.mediaCreate(ms, 'video/webm');
 
     logger.debug(`Video loaded '${relativePath}'`);
     return values;

@@ -9,8 +9,8 @@ exports.mediaCreate = async (inputStream, contentType) => {
   const id = bucketStream.id;
 
   logger.info(`Insert media (id: '${id}')`);
-  await pipeAndWait(inputStream, bucketStream);
-  return id;
+  const { length } = await pipeAndWait(inputStream, bucketStream);
+  return { id, size: length };
 };
 
 exports.mediaRemove = async (id) => {
@@ -35,21 +35,25 @@ async function pipeAndWait(input, output) {
   input.pipe(output);
 
   return new Promise((resolve, reject) => {
-    const end = (err) => {
-      input.removeListener('error', end);
-      output.removeListener('error', end);
-      output.removeListener('finish', end);
-
-      if(err) {
-        reject(err);
-      } else {
-        resolve();
-      }
+    const onSuccess = (data) => {
+      removeListeners();
+      resolve(data);
     };
 
-    input.addListener('error', end);
-    output.addListener('error', end);
-    output.addListener('finish', end);
+    const onError = (err) => {
+      removeListeners();
+      reject(err);
+    };
+
+    input.addListener('error', onError);
+    output.addListener('error', onError);
+    output.addListener('finish', onSuccess);
+
+    function removeListeners() {
+      input.removeListener('error', onError);
+      output.removeListener('error', onError);
+      output.removeListener('finish', onSuccess);
+    }
   });
 }
 
