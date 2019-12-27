@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs-extra');
 const { getConfig, createLogger } = require('mylife-tools-server');
 const business = require('../business');
 
@@ -13,37 +12,36 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
   router.route('/image/:id').get(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const document = business.documentGet('image', id);
-    const fullPath = getFullPath(document);
-    logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
+    logger.debug(`Sending image '${id}'`);
 
-    const source = await fs.readFile(fullPath);
-    const rotated = await business.imageRotateIfNeeded(source);
-    const target = await business.imageToWebP(rotated);
-
+    const { stream } = await business.mediaGet(document.media.id);
     res.contentType('image/webp');
-    res.send(target);
+    stream.pipe(res);
   }));
 
   router.route('/video/:id').get(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const document = business.documentGet('video', id);
-    const fullPath = getFullPath(document);
-    logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
+    logger.debug(`Sending video '${id}'`);
+
+    const { stream } = await business.mediaGet(document.media.id);
     res.contentType('video/webm');
-    business.videoToWebMStream(fullPath, res);
+    stream.pipe(res);
   }));
 
   router.route('/thumbnail/:id').get(asyncHandler(async (req, res) => {
     const { id } = req.params;
     const content = await business.thumbnailGet(id);
     logger.debug(`Sending thumbnail '${id}'`);
-    res.contentType('image/png');
+
+    res.contentType('image/webp');
     res.send(content);
   }));
 
   router.route('/raw/:type/:id').get(asyncHandler(async (req, res) => {
     const { type, id } = req.params;
     const document = business.documentGet(type, id);
+    
     const fullPath = getFullPath(document);
     logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
     res.sendFile(fullPath);
