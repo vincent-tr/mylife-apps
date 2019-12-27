@@ -7,7 +7,8 @@ const MemoryStream = require('memorystream');
 
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
-const tools = require('./video-tools');
+const { getMetadata, createThumbnails, toWebMStream } = require('./tools/ffmpeg');
+const { convertBufferToWebpBuffer } = require('./tools/webp');
 
 const logger = createLogger('mylife:gallery:sync:loaders:video');
 
@@ -24,10 +25,10 @@ exports.processVideo = async (content, relativePath) => {
       values.date = values.metadata.date;
     }
 
-    await createThumbnails(fsh, contentFile, values);
+    await createThumbnailsValues(fsh, contentFile, values);
 
     const ms = new MemoryStream();
-    tools.videoToWebMStream(contentFile, ms);
+    toWebMStream(contentFile, ms);
     const mediaId = await business.mediaCreate(ms, 'video/webm');
     values.media = { id: mediaId, size: 0 }; // TODO size
 
@@ -44,7 +45,7 @@ async function extractMetadata(fullPath) {
     metadata: {}
   };
 
-  const meta = await tools.videoGetMetadata(fullPath);
+  const meta = await getMetadata(fullPath);
 
   const videoStream = meta.streams.find(stream => stream.codec_type === 'video');
   values.duration = meta.format.duration;
@@ -56,11 +57,11 @@ async function extractMetadata(fullPath) {
   return values;
 }
 
-async function createThumbnails(fsh, contentPath, values) {
+async function createThumbnailsValues(fsh, contentPath, values) {
 
   const { duration, height, width } = values;
   const timestamps = computeTimeStamps(duration);
-  const names = await tools.videoCreateThumbnails(fsh.baseDirectory, contentPath, { timestamps, height, width });
+  const names = await createThumbnails(fsh.baseDirectory, contentPath, { timestamps, height, width });
   const thumbnailContents = [];
   // first read all thumbnails, then create all: in case there is a read error (=> thumbnails creation error), nothing is created
   for(const name of names) {
@@ -69,7 +70,8 @@ async function createThumbnails(fsh, contentPath, values) {
 
   values.thumbnails = [];
   for(const thumbnailContent of thumbnailContents) {
-    const thumbnailWebp = await tools.imageToWebP(thumbnailContent);
+    // TODO: do not load and save thumbnailContent
+    const thumbnailWebp = await convertBufferToWebpBuffer(thumbnailContent);
     const thumbnail = await business.thumbnailCreate(thumbnailWebp);
     values.thumbnails.push(thumbnail);
   }

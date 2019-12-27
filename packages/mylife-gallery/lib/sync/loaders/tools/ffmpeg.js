@@ -8,15 +8,15 @@ const { createLogger } = require('mylife-tools-server');
 ffmpeg.setFfmpegPath(ffmpegStatic.path);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
-const logger = createLogger('mylife:gallery:sync:loaders:video');
+const logger = createLogger('mylife:gallery:sync:loaders:tools:ffmpeg');
 
-exports.videoGetMetadata = async function(fullPath) {
+exports.getMetadata = async function(fullPath) {
   return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(fullPath, (err, metadata) => (err ? reject(err) : resolve(metadata)));
   });
 };
 
-exports.videoCreateThumbnails = async function(baseDirectory, fullPath, { timestamps, height, width }) {
+exports.createThumbnails = async function(baseDirectory, fullPath, { timestamps, height, width }) {
 
   // scale to fit 200x200
   const size = width > height ? '200x?' : '?x200';
@@ -35,7 +35,7 @@ exports.videoCreateThumbnails = async function(baseDirectory, fullPath, { timest
   return filenames;
 };
 
-exports.videoToWebMStream = function (fullPath, outputStream) {
+exports.toWebMStream = function (fullPath, outputStream) {
   const command = ffmpeg(fullPath);
   command.format('webm');
 
