@@ -20,11 +20,9 @@ exports.mediaRemove = async (id) => {
   await bucket.delete(id);
 };
 
-exports.mediaGet = async (id) => {
+exports.mediaGet = (id) => {
   const bucket = getBucket();
-  const stream = bucket.openDownloadStream(id);
-  const { contentType, length } = await waitFile(stream);
-  return { stream, contentType, length };
+  return bucket.openDownloadStream(id);
 };
 
 function getBucket() {
@@ -53,28 +51,6 @@ async function pipeAndWait(input, output) {
       input.removeListener('error', onError);
       output.removeListener('error', onError);
       output.removeListener('finish', onSuccess);
-    }
-  });
-}
-
-async function waitFile(stream) {
-  return new Promise((resolve, reject) => {
-    const onSuccess = (file) => {
-      removeListeners();
-      resolve(file);
-    };
-
-    const onError = (err) => {
-      removeListeners();
-      reject(err);
-    };
-
-    stream.addListener('error', onError);
-    stream.addListener('file', onSuccess);
-
-    function removeListeners() {
-      stream.removeListener('error', onError);
-      stream.removeListener('file', onSuccess);
     }
   });
 }

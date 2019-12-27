@@ -14,9 +14,10 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     const document = business.documentGet('image', id);
     logger.debug(`Sending image '${id}'`);
 
-    const { stream } = await business.mediaGet(document.media.id);
+    const stream = business.mediaGet(document.media.id);
     res.contentType('image/webp');
     stream.pipe(res);
+    stream.on('error', err => logger.error(`Error sending image '${id}' : ${err.stack}`));
   }));
 
   router.route('/video/:id').get(asyncHandler(async (req, res) => {
@@ -24,9 +25,10 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     const document = business.documentGet('video', id);
     logger.debug(`Sending video '${id}'`);
 
-    const { stream } = await business.mediaGet(document.media.id);
+    const stream = business.mediaGet(document.media.id);
     res.contentType('video/webm');
     stream.pipe(res);
+    stream.on('error', err => logger.error(`Error sending video '${id}' : ${err.stack}`));
   }));
 
   router.route('/thumbnail/:id').get(asyncHandler(async (req, res) => {
@@ -41,7 +43,7 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
   router.route('/raw/:type/:id').get(asyncHandler(async (req, res) => {
     const { type, id } = req.params;
     const document = business.documentGet(type, id);
-    
+
     const fullPath = getFullPath(document);
     logger.debug(`Sending document '${id}' (fullPath='${fullPath}')`);
     res.sendFile(fullPath);
