@@ -4,6 +4,33 @@ const jimp = require('jimp');
 
 fixJimpRotate();
 
+exports.Image = class Image {
+  static async load(content) {
+    const image = new Image();
+    image.image = await jimp.read(content);
+    return image;
+  }
+
+  getMetadata() {
+    const perceptualHash = this.image.hash();
+    const mime = this.image.getMIME();
+    const { width, height } = this.image.bitmap;
+    return { perceptualHash, mime, width, height };
+  }
+
+  async pngBuffer() {
+    return await this.image.getBufferAsync(jimp.MIME_PNG);
+  }
+
+  async thumbnailPngBuffer() {
+    const thumbnail = this.image.clone();
+    await thumbnail.scaleToFit(200, 200);
+    return await thumbnail.getBufferAsync(jimp.MIME_PNG);
+  }
+};
+
+///////// fixJimpRotate /////////
+
 function fixJimpRotate() {
   // https://github.com/oliver-moran/jimp/issues/721
   jimp.prototype.rotateOrigin = jimp.prototype.rotate;

@@ -3,31 +3,12 @@
 const os = require('os');
 const path = require('path');
 const fs = require('fs-extra');
-const jimp = require('jimp');
 const cwebp = require('webp-converter/cwebp');
 const child_process = require('child_process');
 
 require('./tools/jimp-fix-rotate');
 
 const converterPath = cwebp();
-
-exports.imageLoad = async function(content) {
-  const image = await jimp.read(content);
-
-  const perceptualHash = image.hash();
-  const mime = image.getMIME();
-  const { width, height } = image.bitmap;
-
-  const thumbnailContent = await image.scaleToFit(200, 200).getBufferAsync(jimp.MIME_PNG);
-
-  return { perceptualHash, mime, thumbnailContent, width, height };
-};
-
-exports.imageRotateIfNeeded = async function(content) {
-  // jpeg rotation if needed
-  const image = await jimp.read(content);
-  return await image.getBufferAsync(jimp.MIME_PNG);
-};
 
 exports.imageToWebP = async function(source) {
   const fsh = new FsHelper();
