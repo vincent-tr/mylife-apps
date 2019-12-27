@@ -30,6 +30,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^8.1.0",
     "jimp": "^0.9.3",
+    "memorystream": "^0.3.1",
     "mylife-tools-common": "^1.0.3",
     "mylife-tools-server": "^1.0.11",
     "webp-converter": "^2.2.3"
