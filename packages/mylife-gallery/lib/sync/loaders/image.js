@@ -1,11 +1,10 @@
 'use strict';
 
-const MemoryStream = require('memorystream');
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
-const tools = require('./image-tools');
 const { Image } = require('./tools/jimp');
 const { getMetadata } = require('./tools/exif');
+const { convertBufferToWebpBuffer, convertBufferToWebpStream } = require('./tools/webp');
 
 const logger = createLogger('mylife:gallery:sync:loaders:image');
 
@@ -28,14 +27,13 @@ exports.processImage = async (content, relativePath) => {
   // do not try/catch if we could not read the image
   const image = await Image.load(content);
 
-  const thumbnailContent = await image.thumbnailPngBuffer();
-  const thumbnailWebp = await tools.imageToWebP(thumbnailContent);
-  const thumbnail = await business.thumbnailCreate(thumbnailWebp);
+  const thumbnailContent = convertBufferToWebpBuffer(await image.thumbnailPngBuffer());
+  const thumbnail = await business.thumbnailCreate(thumbnailContent);
 
-  const rotated = await image.pngBuffer();
-  const target = await tools.imageToWebP(rotated);
-  const mediaId = await business.mediaCreate(new MemoryStream(target), 'image/webp');
-  const media = { id: mediaId, size: target.length };
+  // from image to keep proper rotation
+  const imageStream = convertBufferToWebpStream(await image.pngBuffer());
+  const mediaId = await business.mediaCreate(imageStream, 'image/webp');
+  const media = { id: mediaId, size: 0 }; // TODO size
 
   const metadata = image.getMetadata();
   Object.assign(values, { thumbnail, media, ...metadata });
