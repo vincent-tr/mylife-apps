@@ -8,7 +8,7 @@ exports.thumbnailCreate = async (content) => {
     throw new Error('Cannot create empty thumbnail');
   }
 
-  const collection = getDatabaseCollection('thumbnails');
+  const collection = getThumbnailCollection();
 
   const id = newObjectID().toString();
   const record = { _id: newObjectID(id), content: newBinary(content) };
@@ -20,7 +20,7 @@ exports.thumbnailCreate = async (content) => {
 };
 
 exports.thumbnailRemove = async (id) => {
-  const collection = getDatabaseCollection('thumbnails');
+  const collection = getThumbnailCollection();
 
   logger.info(`Delete thumbnail (id: '${id}')`);
   const result = await collection.deleteOne({ _id : newObjectID(id) });
@@ -28,7 +28,7 @@ exports.thumbnailRemove = async (id) => {
 };
 
 exports.thumbnailGet = async (id) => {
-  const collection = getDatabaseCollection('thumbnails');
+  const collection = getThumbnailCollection();
 
   const record = await collection.findOne({ _id : newObjectID(id) });
   if(!record) {
@@ -44,4 +44,8 @@ function newObjectID(id) {
 
 function newBinary(data) {
   return getService('database').newBinary(data);
+}
+
+function getThumbnailCollection() {
+  return getDatabaseCollection('thumbnails');
 }
