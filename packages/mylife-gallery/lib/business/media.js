@@ -36,9 +36,9 @@ async function pipeAndWait(input, output) {
 
   return new Promise((resolve, reject) => {
     const end = (err) => {
-      input.removeEventListener('error', end);
-      output.removeEventListener('error', end);
-      output.removeEventListener('finish', end);
+      input.removeListener('error', end);
+      output.removeListener('error', end);
+      output.removeListener('finish', end);
 
       if(err) {
         reject(err);
@@ -47,9 +47,9 @@ async function pipeAndWait(input, output) {
       }
     };
 
-    input.addEventListener('error', end);
-    output.addEventListener('error', end);
-    output.addEventListener('finish', end);
+    input.addListener('error', end);
+    output.addListener('error', end);
+    output.addListener('finish', end);
   });
 }
 
@@ -65,12 +65,12 @@ async function waitFile(stream) {
       reject(err);
     };
 
-    stream.addEventListener('error', onError);
-    stream.addEventListener('file', onSuccess);
+    stream.addListener('error', onError);
+    stream.addListener('file', onSuccess);
 
     function removeListeners() {
-      stream.removeEventListener('error', onError);
-      stream.removeEventListener('file', onSuccess);
+      stream.removeListener('error', onError);
+      stream.removeListener('file', onSuccess);
     }
   });
 }
