@@ -78,17 +78,15 @@ async function createThumbnailsValues(fsh, contentPath, values) {
 
 function computeTimeStamps(duration) {
   const timestamps = [];
-  // seems that if duration is eg 5.001 we cannot take a screenshot a 5
-  const floorDuration = Math.floor(duration);
-  if(floorDuration < 25) {
+  if(duration < 25) {
     // every 5 secs
-    for(let current = 0; current < floorDuration; current += 5) {
+    for(let current = 0; current < duration; current += 5) {
       timestamps.push(current);
     }
   } else {
     // take 5 thumbnails
     for(let i=0; i<5; ++i) {
-      timestamps.push(i * floorDuration / 5);
+      timestamps.push(i * duration / 5);
     }
   }
 
