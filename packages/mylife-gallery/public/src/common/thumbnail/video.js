@@ -69,7 +69,7 @@ const ThumbnailVideo = ({ document, className, ...props }) => {
       {(thumbnails && thumbnails.length) ? (
         <NotNull thumbnails={thumbnails}/>
       ) : (
-        <icons.documents.None className={classes.imageFallback} />
+        <icons.documents.None className={classes.fallback} />
       )}
     </div>
   );

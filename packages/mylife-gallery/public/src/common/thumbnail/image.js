@@ -31,7 +31,7 @@ const ThumbnailImage = ({ document, className, ...props }) => {
       {document.thumbnail ? (
         <NotNull thumbnail={document.thumbnail}/>
       ) : (
-        <icons.documents.None className={classes.imageFallback} />
+        <icons.documents.None className={classes.fallback} />
       )}
     </div>
   );

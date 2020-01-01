@@ -13,10 +13,7 @@ export const useCommonStyles = mui.makeStyles({
     height: SIZE,
     width: SIZE
   },
-  imageLoading: {
-    display: 'none'
-  },
-  imageFallback: {
+  fallback: {
     height: '100%',
     width: '100%',
     color: mui.colors.grey[200]

@@ -9,7 +9,7 @@ const ThumbnailOther = ({ document, className, ...props }) => {
   const classes = useCommonStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>
-      <icons.documents.None className={classes.imageFallback} />
+      <icons.documents.None className={classes.fallback} />
     </div>
   );
 };
