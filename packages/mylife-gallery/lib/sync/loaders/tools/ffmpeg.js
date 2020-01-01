@@ -24,13 +24,16 @@ exports.createThumbnails = async function(baseDirectory, fullPath, { timestamps,
   let filenames;
 
   const command = ffmpeg(fullPath);
-  command.thumbnails({ folder: baseDirectory, filename: '%b-thumbnail-%i', timestamps, size });
   command.on('filenames', value => (filenames = value));
 
-  await new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     command.on('end', resolve);
     command.on('error', reject);
   });
+
+  command.thumbnails({ folder: baseDirectory, filename: '%b-thumbnail-%i', timestamps, size });
+
+  await promise;
 
   return filenames;
 };
