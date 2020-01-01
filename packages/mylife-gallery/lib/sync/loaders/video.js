@@ -3,7 +3,7 @@
 const path = require('path');
 const os = require('os');
 const fs = require('fs-extra');
-const MemoryStream = require('memorystream');
+const { PassThrough } = require('stream');
 
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
@@ -27,9 +27,9 @@ exports.processVideo = async (content, relativePath) => {
 
     await createThumbnailsValues(fsh, contentFile, values);
 
-    const ms = new MemoryStream();
-    toWebMStream(contentFile, ms);
-    values.media = await business.mediaCreate(ms, 'video/webm');
+    const stream = new PassThrough();
+    toWebMStream(contentFile, stream);
+    values.media = await business.mediaCreate(stream, 'video/webm');
 
     logger.debug(`Video loaded '${relativePath}'`);
     return values;
