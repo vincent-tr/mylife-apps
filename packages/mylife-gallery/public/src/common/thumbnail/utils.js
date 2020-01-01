@@ -20,5 +20,14 @@ export const useCommonStyles = mui.makeStyles({
     height: '100%',
     width: '100%',
     color: mui.colors.grey[200]
+  },
+  pending: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    top: 0,
+    bottom: 0,
+    margin: 'auto',
+    color: mui.colors.grey[200]
   }
 });

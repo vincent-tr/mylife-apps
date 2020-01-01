@@ -11,7 +11,6 @@ const {
   Fullscreen,
   CloudDownload,
   Info,
-  Help,
   Block,
   PlayCircleOutline,
   ChevronLeft,
@@ -49,7 +48,6 @@ export default {
   },
 
   documents: {
-    Pending: Help,
     None: Block,
     Video: PlayCircleOutline
   }

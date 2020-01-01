@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, clsx, useState, useEffect } from 'mylife-tools-ui';
+import { React, PropTypes, mui, clsx, useState, useEffect } from 'mylife-tools-ui';
 import { getThumbnailUrl, useCommonStyles } from './utils';
 import icons from '../icons';
 
@@ -19,7 +19,7 @@ const NotNull = ({ thumbnail }) => {
         src={thumbnailUrl}
         onLoad={() => setLoading(false)} />
       {loading && (
-        <icons.documents.Pending className={classes.imageFallback} />
+        <mui.CircularProgress className={classes.pending} />
       )}
     </React.Fragment>
   );

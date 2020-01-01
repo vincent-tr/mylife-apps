@@ -50,7 +50,7 @@ const NotNull = ({ thumbnails }) => {
         );
       })}
       {!!loadingCount && (
-        <icons.documents.Pending className={classes.imageFallback} />
+        <mui.CircularProgress className={classes.pending} />
       )}
     </React.Fragment>
   );

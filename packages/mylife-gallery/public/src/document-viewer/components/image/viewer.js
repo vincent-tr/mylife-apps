@@ -17,7 +17,7 @@ const useStyles = mui.makeStyles(theme => ({
   imageLoading: {
     display: 'none'
   },
-  imagePending: {
+  pending: {
     position: 'absolute',
     right: 0,
     left: 0,
@@ -41,10 +41,10 @@ const ImageViewer = ({ info, className, ...props }) => {
     <div className={clsx(classes.container, className)} {...props}>
       <img
         src={info.contentUrl}
-        onLoad={() => setLoading(false)}
+        onLoad={() => setLoading(true)}
         className={clsx(classes.image, { [classes.imageLoading]: loading })} />
       {loading && (
-        <icons.documents.Pending className={classes.imagePending} />
+        <mui.CircularProgress className={classes.pending} />
       )}
     </div>
   );
