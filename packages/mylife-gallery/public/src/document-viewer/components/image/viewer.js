@@ -41,7 +41,7 @@ const ImageViewer = ({ info, className, ...props }) => {
     <div className={clsx(classes.container, className)} {...props}>
       <img
         src={info.contentUrl}
-        onLoad={() => setLoading(true)}
+        onLoad={() => setLoading(false)}
         className={clsx(classes.image, { [classes.imageLoading]: loading })} />
       {loading && (
         <mui.CircularProgress className={classes.pending} />
