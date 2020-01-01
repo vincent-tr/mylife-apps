@@ -1,58 +1,22 @@
 'use strict';
 
-import { React, PropTypes, mui, clsx, useEffect, useState, useInterval } from 'mylife-tools-ui';
-import { getThumbnailUrl, useCommonStyles } from './utils';
+import { React, PropTypes, mui, clsx, useState, useInterval } from 'mylife-tools-ui';
+import { useCommonStyles, useImages } from './utils';
 import icons from '../icons';
-
-export const useStyles = mui.makeStyles({
-  imageHide: {
-    display: 'none'
-  }
-});
-
-const ThumbnailItem = ({ thumbnail, show, onLoadingChange }) => {
-  const classes = useStyles();
-
-  // onLoadStart not fired on chrome
-  useEffect(() => onLoadingChange(true), [thumbnail]);
-
-  const thumbnailUrl = getThumbnailUrl(thumbnail);
-  return (
-    <img
-      className={clsx({ [classes.imageHide]: !show })}
-      src={thumbnailUrl}
-      onLoad={() => onLoadingChange(false)} />
-  );
-};
-
-ThumbnailItem.propTypes = {
-  thumbnail: PropTypes.string.isRequired,
-  show: PropTypes.bool.isRequired,
-  onLoadingChange: PropTypes.func.isRequired
-};
 
 const NotNull = ({ thumbnails }) => {
   const classes = useCommonStyles();
-  const [loadingCount, setLoadingCount] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const onLoadingChange = value => {
-    setLoadingCount(count => value ? count + 1 : count - 1);
-  };
+  const imageUrl = useImageSlider(thumbnails);
+  const loading = !imageUrl;
 
-  useInterval(() => setCurrentIndex(index => ((index + 1) % thumbnails.length)), 1000);
+  if(loading) {
+    return (
+      <mui.CircularProgress className={classes.loading} />
+    );
+  }
 
   return (
-    <React.Fragment>
-      {thumbnails.map((thumbnail, index) => {
-        const show = loadingCount === 0 && currentIndex === index;
-        return (
-          <ThumbnailItem key={thumbnail} thumbnail={thumbnail} show={show} onLoadingChange={onLoadingChange} />
-        );
-      })}
-      {!!loadingCount && (
-        <mui.CircularProgress className={classes.loading} />
-      )}
-    </React.Fragment>
+    <img src={imageUrl} />
   );
 };
 
@@ -81,3 +45,13 @@ ThumbnailVideo.propTypes = {
 };
 
 export default ThumbnailVideo;
+
+function useImageSlider(sources) {
+  const imageUrls = useImages(sources);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const loading = imageUrls.some(url => !url);
+
+  useInterval(() => setCurrentIndex(index => ((index + 1) % sources.length)), 1000);
+
+  return loading ? null : imageUrls[currentIndex];
+}
