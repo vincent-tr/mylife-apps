@@ -1,6 +1,6 @@
 'use strict';
 
-import { mui } from 'mylife-tools-ui';
+import { mui, useState, useEffect } from 'mylife-tools-ui';
 
 export const SIZE = 200;
 
@@ -21,7 +21,7 @@ export const useCommonStyles = mui.makeStyles({
     width: '100%',
     color: mui.colors.grey[200]
   },
-  pending: {
+  loading: {
     position: 'absolute',
     right: 0,
     left: 0,
@@ -31,3 +31,30 @@ export const useCommonStyles = mui.makeStyles({
     color: mui.colors.grey[200]
   }
 });
+
+export function useImage(sourceUrl) {
+  const [objectUrl, setObjectUrl] = useState(null);
+
+  useEffect(() => {
+    getThumbnail(sourceUrl).then(setObjectUrl, err => console.error('Error loading image', err)); // eslint-disable-line no-console
+
+    return () => {
+      if(objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+        setObjectUrl(null);
+      }
+    };
+  }, [sourceUrl]);
+
+  return objectUrl;
+}
+
+async function getThumbnail(id) {
+  const response = await fetch(`/content/thumbnail/${id}`);
+  if (!response.ok) {
+    throw new Error(`HTTP error, status = ${response.status}`);
+  }
+
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
+}

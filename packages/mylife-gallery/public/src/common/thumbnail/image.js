@@ -1,27 +1,22 @@
 'use strict';
 
-import { React, PropTypes, mui, clsx, useState, useEffect } from 'mylife-tools-ui';
-import { getThumbnailUrl, useCommonStyles } from './utils';
+import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
+import { useImage, useCommonStyles } from './utils';
 import icons from '../icons';
 
 const NotNull = ({ thumbnail }) => {
   const classes = useCommonStyles();
-  const [loading, setLoading] = useState(false);
+  const imageUrl = useImage(thumbnail);
+  const loading = !imageUrl;
 
-  // onLoadStart not fired on chrome
-  useEffect(() => setLoading(true), [thumbnail]);
+  if(loading) {
+    return (
+      <mui.CircularProgress className={classes.loading} />
+    );
+  }
 
-  const thumbnailUrl = getThumbnailUrl(thumbnail);
   return (
-    <React.Fragment>
-      <img
-        className={clsx({ [classes.imageLoading]: loading })}
-        src={thumbnailUrl}
-        onLoad={() => setLoading(false)} />
-      {loading && (
-        <mui.CircularProgress className={classes.pending} />
-      )}
-    </React.Fragment>
+    <img src={imageUrl} />
   );
 };
 
