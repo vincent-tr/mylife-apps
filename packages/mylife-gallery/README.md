@@ -5,10 +5,8 @@ MyLife photo gallery
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
 
 # TODO:
- - thumbnail: use https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL with always 1 img tag instead of x img and css to hide
  - document:
    - modifier mots clés
-     - mettre a jour le document-viewer de suite apres MAJ de la vue
      - voir comment faire la liste de recherche de l'Autocomplete
    - ajouter/supprimer album
    - ajouter/supprimer persone
