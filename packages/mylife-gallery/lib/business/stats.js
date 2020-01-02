@@ -8,7 +8,11 @@ class StatsView extends StoreContainer {
     super();
 
     this._createSubscriptions();
-    this._createIds('image-count', 'video-count', 'other-count', 'last-integration');
+    this._createIds(
+      'image-count', 'image-file-size', 'image-media-size',
+      'video-count', 'video-file-size', 'video-media-size',
+      'other-count', 'other-file-size',
+      'last-integration');
 
     this.entity = getMetadataEntity('stat');
     this.onCollectionChange();
@@ -50,8 +54,13 @@ class StatsView extends StoreContainer {
 
   onCollectionChange() {
     this._setValue('image-count', this.collections.image.size);
+    this._setValue('image-file-size', this.collections.image.list().reduce((acc, item) => acc + item.fileSize, 0));
+    this._setValue('image-media-size', this.collections.image.list().reduce((acc, item) => acc + item.media.size, 0));
     this._setValue('video-count', this.collections.video.size);
+    this._setValue('video-file-size', this.collections.video.list().reduce((acc, item) => acc + item.fileSize, 0));
+    this._setValue('video-media-size', this.collections.video.list().reduce((acc, item) => acc + item.media.size, 0));
     this._setValue('other-count', this.collections.other.size);
+    this._setValue('other-file-size', this.collections.other.list().reduce((acc, item) => acc + item.fileSize, 0));
     this._setValue('last-integration', findLastIntegration());
   }
 
