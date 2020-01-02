@@ -5,7 +5,6 @@ MyLife photo gallery
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
 
 # TODO:
- - stats: add media size, file size
  - document:
    - modifier mots clés
      - voir comment faire la liste de recherche de l'Autocomplete
