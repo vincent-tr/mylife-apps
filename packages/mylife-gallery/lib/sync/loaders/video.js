@@ -28,7 +28,7 @@ exports.processVideo = async (content, relativePath) => {
     await createThumbnailsValues(fsh, contentFile, values);
 
     const stream = new PassThrough();
-    toWebMStream(contentFile, stream);
+    await toWebMStream(contentFile, stream);
     values.media = await business.mediaCreate(stream, 'video/webm');
 
     logger.debug(`Video loaded '${relativePath}'`);
