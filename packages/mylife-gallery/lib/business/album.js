@@ -12,3 +12,13 @@ function albumList() {
 exports.albumGet = (id) => {
   throw new Error('TODO');
 };
+
+exports.albumCreate = (values) => {
+  const entity = getMetadataEntity('album');
+  const collection = getStoreCollection('albums');
+  const newAlbum = entity.newObject(values);
+
+  const item = collection.set(newAlbum);
+  logger.info(`Created album '${item._id}'`);
+  return item;
+};
