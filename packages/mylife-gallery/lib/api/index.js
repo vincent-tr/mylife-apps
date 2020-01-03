@@ -5,5 +5,6 @@ exports.apiServices = [
   require('./document'),
   require('./stats'),
   require('./suggestion'),
+  require('./album'),
   require('./keyword'),
 ];
