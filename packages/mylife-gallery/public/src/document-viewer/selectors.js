@@ -1,6 +1,6 @@
 'use strict';
 
-import { io } from 'mylife-tools-ui';
+import { io, createSelector } from 'mylife-tools-ui';
 
 const getDocumentViewer = state => state.documentViewer;
 
@@ -10,4 +10,8 @@ export const getDocument = state => getDocumentView(state).first();
 
 export const getKeywordsViewId = state => getDocumentViewer(state).keywordsViewId;
 const getKeywordsView = state => io.getView(state, getKeywordsViewId(state));
-export const getKeywords = state => getKeywordsView(state).keySeq().toArray();
+
+export const getKeywords = createSelector(
+  [ getKeywordsView ],
+  (view) => view.keySeq().sort().toArray()
+);
