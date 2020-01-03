@@ -5,16 +5,9 @@ import { React, PropTypes, mui } from 'mylife-tools-ui';
 const CleanOthersCard = ({ definition, ...props }) => {
   return (
     <mui.Card {...props}>
-      <mui.CardContent>
-        <mui.Typography variant='h5' component='h2'>
-          {'Nettoyer les documents \'autres\''}
-        </mui.Typography>
-        <mui.Typography variant='body2' component='p'>
-          {definition.count} documents à nettoyer
-        </mui.Typography>
-      </mui.CardContent>
+      <mui.CardHeader title={'Nettoyer les documents \'autres\''} subheader={`${definition.count} documents à nettoyer`} />
       <mui.CardActions>
-        <mui.Button size='small'>TODO</mui.Button>
+        <mui.Button size='small'>Nettoyer</mui.Button>
       </mui.CardActions>
     </mui.Card>
   );

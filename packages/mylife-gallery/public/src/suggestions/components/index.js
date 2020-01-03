@@ -27,7 +27,9 @@ const useStyles = mui.makeStyles({
     overflowY: 'auto'
   },
   card: {
-    width: 600
+    width: 400,
+    height: 180,
+    padding: 10
   }
 });
 
