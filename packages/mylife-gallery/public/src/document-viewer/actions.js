@@ -32,6 +32,11 @@ export const fetchKeywordsView = () => createOrRenewView({
   method: 'listKeywords'
 });
 
+export const clearKeywordsView = () => deleteView({
+  viewSelector: getKeywordsViewId,
+  setViewAction: local.setKeywordsView
+});
+
 export function updateDocument(document, values) {
   return async (dispatch) => {
 
