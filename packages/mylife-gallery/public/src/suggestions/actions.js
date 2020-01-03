@@ -1,60 +1,31 @@
 'use strict';
-/*
-import { createAction, io } from 'mylife-tools-ui';
+
+import { createAction } from 'mylife-tools-ui';
+import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
-import { getOperationStatsViewId, getTotalByMonthViewId } from './selectors';
+import { getViewId } from './selectors';
 
 const local = {
-  setOperationStatsView: createAction(actionTypes.SET_OPERATION_STATS_VIEW),
-  setTotalByMonthView: createAction(actionTypes.SET_TOTAL_BY_MONTH_VIEW),
+  setView: createAction(actionTypes.SET_VIEW),
 };
 
-const getOperationStats = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyOperationStats',
-  }));
+const getSuggestions = () => createOrUpdateView({
+  criteriaSelector: () => null,
+  viewSelector: getViewId,
+  setViewAction: local.setView,
+  service: 'suggestion',
+  method: 'notifySuggestions'
+});
 
-  dispatch(local.setOperationStatsView(viewId));
-};
+const clearSuggestions = () => deleteView({
+  viewSelector: getViewId,
+  setViewAction: local.setView
+});
 
-const clearOperationStats = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getOperationStatsViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setOperationStatsView(null));
-};
-
-const getTotalByMonth = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyTotalByMonth',
-  }));
-
-  dispatch(local.setTotalByMonthView(viewId));
-};
-
-const clearTotalByMonth = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getTotalByMonthViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setTotalByMonthView(null));
-};
-*/
 export const enter = () => async (dispatch) => {
-//  await dispatch(getOperationStats());
-//  await dispatch(getTotalByMonth());
+  await dispatch(getSuggestions());
 };
 
 export const leave = () => async (dispatch) => {
-//  await dispatch(clearOperationStats());
-//  await dispatch(clearTotalByMonth());
+  await dispatch(clearSuggestions());
 };

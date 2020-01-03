@@ -1,14 +1,20 @@
 'use strict';
 
-import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
+import { getView } from '../selectors';
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return useMemo(() => ({
-    enter : () => dispatch(enter()),
-    leave : () => dispatch(leave()),
-  }), [dispatch]);
+  return {
+    ...useSelector(state => ({
+      suggestions : getView(state),
+    })),
+    ...useMemo(() => ({
+      enter : () => dispatch(enter()),
+      leave : () => dispatch(leave()),
+    }), [dispatch])
+  };
 };
 
 const useStyles = mui.makeStyles({
@@ -22,12 +28,13 @@ const useStyles = mui.makeStyles({
 
 const Suggestions = () => {
   const classes = useStyles();
-  const { enter, leave } = useConnect();
+  const { enter, leave, suggestions } = useConnect();
   useLifecycle(enter, leave);
 
   return (
     <div className={classes.container}>
       Suggestions <br/>
+      {JSON.stringify(suggestions)}
     </div>
   );
 };
