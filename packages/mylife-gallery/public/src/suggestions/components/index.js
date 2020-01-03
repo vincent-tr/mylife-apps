@@ -24,12 +24,16 @@ const useConnect = () => {
 const useStyles = mui.makeStyles({
   container: {
     flex: '1 1 auto',
-    overflowY: 'auto'
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 10
   },
   card: {
     width: 400,
     height: 180,
-    padding: 10
+    margin: 10
   }
 });
 
@@ -58,13 +62,11 @@ const Suggestions = () => {
   useLifecycle(enter, leave);
 
   return (
-    <mui.GridList cols={0} cellHeight={200} className={classes.container}>
+    <div className={classes.container}>
       {suggestions.map(suggestion => (
-        <mui.GridListTile key={suggestion._id}>
-          <SuggestionCard suggestion={suggestion} className={classes.card} />
-        </mui.GridListTile>
+        <SuggestionCard key={suggestion._id} suggestion={suggestion} className={classes.card} variant='outlined' />
       ))}
-    </mui.GridList>
+    </div>
   );
 };
 

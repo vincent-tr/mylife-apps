@@ -8,6 +8,11 @@ const WarnSyncingCard = ({ definition, ...props }) => {
   return (
     <mui.Card {...props}>
       <mui.CardHeader title={'Synchronisation en cours'} subheader={`Dernier document intégré il y a ${delay}`} />
+      <mui.CardContent>
+        <mui.Typography color='textSecondary'>
+          {'Vous devriez attendre la fin de la synchronisation avant d\'utiliser les suggestions'}
+        </mui.Typography>
+      </mui.CardContent>
     </mui.Card>
   );
 };

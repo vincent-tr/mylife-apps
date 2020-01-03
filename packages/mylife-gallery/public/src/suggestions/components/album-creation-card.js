@@ -6,6 +6,7 @@ const AlbumCreationCard = ({ definition, ...props }) => {
   return (
     <mui.Card {...props}>
       <mui.CardHeader title={definition.root} subheader={`${definition.count} documents dans cet album`} />
+      <mui.CardContent />
       <mui.CardActions>
         <mui.Button size='small'>{'Créer l\'album'}</mui.Button>
       </mui.CardActions>
