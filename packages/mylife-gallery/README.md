@@ -6,8 +6,6 @@ MyLife photo gallery
 
 # TODO:
  - document:
-   - modifier mots clés
-     - voir comment faire la liste de recherche de l'Autocomplete
    - ajouter/supprimer album
    - ajouter/supprimer persone
  - suggestions:
