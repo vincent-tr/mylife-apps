@@ -11,15 +11,21 @@ exports.suggestionsNotify = session => {
 exports.suggestionCreateAlbum = root => {
   // select all documents with this root
   const ids = [];
+  const thumbnails = [];
   for(const document of business.documentList()) {
     if(!document.paths.some(path => getRootPath(path) === root)) {
       continue;
     }
 
     ids.push({ id: document._id, type: document._entity });
+
+    // take 5 first images thumbnails
+    if(thumbnails.length < 5 && document._entity === 'image') {
+      thumbnails.push(document.thumbnail);
+    }
   }
 
-  business.albumCreate({ title: root, documents: ids });
+  business.albumCreate({ title: root, documents: ids, thumbnails });
 };
 
 class SuggestionView extends StoreContainer {
