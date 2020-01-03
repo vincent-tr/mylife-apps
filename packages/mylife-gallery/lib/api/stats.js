@@ -1,6 +1,5 @@
 'use strict';
 
-const { api } = require('mylife-tools-server');
 const business = require('../business');
 const { base } = require('./decorators');
 
