@@ -142,7 +142,7 @@ class SuggestionView extends StoreContainer {
     }
 
     // add new suggestions
-    for(const [root, count] of candidateRoots.entries()) {
+    for(const { root, count } of candidateRoots) {
       this._set(this.entity.newObject({ _id: `album-creation!${root}`, type: 'album-creation', definition: { root, count } }));
     }
   }
