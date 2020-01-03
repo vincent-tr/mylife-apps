@@ -9,6 +9,7 @@ MyLife photo gallery
    - ajouter/supprimer album
    - ajouter/supprimer persone
  - suggestions:
+   - suggest to not do anything while we are syncing (last integration date < 10 mins)
    - propose to create album of a root folder if none of the documents inside are in an album
    - propose to create script (win/\*nix) to remove duplicates (for each select the one to keep)
    - propose to create script to remove other (select with criteria)
