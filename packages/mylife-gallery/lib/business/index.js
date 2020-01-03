@@ -9,4 +9,5 @@ Object.assign(exports,
   require('./stats'),
   require('./collection-subscription'),
   require('./media'),
+  require('./keyword'),
 );
