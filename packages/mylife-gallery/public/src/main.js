@@ -15,9 +15,9 @@ services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
-  { location: '/suggestions', renderer: () => <Suggestions /> },
-  { location: '/browse', renderer: () => <Browse /> },
-  { location: '/stats', renderer: () => <Stats /> },
+  { location: '/suggestions', name: 'Suggestions', icon: icons.menu.Suggestions, renderer: () => <Suggestions /> },
+  { location: '/browse', name: 'Parcourir', icon: icons.menu.Browse, renderer: () => <Browse /> },
+  { location: '/stats', name: 'Statistics', icon: icons.menu.Stats, renderer: () => <Stats /> },
 ];
 
 const menu = [
