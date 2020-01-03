@@ -19,7 +19,7 @@ class KeywordView extends StoreContainer {
     this.subscriptions = [];
     this.collections = {};
 
-    const collections = [...business.getDocumentStoreCollections(), getStoreCollection('album')];
+    const collections = [...business.getDocumentStoreCollections(), getStoreCollection('albums')];
     for(const collection of collections) {
       const subscription = new business.CollectionSubscription(this, collection);
       this.subscriptions.push(subscription);

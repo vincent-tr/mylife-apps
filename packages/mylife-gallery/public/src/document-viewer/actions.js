@@ -28,8 +28,8 @@ export const fetchKeywordsView = () => createOrRenewView({
   criteriaSelector: () => null,
   viewSelector: getKeywordsViewId,
   setViewAction: local.setKeywordsView,
-  service: 'keywords',
-  method: 'listKeywords'
+  service: 'keyword',
+  method: 'notifyKeywords'
 });
 
 export const clearKeywordsView = () => deleteView({

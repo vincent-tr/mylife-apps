@@ -12,7 +12,7 @@ export default handleActions({
 
   [actionTypes.SET_KEYWORDS_VIEW] : (state, action) => ({
     ...state,
-    documentViewId: action.payload
+    keywordsViewId: action.payload
   }),
 
   [io.actionTypes.SET_ONLINE] : (state) => ({
