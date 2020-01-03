@@ -34,7 +34,6 @@ const ChipList = ({ values, onChange, list }) => (
     renderInput={params => (
       <mui.TextField
         {...params}
-        variant='filled'
         placeholder='Mot clé'
         fullWidth
       />
