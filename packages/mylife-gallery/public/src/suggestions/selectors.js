@@ -21,7 +21,7 @@ const TYPE_ORDER = {
 function suggestionComparer(sug1, sug2) {
   // sort by type
   if(sug1.type === sug2.type) {
-    return sug1._id < sug2._id ? 1 : -1;
+    return sug1._id < sug2._id ? -1 : 1;
   }
 
   return TYPE_ORDER[sug1.type] - TYPE_ORDER[sug2.type];
