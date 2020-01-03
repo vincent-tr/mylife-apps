@@ -52,7 +52,7 @@ class SuggestionView extends StoreContainer {
   }
 
   _refreshWarnSyncing() {
-    const TIMEOUT = 1000 * 60 * 10; // 10 mins
+    const TIMEOUT = 1000 * 60 * 20; // 20 mins
     const now = new Date();
     const delay = now - this._lastIntegration;
     const show = delay < TIMEOUT;
