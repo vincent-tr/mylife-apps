@@ -44,6 +44,12 @@ const ChipList = ({ values, onChange, list }) => (
   />
 );
 
+ChipList.propTypes = {
+  values: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+  list: PropTypes.array.isRequired
+};
+
 const DetailKeywords = ({ document }) => {
   const { updateDocument, keywords, fetchKeywordsView, clearView } = useConnect();
   useLifecycle(fetchKeywordsView, clearView);
