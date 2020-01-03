@@ -9,8 +9,17 @@ exports.suggestionsNotify = session => {
 };
 
 exports.suggestionCreateAlbum = root => {
-  // TODO
-  throw new Error(`TODO suggestionCreateAlbum ${root}`);
+  // select all documents with this root
+  const ids = [];
+  for(const document of business.documentList()) {
+    if(!document.paths.some(path => getRootPath(path) === root)) {
+      continue;
+    }
+
+    ids.push({ id: document._id, type: document._entity });
+  }
+
+  business.albumCreate({ title: root, documents: ids });
 };
 
 class SuggestionView extends StoreContainer {
