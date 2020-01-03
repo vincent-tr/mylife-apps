@@ -7,6 +7,6 @@ exports.meta = {
   name : 'keyword'
 };
 
-exports.listKeywords = [ base, () => {
-  return business.keywordList();
+exports.notifyKeywords = [ base, (session) => {
+  return business.keywordsNotify(session);
 } ];
