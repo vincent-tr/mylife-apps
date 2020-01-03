@@ -1,14 +1,23 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, useState } from 'mylife-tools-ui';
-import { updateDocument } from '../../actions';
+import { React, PropTypes, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
+import { updateDocument, fetchKeywordsView, clearKeywordsView } from '../../actions';
+import { getKeywords } from '../../selectors';
 import { getFieldName } from '../../../common/metadata-utils';
+
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return useMemo(() => ({
-    updateDocument : (document, values) => dispatch(updateDocument(document, values)),
-  }), [dispatch]);
+  return {
+    ...useSelector(state => ({
+      keywords: getKeywords(state)
+    })),
+    ...useMemo(() => ({
+      updateDocument : (document, values) => dispatch(updateDocument(document, values)),
+      fetchKeywordsView : () => dispatch(fetchKeywordsView()),
+      clearView : () => dispatch(clearKeywordsView()),
+    }), [dispatch])
+  };
 };
 
 const TODO_Options = ['chip1', 'chip2', 'chip3', 'chip4'];
@@ -38,7 +47,9 @@ const ChipList = ({ values, onChange }) => (
 );
 
 const DetailKeywords = ({ document }) => {
-  const { updateDocument } = useConnect();
+  const { updateDocument, keywords, fetchKeywordsView, clearView } = useConnect();
+  useLifecycle(fetchKeywordsView, clearView);
+
   const onChange = values => updateDocument(document, { keywords: values });
 
   return (

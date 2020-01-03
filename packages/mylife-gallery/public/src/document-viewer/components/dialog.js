@@ -5,7 +5,7 @@ import DialogContentImage from './image/dialog-content';
 import DialogContentVideo from './video/dialog-content';
 import DialogContentOther from './other/dialog-content';
 import { getDocument } from '../selectors';
-import { fetchDocumentView, clearView } from '../actions';
+import { fetchDocumentView, clearDocumentView } from '../actions';
 
 const DialogSelector = ({ document, ...props }) => {
   switch(document._entity) {
@@ -30,7 +30,7 @@ const useConnect = () => {
     })),
     ...useMemo(() => ({
       fetchDocumentView : (type, id) => dispatch(fetchDocumentView(type, id)),
-      clearView : () => dispatch(clearView()),
+      clearView : () => dispatch(clearDocumentView()),
     }), [dispatch])
   };
 };

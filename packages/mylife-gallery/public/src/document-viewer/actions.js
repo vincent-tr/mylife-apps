@@ -3,24 +3,33 @@
 import { createAction, io } from 'mylife-tools-ui';
 import { createOrRenewView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
-import { getViewId } from './selectors';
+import { getDocumentViewId, getKeywordsViewId } from './selectors';
 
 const local = {
-  setView: createAction(actionTypes.SET_VIEW),
+  setDocumentView: createAction(actionTypes.SET_DOCUMENT_VIEW),
+  setKeywordsView: createAction(actionTypes.SET_KEYWORDS_VIEW),
 };
 
 // notifyDocument views cannot be updated (because type can change)
 export const fetchDocumentView = (type, id) => createOrRenewView({
   criteriaSelector: () => ({ type, id }),
-  viewSelector: getViewId,
-  setViewAction: local.setView,
+  viewSelector: getDocumentViewId,
+  setViewAction: local.setDocumentView,
   service: 'document',
   method: 'notifyDocument'
 });
 
-export const clearView = () => deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
+export const clearDocumentView = () => deleteView({
+  viewSelector: getDocumentViewId,
+  setViewAction: local.setDocumentView
+});
+
+export const fetchKeywordsView = () => createOrRenewView({
+  criteriaSelector: () => null,
+  viewSelector: getKeywordsViewId,
+  setViewAction: local.setKeywordsView,
+  service: 'keywords',
+  method: 'listKeywords'
 });
 
 export function updateDocument(document, values) {

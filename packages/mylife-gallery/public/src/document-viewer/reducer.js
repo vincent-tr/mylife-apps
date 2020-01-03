@@ -5,16 +5,23 @@ import actionTypes from './action-types';
 
 export default handleActions({
 
-  [actionTypes.SET_VIEW] : (state, action) => ({
+  [actionTypes.SET_DOCUMENT_VIEW] : (state, action) => ({
     ...state,
-    viewId: action.payload
+    documentViewId: action.payload
+  }),
+
+  [actionTypes.SET_KEYWORDS_VIEW] : (state, action) => ({
+    ...state,
+    documentViewId: action.payload
   }),
 
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
-    viewId: null
+    documentViewId: null,
+    keywordsViewId: null
   })
 
 }, {
-  viewId: null,
+  documentViewId: null,
+  keywordsViewId: null
 });
