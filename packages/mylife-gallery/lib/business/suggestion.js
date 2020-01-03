@@ -3,6 +3,16 @@
 const { StoreContainer, getMetadataEntity, notifyView, getStoreCollection } = require('mylife-tools-server');
 const business = require('.');
 
+exports.suggestionsNotify = session => {
+  const view = new SuggestionView();
+  return notifyView(session, view);
+};
+
+exports.suggestionCreateAlbum = root => {
+  // TODO
+  throw new Error(`TODO suggestionCreateAlbum ${root}`);
+};
+
 class SuggestionView extends StoreContainer {
   constructor() {
     super();
@@ -159,8 +169,3 @@ function findLastIntegration() {
   const result = documents.reduce((acc, doc) => Math.max(acc, doc.integrationDate), -Infinity);
   return isFinite(result) ? new Date(result) : null;
 }
-
-exports.suggestionsNotify = session => {
-  const view = new SuggestionView();
-  return notifyView(session, view);
-};

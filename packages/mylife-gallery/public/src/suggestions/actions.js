@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction } from 'mylife-tools-ui';
+import { io, createAction } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
@@ -29,3 +29,16 @@ export const enter = () => async (dispatch) => {
 export const leave = () => async (dispatch) => {
   await dispatch(clearSuggestions());
 };
+
+
+export function createAlbum(root) {
+  return async (dispatch) => {
+    
+    await dispatch(io.call({
+      service: 'suggestion',
+      method: 'createAlbum',
+      root
+    }));
+
+  };
+}
