@@ -26,7 +26,10 @@ exports.documentCreate = (type, values) => {
   const entity = getMetadataEntity(type);
   const collection = getDocumentStoreCollection(type);
   const newDocument = entity.newObject(values);
-  return collection.set(newDocument);
+
+  const item = collection.set(newDocument);
+  logger.info(`Created document '${item._entity}:${item._id}'`);
+  return item;
 };
 
 exports.documentRemove = (type, id) => {
