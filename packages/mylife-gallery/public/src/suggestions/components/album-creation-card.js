@@ -2,19 +2,12 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 
-const AlbumCreationCard = ({ definition }) => {
+const AlbumCreationCard = ({ definition, ...props }) => {
   return (
-    <mui.Card>
-      <mui.CardContent>
-        <mui.Typography variant='h5' component='h2'>
-          {`Créer album '${definition.root}'`}
-        </mui.Typography>
-        <mui.Typography variant='body2' component='p'>
-          {definition.count} documents dans cet album
-        </mui.Typography>
-      </mui.CardContent>
+    <mui.Card {...props}>
+      <mui.CardHeader title={definition.root} subheader={`${definition.count} documents dans cet album`} />
       <mui.CardActions>
-        <mui.Button size='small'>TODO</mui.Button>
+        <mui.Button size='small'>{'Créer l\'album'}</mui.Button>
       </mui.CardActions>
     </mui.Card>
   );

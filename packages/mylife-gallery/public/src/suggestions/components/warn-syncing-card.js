@@ -3,10 +3,10 @@
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 
-const WarnSyncingCard = ({ definition }) => {
+const WarnSyncingCard = ({ definition, ...props }) => {
   const delay = humanizeDuration(definition.delay, { language: 'fr', round: true });
   return (
-    <mui.Card>
+    <mui.Card {...props}>
       <mui.CardContent>
         <mui.Typography variant='h5' component='h2'>
           Synchronisation en cours

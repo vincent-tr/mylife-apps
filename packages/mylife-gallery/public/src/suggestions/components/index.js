@@ -23,23 +23,24 @@ const useConnect = () => {
 
 const useStyles = mui.makeStyles({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
     flex: '1 1 auto',
     overflowY: 'auto'
+  },
+  card: {
+    width: 600
   }
 });
 
-const SuggestionCard = ({ suggestion }) => {
+const SuggestionCard = ({ suggestion, ...props }) => {
   switch(suggestion.type) {
     case 'warn-syncing':
-      return (<WarnSyncingCard definition={suggestion.definition} />);
+      return (<WarnSyncingCard definition={suggestion.definition} {...props} />);
     case 'clean-others':
-      return (<CleanOthersCard definition={suggestion.definition} />);
+      return (<CleanOthersCard definition={suggestion.definition} {...props} />);
     case 'clean-duplicates':
-      return (<CleanDuplicatesCard definition={suggestion.definition} />);
+      return (<CleanDuplicatesCard definition={suggestion.definition} {...props} />);
     case 'album-creation':
-      return (<AlbumCreationCard definition={suggestion.definition} />);
+      return (<AlbumCreationCard definition={suggestion.definition} {...props} />);
     default:
       throw new Error(`Unsupported suggestion type: '${suggestion.type}'`);
   }
@@ -55,11 +56,13 @@ const Suggestions = () => {
   useLifecycle(enter, leave);
 
   return (
-    <div className={classes.container}>
-      {suggestions.slice(0, 5).map(suggestion => (
-        <SuggestionCard key={suggestion._id} suggestion={suggestion} />
+    <mui.GridList cols={0} cellHeight={200} className={classes.container}>
+      {suggestions.map(suggestion => (
+        <mui.GridListTile key={suggestion._id}>
+          <SuggestionCard suggestion={suggestion} className={classes.card} />
+        </mui.GridListTile>
       ))}
-    </div>
+    </mui.GridList>
   );
 };
 

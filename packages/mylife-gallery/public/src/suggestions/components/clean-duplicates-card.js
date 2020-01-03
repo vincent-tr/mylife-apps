@@ -2,9 +2,9 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 
-const CleanDuplicatesCard = ({ definition }) => {
+const CleanDuplicatesCard = ({ definition, ...props }) => {
   return (
-    <mui.Card>
+    <mui.Card {...props}>
       <mui.CardContent>
         <mui.Typography variant='h5' component='h2'>
           Nettoyer les documents en doublons
