@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, useMemo, useDispatch, useSelector, useLifecycle, dialogs } from 'mylife-tools-ui';
-import FullScreenDialog from '../../common/fullscreen-dialog';
+import CleanDialogBase from './clean-dialog-base';
 import { enterCleanDuplicatesDialog, leaveCleanDialog } from '../actions';
 import { getCleanDocuments } from '../selectors';
 
@@ -23,19 +23,9 @@ const CleanDuplicatesDialog = ({ show, proceed }) => {
   useLifecycle(enter, leave);
 
   return (
-    <FullScreenDialog open={show} onClose={proceed}>
-      <mui.DialogTitle>
-        {'Nettoyage des documents \'autres\''}
-      </mui.DialogTitle>
-      <mui.DialogContent>
-        {JSON.stringify(documents)}
-      </mui.DialogContent>
-      <mui.DialogActions>
-        <mui.Button onClick={proceed} color='primary'>
-          Fermer
-        </mui.Button>
-      </mui.DialogActions>
-    </FullScreenDialog>
+    <CleanDialogBase show={show} onClose={proceed} title={'Nettoyage des documents en doublons'}>
+      {JSON.stringify(documents)}
+    </CleanDialogBase>
   );
 };
 
