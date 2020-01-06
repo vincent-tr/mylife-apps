@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, useMemo, useDispatch, useSelector, useLifecycle, dialogs } from 'mylife-tools-ui';
+import FullScreenDialog from '../../common/fullscreen-dialog';
 import { enterCleanOthersDialog, leaveCleanDialog } from '../actions';
 import { getCleanDocuments } from '../selectors';
 
@@ -22,7 +23,7 @@ const CleanOthersDialog = ({ show, proceed }) => {
   useLifecycle(enter, leave);
 
   return (
-    <mui.Dialog open={show} onClose={proceed} fullWidth maxWidth='xl'>
+    <FullScreenDialog open={show} onClose={proceed}>
       <mui.DialogTitle>
         {'Nettoyage des documents \'autres\''}
       </mui.DialogTitle>
@@ -34,7 +35,7 @@ const CleanOthersDialog = ({ show, proceed }) => {
           Fermer
         </mui.Button>
       </mui.DialogActions>
-    </mui.Dialog>
+    </FullScreenDialog>
   );
 };
 

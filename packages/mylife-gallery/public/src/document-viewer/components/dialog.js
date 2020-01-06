@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import FullScreenDialog from '../../common/fullscreen-dialog';
 import DialogContentImage from './image/dialog-content';
 import DialogContentVideo from './video/dialog-content';
 import DialogContentOther from './other/dialog-content';
@@ -75,14 +76,10 @@ function createViewFetcher(fetchDocumentView, documentSelector, checkEnabled) {
   };
 }
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <mui.Slide direction='up' ref={ref} {...props} />;
-});
-
 const Dialog = ({ show, proceed, options }) => (
-  <mui.Dialog open={show} onClose={proceed} fullScreen TransitionComponent={Transition}>
+  <FullScreenDialog open={show} onClose={proceed}>
     <DialogContainer onClose={proceed} {...options}/>
-  </mui.Dialog>
+  </FullScreenDialog>
 );
 
 Dialog.propTypes = {
