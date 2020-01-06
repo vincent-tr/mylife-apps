@@ -10,20 +10,16 @@ exports.suggestionsNotify = session => {
 
 exports.suggestionCreateAlbum = root => {
   // select all documents with this root
-  const ids = [];
-  const thumbnails = [];
-  for(const document of business.documentList()) {
-    if(!document.paths.some(path => getRootPath(path) === root)) {
-      continue;
-    }
+  const documents = business.documentList().filter(doc => doc.paths.some(path => getRootPath(path) === root));
+  documents.sort(documentDateComparer);
 
-    ids.push({ id: document._id, type: document._entity });
+  const ids = documents.map(doc => ({ id: doc._id, type: doc._entity }));
 
-    // take 5 first images thumbnails
-    if(thumbnails.length < 5 && document._entity === 'image') {
-      thumbnails.push(document.thumbnail);
-    }
-  }
+  // take 5 first images thumbnails
+  const thumbnails = documents
+    .filter(doc => doc._entity === 'image')
+    .slice(0, 5)
+    .map(doc => doc.thumbnail);
 
   business.albumCreate({ title: root, documents: ids, thumbnails });
 };
@@ -183,4 +179,14 @@ function findLastIntegration() {
   const documents = business.documentList();
   const result = documents.reduce((acc, doc) => Math.max(acc, doc.integrationDate), -Infinity);
   return isFinite(result) ? new Date(result) : null;
+}
+
+function documentDateComparer(doc1, doc2) {
+  if(!doc1.date && !doc2.date) {
+    return 0; // Infinity - Infinity => NaN
+  }
+
+  const date1 = doc1.date || Infinity;
+  const date2 = doc2.date || Infinity;
+  return date1 - date2;
 }
