@@ -4,9 +4,37 @@ import humanize from 'humanize';
 import { React, PropTypes, mui, VirtualizedTable } from 'mylife-tools-ui';
 import * as documentUtils from '../../../common/document-utils';
 
+const useStyles = mui.makeStyles({
+  noMaxWidth: {
+    maxWidth: 'none',
+  },
+});
+
+const LoadingErrorCell = ({ loadingError }) => {
+  const classes = useStyles();
+  const text = loadingError.split('\n').map((line, i) => (<p key={i}>{line}</p>));
+
+  return (
+    <div>
+      <mui.Tooltip
+        classes={{ tooltip: classes.noMaxWidth }}
+        title={
+          <mui.Typography component='div'>
+            {text}
+          </mui.Typography>
+        }
+      >
+        <mui.icons.Error color='error'/>
+      </mui.Tooltip>
+    </div>
+  );
+};
+
+LoadingErrorCell.propTypes = {
+  loadingError: PropTypes.string.isRequired
+};
+
 const List = ({ documents, selection, setSelection, ...props }) => {
-
-
   const selectOne = document => setSelection(set => set.add(document._id));
   const unselectOne = document => setSelection(set => set.delete(document._id));
   const selectAll = () => setSelection(set => set.union(documents.map(doc => doc._id)));
@@ -36,7 +64,6 @@ const List = ({ documents, selection, setSelection, ...props }) => {
       onChange={handleSelectAllClick}/>
   );
 
-
   const cellCheckbox = (row) => (
     <mui.Checkbox
       color='primary'
@@ -45,81 +72,21 @@ const List = ({ documents, selection, setSelection, ...props }) => {
       onClick={event => event.stopPropagation()}/>
   );
 
+  const cellLoadingError = (loadingError) => (
+    loadingError && (<LoadingErrorCell loadingError={loadingError} />)
+  );
+
   const columns = [
     { dataKey: 'checkbox', width: 80, headerRenderer: headerCheckbox, cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellCheckbox },
-    { dataKey: 'title', width: 80, headerRenderer: 'Titre', cellDataGetter: ({ rowData }) => documentUtils.getInfo(rowData).title },
-    { dataKey: 'paths', width: 100, headerRenderer: 'Chemins', cellDataGetter: ({ rowData }) => rowData.paths.map(p => p.path).join('; ') },
+    { dataKey: 'title', headerRenderer: 'Titre', cellDataGetter: ({ rowData }) => documentUtils.getInfo(rowData).title },
+    { dataKey: 'paths', headerRenderer: 'Chemins', cellDataGetter: ({ rowData }) => rowData.paths.map(p => p.path).join('; ') },
     { dataKey: 'fileSize', width: 100, headerRenderer: 'Taille', cellDataGetter: ({ rowData }) => humanize.filesize(rowData.fileSize) },
-    { dataKey: 'loadingError', headerRenderer: 'Erreur au chargement', cellDataGetter: ({ rowData }) => !!rowData.loadingError }
+    { dataKey: 'loadingError', width: 100, headerRenderer: 'Erreur au chargement', cellRenderer: cellLoadingError }
   ];
 
   return (
-    <VirtualizedTable data={documents} columns={columns} {...props} onRowClick={row => console.log(row)}/>
+    <VirtualizedTable data={documents} columns={columns} {...props} onRowClick={handleSelectClick}/>
   );
-/*
-
-  const selectOne = document => setSelection(set => set.add(document._id));
-  const unselectOne = document => setSelection(set => set.delete(document._id));
-  const selectAll = () => setSelection(set => set.union(documents.map(doc => doc._id)));
-  const unselectAll = () => setSelection(set => set.clear());
-
-  const handleSelectAllClick = event => {
-    if (event.target.checked) {
-      selectAll();
-    } else {
-      unselectAll();
-    }
-  };
-
-  const handleSelectClick = (event, document) => {
-    if (event.target.checked) {
-      selectOne(document);
-    } else {
-      unselectOne(document);
-    }
-  };
-
-  return (
-    <mui.Table>
-      <mui.TableHead>
-        <mui.TableRow>
-          <mui.TableCell padding='checkbox'>
-            <mui.Checkbox
-              indeterminate={selection.size > 0 && selection.size < documents.length}
-              checked={selection.size === documents.length}
-              onChange={handleSelectAllClick}
-            />
-          </mui.TableCell>
-          <mui.TableCell>Titre</mui.TableCell>
-          <mui.TableCell>Chemin</mui.TableCell>
-          <mui.TableCell>Taille</mui.TableCell>
-          <mui.TableCell>Erreur au chargement</mui.TableCell>
-        </mui.TableRow>
-      </mui.TableHead>
-      <mui.TableBody>
-        {documents.map(document => {
-          const info = documentUtils.getInfo(document);
-          const selected = selection.has(document._id);
-          return (
-            <mui.TableRow key={document._id}
-              hover
-              onClick={event => handleSelectClick(event, document)}
-              tabIndex={-1}
-              selected={selected}
-            >
-              <mui.TableCell padding='checkbox'>
-                <mui.Checkbox checked={selected} />
-              </mui.TableCell>
-              <mui.TableCell>{info.title}</mui.TableCell>
-              <mui.TableCell>{document.paths.map(p => p.path).join('; ')}</mui.TableCell>
-              <mui.TableCell>{humanize.filesize(document.fileSize)}</mui.TableCell>
-              <mui.TableCell>{document.loadingError && <mui.Button>Show</mui.Button>}</mui.TableCell>
-            </mui.TableRow>
-          );
-        })}
-      </mui.TableBody>
-    </mui.Table>
-  );*/
 };
 
 List.propTypes = {
