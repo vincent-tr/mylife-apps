@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import { showDialog } from './clean-others-dialog';
+import { showDialog } from './clean-others-dialog/dialog';
 
 const CleanOthersCard = ({ definition, ...props }) => {
   return (

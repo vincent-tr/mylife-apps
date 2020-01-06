@@ -1,9 +1,10 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useDispatch, useSelector, useLifecycle, dialogs } from 'mylife-tools-ui';
-import CleanDialogBase from './clean-dialog-base';
-import { enterCleanOthersDialog, leaveCleanDialog } from '../actions';
-import { getCleanDocuments } from '../selectors';
+import { React, PropTypes, mui, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable } from 'mylife-tools-ui';
+import { enterCleanOthersDialog, leaveCleanDialog } from '../../actions';
+import { getCleanDocuments } from '../../selectors';
+import CleanDialogBase from './../clean-dialog-base';
+import List from './list';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -18,13 +19,19 @@ const useConnect = () => {
   };
 };
 
+// TODO: Stepper
+
 const CleanOthersDialog = ({ show, proceed }) => {
   const { enter, leave, documents } = useConnect();
   useLifecycle(enter, leave);
+  const [selection, setSelection] = useState(new immutable.Set());
+
 
   return (
     <CleanDialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''}>
-      {JSON.stringify(documents)}
+      {documents && (
+        <List documents={documents} selection={selection} setSelection={setSelection} />
+      )}
     </CleanDialogBase>
   );
 };
