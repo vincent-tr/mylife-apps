@@ -19,18 +19,29 @@ const useConnect = () => {
   };
 };
 
+const useStyles = mui.makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  list: {
+    flex: '1 1 auto',
+  }
+});
+
 // TODO: Stepper
 
 const CleanOthersDialog = ({ show, proceed }) => {
+  const classes = useStyles();
   const { enter, leave, documents } = useConnect();
   useLifecycle(enter, leave);
   const [selection, setSelection] = useState(new immutable.Set());
 
 
   return (
-    <CleanDialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''}>
+    <CleanDialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''} className={classes.container}>
       {documents && (
-        <List documents={documents} selection={selection} setSelection={setSelection} />
+        <List documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />
       )}
     </CleanDialogBase>
   );

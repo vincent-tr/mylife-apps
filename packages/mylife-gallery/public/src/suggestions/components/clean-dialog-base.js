@@ -14,7 +14,7 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const CleanDialogBase = ({ show, onClose, title, children }) => {
+const CleanDialogBase = ({ show, onClose, title, children, ...props }) => {
   const classes = useStyles();
 
   return (
@@ -29,7 +29,7 @@ const CleanDialogBase = ({ show, onClose, title, children }) => {
           </mui.Typography>
         </mui.Toolbar>
       </mui.AppBar>
-      <mui.DialogContent>
+      <mui.DialogContent {...props}>
         {children}
       </mui.DialogContent>
     </FullScreenDialog>
