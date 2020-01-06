@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { showDialog } from './clean-others-dialog';
 
 const CleanOthersCard = ({ definition, ...props }) => {
   return (
@@ -8,7 +9,7 @@ const CleanOthersCard = ({ definition, ...props }) => {
       <mui.CardHeader title={'Documents \'autres\''} subheader={`${definition.count} documents à nettoyer`} />
       <mui.CardContent />
       <mui.CardActions>
-        <mui.Button size='small'>Nettoyer</mui.Button>
+        <mui.Button size='small' onClick={showDialog}>Nettoyer</mui.Button>
       </mui.CardActions>
     </mui.Card>
   );
