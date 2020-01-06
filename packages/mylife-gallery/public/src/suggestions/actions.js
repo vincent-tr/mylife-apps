@@ -1,11 +1,12 @@
 'use strict';
 
-import { io, createAction } from 'mylife-tools-ui';
+import { io, createAction, dialogs } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
 
 const local = {
+  showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
   setView: createAction(actionTypes.SET_VIEW),
   setCleanDocuments: createAction(actionTypes.SET_CLEAN_DOCUMENTS),
 };
@@ -40,6 +41,7 @@ export function createAlbum(root) {
       root
     }));
 
+    dispatch(local.showSuccess('Album créé'));
   };
 }
 
