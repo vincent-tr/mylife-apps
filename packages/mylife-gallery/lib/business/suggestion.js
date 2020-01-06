@@ -24,6 +24,14 @@ exports.suggestionCreateAlbum = root => {
   business.albumCreate({ title: root, documents: ids, thumbnails });
 };
 
+exports.suggestionCleanOthersList = () => {
+  return business.getDocumentStoreCollection('other').list();
+};
+
+exports.suggestionCleanDuplicatesList = () => {
+  return business.documentList().filter(doc => doc.paths.length > 1);
+};
+
 class SuggestionView extends StoreContainer {
   constructor() {
     super();

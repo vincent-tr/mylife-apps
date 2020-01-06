@@ -13,8 +13,14 @@ export default handleActions({
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
     viewId: null
-  })
+  }),
+
+  [actionTypes.SET_CLEAN_DOCUMENTS] : (state, action) => ({
+    ...state,
+    cleanDocuments: action.payload
+  }),
 
 }, {
   viewId: null,
+  cleanDocuments: null
 });

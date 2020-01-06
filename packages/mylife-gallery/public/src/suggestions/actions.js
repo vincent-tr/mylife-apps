@@ -7,6 +7,7 @@ import { getViewId } from './selectors';
 
 const local = {
   setView: createAction(actionTypes.SET_VIEW),
+  setCleanDocuments: createAction(actionTypes.SET_CLEAN_DOCUMENTS),
 };
 
 const getSuggestions = () => createOrUpdateView({
@@ -30,10 +31,9 @@ export const leave = () => async (dispatch) => {
   await dispatch(clearSuggestions());
 };
 
-
 export function createAlbum(root) {
   return async (dispatch) => {
-    
+
     await dispatch(io.call({
       service: 'suggestion',
       method: 'createAlbum',
@@ -42,3 +42,27 @@ export function createAlbum(root) {
 
   };
 }
+
+export const enterCleanOthersDialog = () => async (dispatch) => {
+  const documents = await dispatch(io.call({
+    service: 'suggestion',
+    method: 'cleanOthersList'
+  }));
+
+  dispatch(local.setCleanDocuments(documents));
+};
+
+
+export const enterCleanDuplicatesDialog = () => async (dispatch) => {
+  const documents = await dispatch(io.call({
+    service: 'suggestion',
+    method: 'cleanDuplicatesList'
+  }));
+
+  dispatch(local.setCleanDocuments(documents));
+};
+
+
+export const leaveCleanDialog = () => async (dispatch) => {
+  dispatch(local.setCleanDocuments(null));
+};

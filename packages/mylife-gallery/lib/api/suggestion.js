@@ -15,3 +15,11 @@ exports.createAlbum = [ base, (session, message) => {
   const { root } = message;
   return business.suggestionCreateAlbum(root);
 } ];
+
+exports.cleanOthersList = [ base, (/*session, message*/) => {
+  return business.suggestionCleanOthersList();
+} ];
+
+exports.cleanDuplicatesList = [ base, (/*session, message*/) => {
+  return business.suggestionCleanDuplicatesList();
+} ];
