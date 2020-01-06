@@ -15,15 +15,15 @@ const ImageDialogContent = ({ document, onClose, onPrev, onNext }) => {
 
   return (
     <React.Fragment>
-    <NavBar
-      className={classes.appBar}
-      document={document}
-      info={info}
-      showDetail={true}
-      onClose={onClose}
-      onDetail={toggleShowDetail}
-      onPrev={onPrev}
-      onNext={onNext} />
+      <NavBar
+        className={classes.appBar}
+        document={document}
+        info={info}
+        showDetail={true}
+        onClose={onClose}
+        onDetail={toggleShowDetail}
+        onPrev={onPrev}
+        onNext={onNext} />
       <mui.DialogContent className={classes.viewerContainer}>
         <Viewer document={document} info={info} className={classes.viewer}/>
         <Detail document={document} info={info} className={classes.detail} open={showDetail} />
