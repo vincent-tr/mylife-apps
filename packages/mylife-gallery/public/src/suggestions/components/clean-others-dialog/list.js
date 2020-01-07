@@ -4,29 +4,36 @@ import humanize from 'humanize';
 import { React, PropTypes, mui, VirtualizedTable } from 'mylife-tools-ui';
 import * as documentUtils from '../../../common/document-utils';
 
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   noMaxWidth: {
     maxWidth: 'none',
   },
-});
+  iconContainer: {
+    marginRight: theme.spacing(1)
+  }
+}));
 
 const LoadingErrorCell = ({ loadingError }) => {
   const classes = useStyles();
+  const message = loadingError.split('\n')[0];
   const text = loadingError.split('\n').map((line, i) => (<p key={i}>{line}</p>));
 
   return (
-    <div>
-      <mui.Tooltip
-        classes={{ tooltip: classes.noMaxWidth }}
-        title={
-          <mui.Typography component='div'>
-            {text}
-          </mui.Typography>
-        }
-      >
-        <mui.icons.Error color='error'/>
-      </mui.Tooltip>
-    </div>
+    <>
+      <div className={classes.iconContainer}>
+        <mui.Tooltip
+          classes={{ tooltip: classes.noMaxWidth }}
+          title={
+            <mui.Typography component='div'>
+              {text}
+            </mui.Typography>
+          }
+        >
+          <mui.icons.Error color='error'/>
+        </mui.Tooltip>
+      </div>
+      {message}
+    </>
   );
 };
 
@@ -81,7 +88,7 @@ const List = ({ documents, selection, setSelection, ...props }) => {
     { dataKey: 'title', headerRenderer: 'Titre', cellDataGetter: ({ rowData }) => documentUtils.getInfo(rowData).title },
     { dataKey: 'paths', headerRenderer: 'Chemins', cellDataGetter: ({ rowData }) => rowData.paths.map(p => p.path).join('; ') },
     { dataKey: 'fileSize', width: 100, headerRenderer: 'Taille', cellDataGetter: ({ rowData }) => humanize.filesize(rowData.fileSize) },
-    { dataKey: 'loadingError', width: 100, headerRenderer: 'Erreur au chargement', cellRenderer: cellLoadingError }
+    { dataKey: 'loadingError', headerRenderer: 'Erreur au chargement', cellRenderer: cellLoadingError }
   ];
 
   return (
