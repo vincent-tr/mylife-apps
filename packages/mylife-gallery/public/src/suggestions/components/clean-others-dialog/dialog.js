@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
 import { enterCleanOthersDialog, leaveCleanDialog } from '../../actions';
 import { getCleanDocuments } from '../../selectors';
 import CleanDialogBase from './../clean-dialog-base';
@@ -24,24 +24,54 @@ const useStyles = mui.makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
-  list: {
+  content: {
     flex: '1 1 auto',
+  },
+  list: {
+    width: '100%',
+    height: '100%',
+  },
+  generator: {
   }
 });
 
-// TODO: Stepper
+const ScriptGenerator = ({ documents, selection}) => (
+  <div>
+    TODO
+  </div>
+);
+
+const Stepper = ({ documents, onClose, ...props }) => {
+  const classes = useStyles();
+  const [selection, setSelection] = useState(new immutable.Set());
+
+  const renderList = () => (<List documents={documents} selection={selection} setSelection={setSelection} className={classes.list}/>);
+  const renderGenerator = () => (<ScriptGenerator  documents={documents} selection={selection}  className={classes.generator}/>);
+
+  const steps = [
+    { label: 'Sélection des documents', render: renderList, actions: { canNext: selection.size > 0 } },
+    { label: 'Génération du script', render: renderGenerator }
+  ];
+
+  return (
+    <StepperControl steps={steps} onEnd={onClose} {...props} />
+  );
+};
+
+Stepper.propTypes = {
+  documents: PropTypes.array.isRequired,
+  onClose: PropTypes.func.isRequired
+};
 
 const CleanOthersDialog = ({ show, proceed }) => {
   const classes = useStyles();
   const { enter, leave, documents } = useConnect();
   useLifecycle(enter, leave);
-  const [selection, setSelection] = useState(new immutable.Set());
-
 
   return (
     <CleanDialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''} className={classes.container}>
       {documents && (
-        <List documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />
+        <Stepper documents={documents} onClose={proceed} className={classes.content} />
       )}
     </CleanDialogBase>
   );
