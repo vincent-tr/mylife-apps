@@ -2,10 +2,25 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Stepper, Step, StepLabel } from '@material-ui/core';
+import { Stepper, Step, StepLabel, makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
 import StepperActions from './stepper-actions';
 
-const StepperControl = ({ steps, onStepChanged, onEnd, ...props }) => {
+const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  main: {
+    flex: '1 1 auto',
+  },
+  actions: {
+    flex: '1 1 auto',
+  }
+});
+
+const StepperControl = ({ className, steps, onStepChanged, onEnd, ...props }) => {
+  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const step = steps[activeStep];
@@ -49,7 +64,7 @@ const StepperControl = ({ steps, onStepChanged, onEnd, ...props }) => {
   };
 
   return (
-    <div {...props}>
+    <div className={clsx(className, classes.container)} {...props}>
       <Stepper activeStep={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
@@ -58,14 +73,17 @@ const StepperControl = ({ steps, onStepChanged, onEnd, ...props }) => {
         ))}
       </Stepper>
 
-      {render(step)}
+      <div className={classes.main}>
+        {render(step)}
+      </div>
 
-      <StepperActions {...finalActions} onAction={handleAction} />
+      <StepperActions {...finalActions} onAction={handleAction} className={classes.actions} />
     </div>
   );
 };
 
 StepperControl.propTypes = {
+  className: PropTypes.string,
   steps: PropTypes.arrayOf(
     PropTypes.shape({
       label       : PropTypes.string.isRequired,
