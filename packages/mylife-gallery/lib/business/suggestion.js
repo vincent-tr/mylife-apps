@@ -162,7 +162,7 @@ class SuggestionView extends StoreContainer {
       if(root.startsWith(ROOT_PREFIX_TODO)) {
         continue;
       }
-      
+
       const hasAlbum = list.some(document => document.hasAlbum);
       if(!hasAlbum) {
         candidateRoots.push({ root, count: list.length });
@@ -177,7 +177,7 @@ class SuggestionView extends StoreContainer {
       }
     }
 
-    // add new suggestions
+    // add/replace new suggestions
     for(const { root, count } of candidateRoots) {
       this._set(this.entity.newObject({ _id: `album-creation!${root}`, type: 'album-creation', definition: { root, count } }));
     }
