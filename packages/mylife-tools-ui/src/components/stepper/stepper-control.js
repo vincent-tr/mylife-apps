@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
   main: {
     flex: '1 1 auto',
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
     borderColor: theme.palette.divider
   },
   actions: {
