@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Stepper, Step, StepLabel, makeStyles } from '@material-ui/core';
+import { Box, Stepper, Step, StepLabel, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import StepperActions from './stepper-actions';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -15,10 +15,12 @@ const useStyles = makeStyles({
   },
   main: {
     flex: '1 1 auto',
+    marginBottom: theme.spacing(2),
+    borderColor: theme.palette.divider
   },
   actions: {
   }
-});
+}));
 
 const StepperControl = ({ className, steps, onStepChanged, onEnd, ...props }) => {
   const classes = useStyles();
@@ -74,9 +76,9 @@ const StepperControl = ({ className, steps, onStepChanged, onEnd, ...props }) =>
         ))}
       </Stepper>
 
-      <div className={classes.main}>
+      <Box borderTop={1} borderBottom={1} className={classes.main}>
         {render(step)}
-      </div>
+      </Box>
 
       <StepperActions {...finalActions} onAction={handleAction} className={classes.actions} />
     </div>
