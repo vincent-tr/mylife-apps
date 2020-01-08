@@ -5,6 +5,7 @@ import { enterCleanOthersDialog, leaveCleanDialog } from '../../actions';
 import { getCleanDocuments } from '../../selectors';
 import CleanDialogBase from './../clean-dialog-base';
 import List from './list';
+import ScriptGenerator from './script-generator';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -35,18 +36,12 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const ScriptGenerator = ({ documents, selection}) => (
-  <div>
-    TODO
-  </div>
-);
-
 const Stepper = ({ documents, onClose, ...props }) => {
   const classes = useStyles();
   const [selection, setSelection] = useState(new immutable.Set());
 
   const renderList = () => (<List documents={documents} selection={selection} setSelection={setSelection} className={classes.list}/>);
-  const renderGenerator = () => (<ScriptGenerator  documents={documents} selection={selection}  className={classes.generator}/>);
+  const renderGenerator = () => (<ScriptGenerator documents={documents.filter(doc => selection.has(doc._id))} className={classes.generator}/>);
 
   const steps = [
     { label: 'Sélection des documents', render: renderList, actions: { canNext: selection.size > 0 } },
