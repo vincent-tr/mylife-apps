@@ -11,11 +11,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  header: {
+  },
   main: {
     flex: '1 1 auto',
   },
   actions: {
-    flex: '1 1 auto',
   }
 });
 
@@ -65,7 +66,7 @@ const StepperControl = ({ className, steps, onStepChanged, onEnd, ...props }) =>
 
   return (
     <div className={clsx(className, classes.container)} {...props}>
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={activeStep} className={classes.header}>
         {steps.map((step, index) => (
           <Step key={index}>
             <StepLabel>{step.label}</StepLabel>

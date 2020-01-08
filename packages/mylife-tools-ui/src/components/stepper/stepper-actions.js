@@ -1,13 +1,13 @@
 'use strict';
 
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 
-const StepperActions = ({ canPrev, canNext, canSkip, canFinish, canCancel, onAction }) => (
-  <div>
-    {canPrev && (<Button onClick={() => onAction('prev')}>{'Précédent'}</Button>)}
-    {canNext && (<Button onClick={() => onAction('next')}>{'Suivant'}</Button>)}
+const StepperActions = ({ canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }) => (
+  <div {...props}>
+    <Button disabled={!canPrev} onClick={() => onAction('prev')}>{'Précédent'}</Button>
+    <Button disabled={!canNext} onClick={() => onAction('next')}>{'Suivant'}</Button>
     {canSkip && (<Button onClick={() => onAction('skip')}>{'Sauter'}</Button>)}
     {canFinish && (<Button onClick={() => onAction('finish')}>{'Terminer'}</Button>)}
     {canCancel && (<Button onClick={() => onAction('cancel')}>{'Annuler'}</Button>)}
