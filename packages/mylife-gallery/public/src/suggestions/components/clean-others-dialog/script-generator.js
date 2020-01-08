@@ -9,10 +9,8 @@ const ScriptGenerator = ({ documents, ...props}) => (
   </div>
 );
 
-
 ScriptGenerator.propTypes = {
   documents: PropTypes.array.isRequired,
 };
-
 
 export default ScriptGenerator;
