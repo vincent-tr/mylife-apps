@@ -61,11 +61,17 @@ class SessionNotifications {
   registerView(view) {
     const id = this._newId();
     this.views.set(id, view);
+    view.refresh();
+
     view.on('change', event => this._onViewChange(id, event));
 
     logger.debug(`View #${id} registered on session #${this.session.id}`);
 
-    view.refresh();
+    // emit all events
+    for(const object of view.list()) {
+      this._notify({ view: id, type: 'set', object });
+    }
+
     return id;
   }
 
