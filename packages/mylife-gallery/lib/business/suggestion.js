@@ -5,6 +5,7 @@ const business = require('.');
 
 // root prefix for directories to do (not yet sorted into albums directories)
 const ROOT_PREFIX_TODO = '_';
+const SYNCING_MAX_DELAY = 1000 * 60 * 20; // 20 mins
 
 exports.suggestionsNotify = session => {
   const view = new SuggestionView();
@@ -84,13 +85,13 @@ class SuggestionView extends StoreContainer {
   }
 
   _refreshWarnSyncing() {
-    const TIMEOUT = 1000 * 60 * 20; // 20 mins
     const now = new Date();
     const delay = now - this._lastIntegration;
-    const show = delay < TIMEOUT;
+    const show = delay < SYNCING_MAX_DELAY;
 
     if(show) {
-      this._set(this.entity.newObject({ _id: 'warn-syncing', type: 'warn-syncing', definition: { delay } }));
+      const lastIntegration = this._lastIntegration;
+      this._set(this.entity.newObject({ _id: 'warn-syncing', type: 'warn-syncing', definition: { lastIntegration } }));
     } else {
       this._delete('warn-syncing');
     }
