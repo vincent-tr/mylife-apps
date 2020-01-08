@@ -3,6 +3,9 @@
 const { StoreContainer, getMetadataEntity, notifyView, getStoreCollection } = require('mylife-tools-server');
 const business = require('.');
 
+// root prefix for directories to do (not yet sorted into albums directories)
+const ROOT_PREFIX_TODO = '_';
+
 exports.suggestionsNotify = session => {
   const view = new SuggestionView();
   return notifyView(session, view);
@@ -156,6 +159,10 @@ class SuggestionView extends StoreContainer {
     // select candidate roots
     const candidateRoots = [];
     for(const [root, list] of roots.entries()) {
+      if(root.startsWith(ROOT_PREFIX_TODO)) {
+        continue;
+      }
+      
       const hasAlbum = list.some(document => document.hasAlbum);
       if(!hasAlbum) {
         candidateRoots.push({ root, count: list.length });
