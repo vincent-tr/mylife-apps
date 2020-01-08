@@ -20,7 +20,6 @@ exports.Container = class Container extends EventEmitter {
 
     // if same, no replacement, no emitted event
     if(existing && objectEquals(existing, object)) {
-      console.log('no set, found same', id, existing, object);
       return existing;
     }
 
