@@ -1,6 +1,5 @@
 'use strict';
 
-const objectEquals = require('fast-deep-equal');
 const { getService } = require('../service-manager');
 const { View } = require('./view');
 const { Container } = require('./container');
@@ -31,13 +30,6 @@ exports.Collection = class Collection extends Container {
     }
 
     let id = object._id;
-    const existing = id && this.find(id);
-
-    // if same, no replacement, no emitted event
-    if(existing && objectEquals(existing, object)) {
-      return existing;
-    }
-
     if(!id) {
       id = this.newId();
       object = this.entity.getField('_id').setValue(object, id);

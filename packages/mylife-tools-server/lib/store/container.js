@@ -1,6 +1,7 @@
 'use strict';
 
 const EventEmitter = require('events');
+const objectEquals = require('fast-deep-equal');
 
 exports.Container = class Container extends EventEmitter {
   constructor() {
@@ -16,6 +17,12 @@ exports.Container = class Container extends EventEmitter {
   _set(object) {
     const id = object._id;
     const existing = this.find(id);
+
+    // if same, no replacement, no emitted event
+    if(existing && objectEquals(existing, object)) {
+      console.log('no set, found same', id, existing, object);
+      return existing;
+    }
 
     this._items.set(id, object);
 
