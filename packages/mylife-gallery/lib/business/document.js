@@ -39,7 +39,7 @@ exports.documentRemove = (type, id) => {
   if(!collection.delete(id)) {
     throw new Error(`Cannot delete document '${id}' (type='${type}'): document not found in collection`);
   }
-
+  // TODO: remove from albums
   // TODO: delete thumbnails (image, video) if not used anymore
 };
 
