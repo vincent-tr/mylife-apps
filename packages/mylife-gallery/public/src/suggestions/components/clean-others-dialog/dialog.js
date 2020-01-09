@@ -33,6 +33,8 @@ const useStyles = mui.makeStyles({
     height: '100%',
   },
   generator: {
+    width: '100%',
+    height: '100%',
   }
 });
 

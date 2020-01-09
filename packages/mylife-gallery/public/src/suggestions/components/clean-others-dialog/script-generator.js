@@ -1,24 +1,37 @@
 'use strict';
 
-import { React, PropTypes, mui, useState, useRef } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useState, useRef, clsx } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(2),
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  criteria: {
+    margin: theme.spacing(2),
+  },
+  buttons: {
+    margin: theme.spacing(2),
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  script: {
+    flex: '1 1 auto',
     margin: theme.spacing(2),
   },
   scriptField: {
-    height: '100%'
+    height: '100%',
   }
 }));
 
-const ScriptGenerator = ({ documents, ...props}) => {
+const ScriptGenerator = ({ className, documents, ...props}) => {
   const classes = useStyles();
   const scriptElementRef = useRef(null);
 
   const [pathSeparator, setPathSeparator] = useState('\\');
   const [filePlaceholder, setFilePlaceholder] = useState('${file}');
-  const [template, setTemplate] = useState('Remove-Item –path "${file}" -whatif \n');
+  const [template, setTemplate] = useState('Remove-Item –path "${file}" -whatif\n');
   const [script, setScript] = useState('');
 
   const onGenerate = () => setScript(generate({ documents, pathSeparator, filePlaceholder, template }));
@@ -31,8 +44,8 @@ const ScriptGenerator = ({ documents, ...props}) => {
   };
 
   return (
-    <div {...props}>
-      <mui.Paper variant='outlined' className={classes.paper}>
+    <div className={clsx(className, classes.container)} {...props}>
+      <div className={classes.criteria}>
         <mui.Grid container spacing={2} {...props}>
           <mui.Grid item xs={6} container spacing={2}>
             <mui.Grid item xs={12}>
@@ -60,15 +73,30 @@ const ScriptGenerator = ({ documents, ...props}) => {
             <mui.Grid item xs={12} />
           </mui.Grid>
         </mui.Grid>
-      </mui.Paper>
-      <mui.Button onClick={onGenerate}>{'Générer le script'}</mui.Button>
-      <mui.Button onClick={onCopy}>{'Copier'}</mui.Button>
-      <mui.TextField value={script} onChange={e => setScript(e.target.value)} inputRef={scriptElementRef} fullWidth multiline variant='outlined' className={classes.scriptField} />
+      </div>
+      <div className={classes.buttons}>
+        <mui.Button onClick={onGenerate} variant='contained' color='primary'>{'Générer le script'}</mui.Button>
+        <mui.Button onClick={onCopy} variant='contained'>{'Copier'}</mui.Button>
+      </div>
+      <div className={classes.script}>
+        <mui.TextField
+          value={script}
+          onChange={e => setScript(e.target.value)}
+          inputRef={scriptElementRef}
+          fullWidth
+          multiline
+          variant='outlined'
+          className={classes.scriptField}
+          InputProps={{className: classes.scriptField /* InputProps = wrapper div props, inputProps = textarea props */ }}
+          inputProps={{style: { height: '100%', overflow: 'auto' /* cannot use class because it is overhidden */ }}}
+        />
+      </div>
     </div>
   );
 };
 
 ScriptGenerator.propTypes = {
+  className: PropTypes.string,
   documents: PropTypes.array.isRequired,
 };
 
