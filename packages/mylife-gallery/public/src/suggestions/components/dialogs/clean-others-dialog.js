@@ -46,7 +46,7 @@ const Stepper = ({ documents, onClose, ...props }) => {
   const renderGenerator = () => (<ScriptGenerator documents={documents.filter(doc => selection.has(doc._id))} className={classes.generator}/>);
 
   const steps = [
-    { label: 'Sélection des documents', render: renderList, actions: { canNext: selection.size > 0 } },
+    { label: 'Sélection des documents à supprimer', render: renderList, actions: { canNext: selection.size > 0 } },
     { label: 'Génération du script', render: renderGenerator }
   ];
 
