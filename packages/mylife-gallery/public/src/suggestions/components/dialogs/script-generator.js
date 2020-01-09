@@ -27,7 +27,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const ScriptGenerator = ({ documents, ...props}) => {
+const ScriptGenerator = ({ paths, ...props}) => {
   const classes = useStyles();
   const scriptElementRef = useRef(null);
 
@@ -36,7 +36,7 @@ const ScriptGenerator = ({ documents, ...props}) => {
   const [template, setTemplate] = useState('Remove-Item –path "${file}" -whatif\n');
   const [script, setScript] = useState('');
 
-  const onGenerate = () => setScript(generate({ documents, pathSeparator, filePlaceholder, template }));
+  const onGenerate = () => setScript(generate({ paths, pathSeparator, filePlaceholder, template }));
 
   const onCopy = () => {
     // https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
@@ -99,19 +99,12 @@ const ScriptGenerator = ({ documents, ...props}) => {
 
 ScriptGenerator.propTypes = {
   className: PropTypes.string,
-  documents: PropTypes.array.isRequired,
+  paths: PropTypes.array.isRequired,
 };
 
 export default ScriptGenerator;
 
-function generate({ documents, pathSeparator, filePlaceholder, template }) {
-  const paths = [];
-  for(const document of documents) {
-    for(const { path } of document.paths) {
-      paths.push(path);
-    }
-  }
-
+function generate({ paths, pathSeparator, filePlaceholder, template }) {
   const parts = paths.map(path => {
     const formattedPath = path.split('/').join(pathSeparator);
     return replaceAll(template, filePlaceholder, formattedPath);

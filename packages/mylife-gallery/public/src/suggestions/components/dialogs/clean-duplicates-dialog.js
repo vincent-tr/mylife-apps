@@ -1,9 +1,12 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useDispatch, useSelector, useLifecycle, dialogs } from 'mylife-tools-ui';
-import DialogBase from './dialog-base';
+import { React, PropTypes, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
 import { enterCleanDuplicatesDialog, leaveCleanDialog } from '../../actions';
 import { getCleanDocuments } from '../../selectors';
+import DialogBase from './dialog-base';
+import CleanDuplicatesList from './clean-duplicates-list';
+import ScriptGenerator from './script-generator';
+import useStyles from './styles';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -18,13 +21,37 @@ const useConnect = () => {
   };
 };
 
+const Stepper = ({ documents, onClose }) => {
+  const classes = useStyles();
+  const [selection, setSelection] = useState(new immutable.Map());
+
+  const renderList = () => (<CleanDuplicatesList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
+  const renderGenerator = () => (<ScriptGenerator documents={generatePaths(documents, selection)} />);
+
+  const steps = [
+    { label: 'Sélection des documents à conserver', render: renderList, actions: { canNext: selection.size > 0 } },
+    { label: 'Génération du script', render: renderGenerator }
+  ];
+
+  return (
+    <StepperControl steps={steps} onEnd={onClose} className={classes.content} />
+  );
+};
+
+Stepper.propTypes = {
+  documents: PropTypes.array.isRequired,
+  onClose: PropTypes.func.isRequired
+};
+
 const CleanDuplicatesDialog = ({ show, proceed }) => {
   const { enter, leave, documents } = useConnect();
   useLifecycle(enter, leave);
 
   return (
     <DialogBase show={show} onClose={proceed} title={'Nettoyage des documents en doublons'}>
-      {JSON.stringify(documents)}
+      {documents && (
+        <Stepper documents={documents} onClose={proceed} />
+      )}
     </DialogBase>
   );
 };
@@ -38,4 +65,9 @@ const dialog = dialogs.create(CleanDuplicatesDialog);
 
 export async function showDialog() {
   await dialog();
+}
+
+function generatePaths(documents, selection) {
+  const paths = [];
+  return paths;
 }

@@ -26,7 +26,7 @@ const Stepper = ({ documents, onClose }) => {
   const [selection, setSelection] = useState(new immutable.Set());
 
   const renderList = () => (<CleanOthersList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
-  const renderGenerator = () => (<ScriptGenerator documents={documents.filter(doc => selection.has(doc._id))} />);
+  const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} />);
 
   const steps = [
     { label: 'Sélection des documents à supprimer', render: renderList, actions: { canNext: selection.size > 0 } },
@@ -65,4 +65,14 @@ const dialog = dialogs.create(CleanOthersDialog);
 
 export async function showDialog() {
   await dialog();
+}
+
+function generatePaths(documents, selection) {
+  const paths = [];
+  for(const document of documents.filter(doc => selection.has(doc._id))) {
+    for(const { path } of document.paths) {
+      paths.push(path);
+    }
+  }
+  return paths;
 }
