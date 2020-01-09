@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import { showDialog } from './clean-duplicates-dialog';
+import { showDialog } from './dialogs/clean-duplicates-dialog';
 
 const CleanDuplicatesCard = ({ definition, ...props }) => {
   return (

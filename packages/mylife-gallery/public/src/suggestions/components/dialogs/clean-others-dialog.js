@@ -3,8 +3,8 @@
 import { React, PropTypes, mui, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
 import { enterCleanOthersDialog, leaveCleanDialog } from '../../actions';
 import { getCleanDocuments } from '../../selectors';
-import CleanDialogBase from './../clean-dialog-base';
-import List from './list';
+import DialogBase from './dialog-base';
+import CleanOthersList from './clean-others-list';
 import ScriptGenerator from './script-generator';
 
 const useConnect = () => {
@@ -42,7 +42,7 @@ const Stepper = ({ documents, onClose, ...props }) => {
   const classes = useStyles();
   const [selection, setSelection] = useState(new immutable.Set());
 
-  const renderList = () => (<List documents={documents} selection={selection} setSelection={setSelection} className={classes.list}/>);
+  const renderList = () => (<CleanOthersList documents={documents} selection={selection} setSelection={setSelection} className={classes.list}/>);
   const renderGenerator = () => (<ScriptGenerator documents={documents.filter(doc => selection.has(doc._id))} className={classes.generator}/>);
 
   const steps = [
@@ -66,11 +66,11 @@ const CleanOthersDialog = ({ show, proceed }) => {
   useLifecycle(enter, leave);
 
   return (
-    <CleanDialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''} className={classes.container}>
+    <DialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''} className={classes.container}>
       {documents && (
         <Stepper documents={documents} onClose={proceed} className={classes.content} />
       )}
-    </CleanDialogBase>
+    </DialogBase>
   );
 };
 

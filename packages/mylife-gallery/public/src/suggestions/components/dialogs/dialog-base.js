@@ -1,8 +1,8 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import FullScreenDialog from '../../common/fullscreen-dialog';
-import icons from '../../common/icons';
+import FullScreenDialog from '../../../common/fullscreen-dialog';
+import icons from '../../../common/icons';
 
 const useStyles = mui.makeStyles(theme => ({
   appBar: {
@@ -14,7 +14,7 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const CleanDialogBase = ({ show, onClose, title, children, ...props }) => {
+const DialogBase = ({ show, onClose, title, children, ...props }) => {
   const classes = useStyles();
 
   return (
@@ -36,11 +36,11 @@ const CleanDialogBase = ({ show, onClose, title, children, ...props }) => {
   );
 };
 
-CleanDialogBase.propTypes = {
+DialogBase.propTypes = {
   show: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
 };
 
-export default CleanDialogBase;
+export default DialogBase;

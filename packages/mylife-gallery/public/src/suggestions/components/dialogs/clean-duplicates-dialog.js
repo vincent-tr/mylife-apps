@@ -1,9 +1,9 @@
 'use strict';
 
 import { React, PropTypes, mui, useMemo, useDispatch, useSelector, useLifecycle, dialogs } from 'mylife-tools-ui';
-import CleanDialogBase from './clean-dialog-base';
-import { enterCleanDuplicatesDialog, leaveCleanDialog } from '../actions';
-import { getCleanDocuments } from '../selectors';
+import DialogBase from './dialog-base';
+import { enterCleanDuplicatesDialog, leaveCleanDialog } from '../../actions';
+import { getCleanDocuments } from '../../selectors';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -23,9 +23,9 @@ const CleanDuplicatesDialog = ({ show, proceed }) => {
   useLifecycle(enter, leave);
 
   return (
-    <CleanDialogBase show={show} onClose={proceed} title={'Nettoyage des documents en doublons'}>
+    <DialogBase show={show} onClose={proceed} title={'Nettoyage des documents en doublons'}>
       {JSON.stringify(documents)}
-    </CleanDialogBase>
+    </DialogBase>
   );
 };
 

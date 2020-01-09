@@ -41,7 +41,7 @@ LoadingErrorCell.propTypes = {
   loadingError: PropTypes.string.isRequired
 };
 
-const List = ({ documents, selection, setSelection, ...props }) => {
+const CleanOthersList = ({ documents, selection, setSelection, ...props }) => {
   const selectOne = document => setSelection(set => set.add(document._id));
   const unselectOne = document => setSelection(set => set.delete(document._id));
   const selectAll = () => setSelection(set => set.union(documents.map(doc => doc._id)));
@@ -96,10 +96,10 @@ const List = ({ documents, selection, setSelection, ...props }) => {
   );
 };
 
-List.propTypes = {
+CleanOthersList.propTypes = {
   documents: PropTypes.array.isRequired,
   selection: PropTypes.object.isRequired,
   setSelection: PropTypes.func.isRequired
 };
 
-export default List;
+export default CleanOthersList;
