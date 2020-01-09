@@ -5,6 +5,7 @@ import { getFieldName } from '../../../common/metadata-utils';
 import DetailItem from './detail-item';
 import DetailCaption from './detail-caption';
 import DetailKeywords from './detail-keywords';
+import DetailAlbums from './detail-albums';
 
 const DocumentValue = ({ document, field }) => {
   switch(field) {
@@ -20,6 +21,8 @@ const DocumentValue = ({ document, field }) => {
       return (<DetailCaption document={document} />);
     case 'keywords':
       return (<DetailKeywords document={document} />);
+    case 'albums':
+      return (<DetailAlbums document={document} />);
     default:
       throw new Error(`Unknown document field: '${field}'`);
   }

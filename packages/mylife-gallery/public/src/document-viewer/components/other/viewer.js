@@ -9,6 +9,7 @@ const OtherViewer = ({ document, ...props }) => (
   <mui.List {...props}>
     <DocumentValue document={document} field='caption' />
     <DocumentValue document={document} field='keywords' />
+    <DocumentValue document={document} field='albums' />
 
     <DocumentValue document={document} field='integrationDate' />
     <DocumentValue document={document} field='paths' />
