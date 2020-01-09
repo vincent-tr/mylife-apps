@@ -2,16 +2,18 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import { showDialog } from './dialogs/clean-duplicates-dialog';
+import CardBase from './card-base';
 
 const CleanDuplicatesCard = ({ definition, ...props }) => {
   return (
-    <mui.Card {...props}>
-      <mui.CardHeader title={'Documents en doublons'} subheader={`${definition.count} documents à nettoyer`} />
-      <mui.CardContent />
-      <mui.CardActions>
+    <CardBase
+      title={'Documents en doublons'}
+      description={`${definition.count} documents à nettoyer`}
+      actions={
         <mui.Button size='small' onClick={showDialog}>Nettoyer</mui.Button>
-      </mui.CardActions>
-    </mui.Card>
+      }
+      {...props}
+    />
   );
 };
 

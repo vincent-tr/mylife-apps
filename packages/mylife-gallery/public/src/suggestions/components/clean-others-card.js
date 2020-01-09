@@ -2,16 +2,18 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 import { showDialog } from './dialogs/clean-others-dialog';
+import CardBase from './card-base';
 
 const CleanOthersCard = ({ definition, ...props }) => {
   return (
-    <mui.Card {...props}>
-      <mui.CardHeader title={'Documents \'autres\''} subheader={`${definition.count} documents à nettoyer`} />
-      <mui.CardContent />
-      <mui.CardActions>
+    <CardBase
+      title={'Documents \'autres\''}
+      description={`${definition.count} documents à nettoyer`}
+      actions={
         <mui.Button size='small' onClick={showDialog}>Nettoyer</mui.Button>
-      </mui.CardActions>
-    </mui.Card>
+      }
+      {...props}
+    />
   );
 };
 

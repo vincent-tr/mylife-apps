@@ -2,6 +2,7 @@
 
 import { React, PropTypes, mui, useState, useInterval, useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
+import CardBase from './card-base';
 
 const useStyles = mui.makeStyles(theme => ({
   icon: {
@@ -19,22 +20,20 @@ const WarnSyncingCard = ({ definition, ...props }) => {
   useLifecycle(compute);
 
   return (
-    <mui.Card {...props}>
-      <mui.CardHeader
-        title={
-          <>
-            <mui.icons.Warning className={classes.icon} />
-            Synchronisation en cours
-          </>
-        }
-        subheader={`Dernier document intégré il y a ${delay}`}
-      />
-      <mui.CardContent>
-        <mui.Typography color='textSecondary'>
-          {'Vous devriez attendre la fin de la synchronisation avant d\'utiliser les suggestions'}
-        </mui.Typography>
-      </mui.CardContent>
-    </mui.Card>
+    <CardBase
+      title={
+        <>
+          <mui.icons.Warning className={classes.icon} />
+          Synchronisation en cours
+        </>
+      }
+      description={`Dernier document intégré il y a ${delay}`}
+      {...props}
+    >
+      <mui.Typography color='textSecondary'>
+        {'Vous devriez attendre la fin de la synchronisation avant d\'utiliser les suggestions'}
+      </mui.Typography>
+    </CardBase>
   );
 };
 

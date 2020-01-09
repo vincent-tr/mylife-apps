@@ -2,6 +2,7 @@
 
 import { React, PropTypes, mui, useDispatch, useMemo } from 'mylife-tools-ui';
 import { createAlbum } from '../actions';
+import CardBase from './card-base';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -13,13 +14,16 @@ const useConnect = () => {
 const AlbumCreationCard = ({ definition, ...props }) => {
   const { createAlbum } = useConnect();
   return (
-    <mui.Card {...props}>
-      <mui.CardHeader title={definition.root} subheader={`${definition.count} documents dans cet album`} />
-      <mui.CardContent />
-      <mui.CardActions>
-        <mui.Button size='small' onClick={() => createAlbum(definition.root)}>{'Créer l\'album'}</mui.Button>
-      </mui.CardActions>
-    </mui.Card>
+    <CardBase
+      title={definition.root}
+      description={`${definition.count} documents dans cet album`}
+      actions={
+        <mui.Button size='small' onClick={() => createAlbum(definition.root)}>
+          {'Créer l\'album'}
+        </mui.Button>
+      }
+      {...props}
+    />
   );
 };
 
