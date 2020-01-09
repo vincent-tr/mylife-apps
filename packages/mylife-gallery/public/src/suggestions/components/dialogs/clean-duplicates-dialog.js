@@ -26,7 +26,7 @@ const Stepper = ({ documents, onClose }) => {
   const [selection, setSelection] = useState(new immutable.Map());
 
   const renderList = () => (<CleanDuplicatesList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
-  const renderGenerator = () => (<ScriptGenerator documents={generatePaths(documents, selection)} />);
+  const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} />);
 
   const steps = [
     { label: 'Sélection des documents à conserver', render: renderList, actions: { canNext: selection.size > 0 } },
@@ -69,5 +69,22 @@ export async function showDialog() {
 
 function generatePaths(documents, selection) {
   const paths = [];
+
+  // for each document which has a selection, collection unselected paths
+  for(const document of documents) {
+    const selectedIndex = selection.get(document._id);
+    if(selectedIndex === undefined) {
+      continue;
+    }
+
+    for(const [index, { path }] of document.paths.entries()) {
+      if(index === selectedIndex) {
+        continue;
+      }
+
+      paths.push(path);
+    }
+  }
+
   return paths;
 }
