@@ -1,9 +1,11 @@
 'use strict';
 
-import { React, PropTypes, mui, useState, useRef, clsx } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useState, useRef } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
+    width: '100%',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -25,7 +27,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const ScriptGenerator = ({ className, documents, ...props}) => {
+const ScriptGenerator = ({ documents, ...props}) => {
   const classes = useStyles();
   const scriptElementRef = useRef(null);
 
@@ -44,7 +46,7 @@ const ScriptGenerator = ({ className, documents, ...props}) => {
   };
 
   return (
-    <div className={clsx(className, classes.container)} {...props}>
+    <div className={classes.container}>
       <div className={classes.criteria}>
         <mui.Grid container spacing={2} {...props}>
           <mui.Grid item xs={6} container spacing={2}>

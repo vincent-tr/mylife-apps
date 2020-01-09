@@ -12,9 +12,13 @@ const useStyles = mui.makeStyles(theme => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+  }
 }));
 
-const DialogBase = ({ show, onClose, title, children, ...props }) => {
+const DialogBase = ({ show, onClose, title, children }) => {
   const classes = useStyles();
 
   return (
@@ -29,7 +33,7 @@ const DialogBase = ({ show, onClose, title, children, ...props }) => {
           </mui.Typography>
         </mui.Toolbar>
       </mui.AppBar>
-      <mui.DialogContent {...props}>
+      <mui.DialogContent className={classes.content}>
         {children}
       </mui.DialogContent>
     </FullScreenDialog>

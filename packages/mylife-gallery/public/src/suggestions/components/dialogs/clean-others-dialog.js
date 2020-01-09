@@ -1,11 +1,12 @@
 'use strict';
 
-import { React, PropTypes, mui, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
+import { React, PropTypes, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
 import { enterCleanOthersDialog, leaveCleanDialog } from '../../actions';
 import { getCleanDocuments } from '../../selectors';
 import DialogBase from './dialog-base';
 import CleanOthersList from './clean-others-list';
 import ScriptGenerator from './script-generator';
+import useStyles from './styles';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -20,30 +21,12 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  content: {
-    flex: '1 1 auto',
-  },
-  list: {
-    width: '100%',
-    height: '100%',
-  },
-  generator: {
-    width: '100%',
-    height: '100%',
-  }
-});
-
-const Stepper = ({ documents, onClose, ...props }) => {
+const Stepper = ({ documents, onClose }) => {
   const classes = useStyles();
   const [selection, setSelection] = useState(new immutable.Set());
 
-  const renderList = () => (<CleanOthersList documents={documents} selection={selection} setSelection={setSelection} className={classes.list}/>);
-  const renderGenerator = () => (<ScriptGenerator documents={documents.filter(doc => selection.has(doc._id))} className={classes.generator}/>);
+  const renderList = () => (<CleanOthersList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
+  const renderGenerator = () => (<ScriptGenerator documents={documents.filter(doc => selection.has(doc._id))} />);
 
   const steps = [
     { label: 'Sélection des documents à supprimer', render: renderList, actions: { canNext: selection.size > 0 } },
@@ -51,7 +34,7 @@ const Stepper = ({ documents, onClose, ...props }) => {
   ];
 
   return (
-    <StepperControl steps={steps} onEnd={onClose} {...props} />
+    <StepperControl steps={steps} onEnd={onClose} className={classes.content} />
   );
 };
 
@@ -61,14 +44,13 @@ Stepper.propTypes = {
 };
 
 const CleanOthersDialog = ({ show, proceed }) => {
-  const classes = useStyles();
   const { enter, leave, documents } = useConnect();
   useLifecycle(enter, leave);
 
   return (
-    <DialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''} className={classes.container}>
+    <DialogBase show={show} onClose={proceed} title={'Nettoyage des documents \'autres\''}>
       {documents && (
-        <Stepper documents={documents} onClose={proceed} className={classes.content} />
+        <Stepper documents={documents} onClose={proceed} />
       )}
     </DialogBase>
   );
