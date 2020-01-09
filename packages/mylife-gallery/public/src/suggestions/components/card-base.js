@@ -1,22 +1,31 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  contentPlaceholder: {
+    flex: '1 1 0',
+  },
   content: {
     paddingTop: 0
   }
-}));
+});
 
-const CardBase = ({ title, description, actions, children, ...props }) => {
+const CardBase = ({ className, title, description, actions, children, ...props }) => {
   const classes = useStyles();
   return (
-    <mui.Card {...props}>
+    <mui.Card className={clsx(className, classes.container)} {...props}>
       <mui.CardHeader title={title} subheader={description} />
-      {children && (
+      {children ? (
         <mui.CardContent className={classes.content}>
           {children}
         </mui.CardContent>
+      ) : (
+        <div className={classes.contentPlaceholder} />
       )}
       {actions && (
         <mui.CardActions>
@@ -28,6 +37,7 @@ const CardBase = ({ title, description, actions, children, ...props }) => {
 };
 
 CardBase.propTypes = {
+  className: PropTypes.string,
   title: PropTypes.node,
   description: PropTypes.node,
   actions: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
