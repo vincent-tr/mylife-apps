@@ -2,6 +2,7 @@
 
 import { createAction, io } from 'mylife-tools-ui';
 import { createOrRenewView, deleteView } from '../common/action-tools';
+import { docRef } from '../common/document-utils';
 import actionTypes from './action-types';
 import { getDocumentViewId, getKeywordsViewId } from './selectors';
 
@@ -73,12 +74,5 @@ export function removeDocumentFromAlbum(document, album) {
       reference: docRef(document)
     }));
 
-  };
-}
-
-function docRef(document) {
-  return {
-    type: document._entity,
-    id: document._id,
   };
 }
