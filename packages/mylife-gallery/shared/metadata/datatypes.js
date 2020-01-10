@@ -17,7 +17,7 @@ module.exports = [
   {
     id: 'document-info', structure: [
       { id: 'title', name: 'Titre', datatype: 'name', constraints: ['not-null'] },
-      { id: 'subTitle', name: 'Sous-titre', datatype: 'name' },
+      { id: 'subtitle', name: 'Sous-titre', datatype: 'name' },
     ]
   },
   {
