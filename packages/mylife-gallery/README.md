@@ -6,7 +6,6 @@ MyLife photo gallery
 
 # TODO:
  - document:
-   - ajouter/supprimer album (comme labels gmail)
    - ajouter/supprimer personne
  - suggestions:
    - Faire une suggestion pour créer un script pour déplacer les fichiers dans des dossiers correspondant a l album si les fichiers sont dans un dossier commençant par _ (eg: \_ATrier)
