@@ -94,25 +94,27 @@ class DocumentWithInfoView extends StoreContainer {
 }
 
 function createObject(entity, document) {
-  const albumWithIndex = findAlbumWithIndex(document);
+  const albumsWithIndex = getAlbumsWithIndex(document);
   const info = {
-    title: buildTitle(document, albumWithIndex),
-    subtitle: buildSubtitle(document, albumWithIndex)
+    title: buildTitle(document, albumsWithIndex[0]),
+    subtitle: buildSubtitle(document, albumsWithIndex[0]),
+    albums: albumsWithIndex.map(({ album, index }) => ({ id: album._id, index }))
   };
 
   return entity.newObject({ _id: document._id, document, info });
 }
 
-function findAlbumWithIndex(document) {
+function getAlbumsWithIndex(document) {
+  const list = [];
   for(const album of business.albumList()) {
     for(const [index, docref] of album.documents.entries()) {
       if(docref.type === document._entity && docref.id === document._id) {
-        return { album, index };
+        list.push({ album, index });
+        break; // cannot have same doc several times
       }
     }
   }
-
-  return null;
+  return list;
 }
 
 function buildTitle(document, albumWithIndex) {
