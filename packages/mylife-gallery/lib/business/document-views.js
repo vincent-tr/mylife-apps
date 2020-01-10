@@ -23,7 +23,7 @@ class DocumentWithInfoView extends StoreContainer {
 
     this.entity = getMetadataEntity('document-with-info');
     this._createSubscriptions();
-    this._filter = () => false; // will be set by _buildFilter
+    this._filter = () => false; // will be set by setCriteria
   }
 
   _createSubscriptions() {
@@ -51,7 +51,7 @@ class DocumentWithInfoView extends StoreContainer {
   }
 
   setCriteria(criteria) {
-    this._buildFilter(criteria);
+    this._filter = buildFilter(criteria);
     this.refresh();
   }
 
@@ -67,14 +67,14 @@ class DocumentWithInfoView extends StoreContainer {
     switch(type) {
       case 'create': {
         if(this._filter(after)) {
-          this._set(this._createObject(after));
+          this._set(createObject(this.entity, after));
         }
         break;
       }
 
       case 'update': {
         if(this._filter(after)) {
-          this._set(this._createObject(after));
+          this._set(createObject(this.entity, after));
         } else {
           this._delete(before._id);
         }
@@ -91,113 +91,114 @@ class DocumentWithInfoView extends StoreContainer {
         throw new Error(`Unsupported event type: '${type}'`);
     }
   }
+}
 
-  _buildInfo(document) {
-    if(document.caption) {
-      return {
-        title: document.caption,
-        subtitle: document.keywords.join(' ')
-      };
-    }
+function createObject(entity, document) {
+  const info = buildInfo(document);
+  return entity.newObject({ _id: document._id, document, info });
+}
 
-    const path = document.paths[0].path;
-    const fileName = path.replace(/^.*[\\/]/, '');
+function buildInfo(document) {
 
+  if(document.caption) {
     return {
-      title: fileName,
-      subtitle: path
+      title: document.caption,
+      subtitle: document.keywords.join(' ')
     };
   }
 
-  _createObject(document) {
-    const info = this._buildInfo(document);
-    return this.entity.newObject({ _id: document._id, document, info });
+  const path = document.paths[0].path;
+  const fileName = path.replace(/^.*[\\/]/, '');
+
+  return {
+    title: fileName,
+    subtitle: path
+  };
+}
+
+function buildFilter(criteria) {
+  logger.debug(`creating document filter with criteria '${JSON.stringify(criteria)}'`);
+
+  const parts = [];
+
+  if(criteria.document) {
+    parts.push(document => document._id === criteria.document);
   }
 
-  _buildFilter(criteria) {
-    logger.debug(`creating document filter with criteria '${JSON.stringify(criteria)}'`);
+  createIntervalFilterPart(criteria, parts, 'minDate', 'maxDate', 'date');
+  createIntervalFilterPart(criteria, parts, 'minIntegrationDate', 'maxIntegrationDate', 'integrationDate');
+  createIntervalFilterPart(criteria, parts, 'minDuration', 'maxDuration', null, document => (document._entity === 'video' ? document.duration : null));
 
-    const parts = [];
-
-    if(criteria.document) {
-      parts.push(document => document._id === criteria.document);
-    }
-
-    createIntervalFilterPart(criteria, parts, 'minDate', 'maxDate', 'date');
-    createIntervalFilterPart(criteria, parts, 'minIntegrationDate', 'maxIntegrationDate', 'integrationDate');
-    createIntervalFilterPart(criteria, parts, 'minDuration', 'maxDuration', null, document => (document._entity === 'video' ? document.duration : null));
-
-    if(criteria.type) {
-      const types = new Set(criteria.type);
-      parts.push(document => types.has(document._entity));
-    }
-
-    if(criteria.albums) {
-      const references = new Set();
-      for(const albumId of criteria.albums) {
-        const album = business.albumGet(albumId);
-        for(const albumDocument of album.documents) {
-          references.add(`${albumDocument.type}:${albumDocument.id}`);
-        }
-      }
-
-      parts.push(document => references.has(`${document._entity}:${document._id}`));
-    }
-
-    if(criteria.noAlbum) {
-      // all documents that are in some album
-      const references = new Set();
-      for(const album of business.albumList()) {
-        for(const albumDocument of album.documents) {
-          references.add(`${albumDocument.type}:${albumDocument.id}`);
-        }
-      }
-
-      parts.push(document => !references.has(`${document._entity}:${document._id}`));
-    }
-
-    if(criteria.persons) {
-      const personIds = new Set(criteria.persons);
-      parts.push(document => hasPerson(document, personIds));
-    }
-
-    if(criteria.noPerson) {
-      parts.push(hasNoPerson);
-    }
-
-    if(criteria.keywords) {
-      const criteriaKeywords = criteria.keywords.split(/(\s+)/);
-      parts.push(document => hasKeyword(document, criteriaKeywords));
-    }
-
-    if(criteria.caption) {
-      parts.push(document => document.caption && document.caption.includes(criteria.caption));
-    }
-
-    if(criteria.path) {
-      parts.push(document => hasPath(document, criteria.path));
-    }
-
-    if(criteria.pathDuplicate) {
-      parts.push(document => document.paths.length > 1);
-    }
-
-    createIntervalFilterPart(criteria, parts, 'minWidth', 'maxWidth', 'width');
-    createIntervalFilterPart(criteria, parts, 'minHeight', 'maxHeight', 'height');
-
-    switch(criteria.orientation) {
-      case 'landscape':
-        parts.push(document => document.width && document.height && document.height < document.width);
-        break;
-
-      case 'portrait':
-        parts.push(document => document.width && document.height && document.width < document.height);
-        break;
-
-    }
-
-    this._filter = document => parts.every(part => part(document));
+  if(criteria.type) {
+    const types = new Set(criteria.type);
+    parts.push(document => types.has(document._entity));
   }
+
+  if(criteria.albums) {
+    const references = new Set();
+    for(const albumId of criteria.albums) {
+      const album = business.albumGet(albumId);
+      for(const albumDocument of album.documents) {
+        references.add(`${albumDocument.type}:${albumDocument.id}`);
+      }
+    }
+
+    parts.push(document => references.has(`${document._entity}:${document._id}`));
+  }
+
+  if(criteria.noAlbum) {
+    // all documents that are in some album
+    const references = new Set();
+    for(const album of business.albumList()) {
+      for(const albumDocument of album.documents) {
+        references.add(`${albumDocument.type}:${albumDocument.id}`);
+      }
+    }
+
+    parts.push(document => !references.has(`${document._entity}:${document._id}`));
+  }
+
+  if(criteria.persons) {
+    const personIds = new Set(criteria.persons);
+    parts.push(document => hasPerson(document, personIds));
+  }
+
+  if(criteria.noPerson) {
+    parts.push(hasNoPerson);
+  }
+
+  if(criteria.keywords) {
+    const criteriaKeywords = criteria.keywords.split(/(\s+)/);
+    parts.push(document => hasKeyword(document, criteriaKeywords));
+  }
+
+  if(criteria.caption) {
+    parts.push(document => document.caption && document.caption.includes(criteria.caption));
+  }
+
+  if(criteria.path) {
+    parts.push(document => hasPath(document, criteria.path));
+  }
+
+  if(criteria.pathDuplicate) {
+    parts.push(document => document.paths.length > 1);
+  }
+
+  createIntervalFilterPart(criteria, parts, 'minWidth', 'maxWidth', 'width');
+  createIntervalFilterPart(criteria, parts, 'minHeight', 'maxHeight', 'height');
+
+  switch(criteria.orientation) {
+    case 'landscape':
+      parts.push(document => document.width && document.height && document.height < document.width);
+      break;
+
+    case 'portrait':
+      parts.push(document => document.width && document.height && document.width < document.height);
+      break;
+
+  }
+
+  return document => parts.every(part => part(document));
 }
 
 function createIntervalFilterPart(criteria, parts, minName, maxName, propName, propAccessor = document => document[propName]) {
