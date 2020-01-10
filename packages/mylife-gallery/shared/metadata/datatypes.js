@@ -15,6 +15,12 @@ module.exports = [
     ]
   },
   {
+    id: 'document-info', structure: [
+      { id: 'title', name: 'Titre', datatype: 'name', constraints: ['not-null'] },
+      { id: 'subTitle', name: 'Sous-titre', datatype: 'name' },
+    ]
+  },
+  {
     id: 'media', structure: [
       { id: 'id', name: 'Identifiant', datatype: 'identifier' }, // we do not directly reference gridfs file because it is not loaded as store collection
       { id: 'size', name: 'Taille', datatype: 'count' }
