@@ -16,6 +16,7 @@ WrappedCheckbox.propTypes = {
 
 const sortFields = [
   { id: null, text: '<Aucun>' },
+  { id: 'title', text: 'Titre' },
   { id: 'date', text: 'Date' },
   { id: 'integrationDate', text: 'Date d\'intégration' },
   { id: 'path', text: 'Chemin du fichier' },

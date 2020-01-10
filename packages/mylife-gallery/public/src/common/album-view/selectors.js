@@ -15,8 +15,8 @@ export const getRefCount = state => getBase(state).refCount;
 
 function albumComparer(album1, album2) {
   // sort by title (ignore case)
-  var title1 = album1.title.toUpperCase();
-  var title2 = album2.title.toUpperCase();
+  const title1 = album1.title.toUpperCase();
+  const title2 = album2.title.toUpperCase();
 
   if(title1 === title2) {
     return album1._id < album2._id ? -1 : 1;

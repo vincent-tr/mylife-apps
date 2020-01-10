@@ -39,6 +39,7 @@ const orderNumerics = {
 };
 
 const comparerFactories = {
+  title: createTitleComparer,
   date: createSimpleFieldComparer,
   integrationDate: createSimpleFieldComparer,
   path: createPathComparer,
@@ -59,8 +60,14 @@ function createPathComparer(field, order) {
   };
 }
 
+function createTitleComparer(field, order) {
+  return (doc1, doc2) => {
+    const comp = compareTitles(doc1, doc2) || compareDefault(doc1, doc2);
+    return comp * order;
+  };
+}
+
 function compareSimpleField(field, doc1, doc2) {
-  // console.log('compare', doc1, doc2, doc1.document[field], doc2.document[field])
   return compareValue(doc1.document[field], doc2.document[field]);
 }
 
@@ -85,10 +92,20 @@ function comparePaths(doc1, doc2) {
   return compareValue(paths1[0].path, paths2[0].path);
 }
 
+function compareTitles(doc1, doc2) {
+  const title1 = doc1.info.title.toUpperCase();
+  const title2 = doc2.info.title.toUpperCase();
+  return compareValue(title1, title2);
+}
+
 function compareDefault(doc1, doc2) {
   return compareSimpleField('_id', doc1, doc2);
 }
 
 function compareValue(val1, val2) {
+  if(val1 === val2) {
+    return 0;
+  }
+
   return val1 < val2 ? -1 : 1;
 }
