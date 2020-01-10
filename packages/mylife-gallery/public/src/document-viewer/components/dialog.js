@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import FullScreenDialog from '../../common/fullscreen-dialog';
 import DialogContentImage from './image/dialog-content';
 import DialogContentVideo from './video/dialog-content';
