@@ -11,9 +11,9 @@ exports.notifyAlbums = [ base, (session/*, message*/) => {
   return business.albumsNotify(session);
 } ];
 
-exports.createAlbum = [ base, (session, message) => {
-  const { values } = message;
-  return business.albumCreate(values);
+exports.createAlbumFromDocuments = [ base, (session, message) => {
+  const { title, documents } = message;
+  return business.albumCreateFromDocuments(title, documents);
 } ];
 
 exports.addDocumentToAlbum = [ base, (session, message) => {

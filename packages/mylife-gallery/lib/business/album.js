@@ -16,7 +16,8 @@ exports.albumGet = (id) => {
   return albums.get(id);
 };
 
-exports.albumCreate = (values) => {
+exports.albumCreate = albumCreate;
+function albumCreate(values) {
   const entity = getMetadataEntity('album');
   const albums = getStoreCollection('albums');
   const newAlbum = entity.newObject(values);
@@ -24,6 +25,19 @@ exports.albumCreate = (values) => {
   const item = albums.set(newAlbum);
   logger.info(`Created album '${item._id}'`);
   return item;
+}
+
+exports.albumCreateFromDocuments = (title, documents) => {
+  // take 5 first images thumbnails
+  const thumbnails = documents
+    .map(ref => business.documentGet(ref.type, ref.id))
+    .filter(doc => doc._entity === 'image')
+    .slice(0, 5)
+    .map(doc => doc.thumbnail);
+
+  const values = { title, documents, thumbnails };
+  const album = albumCreate(values);
+  return album._id;
 };
 
 exports.albumAddDocument = (albumId, reference) => {
