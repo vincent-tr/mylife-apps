@@ -40,10 +40,9 @@ exports.albumCreateFromDocuments = (title, documents) => {
   return album._id;
 };
 
-exports.albumAddDocument = (albumId, reference) => {
+exports.albumAddDocument = (album, reference) => {
   const entity = getMetadataEntity('album');
   const albums = getStoreCollection('albums');
-  const album = albums.get(albumId);
 
   // ensure reference is valid
   business.documentGet(reference.type, reference.id);
@@ -60,10 +59,9 @@ exports.albumAddDocument = (albumId, reference) => {
   albums.set(newAlbum);
 };
 
-exports.albumRemoveDocument = (albumId, reference) => {
+exports.albumRemoveDocument = (album, reference) => {
   const entity = getMetadataEntity('album');
   const albums = getStoreCollection('albums');
-  const album = albums.get(albumId);
   const index = findDocRefIndex(album, reference);
   if(index === -1) {
     throw new Error('Le document n\'existe pas');

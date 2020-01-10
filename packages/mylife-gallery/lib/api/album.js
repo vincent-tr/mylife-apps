@@ -18,10 +18,12 @@ exports.createAlbumFromDocuments = [ base, (session, message) => {
 
 exports.addDocumentToAlbum = [ base, (session, message) => {
   const { id, reference } = message;
-  return business.albumAddDocument(id, reference);
+  const album = business.albumGet(id);
+  return business.albumAddDocument(album, reference);
 } ];
 
 exports.removeDocumentFromAlbum = [ base, (session, message) => {
   const { id, reference } = message;
-  return business.albumRemoveDocument(id, reference);
+  const album = business.albumGet(id);
+  return business.albumRemoveDocument(album, reference);
 } ];
