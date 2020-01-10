@@ -15,20 +15,20 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const VideoViewer = ({ info, className, ...props }) => {
+const VideoViewer = ({ mediaUrl, className, ...props }) => {
   const classes = useStyles();
 
   return (
     <div className={clsx(classes.container, className)} {...props}>
       <video controls playsInline
-        src={info.contentUrl}
+        src={mediaUrl}
         className={classes.video} />
     </div>
   );
 };
 
 VideoViewer.propTypes = {
-  info: PropTypes.object.isRequired,
+  mediaUrl: PropTypes.string.isRequired,
   className: PropTypes.string,
 };
 

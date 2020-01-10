@@ -7,8 +7,7 @@ import DetailAdvanced from '../common/detail-advanced';
 import DocumentValue from '../common/document-value';
 import DetailLocation from './detail-location';
 
-const ImageDetail = ({ open, document, info, ...props }) => {
-  void info;
+const ImageDetail = ({ open, document, ...props }) => {
   return (
     <mui.Slide direction='left' in={open} mountOnEnter unmountOnExit>
       <mui.List {...props}>
@@ -36,7 +35,6 @@ const ImageDetail = ({ open, document, info, ...props }) => {
 ImageDetail.propTypes = {
   open: PropTypes.bool.isRequired,
   document: PropTypes.object.isRequired,
-  info: PropTypes.object.isRequired,
 };
 
 export default ImageDetail;

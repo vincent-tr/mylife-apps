@@ -1,7 +1,6 @@
 'use strict';
 
 import { React, PropTypes, mui, VirtuosoGrid, AutoSizer, clsx } from 'mylife-tools-ui';
-import * as documentUtils from '../../common/document-utils';
 import * as documentViewer from '../../document-viewer';
 import Thumbnail from '../../common/thumbnail';
 
@@ -51,8 +50,8 @@ const PADDING = 2*8;
 const Tile = ({ data, index }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
-  const document = data[index];
-  const { title, subtitle } = documentUtils.getInfo(document);
+  const { document, info } = data[index];
+  const { title, subtitle } = info;
 
   return (
     <mui.GridListTile classes={tileClasses} onClick={() => showViewer(data, index)}>

@@ -2,7 +2,6 @@
 
 import humanize from 'humanize';
 import { React, PropTypes, mui, VirtualizedTable } from 'mylife-tools-ui';
-import * as documentUtils from '../../../common/document-utils';
 
 const useStyles = mui.makeStyles(theme => ({
   noMaxWidth: {
@@ -85,7 +84,7 @@ const CleanOthersList = ({ documents, selection, setSelection, ...props }) => {
 
   const columns = [
     { dataKey: 'checkbox', width: 80, headerRenderer: headerCheckbox, cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellCheckbox },
-    { dataKey: 'title', headerRenderer: 'Titre', cellDataGetter: ({ rowData }) => documentUtils.getInfo(rowData).title },
+    { dataKey: 'filename', headerRenderer: 'Nom de fichier', cellDataGetter: ({ rowData }) => getFilename(rowData) },
     { dataKey: 'paths', headerRenderer: 'Chemins', cellDataGetter: ({ rowData }) => rowData.paths.map(p => p.path).join('; ') },
     { dataKey: 'fileSize', width: 100, headerRenderer: 'Taille', cellDataGetter: ({ rowData }) => humanize.filesize(rowData.fileSize) },
     { dataKey: 'loadingError', headerRenderer: 'Erreur au chargement', cellRenderer: cellLoadingError }
@@ -103,3 +102,9 @@ CleanOthersList.propTypes = {
 };
 
 export default CleanOthersList;
+
+function getFilename(document) {
+  const path = document.paths[0].path;
+  const fileName = path.replace(/^.*[\\/]/, '');
+  return fileName;
+}

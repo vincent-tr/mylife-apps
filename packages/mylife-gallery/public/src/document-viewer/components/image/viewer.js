@@ -29,17 +29,17 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const ImageViewer = ({ info, className, ...props }) => {
+const ImageViewer = ({ mediaUrl, className, ...props }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
 
   // onLoadStart not fired on chrome
-  useEffect(() => setLoading(true), [info.contentUrl]);
+  useEffect(() => setLoading(true), [mediaUrl]);
 
   return (
     <div className={clsx(classes.container, className)} {...props}>
       <img
-        src={info.contentUrl}
+        src={mediaUrl}
         onLoad={() => setLoading(false)}
         className={clsx(classes.image, { [classes.imageLoading]: loading })} />
       {loading && (
@@ -50,7 +50,7 @@ const ImageViewer = ({ info, className, ...props }) => {
 };
 
 ImageViewer.propTypes = {
-  info: PropTypes.object.isRequired,
+  mediaUrl: PropTypes.string.isRequired,
   className: PropTypes.string,
 };
 

@@ -8,26 +8,26 @@ import DialogContentOther from './other/dialog-content';
 import { getDocument } from '../selectors';
 import { fetchDocumentView, clearDocumentView } from '../actions';
 
-const DialogSelector = ({ document, ...props }) => {
-  switch(document._entity) {
+const DialogSelector = ({ documentWithInfo, ...props }) => {
+  switch(documentWithInfo.document._entity) {
     case 'image':
-      return (<DialogContentImage document={document} {...props} />);
+      return (<DialogContentImage documentWithInfo={documentWithInfo} {...props} />);
     case 'video':
-      return (<DialogContentVideo document={document} {...props} />);
+      return (<DialogContentVideo documentWithInfo={documentWithInfo} {...props} />);
     case 'other':
-      return (<DialogContentOther document={document} {...props} />);
+      return (<DialogContentOther documentWithInfo={documentWithInfo} {...props} />);
   }
 };
 
 DialogSelector.propTypes = {
-  document: PropTypes.object.isRequired,
+  documentWithInfo: PropTypes.object.isRequired,
 };
 
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
-      document: getDocument(state)
+      documentWithInfo: getDocument(state)
     })),
     ...useMemo(() => ({
       fetchDocumentView : (type, id) => dispatch(fetchDocumentView(type, id)),
@@ -37,7 +37,7 @@ const useConnect = () => {
 };
 
 const DialogContainer = ({ documentType, documentId, onPrev: prev, onNext: next, canPrev, canNext, ...props }) => {
-  const { fetchDocumentView, clearView, document } = useConnect();
+  const { fetchDocumentView, clearView, documentWithInfo } = useConnect();
   const enter = () => fetchDocumentView(documentType, documentId);
   const leave = clearView;
   useLifecycle(enter, leave);
@@ -45,11 +45,11 @@ const DialogContainer = ({ documentType, documentId, onPrev: prev, onNext: next,
   const onPrev = createViewFetcher(fetchDocumentView, prev, canPrev);
   const onNext = createViewFetcher(fetchDocumentView, next, canNext);
 
-  if(!document) {
+  if(!documentWithInfo) {
     return null;
   }
 
-  return (<DialogSelector document={document} onPrev={onPrev} onNext={onNext} {...props} />);
+  return (<DialogSelector documentWithInfo={documentWithInfo} onPrev={onPrev} onNext={onNext} {...props} />);
 };
 
 DialogContainer.propTypes = {

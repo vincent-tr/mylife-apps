@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, notifyView, StoreContainer, getStoreCollection } = require('mylife-tools-server');
+const { createLogger, notifyView, StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const business = require('.');
 
 const logger = createLogger('mylife:gallery:business:document-view');
@@ -20,6 +20,8 @@ exports.documentsWithInfoNotify = (session, criteria) => {
 class DocumentWithInfoView extends StoreContainer {
   constructor() {
     super();
+
+    this.entity = getMetadataEntity('document-with-info');
     this._createSubscriptions();
     this._filter = () => false; // will be set by _buildFilter
   }
@@ -65,14 +67,14 @@ class DocumentWithInfoView extends StoreContainer {
     switch(type) {
       case 'create': {
         if(this._filter(after)) {
-          this._set(after);
+          this._set(this._createObject(after));
         }
         break;
       }
 
       case 'update': {
         if(this._filter(after)) {
-          this._set(after);
+          this._set(this._createObject(after));
         } else {
           this._delete(before._id);
         }
@@ -88,6 +90,14 @@ class DocumentWithInfoView extends StoreContainer {
       default:
         throw new Error(`Unsupported event type: '${type}'`);
     }
+  }
+
+  _createObject(document) {
+    const info = {
+      title: 'title TODO',
+      subtitle: 'subtitle TODO'
+    };
+    return this.entity.newObject({ _id: document._id, document, info });
   }
 
   _buildFilter(criteria) {

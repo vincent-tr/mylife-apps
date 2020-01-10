@@ -10,8 +10,9 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const NavBar = ({ document, info, showDetail, onClose, onDetail, onPrev, onNext, ...props }) => {
-  void document;
+const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNext, ...props }) => {
+  const { info } = documentWithInfo;
+  const downloadInfo = getDownloadInfo(documentWithInfo);
   const classes = useStyles();
   return (
     <mui.AppBar {...props}>
@@ -37,7 +38,7 @@ const NavBar = ({ document, info, showDetail, onClose, onDetail, onPrev, onNext,
             <icons.actions.Detail />
           </mui.IconButton>
         )}
-        <mui.IconButton edge='end' color='inherit' component={mui.Link} download={info.downloadFilename} href={info.downloadUrl}>
+        <mui.IconButton edge='end' color='inherit' component={mui.Link} download={downloadInfo.filename} href={downloadInfo.url}>
           <icons.actions.Download />
         </mui.IconButton>
       </mui.Toolbar>
@@ -46,8 +47,7 @@ const NavBar = ({ document, info, showDetail, onClose, onDetail, onPrev, onNext,
 };
 
 NavBar.propTypes = {
-  document: PropTypes.object.isRequired,
-  info: PropTypes.object.isRequired,
+  documentWithInfo: PropTypes.object.isRequired,
   showDetail: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onDetail: PropTypes.func,
@@ -56,3 +56,11 @@ NavBar.propTypes = {
 };
 
 export default NavBar;
+
+function getDownloadInfo(documentWithInfo) {
+  const { document, info } = documentWithInfo;
+  return {
+    filename: info.title,
+    url: `/content/raw/${document._entity}/${document._id}`
+  };
+}
