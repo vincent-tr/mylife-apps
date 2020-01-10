@@ -30,9 +30,13 @@ export function useImage(sourceUrl) {
   const [objectUrl, setObjectUrl] = useState(null);
 
   useEffect(() => {
-    safeGetThumbnail(sourceUrl).then(setObjectUrl);
+    const controller = new AbortController();
+    safeGetThumbnail(sourceUrl, controller, setObjectUrl);
 
     return () => {
+      // in case we unmount before download has ended
+      controller.abort();
+
       if(objectUrl) {
         URL.revokeObjectURL(objectUrl);
       }
@@ -48,10 +52,12 @@ export function useImages(sourceUrls) {
   const [objectUrls, setObjectUrls] = useState([]);
 
   useEffect(() => {
+    const controller = new AbortController();
     setObjectUrls(sourceUrls.map(() => null));
 
     const fetchThumbnail = (index) => {
-      safeGetThumbnail(sourceUrls[index]).then(objectUrl => setObjectUrls(array => utils.immutable.arrayUpdate(array, index, objectUrl)));
+      const setter = objectUrl => setObjectUrls(array => utils.immutable.arrayUpdate(array, index, objectUrl));
+      safeGetThumbnail(sourceUrls[index], controller, setter);
     };
 
     for(let i=0; i<sourceUrls.length; ++i) {
@@ -59,6 +65,9 @@ export function useImages(sourceUrls) {
     }
 
     return () => {
+      // in case we unmount before download has ended
+      controller.abort();
+
       for(const objectUrl of objectUrls) {
         if(objectUrl) {
           URL.revokeObjectURL(objectUrl);
@@ -72,16 +81,27 @@ export function useImages(sourceUrls) {
   return objectUrls;
 }
 
-async function safeGetThumbnail(id) {
+async function safeGetThumbnail(id, controller, setter) {
   try {
-    const response = await fetch(`/content/thumbnail/${id}`);
+    const response = await fetch(`/content/thumbnail/${id}`, { signal: controller.signal });
     if (!response.ok) {
       throw new Error(`HTTP error, status = ${response.status}`);
     }
 
     const blob = await response.blob();
-    return URL.createObjectURL(blob);
+
+    // only set if not aborted
+    if(controller.signal.aborted) {
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(blob);
+    setter(objectUrl);
   } catch(err) {
+    if(controller.signal.aborted) {
+      return;
+    }
+    
     console.error(`Error loading thuumbnail ${id}`, err); // eslint-disable-line no-console
   }
 }
