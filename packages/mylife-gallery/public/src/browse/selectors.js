@@ -60,12 +60,13 @@ function createPathComparer(field, order) {
 }
 
 function compareSimpleField(field, doc1, doc2) {
-  return compareValue(doc1[field], doc2[field]);
+  // console.log('compare', doc1, doc2, doc1.document[field], doc2.document[field])
+  return compareValue(doc1.document[field], doc2.document[field]);
 }
 
 function comparePaths(doc1, doc2) {
-  const paths1 = doc1.paths;
-  const paths2 = doc2.paths;
+  const paths1 = doc1.document.paths;
+  const paths2 = doc2.document.paths;
 
   // if both duplicates consider them equal
   if(paths1.length > 1 && paths2.length > 1) {
