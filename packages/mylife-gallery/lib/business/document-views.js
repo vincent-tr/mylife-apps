@@ -1,5 +1,6 @@
 'use strict';
 
+const { format: formatDate } = require('date-fns');
 const { createLogger, notifyView, StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const business = require('.');
 
@@ -93,26 +94,60 @@ class DocumentWithInfoView extends StoreContainer {
 }
 
 function createObject(entity, document) {
-  const info = buildInfo(document);
+  const albumWithIndex = findAlbumWithIndex(document);
+  const info = {
+    title: buildTitle(document, albumWithIndex),
+    subtitle: buildSubtitle(document, albumWithIndex)
+  };
+
   return entity.newObject({ _id: document._id, document, info });
 }
 
-function buildInfo(document) {
-
-  if(document.caption) {
-    return {
-      title: document.caption,
-      subtitle: document.keywords.join(' ')
-    };
+function findAlbumWithIndex(document) {
+  for(const album of business.albumList()) {
+    for(const [index, docref] of album.documents.entries()) {
+      if(docref.type === document._entity && docref.id === document._id) {
+        return { album, index };
+      }
+    }
   }
 
+  return null;
+}
+
+function buildTitle(document, albumWithIndex) {
+  // album index
+  if(albumWithIndex) {
+    const { album, index } = albumWithIndex;
+    return `${album.title} ${index.toString().padStart(3, '0')}`;
+  }
+
+  // document date
+  if(document.date) {
+    return formatDate(document.date, 'dd/MM/yyyy');
+  }
+
+  // file name
   const path = document.paths[0].path;
   const fileName = path.replace(/^.*[\\/]/, '');
+  return fileName;
+}
 
-  return {
-    title: fileName,
-    subtitle: path
-  };
+function buildSubtitle(document, albumWithIndex) {
+  if(document.caption) {
+    return document.caption;
+  }
+
+  if(document.keywords.length !== 0) {
+    return document.keywords.join(' ');
+  }
+
+  // if there is an album, no need to return a raw path
+  if(albumWithIndex) {
+    return null;
+  }
+
+  return document.paths[0].path;
 }
 
 function buildFilter(criteria) {
