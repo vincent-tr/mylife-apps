@@ -51,9 +51,17 @@ async function extractMetadata(fullPath) {
   values.height = videoStream.height;
   values.width = videoStream.width;
   const creationDate = (meta.format.tags && meta.format.tags.creation_time) || null;
-  values.metadata.date = creationDate;
+  values.metadata.date = parseDate(creationDate);
 
   return values;
+}
+
+function parseDate(date) {
+  if(!date) {
+    return null;
+  }
+
+  return Date.parse(date);
 }
 
 async function createThumbnailsValues(fsh, contentPath, values) {
