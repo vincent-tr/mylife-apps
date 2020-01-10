@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  id: 'documentWithInfo',
+  id: 'document-with-info',
   parent: 'base',
   name: 'Document avec inf',
   fields: [
