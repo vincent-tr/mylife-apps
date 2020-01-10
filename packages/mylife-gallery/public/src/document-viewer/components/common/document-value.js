@@ -7,7 +7,8 @@ import DetailCaption from './detail-caption';
 import DetailKeywords from './detail-keywords';
 import DetailAlbums from './detail-albums';
 
-const DocumentValue = ({ document, field }) => {
+const DocumentValue = ({ documentWithInfo, field }) => {
+  const { document } = documentWithInfo;
   switch(field) {
     case 'hash':
       return (<DetailItem name={getFieldName('document', 'hash')} value={document.hash} />);
@@ -22,14 +23,14 @@ const DocumentValue = ({ document, field }) => {
     case 'keywords':
       return (<DetailKeywords document={document} />);
     case 'albums':
-      return (<DetailAlbums document={document} />);
+      return (<DetailAlbums documentWithInfo={documentWithInfo} />);
     default:
       throw new Error(`Unknown document field: '${field}'`);
   }
 };
 
 DocumentValue.propTypes = {
-  document: PropTypes.object.isRequired,
+  documentWithInfo: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired
 };
 

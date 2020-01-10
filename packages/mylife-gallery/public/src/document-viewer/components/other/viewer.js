@@ -5,23 +5,23 @@ import DetailItem from '../common/detail-item';
 import DocumentValue from '../common/document-value';
 
 // viewer can only show details
-const OtherViewer = ({ document, ...props }) => (
+const OtherViewer = ({ documentWithInfo, ...props }) => (
   <mui.List {...props}>
-    <DocumentValue document={document} field='caption' />
-    <DocumentValue document={document} field='keywords' />
-    <DocumentValue document={document} field='albums' />
+    <DocumentValue documentWithInfo={documentWithInfo} field='caption' />
+    <DocumentValue documentWithInfo={documentWithInfo} field='keywords' />
+    <DocumentValue documentWithInfo={documentWithInfo} field='albums' />
 
-    <DocumentValue document={document} field='integrationDate' />
-    <DocumentValue document={document} field='paths' />
-    <DocumentValue document={document} field='fileSize' />
-    <DocumentValue document={document} field='hash' />
+    <DocumentValue documentWithInfo={documentWithInfo} field='integrationDate' />
+    <DocumentValue documentWithInfo={documentWithInfo} field='paths' />
+    <DocumentValue documentWithInfo={documentWithInfo} field='fileSize' />
+    <DocumentValue documentWithInfo={documentWithInfo} field='hash' />
 
-    <DetailItem name={'Erreur à l\'intégration du fichier'} value={document.loadingError} />
+    <DetailItem name={'Erreur à l\'intégration du fichier'} value={documentWithInfo.document.loadingError} />
   </mui.List>
 );
 
 OtherViewer.propTypes = {
-  document: PropTypes.object.isRequired,
+  documentWithInfo: PropTypes.object.isRequired,
 };
 
 export default OtherViewer;

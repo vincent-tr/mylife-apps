@@ -1,47 +1,69 @@
 'use strict';
 
 import { React, PropTypes, useMemo, mui, useDispatch } from 'mylife-tools-ui';
+import { useAlbumView } from '../../../common/album-view';
 
-const albums = ['album 1', 'album 2', 'album 3', 'album 4', 'album 5', 'album 1', 'album 2', 'album 3', 'album 4', 'album 5'];
-
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   list: {
     width: 300,
     height: 180,
     overflow: 'auto'
+  },
+  addButton: {
+    marginLeft: theme.spacing(1),
+    color: theme.status.success
+  },
+  deleteButton: {
+    marginLeft: theme.spacing(1),
+    color: theme.status.error
   }
-});
+}));
 
-const DetailAlbums = ({ document }) => {
+const DetailAlbums = ({ documentWithInfo }) => {
   const classes = useStyles();
+  const { albumView } = useAlbumView();
+  const albumIds = documentWithInfo.info.albums.map(item => item.id);
 
   return (
     <mui.ListItem>
       <mui.ListItemText
         disableTypography
         primary={
-          <mui.Typography>{'Albums'}</mui.Typography>
+          <mui.Typography>
+            {'Albums'}
+            <mui.Tooltip title='Ajouter le document à un album'>
+              <mui.IconButton className={classes.addButton}>
+                <mui.icons.AddCircle />
+              </mui.IconButton>
+            </mui.Tooltip>
+          </mui.Typography>
         }
         secondary={
           <mui.List className={classes.list} dense>
-            {albums.map((album, index) => (
-              <mui.ListItem key={index}>
-                <mui.Typography>
-                  {album}
-                </mui.Typography>
-                <mui.IconButton>
-                  <mui.icons.Delete />
-                </mui.IconButton>
-              </mui.ListItem>
-            ))}
+            {albumIds.map(id => {
+              const album = albumView.get(id);
+              return (
+                <mui.ListItem key={id}>
+                  <mui.Typography>
+                    {album.title}
+                  </mui.Typography>
+                  <mui.Tooltip title={'Enlever le document de l\'album'}>
+                    <mui.IconButton className={classes.deleteButton}>
+                      <mui.icons.Delete />
+                    </mui.IconButton>
+                  </mui.Tooltip>
+                </mui.ListItem>
+              );
+            })}
           </mui.List>
-        } />
+        }
+      />
     </mui.ListItem>
   );
 };
 
 DetailAlbums.propTypes = {
-  document: PropTypes.object.isRequired
+  documentWithInfo: PropTypes.object.isRequired
 };
 
 export default DetailAlbums;

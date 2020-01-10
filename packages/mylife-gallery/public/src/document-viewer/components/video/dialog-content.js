@@ -24,7 +24,7 @@ const VideoDialogContent = ({ documentWithInfo, onClose, onPrev, onNext }) => {
         onNext={onNext} />
       <mui.DialogContent className={classes.viewerContainer}>
         <Viewer mediaUrl={mediaUrl} className={classes.viewer}/>
-        <Detail document={documentWithInfo.document} className={classes.detail} open={showDetail} />
+        <Detail documentWithInfo={documentWithInfo} className={classes.detail} open={showDetail} />
       </mui.DialogContent>
     </React.Fragment>
   );

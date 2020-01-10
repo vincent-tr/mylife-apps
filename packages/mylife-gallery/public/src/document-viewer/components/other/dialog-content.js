@@ -17,7 +17,7 @@ const OtherDialogContent = ({ documentWithInfo, onClose, onPrev, onNext }) => {
         onPrev={onPrev}
         onNext={onNext}/>
       <mui.DialogContent className={classes.viewerContainer}>
-        <Viewer document={documentWithInfo.document} className={classes.viewer}/>
+        <Viewer documentWithInfo={documentWithInfo} className={classes.viewer}/>
       </mui.DialogContent>
     </React.Fragment>
   );

@@ -6,23 +6,24 @@ import DetailItem from '../common/detail-item';
 import DetailAdvanced from '../common/detail-advanced';
 import DocumentValue from '../common/document-value';
 
-const VideoDetail = ({ open, document, ...props }) => {
+const VideoDetail = ({ open, documentWithInfo, ...props }) => {
+  const { document } = documentWithInfo;
   return (
     <mui.Slide direction='left' in={open} mountOnEnter unmountOnExit>
       <mui.List {...props}>
-        <DocumentValue document={document} field='caption' />
-        <DocumentValue document={document} field='keywords' />
+        <DocumentValue documentWithInfo={documentWithInfo} field='caption' />
+        <DocumentValue documentWithInfo={documentWithInfo} field='keywords' />
         <DetailItem name='Date de prise' value={document.date} />
-        <DocumentValue document={document} field='albums' />
+        <DocumentValue documentWithInfo={documentWithInfo} field='albums' />
         <DetailItem name={getFieldName('video', 'persons')} value={'TODO document.persons'} />
         <DetailItem name={getFieldName('video', 'duration')} value={document.duration} type='duration' />
         <DetailItem name='Dimensions' value={`${document.width} x ${document.height}`} />
 
         <DetailAdvanced>
-          <DocumentValue document={document} field='integrationDate' />
-          <DocumentValue document={document} field='paths' />
-          <DocumentValue document={document} field='fileSize' />
-          <DocumentValue document={document} field='hash' />
+          <DocumentValue documentWithInfo={documentWithInfo} field='integrationDate' />
+          <DocumentValue documentWithInfo={documentWithInfo} field='paths' />
+          <DocumentValue documentWithInfo={documentWithInfo} field='fileSize' />
+          <DocumentValue documentWithInfo={documentWithInfo} field='hash' />
         </DetailAdvanced>
       </mui.List>
     </mui.Slide>
@@ -31,8 +32,7 @@ const VideoDetail = ({ open, document, ...props }) => {
 
 VideoDetail.propTypes = {
   open: PropTypes.bool.isRequired,
-  document: PropTypes.object.isRequired,
-  info: PropTypes.object.isRequired,
+  documentWithInfo: PropTypes.object.isRequired
 };
 
 export default VideoDetail;
