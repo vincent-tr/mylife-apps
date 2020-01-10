@@ -8,14 +8,15 @@ import { getViewId, getRefCount } from './selectors';
 const local = {
   ref: createAction(actionTypes.REF),
   unref: createAction(actionTypes.UNREF),
+  setView: createAction(actionTypes.SET_VIEW),
 };
 
 const fetchAlbums = () => createOrUpdateView({
   criteriaSelector: () => null,
   viewSelector: getViewId,
   setViewAction: local.setView,
-  service: 'suggestion',
-  method: 'notifySuggestions'
+  service: 'album',
+  method: 'notifyAlbums'
 });
 
 const clearAlbums = () => deleteView({

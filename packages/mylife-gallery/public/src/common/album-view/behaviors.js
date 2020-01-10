@@ -18,14 +18,8 @@ const useConnect = () => {
   };
 };
 
-export function useAlbums() {
-  const { enter, leave, albums } = useConnect();
-  useLifecycle(enter, leave);
-  return albums;
-}
-
 export function useAlbumView() {
-  const { enter, leave, albumView } = useConnect();
+  const { enter, leave, albums, albumView } = useConnect();
   useLifecycle(enter, leave);
-  return albumView;
+  return { albums, albumView };
 }
