@@ -15,7 +15,7 @@ const getDocuments = (criteria = {}) => createOrUpdateView({
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'document',
-  method: 'notifyDocuments'
+  method: 'notifyDocumentsWithInfo'
 });
 
 const clearDocuments = () => deleteView({

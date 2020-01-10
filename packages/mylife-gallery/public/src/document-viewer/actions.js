@@ -16,7 +16,7 @@ export const fetchDocumentView = (type, id) => createOrRenewView({
   viewSelector: getDocumentViewId,
   setViewAction: local.setDocumentView,
   service: 'document',
-  method: 'notifyDocument'
+  method: 'notifyDocumentWithInfo'
 });
 
 export const clearDocumentView = () => deleteView({

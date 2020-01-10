@@ -5,18 +5,19 @@ const business = require('.');
 
 const logger = createLogger('mylife:gallery:business:document-view');
 
-exports.documentNotify = (session, type, id) => {
-  const collection = business.getDocumentStoreCollection(type);
-  return notifyView(session, collection.createView(document => document._id === id));
+exports.documentWithInfoNotify = (session, type, id) => {
+  const view = new DocumentWithInfoView();
+  view.setCriteria({ document: id });
+  return notifyView(session, view);
 };
 
-exports.documentsNotify = (session, criteria) => {
-  const view = new DocumentView();
+exports.documentsWithInfoNotify = (session, criteria) => {
+  const view = new DocumentWithInfoView();
   view.setCriteria(criteria);
   return notifyView(session, view);
 };
 
-class DocumentView extends StoreContainer {
+class DocumentWithInfoView extends StoreContainer {
   constructor() {
     super();
     this._createSubscriptions();
@@ -93,6 +94,10 @@ class DocumentView extends StoreContainer {
     logger.debug(`creating document filter with criteria '${JSON.stringify(criteria)}'`);
 
     const parts = [];
+
+    if(criteria.document) {
+      parts.push(document => document._id === criteria.document);
+    }
 
     createIntervalFilterPart(criteria, parts, 'minDate', 'maxDate', 'date');
     createIntervalFilterPart(criteria, parts, 'minIntegrationDate', 'maxIntegrationDate', 'integrationDate');

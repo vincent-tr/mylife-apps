@@ -7,14 +7,14 @@ exports.meta = {
   name : 'document'
 };
 
-exports.notifyDocument = [ base, (session, message) => {
+exports.notifyDocumentWithInfo = [ base, (session, message) => {
   const { type, id } = message;
-  return business.documentNotify(session, type, id);
+  return business.documentWithInfoNotify(session, type, id);
 } ];
 
-exports.notifyDocuments = [ base, (session, message) => {
+exports.notifyDocumentsWithInfo = [ base, (session, message) => {
   const { criteria } = message;
-  return business.documentsNotify(session, criteria);
+  return business.documentsWithInfoNotify(session, criteria);
 } ];
 
 exports.updateDocument = [ base, (session, message) => {
