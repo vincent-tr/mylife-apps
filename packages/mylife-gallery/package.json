@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/vincent-tr/mylife-gallery#readme",
   "dependencies": {
+    "date-fns": "^2.9.0",
     "exif-parser": "^0.1.12",
     "ffmpeg-static": "^2.7.0",
     "ffprobe-static": "^3.0.0",
