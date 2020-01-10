@@ -27,6 +27,11 @@ function albumCreate(values) {
   return item;
 }
 
+exports.albumDelete = (album) => {
+  throw new Error('TODO');
+  // TODO: delete thumbnails if not used anymore
+};
+
 exports.albumCreateFromDocuments = (title, documents) => {
   // take 5 first images thumbnails
   const thumbnails = documents
