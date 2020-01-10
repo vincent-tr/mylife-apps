@@ -3,6 +3,7 @@ MyLife photo gallery
 
 ## Notes
  - tag on image: https://www.npmjs.com/package/react-rectangle-selection
+ - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp
 
 # TODO:
  - document:
