@@ -74,6 +74,11 @@ exports.albumRemoveDocument = (album, reference) => {
   albums.set(newAlbum);
 };
 
+exports.albumListWithDocumentReference = (reference) => {
+  const albums = getStoreCollection('albums');
+  return albums.filter(album => findDocRefIndex(album, reference) > -1);
+};
+
 exports.albumsNotify = (session) => {
   const albums = getStoreCollection('albums');
   return notifyView(session, albums.createView());

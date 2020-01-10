@@ -2,6 +2,8 @@
 
 const { createLogger, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
+const business = require('.');
+
 const logger = createLogger('mylife:gallery:business:document');
 
 exports.documentList = documentList;
@@ -39,7 +41,12 @@ exports.documentRemove = (type, id) => {
   if(!collection.delete(id)) {
     throw new Error(`Cannot delete document '${id}' (type='${type}'): document not found in collection`);
   }
-  // TODO: remove from albums
+
+  const reference = { type, id };
+  for(const album of business.albumListWithDocumentReference(reference)) {
+    business.albumRemoveDocument(album, reference);
+  }
+
   // TODO: delete thumbnails (image, video) if not used anymore
 };
 
