@@ -24,6 +24,7 @@ class DocumentWithInfoView extends StoreContainer {
 
     this.entity = getMetadataEntity('document-with-info');
     this._createSubscriptions();
+    this._criteria = {};
     this._filter = () => false; // will be set by setCriteria
   }
 
@@ -39,7 +40,7 @@ class DocumentWithInfoView extends StoreContainer {
 
     // add subscription on albums to reset filtering on albums
     const albums = getStoreCollection('albums');
-    const subscription = new business.CollectionSubscription(this, albums, () => this.refresh());
+    const subscription = new business.CollectionSubscription(this, albums, () => this._rebuildFilter()); // need to rebuild criteria to have proper albums buckets
     this.subscriptions.push(subscription);
   }
 
@@ -52,7 +53,12 @@ class DocumentWithInfoView extends StoreContainer {
   }
 
   setCriteria(criteria) {
-    this._filter = buildFilter(criteria);
+    this._criteria = criteria;
+    this._rebuildFilter();
+  }
+
+  _rebuildFilter() {
+    this._filter = buildFilter(this._criteria);
     this.refresh();
   }
 

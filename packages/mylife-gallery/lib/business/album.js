@@ -54,7 +54,7 @@ exports.albumAddDocument = (albumId, reference) => {
   }
 
   const newDocuments = utils.immutable.arrayPush(album.documents, reference);
-  const newAlbum = entity.getField('documents').setValue(newDocuments);
+  const newAlbum = entity.getField('documents').setValue(album, newDocuments);
 
   logger.info(`Adding document '${reference.type}:${reference.id}' on album '${album._id}'`);
   albums.set(newAlbum);
@@ -70,7 +70,7 @@ exports.albumRemoveDocument = (albumId, reference) => {
   }
 
   const newDocuments = utils.immutable.arrayRemove(album.documents, index);
-  const newAlbum = entity.getField('documents').setValue(newDocuments);
+  const newAlbum = entity.getField('documents').setValue(album, newDocuments);
 
   logger.info(`Removing document '${reference.type}:${reference.id}' on album '${album._id}'`);
   albums.set(newAlbum);

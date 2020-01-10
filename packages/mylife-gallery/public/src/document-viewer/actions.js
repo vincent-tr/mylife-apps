@@ -43,10 +43,42 @@ export function updateDocument(document, values) {
     await dispatch(io.call({
       service: 'document',
       method: 'updateDocument',
-      type: document._entity,
-      id: document._id,
+      ...docRef(document),
       values
     }));
 
+  };
+}
+
+export function addDocumentToAlbum(document, album) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'album',
+      method: 'addDocumentToAlbum',
+      id: album._id,
+      reference: docRef(document)
+    }));
+
+  };
+}
+
+export function removeDocumentFromAlbum(document, album) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'album',
+      method: 'removeDocumentFromAlbum',
+      id: album._id,
+      reference: docRef(document)
+    }));
+
+  };
+}
+
+function docRef(document) {
+  return {
+    type: document._entity,
+    id: document._id,
   };
 }
