@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
   children: {
+    flex: '1 1 auto'
   }
 }));
 
