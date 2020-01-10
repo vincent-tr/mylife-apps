@@ -92,11 +92,25 @@ class DocumentWithInfoView extends StoreContainer {
     }
   }
 
-  _createObject(document) {
-    const info = {
-      title: 'title TODO',
-      subtitle: 'subtitle TODO'
+  _buildInfo(document) {
+    if(document.caption) {
+      return {
+        title: document.caption,
+        subtitle: document.keywords.join(' ')
+      };
+    }
+
+    const path = document.paths[0].path;
+    const fileName = path.replace(/^.*[\\/]/, '');
+
+    return {
+      title: fileName,
+      subtitle: path
     };
+  }
+
+  _createObject(document) {
+    const info = this._buildInfo(document);
     return this.entity.newObject({ _id: document._id, document, info });
   }
 
