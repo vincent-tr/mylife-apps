@@ -17,4 +17,4 @@ MyLife photo gallery
    - here: https://github.com/vincent-tr/mylife-apps/blob/f3aa15a16858a4d7efea72d68a6f1e7437bbf589/packages/mylife-tools-ui/src/modules/routing/components/layout-router.js#L14
  - browse (+liste album ?)
    - sélection multiple dans liste de photo et création/affection d'album comme labels Gmail
- - document/person delete: handle properly deletion of dependencies
+ - document/album/person delete: handle properly deletion of dependencies
