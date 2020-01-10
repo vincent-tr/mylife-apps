@@ -51,6 +51,19 @@ export function updateDocument(document, values) {
   };
 }
 
+export function createAlbumWithDocument(document, title) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'album',
+      method: 'createAlbumFromDocuments',
+      title,
+      documents: [docRef(document)]
+    }));
+
+  };
+}
+
 export function addDocumentToAlbum(document, album) {
   return async (dispatch) => {
 
