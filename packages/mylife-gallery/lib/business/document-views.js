@@ -86,7 +86,6 @@ class DocumentWithInfoView extends StoreContainer {
         break;
       }
 
-
       default:
         throw new Error(`Unsupported event type: '${type}'`);
     }
