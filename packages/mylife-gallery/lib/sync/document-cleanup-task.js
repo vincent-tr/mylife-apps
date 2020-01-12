@@ -11,7 +11,7 @@ exports.DocumentCleanupTask = class DocumentCleanupTask {
     logger.debug('Cleaning documents');
 
     const documentsToDelete = listDocumentsToDelete();
-    removeDocuments(documentsToDelete);
+    await removeDocuments(documentsToDelete);
 
     logger.debug(`Done cleanup documents: ${documentsToDelete.length} documents deleted`);
 
@@ -27,10 +27,10 @@ function listDocumentsToDelete() {
   return business.documentFilter(document => document.paths.length === 0);
 }
 
-function removeDocuments(documentsToDelete) {
+async function removeDocuments(documentsToDelete) {
   for(const document of documentsToDelete) {
     try {
-      business.documentRemove(document);
+      await business.documentRemove(document);
     } catch(err) {
       logger.error(`Error deleting document '${document._entity}:${document._id}' : ${err.stack}`);
     }

@@ -34,15 +34,24 @@ exports.documentCreate = (type, values) => {
   return item;
 };
 
-exports.documentRemove = (document) => {
+exports.documentRemove = async (document) => {
   logger.info(`Deleting document '${document._entity}:${document._id}'`);
-  
+
   const type = document._entity;
   const id = document._id;
 
   const collection = getDocumentStoreCollection(type);
   if(!collection.delete(id)) {
     throw new Error(`Cannot delete document '${type}:${id}' : document not found in collection`);
+  }
+
+  switch(type) {
+    case 'image':
+    case 'video': {
+      const mediaId = document.media.id;
+      await business.mediaRemove(mediaId);
+      break;
+    }
   }
 
   const reference = { type, id };
