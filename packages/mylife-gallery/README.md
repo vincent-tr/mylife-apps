@@ -23,8 +23,6 @@ MyLife photo gallery
    - criteria collapsed albums
    - criteria disable albums multi-select if no-album checked
  - document/album/person delete: handle properly deletion of dependencies
-   - document: thumbnails
-   - album: thumbnails
    - person: documents
  - sync
    - date images foireuses ? 1/1/1970, 1980 ?

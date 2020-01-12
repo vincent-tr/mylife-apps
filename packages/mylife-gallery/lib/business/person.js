@@ -48,6 +48,8 @@ exports.personDelete = async (person) => {
   for(const thumbnailId of person.thumbnails) {
     await business.thumbnailRemoveIfUnused(thumbnailId);
   }
+
+  // TODO: update document that reference it
 };
 
 exports.personsNotify = (session) => {
