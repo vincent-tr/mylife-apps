@@ -18,7 +18,7 @@ const useConnect = () => {
       enter: () => dispatch(enter()),
       leave: () => dispatch(leave()),
       changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
-      changeDisplay: (criteria) => dispatch(changeDisplay(criteria)),
+      changeDisplay: (display) => dispatch(changeDisplay(display)),
     }), [dispatch])
   };
 };
