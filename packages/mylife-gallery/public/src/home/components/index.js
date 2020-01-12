@@ -17,8 +17,19 @@ const useStyles = mui.makeStyles({
     flexDirection: 'column',
     flex: '1 1 auto',
     overflowY: 'auto'
+  },
+  criteria: {
+  },
+  list: {
+    flex: '1 1 auto'
   }
 });
+
+// empty set means all
+const initialCriteria = {
+  title: null,
+  keywords: null,
+};
 
 const Home = () => {
   const classes = useStyles();
