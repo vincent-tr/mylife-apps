@@ -21,6 +21,7 @@ MyLife photo gallery
  - browse (+liste album ?)
    - sélection multiple dans liste de photo et création/affection d'album comme labels Gmail
    - criteria collapsed albums
+   - criteria disable albums multi-select if no-album checked
  - document/album/person delete: handle properly deletion of dependencies
    - document: thumbnails/media
    - album: thumbnails
