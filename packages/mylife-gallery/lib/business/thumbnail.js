@@ -2,6 +2,7 @@
 
 const { createLogger, getDatabaseCollection, getService } = require('mylife-tools-server');
 const logger = createLogger('mylife:gallery:business:thumbnail');
+const business = require('.');
 
 exports.thumbnailCreate = async (content) => {
   if(!content) {
@@ -19,12 +20,27 @@ exports.thumbnailCreate = async (content) => {
   return id;
 };
 
-exports.thumbnailRemove = async (id) => {
+exports.thumbnailRemove = thumbnailRemove;
+async function thumbnailRemove(id) {
   const collection = getThumbnailCollection();
 
   logger.info(`Delete thumbnail (id: '${id}')`);
   const result = await collection.deleteOne({ _id : newObjectID(id) });
   return !!result.deletedCount;
+}
+
+exports.thumbnailRemoveIfUnused = async (id) => {
+  if(business.documentIsThumbnailUsed(id)) {
+    return false;
+  }
+  if(business.albumIsThumbnailUsed(id)) {
+    return false;
+  }
+  if(business.personIsThumbnailUsed(id)) {
+    return false;
+  }
+
+  return await thumbnailRemove(id);
 };
 
 exports.thumbnailGet = async (id) => {

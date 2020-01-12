@@ -37,10 +37,17 @@ function personCreate(values) {
   return item;
 }
 
-exports.personDelete = (person) => {
-  throw new Error('TODO');
-  // TODO: update documents to not reference it
-  // TODO: delete thumbnails if not used anymore
+exports.personDelete = async (person) => {
+  logger.info(`Deleting person '${person._id}'`);
+
+  const collection = getStoreCollection('persons');
+  if(!collection.delete(person._id)) {
+    throw new Error(`Cannot delete person '${person._id}' : document not found in collection`);
+  }
+
+  for(const thumbnailId of person.thumbnails) {
+    await business.thumbnailRemoveIfUnused(thumbnailId);
+  }
 };
 
 exports.personsNotify = (session) => {

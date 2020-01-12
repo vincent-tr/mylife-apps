@@ -24,6 +24,23 @@ exports.documentFindByHash = (hash) => {
   return documentFilter(document => document.hash === hash)[0];
 };
 
+exports.documentIsThumbnailUsed = (thumbnailId) => {
+  for(const document of getStoreCollection('images')) {
+    if(document.thumbnail === thumbnailId) {
+      return true;
+    }
+  }
+
+  for(const document of getStoreCollection('videos')) {
+    if(document.thumbnails.includes(thumbnailId)) {
+      return true;
+    }
+  }
+
+  // other has no thumbnail
+  return false;
+};
+
 exports.documentCreate = (type, values) => {
   const entity = getMetadataEntity(type);
   const collection = getDocumentStoreCollection(type);
@@ -59,7 +76,19 @@ exports.documentRemove = async (document) => {
     business.albumRemoveDocument(album, reference);
   }
 
-  // TODO: delete thumbnails (image, video) if not used anymore
+  switch(type) {
+    case 'image': {
+      await business.thumbnailRemoveIfUnused(document.thumbnail);
+      break;
+    }
+
+    case 'video': {
+      for(const thumbnailId of document.thumbnails) {
+        await business.thumbnailRemoveIfUnused(thumbnailId);
+      }
+      break;
+    }
+  }
 };
 
 exports.documentUpdate = (document, values) => {

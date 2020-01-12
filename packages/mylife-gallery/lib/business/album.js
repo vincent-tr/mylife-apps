@@ -16,6 +16,16 @@ exports.albumGet = (id) => {
   return albums.get(id);
 };
 
+exports.albumIsThumbnailUsed = (thumbnailId) => {
+  for(const album of getStoreCollection('albums')) {
+    if(album.thumbnails.includes(thumbnailId)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 exports.albumCreate = albumCreate;
 function albumCreate(values) {
   const entity = getMetadataEntity('album');
@@ -27,9 +37,17 @@ function albumCreate(values) {
   return item;
 }
 
-exports.albumDelete = (album) => {
-  throw new Error('TODO');
-  // TODO: delete thumbnails if not used anymore
+exports.albumDelete = async (album) => {
+  logger.info(`Deleting album '${album._id}'`);
+
+  const collection = getStoreCollection('albums');
+  if(!collection.delete(album._id)) {
+    throw new Error(`Cannot delete album '${album._id}' : document not found in collection`);
+  }
+
+  for(const thumbnailId of album.thumbnails) {
+    await business.thumbnailRemoveIfUnused(thumbnailId);
+  }
 };
 
 exports.albumCreateFromDocuments = (title, documents) => {
