@@ -1,7 +1,28 @@
 'use strict';
 
-import { handleActions, io } from 'mylife-tools-ui';
+import { handleActions, io, immutable } from 'mylife-tools-ui';
 import actionTypes from './action-types';
+
+// empty set means all
+const initialCriteria = {
+  minDate: null,
+  maxDate: null,
+  minIntegrationDate: null,
+  maxIntegrationDate: null,
+  type: new immutable.Set(),
+  albums: new immutable.Set(),
+  noAlbum: false,
+  persons: new immutable.Set(),
+  noPerson: false,
+  keywords: null,
+  caption: null,
+  path: null,
+  pathDuplicate: false,
+  minWidth: null,
+  maxWidth: null,
+  minHeight: null,
+  maxHeight: null,
+};
 
 const initialDisplay = {
   sortField: null,
@@ -20,6 +41,11 @@ export default handleActions({
     display: action.payload || initialDisplay
   }),
 
+  [actionTypes.SET_CRITERIA] : (state, action) => ({
+    ...state,
+    criteria: action.payload || initialCriteria
+  }),
+
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
     viewId: null
@@ -27,5 +53,6 @@ export default handleActions({
 
 }, {
   viewId: null,
+  criteria: initialCriteria,
   display: initialDisplay
 });

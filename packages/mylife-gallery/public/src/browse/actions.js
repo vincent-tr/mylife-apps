@@ -3,10 +3,11 @@
 import { createAction } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
-import { getDisplay, getViewId } from './selectors';
+import { getCriteria, getDisplay, getViewId } from './selectors';
 
 const local = {
   setView: createAction(actionTypes.SET_VIEW),
+  setCriteria: createAction(actionTypes.SET_CRITERIA),
   setDisplay: createAction(actionTypes.SET_DISPLAY)
 };
 
@@ -29,11 +30,17 @@ export const enter = () => async (dispatch) => {
 
 export const leave = () => async (dispatch) => {
   dispatch(local.setDisplay(null));
+  dispatch(local.setCriteria(null));
   await dispatch(clearDocuments());
 };
 
-export const changeCriteria = (criteria) => async (dispatch) => {
-  await dispatch(getDocuments(criteria));
+export const changeCriteria = (changes) => async (dispatch, getState) => {
+  const state = getState();
+  const criteria = getCriteria(state);
+  const newCriteria = { ...criteria, ...changes };
+  dispatch(local.setCriteria(newCriteria));
+
+  await dispatch(getDocuments(newCriteria));
 };
 
 export const changeDisplay = (changes) => async (dispatch, getState) => {
