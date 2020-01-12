@@ -24,15 +24,15 @@ exports.DocumentCleanupTask = class DocumentCleanupTask {
 };
 
 function listDocumentsToDelete() {
-  return business.documentFilter(document => document.paths.length === 0).map(document => ({ type: document._entity, id: document._id }));
+  return business.documentFilter(document => document.paths.length === 0);
 }
 
 function removeDocuments(documentsToDelete) {
-  for(const { type, id } of documentsToDelete) {
+  for(const document of documentsToDelete) {
     try {
-      business.documentRemove(type, id);
+      business.documentRemove(document);
     } catch(err) {
-      logger.error(err.stack);
+      logger.error(`Error deleting document '${document._entity}:${document._id}' : ${err.stack}`);
     }
   }
 }

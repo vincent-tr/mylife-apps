@@ -19,5 +19,6 @@ exports.notifyDocumentsWithInfo = [ base, (session, message) => {
 
 exports.updateDocument = [ base, (session, message) => {
   const { type, id, values } = message;
-  return business.documentUpdate(type, id, values);
+  const document = business.documentGet(type, id);
+  return business.documentUpdate(document, values);
 } ];

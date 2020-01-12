@@ -34,12 +34,15 @@ exports.documentCreate = (type, values) => {
   return item;
 };
 
-exports.documentRemove = (type, id) => {
-  logger.info(`Deleting document '${type}:${id}'`);
+exports.documentRemove = (document) => {
+  logger.info(`Deleting document '${document._entity}:${document._id}'`);
+  
+  const type = document._entity;
+  const id = document._id;
 
   const collection = getDocumentStoreCollection(type);
   if(!collection.delete(id)) {
-    throw new Error(`Cannot delete document '${id}' (type='${type}'): document not found in collection`);
+    throw new Error(`Cannot delete document '${type}:${id}' : document not found in collection`);
   }
 
   const reference = { type, id };
@@ -50,14 +53,14 @@ exports.documentRemove = (type, id) => {
   // TODO: delete thumbnails (image, video) if not used anymore
 };
 
-exports.documentUpdate = (type, id, values) => {
+exports.documentUpdate = (document, values) => {
+  logger.info(`Setting values '${JSON.stringify(values)}' on document '${document._entity}:${document._id}'`);
 
+  const type = document._entity;
   const collection = getDocumentStoreCollection(type);
   const entity = getMetadataEntity(type);
-  const document = collection.get(id);
   const newDocument = entity.setValues(document, values);
 
-  logger.info(`Setting values '${JSON.stringify(values)}' on document '${document._entity}:${document._id}'`);
   collection.set(newDocument);
 };
 
