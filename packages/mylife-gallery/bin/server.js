@@ -3,6 +3,7 @@
 'use strict';
 
 require('../lib/init');
+require('../lib/index-service');
 const { runServices, getArg } = require('mylife-tools-server');
 const { webApiFactory } = require('../lib/web');
 const { apiServices } = require('../lib/api');
@@ -13,7 +14,7 @@ require('../lib/sync');
 const runWeb = !!getArg('web');
 const runSync = !!getArg('sync');
 
-const services = ['store', 'database'];
+const services = ['store', 'database', 'index-service'];
 const parameters = { webApiFactory, apiServices, metadataDefintions, storeConfiguration };
 
 if(runWeb) {
