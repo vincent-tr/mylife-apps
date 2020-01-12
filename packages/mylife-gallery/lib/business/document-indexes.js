@@ -26,6 +26,8 @@ class DocumentIndexes {
 
     this.collection = getStoreCollection('albums');
     this.subscription = new business.CollectionSubscription(this, this.collection);
+
+    this.refresh();
   }
 
   close() {
