@@ -65,6 +65,21 @@ const useStyles = mui.makeStyles({
 
 const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) => {
   const classes = useStyles();
+
+  const onNoAlbumCriteriaChanged = newCriteria => {
+    if(newCriteria.noAlbum) {
+      newCriteria = { ...newCriteria, albums: criteria.albums.clear() };
+    }
+    onCriteriaChanged(newCriteria);
+  };
+
+  const onNoPersonCriteriaChanged = newCriteria => {
+    if(newCriteria.noPerson) {
+      newCriteria = { ...newCriteria, persons: criteria.persons.clear() };
+    }
+    onCriteriaChanged(newCriteria);
+  };
+
   return (
     <mui.Grid container spacing={2}>
       <GridSimpleField width={2} label='Date du document' />
@@ -76,10 +91,10 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <GridSimpleField width={2} label='Fin' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
       <GridSimpleField width={2} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} />
-      <GridSimpleField width={4} label='Albums' editor={AlbumSelector} propName='albums' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} />
-      <GridSimpleField width={1} label='Aucun' editor={WrappedCheckbox} propName='noAlbum' object={criteria} onObjectChanged={onCriteriaChanged} />
-      <GridSimpleField width={4} label='Personnes (TODO)' />
-      <GridSimpleField width={1} label='Aucun' editor={WrappedCheckbox} propName='noPerson' object={criteria} onObjectChanged={onCriteriaChanged} />
+      <GridSimpleField width={4} label='Albums' editor={AlbumSelector} propName='albums' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} disabled={criteria.noAlbum} />
+      <GridSimpleField width={1} label='Aucun' editor={WrappedCheckbox} propName='noAlbum' object={criteria} onObjectChanged={onNoAlbumCriteriaChanged} />
+      <GridSimpleField width={4} label='Personnes (TODO)' /> {/* disabled={criteria.noPerson} */}
+      <GridSimpleField width={1} label='Aucun' editor={WrappedCheckbox} propName='noPerson' object={criteria} onObjectChanged={onNoPersonCriteriaChanged} />
 
       <GridSimpleField width={3} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} fullWidth />
       <GridSimpleField width={3} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} fullWidth />
