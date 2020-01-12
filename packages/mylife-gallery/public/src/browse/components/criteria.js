@@ -73,8 +73,8 @@ class CollapsedTitleFormatter {
 
     this.addDates();
     this.addTypes();
-    // albums
-    // persons
+    this.addAlbums();
+    this.addPersons();
     this.addTexts();
 
     this.addDefault();
@@ -100,6 +100,30 @@ class CollapsedTitleFormatter {
 
     const types = this.criteria.type.toArray().map(id => DOCUMENT_TYPE_MAP.get(id)).join(' ou ');
     this.parts.push(types);
+  }
+
+  addAlbums() {
+    if(this.criteria.noAlbum) {
+      this.parts.push('aucun album');
+      return;
+    }
+
+    const { size } = this.criteria.albums;
+    if(size > 0) {
+      this.parts.push(`${size} album(s)`);
+    }
+  }
+
+  addPersons() {
+    if(this.criteria.noPerson) {
+      this.parts.push('aucune personne');
+      return;
+    }
+
+    const { size } = this.criteria.persons;
+    if(size > 0) {
+      this.parts.push(`${size} personne(s)`);
+    }
   }
 
   addTexts() {
