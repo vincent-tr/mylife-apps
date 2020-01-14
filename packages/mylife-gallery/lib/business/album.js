@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, getStoreCollection, getMetadataEntity, notifyView } = require('mylife-tools-server');
+const { createLogger, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const business = require('.');
 
@@ -100,11 +100,6 @@ exports.albumRemoveDocument = (album, reference) => {
 exports.albumListWithDocumentReference = (reference) => {
   const albums = getStoreCollection('albums');
   return albums.filter(album => findDocRefIndex(album, reference) > -1);
-};
-
-exports.albumsNotify = (session) => {
-  const albums = getStoreCollection('albums');
-  return notifyView(session, albums.createView());
 };
 
 function docRefEquals(docref1, docref2) {

@@ -7,8 +7,9 @@ exports.meta = {
   name : 'album'
 };
 
-exports.notifyAlbums = [ base, (session/*, message*/) => {
-  return business.albumsNotify(session);
+exports.notifyAlbums = [ base, (session, message) => {
+  const { criteria } = message;
+  return business.albumsNotify(session, criteria);
 } ];
 
 exports.createAlbumFromDocuments = [ base, (session, message) => {
