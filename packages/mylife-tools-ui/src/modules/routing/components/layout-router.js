@@ -97,14 +97,8 @@ class RouteMatch {
   constructor(route, parameters) {
     this.route = route;
     this.parameters = parameters;
-  }
-
-  get name() {
-    return this.route.name;
-  }
-
-  get icon() {
-    return this.route.icon;
+    this.name = this.route.getName ? this.route.getName(parameters) : this.route.name;
+    this.icon = this.route.getIcon ? this.route.getIcon(parameters) : this.route.icon;
   }
 
   render() {
