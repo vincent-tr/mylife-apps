@@ -4,7 +4,7 @@ import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'myl
 import { enter, leave, changeCriteria, changeDisplay } from '../actions';
 import { getCriteria, getDisplay, getDisplayView } from '../selectors';
 import Criteria from './criteria';
-// import List from './list';
+import List from './list';
 import Footer from './footer';
 
 const useConnect = () => {
@@ -46,10 +46,7 @@ const Home = () => {
   return (
     <div className={classes.container}>
       <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={changeDisplay} />
-      Home
-      {/*
       <List className={classes.list} display={display} data={data}  />
-      */}
       <Footer size={data.length} />
     </div>
   );
