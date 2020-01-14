@@ -7,6 +7,11 @@ exports.meta = {
   name : 'album'
 };
 
+exports.notifyAlbum = [ base, (session, message) => {
+  const { id } = message;
+  return business.albumNotify(session, id);
+} ];
+
 exports.notifyAlbums = [ base, (session, message) => {
   const { criteria } = message;
   return business.albumsNotify(session, criteria);
