@@ -1,14 +1,24 @@
 'use strict';
 
-import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
-import { enter, leave } from '../actions';
+import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
+import { enter, leave, changeCriteria, changeDisplay } from '../actions';
+import { getCriteria, getDisplay, getDisplayView } from '../selectors';
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return useMemo(() => ({
-    enter : () => dispatch(enter()),
-    leave : () => dispatch(leave()),
-  }), [dispatch]);
+  return {
+    ...useSelector(state => ({
+      criteria: getCriteria(state),
+      display: getDisplay(state),
+      data: getDisplayView(state)
+    })),
+    ...useMemo(() => ({
+      enter: () => dispatch(enter()),
+      leave: () => dispatch(leave()),
+      changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
+      changeDisplay: (display) => dispatch(changeDisplay(display)),
+    }), [dispatch])
+  };
 };
 
 const useStyles = mui.makeStyles({
@@ -24,12 +34,6 @@ const useStyles = mui.makeStyles({
     flex: '1 1 auto'
   }
 });
-
-// empty set means all
-const initialCriteria = {
-  title: null,
-  keywords: null,
-};
 
 const Home = () => {
   const classes = useStyles();

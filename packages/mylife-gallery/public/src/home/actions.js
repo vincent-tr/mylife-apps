@@ -1,60 +1,51 @@
 'use strict';
-/*
-import { createAction, io } from 'mylife-tools-ui';
+
+import { createAction } from 'mylife-tools-ui';
+import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
-import { getOperationStatsViewId, getTotalByMonthViewId } from './selectors';
+import { getCriteria, getDisplay, getViewId } from './selectors';
 
 const local = {
-  setOperationStatsView: createAction(actionTypes.SET_OPERATION_STATS_VIEW),
-  setTotalByMonthView: createAction(actionTypes.SET_TOTAL_BY_MONTH_VIEW),
+  setView: createAction(actionTypes.SET_VIEW),
+  setCriteria: createAction(actionTypes.SET_CRITERIA),
+  setDisplay: createAction(actionTypes.SET_DISPLAY)
 };
 
-const getOperationStats = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyOperationStats',
-  }));
+const getAlbums = (criteria = {}) => createOrUpdateView({
+  criteriaSelector: () => ({ criteria }),
+  viewSelector: getViewId,
+  setViewAction: local.setView,
+  service: 'album',
+  method: 'notifyAlbums'
+});
 
-  dispatch(local.setOperationStatsView(viewId));
-};
+const clearAlbums = () => deleteView({
+  viewSelector: getViewId,
+  setViewAction: local.setView
+});
 
-const clearOperationStats = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getOperationStatsViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setOperationStatsView(null));
-};
-
-const getTotalByMonth = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'reporting',
-    method: 'notifyTotalByMonth',
-  }));
-
-  dispatch(local.setTotalByMonthView(viewId));
-};
-
-const clearTotalByMonth = () => async (dispatch, getState) => {
-  const state = getState();
-  const viewId = getTotalByMonthViewId(state);
-  if(!viewId) {
-    return;
-  }
-
-  await dispatch(io.unnotify(viewId));
-  dispatch(local.setTotalByMonthView(null));
-};
-*/
 export const enter = () => async (dispatch) => {
-//  await dispatch(getOperationStats());
-//  await dispatch(getTotalByMonth());
+  await dispatch(getAlbums());
 };
 
 export const leave = () => async (dispatch) => {
-//  await dispatch(clearOperationStats());
-//  await dispatch(clearTotalByMonth());
+  dispatch(local.setDisplay(null));
+  dispatch(local.setCriteria(null));
+  await dispatch(clearAlbums());
+};
+
+export const changeCriteria = (changes) => async (dispatch, getState) => {
+  const state = getState();
+  const criteria = getCriteria(state);
+  const newCriteria = { ...criteria, ...changes };
+  dispatch(local.setCriteria(newCriteria));
+
+  await dispatch(getAlbums(newCriteria));
+};
+
+export const changeDisplay = (changes) => async (dispatch, getState) => {
+  const state = getState();
+  const display = getDisplay(state);
+  const newDisplay = { ...display, ...changes };
+  dispatch(local.setDisplay(newDisplay));
 };
