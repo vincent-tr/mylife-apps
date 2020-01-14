@@ -2,20 +2,20 @@
 
 import { React, PropTypes, mui, VirtuosoGrid, AutoSizer, clsx } from 'mylife-tools-ui';
 import * as documentViewer from '../../document-viewer';
-import Thumbnail from '../../common/thumbnail';
+import { ThumbnailDocument, THUMBNAIL_SIZE } from '../../common/thumbnail';
 
 const useStyles = mui.makeStyles(theme => ({
   list: {
     overflowY: 'visible'
   },
   tileContainer: {
-    height: Thumbnail.SIZE,
-    width: Thumbnail.SIZE,
+    height: THUMBNAIL_SIZE,
+    width: THUMBNAIL_SIZE,
   },
   tile: {
     // size + image position
-    height: Thumbnail.SIZE,
-    width: Thumbnail.SIZE,
+    height: THUMBNAIL_SIZE,
+    width: THUMBNAIL_SIZE,
     textAlign:'center',
 
     // spacing
@@ -55,7 +55,7 @@ const Tile = ({ data, index }) => {
 
   return (
     <mui.GridListTile classes={tileClasses} onClick={() => showViewer(data, index)}>
-      <Thumbnail document={document} />
+      <ThumbnailDocument document={document} />
       <mui.GridListTileBar title={title} subtitle={subtitle} />
     </mui.GridListTile>
   );
@@ -100,7 +100,7 @@ TileContainer.propTypes = {
 const GridList = ({ listRef, className, ...props }) => {
   const classes = useStyles();
   return (
-    <mui.GridList ref={listRef} cols={0} cellHeight={Thumbnail.SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
+    <mui.GridList ref={listRef} cols={0} cellHeight={THUMBNAIL_SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
   );
 };
 

@@ -24,12 +24,12 @@ NotNull.propTypes = {
   thumbnail: PropTypes.string.isRequired
 };
 
-const ThumbnailImage = ({ document, className, ...props }) => {
+const BaseMono = ({ thumbnail, className, ...props }) => {
   const classes = useCommonStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>
-      {document.thumbnail ? (
-        <NotNull thumbnail={document.thumbnail}/>
+      {thumbnail ? (
+        <NotNull thumbnail={thumbnail}/>
       ) : (
         <icons.documents.None className={classes.fallback} />
       )}
@@ -37,9 +37,9 @@ const ThumbnailImage = ({ document, className, ...props }) => {
   );
 };
 
-ThumbnailImage.propTypes = {
-  document: PropTypes.object.isRequired,
+BaseMono.propTypes = {
+  thumbnail: PropTypes.string,
   className: PropTypes.string
 };
 
-export default ThumbnailImage;
+export default BaseMono;

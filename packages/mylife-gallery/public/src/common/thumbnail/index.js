@@ -1,26 +1,6 @@
 'use strict';
 
-import { React, PropTypes } from 'mylife-tools-ui';
-import { SIZE } from './utils';
-import ThumbnailImage from './image';
-import ThumbnailVideo from './video';
-import ThumbnailOther from './other';
-
-const Thumbnail = ({ document, ...props }) => {
-  switch(document._entity) {
-    case 'image':
-      return (<ThumbnailImage document={document} {...props} />);
-    case 'video':
-      return (<ThumbnailVideo document={document} {...props} />);
-    case 'other':
-      return (<ThumbnailOther document={document} {...props} />);
-  }
-};
-
-Thumbnail.propTypes = {
-  document: PropTypes.object.isRequired,
-};
-
-Thumbnail.SIZE = SIZE;
-
-export default Thumbnail;
+export { SIZE as THUMBNAIL_SIZE } from './utils';
+export { default as ThumbnailDocument } from './document';
+export { default as ThumbnailPerson } from './person';
+export { default as ThumbnailAlbum } from './album';

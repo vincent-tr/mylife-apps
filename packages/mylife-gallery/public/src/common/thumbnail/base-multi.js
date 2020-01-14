@@ -24,9 +24,8 @@ NotNull.propTypes = {
   thumbnails: PropTypes.array.isRequired
 };
 
-const ThumbnailVideo = ({ document, className, ...props }) => {
+const BaseMulti = ({ thumbnails, className, ...props }) => {
   const classes = useCommonStyles();
-  const { thumbnails } = document;
 
   return (
     <div className={clsx(classes.container, className)} {...props}>
@@ -39,12 +38,12 @@ const ThumbnailVideo = ({ document, className, ...props }) => {
   );
 };
 
-ThumbnailVideo.propTypes = {
-  document: PropTypes.object.isRequired,
+BaseMulti.propTypes = {
+  thumbnails: PropTypes.array,
   className: PropTypes.string
 };
 
-export default ThumbnailVideo;
+export default BaseMulti;
 
 function useImageSlider(sources) {
   const imageUrls = useImages(sources);

@@ -4,8 +4,7 @@ import { React, PropTypes, clsx } from 'mylife-tools-ui';
 import { useCommonStyles } from './utils';
 import icons from '../icons';
 
-const ThumbnailOther = ({ document, className, ...props }) => {
-  void document;
+const BaseNone = ({ className, ...props }) => {
   const classes = useCommonStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>
@@ -14,9 +13,8 @@ const ThumbnailOther = ({ document, className, ...props }) => {
   );
 };
 
-ThumbnailOther.propTypes = {
-  document: PropTypes.object.isRequired,
+BaseNone.propTypes = {
   className: PropTypes.string
 };
 
-export default ThumbnailOther;
+export default BaseNone;
