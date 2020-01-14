@@ -12,8 +12,6 @@ const LayoutRouter = ({ routes, menu, ...props }) => {
   const routesInfo = useMemo(() => new RoutesInfo(routes), [routes]);
   const routeMatch = routesInfo.findMatch(location);
 
-  console.log(routeMatch)
-
   return (
     <Layout
       onMainClick={() => navigate('/')}
