@@ -28,7 +28,7 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const Stats = () => {
+const Album = () => {
   const classes = useStyles();
   const { enter, leave, album, documents } = useConnect();
   useLifecycle(enter, leave);
@@ -40,4 +40,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default Album;

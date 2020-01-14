@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, VirtuosoGrid, AutoSizer, clsx } from 'mylife-tools-ui';
+import { React, PropTypes, mui, VirtuosoGrid, AutoSizer, clsx, routing } from 'mylife-tools-ui';
 import { ThumbnailAlbum, THUMBNAIL_SIZE } from '../../common/thumbnail';
 
 const useStyles = mui.makeStyles(theme => ({
@@ -50,9 +50,10 @@ const Tile = ({ data, index }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const album = data[index];
+  const { navigate } = routing.useRoutingConnect();
 
   return (
-    <mui.GridListTile classes={tileClasses} onClick={() => console.log(album)}>
+    <mui.GridListTile classes={tileClasses} onClick={() => navigate(`/album/${album._id}`)}>
       <ThumbnailAlbum album={album} />
       <mui.GridListTileBar title={album.title} subtitle={`${album.documents.length} document(s)`} />
     </mui.GridListTile>
