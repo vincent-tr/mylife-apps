@@ -12,7 +12,7 @@ exports.albumNotify = (session, id) => {
   return notifyView(session, view);
 };
 
-exports.albumsNotify = (session, criteria) => {
+exports.albumsNotify = (session, criteria = {}) => {
   const view = new AlbumView();
   view.setCriteria(criteria);
   return notifyView(session, view);

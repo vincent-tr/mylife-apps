@@ -12,7 +12,7 @@ exports.documentWithInfoNotify = (session, type, id) => {
   return notifyView(session, view);
 };
 
-exports.documentsWithInfoNotify = (session, criteria) => {
+exports.documentsWithInfoNotify = (session, criteria = {}) => {
   const view = new DocumentWithInfoView();
   view.setCriteria(criteria);
   return notifyView(session, view);
