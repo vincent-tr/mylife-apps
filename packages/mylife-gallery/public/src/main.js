@@ -9,6 +9,7 @@ import Home from './home/components';
 import Suggestions from './suggestions/components';
 import Browse from './browse/components';
 import Stats from './stats/components';
+import Album from './album/components';
 
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);
@@ -18,6 +19,7 @@ const routes = [
   { location: '/suggestions', name: 'Suggestions', icon: icons.menu.Suggestions, renderer: () => <Suggestions /> },
   { location: '/browse', name: 'Parcourir', icon: icons.menu.Browse, renderer: () => <Browse /> },
   { location: '/stats', name: 'Statistics', icon: icons.menu.Stats, renderer: () => <Stats /> },
+  { location: '/album/:albumId', name: 'Statistics', icon: icons.menu.Stats, renderer: ({ albumId }) => <Album albumId={albumId} /> },
 ];
 
 const menu = [

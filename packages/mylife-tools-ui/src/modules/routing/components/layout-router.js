@@ -1,26 +1,27 @@
 'use strict';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';
-
-const defaultRouteData = { name: null, icon: null };
+import PathToRegex from 'path-to-regex';
 
 const LayoutRouter = ({ routes, menu, ...props }) => {
   const { location, navigate } = useRoutingConnect();
-
   const mappedMenu = mapMenu({ navigate, menu });
-  const currentRoute = routes.find(route => route.location === location) || defaultRouteData;
+  const routesInfo = useMemo(() => new RoutesInfo(routes), [routes]);
+  const routeMatch = routesInfo.findMatch(location);
+
+  console.log(routeMatch)
 
   return (
     <Layout
       onMainClick={() => navigate('/')}
-      viewName={currentRoute.name}
-      viewIcon={currentRoute.icon}
+      viewName={routeMatch.name}
+      viewIcon={routeMatch.icon}
       menu={mappedMenu}
       {...props}>
-      {currentRoute.renderer()}
+      {routeMatch.render()}
     </Layout>
   );
 };
@@ -57,4 +58,58 @@ function mapMenu({ navigate, menu }) {
       ... item
     };
   });
+}
+
+const defaultRouteMatch = { name: null, icon: null, render: () => null };
+
+class RoutesInfo {
+  constructor(routes) {
+    this.routesInfo = routes.map(route => new RouteInfo(route));
+  }
+
+  findMatch(location) {
+    for(const routeInfo of this.routesInfo) {
+      const match = routeInfo.match(location);
+      if(match) {
+        return match;
+      }
+    }
+
+    return defaultRouteMatch;
+  }
+}
+
+class RouteInfo {
+  constructor(route) {
+    this.route = route;
+    this.parser = new PathToRegex(route.location);
+  }
+
+  match(location) {
+    const result = this.parser.match(location);
+    if(!result) {
+      return null;
+    }
+
+    return new RouteMatch(this.route, result);
+  }
+}
+
+class RouteMatch {
+  constructor(route, parameters) {
+    this.route = route;
+    this.parameters = parameters;
+  }
+
+  get name() {
+    return this.route.name;
+  }
+
+  get icon() {
+    return this.route.icon;
+  }
+
+  render() {
+    return this.route.renderer(this.parameters);
+  }
 }
