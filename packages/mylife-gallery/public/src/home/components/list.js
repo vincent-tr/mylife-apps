@@ -54,7 +54,7 @@ const Tile = ({ data, index }) => {
   return (
     <mui.GridListTile classes={tileClasses} onClick={() => console.log(album)}>
       <ThumbnailAlbum album={album} />
-      <mui.GridListTileBar title={album.title} subtitle={album.keywords.join(' ')} />
+      <mui.GridListTileBar title={album.title} subtitle={`${album.documents.length} document(s)`} />
     </mui.GridListTile>
   );
 };

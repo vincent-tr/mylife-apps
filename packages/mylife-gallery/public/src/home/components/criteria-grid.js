@@ -6,8 +6,7 @@ import CriteriaGridSimpleField from '../../common/criteria-grid-simple-field';
 
 const sortFields = [
   { id: 'title', text: 'Titre' },
-  { id: 'docCount', text: 'Nombre de documents' },
-  { id: 'fileSizeSum', text: 'Cumul des tailles de fichiers' }
+  { id: 'docCount', text: 'Nombre de documents' }
 ];
 
 const useStyles = mui.makeStyles({
