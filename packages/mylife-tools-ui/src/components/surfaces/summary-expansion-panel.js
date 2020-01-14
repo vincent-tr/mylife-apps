@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
 import * as icons from '@material-ui/icons';
 
-const SummaryExpansionPanel = ({ expandedSummary, collapsedSummary, children, ...props }) => {
-  const [expanded, setExpanded] = useState(true);
+const SummaryExpansionPanel = ({ initialExpanded = true, expandedSummary, collapsedSummary, children, ...props }) => {
+  const [expanded, setExpanded] = useState(initialExpanded);
   const toggleExpanded = () => setExpanded(!expanded);
 
   return (
@@ -23,6 +23,7 @@ const SummaryExpansionPanel = ({ expandedSummary, collapsedSummary, children, ..
 };
 
 SummaryExpansionPanel.propTypes = {
+  initialExpanded: PropTypes.bool,
   expandedSummary: PropTypes.node.isRequired,
   collapsedSummary: PropTypes.node.isRequired,
   children: PropTypes.oneOfType([
