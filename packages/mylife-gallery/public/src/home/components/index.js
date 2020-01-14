@@ -3,6 +3,9 @@
 import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave, changeCriteria, changeDisplay } from '../actions';
 import { getCriteria, getDisplay, getDisplayView } from '../selectors';
+import Criteria from './criteria';
+// import List from './list';
+// import Footer from './footer';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -37,12 +40,17 @@ const useStyles = mui.makeStyles({
 
 const Home = () => {
   const classes = useStyles();
-  const { enter, leave } = useConnect();
+  const { criteria, display, data, enter, leave, changeCriteria, changeDisplay } = useConnect();
   useLifecycle(enter, leave);
 
   return (
     <div className={classes.container}>
-      Home <br/>
+      <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={changeDisplay} />
+      Home
+      {/*
+      <List className={classes.list} display={display} data={data}  />
+      <Footer size={data.length} />
+      */}
     </div>
   );
 };
