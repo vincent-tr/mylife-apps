@@ -26,7 +26,6 @@ MyLife photo gallery
    - Suggestion pour supprimer document other avec loadingError (pour le re-sync)
  - browse (+liste album ?)
    - sélection multiple dans liste de photo et création/affection d'album comme labels Gmail
- - document/album/person delete: handle properly deletion of dependencies
-   - person: documents
+ - person delete: handle properly deletion of dependencies (documents that tag the person)
  - sync
    - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?
