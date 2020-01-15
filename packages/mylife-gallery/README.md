@@ -7,6 +7,11 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp
 
 # TODO:
+ - album:
+   - album detail
+   - doc moves (ordering)
+   - doc delete
+   - doc add ?
  - document:
    - ajouter/supprimer personne
    - rotation image/video
