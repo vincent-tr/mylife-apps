@@ -1,20 +1,20 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
-import * as documentViewer from '../../document-viewer';
-import { ThumbnailDocument } from '../../common/thumbnail';
-import ThumbnailList from '../../common/thumbnail-list';
+import * as documentViewer from '../document-viewer';
+import { ThumbnailDocument } from './thumbnail';
+import ThumbnailList from './thumbnail-list';
 
-const List = ({ data, ...props }) => (
+const DocumentThumbnailList = ({ data, ...props }) => (
   <ThumbnailList data={data} getTileInfo={getTileInfo} {...props} />
 );
 
-List.propTypes = {
+DocumentThumbnailList.propTypes = {
   className: PropTypes.string,
   data: PropTypes.array.isRequired
 };
 
-export default List;
+export default DocumentThumbnailList;
 
 function getTileInfo(data, index) {
   const { document, info } = data[index];
