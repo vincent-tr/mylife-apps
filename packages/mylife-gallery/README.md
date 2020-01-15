@@ -7,8 +7,6 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp
 
 # TODO:
- - album:
-   - name should be a component to be able to render album.title from albumId (using state)
  - document:
    - ajouter/supprimer personne
    - rotation image/video
