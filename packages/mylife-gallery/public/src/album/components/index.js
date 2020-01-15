@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getAlbum, getDocuments } from '../selectors';
 
@@ -13,7 +13,7 @@ const useConnect = () => {
       documents: getDocuments(state)
     })),
     ...useMemo(() => ({
-      enter: () => dispatch(enter()),
+      enter: (albumId) => dispatch(enter(albumId)),
       leave: () => dispatch(leave()),
     }), [dispatch])
   };
@@ -28,16 +28,20 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const Album = () => {
+const Album = ({ albumId }) => {
   const classes = useStyles();
   const { enter, leave, album, documents } = useConnect();
-  useLifecycle(enter, leave);
+  useLifecycle(() => enter(albumId), leave);
 
   return (
     <div className={classes.container}>
       Album {JSON.stringify(album)}
     </div>
   );
+};
+
+Album.propTypes = {
+  albumId: PropTypes.string.isRequired
 };
 
 export default Album;
