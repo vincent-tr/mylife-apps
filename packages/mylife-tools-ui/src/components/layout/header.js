@@ -64,7 +64,7 @@ Header.propTypes = {
   appName: PropTypes.string.isRequired,
   appIcon: PropTypes.elementType.isRequired,
   onMainClick: PropTypes.func,
-  viewName: PropTypes.string,
+  viewName: PropTypes.node,
   viewIcon: PropTypes.elementType,
   onMenuButtonClick: PropTypes.func
 };

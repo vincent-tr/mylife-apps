@@ -15,8 +15,8 @@ const LayoutRouter = ({ routes, menu, ...props }) => {
   return (
     <Layout
       onMainClick={() => navigate('/')}
-      viewName={routeMatch.name}
-      viewIcon={routeMatch.icon}
+      viewName={routeMatch.renderName()}
+      viewIcon={routeMatch.renderIcon()}
       menu={mappedMenu}
       {...props}>
       {routeMatch.render()}
@@ -37,7 +37,9 @@ LayoutRouter.propTypes = {
     PropTypes.shape({
       location: PropTypes.string.isRequired,
       name: Layout.propTypes.viewName,
+      nameRenderer: PropTypes.func,
       icon: Layout.propTypes.viewIcon,
+      iconRenderer: PropTypes.func,
       renderer: PropTypes.func.isRequired
     }).isRequired
   ).isRequired
@@ -58,7 +60,8 @@ function mapMenu({ navigate, menu }) {
   });
 }
 
-const defaultRouteMatch = { name: null, icon: null, render: () => null };
+const nullRenderer = () => null;
+const defaultRouteMatch = { renderName: nullRenderer, renderIcon: nullRenderer, render: nullRenderer };
 
 class RoutesInfo {
   constructor(routes) {
@@ -97,8 +100,20 @@ class RouteMatch {
   constructor(route, parameters) {
     this.route = route;
     this.parameters = parameters;
-    this.name = this.route.getName ? this.route.getName(parameters) : this.route.name;
-    this.icon = this.route.getIcon ? this.route.getIcon(parameters) : this.route.icon;
+  }
+
+  renderName() {
+    if(this.route.nameRenderer) {
+      return this.route.nameRenderer(this.parameters);
+    }
+    return this.route.name;
+  }
+
+  renderIcon() {
+    if(this.route.iconRenderer) {
+      return this.route.iconRenderer(this.parameters);
+    }
+    return this.route.icon;
   }
 
   render() {
