@@ -29,4 +29,4 @@ MyLife photo gallery
  - document/album/person delete: handle properly deletion of dependencies
    - person: documents
  - sync
-   - date images foireuses ? 1/1/1970, 1980 ?
+   - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?
