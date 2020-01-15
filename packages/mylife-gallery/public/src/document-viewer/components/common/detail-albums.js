@@ -111,6 +111,10 @@ const DetailAlbums = ({ documentWithInfo }) => {
           <mui.List className={classes.list} dense>
             {albumIds.map(id => {
               const album = albumView.get(id);
+              if(!album) { // albumView not ready
+                return null;
+              }
+
               return (
                 <mui.ListItem key={id}>
                   <mui.Typography>
