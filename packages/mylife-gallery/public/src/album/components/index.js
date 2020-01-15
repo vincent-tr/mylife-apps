@@ -3,7 +3,8 @@
 import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getAlbum, getDocuments } from '../selectors';
-
+import DocumentThumbnailList from '../../common/document-thumbnail-list';
+import ListFooter from '../../common/list-footer';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,9 @@ const useStyles = mui.makeStyles({
     flexDirection: 'column',
     flex: '1 1 auto',
     overflowY: 'auto'
+  },
+  list: {
+    flex: '1 1 auto'
   }
 });
 
@@ -35,7 +39,8 @@ const Album = ({ albumId }) => {
 
   return (
     <div className={classes.container}>
-      Album {JSON.stringify(album)}
+      <DocumentThumbnailList className={classes.list} data={documents}  />
+      <ListFooter text={`${documents.length} document(s)`} />
     </div>
   );
 };
