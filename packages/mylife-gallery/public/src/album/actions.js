@@ -25,7 +25,7 @@ const clearAlbums = () => deleteView({
 });
 
 const fetchDocuments = () => createOrUpdateView({
-  criteriaSelector: (state) => ({ albums: [getAlbumId(state)] }),
+  criteriaSelector: (state) => ({ criteria: { albums: [getAlbumId(state)] } }),
   viewSelector: getDocumentViewId,
   setViewAction: local.setDocumentView,
   service: 'document',
