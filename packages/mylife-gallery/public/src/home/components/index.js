@@ -5,7 +5,7 @@ import { enter, leave, changeCriteria, changeDisplay } from '../actions';
 import { getCriteria, getDisplay, getDisplayView } from '../selectors';
 import Criteria from './criteria';
 import List from './list';
-import Footer from './footer';
+import ListFooter from '../../common/list-footer';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const Home = () => {
     <div className={classes.container}>
       <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={changeDisplay} />
       <List className={classes.list} display={display} data={data}  />
-      <Footer size={data.length} />
+      <ListFooter text={`${data.length} albums(s)`} />
     </div>
   );
 };

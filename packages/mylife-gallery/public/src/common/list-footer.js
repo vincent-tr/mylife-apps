@@ -8,18 +8,20 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const Footer = ({ size, className, ...props }) => {
+const ListFooter = ({ text, className, ...props }) => {
   const classes = useStyles();
   return (
     <mui.Toolbar className={clsx(classes.toolbar, className)} {...props}>
-      <mui.Typography>{`${size} document(s)`}</mui.Typography>
+      <mui.Typography>
+        {text}
+      </mui.Typography>
     </mui.Toolbar>
   );
 };
 
-Footer.propTypes = {
+ListFooter.propTypes = {
   className: PropTypes.string,
-  size: PropTypes.number.isRequired
+  text: PropTypes.string,
 };
 
-export default Footer;
+export default ListFooter;
