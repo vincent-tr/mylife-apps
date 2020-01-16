@@ -43,7 +43,7 @@ exports.Datatype = class Datatype {
 
     if(definition.enum) {
       this._primitive = 'enum'
-      this._values = validator.validate(definition.enum, { type: 'string-array', mandatory: true });
+      this._values = validator.validate(definition.enum, 'enum', { type: 'string-array', mandatory: true });
     }
 
     if(definition.reference) {
