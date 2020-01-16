@@ -8,8 +8,6 @@ MyLife photo gallery
 
 # TODO:
  - slideshow
-   - list d albums
-   - algo de defilement (random, dans l'ordre)
    - url pour défilement (routage)
  - album:
    - album detail
