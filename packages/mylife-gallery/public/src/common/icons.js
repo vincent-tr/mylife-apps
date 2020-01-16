@@ -38,7 +38,7 @@ export default {
     Browse: Explore,
     Stats : Equalizer,
     Album : PhotoAlbum,
-    Slideshow
+    Slideshows: Slideshow
   },
 
   actions: {
