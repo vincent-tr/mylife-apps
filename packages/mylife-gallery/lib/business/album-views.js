@@ -5,7 +5,6 @@ const business = require('.');
 
 const logger = createLogger('mylife:gallery:business:album-view');
 
-
 exports.albumNotify = (session, id) => {
   const view = new AlbumView();
   view.setCriteria({ album: id });
