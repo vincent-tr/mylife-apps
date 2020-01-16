@@ -1,6 +1,6 @@
 'use strict';
 
-const { createLogger, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const { createLogger, getStoreCollection, getMetadataEntity, notifyView } = require('mylife-tools-server');
 const { utils } = require('mylife-tools-common');
 const business = require('.');
 
@@ -14,6 +14,16 @@ exports.slideshowList = () => {
 exports.slideshowGet = (id) => {
   const slideshows = getStoreCollection('slideshows');
   return slideshows.get(id);
+};
+
+exports.slideshowNotify = (session, id) => {
+  const slideshows = getStoreCollection('slideshows');
+  return notifyView(session, slideshows.createView(slideshow => slideshow._id === id));
+};
+
+exports.slideshowsNotify = (session) => {
+  const slideshows = getStoreCollection('slideshows');
+  return notifyView(session, slideshows.createView());
 };
 
 exports.slideshowCreate = slideshowCreate;
