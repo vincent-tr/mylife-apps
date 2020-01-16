@@ -48,4 +48,5 @@ module.exports = [
       { id: 'date', name: 'Date de prise', datatype: 'datetime' }
     ]
   },
+  { id: 'slideshow-style', enum: ['scrolling-ordered', 'scrolling-random'] },
 ];

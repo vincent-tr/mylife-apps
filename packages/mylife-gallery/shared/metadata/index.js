@@ -9,6 +9,7 @@ exports.entities = [
   require('./entities/other'),
   require('./entities/album'),
   require('./entities/person'),
+  require('./entities/slideshow'),
   require('./entities/stat'),
   require('./entities/suggestion'),
 ];

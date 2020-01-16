@@ -6,5 +6,6 @@ module.exports = [
   { collection: 'others', entity: 'other', indexes: [] },
   { collection: 'albums', entity: 'album', indexes: [] },
   { collection: 'persons', entity: 'person', indexes: [] },
+  { collection: 'slideshows', entity: 'slideshow', indexes: [] },
   // thumbnails not added as store collection
 ];
