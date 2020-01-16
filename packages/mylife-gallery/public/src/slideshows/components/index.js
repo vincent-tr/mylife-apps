@@ -41,7 +41,7 @@ const Home = () => {
   return (
     <div className={classes.container}>
       <List className={classes.list} data={data}  />
-      <ListFooter text={`${data.length} albums(s)`} />
+      <ListFooter text={`${data.length} diaporama(s)`} />
     </div>
   );
 };
