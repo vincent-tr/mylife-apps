@@ -22,6 +22,12 @@ exports.createAlbumFromDocuments = [ base, (session, message) => {
   return business.albumCreateFromDocuments(title, documents);
 } ];
 
+exports.deleteAlbum = [ base, (session, message) => {
+  const { id } = message;
+  const album = business.albumGet(id);
+  return business.albumDlete(album);
+} ];
+
 exports.addDocumentToAlbum = [ base, (session, message) => {
   const { id, reference } = message;
   const album = business.albumGet(id);
@@ -32,4 +38,10 @@ exports.removeDocumentFromAlbum = [ base, (session, message) => {
   const { id, reference } = message;
   const album = business.albumGet(id);
   return business.albumRemoveDocument(album, reference);
+} ];
+
+exports.moveDocumentInAlbum = [ base, (session, message) => {
+  const { id, oldIndex, newIndex } = message;
+  const album = business.albumGet(id);
+  return business.albumMoveDocument(album, oldIndex, newIndex);
 } ];

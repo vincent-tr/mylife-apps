@@ -97,6 +97,10 @@ exports.albumRemoveDocument = (album, reference) => {
   albums.set(newAlbum);
 };
 
+exports.albumMoveDocument = (album, oldIndex, newIndex) => {
+  throw new Error('TODO');
+};
+
 exports.albumListWithDocumentReference = (reference) => {
   const albums = getStoreCollection('albums');
   return albums.filter(album => findDocRefIndex(album, reference) > -1);
