@@ -7,6 +7,7 @@ const {
   Explore,
   Equalizer,
   PhotoAlbum,
+  Slideshow,
   AddCircle,
   Close,
   Fullscreen,
@@ -36,7 +37,8 @@ export default {
     Suggestions: Announcement,
     Browse: Explore,
     Stats : Equalizer,
-    Album : PhotoAlbum
+    Album : PhotoAlbum,
+    Slideshow
   },
 
   actions: {
