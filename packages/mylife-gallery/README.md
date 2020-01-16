@@ -7,7 +7,7 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp
 
 # TODO:
- - scrolling
+ - slideshow
    - list d albums
    - algo de defilement (random, dans l'ordre)
    - url pour défilement (routage)
