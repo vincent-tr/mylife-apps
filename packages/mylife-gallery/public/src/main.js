@@ -16,6 +16,7 @@ import AlbumTitle from './album/components/title';
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);
 
+/* eslint-disable react/display-name, react/prop-types */
 const routes = [
   { location: '/', renderer: () => <Home /> },
   { location: '/slideshows', name: 'Diaporamas', icon: icons.menu.Slideshows, renderer: () => <Slideshows /> },
@@ -24,6 +25,7 @@ const routes = [
   { location: '/stats', name: 'Statistics', icon: icons.menu.Stats, renderer: () => <Stats /> },
   { location: '/album/:albumId', name: (<AlbumTitle />), icon: icons.menu.Album, renderer: ({ albumId }) => <Album albumId={albumId} /> },
 ];
+/* eslint-enable */
 
 const menu = [
   { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows' },
