@@ -28,6 +28,12 @@ exports.deleteAlbum = [ base, (session, message) => {
   return business.albumDelete(album);
 } ];
 
+exports.updateAlbum = [ base, (session, message) => {
+  const { id, values } = message;
+  const album = business.albumGet(id);
+  return business.albumUpdate(album, values);
+} ];
+
 exports.addDocumentToAlbum = [ base, (session, message) => {
   const { id, reference } = message;
   const album = business.albumGet(id);

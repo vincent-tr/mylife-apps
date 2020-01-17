@@ -46,6 +46,16 @@ exports.slideshowDelete = async (slideshow) => {
   }
 };
 
+exports.slideshowUpdate = (slideshow, values) => {
+  logger.info(`Setting values '${JSON.stringify(values)}' on slideshow '${slideshow._id}'`);
+
+  const entity = getMetadataEntity('slideshow');
+  const slideshows = getStoreCollection('slideshows');
+  const newSlideshow = entity.setValues(slideshow, values);
+
+  slideshows.set(newSlideshow);
+};
+
 exports.slideshowAddAlbum = (slideshow, albumId) => {
   const entity = getMetadataEntity('slideshow');
   const slideshows = getStoreCollection('slideshows');

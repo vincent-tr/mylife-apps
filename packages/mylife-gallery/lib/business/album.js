@@ -54,6 +54,16 @@ exports.albumDelete = async (album) => {
   }
 };
 
+exports.albumUpdate = (album, values) => {
+  logger.info(`Setting values '${JSON.stringify(values)}' on album '${album._id}'`);
+
+  const entity = getMetadataEntity('album');
+  const albums = getStoreCollection('albums');
+  const newAlbum = entity.setValues(album, values);
+
+  albums.set(newAlbum);
+};
+
 exports.albumCreateFromDocuments = (title, documents) => {
   // take 5 first images thumbnails
   const thumbnails = documents
