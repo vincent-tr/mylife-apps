@@ -7,6 +7,9 @@ import { getDisplayView, getSelectedId } from '../selectors';
 import icons from '../../common/icons';
 
 const useStyles = mui.makeStyles(theme => ({
+  panel: {
+    width: '100%',
+  },
   deleteButton: {
     color: theme.status.error
   }
@@ -32,7 +35,7 @@ const ListItem = ({ slideshow, selected, toggleSelect, onDelete, ...props }) => 
 
   return (
     <mui.ListItem {...props}>
-      <mui.ExpansionPanel expanded={selected} onChange={toggleSelect}>
+      <mui.ExpansionPanel expanded={selected} onChange={toggleSelect} className={classes.panel}>
         <mui.ExpansionPanelSummary
           expandIcon={<mui.icons.ExpandMore />}>
           <mui.Typography>{slideshow.name}</mui.Typography>
