@@ -30,11 +30,18 @@ class AlbumView extends StoreContainer {
   _createSubscriptions() {
     this.subscriptions = [];
     this.collection = getStoreCollection('albums');
-    this.subscription = new business.CollectionSubscription(this, this.collection);
+    this.subscriptions.push = new business.CollectionSubscription(this, this.collection);
+
+    // add subscription on slideshows to reset filtering on slideshows
+    const slideshows = getStoreCollection('slideshows');
+    const subscription = new business.CollectionSubscription(this, slideshows, () => this._rebuildFilter()); // need to rebuild criteria to have proper slideshows buckets
+    this.subscriptions.push(subscription);
   }
 
   close() {
-    this.subscription.unsubscribe();
+    for(const subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
 
     this._reset();
   }
@@ -87,6 +94,12 @@ function buildFilter(criteria) {
 
   if(criteria.album) {
     parts.push(album => album._id === criteria.album);
+  }
+
+  if(criteria.slideshow) {
+    const slideshow = business.slideshowGet(criteria.slideshow);
+    const ids = new Set(slideshow.albums);
+    parts.push(album => ids.has(album._id));
   }
 
   if(criteria.title) {
