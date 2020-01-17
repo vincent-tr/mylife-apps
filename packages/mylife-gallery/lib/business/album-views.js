@@ -30,7 +30,7 @@ class AlbumView extends StoreContainer {
   _createSubscriptions() {
     this.subscriptions = [];
     this.collection = getStoreCollection('albums');
-    this.subscriptions.push = new business.CollectionSubscription(this, this.collection);
+    this.subscriptions.push(new business.CollectionSubscription(this, this.collection));
 
     // add subscription on slideshows to reset filtering on slideshows
     const slideshows = getStoreCollection('slideshows');
