@@ -84,6 +84,11 @@ exports.slideshowMoveAlbum = (slideshow, oldIndex, newIndex) => {
   throw new Error('TODO');
 };
 
+exports.slideshowListWithAlbumId = (albumId) => {
+  const slideshows = getStoreCollection('slideshows');
+  return slideshows.filter(slideshow => findAlbumIndex(slideshow, albumId) > -1);
+};
+
 function findAlbumIndex(slideshow, albumId) {
   return slideshow.albums.indexOf(albumId);
 }

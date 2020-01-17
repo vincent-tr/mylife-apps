@@ -25,6 +25,5 @@ MyLife photo gallery
  - browse (+liste album ?)
    - sélection multiple dans liste de photo et création/affection d'album comme labels Gmail
  - person delete: handle properly deletion of dependencies (documents that tag the person)
- - album delete: handle properly deletion of dependencies (slideshows that have the album)
  - sync
    - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?

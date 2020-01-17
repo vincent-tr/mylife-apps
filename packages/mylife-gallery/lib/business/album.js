@@ -40,6 +40,10 @@ function albumCreate(values) {
 exports.albumDelete = async (album) => {
   logger.info(`Deleting album '${album._id}'`);
 
+  for(const slideshow of business.slideshowListWithAlbumId(album._id)) {
+    business.slideshowRemoveAlbum(slideshow, album._id);
+  }
+
   const collection = getStoreCollection('albums');
   if(!collection.delete(album._id)) {
     throw new Error(`Cannot delete album '${album._id}' : document not found in collection`);
