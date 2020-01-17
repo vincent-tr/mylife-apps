@@ -18,6 +18,9 @@ const useStyles = mui.makeStyles(theme => ({
       marginRight: theme.spacing(1),
     },
   },
+  editor: {
+    width: 200
+  },
   deleteButton: {
     color: theme.status.error
   }
@@ -61,13 +64,13 @@ const ListItem = ({ slideshow, ...props }) => {
                 <mui.Typography>Nom</mui.Typography>
               </mui.Grid>
               <mui.Grid item xs={6}>
-                <DebouncedTextField value={slideshow.name} onChange={(value) => onUpdate('name', value)} />
+                <DebouncedTextField value={slideshow.name} onChange={(value) => onUpdate('name', value)} className={classes.editor} />
               </mui.Grid>
               <mui.Grid item xs={6}>
                 <mui.Typography>Style</mui.Typography>
               </mui.Grid>
               <mui.Grid item xs={6}>
-                <ListSelector list={styles} value={slideshow.style} onChange={(value) => onUpdate('style', value)} />
+                <ListSelector list={styles} value={slideshow.style} onChange={(value) => onUpdate('style', value)} className={classes.editor} />
               </mui.Grid>
               <mui.Grid item xs={12} justify='center' container>
                 <mui.Button
