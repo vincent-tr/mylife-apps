@@ -7,7 +7,7 @@ module.exports = {
   fields: [
     { id: 'name', name: 'Nom', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'albums', name: 'Albums', datatype: 'list:album', constraints: ['not-null'], initial: [] },
-    { id: 'style', name: 'Style', datatype: 'slideshow-style', constraints: ['not-null'] },
+    { id: 'style', name: 'Style', datatype: 'slideshow-style', constraints: ['not-null'], initial: 'scrolling-ordered' },
   ],
   display: obj => obj.name
 };
