@@ -44,10 +44,6 @@ exports.slideshowDelete = async (slideshow) => {
   if(!collection.delete(slideshow._id)) {
     throw new Error(`Cannot delete slideshow '${slideshow._id}' : album not found in collection`);
   }
-
-  for(const thumbnailId of slideshow.thumbnails) {
-    await business.thumbnailRemoveIfUnused(thumbnailId);
-  }
 };
 
 exports.slideshowAddAlbum = (slideshow, albumId) => {
