@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useSelector } from 'mylife-tools-ui';
+import { useSelector } from 'mylife-tools-ui';
 import { getAlbum } from '../selectors';
 
 const useConnect = () => useSelector(state => ({
