@@ -64,7 +64,6 @@ export const updateSlideshow = (slideshow, values) => {
       id: slideshow._id,
       values
     }));
-
   };
 };
 
