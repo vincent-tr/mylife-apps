@@ -18,7 +18,7 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const Home = () => {
+const Slideshows = () => {
   const classes = useStyles();
   const { enter, leave } = useConnect();
   useLifecycle(enter, leave);
@@ -28,4 +28,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Slideshows;
