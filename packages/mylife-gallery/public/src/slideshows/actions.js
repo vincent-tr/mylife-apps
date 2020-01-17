@@ -55,6 +55,19 @@ export const deleteSlideshow = (id) => {
   };
 };
 
+export const updateSlideshow = (slideshow, values) => {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'slideshow',
+      method: 'updateSlideshow',
+      id: slideshow._id,
+      values
+    }));
+
+  };
+};
+
 export const enter = () => async (dispatch) => {
   await dispatch(getSlideshows());
 };
