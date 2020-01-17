@@ -43,14 +43,14 @@ const List = ({ ...props }) => {
   return (
     <>
       <mui.List {...props}>
-        {data.map(slideshow => (
-          <ListItem
-            key={slideshow._id}
-            slideshow={slideshow}
-            selected={selectedId === slideshow._id}
-            select={() => changeSelected(slideshow._id)}
-          />
-        ))}
+        {data.map(slideshow => {
+          const id = slideshow._id;
+          const selected = selectedId === id;
+          const toggleSelect = () => changeSelected(selectedId === id ? null : id);
+          return (
+            <ListItem key={id} slideshow={slideshow} selected={selected} toggleSelect={toggleSelect} />
+          );
+        })}
       </mui.List>
       <mui.Tooltip title='Nouveau diaporama'>
         <mui.Fab color='primary' className={classes.addButton} onClick={onAdd}>

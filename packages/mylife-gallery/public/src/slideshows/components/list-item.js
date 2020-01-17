@@ -22,23 +22,27 @@ const useConnect = () => {
   };
 };
 
-const ListItem = ({ slideshow, selected, select, ...props }) => {
+const ListItem = ({ slideshow, selected, toggleSelect, ...props }) => {
   // const classes = useStyles();
   // const { data, selectedId, createSlideshow, changeSelected } = useConnect();
 
   return (
     <mui.ListItem {...props}>
-      {slideshow.name}
-      {slideshow.style}
-      <mui.Button>
-        fullscreen
-      </mui.Button>
-      {/* thumbnail du diaporama */}
-      <mui.Button onClick={select}>
-        expanded={selected.toString()}
-        {/* selection des albums */}
-        {/* bouton suppression */}
-      </mui.Button>
+      <mui.ExpansionPanel expanded={selected} onChange={toggleSelect}>
+        <mui.ExpansionPanelSummary
+          expandIcon={<mui.icons.ExpandMore />}>
+          <mui.Typography>{slideshow.name}</mui.Typography>
+        </mui.ExpansionPanelSummary>
+        <mui.ExpansionPanelDetails>
+          {slideshow.style}
+          <mui.Button>
+            fullscreen
+          </mui.Button>
+          {/* thumbnail du diaporama */}
+          {/* selection des albums */}
+          {/* bouton suppression */}
+        </mui.ExpansionPanelDetails>
+      </mui.ExpansionPanel>
     </mui.ListItem>
   );
 };
@@ -46,7 +50,7 @@ const ListItem = ({ slideshow, selected, select, ...props }) => {
 ListItem.propTypes = {
   slideshow: PropTypes.object.isRequired,
   selected: PropTypes.bool.isRequired,
-  select: PropTypes.func.isRequired
+  toggleSelect: PropTypes.func.isRequired
 };
 
 export default ListItem;
