@@ -56,18 +56,30 @@ const ListItem = ({ slideshow, ...props }) => {
       <mui.ExpansionPanel expanded={selected} onChange={toggleSelect} className={classes.panel}>
         <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
           <StopPropagationContainer className={classes.summaryContainer}>
-            <mui.Typography>Nom</mui.Typography>
-            <DebouncedTextField value={slideshow.name} onChange={(value) => onUpdate('name', value)} />
-            <mui.Typography>Style</mui.Typography>
-            <ListSelector list={styles} value={slideshow.style} onChange={(value) => onUpdate('style', value)} />
-            <mui.Button
-              variant='contained'
-              color='primary'
-              startIcon={<icons.menu.Slideshows />}
-              onClick={() => console.log('TODO: run slideshow', slideshow)}
-            >
-              Lancer
-            </mui.Button>
+            <mui.Grid container spacing={2}>
+              <mui.Grid item xs={6}>
+                <mui.Typography>Nom</mui.Typography>
+              </mui.Grid>
+              <mui.Grid item xs={6}>
+                <DebouncedTextField value={slideshow.name} onChange={(value) => onUpdate('name', value)} />
+              </mui.Grid>
+              <mui.Grid item xs={6}>
+                <mui.Typography>Style</mui.Typography>
+              </mui.Grid>
+              <mui.Grid item xs={6}>
+                <ListSelector list={styles} value={slideshow.style} onChange={(value) => onUpdate('style', value)} />
+              </mui.Grid>
+              <mui.Grid item xs={12} justify='center' container>
+                <mui.Button
+                  variant='contained'
+                  color='primary'
+                  startIcon={<icons.menu.Slideshows />}
+                  onClick={() => console.log('TODO: run slideshow', slideshow)}
+                >
+                  Lancer
+                </mui.Button>
+              </mui.Grid>
+            </mui.Grid>
             <Preview slideshow={slideshow} />
           </StopPropagationContainer>
         </mui.ExpansionPanelSummary>
