@@ -25,9 +25,6 @@ const useStyles = mui.makeStyles(theme => ({
     borderWidth: 1,
     borderColor: mui.colors.grey[300],
     borderStyle: 'solid',
-
-    // cursor
-    cursor: 'pointer',
   },
   image: {
     // reset base style
