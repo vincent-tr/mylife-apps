@@ -1,10 +1,10 @@
 'use strict';
 
 import { React, PropTypes, mui, useDispatch, useSelector, useMemo, StopPropagationContainer, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
-import ThumbnailList from '../../common/thumbnail-list';
+import icons from '../../common/icons';
 import { deleteSlideshow, updateSlideshow, changeSelected } from '../actions';
 import { getDisplayView, getSelectedId } from '../selectors';
-import icons from '../../common/icons';
+import Preview from './preview';
 
 const useStyles = mui.makeStyles(theme => ({
   panel: {
@@ -68,6 +68,7 @@ const ListItem = ({ slideshow, ...props }) => {
             >
               Lancer
             </mui.Button>
+            <Preview slideshow={slideshow} />
           </StopPropagationContainer>
         </mui.ExpansionPanelSummary>
         <mui.ExpansionPanelDetails>
