@@ -12,7 +12,7 @@ const useStyles = mui.makeStyles(theme => ({
   },
   summaryContainer: {
     display: 'flex',
-    alignItems: 'baseline',
+    alignItems: 'center',
     '& > *': {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
@@ -32,7 +32,6 @@ const useConnect = () => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
-      data: getDisplayView(state),
       selectedId: getSelectedId(state),
     })),
     ...useMemo(() => ({
@@ -61,13 +60,17 @@ const ListItem = ({ slideshow, ...props }) => {
             <DebouncedTextField value={slideshow.name} onChange={(value) => onUpdate('name', value)} />
             <mui.Typography>Style</mui.Typography>
             <ListSelector list={styles} value={slideshow.style} onChange={(value) => onUpdate('style', value)} />
+            <mui.Button
+              variant='contained'
+              color='primary'
+              startIcon={<icons.menu.Slideshows />}
+              onClick={() => console.log('TODO: run slideshow', slideshow)}
+            >
+              Lancer
+            </mui.Button>
           </StopPropagationContainer>
         </mui.ExpansionPanelSummary>
         <mui.ExpansionPanelDetails>
-          {slideshow.style}
-          <mui.Button>
-            fullscreen
-          </mui.Button>
           {/* thumbnail du diaporama */}
           {/* selection des albums */}
           <mui.IconButton onClick={onDelete} className={classes.deleteButton}>
