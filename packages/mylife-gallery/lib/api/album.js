@@ -25,7 +25,7 @@ exports.createAlbumFromDocuments = [ base, (session, message) => {
 exports.deleteAlbum = [ base, (session, message) => {
   const { id } = message;
   const album = business.albumGet(id);
-  return business.albumDlete(album);
+  return business.albumDelete(album);
 } ];
 
 exports.addDocumentToAlbum = [ base, (session, message) => {

@@ -24,7 +24,7 @@ exports.createSlideshow = [ base, (session, message) => {
 exports.deleteSlideshow = [ base, (session, message) => {
   const { id } = message;
   const slideshow = business.slideshowGet(id);
-  return business.slideshowDlete(slideshow);
+  return business.slideshowDelete(slideshow);
 } ];
 
 exports.addAlbumToSlideshow = [ base, (session, message) => {
