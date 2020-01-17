@@ -1,8 +1,8 @@
 'use strict';
 
 import { React, mui, dialogs, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
-import { createSlideshow, deleteSlideshow, changeSelected } from '../actions';
-import { getDisplayView, getSelectedId } from '../selectors';
+import { createSlideshow,  } from '../actions';
+import { getDisplayView } from '../selectors';
 import ListItem from './list-item';
 
 const useStyles = mui.makeStyles(theme => ({
@@ -18,19 +18,16 @@ const useConnect = () => {
   return {
     ...useSelector(state => ({
       data: getDisplayView(state),
-      selectedId: getSelectedId(state),
     })),
     ...useMemo(() => ({
       createSlideshow: name => dispatch(createSlideshow(name)),
-      deleteSlideshow: id => dispatch(deleteSlideshow(id)),
-      changeSelected: id => dispatch(changeSelected(id))
     }), [dispatch])
   };
 };
 
 const List = ({ ...props }) => {
   const classes = useStyles();
-  const { data, selectedId, createSlideshow, deleteSlideshow, changeSelected } = useConnect();
+  const { data, createSlideshow } = useConnect();
 
   const onAdd = async () => {
     const { result, text: name } = await dialogs.input({ title: 'Nom du nouveau diaporama', label: 'Nom' });
@@ -44,21 +41,9 @@ const List = ({ ...props }) => {
   return (
     <>
       <mui.List {...props}>
-        {data.map(slideshow => {
-          const id = slideshow._id;
-          const selected = selectedId === id;
-          const toggleSelect = () => changeSelected(selectedId === id ? null : id);
-          const onDelete = () => deleteSlideshow(id);
-          return (
-            <ListItem
-              key={id}
-              slideshow={slideshow}
-              selected={selected}
-              toggleSelect={toggleSelect}
-              onDelete={onDelete}
-            />
-          );
-        })}
+        {data.map(slideshow => (
+          <ListItem key={slideshow._id} slideshow={slideshow} />
+        ))}
       </mui.List>
       <mui.Tooltip title='Nouveau diaporama'>
         <mui.Fab color='primary' className={classes.addButton} onClick={onAdd}>
