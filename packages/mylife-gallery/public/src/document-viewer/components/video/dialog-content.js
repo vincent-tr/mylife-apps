@@ -38,7 +38,3 @@ VideoDialogContent.propTypes = {
 };
 
 export default VideoDialogContent;
-
-function getMediaUrl(documentWithInfo) {
-
-}
