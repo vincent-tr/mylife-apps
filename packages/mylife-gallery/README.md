@@ -8,6 +8,7 @@ MyLife photo gallery
 
 # TODO:
  - slideshow
+   - au lieu d'afficher le nombre d'albums on devrait afficher le nombre de documents
    - url pour défilement (routage)
  - album:
    - album detail
