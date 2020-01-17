@@ -7,7 +7,7 @@ import { Select, MenuItem } from '@material-ui/core';
 
 const NULL_ID = 'null-id';
 
-const SortFieldSelector = ({ list, value, onChange, ...props }) => {
+const ListSelector = ({ list, value, onChange, ...props }) => {
   const handleChange = event => onChange(nullFromEditor(event.target.value));
   return (
     <Select
@@ -22,7 +22,7 @@ const SortFieldSelector = ({ list, value, onChange, ...props }) => {
   );
 };
 
-SortFieldSelector.propTypes = {
+ListSelector.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
       id   : PropTypes.string,
@@ -33,7 +33,7 @@ SortFieldSelector.propTypes = {
   onChange: PropTypes.func.isRequired
 };
 
-export default SortFieldSelector;
+export default ListSelector;
 
 function nullFromEditor(value) {
   if(value === NULL_ID) {
