@@ -16,7 +16,8 @@ const {
   Block,
   PlayCircleOutline,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Delete
 } = mui.icons;
 
 const Gallery = (props) => (
@@ -49,6 +50,7 @@ export default {
     Fullscreen,
     Previous: ChevronLeft,
     Next: ChevronRight,
+    Delete
   },
 
   documents: {

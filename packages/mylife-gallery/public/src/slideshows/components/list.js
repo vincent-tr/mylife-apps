@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, mui, dialogs, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
-import { createSlideshow, changeSelected } from '../actions';
+import { createSlideshow, deleteSlideshow, changeSelected } from '../actions';
 import { getDisplayView, getSelectedId } from '../selectors';
 import ListItem from './list-item';
 
@@ -22,6 +22,7 @@ const useConnect = () => {
     })),
     ...useMemo(() => ({
       createSlideshow: name => dispatch(createSlideshow(name)),
+      deleteSlideshow: id => dispatch(deleteSlideshow(id)),
       changeSelected: id => dispatch(changeSelected(id))
     }), [dispatch])
   };
@@ -29,7 +30,7 @@ const useConnect = () => {
 
 const List = ({ ...props }) => {
   const classes = useStyles();
-  const { data, selectedId, createSlideshow, changeSelected } = useConnect();
+  const { data, selectedId, createSlideshow, deleteSlideshow, changeSelected } = useConnect();
 
   const onAdd = async () => {
     const { result, text: name } = await dialogs.input({ title: 'Nom du nouveau diaporama', label: 'Nom' });
@@ -47,8 +48,15 @@ const List = ({ ...props }) => {
           const id = slideshow._id;
           const selected = selectedId === id;
           const toggleSelect = () => changeSelected(selectedId === id ? null : id);
+          const onDelete = () => deleteSlideshow(id);
           return (
-            <ListItem key={id} slideshow={slideshow} selected={selected} toggleSelect={toggleSelect} />
+            <ListItem
+              key={id}
+              slideshow={slideshow}
+              selected={selected}
+              toggleSelect={toggleSelect}
+              onDelete={onDelete}
+            />
           );
         })}
       </mui.List>

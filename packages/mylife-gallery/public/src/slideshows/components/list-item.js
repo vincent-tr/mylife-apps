@@ -4,8 +4,12 @@ import { React, PropTypes, mui, dialogs, useDispatch, useSelector, useMemo } fro
 import ThumbnailList from '../../common/thumbnail-list';
 import { createSlideshow, changeSelected } from '../actions';
 import { getDisplayView, getSelectedId } from '../selectors';
+import icons from '../../common/icons';
 
 const useStyles = mui.makeStyles(theme => ({
+  deleteButton: {
+    color: theme.status.error
+  }
 }));
 
 const useConnect = () => {
@@ -22,8 +26,8 @@ const useConnect = () => {
   };
 };
 
-const ListItem = ({ slideshow, selected, toggleSelect, ...props }) => {
-  // const classes = useStyles();
+const ListItem = ({ slideshow, selected, toggleSelect, onDelete, ...props }) => {
+  const classes = useStyles();
   // const { data, selectedId, createSlideshow, changeSelected } = useConnect();
 
   return (
@@ -41,6 +45,9 @@ const ListItem = ({ slideshow, selected, toggleSelect, ...props }) => {
           {/* thumbnail du diaporama */}
           {/* selection des albums */}
           {/* bouton suppression */}
+          <mui.IconButton onClick={onDelete} className={classes.deleteButton}>
+            <icons.actions.Delete />
+          </mui.IconButton>
         </mui.ExpansionPanelDetails>
       </mui.ExpansionPanel>
     </mui.ListItem>
@@ -50,7 +57,8 @@ const ListItem = ({ slideshow, selected, toggleSelect, ...props }) => {
 ListItem.propTypes = {
   slideshow: PropTypes.object.isRequired,
   selected: PropTypes.bool.isRequired,
-  toggleSelect: PropTypes.func.isRequired
+  toggleSelect: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 export default ListItem;
