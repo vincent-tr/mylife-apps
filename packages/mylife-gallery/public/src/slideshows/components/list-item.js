@@ -44,7 +44,7 @@ const useConnect = () => {
 
 const ListItem = ({ slideshow, ...props }) => {
   const classes = useStyles();
-  const { selectedId, deleteSlideshow, changeSelected } = useConnect();
+  const { selectedId, deleteSlideshow, updateSlideshow, changeSelected } = useConnect();
   const id = slideshow._id;
   const selected = selectedId === id;
   const toggleSelect = () => changeSelected(selectedId === id ? null : id);
