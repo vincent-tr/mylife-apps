@@ -1,9 +1,9 @@
 'use strict';
 
-import { React, PropTypes, mui, dialogs, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
-import ThumbnailList from '../../common/thumbnail-list';
+import { React, mui, dialogs, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
 import { createSlideshow, changeSelected } from '../actions';
 import { getDisplayView, getSelectedId } from '../selectors';
+import ListItem from './list-item';
 
 const useStyles = mui.makeStyles(theme => ({
   addButton: {
@@ -44,19 +44,12 @@ const List = ({ ...props }) => {
     <>
       <mui.List {...props}>
         {data.map(slideshow => (
-          <mui.ListItem key={slideshow._id}>
-            {slideshow.name}
-            {slideshow.style}
-            <mui.Button>
-              fullscreen
-            </mui.Button>
-            {/* thumbnail du diaporama */}
-            <mui.Button onClick={() => changeSelected(slideshow._id)}>
-              expanded={(selectedId === slideshow._id).toString()}
-              {/* selection des albums */}
-              {/* bouton suppression */}
-            </mui.Button>
-          </mui.ListItem>
+          <ListItem
+            key={slideshow._id}
+            slideshow={slideshow}
+            selected={selectedId === slideshow._id}
+            select={() => changeSelected(slideshow._id)}
+          />
         ))}
       </mui.List>
       <mui.Tooltip title='Nouveau diaporama'>
