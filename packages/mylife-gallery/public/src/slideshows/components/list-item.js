@@ -3,7 +3,7 @@
 import { React, PropTypes, mui, useDispatch, useSelector, useMemo, StopPropagationContainer, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { deleteSlideshow, updateSlideshow, changeSelected } from '../actions';
-import { getDisplayView, getSelectedId } from '../selectors';
+import { getSelectedId } from '../selectors';
 import Preview from './preview';
 
 const useStyles = mui.makeStyles(theme => ({
