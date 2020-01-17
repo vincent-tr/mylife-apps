@@ -29,7 +29,15 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
+const useAddButtonStyles = mui.makeStyles(theme => ({
+  listAddIcon: {
+    marginRight: theme.spacing(1),
+    color: theme.status.success
+  }
+}));
+
 const AddButton = ({ albums, addAlbum, createAlbum, ...props }) => {
+  const classes = useAddButtonStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const onOpen = event => setAnchorEl(event.currentTarget);
@@ -63,7 +71,10 @@ const AddButton = ({ albums, addAlbum, createAlbum, ...props }) => {
       open={!!anchorEl}
       onClose={onClose}
     >
-      <mui.MenuItem onClick={onNew}>Nouvel album ...</mui.MenuItem>
+      <mui.MenuItem onClick={onNew}>
+        <mui.icons.AddCircle className={classes.listAddIcon}/>
+        Nouvel album ...
+      </mui.MenuItem>
       {albums.map(album => (
         <mui.MenuItem key={album._id} onClick={() => onAdd(album)}>{album.title}</mui.MenuItem>
       ))}
