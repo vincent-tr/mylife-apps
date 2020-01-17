@@ -7,14 +7,22 @@ export default handleActions({
 
   [actionTypes.SET_VIEW] : (state, action) => ({
     ...state,
-    viewId: action.payload
+    viewId: action.payload,
+    selectedId: null,
+  }),
+
+  [actionTypes.SET_SELECTED] : (state, action) => ({
+    ...state,
+    selectedId: action.payload,
   }),
 
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
-    viewId: null
+    viewId: null,
+    selectedId: null,
   })
 
 }, {
   viewId: null,
+  selectedId: null,
 });
