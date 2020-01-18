@@ -59,7 +59,7 @@ class CallEngine {
     const { transaction } = message;
     const pending = this.pendings.get(transaction);
     if(!pending) {
-      console.log('Got response for unknown transaction, ignored');
+      console.log('Got response for unknown transaction, ignored'); // eslint-disable-line no-console
       return;
     }
 
