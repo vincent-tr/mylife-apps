@@ -16,6 +16,11 @@ exports.notifySlideshows = [ base, (session/*, message*/) => {
   return business.slideshowsNotify(session);
 } ];
 
+exports.notifySlideshowsImages = [ base, (session, message) => {
+  const { criteria } = message;
+  return business.slideshowsImagesNotify(session, criteria);
+} ];
+
 exports.createSlideshow = [ base, (session, message) => {
   const { values } = message;
   return business.slideshowCreate(values);
