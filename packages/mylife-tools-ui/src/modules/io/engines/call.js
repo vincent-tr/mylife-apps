@@ -106,16 +106,24 @@ class CallEngine {
 
 export default CallEngine;
 
+const styles = {
+  default: 'color: inherit; font-weight: bold',
+  lighter: 'color: gray; font-weight: lighter',
+  request: 'color: #03A9F4; font-weight: bold',
+  result: 'color: #4CAF50; font-weight: bold',
+  error: 'color: #F20404; font-weight: bold',
+};
+
 function logCall(pending, error, result) {
   const duration = pending.end - pending.begin;
   const { service, method } = pending.request;
   /* eslint-disable no-console */
-  console.groupCollapsed(`CALL ${service}.${method} (in ${duration.toFixed(2)} ms)`);
-  console.log('request', pending.request);
+  console.groupCollapsed(`%c call %c${service}.${method} %c(in ${duration.toFixed(2)} ms)`, styles.lighter, styles.default, styles.lighter);
+  console.log('%crequest', styles.request, pending.request);
   if(error) {
-    console.log('error', error);
+    console.log('%cerror', styles.error, error);
   } else {
-    console.log('result', result);
+    console.log('%cresult', styles.result, result);
   }
   console.groupEnd();
   /* eslint-enable */
