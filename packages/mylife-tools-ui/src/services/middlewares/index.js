@@ -9,7 +9,7 @@ import routing          from '../../modules/routing/middleware';
 const middlewares = [download, routing, io, thunk];
 
 if(process.env.NODE_ENV !== 'production') {
-  middlewares.push(createLogger());
+  middlewares.push(createLogger({ duration: true, collapsed: () => true }));
 }
 
 export default middlewares;
