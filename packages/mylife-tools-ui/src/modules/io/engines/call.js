@@ -5,17 +5,29 @@ import { busySet } from '../../dialogs';
 
 const CALL_TIMEOUT = 5000;
 
+const timer = (performance && typeof performance.now === 'function') ? performance : Date;
+const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
+
 class Pending {
-  constructor(engine, transaction, deferred) {
+  constructor(engine, request, deferred) {
     this.engine = engine;
-    this.transaction = transaction;
+    this.request = request;
     this.deferred = deferred;
     this.timeout = setTimeout(() => this.onTimeout(), CALL_TIMEOUT);
+    this.begin = timer.now();
+  }
+
+  get transaction() {
+    return this.request.transaction;
   }
 
   finish(error, result) {
+    this.end = timer.now();
     clearTimeout(this.timeout);
     this.engine.removePending(this);
+
+    logger(this, error, result);
+
     if(error) {
       this.deferred.reject(error);
     } else {
@@ -82,13 +94,29 @@ class CallEngine {
 
   async executeCall(message) {
     const transaction = ++this.transactionCounter;
-    this.emitter({ ...message, transaction, engine: 'call' });
+    const request = { ...message, transaction, engine: 'call' };
+    this.emitter(request);
 
     const deferred = utils.defer();
-    this.addPending(new Pending(this, transaction, deferred));
+    this.addPending(new Pending(this, request, deferred));
 
     return await deferred.promise;
   }
 }
 
 export default CallEngine;
+
+function logCall(pending, error, result) {
+  const duration = pending.end - pending.begin;
+  const { service, method } = pending.request;
+  /* eslint-disable no-console */
+  console.groupCollapsed(`CALL ${service}.${method} (in ${duration.toFixed(2)} ms)`);
+  console.log('request', pending.request);
+  if(error) {
+    console.log('error', error);
+  } else {
+    console.log('result', result);
+  }
+  console.groupEnd();
+  /* eslint-enable */
+}
