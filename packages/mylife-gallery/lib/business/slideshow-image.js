@@ -18,6 +18,8 @@ class SlideshowImageView extends StoreContainer {
     this.entity = getMetadataEntity('slidehow-mage');
     this._createSubscriptions();
     this._criteria = {};
+
+    this._slideshowsPerAlbum = new Map();
   }
 
   _createSubscriptions() {
@@ -39,6 +41,7 @@ class SlideshowImageView extends StoreContainer {
   }
 
   setCriteria(criteria) {
+    logger.debug(`creating slideshows-images filter with criteria '${JSON.stringify(criteria)}'`);
     this._criteria = criteria;
     this.refresh();
   }
@@ -47,33 +50,27 @@ class SlideshowImageView extends StoreContainer {
     // TODO
   }
 
-  onCollectionChange(collection, { before, after, type }) {
-    // TODO: switch on collection
-    switch(type) {
-      case 'create': {
-        // TODO
-        break;
-      }
+  onCollectionChange(collection, event) {
+    if(collection === this.slideshows) {
+      const slideshow = getEventObject(event);
+    }
 
-      case 'update': {
-        // TODO
-        break;
-      }
-
-      case 'remove': {
-        // TODO
-        break;
-      }
-
-      default:
-        throw new Error(`Unsupported event type: '${type}'`);
+    if(collection === this.albums) {
+      const album = getEventObject(event);
     }
   }
 }
 
-function buildFilter(criteria) {
-  logger.debug(`creating slideshows-images filter with criteria '${JSON.stringify(criteria)}'`);
+function getEventObject({ before, after, type }) {
+  switch(type) {
+    case 'create':
+    case 'update':
+      return after;
 
-  // TODO
+    case 'remove':
+      return before;
 
+    default:
+      throw new Error(`Unsupported event type: '${type}'`);
+  }
 }
