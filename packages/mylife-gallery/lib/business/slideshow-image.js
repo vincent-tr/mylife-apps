@@ -17,8 +17,8 @@ class SlideshowImageView extends StoreContainer {
 
     this.entity = getMetadataEntity('slidehow-mage');
     this._createSubscriptions();
-    this._criteria = {};
 
+    this._filterIds = new Set();
     this._slideshowsPerAlbum = new Map();
   }
 
@@ -42,22 +42,50 @@ class SlideshowImageView extends StoreContainer {
 
   setCriteria(criteria) {
     logger.debug(`creating slideshows-images filter with criteria '${JSON.stringify(criteria)}'`);
-    this._criteria = criteria;
+    this._filterIds = new Set(criteria.slideshows || []);
+
     this.refresh();
   }
 
   refresh() {
+    this._slideshowsPerAlbum.clear();
     // TODO
   }
 
   onCollectionChange(collection, event) {
     if(collection === this.slideshows) {
       const slideshow = getEventObject(event);
+      if(!this._filterIds.has(slideshow._id)) {
+        return;
+      }
+
+      const before = event.before ? event.before.albums : [];
+      const after = event.after ? event.after.albums : [];
+      const [deleted, added] = diff(before, after);
+
+      for(const albumId of deleted) {
+        const album = business.albumGet(albumId);
+        this._onAlbumRemove(slideshow, album);
+      }
+
+      for(const albumId of added) {
+        const album = business.albumGet(albumId);
+        this._onAlbumAdd(slideshow, album);
+      }
     }
 
     if(collection === this.albums) {
       const album = getEventObject(event);
+      // TODO
     }
+  }
+
+  _onAlbumAdd(slideshow, album) {
+    // TODO
+  }
+
+  _onAlbumRemove(slideshow, album) {
+    // TODO
   }
 }
 
@@ -73,4 +101,8 @@ function getEventObject({ before, after, type }) {
     default:
       throw new Error(`Unsupported event type: '${type}'`);
   }
+}
+
+function diff(before, after) {
+
 }
