@@ -57,6 +57,11 @@ exports.documentRemove = async (document) => {
   const type = document._entity;
   const id = document._id;
 
+  const reference = { type, id };
+  for(const album of business.albumListWithDocumentReference(reference)) {
+    business.albumRemoveDocument(album, reference);
+  }
+
   const collection = getDocumentStoreCollection(type);
   if(!collection.delete(id)) {
     throw new Error(`Cannot delete document '${type}:${id}' : document not found in collection`);
@@ -69,11 +74,6 @@ exports.documentRemove = async (document) => {
       await business.mediaRemove(mediaId);
       break;
     }
-  }
-
-  const reference = { type, id };
-  for(const album of business.albumListWithDocumentReference(reference)) {
-    business.albumRemoveDocument(album, reference);
   }
 
   switch(type) {

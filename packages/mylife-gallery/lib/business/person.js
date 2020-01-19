@@ -40,6 +40,8 @@ function personCreate(values) {
 exports.personDelete = async (person) => {
   logger.info(`Deleting person '${person._id}'`);
 
+  // TODO: update document that reference it
+
   const collection = getStoreCollection('persons');
   if(!collection.delete(person._id)) {
     throw new Error(`Cannot delete person '${person._id}' : document not found in collection`);
@@ -48,8 +50,6 @@ exports.personDelete = async (person) => {
   for(const thumbnailId of person.thumbnails) {
     await business.thumbnailRemoveIfUnused(thumbnailId);
   }
-
-  // TODO: update document that reference it
 };
 
 exports.personsNotify = (session) => {
