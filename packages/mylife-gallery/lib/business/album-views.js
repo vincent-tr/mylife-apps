@@ -103,7 +103,7 @@ function buildFilter(criteria) {
   }
 
   if(criteria.title) {
-    parts.push(album => album.title && album.title.includes(criteria.title));
+    parts.push(album => album.title.includes(criteria.title));
   }
 
   if(criteria.keywords) {

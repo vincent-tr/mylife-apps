@@ -2,6 +2,7 @@
 
 import { React, PropTypes, useMemo, mui, useDispatch, dialogs } from 'mylife-tools-ui';
 import { useAlbumView } from '../../../common/album-view';
+import { renderObject } from '../../../common/metadata-utils';
 import { addDocumentToAlbum, removeDocumentFromAlbum, createAlbumWithDocument } from '../../actions';
 
 const useConnect = () => {
@@ -76,7 +77,7 @@ const AddButton = ({ albums, addAlbum, createAlbum, ...props }) => {
         Nouvel album ...
       </mui.MenuItem>
       {albums.map(album => (
-        <mui.MenuItem key={album._id} onClick={() => onAdd(album)}>{album.title}</mui.MenuItem>
+        <mui.MenuItem key={album._id} onClick={() => onAdd(album)}>{renderObject(album)}</mui.MenuItem>
       ))}
     </mui.Menu>
     </>

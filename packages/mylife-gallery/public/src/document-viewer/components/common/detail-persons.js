@@ -2,6 +2,7 @@
 
 import { React, PropTypes, useMemo, mui, useState, useDispatch, dialogs } from 'mylife-tools-ui';
 import { usePersonView, personComparer } from '../../../common/person-view';
+import { renderObject } from '../../../common/metadata-utils';
 import { addPersonToDocument, removePersonFromDocument, createPersonWithDocument } from '../../actions';
 
 const useConnect = () => {
@@ -107,7 +108,7 @@ const AddButton = ({ persons, addPerson, createPerson, ...props }) => {
         Nouvelle personne ...
       </mui.MenuItem>
       {persons.map(person => (
-        <mui.MenuItem key={person._id} onClick={() => onAdd(person)}>{person.firstName} {person.lastName}</mui.MenuItem>
+        <mui.MenuItem key={person._id} onClick={() => onAdd(person)}>{renderObject(person)}</mui.MenuItem>
       ))}
     </mui.Menu>
     </>

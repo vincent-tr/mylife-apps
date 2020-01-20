@@ -84,11 +84,11 @@ function buildFilter(criteria) {
   const parts = [];
 
   if(criteria.firstName) {
-    parts.push(person => person.firstName && person.firstName.includes(criteria.firstName));
+    parts.push(person => person.firstName.includes(criteria.firstName));
   }
 
   if(criteria.lastName) {
-    parts.push(person => person.lastName && person.lastName.includes(criteria.lastName));
+    parts.push(person => person.lastName.includes(criteria.lastName));
   }
 
   return person => parts.every(part => part(person));

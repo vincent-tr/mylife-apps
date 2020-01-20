@@ -2,6 +2,7 @@
 
 import { React, PropTypes, mui, immutable } from 'mylife-tools-ui';
 import { useAlbumView } from '../../common/album-view';
+import { renderObject } from '../../common/metadata-utils';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -48,5 +49,5 @@ AlbumSelector.propTypes = {
 export default AlbumSelector;
 
 function createSelectorValueRenderer(albumView) {
-  return selection => selection.map(albumId => albumView.get(albumId).title).join(', ');
+  return selection => selection.map(albumId => renderObject(albumView.get(albumId))).join(', ');
 }
