@@ -261,7 +261,7 @@ function createIntervalFilterPart(criteria, parts, minName, maxName, propName, p
 }
 
 function hasPerson(document, personIds) {
-  switch(document.type) {
+  switch(document._entity) {
     case 'image':
     case 'video':
       return document.persons.some(person => personIds.has(person));
@@ -271,7 +271,7 @@ function hasPerson(document, personIds) {
 }
 
 function hasNoPerson(document) {
-  switch(document.type) {
+  switch(document._entity) {
     case 'image':
     case 'video':
       return document.persons.length === 0;
