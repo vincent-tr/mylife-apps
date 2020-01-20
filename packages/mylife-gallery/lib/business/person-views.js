@@ -10,7 +10,7 @@ exports.personNotify = (session, id) => {
   return notifyView(session, persons.createView(person => person._id === id));
 };
 
-exports.personsNotify = (session, criteria) => {
+exports.personsNotify = (session, criteria = {}) => {
   const view = new PersonView();
   view.setCriteria(criteria);
   return notifyView(session, view);
