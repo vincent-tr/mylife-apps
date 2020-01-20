@@ -107,15 +107,17 @@ class SlideshowImageView extends StoreContainer {
   _onAlbumAdd(slideshowId, album) {
     // TODO
     // TODO _slideshowsPerAlbum
+    // TODO order
   }
 
   _onAlbumRemove(slideshowId, album) {
     // TODO
     // TODO _slideshowsPerAlbum
+    // TODO order
   }
 
   _onAlbumUpdate(slideshowId, deleted, added) {
-
+    // TODO order
   }
 }
 
