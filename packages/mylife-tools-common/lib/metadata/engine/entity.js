@@ -143,6 +143,10 @@ exports.Entity = class Entity {
     return this._display;
   }
 
+  render(object) {
+    return this._display(object);
+  }
+
   get fields() {
     return this._fields;
   }
