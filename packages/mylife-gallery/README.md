@@ -15,7 +15,8 @@ MyLife photo gallery
    - doc moves (ordering)
    - doc delete
    - doc add ?
-   - delet album
+   - choose album thumbnails
+   - delete album
  - persons management
  - document:
    - ajouter/supprimer personne
