@@ -19,7 +19,6 @@ MyLife photo gallery
    - delete album
  - persons management
  - document:
-   - ajouter/supprimer personne
    - rotation image/video
  - suggestions:
    - Suggestion pour montrer les documents sans album
