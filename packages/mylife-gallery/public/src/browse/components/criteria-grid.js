@@ -3,6 +3,7 @@
 import { React, PropTypes, mui, DateOrYearSelector, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
 import TypeSelector from './type-selector';
 import AlbumSelector from './album-selector';
+import PersonSelector from './person-selector';
 import SortOrderSelector from '../../common/sort-order-selector';
 import CriteriaGridSimpleField from '../../common/criteria-grid-simple-field';
 
@@ -66,7 +67,7 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <CriteriaGridSimpleField width={2} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} />
       <CriteriaGridSimpleField width={4} label='Albums' editor={AlbumSelector} propName='albums' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} disabled={criteria.noAlbum} />
       <CriteriaGridSimpleField width={1} label='Aucun' editor={WrappedCheckbox} propName='noAlbum' object={criteria} onObjectChanged={onNoAlbumCriteriaChanged} />
-      <CriteriaGridSimpleField width={4} label='Personnes (TODO)' /> {/* disabled={criteria.noPerson} */}
+      <CriteriaGridSimpleField width={4} label='Personnes' editor={PersonSelector} propName='persons' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} disabled={criteria.noPerson} />
       <CriteriaGridSimpleField width={1} label='Aucun' editor={WrappedCheckbox} propName='noPerson' object={criteria} onObjectChanged={onNoPersonCriteriaChanged} />
 
       <CriteriaGridSimpleField width={3} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} fullWidth />
