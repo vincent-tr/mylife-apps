@@ -19,7 +19,8 @@ exports.notifyPersons = [ base, (session, message) => {
 
 exports.createPersonFromDocuments = [ base, (session, message) => {
   const { firstName, lastName, documents } = message;
-  return business.personCreateFromDocuments(firstName, lastName, documents);
+  const person = business.personCreateFromDocuments(firstName, lastName, documents);
+  return person._id;
 } ];
 
 exports.deleteAlbum = [ base, (session, message) => {

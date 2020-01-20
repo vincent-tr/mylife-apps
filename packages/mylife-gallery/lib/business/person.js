@@ -37,11 +37,19 @@ function personCreate(values) {
 }
 
 exports.personCreateFromDocuments = (firstName, lastName, documents) => {
-  const person = personCreate({ firstName, lastName });
+  // take first image thumbnail
+  const thumbnail = documents
+    .map(ref => business.documentGet(ref.type, ref.id))
+    .find(doc => doc._entity === 'image');
+  const thumbnails = thumbnail ? [thumbnail] : thumbnail;
+
+  const person = personCreate({ firstName, lastName, thumbnails });
+
   for(const { type, id } of documents) {
     const document = business.documentGet(type, id);
     business.documentAddPerson(document, person);
   }
+
   return person;
 };
 
