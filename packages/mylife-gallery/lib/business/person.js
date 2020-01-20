@@ -1,7 +1,6 @@
 'use strict';
 
 const { createLogger, getStoreCollection, getMetadataEntity, notifyView } = require('mylife-tools-server');
-const { utils } = require('mylife-tools-common');
 const business = require('.');
 
 const logger = createLogger('mylife:gallery:business:person');
