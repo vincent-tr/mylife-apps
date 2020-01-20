@@ -107,7 +107,7 @@ const AddButton = ({ persons, addPerson, createPerson, ...props }) => {
         Nouvelle personne ...
       </mui.MenuItem>
       {persons.map(person => (
-        <mui.MenuItem key={person._id} onClick={() => onAdd(person)}>{person.title}</mui.MenuItem>
+        <mui.MenuItem key={person._id} onClick={() => onAdd(person)}>{person.firstName} {person.lastName}</mui.MenuItem>
       ))}
     </mui.Menu>
     </>
