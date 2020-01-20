@@ -131,7 +131,7 @@ exports.documentAddPerson = (document, person) => {
   const newPersons = utils.immutable.arrayPush(document.persons, person._id);
   const newDocument = entity.getField('persons').setValue(document, newPersons);
 
-  logger.info(`Adding person '$${person._id}' on document '${document._entity}:${document._id}'`);
+  logger.info(`Adding person '${person._id}' on document '${document._entity}:${document._id}'`);
   documents.set(newDocument);
 };
 
