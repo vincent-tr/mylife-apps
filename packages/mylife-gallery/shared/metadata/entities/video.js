@@ -12,6 +12,6 @@ module.exports = {
     { id: 'height', name: 'Hauteur', datatype: 'count' },
     { id: 'duration', name: 'Durée', datatype: 'real' },
     { id: 'date', name: 'Date de prise de vidéo', datatype: 'datetime' },
-    { id: 'persons', name: 'Personnes', datatype: 'list:person', constraints: ['not-null'], initial: [] }, // we do not directly reference thumbnail because it is not loaded as store collection
+    { id: 'persons', name: 'Personnes', datatype: 'list:person', constraints: ['not-null'], initial: [] },
   ]
 };

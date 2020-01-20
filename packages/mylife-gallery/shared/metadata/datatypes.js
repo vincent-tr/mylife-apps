@@ -27,15 +27,6 @@ module.exports = [
     ]
   },
   {
-    id: 'image-tag', structure: [
-      { id: 'person', name: 'Personne', datatype: 'person' },
-      { id: 'left', name: 'Placement gauche', datatype: 'count' },
-      { id: 'top', name: 'Placement haut', datatype: 'count' },
-      { id: 'width', name: 'Largeur', datatype: 'count' },
-      { id: 'height', name: 'Hauteur', datatype: 'count' },
-    ]
-  },
-  {
     id: 'image-metadata', structure: [
       { id: 'date', name: 'Date de prise', datatype: 'datetime' },
       { id: 'gpsLatitude', name: 'GPS Latitude', datatype: 'real' },

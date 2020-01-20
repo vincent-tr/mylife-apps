@@ -12,6 +12,6 @@ module.exports = {
     { id: 'width', name: 'Largeur', datatype: 'count' },
     { id: 'height', name: 'Hauteur', datatype: 'count' },
     { id: 'date', name: 'Date de prise de photo', datatype: 'datetime' },
-    { id: 'persons', name: 'Personnes', datatype: 'list:image-tag', constraints: ['not-null'], initial: [] },
+    { id: 'persons', name: 'Personnes', datatype: 'list:person', constraints: ['not-null'], initial: [] },
   ]
 };
