@@ -74,7 +74,10 @@ exports.albumCreateFromDocuments = (title, documents) => {
 
   const values = { title, documents, thumbnails };
   const album = albumCreate(values);
-  return album._id;
+  for(const ref of documents) {
+    business.albumAddDocument(album, ref);
+  }
+  return album;
 };
 
 exports.albumAddDocument = (album, reference) => {

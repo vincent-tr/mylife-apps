@@ -19,7 +19,8 @@ exports.notifyAlbums = [ base, (session, message) => {
 
 exports.createAlbumFromDocuments = [ base, (session, message) => {
   const { title, documents } = message;
-  return business.albumCreateFromDocuments(title, documents);
+  const album = business.albumCreateFromDocuments(title, documents);
+  return album._id;
 } ];
 
 exports.deleteAlbum = [ base, (session, message) => {
