@@ -24,6 +24,20 @@ exports.documentFindByHash = (hash) => {
   return documentFilter(document => document.hash === hash)[0];
 };
 
+exports.documentListByPerson = (person) => {
+  const list = [];
+  // other has no person
+  const collections = [getStoreCollection('images'), getStoreCollection('videos')];
+  for(const collection of collections) {
+    for(const document of collection.list()) {
+      if(document.persons.inclues(person._id)) {
+        list.push(document);
+      }
+    }
+  }
+  return list;
+};
+
 exports.documentIsThumbnailUsed = (thumbnailId) => {
   for(const document of getStoreCollection('images').list()) {
     if(document.thumbnail === thumbnailId) {
@@ -101,6 +115,48 @@ exports.documentUpdate = (document, values) => {
 
   collection.set(newDocument);
 };
+
+exports.documentAddPerson = (document, person) => {
+  const type = document._entity;
+  if(type !== 'image' && type !== 'video') {
+    throw new Error(`Invalid document type for document '${document._entity}:${document._id}' to call 'documentAddPerson'`);
+  }
+  const documents = getDocumentStoreCollection(type);
+  const entity = getMetadataEntity(type);
+  const index = findPersonIndex(document, person._id);
+  if(index !== -1) {
+    throw new Error('La personne existe déjà sur le document');
+  }
+
+  const newPersons = utils.immutable.arrayPush(document.persons, person._id);
+  const newDocument = entity.getField('persons').setValue(document, newPersons);
+
+  logger.info(`Adding person '$${person._id}' on document '${document._entity}:${document._id}'`);
+  documents.set(newDocument);
+};
+
+exports.documentRemovePerson = (document, person) => {
+  const type = document._entity;
+  if(type !== 'image' && type !== 'video') {
+    throw new Error(`Invalid document type for document '${document._entity}:${document._id}' to call 'documentAddPerson'`);
+  }
+  const documents = getDocumentStoreCollection(type);
+  const entity = getMetadataEntity(type);
+  const index = findPersonIndex(document, person._id);
+  if(index === -1) {
+    throw new Error('La personne n\'existe pas sur le document');
+  }
+
+  const newPersons = utils.immutable.arrayRemove(document.persons, index);
+  const newDocument = entity.getField('persons').setValue(document, newPersons);
+
+  logger.info(`Removing person '$${person._id}' from document '${document._entity}:${document._id}'`);
+  documents.set(newDocument);
+};
+
+function findPersonIndex(document, personId) {
+  return document.persons.findIndex(id => id === personId);
+}
 
 exports.documentAddPath = (document, path, fileUpdateDate) => {
   logger.info(`Adding path '${path}' on document '${document._entity}:${document._id}'`);
