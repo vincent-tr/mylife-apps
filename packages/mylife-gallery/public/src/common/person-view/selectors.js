@@ -13,7 +13,7 @@ export const getPersons = createSelector(
 
 export const getRefCount = state => getBase(state).refCount;
 
-function personComparer(person1, person2) {
+export function personComparer(person1, person2) {
   // sort by first name then last name (ignore case)
   const firstName1 = person1.firstName.toUpperCase();
   const firstName2 = person2.firstName.toUpperCase();
