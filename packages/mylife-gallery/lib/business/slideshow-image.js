@@ -54,38 +54,68 @@ class SlideshowImageView extends StoreContainer {
 
   onCollectionChange(collection, event) {
     if(collection === this.slideshows) {
-      const slideshow = getEventObject(event);
-      if(!this._filterIds.has(slideshow._id)) {
-        return;
-      }
-
-      const before = event.before ? event.before.albums : [];
-      const after = event.after ? event.after.albums : [];
-      const [deleted, added] = diff(before, after);
-
-      for(const albumId of deleted) {
-        const album = business.albumGet(albumId);
-        this._onAlbumRemove(slideshow, album);
-      }
-
-      for(const albumId of added) {
-        const album = business.albumGet(albumId);
-        this._onAlbumAdd(slideshow, album);
-      }
+      this._onSlideshowChange(event);
+      return;
     }
 
     if(collection === this.albums) {
-      const album = getEventObject(event);
-      // TODO
+      this._onAlbumChange(event);
+      return;
     }
   }
 
-  _onAlbumAdd(slideshow, album) {
-    // TODO
+  _onSlideshowChange(event) {
+    const slideshow = getEventObject(event);
+    if(!this._filterIds.has(slideshow._id)) {
+      return;
+    }
+
+    const before = getAlbums(event.before);
+    const after = getAlbums(event.after);
+    const [deleted, added] = diff(before, after);
+
+    for(const albumId of deleted) {
+      const album = business.albumGet(albumId);
+      this._onAlbumRemove(slideshow._id, album);
+    }
+
+    for(const albumId of added) {
+      const album = business.albumGet(albumId);
+      this._onAlbumAdd(slideshow._id, album);
+    }
   }
 
-  _onAlbumRemove(slideshow, album) {
+  _onAlbumChange(event) {
+    if(event.type !== 'create' && event.type !== 'update') {
+      return;
+    }
+
+    const album = getEventObject(event);
+    const slideshows = this._slideshowsPerAlbum.get(album._id);
+    if(!slideshows) {
+      return;
+    }
+
+    const before = getDocuments(event.before);
+    const after = getDocuments(event.after);
+    const [deleted, added] = diff(before, after);
+    for(const slideshowId of slideshows) {
+      this._onAlbumUpdate(slideshowId, deleted, added);
+    }
+  }
+
+  _onAlbumAdd(slideshowId, album) {
     // TODO
+    // TODO _slideshowsPerAlbum
+  }
+
+  _onAlbumRemove(slideshowId, album) {
+    // TODO
+    // TODO _slideshowsPerAlbum
+  }
+
+  _onAlbumUpdate(slideshowId, deleted, added) {
+
   }
 }
 
@@ -103,6 +133,42 @@ function getEventObject({ before, after, type }) {
   }
 }
 
-function diff(before, after) {
+function getAlbums(slideshow) {
+  if(!slideshow) {
+    return [];
+  }
 
+  return slideshow.albums;
+}
+
+function getDocuments(album) {
+  if(!album) {
+    return [];
+  }
+
+  return album.documents
+    .filter(ref => ref.type === 'image')
+    .map(ref =>ref .id);
+}
+
+function diff(before, after) {
+  const beforeSet = new Set(before);
+  const afterSet = new Set(after);
+  const deleted = [];
+  const added = [];
+
+  for(const item of beforeSet) {
+    if(!afterSet.has(item)) {
+      deleted.push(item);
+    }
+  }
+
+
+  for(const item of afterSet) {
+    if(!beforeSet.has(item)) {
+      added.push(item);
+    }
+  }
+
+  return { deleted, added };
 }
