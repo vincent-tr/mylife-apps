@@ -20,16 +20,12 @@ const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNex
         <mui.IconButton edge='start' color='inherit' onClick={onClose}>
           <icons.actions.Close />
         </mui.IconButton>
-        {onPrev && (
-          <mui.IconButton color='inherit' onClick={onPrev}>
-            <icons.actions.Previous />
-          </mui.IconButton>
-        )}
-        {onNext && (
-          <mui.IconButton color='inherit' onClick={onNext}>
-            <icons.actions.Next />
-          </mui.IconButton>
-        )}
+        <mui.IconButton color='inherit' onClick={onPrev} disabled={!onPrev}>
+          <icons.actions.Previous />
+        </mui.IconButton>
+        <mui.IconButton color='inherit' onClick={onNext} disabled={!onNext}>
+          <icons.actions.Next />
+        </mui.IconButton>
         <mui.Typography variant='h6' className={classes.title}>
           {info.title}
         </mui.Typography>
