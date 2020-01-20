@@ -28,3 +28,4 @@ MyLife photo gallery
  - person delete: handle properly deletion of dependencies (documents that tag the person)
  - sync
    - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?
+   - rajouter l'heure si possible (sympa de savoir si c est le matin, le soir, etc)
