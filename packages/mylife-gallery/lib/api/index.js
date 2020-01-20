@@ -6,6 +6,7 @@ exports.apiServices = [
   require('./stats'),
   require('./suggestion'),
   require('./album'),
+  require('./person'),
   require('./slideshow'),
   require('./keyword'),
 ];
