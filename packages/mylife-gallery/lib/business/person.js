@@ -36,6 +36,15 @@ function personCreate(values) {
   return item;
 }
 
+exports.personCreateFromDocuments = (firstName, lastName, documents) => {
+  const person = personCreate({ firstName, lastName });
+  for(const { type, id } of documents) {
+    const document = business.documentGet(type, id);
+    business.documentAddPerson(document, person);
+  }
+  return person;
+};
+
 exports.personDelete = async (person) => {
   logger.info(`Deleting person '${person._id}'`);
 
@@ -53,6 +62,7 @@ exports.personDelete = async (person) => {
   }
 };
 
+// TODO
 exports.personsNotify = (session) => {
   const persons = getStoreCollection('persons');
   return notifyView(session, persons.createView());
