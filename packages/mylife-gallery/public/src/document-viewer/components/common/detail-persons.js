@@ -1,7 +1,7 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, dialogs } from 'mylife-tools-ui';
-import { usePersonView } from '../../../common/person-view';
+import { React, PropTypes, useMemo, mui, useState, useDispatch, dialogs } from 'mylife-tools-ui';
+import { usePersonView, personComparer } from '../../../common/person-view';
 import { addPersonToDocument, removePersonFromDocument, createPersonWithDocument } from '../../actions';
 
 const useConnect = () => {
@@ -29,6 +29,37 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
+const PersonAddDialog = ({ show, proceed }) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  return (
+    <mui.Dialog aria-labelledby='dialog-title' open={show} scroll='paper' maxWidth='sm' fullWidth>
+      <mui.DialogTitle id='dialog-title'>
+        {'Informations de la nouvelle personne'}
+      </mui.DialogTitle>
+
+      <mui.DialogContent dividers>
+        <mui.DialogContentText>{'Prénom'}</mui.DialogContentText>
+        <mui.TextField autoFocus fullWidth value={firstName} onChange={e => setFirstName(e.target.value)} />
+        <mui.DialogContentText>{'Nom'}</mui.DialogContentText>
+        <mui.TextField fullWidth value={lastName} onChange={e => setLastName(e.target.value)} />
+      </mui.DialogContent>
+
+      <mui.DialogActions>
+        <mui.Button color='primary' onClick={() => proceed({ result: 'ok', firstName, lastName })}>OK</mui.Button>
+        <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
+      </mui.DialogActions>
+    </mui.Dialog>
+  );
+};
+
+PersonAddDialog.propTypes = {
+  show: PropTypes.bool,
+  proceed: PropTypes.func
+};
+
+const personAddDialog = dialogs.create(PersonAddDialog);
+
 const useAddButtonStyles = mui.makeStyles(theme => ({
   listAddIcon: {
     marginRight: theme.spacing(1),
@@ -51,7 +82,7 @@ const AddButton = ({ persons, addPerson, createPerson, ...props }) => {
   const onNew = async () => {
     onClose();
 
-    const { result, text: title } = await dialogs.input({ title: 'Titre du nouvel person', label: 'Titre' });
+    const { result, firstName, lastName } = await personAddDialog();
     if(result !== 'ok') {
       return;
     }
@@ -61,7 +92,7 @@ const AddButton = ({ persons, addPerson, createPerson, ...props }) => {
 
   return (
     <>
-    <mui.Tooltip title='Ajouter le document à un person'>
+    <mui.Tooltip title='Ajouter une personne à un document'>
       <mui.IconButton {...props} onClick={onOpen}>
         <mui.icons.AddCircle />
       </mui.IconButton>
@@ -73,7 +104,7 @@ const AddButton = ({ persons, addPerson, createPerson, ...props }) => {
     >
       <mui.MenuItem onClick={onNew}>
         <mui.icons.AddCircle className={classes.listAddIcon}/>
-        Nouvel person ...
+        Nouvelle personne ...
       </mui.MenuItem>
       {persons.map(person => (
         <mui.MenuItem key={person._id} onClick={() => onAdd(person)}>{person.title}</mui.MenuItem>
@@ -94,14 +125,30 @@ const DetailPersons = ({ documentWithInfo }) => {
   const { persons, personView } = usePersonView();
   const { addPerson, removePerson, createPerson } = useConnect();
 
-  const { document, info } = documentWithInfo;
-  const personIds = info.persons.map(item => item.id);
+  const { document } = documentWithInfo;
+  const personIds = document.persons;
 
   const addablePersons = useMemo(() => {
     // the same document cannot be added twice in an person
     const idSet = new Set(personIds);
     return persons.filter(person => !idSet.has(person._id));
   }, [personIds, persons]);
+
+  const personList = useMemo(() => {
+    const list = [];
+    for(const id of personIds) {
+      const person = personView.get(id);
+      if(!person) {
+        // personView not ready
+        continue;
+      }
+
+      list.push(person);
+    }
+
+    list.sort(personComparer);
+    return list;
+  }, [personIds, personView]);
 
   return (
     <mui.ListItem>
@@ -120,25 +167,18 @@ const DetailPersons = ({ documentWithInfo }) => {
         }
         secondary={
           <mui.List className={classes.list} dense>
-            {personIds.map(id => {
-              const person = personView.get(id);
-              if(!person) { // personView not ready
-                return null;
-              }
-
-              return (
-                <mui.ListItem key={id}>
-                  <mui.Typography>
-                    {person.title}
-                  </mui.Typography>
-                  <mui.Tooltip title={'Enlever la personne du document'}>
-                    <mui.IconButton className={classes.deleteButton} onClick={() => removePerson(document, person)}>
-                      <mui.icons.Delete />
-                    </mui.IconButton>
-                  </mui.Tooltip>
-                </mui.ListItem>
-              );
-            })}
+            {personList.map(person => (
+              <mui.ListItem key={person._id}>
+                <mui.Typography>
+                  {person.firstName} {person.lastName}
+                </mui.Typography>
+                <mui.Tooltip title={'Enlever la personne du document'}>
+                  <mui.IconButton className={classes.deleteButton} onClick={() => removePerson(document, person)}>
+                    <mui.icons.Delete />
+                  </mui.IconButton>
+                </mui.Tooltip>
+              </mui.ListItem>
+            ))}
           </mui.List>
         }
       />
