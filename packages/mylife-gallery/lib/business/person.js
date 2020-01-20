@@ -40,7 +40,9 @@ function personCreate(values) {
 exports.personDelete = async (person) => {
   logger.info(`Deleting person '${person._id}'`);
 
-  // TODO: update document that reference it
+  for(const document of business.documentListByPerson(person)) {
+    business.documentRemovePerson(document, person);
+  }
 
   const collection = getStoreCollection('persons');
   if(!collection.delete(person._id)) {
