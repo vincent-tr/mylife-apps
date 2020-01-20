@@ -38,10 +38,10 @@ function personCreate(values) {
 
 exports.personCreateFromDocuments = (firstName, lastName, documents) => {
   // take first image thumbnail
-  const thumbnail = documents
+  const doc = documents
     .map(ref => business.documentGet(ref.type, ref.id))
     .find(doc => doc._entity === 'image');
-  const thumbnails = thumbnail ? [thumbnail] : thumbnail;
+  const thumbnails = doc ? [doc.thumbnail] : [];
 
   const person = personCreate({ firstName, lastName, thumbnails });
 
