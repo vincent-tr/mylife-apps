@@ -48,8 +48,10 @@ class SlideshowImageView extends StoreContainer {
   }
 
   refresh() {
-    this._slideshowsPerAlbum.clear();
-    // TODO
+    // TODO: remove slideshows not in filter ids
+    for(const slideshowId of this._filterIds) {
+      this._buildSlideshow(business.slideshowGet(slideshowId));
+    }
   }
 
   onCollectionChange(collection, event) {
@@ -70,19 +72,7 @@ class SlideshowImageView extends StoreContainer {
       return;
     }
 
-    const before = getAlbums(event.before);
-    const after = getAlbums(event.after);
-    const [deleted, added] = diff(before, after);
-
-    for(const albumId of deleted) {
-      const album = business.albumGet(albumId);
-      this._onAlbumRemove(slideshow._id, album);
-    }
-
-    for(const albumId of added) {
-      const album = business.albumGet(albumId);
-      this._onAlbumAdd(slideshow._id, album);
-    }
+    this._buildSlideshow(slideshow);
   }
 
   _onAlbumChange(event) {
@@ -90,34 +80,21 @@ class SlideshowImageView extends StoreContainer {
       return;
     }
 
-    const album = getEventObject(event);
-    const slideshows = this._slideshowsPerAlbum.get(album._id);
+    const slideshows = this._slideshowsPerAlbum.get(event.after._id);
     if(!slideshows) {
       return;
     }
 
-    const before = getDocuments(event.before);
-    const after = getDocuments(event.after);
-    const [deleted, added] = diff(before, after);
     for(const slideshowId of slideshows) {
-      this._onAlbumUpdate(slideshowId, deleted, added);
+      this._buildSlideshow(business.slideshowGet(slideshowId));
     }
   }
 
-  _onAlbumAdd(slideshowId, album) {
+  _buildSlideshow(slideshow) {
     // TODO
     // TODO _slideshowsPerAlbum
     // TODO order
-  }
 
-  _onAlbumRemove(slideshowId, album) {
-    // TODO
-    // TODO _slideshowsPerAlbum
-    // TODO order
-  }
-
-  _onAlbumUpdate(slideshowId, deleted, added) {
-    // TODO order
   }
 }
 
@@ -133,44 +110,4 @@ function getEventObject({ before, after, type }) {
     default:
       throw new Error(`Unsupported event type: '${type}'`);
   }
-}
-
-function getAlbums(slideshow) {
-  if(!slideshow) {
-    return [];
-  }
-
-  return slideshow.albums;
-}
-
-function getDocuments(album) {
-  if(!album) {
-    return [];
-  }
-
-  return album.documents
-    .filter(ref => ref.type === 'image')
-    .map(ref =>ref .id);
-}
-
-function diff(before, after) {
-  const beforeSet = new Set(before);
-  const afterSet = new Set(after);
-  const deleted = [];
-  const added = [];
-
-  for(const item of beforeSet) {
-    if(!afterSet.has(item)) {
-      deleted.push(item);
-    }
-  }
-
-
-  for(const item of afterSet) {
-    if(!beforeSet.has(item)) {
-      added.push(item);
-    }
-  }
-
-  return { deleted, added };
 }
