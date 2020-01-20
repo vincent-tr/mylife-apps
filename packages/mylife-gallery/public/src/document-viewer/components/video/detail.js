@@ -15,7 +15,7 @@ const VideoDetail = ({ open, documentWithInfo, ...props }) => {
         <DocumentValue documentWithInfo={documentWithInfo} field='keywords' />
         <DetailItem name='Date de prise' value={document.date} />
         <DocumentValue documentWithInfo={documentWithInfo} field='albums' />
-        <DetailItem name={getFieldName('video', 'persons')} value={'TODO document.persons'} />
+        <DocumentValue documentWithInfo={documentWithInfo} field='persons' />
         <DetailItem name={getFieldName('video', 'duration')} value={document.duration} type='duration' />
         <DetailItem name='Dimensions' value={`${document.width} x ${document.height}`} />
 

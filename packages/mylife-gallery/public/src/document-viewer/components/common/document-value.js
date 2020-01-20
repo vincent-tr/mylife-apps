@@ -6,6 +6,7 @@ import DetailItem from './detail-item';
 import DetailCaption from './detail-caption';
 import DetailKeywords from './detail-keywords';
 import DetailAlbums from './detail-albums';
+import DetailPersons from './detail-persons';
 
 const DocumentValue = ({ documentWithInfo, field }) => {
   const { document } = documentWithInfo;
@@ -24,6 +25,8 @@ const DocumentValue = ({ documentWithInfo, field }) => {
       return (<DetailKeywords document={document} />);
     case 'albums':
       return (<DetailAlbums documentWithInfo={documentWithInfo} />);
+    case 'persons':
+      return (<DetailPersons documentWithInfo={documentWithInfo} />);
     default:
       throw new Error(`Unknown document field: '${field}'`);
   }

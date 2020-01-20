@@ -89,3 +89,46 @@ export function removeDocumentFromAlbum(document, album) {
 
   };
 }
+
+export function createPersonWithDocument(document, firstName, lastName) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'person',
+      method: 'createPersonFromDocuments',
+      firstName,
+      lastName,
+      documents: [docRef(document)]
+    }));
+
+  };
+}
+
+export function addPersonToDocument(document, person) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'document',
+      method: 'addPersonToDocument',
+      ... docRef(document),
+      personId: person._id
+    }));
+
+  };
+}
+
+export function removePersonFromDocument(document, person) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'document',
+      method: 'removePersonToDocument',
+      ... docRef(document),
+      personId: person._id
+    }));
+
+  };
+}
+
+
+addPersonToDocument, removePersonFromDocument, createPersonWithDocument

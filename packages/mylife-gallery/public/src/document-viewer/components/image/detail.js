@@ -16,7 +16,7 @@ const ImageDetail = ({ open, documentWithInfo, ...props }) => {
         <DocumentValue documentWithInfo={documentWithInfo} field='keywords' />
         <DetailItem name={getFieldName('image', 'date')} value={document.date} />
         <DocumentValue documentWithInfo={documentWithInfo} field='albums' />
-        <DetailItem name={getFieldName('image', 'persons')} value={'TODO document.persons'} />
+        <DocumentValue documentWithInfo={documentWithInfo} field='persons' />
         <DetailLocation location={getLocation(document)} />
         <DetailItem name='Dimensions' value={`${document.width} x ${document.height}`} />
         <DetailItem name={'Modèle d\'appareil'} value={document.metadata.model} />
