@@ -20,6 +20,7 @@ MyLife photo gallery
  - persons management
  - document:
    - rotation image/video
+   - pouvoir modifier la date d une image/video ou pouvoir la re-importer depuis la metadata
  - suggestions:
    - Suggestion pour montrer les documents sans album
    - Suggestion pour créer un script pour déplacer les fichiers dans des dossiers correspondant a l album si les fichiers sont dans un dossier commençant par _ (eg: \_ATrier)
