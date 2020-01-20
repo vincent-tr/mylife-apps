@@ -25,13 +25,13 @@ exports.documentFindByHash = (hash) => {
 };
 
 exports.documentIsThumbnailUsed = (thumbnailId) => {
-  for(const document of getStoreCollection('images')) {
+  for(const document of getStoreCollection('images').list()) {
     if(document.thumbnail === thumbnailId) {
       return true;
     }
   }
 
-  for(const document of getStoreCollection('videos')) {
+  for(const document of getStoreCollection('videos').list()) {
     if(document.thumbnails.includes(thumbnailId)) {
       return true;
     }
