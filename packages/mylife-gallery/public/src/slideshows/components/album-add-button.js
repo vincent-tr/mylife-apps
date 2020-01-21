@@ -72,8 +72,7 @@ const AlbumAddButton = ({ slideshow, className, ...props }) => {
 
 AlbumAddButton.propTypes = {
   slideshow: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  addAlbum: PropTypes.func.isRequired
+  className: PropTypes.string
 };
 
 export default AlbumAddButton;
