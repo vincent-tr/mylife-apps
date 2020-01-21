@@ -47,7 +47,7 @@ const AddButton = ({ albums, addAlbum, ...props }) => {
         variant='contained'
         className={classes.addButton}
         onClick={onOpen}
-        startIcon={<icons.actions.Delete />}
+        startIcon={<icons.actions.Add />}
         {...props}
       >
         {'Ajouter'}
