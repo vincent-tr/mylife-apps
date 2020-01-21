@@ -62,10 +62,8 @@ const NotEmpty = ({ slideshow }) => {
 const Preview = ({ slideshow, className, ...props }) => {
   const classes = { ...useCommonStyles(), ...useStyles() };
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
-  const empty = !slideshow.albums.length;
   const { slideshowImages } = useSlideshowImageView(slideshow._id);
-
-  console.log(slideshowImages);
+  const empty = !slideshowImages.size;
 
   return (
     <mui.GridListTile component='div' classes={tileClasses}>
@@ -76,7 +74,7 @@ const Preview = ({ slideshow, className, ...props }) => {
           <NotEmpty slideshow={slideshow} />
         )}
       </div>
-      <mui.GridListTileBar title={`${slideshow.albums.length} album(s)`} />
+      <mui.GridListTileBar title={`${slideshowImages.size} images(s)`} />
     </mui.GridListTile>
   );
 };
