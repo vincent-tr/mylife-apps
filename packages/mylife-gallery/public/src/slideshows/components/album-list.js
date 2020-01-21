@@ -16,17 +16,21 @@ const useConnect = () => {
 };
 
 const useStyles = mui.makeStyles(theme => ({
-  addButton: {
-    marginLeft: theme.spacing(1),
-    color: theme.palette.success.main
-  },
   deleteButton: {
     marginLeft: theme.spacing(1),
     color: theme.palette.error.main
+  },
+  addButton: {
+    color: theme.palette.getContrastText(theme.palette.success.dark),
+    backgroundColor: theme.palette.success.main,
+    '&:hover': {
+      backgroundColor: theme.palette.success.dark,
+    }
   }
 }));
 
 const AddButton = ({ albums, addAlbum, ...props }) => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const onOpen = event => setAnchorEl(event.currentTarget);
@@ -39,20 +43,25 @@ const AddButton = ({ albums, addAlbum, ...props }) => {
 
   return (
     <>
-    <mui.Tooltip title='Ajouter un album au diaporama'>
-      <mui.IconButton {...props} onClick={onOpen}>
-        <mui.icons.AddCircle />
-      </mui.IconButton>
-    </mui.Tooltip>
-    <mui.Menu
-      anchorEl={anchorEl}
-      open={!!anchorEl}
-      onClose={onClose}
-    >
-      {albums.map(album => (
-        <mui.MenuItem key={album._id} onClick={() => onAdd(album)}>{renderObject(album)}</mui.MenuItem>
-      ))}
-    </mui.Menu>
+      <mui.Button
+        variant='contained'
+        className={classes.addButton}
+        onClick={onOpen}
+        startIcon={<icons.actions.Delete />}
+        {...props}
+      >
+        {'Ajouter'}
+      </mui.Button>
+
+      <mui.Menu
+        anchorEl={anchorEl}
+        open={!!anchorEl}
+        onClose={onClose}
+      >
+        {albums.map(album => (
+          <mui.MenuItem key={album._id} onClick={() => onAdd(album)}>{renderObject(album)}</mui.MenuItem>
+        ))}
+      </mui.Menu>
     </>
   );
 };
@@ -75,7 +84,7 @@ const AlbumList = ({ slideshow, ...props }) => {
   }, [albumIds, albums]);
 
   return (
-    <mui.List {...props}>
+    <mui.List dense {...props}>
       {albumIds.map(id => {
         const album = albumView.get(id);
         if(!album) { // albumView not ready
@@ -101,7 +110,6 @@ const AlbumList = ({ slideshow, ...props }) => {
         <AddButton
           albums={addableAlbums}
           addAlbum={album => addAlbumToSlideshow(slideshow, album)}
-          className={classes.addButton}
         />
       </mui.ListItem>
 
