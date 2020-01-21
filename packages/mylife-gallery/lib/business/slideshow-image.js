@@ -107,7 +107,7 @@ class SlideshowImageView extends StoreContainer {
   _buildSlideshow(id) {
     let data = this._slideshowsData.get(id);
     if(!data) {
-      data = new SlideshowData(id);
+      data = new SlideshowData(id, this.entity);
       this._slideshowsData.set(id, data);
     }
 
@@ -170,25 +170,88 @@ class SlideshowPerAlbum {
 }
 
 class SlideshowData {
-  constructor(id) {
+  constructor(id, entity) {
     this._id = id;
+    this._entity = entity
     this._albums = new Set();
-    this._objects = new Map();
+    this._objects = new Set();
   }
 
   update(slideshowsPerAlbum) {
-    // TODO
-    // TODO _slideshowsPerAlbum
-    // TODO order
+    const slideshow = business.slideshowGet(this._id);
+    const albumIds = slideshow.albums;
 
+    this._updateAlbumsSet(slideshowsPerAlbum, albumIds);
+
+    const imageIds = this._listImageIds(albumIds);
+    const added = this._buildAdded(imageIds);
+    const deleted = this._buildDeleted(imageIds);
+
+    return [deleted, added];
+  }
+
+  _listImageIds(albumIds) {
+    const imageIds = [];
+    for(const albumId of albumIds) {
+      const album = business.albumGet(albumId);
+      for(const { type, id: documentId } of album.documents) {
+        if(type !== 'image') {
+          continue;
+        }
+
+        imageIds.push(documentId);
+      }
+    }
+    return imageIds;
+  }
+
+  _buildAdded(imageIds) {
+    const added = [];
+    for(const [index, id] of imageIds.entries()) {
+      const image = business.documentGet('image', id);
+      const values = { _id: `${this._id}-${id}`, index, thumbnail: image.thumbnail, media: image.media.id };
+      added.push(this._entity.newObject(values));
+    }
+    return added;
+  }
+
+  _buildDeleted(newImageIds) {
+    const newSet = new Set(newImageIds.map(id => `${this._id}-${id}`));
+    const deleted = [];
+    for(const oldId of this._objects) {
+      if(!newSet.has(oldId)) {
+        deleted.push(oldId);
+      }
+    }
+    return deleted;
+  }
+
+  _updateAlbumsSet(slideshowsPerAlbum, newAlbumIds) {
+    const newAlbumSet = new Set(newAlbumIds);
+
+    // deleted albums
+    for(const id of this._albums) {
+      if(!newAlbumSet.has(id)) {
+        slideshowsPerAlbum.removeSlideshowAlbum(this._id, id);
+      }
+    }
+
+    // added albums
+    for(const id of newAlbumSet) {
+      if(!this._albums.has(id)) {
+        this._albums.add(id);
+        slideshowsPerAlbum.addSlideshowAlbum(this._id, id);
+      }
+    }
   }
 
   delete(slideshowsPerAlbum) {
     for(const albumId of this._albums) {
       slideshowsPerAlbum.removeSlideshowAlbum(this._id, albumId);
     }
+    this._albums.clear();
 
-    const objectIds = Array.from(this._objects.keys());
+    const objectIds = Array.from(this._objects);
     this._objects.clear();
     return objectIds;
   }
