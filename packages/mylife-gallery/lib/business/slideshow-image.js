@@ -142,10 +142,6 @@ class SlideshowPerAlbum {
     this.empty = new Set();
   }
 
-  clear() {
-    this.map.clear();
-  }
-
   getSlideshows(albumId) {
     return this.map.get(albumId) || this.empty;
   }
