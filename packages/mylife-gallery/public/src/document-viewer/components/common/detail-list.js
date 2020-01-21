@@ -102,14 +102,14 @@ const DetailList = ({ title, addTooltip, newTooltip, deleteTooltip, onAdd, onNew
 
               return (
                 <mui.ListItem key={item._id}>
-                  <mui.Typography>
-                    {renderObject(item)}
-                  </mui.Typography>
-                  <mui.Tooltip title={deleteTooltip}>
-                    <mui.IconButton className={classes.deleteButton} onClick={() => onDelete(item)}>
-                      <mui.icons.Delete />
-                    </mui.IconButton>
-                  </mui.Tooltip>
+                  <mui.ListItemText primary={renderObject(item)} />
+                  <mui.ListItemSecondaryAction>
+                    <mui.Tooltip title={deleteTooltip}>
+                      <mui.IconButton className={classes.deleteButton} onClick={() => onDelete(item)}>
+                        <mui.icons.Delete />
+                      </mui.IconButton>
+                    </mui.Tooltip>
+                  </mui.ListItemSecondaryAction>
                 </mui.ListItem>
               );
             })}
