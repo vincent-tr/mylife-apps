@@ -6,7 +6,7 @@ import { deleteSlideshow, updateSlideshow, changeSelected } from '../actions';
 import { getSelectedId } from '../selectors';
 import Preview from './preview';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles(theme => console.log(theme) || ({
   panel: {
     width: '100%',
   },
@@ -22,7 +22,11 @@ const useStyles = mui.makeStyles(theme => ({
     width: 200
   },
   deleteButton: {
-    color: theme.status.error
+    color: theme.palette.getContrastText(theme.status.error),
+    backgroundColor: theme.status.error,
+    '&:hover': {
+      backgroundColor: theme.palette.augmentColor({ main: theme.status.error }).dark,
+    }
   }
 }));
 
@@ -87,11 +91,15 @@ const ListItem = ({ slideshow, ...props }) => {
           </StopPropagationContainer>
         </mui.ExpansionPanelSummary>
         <mui.ExpansionPanelDetails>
-          {/* thumbnail du diaporama */}
           {/* selection des albums */}
-          <mui.IconButton onClick={onDelete} className={classes.deleteButton}>
-            <icons.actions.Delete />
-          </mui.IconButton>
+          <mui.Button
+            variant='contained'
+            className={classes.deleteButton}
+            onClick={onDelete}
+            startIcon={<icons.actions.Delete />}
+          >
+            {'Supprimer'}
+          </mui.Button>
         </mui.ExpansionPanelDetails>
       </mui.ExpansionPanel>
     </mui.ListItem>
