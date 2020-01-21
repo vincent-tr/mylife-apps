@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui } from 'mylife-tools-ui';
 import { renderObject } from '../../../common/metadata-utils';
 
 const useStyles = mui.makeStyles(theme => ({
