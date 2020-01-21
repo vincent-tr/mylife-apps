@@ -30,6 +30,7 @@ const useStyles = mui.makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
   albumList: {
+    width: '100%'
   },
   buttonWrapper: {
     width: THUMBNAIL_SIZE + (theme.spacing(1) + borderWidth) * 2,
@@ -67,7 +68,7 @@ const ItemDetail = ({ slideshow }) => {
             <mui.Typography>Albums</mui.Typography>
             <AlbumAddButton slideshow={slideshow} className={classes.addButton} />
           </mui.Grid>
-          <mui.Grid item xs={6} container>
+          <mui.Grid item xs={6}>
             <AlbumList slideshow={slideshow} className={classes.albumList} />
           </mui.Grid>
         </mui.Grid>
