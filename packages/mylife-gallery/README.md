@@ -11,7 +11,6 @@ MyLife photo gallery
   - albumAddDocumentS (to have one change with all documents)
   - albumRemoveDocumentS (to have one change with all documents)
  - slideshow
-   - au lieu d'afficher le nombre d'albums on devrait afficher le nombre de documents
    - url pour défilement (routage)
  - album:
    - album detail
