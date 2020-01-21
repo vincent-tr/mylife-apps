@@ -11,7 +11,6 @@ const borderWidth = 1;
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
-    height: '50vh'
   },
   wrapper: {
     width: '100%',
@@ -30,7 +29,13 @@ const useStyles = mui.makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
   albumList: {
-    width: '100%'
+    width: '100%',
+    overflowY: 'auto',
+    height: '50vh',
+
+    borderWidth: 1,
+    borderColor: mui.colors.grey[300],
+    borderStyle: 'solid',
   },
   buttonWrapper: {
     width: THUMBNAIL_SIZE + (theme.spacing(1) + borderWidth) * 2,
