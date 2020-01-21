@@ -117,6 +117,7 @@ exports.albumRemoveDocument = (album, reference) => {
 
 exports.albumMoveDocument = (album, oldIndex, newIndex) => {
   throw new Error('TODO');
+  // https://github.com/sindresorhus/array-move/blob/master/index.js
 };
 
 exports.albumListWithDocumentReference = (reference) => {

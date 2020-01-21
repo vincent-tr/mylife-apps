@@ -43,7 +43,7 @@ const AlbumList = ({ slideshow, ...props }) => {
                   <mui.icons.Delete />
                 </mui.IconButton>
               </mui.Tooltip>
-              {/* TODO: move */}
+              {/* TODO: move => https://github.com/clauderic/react-sortable-hoc */}
             </mui.ListItemSecondaryAction>
           </mui.ListItem>
         );

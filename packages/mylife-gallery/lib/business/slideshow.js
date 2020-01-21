@@ -92,6 +92,7 @@ exports.slideshowRemoveAlbum = (slideshow, albumId) => {
 
 exports.slideshowMoveAlbum = (slideshow, oldIndex, newIndex) => {
   throw new Error('TODO');
+  // https://github.com/sindresorhus/array-move/blob/master/index.js
 };
 
 exports.slideshowListWithAlbumId = (albumId) => {
