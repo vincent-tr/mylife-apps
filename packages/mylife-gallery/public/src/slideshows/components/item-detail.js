@@ -78,14 +78,16 @@ const ItemDetail = ({ slideshow }) => {
           </mui.Grid>
         </mui.Grid>
         <div className={classes.buttonWrapper}>
-          <mui.Button
-            variant='contained'
-            className={classes.deleteButton}
-            onClick={onDelete}
-            startIcon={<icons.actions.Delete />}
-          >
-            {'Supprimer'}
-          </mui.Button>
+          <mui.Tooltip title={'Supprimer le diaporama'}>
+            <mui.Button
+              variant='contained'
+              className={classes.deleteButton}
+              onClick={onDelete}
+              startIcon={<icons.actions.Delete />}
+            >
+              {'Supprimer'}
+            </mui.Button>
+          </mui.Tooltip>
         </div>
       </div>
     </mui.ExpansionPanelDetails>
