@@ -15,7 +15,7 @@ class SlideshowImageView extends StoreContainer {
   constructor() {
     super();
 
-    this.entity = getMetadataEntity('slidehow-mage');
+    this.entity = getMetadataEntity('slideshow-image');
     this._createSubscriptions();
 
     this._filterIds = new Set();
