@@ -179,8 +179,8 @@ class SlideshowData {
     this._updateAlbumsSet(slideshowsPerAlbum, albumIds);
 
     const imageIds = this._listImageIds(albumIds);
-    const added = this._buildAdded(imageIds);
     const deleted = this._buildDeleted(imageIds);
+    const added = this._buildAdded(imageIds);
 
     return [deleted, added];
   }
@@ -202,10 +202,12 @@ class SlideshowData {
 
   _buildAdded(imageIds) {
     const added = [];
-    for(const [index, id] of imageIds.entries()) {
-      const image = business.documentGet('image', id);
-      const objectValues = { _id: `${this._id}-${id}`, index, slideshow: this._id, thumbnail: image.thumbnail, media: image.media.id };
+    for(const [index, imageId] of imageIds.entries()) {
+      const image = business.documentGet('image', imageId);
+      const id = `${this._id}-${imageId}`;
+      const objectValues = { _id: id, index, slideshow: this._id, thumbnail: image.thumbnail, media: image.media.id };
       added.push(objectValues);
+      this._objects.add(id);
     }
     return added;
   }
@@ -218,6 +220,11 @@ class SlideshowData {
         deleted.push(oldId);
       }
     }
+
+    for(const id of deleted) {
+      this._objects.delete(id);
+    }
+
     return deleted;
   }
 
@@ -225,10 +232,16 @@ class SlideshowData {
     const newAlbumSet = new Set(newAlbumIds);
 
     // deleted albums
+    const deletedAlbums = [];
     for(const id of this._albums) {
       if(!newAlbumSet.has(id)) {
         slideshowsPerAlbum.removeSlideshowAlbum(this._id, id);
+        deletedAlbums.push(id);
       }
+    }
+
+    for(const id of deletedAlbums) {
+      this._albums.delete(id);
     }
 
     // added albums
