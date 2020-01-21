@@ -31,13 +31,13 @@ const useConnect = () => {
   }), [dispatch]);
 };
 
-const ItemHeader = ({ slideshow, ...props }) => {
+const ItemHeader = ({ slideshow }) => {
   const classes = useStyles();
   const { updateSlideshow } = useConnect();
   const onUpdate = (prop, value) => updateSlideshow(slideshow, { [prop]: value });
 
   return (
-    <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />} {...props}>
+    <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
       <StopPropagationContainer className={classes.container}>
         <mui.Grid container spacing={2}>
           <mui.Grid item xs={6}>
