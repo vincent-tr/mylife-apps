@@ -107,7 +107,7 @@ class SlideshowImageView extends StoreContainer {
   _buildSlideshow(id) {
     let data = this._slideshowsData.get(id);
     if(!data) {
-      data = new SlideshowData(id, this.entity);
+      data = new SlideshowData(id);
       this._slideshowsData.set(id, data);
     }
 
@@ -116,8 +116,8 @@ class SlideshowImageView extends StoreContainer {
       this._delete(objectId);
     }
 
-    for(const object of toSet) {
-      this._set(object);
+    for(const objectValues of toSet) {
+      this._set(this._entity.newObject(objectValues));
     }
   }
 }
@@ -170,9 +170,8 @@ class SlideshowPerAlbum {
 }
 
 class SlideshowData {
-  constructor(id, entity) {
+  constructor(id) {
     this._id = id;
-    this._entity = entity;
     this._albums = new Set();
     this._objects = new Set();
   }
@@ -209,8 +208,8 @@ class SlideshowData {
     const added = [];
     for(const [index, id] of imageIds.entries()) {
       const image = business.documentGet('image', id);
-      const values = { _id: `${this._id}-${id}`, index, thumbnail: image.thumbnail, media: image.media.id };
-      added.push(this._entity.newObject(values));
+      const objectValues = { _id: `${this._id}-${id}`, index, thumbnail: image.thumbnail, media: image.media.id };
+      added.push(objectValues);
     }
     return added;
   }
