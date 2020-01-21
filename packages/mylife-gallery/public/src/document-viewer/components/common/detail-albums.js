@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, dialogs } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, useDispatch, dialogs } from 'mylife-tools-ui';
 import { useAlbumView } from '../../../common/album-view';
 import DetailList from './detail-list';
 import { addDocumentToAlbum, removeDocumentFromAlbum, createAlbumWithDocument } from '../../actions';
