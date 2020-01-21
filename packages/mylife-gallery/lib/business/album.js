@@ -67,17 +67,18 @@ exports.albumUpdate = (album, values) => {
 exports.albumCreateFromDocuments = (title, documents) => {
   // take 5 first images thumbnails
   const thumbnails = documents
-    .map(ref => business.documentGet(ref.type, ref.id))
-    .filter(doc => doc._entity === 'image')
+    .filter(ref => ref.type === 'image')
     .slice(0, 5)
+    .map(ref => business.documentGet(ref.type, ref.id))
     .map(doc => doc.thumbnail);
 
-  const values = { title, thumbnails };
-  const album = albumCreate(values);
+  // check that each doc ref is valid
   for(const ref of documents) {
-    business.albumAddDocument(album, ref);
+    business.documentGet(ref.type, ref.id);
   }
-  return album;
+
+  const values = { title, documents, thumbnails };
+  return albumCreate(values);
 };
 
 exports.albumAddDocument = (album, reference) => {
