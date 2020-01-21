@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useMemo, clsx } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useDispatch, useMemo } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { deleteSlideshow } from '../actions';
 import AlbumList from './album-list';
@@ -60,7 +60,7 @@ const ItemDetail = ({ slideshow }) => {
   return (
     <mui.ExpansionPanelDetails className={classes.container}>
       <div className={classes.wrapper}>
-        <mui.Grid container spacing={2} className={clsx(classes.grid, classes.gridOverrides)}>
+        <mui.Grid container spacing={2} className={classes.grid}>
           <mui.Grid item xs={6}>
             <mui.Typography>Albums</mui.Typography>
           </mui.Grid>
