@@ -3,7 +3,7 @@
 import { React, PropTypes, mui, useDispatch, useMemo } from 'mylife-tools-ui';
 import { useAlbumView } from '../../common/album-view';
 import { renderObject } from '../../common/metadata-utils';
-import { addAlbumToSlideshow, removeAlbumFromSlideshow, moveAlbumInSlideshow } from '../actions';
+import { removeAlbumFromSlideshow, moveAlbumInSlideshow } from '../actions';
 
 const useConnect = () => {
   const dispatch = useDispatch();
