@@ -7,12 +7,17 @@ import Preview from './preview';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
+    width: '100%',
+    maxWidth: 900,
     display: 'flex',
     alignItems: 'center',
     '& > *': {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
     },
+  },
+  grid: {
+    width: 650
   },
   editor: {
     width: 200
@@ -39,7 +44,7 @@ const ItemHeader = ({ slideshow }) => {
   return (
     <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
       <StopPropagationContainer className={classes.container}>
-        <mui.Grid container spacing={2}>
+        <mui.Grid container spacing={2} className={classes.grid}>
           <mui.Grid item xs={6}>
             <mui.Typography>Nom</mui.Typography>
           </mui.Grid>
