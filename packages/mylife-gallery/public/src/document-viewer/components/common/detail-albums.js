@@ -33,7 +33,7 @@ const DetailAlbums = ({ documentWithInfo }) => {
       return;
     }
 
-    createAlbum(title);
+    createAlbum(document, title);
   };
 
   return (
