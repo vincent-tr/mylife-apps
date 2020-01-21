@@ -22,10 +22,10 @@ const useStyles = mui.makeStyles(theme => console.log(theme) || ({
     width: 200
   },
   deleteButton: {
-    color: theme.palette.getContrastText(theme.status.error),
-    backgroundColor: theme.status.error,
+    color: theme.palette.getContrastText(theme.palette.error.main),
+    backgroundColor: theme.palette.error.main,
     '&:hover': {
-      backgroundColor: theme.palette.augmentColor({ main: theme.status.error }).dark,
+      backgroundColor: theme.palette.error.dark,
     }
   }
 }));
