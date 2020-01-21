@@ -6,11 +6,11 @@ import { getSelectedId } from '../selectors';
 import ItemHeader from './item-header';
 import ItemDetail from './item-detail';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles({
   panel: {
     width: '100%',
   }
-}));
+});
 
 const useConnect = () => {
   const dispatch = useDispatch();
