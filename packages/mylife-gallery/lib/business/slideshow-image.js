@@ -19,7 +19,8 @@ class SlideshowImageView extends StoreContainer {
     this._createSubscriptions();
 
     this._filterIds = new Set();
-    this._slideshowsPerAlbum = new Map();
+    this._slideshowsPerAlbum = new SlideshowPerAlbum();
+    this._slideshowsData = new Map();
   }
 
   _createSubscriptions() {
@@ -48,7 +49,23 @@ class SlideshowImageView extends StoreContainer {
   }
 
   refresh() {
-    // TODO: remove slideshows not in filter ids
+    const idsToRemove = [];
+    for(const id of this._slideshowsData.keys()) {
+      if(!this._filterIds.has(id)) {
+        idsToRemove.push(id);
+      }
+    }
+
+    for(const slideshowId of idsToRemove) {
+      const data = this._slideshowsData.get(slideshowId);
+      this._slideshowsData.delete(slideshowId);
+
+      const toDelete = data.delete(this._slideshowsPerAlbum);
+      for(const objectId of toDelete) {
+        this._delete(objectId);
+      }
+    }
+
     for(const slideshowId of this._filterIds) {
       this._buildSlideshow(business.slideshowGet(slideshowId));
     }
@@ -80,21 +97,28 @@ class SlideshowImageView extends StoreContainer {
       return;
     }
 
-    const slideshows = this._slideshowsPerAlbum.get(event.after._id);
-    if(!slideshows) {
-      return;
-    }
-
+    const slideshows = this._slideshowsPerAlbum.getSlideshows(event.after._id);
     for(const slideshowId of slideshows) {
       this._buildSlideshow(business.slideshowGet(slideshowId));
     }
   }
 
   _buildSlideshow(slideshow) {
-    // TODO
-    // TODO _slideshowsPerAlbum
-    // TODO order
+    const id = slideshow._id;
+    let data = this._slideshowsData.get(id);
+    if(!data) {
+      data = new SlideshowData(id);
+      this._slideshowsData.set(id, data);
+    }
 
+    const [toDelete, toSet] = data.update(slideshow, this._slideshowsPerAlbum);
+    for(const objectId of toDelete) {
+      this._delete(objectId);
+    }
+
+    for(const object of toSet) {
+      this._set(object);
+    }
   }
 }
 
@@ -110,4 +134,63 @@ function getEventObject({ before, after, type }) {
     default:
       throw new Error(`Unsupported event type: '${type}'`);
   }
+}
+
+class SlideshowPerAlbum {
+  constructor() {
+    this.map = new Map();
+    this.empty = new Set();
+  }
+
+  clear() {
+    this.map.clear();
+  }
+
+  getSlideshows(albumId) {
+    return this.map.get(albumId) || this.empty;
+  }
+
+  addSlideshowAlbum(slideshowId, albumId) {
+    let set = this.map.get(slideshowId);
+    if(!set) {
+      set = new Set();
+      this.map.set(slideshowId, set);
+    }
+
+    set.add(albumId);
+  }
+
+  removeSlideshowAlbum(slideshowId, albumId) {
+    const set = this.map.get(slideshowId);
+    set.delete(albumId);
+    if(!set.size) {
+      this.map.delete(slideshowId);
+    }
+  }
+}
+
+class SlideshowData {
+  constructor(id) {
+    this._id = id;
+    this._albums = new Set();
+    this._objects = new Map();
+  }
+
+  update(slideshow, slideshowsPerAlbum) {
+    // TODO
+    // TODO _slideshowsPerAlbum
+    // TODO order
+
+  }
+
+  delete(slideshowsPerAlbum) {
+    for(const albumId of this._albums) {
+      slideshowsPerAlbum.removeSlideshowAlbum(this._id, albumId);
+    }
+
+    const objectIds = Array.from(this._objects.keys());
+    this._objects.clear();
+    return objectIds;
+  }
+
 }
