@@ -67,7 +67,7 @@ class SlideshowImageView extends StoreContainer {
     }
 
     for(const slideshowId of this._filterIds) {
-      this._buildSlideshow(business.slideshowGet(slideshowId));
+      this._buildSlideshow(slideshowId);
     }
   }
 
@@ -85,11 +85,12 @@ class SlideshowImageView extends StoreContainer {
 
   _onSlideshowChange(event) {
     const slideshow = getEventObject(event);
-    if(!this._filterIds.has(slideshow._id)) {
+    const id = slideshow._id;
+    if(!this._filterIds.has(id)) {
       return;
     }
 
-    this._buildSlideshow(slideshow);
+    this._buildSlideshow(id);
   }
 
   _onAlbumChange(event) {
@@ -103,15 +104,14 @@ class SlideshowImageView extends StoreContainer {
     }
   }
 
-  _buildSlideshow(slideshow) {
-    const id = slideshow._id;
+  _buildSlideshow(id) {
     let data = this._slideshowsData.get(id);
     if(!data) {
       data = new SlideshowData(id);
       this._slideshowsData.set(id, data);
     }
 
-    const [toDelete, toSet] = data.update(slideshow, this._slideshowsPerAlbum);
+    const [toDelete, toSet] = data.update(this._slideshowsPerAlbum);
     for(const objectId of toDelete) {
       this._delete(objectId);
     }
@@ -176,7 +176,7 @@ class SlideshowData {
     this._objects = new Map();
   }
 
-  update(slideshow, slideshowsPerAlbum) {
+  update(slideshowsPerAlbum) {
     // TODO
     // TODO _slideshowsPerAlbum
     // TODO order
