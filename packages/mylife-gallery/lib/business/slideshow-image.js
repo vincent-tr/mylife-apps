@@ -172,7 +172,7 @@ class SlideshowPerAlbum {
 class SlideshowData {
   constructor(id, entity) {
     this._id = id;
-    this._entity = entity
+    this._entity = entity;
     this._albums = new Set();
     this._objects = new Set();
   }
