@@ -19,6 +19,10 @@ const useConnect = (slideshowId) => {
 };
 
 export function useSlideshowImageView(slideshowId) {
+  if(!slideshowId) {
+    throw new Error('Cannot use \'useSlideshowImageView\' with null slideshowId');
+  }
+  
   const { ref, unref, slideshowImageView, slideshowImages } = useConnect(slideshowId);
   useLifecycle(() => ref(slideshowId), () => unref(slideshowId));
   return { slideshowImageView, slideshowImages };

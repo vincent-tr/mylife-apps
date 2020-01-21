@@ -12,12 +12,12 @@ export default handleActions({
 
   [actionTypes.REF] : (state, action) => ({
     ...state,
-    refs: ref(state.refs, action.paylod)
+    refs: ref(state.refs, action.payload)
   }),
 
   [actionTypes.UNREF] : (state, action) => ({
     ...state,
-    refs: unref(state.refs, action.paylod)
+    refs: unref(state.refs, action.payload)
   }),
 
   [io.actionTypes.SET_ONLINE] : (state) => ({

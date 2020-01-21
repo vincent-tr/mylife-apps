@@ -24,7 +24,7 @@ const clearSlideshowImages = () => deleteView({
   setViewAction: local.setView
 });
 
-export const refSlideshowImagesView = (slideshowId) => async (dispatch, getState) => {
+export const refSlideshowImageView = (slideshowId) => async (dispatch, getState) => {
   const wasRef = isRef(getState(), slideshowId);
   dispatch(local.ref(slideshowId));
 
@@ -34,10 +34,9 @@ export const refSlideshowImagesView = (slideshowId) => async (dispatch, getState
   }
 };
 
-export const unrefSlideshowImagesView = (slideshowId) => async (dispatch, getState) => {
+export const unrefSlideshowImageView = (slideshowId) => async (dispatch, getState) => {
   dispatch(local.unref());
   const state = getState();
-  const isRef = isRef(state, slideshowId);
 
   if(!isAnyRef(state)) {
     // no ref amymore, release view
@@ -51,7 +50,7 @@ export const unrefSlideshowImagesView = (slideshowId) => async (dispatch, getSta
 function getCriteriaFromState(state) {
   const refs = getRefs(state);
   const slideshows = refs.keySeq().toArray();
-  return { slideshows };
+  return { criteria: { slideshows } };
 }
 
 function isRef(state, slideshowId) {
