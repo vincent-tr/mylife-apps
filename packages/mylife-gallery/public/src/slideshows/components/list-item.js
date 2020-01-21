@@ -5,6 +5,7 @@ import icons from '../../common/icons';
 import { deleteSlideshow, updateSlideshow, changeSelected } from '../actions';
 import { getSelectedId } from '../selectors';
 import Preview from './preview';
+import AlbumList from './album-list';
 
 const useStyles = mui.makeStyles(theme => ({
   panel: {
@@ -100,6 +101,7 @@ const ListItem = ({ slideshow, ...props }) => {
           >
             {'Supprimer'}
           </mui.Button>
+          <AlbumList slideshow={slideshow} />
         </mui.ExpansionPanelDetails>
       </mui.ExpansionPanel>
     </mui.ListItem>

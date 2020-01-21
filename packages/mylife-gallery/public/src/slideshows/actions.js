@@ -67,6 +67,46 @@ export const updateSlideshow = (slideshow, values) => {
   };
 };
 
+export function addAlbumToSlideshow(slideshow, album) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'slideshow',
+      method: 'addAlbumToSlideshow',
+      id: slideshow._id,
+      albumId: album._id
+    }));
+
+  };
+}
+
+export function removeAlbumFromSlideshow(slideshow, album) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'slideshow',
+      method: 'removeAlbumFromSlideshow',
+      id: slideshow._id,
+      albumId: album._id
+    }));
+
+  };
+}
+
+export function moveAlbumInSlideshow(slideshow, oldIndex, newIndex) {
+  return async (dispatch) => {
+
+    await dispatch(io.call({
+      service: 'slideshow',
+      method: 'moveAlbumInSlideshow',
+      id: slideshow._id,
+      oldIndex,
+      newIndex
+    }));
+
+  };
+}
+
 export const enter = () => async (dispatch) => {
   await dispatch(getSlideshows());
 };
