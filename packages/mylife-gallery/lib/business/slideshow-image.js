@@ -117,7 +117,7 @@ class SlideshowImageView extends StoreContainer {
     }
 
     for(const objectValues of toSet) {
-      this._set(this._entity.newObject(objectValues));
+      this._set(this.entity.newObject(objectValues));
     }
   }
 }
@@ -204,7 +204,7 @@ class SlideshowData {
     const added = [];
     for(const [index, id] of imageIds.entries()) {
       const image = business.documentGet('image', id);
-      const objectValues = { _id: `${this._id}-${id}`, index, thumbnail: image.thumbnail, media: image.media.id };
+      const objectValues = { _id: `${this._id}-${id}`, index, slideshow: this._id, thumbnail: image.thumbnail, media: image.media.id };
       added.push(objectValues);
     }
     return added;
