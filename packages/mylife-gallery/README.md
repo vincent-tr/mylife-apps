@@ -7,8 +7,6 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp or https://github.com/Darth-Knoppix/example-react-fullscreen
 
 # TODO:
- - common
-  - augment theme status color and move them into palette (cd slideshows/components/list-item)
  - slideshow
    - au lieu d'afficher le nombre d'albums on devrait afficher le nombre de documents
    - url pour défilement (routage)

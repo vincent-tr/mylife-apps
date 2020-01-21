@@ -6,7 +6,7 @@ import CardBase from './card-base';
 
 const useStyles = mui.makeStyles(theme => ({
   icon: {
-    color: theme.status.warning,
+    color: theme.palette.warning.main,
     marginRight: theme.spacing(2)
   }
 }));

@@ -9,28 +9,12 @@ const defaultConfig = {
   }
 };
 
-let theme = setupTheme(defaultConfig);
+let theme = createMuiTheme(defaultConfig);
 
 export function initTheme(config) {
-  theme = setupTheme(config);
+  theme = createMuiTheme(config);
 }
 
 export function getTheme() {
-  return theme;
-}
-
-function setupTheme(config) {
-  const theme = createMuiTheme(config);
-
-  // additional properties
-  if(!theme.status) {
-    theme.status = {
-      success: colors.green[600],
-      info: theme.palette.primary.dark,
-      warning: colors.amber[700],
-      error: theme.palette.error.dark,
-    };
-  }
-
   return theme;
 }

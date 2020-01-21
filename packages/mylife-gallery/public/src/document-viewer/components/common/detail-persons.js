@@ -22,11 +22,11 @@ const useStyles = mui.makeStyles(theme => ({
   },
   addButton: {
     marginLeft: theme.spacing(1),
-    color: theme.status.success
+    color: theme.palette.success.main
   },
   deleteButton: {
     marginLeft: theme.spacing(1),
-    color: theme.status.error
+    color: theme.palette.error.main
   }
 }));
 
@@ -64,7 +64,7 @@ const personAddDialog = dialogs.create(PersonAddDialog);
 const useAddButtonStyles = mui.makeStyles(theme => ({
   listAddIcon: {
     marginRight: theme.spacing(1),
-    color: theme.status.success
+    color: theme.palette.success.main
   }
 }));
 

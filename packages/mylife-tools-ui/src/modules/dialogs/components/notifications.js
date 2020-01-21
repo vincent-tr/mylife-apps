@@ -32,16 +32,16 @@ const useConnect = () => {
 
 const useStyles = makeStyles(theme => ({
   success: {
-    backgroundColor: theme.status.success,
+    backgroundColor: theme.palette.success.main,
   },
   info: {
-    backgroundColor: theme.status.info,
+    backgroundColor: theme.palette.info.main,
   },
   warning: {
-    backgroundColor: theme.status.warning,
+    backgroundColor: theme.palette.warning.main,
   },
   error: {
-    backgroundColor: theme.status.error,
+    backgroundColor: theme.palette.error.main,
   },
   box: {
     marginBottom: '0.2rem'
