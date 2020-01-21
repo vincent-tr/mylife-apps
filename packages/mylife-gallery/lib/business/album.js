@@ -72,7 +72,7 @@ exports.albumCreateFromDocuments = (title, documents) => {
     .slice(0, 5)
     .map(doc => doc.thumbnail);
 
-  const values = { title, documents, thumbnails };
+  const values = { title, thumbnails };
   const album = albumCreate(values);
   for(const ref of documents) {
     business.albumAddDocument(album, ref);
