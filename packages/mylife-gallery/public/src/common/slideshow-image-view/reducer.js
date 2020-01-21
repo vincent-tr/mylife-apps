@@ -38,7 +38,7 @@ function ref(refs, id) {
 
 function unref(refs, id) {
   const count = refs.get(id);
-  if(count <= 1) {
+  if(count === 1) {
     return refs.delete(id);
   }
   return refs.set(id, count - 1);
