@@ -48,6 +48,10 @@ class AlbumView extends StoreContainer {
 
   setCriteria(criteria) {
     this._criteria = criteria;
+    this._rebuildFilter();
+  }
+
+  _rebuildFilter() {
     this._filter = buildFilter(this._criteria);
     this.refresh();
   }
