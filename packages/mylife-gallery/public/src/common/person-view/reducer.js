@@ -1,6 +1,6 @@
 'use strict';
 
-import { handleActions } from 'mylife-tools-ui';
+import { io, handleActions } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 export default handleActions({
@@ -17,8 +17,14 @@ export default handleActions({
 
   [actionTypes.UNREF] : (state) => ({
     ...state,
-    refCount: state.refCount - 1
+    refCount: Math.max(state.refCount - 1, 0)
   }),
+
+  [io.actionTypes.SET_ONLINE] : (state) => ({
+    ...state,
+    viewId: null,
+    refCount: 0
+  })
 
 }, {
   viewId: null,
