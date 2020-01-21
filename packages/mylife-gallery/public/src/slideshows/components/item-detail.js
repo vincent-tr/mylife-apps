@@ -4,6 +4,7 @@ import { React, PropTypes, mui, useDispatch, useMemo } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { deleteSlideshow } from '../actions';
 import AlbumList from './album-list';
+import AlbumAddButton from './album-add-button';
 import { THUMBNAIL_SIZE } from '../../common/thumbnail';
 
 const borderWidth = 1;
@@ -16,7 +17,6 @@ const useStyles = mui.makeStyles(theme => ({
     width: '100%',
     maxWidth: 900,
     display: 'flex',
-    alignItems: 'flex-start',
     '& > *': {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
@@ -24,15 +24,17 @@ const useStyles = mui.makeStyles(theme => ({
   },
   grid: {
     width: 650,
-    height: '100%'
+    flex: '1 1 auto'
+  },
+  addButton: {
+    marginTop: theme.spacing(1),
   },
   albumList: {
-    flex: '1 1 auto',
-    maxWidth: 400
   },
   buttonWrapper: {
     width: THUMBNAIL_SIZE + (theme.spacing(1) + borderWidth) * 2,
     display: 'flex',
+    alignItems: 'flex-start',
     justifyContent: 'center'
   },
   deleteButton: {
@@ -63,6 +65,7 @@ const ItemDetail = ({ slideshow }) => {
         <mui.Grid container spacing={2} className={classes.grid}>
           <mui.Grid item xs={6}>
             <mui.Typography>Albums</mui.Typography>
+            <AlbumAddButton slideshow={slideshow} className={classes.addButton} />
           </mui.Grid>
           <mui.Grid item xs={6} container>
             <AlbumList slideshow={slideshow} className={classes.albumList} />
