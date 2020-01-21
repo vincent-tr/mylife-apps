@@ -1,5 +1,6 @@
 'use strict';
 
+import { Mutex } from 'async-mutex';
 import { createAction } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../action-tools';
 import actionTypes from './action-types';
@@ -23,6 +24,9 @@ const clearAlbums = () => deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });
+
+// needed  because fetchAlbums/clearAlbums is not atomic
+const mutex = new Mutex();
 
 export const refAlbumView = () => async (dispatch, getState) => {
   dispatch(local.ref());

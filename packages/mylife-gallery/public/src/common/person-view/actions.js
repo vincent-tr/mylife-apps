@@ -1,5 +1,6 @@
 'use strict';
 
+import { Mutex } from 'async-mutex';
 import { createAction } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../action-tools';
 import actionTypes from './action-types';
@@ -24,20 +25,31 @@ const clearPersons = () => deleteView({
   setViewAction: local.setView
 });
 
-export const refPersonView = () => async (dispatch, getState) => {
-  dispatch(local.ref());
+// needed  because fetchPersons/clearPersons is not atomic
+const mutex = new Mutex();
 
-  if(getRefCount(getState()) === 1) {
-    // first ref, need to actually fetch it
-    await dispatch(fetchPersons());
-  }
+export const refPersonView = () => async (dispatch, getState) => {
+  await mutex.runExclusive(async () => {
+
+    dispatch(local.ref());
+
+    if(getRefCount(getState()) === 1) {
+      // first ref, need to actually fetch it
+      await dispatch(fetchPersons());
+    }
+
+  });
 };
 
 export const unrefPersonView = () => async (dispatch, getState) => {
-  dispatch(local.unref());
+  await mutex.runExclusive(async () => {
 
-  if(getRefCount(getState()) === 0) {
-    // last ref, clear
-    await dispatch(clearPersons());
-  }
+    dispatch(local.unref());
+
+    if(getRefCount(getState()) === 0) {
+      // last ref, clear
+      await dispatch(clearPersons());
+    }
+
+  });
 };
