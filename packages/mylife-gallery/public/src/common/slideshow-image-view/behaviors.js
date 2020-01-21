@@ -2,13 +2,14 @@
 
 import { useMemo, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { refSlideshowImageView, unrefSlideshowImageView } from './actions';
-import { getSlideshowImageView } from './selectors';
+import { getSlideshowImageView, getSlideshowImages } from './selectors';
 
-const useConnect = () => {
+const useConnect = (slideshowId) => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
-      slideshowImageView: getSlideshowImageView(state)
+      slideshowImageView: getSlideshowImageView(state),
+      slideshowImages: getSlideshowImages(state, slideshowId)
     })),
     ...useMemo(() => ({
       ref: (slideshowId) => dispatch(refSlideshowImageView(slideshowId)),
@@ -18,7 +19,7 @@ const useConnect = () => {
 };
 
 export function useSlideshowImageView(slideshowId) {
-  const { ref, unref, slideshowImageView } = useConnect();
+  const { ref, unref, slideshowImageView, slideshowImages } = useConnect(slideshowId);
   useLifecycle(() => ref(slideshowId), () => unref(slideshowId));
-  return { slideshowImageView };
+  return { slideshowImageView, slideshowImages };
 }

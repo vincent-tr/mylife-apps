@@ -4,12 +4,7 @@ import { React, PropTypes, mui, useState, useSelector, clsx } from 'mylife-tools
 import { THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { useCommonStyles } from '../../common/thumbnail/utils';
 import BaseNone from '../../common/thumbnail/base-none';
-import { getDisplayView, getSelectedId } from '../selectors';
-
-const useConnect = () => useSelector(state => ({
-  data: getDisplayView(state),
-  selectedId: getSelectedId(state),
-}));
+import { useSlideshowImageView } from '../../common/slideshow-image-view';
 
 const useStyles = mui.makeStyles(theme => ({
   tile: {
@@ -68,6 +63,9 @@ const Preview = ({ slideshow, className, ...props }) => {
   const classes = { ...useCommonStyles(), ...useStyles() };
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const empty = !slideshow.albums.length;
+  const { slideshowImages } = useSlideshowImageView(slideshow._id);
+
+  console.log(slideshowImages);
 
   return (
     <mui.GridListTile component='div' classes={tileClasses}>
