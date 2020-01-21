@@ -6,7 +6,7 @@ import { deleteSlideshow, updateSlideshow, changeSelected } from '../actions';
 import { getSelectedId } from '../selectors';
 import Preview from './preview';
 
-const useStyles = mui.makeStyles(theme => console.log(theme) || ({
+const useStyles = mui.makeStyles(theme => ({
   panel: {
     width: '100%',
   },
