@@ -93,15 +93,15 @@ const AlbumList = ({ slideshow, ...props }) => {
 
         return (
           <mui.ListItem key={id}>
-            <mui.Typography>
-              {album.title}
-            </mui.Typography>
-            <mui.Tooltip title={'Enlever l\'album du diaporama'}>
-              <mui.IconButton className={classes.deleteButton} onClick={() => removeAlbumFromSlideshow(slideshow, album)}>
-                <mui.icons.Delete />
-              </mui.IconButton>
-            </mui.Tooltip>
-            {/* TODO: move */}
+            <mui.ListItemText primary={renderObject(album)} />
+            <mui.ListItemSecondaryAction>
+              <mui.Tooltip title={'Enlever l\'album du diaporama'}>
+                <mui.IconButton className={classes.deleteButton} onClick={() => removeAlbumFromSlideshow(slideshow, album)}>
+                  <mui.icons.Delete />
+                </mui.IconButton>
+              </mui.Tooltip>
+              {/* TODO: move */}
+            </mui.ListItemSecondaryAction>
           </mui.ListItem>
         );
       })}
