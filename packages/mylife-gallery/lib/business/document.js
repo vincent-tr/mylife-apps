@@ -114,6 +114,15 @@ exports.documentUpdate = (document, values) => {
   const newDocument = entity.setValues(document, values);
 
   collection.set(newDocument);
+
+  const isDateChange = document._entity !== 'other' && dateEquals(document.date, newDocument.date);
+  if(isDateChange) {
+    // need to update album order
+    const reference = { type, id: document._id };
+    for(const album of business.albumListWithDocumentReference(reference)) {
+      business.albumSortDocuments(album);
+    }
+  }
 };
 
 exports.documentAddPerson = (document, person) => {
@@ -215,4 +224,15 @@ function getDocumentStoreCollections() {
     getStoreCollection('videos'),
     getStoreCollection('others')
   ];
+}
+
+function dateEquals(date1, date2) {
+  if(date1 === null && date2 === null) {
+    return true;
+  }
+  if(date1 === null || date2 === null) {
+    return false;
+  }
+
+  return date1.valueOf() === date2.valueOf();
 }
