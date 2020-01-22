@@ -13,7 +13,7 @@ const local = {
 };
 
 const fetchAlbums = () => createOrUpdateView({
-  criteriaSelector: () => null,
+  criteriaSelector: () => ({ criteria: {}}),
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'album',

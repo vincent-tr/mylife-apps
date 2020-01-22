@@ -13,7 +13,7 @@ const local = {
 };
 
 const fetchPersons = () => createOrUpdateView({
-  criteriaSelector: () => null,
+  criteriaSelector: () => ({ criteria: {} }),
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'person',
