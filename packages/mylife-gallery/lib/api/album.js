@@ -35,16 +35,16 @@ exports.updateAlbum = [ base, (session, message) => {
   return business.albumUpdate(album, values);
 } ];
 
-exports.addDocumentToAlbum = [ base, (session, message) => {
-  const { id, reference } = message;
+exports.addDocumentsToAlbum = [ base, (session, message) => {
+  const { id, references } = message;
   const album = business.albumGet(id);
-  return business.albumAddDocument(album, reference);
+  return business.albumAddDocuments(album, references);
 } ];
 
-exports.removeDocumentFromAlbum = [ base, (session, message) => {
-  const { id, reference } = message;
+exports.removeDocumentsFromAlbum = [ base, (session, message) => {
+  const { id, references } = message;
   const album = business.albumGet(id);
-  return business.albumRemoveDocument(album, reference);
+  return business.albumRemoveDocuments(album, references);
 } ];
 
 exports.moveDocumentInAlbum = [ base, (session, message) => {

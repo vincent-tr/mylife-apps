@@ -73,7 +73,7 @@ exports.documentRemove = async (document) => {
 
   const reference = { type, id };
   for(const album of business.albumListWithDocumentReference(reference)) {
-    business.albumRemoveDocument(album, reference);
+    business.albumRemoveDocuments(album, [reference]);
   }
 
   const collection = getDocumentStoreCollection(type);

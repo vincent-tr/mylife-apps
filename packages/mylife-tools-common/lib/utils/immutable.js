@@ -7,7 +7,8 @@ exports.immutable = {
   arrayPush: (array, value) => [...array, value],
   arrayRemove: (array, index) => [...array.slice(0, index), ...array.slice(index + 1)],
   arrayUpdate: (array, index, value) => array.map((item, mapIndex) => mapIndex === index ? value : item),
-  arrayMove: (array, oldIndex, newIndex) => arrayMoveMutate(array.slice(), oldIndex, newIndex)
+  arrayMove: (array, oldIndex, newIndex) => arrayMoveMutate(array.slice(), oldIndex, newIndex),
+  arrayRemoveMulti
 };
 
 function arrayMoveMutate(array, from, to) {
@@ -15,4 +16,15 @@ function arrayMoveMutate(array, from, to) {
 	const item = array.splice(from, 1)[0];
 	array.splice(startIndex, 0, item);
   return array;
+}
+
+function arrayRemoveMulti(array, indexes) {
+  const set = new Set(indexes);
+  const result = [];
+  for(const [index, item] of array.entries()) {
+    if(!set.has(index)) {
+      result.push(item);
+    }
+  }
+  return result;
 }

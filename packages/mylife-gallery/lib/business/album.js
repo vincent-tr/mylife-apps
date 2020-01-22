@@ -79,37 +79,40 @@ exports.albumCreateFromDocuments = (title, documents) => {
   return albumCreate(values);
 };
 
-exports.albumAddDocument = (album, reference) => {
+exports.albumAddDocuments = (album, references) => {
   const entity = getMetadataEntity('album');
   const albums = getStoreCollection('albums');
 
-  // ensure reference is valid
-  business.documentGet(reference.type, reference.id);
-
-  const index = findDocRefIndex(album, reference);
-  if(index !== -1) {
-    throw new Error('Le document existe déjà');
+  for(const reference of references) {
+    const index = findDocRefIndex(album, reference);
+    if(index !== -1) {
+      throw new Error(`Le document '${reference.type}:${reference.id}' existe déjà`);
+    }
   }
 
-  const newDocuments = sortDocumentReferences(utils.immutable.arrayPush(album.documents, reference));
+  const newDocuments = sortDocumentReferences([...album.documents, ...references]);
   const newAlbum = entity.getField('documents').setValue(album, newDocuments);
 
-  logger.info(`Adding document '${reference.type}:${reference.id}' on album '${album._id}'`);
+  logger.info(`Adding documents '${JSON.stringify(references)}' on album '${album._id}'`);
   albums.set(newAlbum);
 };
 
-exports.albumRemoveDocument = (album, reference) => {
+exports.albumRemoveDocuments = (album, references) => {
   const entity = getMetadataEntity('album');
   const albums = getStoreCollection('albums');
-  const index = findDocRefIndex(album, reference);
-  if(index === -1) {
-    throw new Error('Le document n\'existe pas');
-  }
 
-  const newDocuments = utils.immutable.arrayRemove(album.documents, index);
+  const indexes = references.map(reference => {
+    const index = findDocRefIndex(album, reference);
+    if(index === -1) {
+      throw new Error(`Le document '${reference.type}:${reference.id}' n'existe pas`);
+    }
+    return index;
+  });
+
+  const newDocuments = utils.immutable.arrayRemoveMulti(album.documents, indexes);
   const newAlbum = entity.getField('documents').setValue(album, newDocuments);
 
-  logger.info(`Removing document '${reference.type}:${reference.id}' on album '${album._id}'`);
+  logger.info(`Removing documents '${JSON.stringify(references)}' on album '${album._id}'`);
   albums.set(newAlbum);
 };
 
@@ -186,4 +189,8 @@ function sortDocumentReferences(references) {
   });
 
   return refsWithDate.map(({ type, id}) => ({type, id }));
+}
+
+function removeIndexes(array, indexes) {
+
 }

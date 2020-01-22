@@ -69,9 +69,9 @@ export function addDocumentToAlbum(document, album) {
 
     await dispatch(io.call({
       service: 'album',
-      method: 'addDocumentToAlbum',
+      method: 'addDocumentsToAlbum',
       id: album._id,
-      reference: docRef(document)
+      references: [docRef(document)]
     }));
 
   };
@@ -82,9 +82,9 @@ export function removeDocumentFromAlbum(document, album) {
 
     await dispatch(io.call({
       service: 'album',
-      method: 'removeDocumentFromAlbum',
+      method: 'removeDocumentsFromAlbum',
       id: album._id,
-      reference: docRef(document)
+      references: [docRef(document)]
     }));
 
   };

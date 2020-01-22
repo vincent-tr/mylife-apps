@@ -7,9 +7,6 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp or https://github.com/Darth-Knoppix/example-react-fullscreen
 
 # TODO:
- - album api
-  - albumAddDocumentS (to have one change with all documents)
-  - albumRemoveDocumentS (to have one change with all documents)
  - slideshow
    - url pour défilement (routage)
  - album:
