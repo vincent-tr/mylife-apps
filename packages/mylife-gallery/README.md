@@ -16,6 +16,9 @@ MyLife photo gallery
    - choose album thumbnails
    - delete album
  - persons management
+   - update firstName/lastName
+   - choose thumbnails
+   - delete person
  - document:
    - rotation image/video
    - pouvoir modifier la date d une image/video ou pouvoir la re-importer depuis la metadata
