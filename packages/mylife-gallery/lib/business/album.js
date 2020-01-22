@@ -150,4 +150,40 @@ function findDocRefIndex(album, reference) {
 
 function sortDocumentReferences(references) {
   // validate all reference, and sort by date (with undated image/video at the end, and others after)
+  const refsWithDate = references.map(ref => {
+    const document = business.documentGet(ref.type, ref.id);
+    const type = ref.type;
+    let date = null;
+    switch(type) {
+      case 'image':
+      case 'video':
+        date = document.date;
+        break;
+    }
+
+    return { ...ref, date };
+  });
+
+  refsWithDate.sort((ref1, ref2) => {
+    if(ref1.date !== null && ref2.date !== null) {
+      return ref1.date.valueOf() - ref2.date.valueOf();
+    }
+
+    if(ref1.date !== null || ref2.date !== null) {
+      return ref1.date === null ? 1 : -1;
+    }
+
+    // both null, move others at the end
+    if(ref1.type === 'other' && ref2.type !== 'other') {
+      return -1;
+    }
+    if(ref1.type !== 'other' && ref2.type === 'other') {
+      return 1;
+    }
+
+    // else sort by id (default)
+    return ref1.id < ref2.id ? -1 : 1;
+  });
+
+  return refsWithDate.map(({ type, id}) => ({type, id }));
 }
