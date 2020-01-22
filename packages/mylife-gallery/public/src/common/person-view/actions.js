@@ -1,8 +1,8 @@
 'use strict';
 
-import { Mutex } from 'async-mutex';
 import { createAction } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../action-tools';
+import { createDebouncedRefresh } from '../ref-view-tools';
 import actionTypes from './action-types';
 import { getViewId, getRefCount } from './selectors';
 
@@ -25,31 +25,33 @@ const clearPersons = () => deleteView({
   setViewAction: local.setView
 });
 
-// needed  because fetchPersons/clearPersons is not atomic
-const mutex = new Mutex();
 
-export const refPersonView = () => async (dispatch, getState) => {
-  await mutex.runExclusive(async () => {
+async function refreshPersonsImpl(dispatch, oldRefCount, newRefCount) {
+  const wasRef = oldRefCount > 0;
+  const isRef = newRefCount > 0;
+  if(wasRef === isRef) {
+    return;
+  }
 
-    dispatch(local.ref());
+  if(isRef) {
+    await dispatch(fetchPersons());
+  } else {
+    await dispatch(clearPersons());
+  }
+}
 
-    if(getRefCount(getState()) === 1) {
-      // first ref, need to actually fetch it
-      await dispatch(fetchPersons());
-    }
+const refreshPersons = createDebouncedRefresh(refreshPersonsImpl);
 
-  });
+export const refPersonView = () => (dispatch, getState) => {
+  const prevRef = getRefCount(getState());
+  dispatch(local.ref());
+  const currentRef = getRefCount(getState());
+  refreshPersons(dispatch, prevRef, currentRef);
 };
 
-export const unrefPersonView = () => async (dispatch, getState) => {
-  await mutex.runExclusive(async () => {
-
-    dispatch(local.unref());
-
-    if(getRefCount(getState()) === 0) {
-      // last ref, clear
-      await dispatch(clearPersons());
-    }
-
-  });
+export const unrefPersonView = () => (dispatch, getState) => {
+  const prevRef = getRefCount(getState());
+  dispatch(local.unref());
+  const currentRef = getRefCount(getState());
+  refreshPersons(dispatch, prevRef, currentRef);
 };

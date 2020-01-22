@@ -1,8 +1,8 @@
 'use strict';
 
-import { Mutex } from 'async-mutex';
 import { createAction } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../action-tools';
+import { createDebouncedRefresh } from '../ref-view-tools';
 import actionTypes from './action-types';
 import { getViewId, getRefCount } from './selectors';
 
@@ -25,23 +25,32 @@ const clearAlbums = () => deleteView({
   setViewAction: local.setView
 });
 
-// needed  because fetchAlbums/clearAlbums is not atomic
-const mutex = new Mutex();
-
-export const refAlbumView = () => async (dispatch, getState) => {
-  dispatch(local.ref());
-
-  if(getRefCount(getState()) === 1) {
-    // first ref, need to actually fetch it
-    await dispatch(fetchAlbums());
+async function refreshAlbumsImpl(dispatch, oldRefCount, newRefCount) {
+  const wasRef = oldRefCount > 0;
+  const isRef = newRefCount > 0;
+  if(wasRef === isRef) {
+    return;
   }
-};
 
-export const unrefAlbumView = () => async (dispatch, getState) => {
-  dispatch(local.unref());
-
-  if(getRefCount(getState()) === 0) {
-    // last ref, clear
+  if(isRef) {
+    await dispatch(fetchAlbums());
+  } else {
     await dispatch(clearAlbums());
   }
+}
+
+const refreshAlbums = createDebouncedRefresh(refreshAlbumsImpl);
+
+export const refAlbumView = () => (dispatch, getState) => {
+  const prevRef = getRefCount(getState());
+  dispatch(local.ref());
+  const currentRef = getRefCount(getState());
+  refreshAlbums(dispatch, prevRef, currentRef);
+};
+
+export const unrefAlbumView = () => (dispatch, getState) => {
+  const prevRef = getRefCount(getState());
+  dispatch(local.unref());
+  const currentRef = getRefCount(getState());
+  refreshAlbums(dispatch, prevRef, currentRef);
 };
