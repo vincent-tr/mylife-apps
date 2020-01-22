@@ -12,7 +12,6 @@ MyLife photo gallery
  - album:
    - album detail
    - doc delete
-   - doc add ?
    - choose album thumbnails
    - delete album
  - persons management
