@@ -138,7 +138,7 @@ exports.albumSortDocuments = (album) => {
 
   logger.info(`Sorting documents on album '${album._id}'`);
   albums.set(newAlbum);
-}
+};
 
 function docRefEquals(docref1, docref2) {
   return docref1.type === docref2.type && docref1.id === docref2.id;
@@ -148,6 +148,6 @@ function findDocRefIndex(album, reference) {
   return album.documents.findIndex(docref => docRefEquals(docref, reference));
 }
 
-sortDocumentReferences(references) {
+function sortDocumentReferences(references) {
   // validate all reference, and sort by date (with undated image/video at the end, and others after)
 }
