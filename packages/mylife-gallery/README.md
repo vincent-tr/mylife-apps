@@ -7,6 +7,8 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp or https://github.com/Darth-Knoppix/example-react-fullscreen
 
 # TODO:
+ - web api
+  - renvoyer les media/thumbnail avec header http: "Cache-Control: max-age=31536000"
  - slideshow
    - url pour défilement (routage)
  - album:
@@ -19,7 +21,7 @@ MyLife photo gallery
    - choose thumbnails
    - delete person
  - document:
-   - rotation image/video
+   - rotation image/video (créer nouveau média/thumbnail à cause du cache http, donc créer un nouvel id)
    - pouvoir modifier la date d une image/video ou pouvoir la re-importer depuis la metadata
  - suggestions:
    - Suggestion pour montrer les documents sans album
