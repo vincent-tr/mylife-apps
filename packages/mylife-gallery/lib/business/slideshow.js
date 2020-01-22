@@ -96,8 +96,14 @@ exports.slideshowRemoveAlbum = (slideshow, albumId) => {
 };
 
 exports.slideshowMoveAlbum = (slideshow, oldIndex, newIndex) => {
-  throw new Error('TODO');
-  // https://github.com/sindresorhus/array-move/blob/master/index.js
+  const entity = getMetadataEntity('slideshow');
+  const slideshows = getStoreCollection('slideshows');
+
+  const newAlbums = utils.immutable.arrayMove(slideshow.albums, oldIndex, newIndex);
+  const newSlideshow = entity.getField('albums').setValue(slideshow, newAlbums);
+
+  logger.info(`Moving album at '${oldIndex}' to '${newIndex}' on slideshow '${slideshow._id}'`);
+  slideshows.set(newSlideshow);
 };
 
 exports.slideshowListWithAlbumId = (albumId) => {

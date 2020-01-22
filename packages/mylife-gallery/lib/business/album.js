@@ -116,8 +116,14 @@ exports.albumRemoveDocument = (album, reference) => {
 };
 
 exports.albumMoveDocument = (album, oldIndex, newIndex) => {
-  throw new Error('TODO');
-  // https://github.com/sindresorhus/array-move/blob/master/index.js
+  const entity = getMetadataEntity('album');
+  const albums = getStoreCollection('albums');
+
+  const newDocuments = utils.immutable.arrayMove(album.documents, oldIndex, newIndex);
+  const newAlbum = entity.getField('documents').setValue(album, newDocuments);
+
+  logger.info(`Moving document at '${oldIndex}' to '${newIndex}' on album '${album._id}'`);
+  albums.set(newAlbum);
 };
 
 exports.albumListWithDocumentReference = (reference) => {
