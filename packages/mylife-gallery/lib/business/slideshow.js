@@ -16,6 +16,11 @@ exports.slideshowGet = (id) => {
   return slideshows.get(id);
 };
 
+exports.slideshowFind = (id) => {
+  const slideshows = getStoreCollection('slideshows');
+  return slideshows.find(id);
+};
+
 exports.slideshowNotify = (session, id) => {
   const slideshows = getStoreCollection('slideshows');
   return notifyView(session, slideshows.createView(slideshow => slideshow._id === id));

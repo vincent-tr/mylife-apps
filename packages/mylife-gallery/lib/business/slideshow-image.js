@@ -173,7 +173,13 @@ class SlideshowData {
   }
 
   update(slideshowsPerAlbum) {
-    const slideshow = business.slideshowGet(this._id);
+    const slideshow = business.slideshowFind(this._id);
+    if(!slideshow) {
+      // slideshow has been deleted but is still in criteria
+      const deleted = this.delete(slideshowsPerAlbum);
+      return [deleted, []];
+    }
+
     const albumIds = slideshow.albums;
 
     this._updateAlbumsSet(slideshowsPerAlbum, albumIds);
