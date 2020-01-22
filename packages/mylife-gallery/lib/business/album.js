@@ -72,10 +72,8 @@ exports.albumCreateFromDocuments = (title, documents) => {
     .map(ref => business.documentGet(ref.type, ref.id))
     .map(doc => doc.thumbnail);
 
-  // check that each doc ref is valid
-  for(const ref of documents) {
-    business.documentGet(ref.type, ref.id);
-  }
+  // check that each doc ref is valid, and order them
+  documents = sortDocumentReferences(documents);
 
   const values = { title, documents, thumbnails };
   return albumCreate(values);
@@ -93,7 +91,7 @@ exports.albumAddDocument = (album, reference) => {
     throw new Error('Le document existe déjà');
   }
 
-  const newDocuments = utils.immutable.arrayPush(album.documents, reference);
+  const newDocuments = sortDocumentReferences(utils.immutable.arrayPush(album.documents, reference));
   const newAlbum = entity.getField('documents').setValue(album, newDocuments);
 
   logger.info(`Adding document '${reference.type}:${reference.id}' on album '${album._id}'`);
@@ -131,10 +129,25 @@ exports.albumListWithDocumentReference = (reference) => {
   return albums.filter(album => findDocRefIndex(album, reference) > -1);
 };
 
+exports.albumSortDocuments = (album) => {
+  const entity = getMetadataEntity('album');
+  const albums = getStoreCollection('albums');
+
+  const newDocuments = sortDocumentReferences(album.documents);
+  const newAlbum = entity.getField('documents').setValue(album, newDocuments);
+
+  logger.info(`Sorting documents on album '${album._id}'`);
+  albums.set(newAlbum);
+}
+
 function docRefEquals(docref1, docref2) {
   return docref1.type === docref2.type && docref1.id === docref2.id;
 }
 
 function findDocRefIndex(album, reference) {
   return album.documents.findIndex(docref => docRefEquals(docref, reference));
+}
+
+sortDocumentReferences(references) {
+  // validate all reference, and sort by date (with undated image/video at the end, and others after)
 }
