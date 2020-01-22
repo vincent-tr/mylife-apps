@@ -23,32 +23,14 @@ exports.createPersonFromDocuments = [ base, (session, message) => {
   return person._id;
 } ];
 
-exports.deleteAlbum = [ base, (session, message) => {
+exports.deletePerson = [ base, (session, message) => {
   const { id } = message;
-  const album = business.albumGet(id);
-  return business.albumDelete(album);
+  const person = business.personGet(id);
+  return business.personDelete(person);
 } ];
 
-exports.updateAlbum = [ base, (session, message) => {
+exports.updatePerson = [ base, (session, message) => {
   const { id, values } = message;
-  const album = business.albumGet(id);
-  return business.albumUpdate(album, values);
-} ];
-
-exports.addDocumentToAlbum = [ base, (session, message) => {
-  const { id, reference } = message;
-  const album = business.albumGet(id);
-  return business.albumAddDocument(album, reference);
-} ];
-
-exports.removeDocumentFromAlbum = [ base, (session, message) => {
-  const { id, reference } = message;
-  const album = business.albumGet(id);
-  return business.albumRemoveDocument(album, reference);
-} ];
-
-exports.moveDocumentInAlbum = [ base, (session, message) => {
-  const { id, oldIndex, newIndex } = message;
-  const album = business.albumGet(id);
-  return business.albumMoveDocument(album, oldIndex, newIndex);
+  const person = business.personGet(id);
+  return business.personUpdate(person, values);
 } ];
