@@ -14,7 +14,6 @@ MyLife photo gallery
    - url pour défilement (routage)
  - album:
    - album detail
-   - doc moves (ordering)
    - doc delete
    - doc add ?
    - choose album thumbnails
