@@ -23,7 +23,7 @@ function useSlideshowEngine(slideshow, mediaAccessor) {
 
   useEffect(() => {
     const orchestrator = createOrchestrator(slideshow);
-    const engine = new SlideshowEngine(slideshowImages, setUrl, mediaAccessor, orchestrator);
+    const engine = new SlideshowEngine(slideshow, slideshowImages, setUrl, mediaAccessor, orchestrator);
 
     return () => engine.close();
   }, [slideshow, slideshowImages]);
