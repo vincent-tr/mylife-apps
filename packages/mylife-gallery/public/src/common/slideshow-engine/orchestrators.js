@@ -52,6 +52,6 @@ class RandomStyleOrchestrator {
 }
 
 const ORCHESTRATOR_BY_STYLE = {
-  'scrolling-ordered': OrderedStyleOrchestrator,
-  'scrolling-random': RandomStyleOrchestrator,
+  ordered: OrderedStyleOrchestrator,
+  random: RandomStyleOrchestrator,
 };
