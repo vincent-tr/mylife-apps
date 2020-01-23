@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useMemo, StopPropagationContainer, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useDispatch, useMemo, StopPropagationContainer, DebouncedTextField } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { updateSlideshow } from '../actions';
 import Preview from './preview';
@@ -21,13 +21,11 @@ const useStyles = mui.makeStyles(theme => ({
   },
   editor: {
     width: 200
+  },
+  runButton: {
+    marginTop: theme.spacing(8)
   }
 }));
-
-const styles = [
-  { id: 'scrolling-ordered', text: 'Défilement dans l\'ordre' },
-  { id: 'scrolling-random', text: 'Défilement aléatoire' },
-];
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -51,14 +49,9 @@ const ItemHeader = ({ slideshow }) => {
           <mui.Grid item xs={6}>
             <DebouncedTextField value={slideshow.name} onChange={(value) => onUpdate('name', value)} className={classes.editor} />
           </mui.Grid>
-          <mui.Grid item xs={6}>
-            <mui.Typography>Style</mui.Typography>
-          </mui.Grid>
-          <mui.Grid item xs={6}>
-            <ListSelector list={styles} value={slideshow.style} onChange={(value) => onUpdate('style', value)} className={classes.editor} />
-          </mui.Grid>
           <mui.Grid item xs={12} justify='center' container>
             <mui.Button
+              className={classes.runButton}
               variant='contained'
               color='primary'
               startIcon={<icons.menu.Slideshows />}
