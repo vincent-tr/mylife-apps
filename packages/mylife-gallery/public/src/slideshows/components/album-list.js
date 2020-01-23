@@ -1,6 +1,6 @@
 'use strict';
 
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import { React, PropTypes, mui, useDispatch, useMemo } from 'mylife-tools-ui';
 import { useAlbumView } from '../../common/album-view';
 import { renderObject } from '../../common/metadata-utils';
@@ -15,7 +15,7 @@ const useConnect = () => {
 };
 
 const useStyles = mui.makeStyles(theme => ({
-  listItem: {
+  itemDragHandle: {
     cursor: 'grab'
   },
   deleteButton: {
@@ -24,10 +24,26 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
+const ItemDragHandle = () => {
+  const classes = useStyles();
+  return (
+    <mui.ListItemIcon className={classes.itemDragHandle}>
+      <mui.Tooltip title={'Changer l\'ordere de l\'album dans le diaporama'}>
+        <mui.IconButton>
+          <mui.icons.ImportExport />
+        </mui.IconButton>
+      </mui.Tooltip>
+    </mui.ListItemIcon>
+  );
+};
+
+const ItemSortableHandle = SortableHandle(ItemDragHandle);
+
 const Item = ({ album, onDelete }) => {
   const classes = useStyles();
   return (
-    <mui.ListItem className={classes.listItem}>
+    <mui.ListItem>
+      <ItemSortableHandle />
       <mui.ListItemText primary={renderObject(album)} />
       <mui.ListItemSecondaryAction>
         <mui.Tooltip title={'Enlever l\'album du diaporama'}>
@@ -71,6 +87,7 @@ const AlbumList = ({ slideshow, ...props }) => {
   return (
     <SortableList
       dense
+      useDragHandle
       albums={albums}
       onDelete={album => removeAlbumFromSlideshow(slideshow, album)}
       onSortEnd={({ oldIndex, newIndex }) => moveAlbumInSlideshow(slideshow, oldIndex, newIndex)}
