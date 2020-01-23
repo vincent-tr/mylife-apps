@@ -1,8 +1,8 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useMemo } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useDispatch, useMemo, ListSelector, DebouncedSlider } from 'mylife-tools-ui';
 import icons from '../../common/icons';
-import { deleteSlideshow } from '../actions';
+import { updateSlideshow, deleteSlideshow } from '../actions';
 import AlbumList from './album-list';
 import AlbumAddButton from './album-add-button';
 import { THUMBNAIL_SIZE } from '../../common/thumbnail';
@@ -52,26 +52,63 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
+const orders = [
+  { id: 'ordered', text: 'Défilement dans l\'ordre' },
+  { id: 'random', text: 'Défilement aléatoire' },
+];
+
+const transitions = [
+  { id: 'none', text: 'Aucune' },
+  { id: 'collapse', text: 'Réduction (collapse)' },
+  { id: 'fade', text: 'Fondu enchainée (fade)' },
+  { id: 'grow', text: 'Agrandissement et fondu enchainée (grow)' },
+  { id: 'slide', text: 'Défilement (slide)' },
+  { id: 'zoom', text: 'Agrandissement (zoom)' },
+];
+
 const useConnect = () => {
   const dispatch = useDispatch();
   return useMemo(() => ({
+    updateSlideshow: (slideshow, values) => dispatch(updateSlideshow(slideshow, values)),
     deleteSlideshow: id => dispatch(deleteSlideshow(id)),
   }), [dispatch]);
 };
 
 const ItemDetail = ({ slideshow }) => {
   const classes = useStyles();
-  const { deleteSlideshow } = useConnect();
-  const id = slideshow._id;
-  const onDelete = () => deleteSlideshow(id);
+  const { updateSlideshow, deleteSlideshow } = useConnect();
+  const onUpdate = (prop, value) => updateSlideshow(slideshow, { [prop]: value });
+  const onDelete = () => deleteSlideshow(slideshow._id);
 
   return (
     <mui.ExpansionPanelDetails className={classes.container}>
       <div className={classes.wrapper}>
         <mui.Grid container spacing={2} className={classes.grid}>
-          <mui.Grid item xs={6}>
-            <mui.Typography>Albums</mui.Typography>
-            <AlbumAddButton slideshow={slideshow} className={classes.addButton} />
+          <mui.Grid item xs={6} container spacing={2}>
+            <mui.Grid item xs={12}>
+              <mui.Typography>Albums</mui.Typography>
+            </mui.Grid>
+            <mui.Grid item xs={12}>
+              <AlbumAddButton slideshow={slideshow} className={classes.addButton} />
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <mui.Typography>Ordonnancement</mui.Typography>
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <ListSelector list={orders} value={slideshow.order} onChange={(value) => onUpdate('order', value)} className={classes.editor} />
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <mui.Typography>Transition</mui.Typography>
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <ListSelector list={transitions} value={slideshow.transition} onChange={(value) => onUpdate('transition', value)} className={classes.editor} />
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <mui.Typography>Interval</mui.Typography>
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <DebouncedSlider min={0.1} step={0.1} max={30} valueLabelDisplay='auto' value={slideshow.interval} onChange={(e, value) => onUpdate('interval', value)} className={classes.editor} />
+            </mui.Grid>
           </mui.Grid>
           <mui.Grid item xs={6}>
             <AlbumList slideshow={slideshow} className={classes.albumList} />
