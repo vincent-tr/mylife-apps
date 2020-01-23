@@ -24,6 +24,7 @@ exports.SlideshowEngine = class SlideshowEngine {
     this.controller = new AbortController();
 
     this.state = states.PENDING_DOWNLOAD;
+    this.fillPrefetch();
   }
 
   close() {
@@ -31,7 +32,7 @@ exports.SlideshowEngine = class SlideshowEngine {
 
     this.controller.abort();
 
-    for(const url of this.urls.values()) {
+    for(const url of this.mediaUrls.values()) {
       URL.revokeObjectURL(url);
     }
 
