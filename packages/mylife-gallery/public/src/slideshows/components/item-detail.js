@@ -12,22 +12,6 @@ const borderWidth = 1;
 const useStyles = mui.makeStyles(theme => ({
   container: {
   },
-  wrapper: {
-    width: '100%',
-    maxWidth: 900,
-    display: 'flex',
-    '& > *': {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-  },
-  grid: {
-    width: 650,
-    flex: '1 1 auto'
-  },
-  addButton: {
-    marginTop: theme.spacing(1),
-  },
   albumList: {
     width: '100%',
     overflowY: 'auto',
@@ -81,52 +65,55 @@ const ItemDetail = ({ slideshow }) => {
   const onDelete = () => deleteSlideshow(slideshow._id);
 
   return (
-    <mui.ExpansionPanelDetails className={classes.container}>
-      <div className={classes.wrapper}>
-        <mui.Grid container spacing={2} className={classes.grid}>
-          <mui.Grid item xs={6} container spacing={2}>
-            <mui.Grid item xs={12}>
-              <mui.Typography>Albums</mui.Typography>
-            </mui.Grid>
-            <mui.Grid item xs={12}>
-              <AlbumAddButton slideshow={slideshow} className={classes.addButton} />
-            </mui.Grid>
-            <mui.Grid item xs={6}>
-              <mui.Typography>Ordonnancement</mui.Typography>
-            </mui.Grid>
-            <mui.Grid item xs={6}>
-              <ListSelector list={orders} value={slideshow.order} onChange={(value) => onUpdate('order', value)} className={classes.editor} />
-            </mui.Grid>
-            <mui.Grid item xs={6}>
-              <mui.Typography>Transition</mui.Typography>
-            </mui.Grid>
-            <mui.Grid item xs={6}>
-              <ListSelector list={transitions} value={slideshow.transition} onChange={(value) => onUpdate('transition', value)} className={classes.editor} />
-            </mui.Grid>
-            <mui.Grid item xs={6}>
-              <mui.Typography>Interval</mui.Typography>
-            </mui.Grid>
-            <mui.Grid item xs={6}>
-              <DebouncedSlider min={0.1} step={0.1} max={30} valueLabelDisplay='auto' value={slideshow.interval} onChange={(e, value) => onUpdate('interval', value)} className={classes.editor} />
-            </mui.Grid>
+    <mui.ExpansionPanelDetails>
+      <mui.Grid container spacing={2}>
+
+        <mui.Grid item xs={6} container spacing={2}>
+          <mui.Grid item xs={6}>
+            <mui.Typography>Ordonnancement</mui.Typography>
           </mui.Grid>
           <mui.Grid item xs={6}>
+            <ListSelector list={orders} value={slideshow.order} onChange={(value) => onUpdate('order', value)} className={classes.editor} />
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <mui.Typography>Transition</mui.Typography>
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <ListSelector list={transitions} value={slideshow.transition} onChange={(value) => onUpdate('transition', value)} className={classes.editor} />
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <mui.Typography>Interval</mui.Typography>
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <DebouncedSlider min={0.1} step={0.1} max={30} valueLabelDisplay='auto' value={slideshow.interval} onChange={(e, value) => onUpdate('interval', value)} className={classes.editor} />
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <mui.Tooltip title={'Supprimer le diaporama'}>
+              <mui.Button
+                variant='contained'
+                className={classes.deleteButton}
+                onClick={onDelete}
+                startIcon={<icons.actions.Delete />}
+              >
+                {'Supprimer'}
+              </mui.Button>
+            </mui.Tooltip>
+          </mui.Grid>
+        </mui.Grid>
+
+        <mui.Grid item xs={6} container spacing={2} alignItems='center'>
+          <mui.Grid item xs={6}>
+            <mui.Typography>Albums</mui.Typography>
+          </mui.Grid>
+          <mui.Grid item xs={6} container justify='flex-end'>
+            <AlbumAddButton slideshow={slideshow} />
+          </mui.Grid>
+          <mui.Grid item xs={12}>
             <AlbumList slideshow={slideshow} className={classes.albumList} />
           </mui.Grid>
         </mui.Grid>
-        <div className={classes.buttonWrapper}>
-          <mui.Tooltip title={'Supprimer le diaporama'}>
-            <mui.Button
-              variant='contained'
-              className={classes.deleteButton}
-              onClick={onDelete}
-              startIcon={<icons.actions.Delete />}
-            >
-              {'Supprimer'}
-            </mui.Button>
-          </mui.Tooltip>
-        </div>
-      </div>
+
+      </mui.Grid>
     </mui.ExpansionPanelDetails>
   );
 };
