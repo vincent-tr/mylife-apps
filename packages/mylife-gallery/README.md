@@ -9,6 +9,7 @@ MyLife photo gallery
 # TODO:
  - slideshow
    - url pour défilement (routage)
+   - LRU pour object URL de l'engine
  - album:
    - album detail
    - doc delete
