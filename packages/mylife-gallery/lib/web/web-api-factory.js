@@ -15,7 +15,7 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     logger.debug(`Sending image '${id}'`);
 
     const stream = business.mediaGet(document.media.id);
-    res.contentType('image/webp');
+    prepareResponse(res, 'image/webp');
     stream.pipe(res);
     stream.on('error', err => logger.error(`Error sending image '${id}' : ${err.stack}`));
   }));
@@ -26,7 +26,7 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     logger.debug(`Sending video '${id}'`);
 
     const stream = business.mediaGet(document.media.id);
-    res.contentType('video/webm');
+    prepareResponse(res, 'video/webm');
     stream.pipe(res);
     stream.on('error', err => logger.error(`Error sending video '${id}' : ${err.stack}`));
   }));
@@ -36,7 +36,7 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
     const content = await business.thumbnailGet(id);
     logger.debug(`Sending thumbnail '${id}'`);
 
-    res.contentType('image/webp');
+    prepareResponse(res, 'image/webp');
     res.send(content);
   }));
 
@@ -56,4 +56,9 @@ function getFullPath(document) {
   const basePath = getConfig('gallery');
   const relativePath = document.paths[0].path;
   return path.join(basePath, relativePath);
+}
+
+function prepareResponse(response, contenType) {
+  response.set('Content-Type', contenType);
+  response.set('Cache-Control', 'public, max-age=31557600, s-maxage=31557600'); // 1 year
 }
