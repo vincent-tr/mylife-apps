@@ -6,7 +6,6 @@ const states = {
 };
 
 const PREFETCH_SIZE = 5;
-const INTERVAL = 10000;
 
 const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
 
@@ -66,7 +65,7 @@ exports.SlideshowEngine = class SlideshowEngine {
 
 
     this.setState(states.WAITING_INTERVAL);
-    this.timer = setTimeout(() => this.onTimeout(), INTERVAL);
+    this.timer = setTimeout(() => this.onTimeout(), this.slideshow.interval * 1000);
   }
 
   isNextReady() {
