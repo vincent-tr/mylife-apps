@@ -6,11 +6,13 @@ const states = {
 };
 
 const PREFETCH_SIZE = 5;
-const INTERVAL = 5000;
+const INTERVAL = 10000;
+
 const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
 
 exports.SlideshowEngine = class SlideshowEngine {
-  constructor(slideshowImages, nextHandler, mediaAccessor, orchestrator) {
+  constructor(slideshow, slideshowImages, nextHandler, mediaAccessor, orchestrator) {
+    this.slideshow = slideshow;
     this.slideshowImages = slideshowImages;
     this.nextHandler = nextHandler;
     this.mediaAccessor = mediaAccessor;
@@ -24,7 +26,7 @@ exports.SlideshowEngine = class SlideshowEngine {
     this.mediaUrls = new Map();
     this.controller = new AbortController();
 
-    this.state = states.PENDING_DOWNLOAD;
+    this.setState(states.PENDING_DOWNLOAD);
     this.fillPrefetch();
   }
 
@@ -40,6 +42,11 @@ exports.SlideshowEngine = class SlideshowEngine {
     this.orchestrator.close();
   }
 
+  setState(state) {
+    this.state = state;
+    logger(this.slideshow._id, 'setState', stateToString(state));
+  }
+
   fillPrefetch() {
     while(this.prefetchQueue.length < PREFETCH_SIZE) {
       const slideshowImage = this.orchestrator.next();
@@ -52,12 +59,13 @@ exports.SlideshowEngine = class SlideshowEngine {
     const slideshowImage = this.prefetchQueue.shift();
     const url = this.mediaUrls.get(slideshowImage._id);
     this.nextHandler(url);
-    logger('moveToNext', slideshowImage.slideshow, slideshowImage.index);
+    logger(this.slideshow._id, 'moveToNext', slideshowImage.index);
 
     // prepare next steps
     this.fillPrefetch();
 
-    this.state = states.WAITING_INTERVAL;
+
+    this.setState(states.WAITING_INTERVAL);
     this.timer = setTimeout(() => this.onTimeout(), INTERVAL);
   }
 
@@ -71,10 +79,11 @@ exports.SlideshowEngine = class SlideshowEngine {
 
     if(this.isNextReady()) {
       this.moveToNext();
+      return;
     }
 
     // wait for next item to be ready
-    this.state = states.PENDING_DOWNLOAD;
+    this.setState(states.PENDING_DOWNLOAD);
   }
 
   startFetchUrl(slideshowImage) {
@@ -129,9 +138,20 @@ const styles = {
   error: 'color: #F20404; font-weight: bold',
 };
 
-function logCall(action, ...args) {
+function logCall(id, action, ...args) {
   /* eslint-disable no-console */
   const formattedArgs = args.map(arg => `${arg}`).join(' ');
-  console.log(`%c slidehow-engine %c${action} %c${formattedArgs}`, styles.lighter, styles.default, styles.lighter);
+  console.log(`%c slidehow-engine ${id} %c${action} %c${formattedArgs}`, styles.lighter, styles.default, styles.lighter);
   /* eslint-enable */
+}
+
+function stateToString(state) {
+  switch(state) {
+    case states.PENDING_DOWNLOAD:
+      return 'PENDING_DOWNLOAD';
+    case states.WAITING_INTERVAL:
+      return 'WAITING_INTERVAL';
+    default:
+      return state.toString();
+  }
 }
