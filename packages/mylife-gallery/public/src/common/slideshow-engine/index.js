@@ -22,6 +22,10 @@ function useSlideshowEngine(slideshow, mediaAccessor) {
   const [url, setUrl] = useState(null);
 
   useEffect(() => {
+    if(!slideshow || !slideshowImages || !slideshowImages.size) {
+      return;
+    }
+
     const orchestrator = createOrchestrator(slideshow);
     const engine = new SlideshowEngine(slideshow, slideshowImages, setUrl, mediaAccessor, orchestrator);
 
