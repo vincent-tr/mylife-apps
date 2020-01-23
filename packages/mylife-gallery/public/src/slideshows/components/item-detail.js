@@ -10,8 +10,18 @@ import { THUMBNAIL_SIZE } from '../../common/thumbnail';
 const borderWidth = 1;
 
 const useStyles = mui.makeStyles(theme => ({
-  container: {
+  leftPanel: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    '& > *:first-child': {
+
+    },
+    '& > *:last-child': {
+      alignSelf: 'flex-start'
+    }
   },
+
   albumList: {
     width: '100%',
     overflowY: 'auto',
@@ -68,9 +78,9 @@ const ItemDetail = ({ slideshow }) => {
     <mui.ExpansionPanelDetails>
       <mui.Grid container spacing={2}>
 
-        <mui.Grid item xs={6} container direction='column' alignItems='stretch'>
+        <mui.Grid item xs={6} className={classes.leftPanel}>
 
-          <mui.Grid item xs={6} spacing={4} container alignItems='center' alignContent='flex-start'>
+          <mui.Grid spacing={4} container alignItems='center' alignContent='flex-start'>
             <mui.Grid item xs={6}>
               <mui.Typography>Ordonnancement</mui.Typography>
             </mui.Grid>
@@ -91,18 +101,16 @@ const ItemDetail = ({ slideshow }) => {
             </mui.Grid>
           </mui.Grid>
 
-          <mui.Grid item xs={6} container alignItems='flex-end'>
-            <mui.Tooltip title={'Supprimer le diaporama'}>
-              <mui.Button
-                variant='contained'
-                className={classes.deleteButton}
-                onClick={onDelete}
-                startIcon={<icons.actions.Delete />}
-              >
-                {'Supprimer'}
-              </mui.Button>
-            </mui.Tooltip>
-          </mui.Grid>
+          <mui.Tooltip title={'Supprimer le diaporama'}>
+            <mui.Button
+              variant='contained'
+              className={classes.deleteButton}
+              onClick={onDelete}
+              startIcon={<icons.actions.Delete />}
+            >
+              {'Supprimer'}
+            </mui.Button>
+          </mui.Tooltip>
 
         </mui.Grid>
 
