@@ -87,7 +87,7 @@ const ItemDetail = ({ slideshow }) => {
               <mui.Typography>Interval</mui.Typography>
             </mui.Grid>
             <mui.Grid item xs={6}>
-              <DebouncedSlider min={0.1} step={0.1} max={30} valueLabelDisplay='auto' value={slideshow.interval} onChange={(e, value) => onUpdate('interval', value)} className={classes.editor} />
+              <DebouncedSlider min={0.1} step={0.1} max={30} valueLabelDisplay='auto' value={slideshow.interval} onChange={value => onUpdate('interval', value)} className={classes.editor} />
             </mui.Grid>
           </mui.Grid>
 
