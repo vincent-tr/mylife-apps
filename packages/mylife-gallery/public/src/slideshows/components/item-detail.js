@@ -70,7 +70,7 @@ const ItemDetail = ({ slideshow }) => {
 
         <mui.Grid item xs={6} container direction='column' alignItems='stretch'>
 
-          <mui.Grid item xs={6} container alignItems='flex-start'>
+          <mui.Grid item xs={6} spacing={4} container alignItems='center' alignContent='flex-start'>
             <mui.Grid item xs={6}>
               <mui.Typography>Ordonnancement</mui.Typography>
             </mui.Grid>
