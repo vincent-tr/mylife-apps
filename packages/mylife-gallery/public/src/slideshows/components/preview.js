@@ -1,10 +1,11 @@
 'use strict';
 
-import { React, PropTypes, mui, useState, useSelector, clsx } from 'mylife-tools-ui';
+import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 import { THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { useCommonStyles } from '../../common/thumbnail/utils';
 import BaseNone from '../../common/thumbnail/base-none';
 import { useSlideshowImageView } from '../../common/slideshow-image-view';
+import { useSlideshowEngineThumbnail } from '../../common/slideshow-engine';
 
 const useStyles = mui.makeStyles(theme => ({
   tile: {
@@ -52,8 +53,7 @@ ThumbnailOrLoading.propTypes = {
 };
 
 const NotEmpty = ({ slideshow }) => {
-  // const { selectedId,  } = useConnect();
-  const [imageUrl, setImageUrl] = useState(null);
+  const imageUrl = useSlideshowEngineThumbnail(slideshow);
   return (
     <ThumbnailOrLoading imageUrl={imageUrl} />
   );
