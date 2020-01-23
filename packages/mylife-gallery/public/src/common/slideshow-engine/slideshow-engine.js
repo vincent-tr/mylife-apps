@@ -7,6 +7,7 @@ const states = {
 
 const PREFETCH_SIZE = 5;
 const INTERVAL = 5000;
+const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
 
 exports.SlideshowEngine = class SlideshowEngine {
   constructor(slideshowImages, nextHandler, mediaAccessor, orchestrator) {
@@ -51,6 +52,7 @@ exports.SlideshowEngine = class SlideshowEngine {
     const slideshowImage = this.prefetchQueue.shift();
     const url = this.mediaUrls.get(slideshowImage._id);
     this.nextHandler(url);
+    logger('moveToNext', slideshowImage.slideshow, slideshowImage.index);
 
     // prepare next steps
     this.fillPrefetch();
@@ -117,4 +119,19 @@ async function safeFetchUrl(url, controller, setter) {
 
     console.error(`Error fetch url ${url}`, err); // eslint-disable-line no-console
   }
+}
+
+const styles = {
+  default: 'color: inherit; font-weight: bold',
+  lighter: 'color: gray; font-weight: lighter',
+  request: 'color: #03A9F4; font-weight: bold',
+  result: 'color: #4CAF50; font-weight: bold',
+  error: 'color: #F20404; font-weight: bold',
+};
+
+function logCall(action, ...args) {
+  /* eslint-disable no-console */
+  const formattedArgs = args.map(arg => `${arg}`).join(' ');
+  console.log(`%c slidehow-engine %c${action} %c${formattedArgs}`, styles.lighter, styles.default, styles.lighter);
+  /* eslint-enable */
 }
