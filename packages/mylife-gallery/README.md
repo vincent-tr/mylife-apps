@@ -7,8 +7,6 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp or https://github.com/Darth-Knoppix/example-react-fullscreen
 
 # TODO:
- - web api
-   - renvoyer les media/thumbnail avec header http: "Cache-Control: max-age=31536000"
  - slideshow
    - url pour défilement (routage)
  - album:
