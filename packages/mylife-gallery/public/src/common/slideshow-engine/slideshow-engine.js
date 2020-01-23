@@ -17,6 +17,8 @@ exports.SlideshowEngine = class SlideshowEngine {
     this.mediaAccessor = mediaAccessor;
     this.orchestrator = orchestrator;
 
+    logger(this.slideshow._id, 'created', `interval=${this.slideshow.interval} sec`);
+
     this.orchestrator.init(this.slideshowImages);
 
     this.prefetchQueue = [];
@@ -39,6 +41,8 @@ exports.SlideshowEngine = class SlideshowEngine {
     }
 
     this.orchestrator.close();
+
+    logger(this.slideshow._id, 'closed');
   }
 
   setState(state) {
