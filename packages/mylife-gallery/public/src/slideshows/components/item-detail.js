@@ -68,26 +68,30 @@ const ItemDetail = ({ slideshow }) => {
     <mui.ExpansionPanelDetails>
       <mui.Grid container spacing={2}>
 
-        <mui.Grid item xs={6} container spacing={2}>
-          <mui.Grid item xs={6}>
-            <mui.Typography>Ordonnancement</mui.Typography>
+        <mui.Grid item xs={6} container direction='column' alignItems='stretch'>
+
+          <mui.Grid item xs={6} container alignItems='flex-start'>
+            <mui.Grid item xs={6}>
+              <mui.Typography>Ordonnancement</mui.Typography>
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <ListSelector list={orders} value={slideshow.order} onChange={(value) => onUpdate('order', value)} className={classes.editor} />
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <mui.Typography>Transition</mui.Typography>
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <ListSelector list={transitions} value={slideshow.transition} onChange={(value) => onUpdate('transition', value)} className={classes.editor} />
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <mui.Typography>Interval</mui.Typography>
+            </mui.Grid>
+            <mui.Grid item xs={6}>
+              <DebouncedSlider min={0.1} step={0.1} max={30} valueLabelDisplay='auto' value={slideshow.interval} onChange={(e, value) => onUpdate('interval', value)} className={classes.editor} />
+            </mui.Grid>
           </mui.Grid>
-          <mui.Grid item xs={6}>
-            <ListSelector list={orders} value={slideshow.order} onChange={(value) => onUpdate('order', value)} className={classes.editor} />
-          </mui.Grid>
-          <mui.Grid item xs={6}>
-            <mui.Typography>Transition</mui.Typography>
-          </mui.Grid>
-          <mui.Grid item xs={6}>
-            <ListSelector list={transitions} value={slideshow.transition} onChange={(value) => onUpdate('transition', value)} className={classes.editor} />
-          </mui.Grid>
-          <mui.Grid item xs={6}>
-            <mui.Typography>Interval</mui.Typography>
-          </mui.Grid>
-          <mui.Grid item xs={6}>
-            <DebouncedSlider min={0.1} step={0.1} max={30} valueLabelDisplay='auto' value={slideshow.interval} onChange={(e, value) => onUpdate('interval', value)} className={classes.editor} />
-          </mui.Grid>
-          <mui.Grid item xs={6}>
+
+          <mui.Grid item xs={6} container alignItems='flex-end'>
             <mui.Tooltip title={'Supprimer le diaporama'}>
               <mui.Button
                 variant='contained'
@@ -99,6 +103,7 @@ const ItemDetail = ({ slideshow }) => {
               </mui.Button>
             </mui.Tooltip>
           </mui.Grid>
+
         </mui.Grid>
 
         <mui.Grid item xs={6} container spacing={2} alignItems='center'>
