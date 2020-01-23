@@ -1,10 +1,10 @@
 'use strict';
 
 exports.createOrchestrator = (slideshow) => {
-  const { style } = slideshow;
-  const Orchestrator = ORCHESTRATOR_BY_STYLE[style];
+  const { order } = slideshow;
+  const Orchestrator = ORCHESTRATOR_BY_ORDER[order];
   if(!Orchestrator) {
-    throw new Error(`Unknown style: '${style}'`);
+    throw new Error(`Unknown order: '${order}'`);
   }
 
   return new Orchestrator();
@@ -51,7 +51,7 @@ class RandomStyleOrchestrator {
   }
 }
 
-const ORCHESTRATOR_BY_STYLE = {
+const ORCHESTRATOR_BY_ORDER = {
   ordered: OrderedStyleOrchestrator,
   random: RandomStyleOrchestrator,
 };
