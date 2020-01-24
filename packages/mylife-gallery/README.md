@@ -8,7 +8,7 @@ MyLife photo gallery
 
 # TODO:
  - slideshow
-   - url pour défilement (routage)
+   - collapse transition does not work
  - album:
    - album detail
    - doc delete
