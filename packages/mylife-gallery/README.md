@@ -18,7 +18,6 @@ MyLife photo gallery
    - delete person
  - document:
    - rotation image/video (créer nouveau média/thumbnail à cause du cache http, donc créer un nouvel id) => NON, on va faire ca dans l explorateur et il sera reimporte
-   - pouvoir modifier la date d une image/video ou pouvoir la re-importer depuis la metadata
  - suggestions:
    - Suggestion pour ajouter un document a un album s'il n'a pas d album et que l'abum correspondant au root existe deja (genre un doc qu on aurait sorti d un album), sauf si le dossier commence par _
    - Suggestion pour montrer les documents sans album
