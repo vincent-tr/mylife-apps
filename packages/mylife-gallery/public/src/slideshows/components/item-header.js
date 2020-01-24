@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useMemo, StopPropagationContainer, DebouncedTextField } from 'mylife-tools-ui';
+import { React, PropTypes, mui, routing, useDispatch, useMemo, StopPropagationContainer, DebouncedTextField } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { updateSlideshow } from '../actions';
 import Preview from './preview';
@@ -37,6 +37,7 @@ const useConnect = () => {
 const ItemHeader = ({ slideshow }) => {
   const classes = useStyles();
   const { updateSlideshow } = useConnect();
+  const { navigate } = routing.useRoutingConnect();
   const onUpdate = (prop, value) => updateSlideshow(slideshow, { [prop]: value });
 
   return (
@@ -55,7 +56,7 @@ const ItemHeader = ({ slideshow }) => {
               variant='contained'
               color='primary'
               startIcon={<icons.menu.Slideshows />}
-              onClick={() => console.log('TODO: run slideshow', slideshow)}
+              onClick={() => navigate(`/slideshow/${slideshow._id}`)}
             >
               Lancer
             </mui.Button>

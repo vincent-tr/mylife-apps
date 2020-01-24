@@ -7,6 +7,8 @@ import metadataDefintions from '../../shared/metadata';
 import icons from './common/icons';
 import Home from './home/components';
 import Slideshows from './slideshows/components';
+import Slideshow from './slideshow/components';
+import SlideshowTitle from './slideshow/components/title';
 import Suggestions from './suggestions/components';
 import Browse from './browse/components';
 import Stats from './stats/components';
@@ -20,6 +22,7 @@ services.initMetadata(metadataDefintions);
 const routes = [
   { location: '/', renderer: () => <Home /> },
   { location: '/slideshows', name: 'Diaporamas', icon: icons.menu.Slideshows, renderer: () => <Slideshows /> },
+  { location: '/slideshow/:slideshowId', name: (<SlideshowTitle />), icon: icons.menu.Slideshows, renderer: ({ slideshowId }) => <Slideshow slideshowId={slideshowId} />},
   { location: '/suggestions', name: 'Suggestions', icon: icons.menu.Suggestions, renderer: () => <Suggestions /> },
   { location: '/browse', name: 'Parcourir', icon: icons.menu.Browse, renderer: () => <Browse /> },
   { location: '/stats', name: 'Statistics', icon: icons.menu.Stats, renderer: () => <Stats /> },

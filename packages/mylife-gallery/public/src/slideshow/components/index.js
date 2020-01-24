@@ -31,7 +31,7 @@ const Slideshow = ({ slideshowId }) => {
   const classes = useStyles();
   const { enter, leave, slideshow } = useConnect();
   useLifecycle(() => enter(slideshowId), leave);
-  const { slideshowImages } = useSlideshowImageView(slideshow._id);
+  //const { slideshowImages } = useSlideshowImageView(slideshow._id);
 
   return (
     <div className={classes.container}>
