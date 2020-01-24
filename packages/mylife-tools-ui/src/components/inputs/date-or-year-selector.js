@@ -28,17 +28,18 @@ const pickerOptions = {
   clearLabel: 'Aucun'
 };
 
-const DateOrYearSelector = ({ onChange, value, showYearSelector, selectLastDay, ...props }) => {
+const DateOrYearSelector = ({ disabled, onChange, value, showYearSelector, selectLastDay, ...props }) => {
   const classes = useStyles();
   return (
     <div className={classes.container} {...props}>
-      <DatePicker className={classes.input} value={value} onChange={onChange} {...pickerOptions} />
-      {showYearSelector && (<YearSelectorButton className={classes.button} value={value} onChange={onChange} selectLastDay={selectLastDay} />)}
+      <DatePicker disabled={disabled} className={classes.input} value={value} onChange={onChange} {...pickerOptions} />
+      {showYearSelector && (<YearSelectorButton disabled={disabled} className={classes.button} value={value} onChange={onChange} selectLastDay={selectLastDay} />)}
     </div>
   );
 };
 
 DateOrYearSelector.propTypes = {
+  disabled: PropTypes.bool,
   value: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
   showYearSelector: PropTypes.bool,
