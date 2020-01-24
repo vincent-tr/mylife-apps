@@ -159,6 +159,10 @@ function buildFilter(criteria) {
   createIntervalFilterPart(criteria, parts, 'minIntegrationDate', 'maxIntegrationDate', 'integrationDate');
   createIntervalFilterPart(criteria, parts, 'minDuration', 'maxDuration', null, document => (document._entity === 'video' ? document.duration : null));
 
+  if(criteria.noDate) {
+    parts.push(hasNoDate);
+  }
+
   if(criteria.type) {
     const types = new Set(criteria.type);
     parts.push(document => types.has(document._entity));
@@ -258,6 +262,16 @@ function createIntervalFilterPart(criteria, parts, minName, maxName, propName, p
     });
     return;
   }
+}
+
+function hasNoDate(document) {
+  switch(document._entity) {
+    case 'image':
+    case 'video':
+      return document.date === null;
+  }
+
+  return true;
 }
 
 function hasPerson(document, personIds) {
