@@ -7,8 +7,6 @@ MyLife photo gallery
  - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp or https://github.com/Darth-Knoppix/example-react-fullscreen
 
 # TODO:
- - slideshow
-   - collapse transition does not work
  - album:
    - album detail
    - doc delete
@@ -35,9 +33,11 @@ MyLife photo gallery
    - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?
    - rajouter l'heure si possible (sympa de savoir si c est le matin, le soir, etc)
  - mobile
-  - enlever Diaporamas
-  - enlever Suggestions
-  - adapter nav-bar  document-viewer (si titre trop grand, peut etre sur 2 lignes ?)
-  - adapter detail document-viewer (devrait etre fullscreen, ne pas afficher le doc
-  - adapter criteria albums
-  - adapter criteria browse
+   - enlever Diaporamas
+   - enlever Suggestions
+   - adapter nav-bar  document-viewer (si titre trop grand, peut etre sur 2 lignes ?)
+   - adapter detail document-viewer (devrait etre fullscreen, ne pas afficher le doc
+   - adapter criteria albums
+   - adapter criteria browse
+ - slideshow
+   - collapse transition does not work
