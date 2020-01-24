@@ -12,12 +12,14 @@ const useStyles = mui.makeStyles({
 
 const TRANSITION_TIMEOUT = 500;
 
-const ImageContent = ({ url, className, ...props }) => {
+const ImageContent = React.forwardRef(({ url, className, ...props }, ref) => {
   const classes = useStyles();
   return (
-    <img src={url} className={clsx(classes.image, className)} {...props} />
+    <img ref={ref} src={url} className={clsx(classes.image, className)} {...props} />
   );
-};
+});
+
+ImageContent.displayName = 'ImageContent';
 
 ImageContent.propTypes = {
   url: PropTypes.string.isRequired,
@@ -37,9 +39,9 @@ NoTransition.propTypes = {
 
 const Transition = ({ transitionData, url, ...props }) => {
   const { transitionIn, stateUrl } = useTransition(url);
-  const { component: Transition, props: transitionProps } = transitionData;
+  const { component: Transition } = transitionData;
   return (
-    <Transition in={transitionIn} {...transitionProps}>
+    <Transition in={transitionIn} timeout={TRANSITION_TIMEOUT}>
       <ImageContent url={stateUrl} {...props} />
     </Transition>
   );
@@ -50,13 +52,17 @@ Transition.propTypes = {
   transitionData: PropTypes.object.isRequired
 };
 
+const LeftRightSlide = ({ in: inProp, ...props }) => (
+  <mui.Slide in={inProp} direction={inProp ? 'right' : 'left'} {...props} />
+);
+
 const transitions = {
   none: { wrapper: NoTransition },
   collapse: { wrapper: NoTransition }, // TODO: does not work as-this {  wrapper: Transition, component: mui.Collapse, props: { in: true, timeout: TRANSITION_TIMEOUT } },
-  fade: { wrapper: Transition, component: mui.Fade, props: { timeout: TRANSITION_TIMEOUT } },
-  grow: {  wrapper: Transition, component: mui.Grow, props: { timeout: TRANSITION_TIMEOUT } },
-  slide: {  wrapper: Transition, component: mui.Slide, props: { direction: 'right', timeout: TRANSITION_TIMEOUT } },
-  zoom: {  wrapper: Transition, component: mui.Zoom, props: { timeout: TRANSITION_TIMEOUT } },
+  fade: { wrapper: Transition, component: mui.Fade },
+  grow: {  wrapper: Transition, component: mui.Grow },
+  slide: {  wrapper: Transition, component: LeftRightSlide },
+  zoom: {  wrapper: Transition, component: mui.Zoom },
 };
 
 const Image = ({ slideshow, ...props }) => {
@@ -98,6 +104,7 @@ function useTransition(url) {
         setTransitionIn(false);
         await abortableDelay(TRANSITION_TIMEOUT, controller);
         setStateUrl(url);
+        await abortableDelay(10, controller);
         setTransitionIn(true);
 
       } catch(err) {
