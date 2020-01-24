@@ -14,6 +14,7 @@ const ImageDetail = ({ open, documentWithInfo, ...props }) => {
       <mui.List {...props}>
         <DocumentValue documentWithInfo={documentWithInfo} field='caption' />
         <DocumentValue documentWithInfo={documentWithInfo} field='keywords' />
+        <DocumentValue documentWithInfo={documentWithInfo} field='date' />
         <DetailItem name={getFieldName('image', 'date')} value={document.date} />
         <DocumentValue documentWithInfo={documentWithInfo} field='albums' />
         <DocumentValue documentWithInfo={documentWithInfo} field='persons' />

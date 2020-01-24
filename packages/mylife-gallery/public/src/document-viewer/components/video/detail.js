@@ -13,7 +13,7 @@ const VideoDetail = ({ open, documentWithInfo, ...props }) => {
       <mui.List {...props}>
         <DocumentValue documentWithInfo={documentWithInfo} field='caption' />
         <DocumentValue documentWithInfo={documentWithInfo} field='keywords' />
-        <DetailItem name='Date de prise' value={document.date} />
+        <DocumentValue documentWithInfo={documentWithInfo} field='date' />
         <DocumentValue documentWithInfo={documentWithInfo} field='albums' />
         <DocumentValue documentWithInfo={documentWithInfo} field='persons' />
         <DetailItem name={getFieldName('video', 'duration')} value={document.duration} type='duration' />

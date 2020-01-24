@@ -5,6 +5,7 @@ import { getFieldName } from '../../../common/metadata-utils';
 import DetailItem from './detail-item';
 import DetailCaption from './detail-caption';
 import DetailKeywords from './detail-keywords';
+import DetailDate from './detail-date';
 import DetailAlbums from './detail-albums';
 import DetailPersons from './detail-persons';
 
@@ -23,6 +24,8 @@ const DocumentValue = ({ documentWithInfo, field }) => {
       return (<DetailCaption document={document} />);
     case 'keywords':
       return (<DetailKeywords document={document} />);
+    case 'date':
+      return (<DetailDate document={document} />);
     case 'albums':
       return (<DetailAlbums documentWithInfo={documentWithInfo} />);
     case 'persons':
