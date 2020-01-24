@@ -53,12 +53,11 @@ exports.SlideshowEngine = class SlideshowEngine {
   }
 
   fillPrefetch() {
-    while(this.prefetchQueue.length < PREFETCH_SIZE) {
+    while(this.prefetchQueue.length < Math.min(PREFETCH_SIZE, this.slideshowImages.size)) {
       const slideshowImage = this.orchestrator.next();
       this.prefetchQueue.push(slideshowImage);
       this.startFetchUrl(slideshowImage);
     }
-
   }
 
   cleanMediaUrls() {
@@ -81,6 +80,10 @@ exports.SlideshowEngine = class SlideshowEngine {
     const url = this.mediaUrls.get(slideshowImage._id);
     this.nextHandler(url);
     logger(this.slideshow._id, 'moveToNext', slideshowImage.index);
+
+    if(this.slideshowImages.size === 1) {
+      return; // nothing to do, will never change
+    }
 
     // prepare next steps
     this.fillPrefetch();
