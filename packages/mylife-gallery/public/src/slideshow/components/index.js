@@ -3,7 +3,7 @@
 import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getSlideshow } from '../selectors';
-import { useSlideshowImageView } from '../../common/slideshow-image-view';
+import View from './view';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -24,6 +24,8 @@ const useStyles = mui.makeStyles({
     flexDirection: 'column',
     flex: '1 1 auto',
     overflowY: 'auto'
+  },
+  content: {
   }
 });
 
@@ -31,11 +33,10 @@ const Slideshow = ({ slideshowId }) => {
   const classes = useStyles();
   const { enter, leave, slideshow } = useConnect();
   useLifecycle(() => enter(slideshowId), leave);
-  //const { slideshowImages } = useSlideshowImageView(slideshow._id);
 
   return (
     <div className={classes.container}>
-      TODO
+      <View slideshow={slideshow} classeName={classes.content} />
     </div>
   );
 };
