@@ -27,7 +27,7 @@ const TRANSITION_TIMEOUT = 500;
 
 const transitions = {
   none: { component: React.Fragment },
-  collapse: { component: mui.Collapse, props: { in: true, timeout: TRANSITION_TIMEOUT } },
+  collapse: { component: React.Fragment }, // TODO: does not work as-this { component: mui.Collapse, props: { in: true, timeout: TRANSITION_TIMEOUT } },
   fade: { component: mui.Fade, props: { in: true, timeout: TRANSITION_TIMEOUT } },
   grow: { component: mui.Grow, props: { in: true, timeout: TRANSITION_TIMEOUT } },
   slide: { component: mui.Slide, props: { in: true, direction: 'right', timeout: TRANSITION_TIMEOUT } },
