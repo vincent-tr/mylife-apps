@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
+import { React, PropTypes, mui, clsx, useState, useEffect, fireAsync, AbortError, abortableDelay } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles({
   image: {
@@ -12,35 +12,108 @@ const useStyles = mui.makeStyles({
 
 const TRANSITION_TIMEOUT = 500;
 
-const transitions = {
-  none: { component: React.Fragment },
-  collapse: { component: React.Fragment }, // TODO: does not work as-this { component: mui.Collapse, props: { in: true, timeout: TRANSITION_TIMEOUT } },
-  fade: { component: mui.Fade, props: { in: true, timeout: TRANSITION_TIMEOUT } },
-  grow: { component: mui.Grow, props: { in: true, timeout: TRANSITION_TIMEOUT } },
-  slide: { component: mui.Slide, props: { in: true, direction: 'right', timeout: TRANSITION_TIMEOUT } },
-  zoom: { component: mui.Zoom, props: { in: true, timeout: TRANSITION_TIMEOUT } },
+const ImageContent = ({ url, className, ...props }) => {
+  const classes = useStyles();
+  return (
+    <img src={url} className={clsx(classes.image, className)} {...props} />
+  );
 };
 
-const Image = ({ slideshow, url, className, ...props }) => {
-  const classes = useStyles();
+ImageContent.propTypes = {
+  url: PropTypes.string.isRequired,
+  className: PropTypes.string
+};
 
+const NoTransition = ({ transitionData, ...props }) => {
+  void transitionData;
+  return (
+    <ImageContent {...props} />
+  );
+};
+
+NoTransition.propTypes = {
+  transitionData: PropTypes.object.isRequired
+};
+
+const Transition = ({ transitionData, url, ...props }) => {
+  const { transitionIn, stateUrl } = useTransition(url);
+  const { component: Transition, props: transitionProps } = transitionData;
+  return (
+    <Transition in={transitionIn} {...transitionProps}>
+      <ImageContent url={stateUrl} {...props} />
+    </Transition>
+  );
+};
+
+Transition.propTypes = {
+  url: PropTypes.string.isRequired,
+  transitionData: PropTypes.object.isRequired
+};
+
+const transitions = {
+  none: { wrapper: NoTransition },
+  collapse: { wrapper: NoTransition }, // TODO: does not work as-this {  wrapper: Transition, component: mui.Collapse, props: { in: true, timeout: TRANSITION_TIMEOUT } },
+  fade: { wrapper: Transition, component: mui.Fade, props: { timeout: TRANSITION_TIMEOUT } },
+  grow: {  wrapper: Transition, component: mui.Grow, props: { timeout: TRANSITION_TIMEOUT } },
+  slide: {  wrapper: Transition, component: mui.Slide, props: { direction: 'right', timeout: TRANSITION_TIMEOUT } },
+  zoom: {  wrapper: Transition, component: mui.Zoom, props: { timeout: TRANSITION_TIMEOUT } },
+};
+
+const Image = ({ slideshow, ...props }) => {
   const transitionData = transitions[slideshow.transition];
   if(!transitionData) {
     throw new Error(`Unknown transition: ${transitionData}`);
   }
 
-  const { component: Transition, props: transitionProps } = transitionData;
+  const { wrapper: Wrapper } = transitionData;
   return (
-    <Transition key={url} {...transitionProps}>
-      <img src={url} className={clsx(classes.image, className)} {...props} />
-    </Transition>
+    <Wrapper transitionData={transitionData} {...props} />
   );
 };
 
 Image.propTypes = {
-  slideshow: PropTypes.object.isRequired,
   url: PropTypes.string.isRequired,
-  className: PropTypes.string
+  slideshow: PropTypes.object.isRequired,
 };
 
 export default Image;
+
+function useTransition(url) {
+  const [transitionIn, setTransitionIn] = useState(true);
+  const [stateUrl, setStateUrl] = useState(url);
+
+  useEffect(() => {
+    // on init set directly
+    if(!stateUrl) {
+      setStateUrl(url);
+      setTransitionIn(true);
+      return;
+    }
+
+    const controller = new AbortController();
+    fireAsync(async () => {
+      try {
+
+        // transition switch
+        setTransitionIn(false);
+        await abortableDelay(TRANSITION_TIMEOUT, controller);
+        setStateUrl(url);
+        setTransitionIn(true);
+
+      } catch(err) {
+        if(err instanceof AbortError) {
+          // aborted
+          return;
+        }
+
+        throw err;
+      }
+    });
+
+    return () => {
+      controller.abort();
+    };
+  }, [url]);
+
+  return { transitionIn, stateUrl };
+}
