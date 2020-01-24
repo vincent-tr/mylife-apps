@@ -25,6 +25,7 @@ MyLife photo gallery
  - suggestions:
    - Suggestion pour ajouter un document a un album s'il n'a pas d album et que l'abum correspondant au root existe deja (genre un doc qu on aurait sorti d un album), sauf si le dossier commence par _
    - Suggestion pour montrer les documents sans album
+   - Suggestion pour montrer les roots qui commence par _
    - Suggestion pour créer un script pour déplacer les fichiers dans des dossiers correspondant a l album si les fichiers sont dans un dossier commençant par _ (eg: \_ATrier)
    - Suggestion pour supprimer les albums vides
    - Suggestion pour supprimer document other avec loadingError (pour le re-sync)
