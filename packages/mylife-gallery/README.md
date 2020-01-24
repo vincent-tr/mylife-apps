@@ -27,7 +27,6 @@ MyLife photo gallery
    - Suggestion pour supprimer les albums vides
    - Suggestion pour supprimer document other avec loadingError (pour le re-sync)
  - browse (+liste album ?)
-   - criteria: rajouter date nulle
    - sélection multiple dans liste de photo et création/affection d'album comme labels Gmail + création/affection de personnes
  - sync
    - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?
