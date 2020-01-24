@@ -36,7 +36,7 @@ const Slideshow = ({ slideshowId }) => {
 
   return (
     <div className={classes.container}>
-      <View slideshow={slideshow} classeName={classes.content} />
+      <View slideshow={slideshow} className={classes.content} />
     </div>
   );
 };
