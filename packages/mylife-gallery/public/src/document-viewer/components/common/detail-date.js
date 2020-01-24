@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, formatDate, addLineBreaks } from 'mylife-tools-ui';
 import { updateDocument } from '../../actions';
 import { getFieldName } from '../../../common/metadata-utils';
 
@@ -11,18 +11,19 @@ const useConnect = () => {
   }), [dispatch]);
 };
 
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
   },
   input: {
-    width: 100
+    width: 150
   },
   button: {
+    marginLeft: theme.spacing(1)
   }
-});
+}));
 
 const pickerOptions = {
   clearable: true,
@@ -50,10 +51,12 @@ const DetailDate = ({ document }) => {
           <div className={classes.container}>
             <mui.DateTimePicker className={classes.input} value={document.date} onChange={onChange} {...pickerOptions} />
             {canReset && (
-              <mui.Tooltip title={'reset to TOTO date'}>
-                <mui.IconButton className={classes.button} onClick={() => onChange(resetDate)}>
-                  <mui.icons.Add />
-                </mui.IconButton>
+              <mui.Tooltip title={addLineBreaks(`Ré-initialiser la date à ${formatDate(document.date, 'dd/MM/yyyy HH:mm:ss')}\n(date dans la métadonnée du document)`)}>
+                <div>
+                  <mui.IconButton size='small' className={classes.button} onClick={() => onChange(resetDate)}>
+                    <mui.icons.Update />
+                  </mui.IconButton>
+                </div>
               </mui.Tooltip>
             )}
           </div>
