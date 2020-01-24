@@ -59,6 +59,10 @@ const NotEmpty = ({ slideshow }) => {
   );
 };
 
+NotEmpty.propTypes = {
+  slideshow: PropTypes.object.isRequired
+};
+
 const Preview = ({ slideshow, className, ...props }) => {
   const classes = { ...useCommonStyles(), ...useStyles() };
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
