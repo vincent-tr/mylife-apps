@@ -10,19 +10,6 @@ const useStyles = mui.makeStyles({
   },
 });
 
-const ImageContent = ({ url, className, ...props }) => {
-  const classes = useStyles();
-  return (
-    <img src={url} className={clsx(classes.image, className)} {...props} />
-  );
-};
-
-ImageContent.propTypes = {
-  slideshow: PropTypes.object.isRequired,
-  url: PropTypes.string.isRequired,
-  className: PropTypes.string
-};
-
 const TRANSITION_TIMEOUT = 500;
 
 const transitions = {
