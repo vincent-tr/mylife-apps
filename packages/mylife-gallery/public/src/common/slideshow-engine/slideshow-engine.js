@@ -1,13 +1,14 @@
 'use strict';
 
+const activateLogger = process.env.NODE_ENV !== 'production';
+const logger = activateLogger ? logCall : () => {};
+
 const states = {
   PENDING_DOWNLOAD: 1,
   WAITING_INTERVAL: 2
 };
 
 const PREFETCH_SIZE = 5;
-
-const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
 
 exports.SlideshowEngine = class SlideshowEngine {
   constructor(slideshow, slideshowImages, nextHandler, mediaAccessor, orchestrator) {
