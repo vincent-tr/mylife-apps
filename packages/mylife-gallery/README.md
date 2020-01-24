@@ -29,7 +29,6 @@ MyLife photo gallery
    - sélection multiple dans liste de photo et création/affection d'album comme labels Gmail + création/affection de personnes
  - sync
    - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?
-   - rajouter l'heure si possible (sympa de savoir si c est le matin, le soir, etc)
  - mobile
    - enlever Diaporamas
    - enlever Suggestions
