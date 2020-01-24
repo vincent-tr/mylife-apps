@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, clsx, useState, useLayoutEffect } from 'mylife-tools-ui';
+import { React, PropTypes, mui, clsx, useState, useLayoutEffect, useEffect } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({
   enterButton: {
@@ -14,6 +14,8 @@ const Maximizable = ({ classes: propClasses = {}, className, children, ...props 
   const classes = useStyles();
   const maximizableElement = React.useRef();
   const [isFullscreen, setFullscreen] = useFullscreenStatus(maximizableElement);
+
+  useEffect(() => setFullscreen(true), []);
 
   return (
     <div ref={maximizableElement} className={clsx(isFullscreen ? propClasses.fullscreen : propClasses.windowed, className)} {...props}>
