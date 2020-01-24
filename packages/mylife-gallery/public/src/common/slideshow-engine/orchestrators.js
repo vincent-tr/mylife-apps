@@ -37,7 +37,7 @@ class RandomStyleOrchestrator {
   next() {
     if(this.slideshowImages.size < 2) {
       this.prevIndex = 0;
-      return 0;
+      return this.slideshowImages.get(0);
     }
 
     // no 2 times same item
@@ -47,7 +47,7 @@ class RandomStyleOrchestrator {
     } while(this.prevIndex === nextIndex);
 
     this.prevIndex = nextIndex;
-    return nextIndex;
+    return this.slideshowImages.get(nextIndex);
   }
 }
 
