@@ -21,6 +21,12 @@ const useConnect = () => {
 const useStyles = mui.makeStyles(theme => ({
   container: {
     flex: '1 1 auto',
+    display: 'flex'
+  },
+  windowed: {
+    display: '1 1 auto',
+    height: '100%',
+    width: '100%',
     background: theme.palette.common.black,
     position: 'relative'
   },
@@ -35,7 +41,9 @@ const Slideshow = ({ slideshowId }) => {
 
   return (
     <div className={classes.container}>
-      <View slideshow={slideshow} className={classes.content} />
+      <div className={classes.windowed}>
+        <View slideshow={slideshow} className={classes.content} />
+      </div>
     </div>
   );
 };

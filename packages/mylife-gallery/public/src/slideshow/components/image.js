@@ -2,10 +2,13 @@
 
 import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles({
   image: {
+    objectFit: 'scale-down',
+    width: '100%',
+    height: '100%',
   },
-}));
+});
 
 const Image = ({ slideshow, url, className, ...props }) => {
   // TODO: transition
