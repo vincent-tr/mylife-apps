@@ -5,6 +5,7 @@ import actionTypes from './action-types';
 
 // empty set means all
 const initialCriteria = {
+  noDate: false,
   minDate: null,
   maxDate: null,
   minIntegrationDate: null,

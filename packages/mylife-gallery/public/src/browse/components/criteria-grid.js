@@ -40,6 +40,13 @@ const useStyles = mui.makeStyles({
 const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) => {
   const classes = useStyles();
 
+  const onNoDateCriteriaChanged = newCriteria => {
+    if(newCriteria.noDate) {
+      newCriteria = { ...newCriteria, minDate: null, maxDate: null };
+    }
+    onCriteriaChanged(newCriteria);
+  };
+
   const onNoAlbumCriteriaChanged = newCriteria => {
     if(newCriteria.noAlbum) {
       newCriteria = { ...newCriteria, albums: criteria.albums.clear() };
@@ -57,10 +64,11 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
   return (
     <mui.Grid container spacing={2}>
       <CriteriaGridSimpleField width={2} label='Date du document' />
-      <CriteriaGridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
-      <CriteriaGridSimpleField width={2} label='Fin' editor={DateOrYearSelector} propName='maxDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
+      <CriteriaGridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector disabled={criteria.noDate} />
+      <CriteriaGridSimpleField width={2} label='Fin' editor={DateOrYearSelector} propName='maxDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay disabled={criteria.noDate} />
+      <CriteriaGridSimpleField width={1} label='Aucune' editor={WrappedCheckbox} propName='noDate' object={criteria} onObjectChanged={onNoDateCriteriaChanged} />
 
-      <CriteriaGridSimpleField width={2} label={'Date d\'intégration'} />
+      <CriteriaGridSimpleField width={1} label={'Date d\'intégration'} />
       <CriteriaGridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
       <CriteriaGridSimpleField width={2} label='Fin' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
 
