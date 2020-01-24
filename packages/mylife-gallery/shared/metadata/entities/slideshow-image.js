@@ -8,6 +8,6 @@ module.exports = {
     { id: 'slideshow', name: 'Diaporama', datatype: 'slideshow', constraints: ['not-null'] },
     { id: 'index', name: 'Position dans le diaporama', datatype: 'count', constraints: ['not-null'] },
     { id: 'thumbnail', name: 'Miniature', datatype: 'identifier', constraints: ['not-null'] }, // we do not directly reference thumbnail because it is not loaded as store collection
-    { id: 'media', name: 'Média', datatype: 'identifier', constraints: ['not-null'] }, // we do not directly reference gridfs file because it is not loaded as store collection
+    { id: 'image', name: 'Image', datatype: 'image', constraints: ['not-null'] },
   ]
 };

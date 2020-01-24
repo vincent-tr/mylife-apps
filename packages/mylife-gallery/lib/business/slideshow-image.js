@@ -210,8 +210,8 @@ class SlideshowData {
     const added = [];
     for(const [index, imageId] of imageIds.entries()) {
       const image = business.documentGet('image', imageId);
-      const id = `${this._id}-${imageId}`;
-      const objectValues = { _id: id, index, slideshow: this._id, thumbnail: image.thumbnail, media: image.media.id };
+      const id = `${this._id}-${image._id}`;
+      const objectValues = { _id: id, index, slideshow: this._id, thumbnail: image.thumbnail, image: image._id };
       added.push(objectValues);
       this._objects.add(id);
     }

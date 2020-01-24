@@ -6,11 +6,11 @@ import { SlideshowEngine } from './slideshow-engine';
 import { createOrchestrator } from './orchestrators';
 
 const thumbnailMediaAccessor = slideshowImage => `/content/thumbnail/${slideshowImage.thumbnail}`;
-const mediaMediaAccessor = slideshowImage => `/content/image/${slideshowImage.media}`;
+const imageMediaAccessor = slideshowImage => `/content/image/${slideshowImage.image}`;
 
 // avoid to have mutable mediaAccessor parameter
 export function useSlideshowEngineMedia(slideshow) {
-  return useSlideshowEngine(slideshow, mediaMediaAccessor);
+  return useSlideshowEngine(slideshow, imageMediaAccessor);
 }
 
 export function useSlideshowEngineThumbnail(slideshow) {
