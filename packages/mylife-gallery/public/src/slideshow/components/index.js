@@ -18,16 +18,15 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
     flex: '1 1 auto',
-    overflowY: 'auto'
+    background: theme.palette.common.black,
+    position: 'relative'
   },
   content: {
   }
-});
+}));
 
 const Slideshow = ({ slideshowId }) => {
   const classes = useStyles();
