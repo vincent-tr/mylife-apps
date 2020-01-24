@@ -56,6 +56,10 @@ const LeftRightSlide = ({ in: inProp, ...props }) => (
   <mui.Slide in={inProp} direction={inProp ? 'right' : 'left'} {...props} />
 );
 
+LeftRightSlide.propTypes = {
+  in: PropTypes.bool.isRequired
+};
+
 const transitions = {
   none: { wrapper: NoTransition },
   collapse: { wrapper: NoTransition }, // TODO: does not work as-this {  wrapper: Transition, component: mui.Collapse, props: { in: true, timeout: TRANSITION_TIMEOUT } },
