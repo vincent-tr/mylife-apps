@@ -22,6 +22,7 @@ exports.SlideshowEngine = class SlideshowEngine {
     this.orchestrator.init(this.slideshowImages);
 
     this.prefetchQueue = [];
+    this.current = null;
     this.timer = null;
 
     this.mediaUrls = new Map();
@@ -56,10 +57,26 @@ exports.SlideshowEngine = class SlideshowEngine {
       this.prefetchQueue.push(slideshowImage);
       this.startFetchUrl(slideshowImage);
     }
+
+  }
+
+  cleanMediaUrls() {
+    // remove mediaUrls not in prefetch or current
+    const usedIds = new Set(this.prefetchQueue.map(slideshowImage => slideshowImage._id));
+    if(this.current) {
+      usedIds.add(this.current._id);
+    }
+
+    for(const urlId of Array.from(this.mediaUrls.keys())) {
+      if(!usedIds.has(urlId)) {
+        this.mediaUrls.delete(urlId);
+      }
+    }
   }
 
   moveToNext() {
     const slideshowImage = this.prefetchQueue.shift();
+    this.current = slideshowImage;
     const url = this.mediaUrls.get(slideshowImage._id);
     this.nextHandler(url);
     logger(this.slideshow._id, 'moveToNext', slideshowImage.index);
@@ -67,6 +84,8 @@ exports.SlideshowEngine = class SlideshowEngine {
     // prepare next steps
     this.fillPrefetch();
 
+    // clean old urls
+    this.cleanMediaUrls();
 
     this.setState(states.WAITING_INTERVAL);
     this.timer = setTimeout(() => this.onTimeout(), this.slideshow.interval * 1000);
