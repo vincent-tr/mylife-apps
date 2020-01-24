@@ -7,7 +7,7 @@ import Empty from './empty';
 import Loading from './loading';
 import Image from './image';
 
-const ViewWithSlideshowNotEmpty = ({ slideshow, ...props }) => {
+const ContentWithSlideshowNotEmpty = ({ slideshow, ...props }) => {
   const imageUrl = useSlideshowEngineMedia(slideshow);
   const loading = !imageUrl;
   if(loading) {
@@ -21,11 +21,11 @@ const ViewWithSlideshowNotEmpty = ({ slideshow, ...props }) => {
   );
 };
 
-ViewWithSlideshowNotEmpty.propTypes = {
+ContentWithSlideshowNotEmpty.propTypes = {
   slideshow: PropTypes.object.isRequired
 };
 
-const ViewWithSlideshow = ({ slideshow, ...props }) => {
+const ContentWithSlideshow = ({ slideshow, ...props }) => {
   const { slideshowImages } = useSlideshowImageView(slideshow._id);
   const empty = !slideshowImages.size;
   if(empty) {
@@ -35,15 +35,15 @@ const ViewWithSlideshow = ({ slideshow, ...props }) => {
   }
 
   return (
-    <ViewWithSlideshowNotEmpty slideshow={slideshow} {...props} />
+    <ContentWithSlideshowNotEmpty slideshow={slideshow} {...props} />
   );
 };
 
-ViewWithSlideshow.propTypes = {
+ContentWithSlideshow.propTypes = {
   slideshow: PropTypes.object.isRequired
 };
 
-const View = ({ slideshow, ...props }) => {
+const Content = ({ slideshow, ...props }) => {
   if(!slideshow) {
     return (
       <Loading {...props} />
@@ -51,13 +51,13 @@ const View = ({ slideshow, ...props }) => {
   }
 
   return (
-    <ViewWithSlideshow slideshow={slideshow} {...props} />
+    <ContentWithSlideshow slideshow={slideshow} {...props} />
   );
 };
 
-View.propTypes = {
+Content.propTypes = {
   slideshow: PropTypes.object,
   className: PropTypes.string
 };
 
-export default View;
+export default Content;

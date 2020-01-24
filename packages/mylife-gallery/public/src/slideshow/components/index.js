@@ -3,7 +3,8 @@
 import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getSlideshow } from '../selectors';
-import View from './view';
+import Content from './content';
+import Maximizable from './maximizable';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,10 @@ const useStyles = mui.makeStyles(theme => ({
     background: theme.palette.common.black,
     position: 'relative'
   },
+  fullscreen: {
+    background: theme.palette.common.black,
+    position: 'relative'
+  },
   content: {
   }
 }));
@@ -42,9 +47,9 @@ const Slideshow = ({ slideshowId }) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.windowed}>
-        <View slideshow={slideshow} className={classes.content} />
-      </div>
+      <Maximizable classes={{ windowed: classes.windowed, fullscreen: classes.fullscreen }}>
+        <Content slideshow={slideshow} className={classes.content} />
+      </Maximizable>
     </div>
   );
 };
