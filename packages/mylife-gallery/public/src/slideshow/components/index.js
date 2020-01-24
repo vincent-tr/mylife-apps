@@ -21,6 +21,7 @@ const useConnect = () => {
 const useStyles = mui.makeStyles(theme => ({
   container: {
     flex: '1 1 auto',
+    height: '100%',
     display: 'flex'
   },
   windowed: {
