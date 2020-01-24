@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle, AutoSizer } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getSlideshow } from '../selectors';
 import Content from './content';
@@ -22,7 +22,6 @@ const useConnect = () => {
 const useStyles = mui.makeStyles(theme => ({
   container: {
     flex: '1 1 auto',
-    height: '100%',
     display: 'flex'
   },
   windowed: {
@@ -47,9 +46,15 @@ const Slideshow = ({ slideshowId }) => {
 
   return (
     <div className={classes.container}>
-      <Maximizable classes={{ windowed: classes.windowed, fullscreen: classes.fullscreen }}>
-        <Content slideshow={slideshow} className={classes.content} />
-      </Maximizable>
+      <AutoSizer>
+        {({ height, width }) => (
+          <div style={{height, width}}>
+            <Maximizable classes={{ windowed: classes.windowed, fullscreen: classes.fullscreen }}>
+              <Content slideshow={slideshow} className={classes.content} />
+            </Maximizable>
+          </div>
+        )}
+      </AutoSizer>
     </div>
   );
 };
