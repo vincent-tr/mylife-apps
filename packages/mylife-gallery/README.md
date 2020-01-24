@@ -9,7 +9,6 @@ MyLife photo gallery
 # TODO:
  - slideshow
    - collapse transition does not work
-   - transition happen on enter but not on leave
  - album:
    - album detail
    - doc delete
