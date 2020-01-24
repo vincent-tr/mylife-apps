@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate } from 'mylife-tools-ui';
+import { React, PropTypes, mui, formatDate, addLineBreaks } from 'mylife-tools-ui';
 import humanize from 'humanize';
 import humanizeDuration from 'humanize-duration';
 
@@ -28,7 +28,7 @@ const DetailItem = ({ name, value, type }) =>  {
     }
 
     case 'date': {
-      value = formatDate(value, 'dd/MM/yyyy');
+      value = formatDate(value, 'dd/MM/yyyy HH:mm:ss');
       break;
     }
 
@@ -62,14 +62,3 @@ DetailItem.propTypes = {
 };
 
 export default DetailItem;
-
-function addLineBreaks(values) {
-  return values.map((text, index) => (
-    <React.Fragment key={index}>
-      {text}
-      {index < values.length -1 && (
-        <br />
-      )}
-    </React.Fragment>
-  ));
-}

@@ -1,5 +1,7 @@
 'use strict';
 
+import React from 'react';
+
 export function fireAsync(target) {
   target().catch(err => console.error('Unhandled promise rejection', err)); // eslint-disable-line no-console
 }
@@ -26,4 +28,19 @@ export async function abortableDelay(delay, controller) {
       resolve();
     }, delay);
   });
+}
+
+export function addLineBreaks(values) {
+  if(typeof values === 'string') {
+    values = values.split('\n');
+  }
+  
+  return values.map((text, index) => (
+    <React.Fragment key={index}>
+      {text}
+      {index < values.length -1 && (
+        <br />
+      )}
+    </React.Fragment>
+  ));
 }
