@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
   breadcrumbList: {
     flexWrap: 'nowrap'
   },
+  pad: {
+    flexGrow: 1,
+  },
   titleIcon: {
     marginRight: theme.spacing(0.5),
     width: 20,
@@ -30,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, onMenuButtonClick, ...props }) => {
+const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, onMenuButtonClick, ...props }) => {
   const AppIcon = appIcon;
   const ViewIcon = viewIcon;
   const classes = useStyles();
@@ -55,6 +58,10 @@ const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, onMenuButto
             </Typography>
           )}
         </Breadcrumbs>
+
+        <div className={classes.pad} />
+
+        {viewAdditionalHeader}
       </Toolbar>
     </AppBar>
   );
@@ -66,6 +73,7 @@ Header.propTypes = {
   onMainClick: PropTypes.func,
   viewName: PropTypes.node,
   viewIcon: PropTypes.elementType,
+  viewAdditionalHeader: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
   onMenuButtonClick: PropTypes.func
 };
 

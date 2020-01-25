@@ -17,6 +17,7 @@ const LayoutRouter = ({ routes, menu, ...props }) => {
       onMainClick={() => navigate('/')}
       viewName={routeMatch.renderName()}
       viewIcon={routeMatch.renderIcon()}
+      viewAdditionalHeader={routeMatch.renderAdditionalHeader()}
       menu={mappedMenu}
       {...props}>
       {routeMatch.render()}
@@ -40,6 +41,8 @@ LayoutRouter.propTypes = {
       nameRenderer: PropTypes.func,
       icon: Layout.propTypes.viewIcon,
       iconRenderer: PropTypes.func,
+      additionalHeader: Layout.propTypes.additionalHeader,
+      additionalHeaderRenderer: PropTypes.func,
       renderer: PropTypes.func.isRequired
     }).isRequired
   ).isRequired
@@ -114,6 +117,13 @@ class RouteMatch {
       return this.route.iconRenderer(this.parameters);
     }
     return this.route.icon;
+  }
+
+  renderAdditionalHeader() {
+    if(this.route.additionalHeaderRenderer) {
+      return this.route.additionalHeaderRenderer(this.parameters);
+    }
+    return this.route.additionalHeader;
   }
 
   render() {
