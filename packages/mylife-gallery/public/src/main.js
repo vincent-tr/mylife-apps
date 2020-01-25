@@ -14,6 +14,7 @@ import Browse from './browse/components';
 import Stats from './stats/components';
 import Album from './album/components';
 import AlbumTitle from './album/components/title';
+import AlbumAdditionalHeader from './album/components/additional-header';
 
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);
@@ -26,7 +27,7 @@ const routes = [
   { location: '/suggestions', name: 'Suggestions', icon: icons.menu.Suggestions, renderer: () => <Suggestions /> },
   { location: '/browse', name: 'Parcourir', icon: icons.menu.Browse, renderer: () => <Browse /> },
   { location: '/stats', name: 'Statistics', icon: icons.menu.Stats, renderer: () => <Stats /> },
-  { location: '/album/:albumId', name: (<AlbumTitle />), icon: icons.menu.Album, renderer: ({ albumId }) => <Album albumId={albumId} /> },
+  { location: '/album/:albumId', name: (<AlbumTitle />), icon: icons.menu.Album, additionalHeader: (<AlbumAdditionalHeader />), renderer: ({ albumId }) => <Album albumId={albumId} /> },
 ];
 /* eslint-enable */
 
