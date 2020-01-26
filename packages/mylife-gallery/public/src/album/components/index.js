@@ -2,15 +2,15 @@
 
 import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
-import { getAlbum, getDocuments, isShowDetail } from '../selectors';
+import { getDocuments, isShowDetail } from '../selectors';
 import DocumentThumbnailList from '../../common/document-thumbnail-list';
 import ListFooter from '../../common/list-footer';
+import Detail from './detail';
 
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
-      album: getAlbum(state),
       documents: getDocuments(state),
       isShowDetail: isShowDetail(state),
     })),
@@ -42,7 +42,7 @@ const useStyles = mui.makeStyles({
 
 const Album = ({ albumId }) => {
   const classes = useStyles();
-  const { enter, leave, album, documents, isShowDetail } = useConnect();
+  const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
 
   return (
@@ -51,10 +51,8 @@ const Album = ({ albumId }) => {
         <DocumentThumbnailList className={classes.list} data={documents}  />
         <ListFooter text={`${documents.length} document(s)`} />
       </div>
-      {isShowDetail &&(
-        <div className={classes.detail}>
-          Detail
-        </div>
+      {isShowDetail && (
+        <Detail className={classes.detail} />
       )}
     </div>
   );
