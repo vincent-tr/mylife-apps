@@ -1,12 +1,29 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
 import icons from '../../common/icons';
+import { showDetail } from '../actions';
+import { isShowDetail } from '../selectors';
 
-const AlbumAdditionalHeader = () => (
-  <mui.IconButton color='inherit' onClick={() => console.log('on detail')}>
-    <icons.actions.Detail />
-  </mui.IconButton>
-);
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => ({
+      isShowDetail: isShowDetail(state)
+    })),
+    ...useMemo(() => ({
+      showDetail: (show) => dispatch(showDetail(show)),
+    }), [dispatch])
+  };
+};
+
+const AlbumAdditionalHeader = () => {
+  const { isShowDetail, showDetail } = useConnect();
+  return (
+    <mui.IconButton color='inherit' onClick={() => showDetail(!isShowDetail)}>
+      <icons.actions.Detail />
+    </mui.IconButton>
+  );
+}
 
 export default AlbumAdditionalHeader;

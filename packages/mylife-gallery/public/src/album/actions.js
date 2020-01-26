@@ -9,7 +9,10 @@ const local = {
   setAlbumId: createAction(actionTypes.SET_ALBUM_ID),
   setAlbumView: createAction(actionTypes.SET_ALBUM_VIEW),
   setDocumentView: createAction(actionTypes.SET_DOCUMENT_VIEW),
+  showDetail: createAction(actionTypes.SHOW_DETAIL),
 };
+
+export const showDetail = local.showDetail;
 
 const fetchAlbum = () => createOrUpdateView({
   criteriaSelector: (state) => ({ id: getAlbumId(state) }),

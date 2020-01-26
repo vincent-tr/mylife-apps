@@ -5,6 +5,8 @@ import { io, createSelector } from 'mylife-tools-ui';
 const getAlbumState = state => state.album;
 export const getAlbumId = state => getAlbumState(state).albumId;
 
+export const isShowDetail = state => getAlbumState(state).showDetail;
+
 export const getAlbumViewId = state => getAlbumState(state).albumViewId;
 const getAlbumView = state => io.getView(state, getAlbumViewId(state));
 export const getAlbum = state => getAlbumView(state).first();
