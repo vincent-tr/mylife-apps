@@ -22,19 +22,19 @@ services.initMetadata(metadataDefintions);
 /* eslint-disable react/display-name, react/prop-types */
 const routes = [
   { location: '/', renderer: () => <Home /> },
+  { location: '/album/:albumId', name: (<AlbumTitle />), icon: icons.menu.Album, additionalHeader: (<AlbumAdditionalHeader />), renderer: ({ albumId }) => <Album albumId={albumId} /> },
   { location: '/slideshows', name: 'Diaporamas', icon: icons.menu.Slideshows, renderer: () => <Slideshows /> },
   { location: '/slideshow/:slideshowId', name: (<SlideshowTitle />), icon: icons.menu.Slideshows, renderer: ({ slideshowId }) => <Slideshow slideshowId={slideshowId} />},
-  { location: '/suggestions', name: 'Suggestions', icon: icons.menu.Suggestions, renderer: () => <Suggestions /> },
   { location: '/browse', name: 'Parcourir', icon: icons.menu.Browse, renderer: () => <Browse /> },
+  { location: '/suggestions', name: 'Suggestions', icon: icons.menu.Suggestions, renderer: () => <Suggestions /> },
   { location: '/stats', name: 'Statistics', icon: icons.menu.Stats, renderer: () => <Stats /> },
-  { location: '/album/:albumId', name: (<AlbumTitle />), icon: icons.menu.Album, additionalHeader: (<AlbumAdditionalHeader />), renderer: ({ albumId }) => <Album albumId={albumId} /> },
 ];
 /* eslint-enable */
 
 const menu = [
   { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows' },
-  { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions' },
   { id: 'browse', text: 'Parcourir', icon: icons.menu.Browse, location: '/browse' },
+  { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions' },
   { id: 'stats', text: 'Statistics', icon: icons.menu.Stats, location: '/stats' },
 ];
 
