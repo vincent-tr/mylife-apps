@@ -1,11 +1,6 @@
 # mylife-gallery
 MyLife photo gallery
 
-## Notes
- - tag on image: https://www.npmjs.com/package/react-rectangle-selection
- - tag on image: https://github.com/justadudewhohacks/face-api.js/
- - mode defilement: https://www.w3schools.com/howto/howto_js_fullscreen.asp or https://github.com/Darth-Knoppix/example-react-fullscreen
-
 # TODO:
  - album:
    - album detail
