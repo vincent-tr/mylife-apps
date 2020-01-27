@@ -7,7 +7,7 @@ import ThumbnailList from './thumbnail-list';
 import icons from './icons';
 
 const DocumentThumbnailList = ({ data, selectedItems, onSelectionChange, ...props }) => {
-  const selectable = !!selectedItems && onSelectionChange;
+  const selectable = !!selectedItems && !!onSelectionChange;
 
   const getTileInfo = !selectable ?
     getBaseTileInfo :
@@ -20,7 +20,7 @@ const DocumentThumbnailList = ({ data, selectedItems, onSelectionChange, ...prop
     };
 
   return (
-    <ThumbnailList data={data} getTileInfo={getTileInfo} {...props} selectable />
+    <ThumbnailList data={data} selectable={selectable} getTileInfo={getTileInfo} {...props} />
   );
 };
 
