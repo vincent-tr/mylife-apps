@@ -46,7 +46,7 @@ const Browse = () => {
   return (
     <div className={classes.container}>
       <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={changeDisplay} />
-      <DocumentThumbnailList className={classes.list} data={data}  />
+      <DocumentThumbnailList className={classes.list} data={data} />
       <ListFooter text={`${data.length} document(s)`} />
     </div>
   );
