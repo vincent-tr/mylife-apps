@@ -53,6 +53,25 @@ const useStyles = mui.makeStyles(theme => ({
 
 const PADDING = 2*8;
 
+const TextWithTooltipIfOveryflow = ({ text }) => {
+  if(!text) {
+    return null;
+  }
+
+  return (
+    <mui.Tooltip title={text}>
+      <span>
+        {text}
+      </span>
+    </mui.Tooltip>
+  );
+};
+
+TextWithTooltipIfOveryflow.propTypes = {
+  text: PropTypes.string,
+};
+
+
 const Tile = ({ data, index, selectable, getTileInfo }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
@@ -61,7 +80,10 @@ const Tile = ({ data, index, selectable, getTileInfo }) => {
   return (
     <mui.GridListTile classes={tileClasses} onClick={onClick}>
       {thumbnail}
-      <mui.GridListTileBar title={title} subtitle={subtitle}/>
+      <mui.GridListTileBar
+        title={<TextWithTooltipIfOveryflow text={title} />}
+        subtitle={<TextWithTooltipIfOveryflow text={subtitle} />}
+      />
       {selectable && (
         <mui.Checkbox
           value={selected}
