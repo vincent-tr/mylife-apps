@@ -42,8 +42,8 @@ const useStyles = mui.makeStyles(theme => ({
   },
   checkbox: {
     position: 'absolute',
-    top: theme.spacing(-1),
-    right: theme.spacing(-1),
+    top: 0,
+    right: 0,
 
     backgroundColor: 'rgba(200, 200, 200, 0.5)'
   },
@@ -53,7 +53,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const PADDING = 2*8;
 
-const Tile = ({ data, index, canSelect, getTileInfo }) => {
+const Tile = ({ data, index, selectable, getTileInfo }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const { title, subtitle, thumbnail, onClick, selected, onSelect } = getTileInfo(data, index);
@@ -62,7 +62,7 @@ const Tile = ({ data, index, canSelect, getTileInfo }) => {
     <mui.GridListTile classes={tileClasses} onClick={onClick}>
       {thumbnail}
       <mui.GridListTileBar title={title} subtitle={subtitle}/>
-      {canSelect && (
+      {selectable && (
         <mui.Checkbox
           value={selected}
           onChange={e => onSelect(e.target.checked)}
@@ -79,7 +79,7 @@ const Tile = ({ data, index, canSelect, getTileInfo }) => {
 Tile.propTypes = {
   data: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
-  canSelect: PropTypes.bool.isRequired,
+  selectable: PropTypes.bool.isRequired,
   getTileInfo: PropTypes.func.isRequired
 };
 
@@ -107,7 +107,7 @@ GridList.propTypes = {
   className: PropTypes.string
 };
 
-const ThumbnailList = ({ className, data, canSelect = false, getTileInfo }) => {
+const ThumbnailList = ({ className, data, selectable = false, getTileInfo }) => {
   const classes = useStyles();
 
   if(!data.length) {
@@ -127,7 +127,7 @@ const ThumbnailList = ({ className, data, canSelect = false, getTileInfo }) => {
             overscan={200}
             ListContainer={GridList}
             ItemContainer={TileContainer}
-            item={index => (<Tile data={data} index={index} canSelect={canSelect} getTileInfo={getTileInfo} />)}
+            item={index => (<Tile data={data} index={index} selectable={selectable} getTileInfo={getTileInfo} />)}
             listClassName={classes.empty}
             itemClassName={classes.empty}
             style={{ height, width, overflowX: 'hidden' }} />
@@ -140,7 +140,7 @@ const ThumbnailList = ({ className, data, canSelect = false, getTileInfo }) => {
 ThumbnailList.propTypes = {
   className: PropTypes.string,
   data: PropTypes.array.isRequired,
-  canSelect: PropTypes.bool,
+  selectable: PropTypes.bool,
   getTileInfo: PropTypes.func.isRequired
 };
 
