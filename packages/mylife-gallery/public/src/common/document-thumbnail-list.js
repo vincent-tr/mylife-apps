@@ -15,7 +15,7 @@ const DocumentThumbnailList = ({ data, selectedItems, onSelectionChange, ...prop
       const info = getBaseTileInfo(data, index);
       const id = data[index]._id;
       info.selected = selectedItems.has(id);
-      info.onSelect = onSelectionChange({ id, selected: !info.selected });
+      info.onSelect = () => onSelectionChange({ id, selected: !info.selected });
       return info;
     };
 
