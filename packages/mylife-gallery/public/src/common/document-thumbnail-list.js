@@ -17,20 +17,26 @@ DocumentThumbnailList.propTypes = {
 
 export default DocumentThumbnailList;
 
-const useTypeMarkerStyles = mui.makeStyles({
+const useTypeMarkerStyles = mui.makeStyles(theme => ({
   container: {
     position: 'absolute',
     top: 0,
-    right: 0,
-    height: 48,
-    width: 48,
+    left: 0,
+    height: 20,
+    width: 20,
+    borderWidth: 9,
+    backgroundColor: 'rgba(200, 200, 200, 0.5)',
+    borderRadius: '50%',
+    borderColor: 'transparent',
+    borderStyle: 'solid',
+    color: theme.palette.common.black
+
   },
   image: {
     height: '100%',
     width: '100%',
-    color: 'rgba(0, 0, 0, 0.5)'
   }
-});
+}));
 
 const TypeMarker = ({ document }) => {
   const classes = useTypeMarkerStyles();
