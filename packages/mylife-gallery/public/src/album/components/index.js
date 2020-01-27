@@ -31,13 +31,16 @@ const useStyles = mui.makeStyles({
     flexDirection: 'column',
     flex: '1 1 auto',
   },
+  toolbar: {
+    backgroundColor: mui.colors.grey[300]
+  },
   list: {
     flex: '1 1 auto'
   },
   detail: {
     width: 350,
     overflowY: 'auto'
-  }
+  },
 });
 
 const Album = ({ albumId }) => {
@@ -45,11 +48,20 @@ const Album = ({ albumId }) => {
   const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
   const [selectedItems, setSelectedItems] = useState(new immutable.Set());
-  const onSelectionChange = ({ id, value }) => setSelectedItems(value ? selectedItems.add(id) : selectedItems.delete(id));
+  const onSelectionChange = ({ id, selected }) => setSelectedItems(selected ? selectedItems.add(id) : selectedItems.delete(id));
+  const showHeader = selectedItems.size > 0;
 
   return (
     <div className={classes.container}>
       <div className={classes.listContainer}>
+        {showHeader && (
+          <mui.Toolbar className={classes.toolbar}>
+            <mui.Typography>
+              {'header'}
+            </mui.Typography>
+          </mui.Toolbar>
+        )}
+
         <DocumentThumbnailList className={classes.list} data={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange}/>
         <ListFooter text={`${documents.length} document(s)`} />
       </div>
