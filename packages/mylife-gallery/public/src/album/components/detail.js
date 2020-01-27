@@ -16,14 +16,15 @@ const useConnect = () => {
   };
 };
 
-const Detail = ({ ...props }) => {
+const Detail = React.forwardRef(({ ...props }, ref) => {
   const { album, updateAlbum } = useConnect();
   return (
-    <div {...props}>
+    <div ref={ref} {...props}>
       Detail
     </div>
   );
-};
+});
+Detail.displayName = 'Detail';
 
 
 export default Detail;
