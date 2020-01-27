@@ -6,13 +6,28 @@ import { ThumbnailDocument } from './thumbnail';
 import ThumbnailList from './thumbnail-list';
 import icons from './icons';
 
-const DocumentThumbnailList = ({ data, ...props }) => (
-  <ThumbnailList data={data} getTileInfo={getTileInfo} {...props} />
-);
+const DocumentThumbnailList = ({ data, selectedItems, onSelectionChange, ...props }) => {
+  const selectable = !!selectedItems && onSelectionChange;
+
+  const getTileInfo = !selectable ?
+    getBaseTileInfo :
+    (data, index) => {
+      const info = getBaseTileInfo(data, index);
+      const id = data[index]._id;
+      info.selected = selectedItems.has(id);
+      info.onSelect = onSelectionChange({ id, selected: !info.selected });
+      return info;
+    };
+
+  return (
+    <ThumbnailList data={data} getTileInfo={getTileInfo} {...props} selectable />
+  );
+};
 
 DocumentThumbnailList.propTypes = {
-  className: PropTypes.string,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  selectedItems: PropTypes.object,
+  onSelectionChange: PropTypes.func
 };
 
 export default DocumentThumbnailList;
@@ -57,7 +72,7 @@ TypeMarker.propTypes = {
   document: PropTypes.object.isRequired
 };
 
-function getTileInfo(data, index) {
+function getBaseTileInfo(data, index) {
   const { document, info } = data[index];
   const { title, subtitle } = info;
   const onClick = () => showViewer(data, index);
