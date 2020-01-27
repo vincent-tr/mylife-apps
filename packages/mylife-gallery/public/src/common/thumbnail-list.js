@@ -45,7 +45,8 @@ const useStyles = mui.makeStyles(theme => ({
     top: 0,
     right: 0,
 
-    backgroundColor: 'rgba(200, 200, 200, 0.5)'
+    // keep it on hover, checked hover, etc
+    backgroundColor: 'rgba(200, 200, 200, 0.5) !important',
   },
   empty: {
   }
