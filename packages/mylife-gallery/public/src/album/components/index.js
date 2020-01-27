@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, PropTypes, mui, immutable, useState, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
 import DocumentThumbnailList from '../../common/document-thumbnail-list';
@@ -44,16 +44,18 @@ const Album = ({ albumId }) => {
   const classes = useStyles();
   const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
+  const [selectedItems, setSelectedItems] = useState(new immutable.Set());
+  const onSelectionChange = ({ id, value }) => setSelectedItems(value ? selectedItems.add(id) : selectedItems.delete(id));
 
   return (
     <div className={classes.container}>
       <div className={classes.listContainer}>
-        <DocumentThumbnailList className={classes.list} data={documents}  />
+        <DocumentThumbnailList className={classes.list} data={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange}/>
         <ListFooter text={`${documents.length} document(s)`} />
       </div>
-      {isShowDetail && (
+      <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>
         <Detail className={classes.detail} />
-      )}
+      </mui.Slide>
     </div>
   );
 };
