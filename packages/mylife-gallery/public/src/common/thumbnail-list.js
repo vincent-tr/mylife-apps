@@ -25,6 +25,9 @@ const useStyles = mui.makeStyles(theme => ({
     borderColor: mui.colors.grey[300],
     borderStyle: 'solid',
 
+    // children
+    position: 'relative',
+
     // cursor
     cursor: 'pointer',
   },
@@ -37,8 +40,12 @@ const useStyles = mui.makeStyles(theme => ({
     transform: 'unset',
     position: 'relative',
   },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.5)',
+  checkbox: {
+    position: 'absolute',
+    top: theme.spacing(-1),
+    right: theme.spacing(-1),
+
+    backgroundColor: 'rgba(200, 200, 200, 0.5)'
   },
   empty: {
   }
@@ -46,15 +53,25 @@ const useStyles = mui.makeStyles(theme => ({
 
 const PADDING = 2*8;
 
-const Tile = ({ data, index, getTileInfo }) => {
+const Tile = ({ data, index, canSelect, getTileInfo }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
-  const { title, subtitle, thumbnail, onClick } = getTileInfo(data, index);
+  const { title, subtitle, thumbnail, onClick, selected, onSelect } = getTileInfo(data, index);
 
   return (
     <mui.GridListTile classes={tileClasses} onClick={onClick}>
       {thumbnail}
-      <mui.GridListTileBar title={title} subtitle={subtitle} />
+      <mui.GridListTileBar title={title} subtitle={subtitle}/>
+      {canSelect && (
+        <mui.Checkbox
+          value={selected}
+          onChange={e => onSelect(e.target.checked)}
+          onClick={e => e.stopPropagation()}
+          size='small'
+          color='primary'
+          className={classes.checkbox}
+        />
+      )}
     </mui.GridListTile>
   );
 };
@@ -62,6 +79,7 @@ const Tile = ({ data, index, getTileInfo }) => {
 Tile.propTypes = {
   data: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
+  canSelect: PropTypes.bool.isRequired,
   getTileInfo: PropTypes.func.isRequired
 };
 
@@ -89,7 +107,7 @@ GridList.propTypes = {
   className: PropTypes.string
 };
 
-const ThumbnailList = ({ className, data, getTileInfo }) => {
+const ThumbnailList = ({ className, data, canSelect = false, getTileInfo }) => {
   const classes = useStyles();
 
   if(!data.length) {
@@ -109,7 +127,7 @@ const ThumbnailList = ({ className, data, getTileInfo }) => {
             overscan={200}
             ListContainer={GridList}
             ItemContainer={TileContainer}
-            item={index => (<Tile data={data} index={index} getTileInfo={getTileInfo} />)}
+            item={index => (<Tile data={data} index={index} canSelect={canSelect} getTileInfo={getTileInfo} />)}
             listClassName={classes.empty}
             itemClassName={classes.empty}
             style={{ height, width, overflowX: 'hidden' }} />
@@ -122,6 +140,7 @@ const ThumbnailList = ({ className, data, getTileInfo }) => {
 ThumbnailList.propTypes = {
   className: PropTypes.string,
   data: PropTypes.array.isRequired,
+  canSelect: PropTypes.bool,
   getTileInfo: PropTypes.func.isRequired
 };
 
