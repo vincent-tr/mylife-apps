@@ -32,14 +32,12 @@ const MenuAlbums = ({ documents, anchorEl, handleClose }) => {
 
         return (
           <mui.MenuItem key={album._id} onClick={handleClose}>
-            <mui.ListItemText primary={renderObject(album)} />
-            <mui.ListItemSecondaryAction>
-              <mui.Tooltip title={'Enlever les documents de l\'album'}>
-                <mui.IconButton onClick={() => onDelete(album)}>
-                  <mui.icons.Delete />
-                </mui.IconButton>
-              </mui.Tooltip>
-            </mui.ListItemSecondaryAction>
+            {renderObject(album)}
+            <mui.Tooltip title={'Enlever les documents de l\'album'}>
+              <mui.IconButton onClick={() => onDelete(album)}>
+                <mui.icons.Delete />
+              </mui.IconButton>
+            </mui.Tooltip>
           </mui.MenuItem>
         );
       })}
@@ -72,7 +70,7 @@ export default HeaderAlbums;
 function getUsedAlbums(documents) {
   const set = new Set();
   for(const { info } of documents) {
-    for(const id of info.albums) {
+    for(const { id } of info.albums) {
       set.add(id);
     }
   }
