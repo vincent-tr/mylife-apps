@@ -3,9 +3,7 @@
 import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 import BaseNone from '../../common/thumbnail/base-none';
 
-console.log(mui.colors.grey[900])
-
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles({
   empty: {
     position: 'absolute',
     right: 0,
@@ -17,7 +15,7 @@ const useStyles = mui.makeStyles(theme => ({
       color: mui.colors.grey[800]
     },
   }
-}));
+});
 
 const Empty = ({ className }) => {
   const classes = useStyles();
