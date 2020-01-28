@@ -2,6 +2,8 @@
 
 import { React, PropTypes, mui, useMemo } from 'mylife-tools-ui';
 import HeaderAlbums from './header-albums';
+import HeaderPersons from './header-persons';
+import HeaderKeywords from './header-keywords';
 
 /*
 
@@ -46,7 +48,8 @@ const Header = ({ documents, selectedItems, onSelectionChange }) => {
       <div className={classes.separator} />
 
       <HeaderAlbums documents={selectedDocuments} />
-      <HeaderAlbums documents={selectedDocuments} />
+      <HeaderPersons documents={selectedDocuments} />
+      <HeaderKeywords documents={selectedDocuments} />
     </mui.Toolbar>
   );
 };

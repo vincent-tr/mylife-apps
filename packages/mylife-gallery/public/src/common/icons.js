@@ -7,6 +7,7 @@ const {
   Explore,
   Equalizer,
   PhotoAlbum,
+  People,
   Slideshow,
   AddCircle,
   Close,
@@ -39,6 +40,7 @@ export default {
     Browse: Explore,
     Stats : Equalizer,
     Album : PhotoAlbum,
+    Person : People,
     Slideshows: Slideshow
   },
 
