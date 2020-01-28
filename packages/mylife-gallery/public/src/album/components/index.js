@@ -5,6 +5,7 @@ import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
 import DocumentThumbnailList from '../../common/document-thumbnail-list';
 import ListFooter from '../../common/list-footer';
+import Header from './header';
 import Detail from './detail';
 
 const useConnect = () => {
@@ -31,9 +32,6 @@ const useStyles = mui.makeStyles({
     flexDirection: 'column',
     flex: '1 1 auto',
   },
-  toolbar: {
-    backgroundColor: mui.colors.grey[300]
-  },
   list: {
     flex: '1 1 auto'
   },
@@ -48,22 +46,20 @@ const Album = ({ albumId }) => {
   const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
   const [selectedItems, setSelectedItems] = useState(new immutable.Set());
-  const onSelectionChange = ({ id, selected }) => setSelectedItems(selected ? selectedItems.add(id) : selectedItems.delete(id));
-  const showHeader = selectedItems.size > 0;
+  const onSelectionChange = ({ id, selected }) => {
+    if(id != null) {
+      return setSelectedItems(selected ? selectedItems.add(id) : selectedItems.delete(id));
+    }
+
+    return setSelectedItems(selected ? selectedItems.union(documents.map(doc => doc._id)) : selectedItems.clear());
+  };
 
   return (
     <div className={classes.container}>
       <div className={classes.listContainer}>
-        {showHeader && (
-          <mui.Toolbar className={classes.toolbar}>
-            <mui.Typography>
-              {'header'}
-            </mui.Typography>
-          </mui.Toolbar>
-        )}
-
+        <Header totalCount={documents.length} selectedItems={selectedItems} onSelectionChange={onSelectionChange} />
         <DocumentThumbnailList className={classes.list} data={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange}/>
-        <ListFooter text={`${documents.length} document(s)`} />
+        <ListFooter text={getFooterText(documents, selectedItems)} />
       </div>
       <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>
         <Detail className={classes.detail} />
@@ -77,3 +73,11 @@ Album.propTypes = {
 };
 
 export default Album;
+
+function getFooterText(documents, selectedItems) {
+  const base = `${documents.length} document(s)`;
+  if(selectedItems.size === 0) {
+    return base;
+  }
+  return `${base} - ${selectedItems.size} sélectionné(s)`;
+}
