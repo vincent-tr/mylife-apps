@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, immutable, useState, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
 import DocumentThumbnailList from '../../common/document-thumbnail-list';
@@ -45,14 +45,7 @@ const Album = ({ albumId }) => {
   const classes = useStyles();
   const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
-  const [selectedItems, setSelectedItems] = useState(new immutable.Set());
-  const onSelectionChange = ({ id, selected }) => {
-    if(id != null) {
-      return setSelectedItems(selected ? selectedItems.add(id) : selectedItems.delete(id));
-    }
-
-    return setSelectedItems(selected ? selectedItems.union(documents.map(doc => doc._id)) : selectedItems.clear());
-  };
+  const [selectedItems, onSelectionChange] = useSelectionSet(() => documents.map(doc => doc._id));
 
   return (
     <div className={classes.container}>
