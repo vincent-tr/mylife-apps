@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, useMemo } from 'mylife-tools-ui';
+import HeaderAlbums from './header-albums';
 
 /*
 
@@ -12,11 +13,19 @@ import { React, PropTypes, mui, useMemo } from 'mylife-tools-ui';
 - si on quitte le menu, c est annulé
 */
 
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   toolbar: {
-    backgroundColor: mui.colors.grey[300]
+    backgroundColor: mui.colors.grey[300],
+  },
+  separator: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    borderLeftWidth: 1,
+    borderLeftStyle: 'solid',
+    borderLeftColor: 'rgba(0, 0, 0, 0.3)',
+    height: theme.spacing(4)
   }
-});
+}));
 
 const Header = ({ documents, selectedItems, onSelectionChange }) => {
   const classes = useStyles();
@@ -34,9 +43,10 @@ const Header = ({ documents, selectedItems, onSelectionChange }) => {
     <mui.Toolbar className={classes.toolbar}>
       <mui.Checkbox checked={allSelected} indeterminate={someSelected && !allSelected} onChange={e => onAllChange(e.target.checked)} color='primary' />
 
-      <mui.Typography>
-        {'header'}
-      </mui.Typography>
+      <div className={classes.separator} />
+
+      <HeaderAlbums documents={selectedDocuments} />
+      <HeaderAlbums documents={selectedDocuments} />
     </mui.Toolbar>
   );
 };
