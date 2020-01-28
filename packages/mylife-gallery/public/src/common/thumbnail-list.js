@@ -87,7 +87,7 @@ const Tile = ({ data, index, selectable, getTileInfo }) => {
       />
       {selectable && (
         <mui.Checkbox
-          value={selected}
+          checked={selected}
           onChange={e => onSelect(e.target.checked)}
           onClick={e => e.stopPropagation()}
           size='small'
