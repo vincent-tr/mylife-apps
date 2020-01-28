@@ -6,7 +6,7 @@ import { ThumbnailDocument } from '../../common/thumbnail';
 import ThumbnailList from '../../common/thumbnail-list';
 import icons from '../../common/icons';
 
-const DocumentThumbnailList = ({ data, selectedItems, onSelectionChange, ...props }) => {
+const List = ({ data, selectedItems, onSelectionChange, ...props }) => {
   const selectable = !!selectedItems && !!onSelectionChange;
 
   const getTileInfo = !selectable ?
@@ -24,13 +24,13 @@ const DocumentThumbnailList = ({ data, selectedItems, onSelectionChange, ...prop
   );
 };
 
-DocumentThumbnailList.propTypes = {
+List.propTypes = {
   data: PropTypes.array.isRequired,
   selectedItems: PropTypes.object,
   onSelectionChange: PropTypes.func
 };
 
-export default DocumentThumbnailList;
+export default List;
 
 const useTypeMarkerStyles = mui.makeStyles(theme => ({
   container: {

@@ -1,11 +1,9 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
 import DocumentList from '../../document-list/components';
-import ListFooter from '../../common/list-footer';
-import Header from './header';
 import Detail from './detail';
 
 const useConnect = () => {
@@ -27,11 +25,6 @@ const useStyles = mui.makeStyles({
     display: 'flex',
     flex: '1 1 auto',
   },
-  listContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: '1 1 auto',
-  },
   list: {
     flex: '1 1 auto'
   },
@@ -45,15 +38,10 @@ const Album = ({ albumId }) => {
   const classes = useStyles();
   const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
-  const [selectedItems, onSelectionChange] = useSelectionSet(() => documents.map(doc => doc._id));
 
   return (
     <div className={classes.container}>
-      <div className={classes.listContainer}>
-        <Header totalCount={documents.length} selectedItems={selectedItems} onSelectionChange={onSelectionChange} />
-        <DocumentList className={classes.list} data={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange}/>
-        <ListFooter text={getFooterText(documents, selectedItems)} />
-      </div>
+      <DocumentList className={classes.list} documents={documents} />
       <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>
         <Detail className={classes.detail} />
       </mui.Slide>
@@ -66,11 +54,3 @@ Album.propTypes = {
 };
 
 export default Album;
-
-function getFooterText(documents, selectedItems) {
-  const base = `${documents.length} document(s)`;
-  if(selectedItems.size === 0) {
-    return base;
-  }
-  return `${base} - ${selectedItems.size} sélectionné(s)`;
-}

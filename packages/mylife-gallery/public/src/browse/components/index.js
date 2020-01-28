@@ -5,7 +5,6 @@ import { enter, leave, changeCriteria, changeDisplay } from '../actions';
 import { getCriteria, getDisplay, getDisplayView } from '../selectors';
 import Criteria from './criteria';
 import DocumentList from '../../document-list/components';
-import ListFooter from '../../common/list-footer';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -46,8 +45,7 @@ const Browse = () => {
   return (
     <div className={classes.container}>
       <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={changeDisplay} />
-      <DocumentList className={classes.list} data={data} />
-      <ListFooter text={`${data.length} document(s)`} />
+      <DocumentList className={classes.list} documents={data} />
     </div>
   );
 };
