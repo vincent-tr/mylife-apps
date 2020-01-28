@@ -21,7 +21,7 @@ const Header = ({ totalCount, selectedItems, onSelectionChange }) => {
 
   return (
     <mui.Toolbar className={classes.toolbar}>
-      <mui.Checkbox checked={allSelected} indeterminate={someSelected && !allSelected} onChange={e => onAllChange(e.target.checked)} />
+      <mui.Checkbox checked={allSelected} indeterminate={someSelected && !allSelected} onChange={e => onAllChange(e.target.checked)} color='primary' />
       <mui.Typography>
         {'header'}
       </mui.Typography>
