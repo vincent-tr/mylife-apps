@@ -1,10 +1,10 @@
 'use strict';
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
-import * as documentViewer from '../document-viewer';
-import { ThumbnailDocument } from './thumbnail';
-import ThumbnailList from './thumbnail-list';
-import icons from './icons';
+import * as documentViewer from '../../document-viewer';
+import { ThumbnailDocument } from '../../common/thumbnail';
+import ThumbnailList from '../../common/thumbnail-list';
+import icons from '../../common/icons';
 
 const DocumentThumbnailList = ({ data, selectedItems, onSelectionChange, ...props }) => {
   const selectable = !!selectedItems && !!onSelectionChange;

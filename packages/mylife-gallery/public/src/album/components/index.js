@@ -3,7 +3,7 @@
 import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
-import DocumentThumbnailList from '../../common/document-thumbnail-list';
+import DocumentList from '../../document-list/components';
 import ListFooter from '../../common/list-footer';
 import Header from './header';
 import Detail from './detail';
@@ -51,7 +51,7 @@ const Album = ({ albumId }) => {
     <div className={classes.container}>
       <div className={classes.listContainer}>
         <Header totalCount={documents.length} selectedItems={selectedItems} onSelectionChange={onSelectionChange} />
-        <DocumentThumbnailList className={classes.list} data={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange}/>
+        <DocumentList className={classes.list} data={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange}/>
         <ListFooter text={getFooterText(documents, selectedItems)} />
       </div>
       <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>

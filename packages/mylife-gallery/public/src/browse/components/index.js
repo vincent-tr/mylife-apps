@@ -4,7 +4,7 @@ import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'myl
 import { enter, leave, changeCriteria, changeDisplay } from '../actions';
 import { getCriteria, getDisplay, getDisplayView } from '../selectors';
 import Criteria from './criteria';
-import DocumentThumbnailList from '../../common/document-thumbnail-list';
+import DocumentList from '../../document-list/components';
 import ListFooter from '../../common/list-footer';
 
 const useConnect = () => {
@@ -46,7 +46,7 @@ const Browse = () => {
   return (
     <div className={classes.container}>
       <Criteria className={classes.criteria} criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={changeDisplay} />
-      <DocumentThumbnailList className={classes.list} data={data} />
+      <DocumentList className={classes.list} data={data} />
       <ListFooter text={`${data.length} document(s)`} />
     </div>
   );
