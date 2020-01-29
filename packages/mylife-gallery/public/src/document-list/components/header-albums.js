@@ -74,11 +74,15 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
       <mui.List>
         <mui.ListItem>
 
-          <mui.TextField placeholder='Nouvel album...'/>
+          <mui.ListItemText primary={
+            <mui.TextField fullWidth placeholder='Nouvel album...'/>
+          } />
 
-          <mui.IconButton className={classes.addButton}>
-            <mui.icons.AddCircle />
-          </mui.IconButton>
+          <mui.ListItemSecondaryAction>
+            <mui.IconButton edge='end' className={classes.addButton}>
+              <mui.icons.AddCircle />
+            </mui.IconButton>
+          </mui.ListItemSecondaryAction>
 
         </mui.ListItem>
 
