@@ -100,7 +100,8 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
 PopupAlbums.displayName = 'PopupAlbums';
 
 PopupAlbums.propTypes = {
-  documents: PropTypes.array.isRequired
+  documents: PropTypes.array.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 const HeaderAlbums = ({ documents }) => {
