@@ -167,11 +167,15 @@ const ObjectDisplay = ({ objects, initialObjectUsage }) => {
       separator=''
       maxItems={3}
       itemsAfterCollapse={0}
-      itemBeforeColapse={2}
-      classes={{ separator: classes.breadcrumbsSeparator}}
+      itemsBeforeCollapse={2}
+      classes={{ separator: classes.breadcrumbsSeparator }}
     >
       {selectedObjects.map(object => (
-        <mui.Chip key={object._id} label={renderObject(object)} className={classes.breadcrumbsChip} />
+        <mui.Chip
+          key={object._id}
+          label={renderObject(object)}
+          className={classes.breadcrumbsChip}
+        />
       ))}
     </mui.Breadcrumbs>
   );
