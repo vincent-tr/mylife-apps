@@ -94,7 +94,13 @@ const ItemDetail = ({ slideshow }) => {
             </mui.Grid>
           </mui.Grid>
 
-          <DeleteButton tooltip={'Supprimer le diaporama'} icon text='Supprimer' onConfirmed={onDelete} />
+          <DeleteButton
+            tooltip={'Supprimer le diaporama'}
+            icon
+            text='Supprimer'
+            confirmText={`Etes-vous sûr de vouloir supprimer le diaporama '${slideshow.name}' ?`}
+            onConfirmed={onDelete}
+          />
 
         </mui.Grid>
 

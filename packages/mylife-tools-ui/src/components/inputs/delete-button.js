@@ -2,7 +2,7 @@
 
 import React, {useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography, icons, makeStyles } from '@material-ui/core';
+import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography, makeStyles } from '@material-ui/core';
 import { Delete as DeleteIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
@@ -13,6 +13,12 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.error.dark,
     }
   },
+  paper: {
+    padding: theme.spacing(2),
+    '& > *': {
+      margin: theme.spacing(2)
+    },
+  }
 }));
 
 const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed }) => {
@@ -60,9 +66,9 @@ const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText =
   return (
     <>
       {button}
-      <Popper open={!!anchorEl} anchorEl={anchorEl} placement='top'>
+      <Popper open={!!anchorEl} anchorEl={anchorEl}>
         <ClickAwayListener onClickAway={handleClose}>
-          <Paper>
+          <Paper className={classes.paper}>
             <Typography>{confirmText}</Typography>
             <Button
               variant='contained'
