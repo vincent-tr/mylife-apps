@@ -40,14 +40,16 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
     const value = getInitialAlbumUsage(documents);
     setInitialAlbumUsage(value);
     setAlbumUsage(value);
-  }, [documents]);
+  }, [documents, albums]);
 
   const onUpdate = (album, value) => setAlbumUsage(albumUsage => (value ? albumUsage.set(album._id, new immutable.Set(documents)) : albumUsage.delete(album._id)));
 
   const onSave = () => {
-    console.log('onSave');
+    console.log('onSave', initialAlbumUsage, albumUsage);
     onClose();
   }
+
+  // TODO new album
 
   return (
     <mui.Paper ref={ref} className={classes.paper}>
