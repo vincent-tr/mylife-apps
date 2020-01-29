@@ -34,11 +34,11 @@ const Header = ({ documents, selectedItems, onSelectionChange }) => {
   return (
     <mui.Toolbar className={classes.toolbar}>
       <mui.Checkbox checked={allSelected} indeterminate={someSelected && !allSelected} onChange={e => onAllChange(e.target.checked)} color='primary' />
-
       <div className={classes.separator} />
-
       <HeaderAlbums documents={selectedDocuments} />
+      <div className={classes.separator} />
       <HeaderPersons documents={selectedDocuments} />
+      <div className={classes.separator} />
       <HeaderKeywords documents={selectedDocuments} />
     </mui.Toolbar>
   );
