@@ -27,14 +27,123 @@ const useStyles = mui.makeStyles(theme => ({
   },
   addButton: {
     color: theme.palette.success.main
+  },
+  deleteButton: {
+    color: theme.palette.error.main
   }
 }));
+
+const ENTER_KEY = 13;
+
+const NewAlbum = ({ setNewAlbums }) => {
+  const classes = useStyles();
+  const [name, setName] = useState('');
+
+  const onValidate = () => {
+    setNewAlbums(newAlbums => newAlbums.push({ name, selected: true }));
+    setName('');
+  };
+
+  const handleKeyDown = e => {
+    if (e.keyCode === ENTER_KEY) {
+      onValidate();
+    }
+  };
+
+  return (
+    <mui.ListItem>
+
+      <mui.ListItemText primary={
+        <mui.TextField
+          fullWidth
+          placeholder='Nouvel album...'
+          value={name}
+          onChange={e => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+      } />
+
+      <mui.ListItemSecondaryAction>
+        <mui.IconButton edge='end' className={classes.addButton} onClick={onValidate}>
+          <mui.icons.AddCircle />
+        </mui.IconButton>
+      </mui.ListItemSecondaryAction>
+
+    </mui.ListItem>
+  );
+};
+
+NewAlbum.propTypes = {
+  setNewAlbums: PropTypes.func.isRequired
+};
+
+const NewAlbumItems = ({ newAlbums, setNewAlbums }) => {
+  const classes = useStyles();
+  const onNewUpdate = (index, selected) => setNewAlbums(newAlbums => newAlbums.update(index, album => ({ ...album, selected })));
+  const onNewDelete = (index) => setNewAlbums(newAlbums => newAlbums.delete(index));
+
+  return newAlbums.map(({ name, selected }, index) => (
+    <mui.ListItem key={index}>
+      <mui.ListItemIcon>
+        <mui.Checkbox
+          edge='start'
+          color='primary'
+          checked={selected}
+          onChange={e => onNewUpdate(index, e.target.checked)}
+          tabIndex={-1}
+          disableRipple
+        />
+      </mui.ListItemIcon>
+
+      <mui.ListItemText primary={name} />
+
+      <mui.ListItemSecondaryAction>
+        <mui.IconButton edge='end' className={classes.deleteButton} onClick={() => onNewDelete(index)}>
+          <mui.icons.Delete />
+        </mui.IconButton>
+      </mui.ListItemSecondaryAction>
+
+    </mui.ListItem>
+  ));
+};
+
+NewAlbumItems.propTypes = {
+  newAlbums: PropTypes.object.isRequired,
+  setNewAlbums: PropTypes.func.isRequired,
+};
+
+const AlbumItems = ({ documents, albums, albumUsage, setAlbumUsage }) => {
+  const onUpdate = (album, value) => setAlbumUsage(albumUsage => (value ? albumUsage.set(album._id, new immutable.Set(documents)) : albumUsage.delete(album._id)));
+
+  return albums.map(album => {
+    const usage = (albumUsage.get(album._id) || new immutable.Set()).size;
+
+    return (
+      <mui.ListItem key={album._id}>
+        <mui.ListItemIcon>
+          <mui.Checkbox
+            edge='start'
+            color='primary'
+            checked={usage === documents.length}
+            indeterminate={usage > 0 && usage < documents.length}
+            onChange={e => onUpdate(album, e.target.checked)}
+            tabIndex={-1}
+            disableRipple
+          />
+        </mui.ListItemIcon>
+
+        <mui.ListItemText primary={renderObject(album)} />
+      </mui.ListItem>
+    );
+  });
+};
 
 const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
   const classes = useStyles();
   const { albums } = useAlbumView();
   const [albumUsage, setAlbumUsage] = useState(new immutable.Map());
   const [initialAlbumUsage, setInitialAlbumUsage] = useState(new immutable.Map());
+  const [newAlbums, setNewAlbums] = useState(new immutable.List());
 
   useEffect(() => {
     const value = getInitialAlbumUsage(documents);
@@ -42,14 +151,11 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
     setAlbumUsage(value);
   }, [documents, albums]);
 
-  const onUpdate = (album, value) => setAlbumUsage(albumUsage => (value ? albumUsage.set(album._id, new immutable.Set(documents)) : albumUsage.delete(album._id)));
 
   const onSave = () => {
     console.log('onSave', initialAlbumUsage, albumUsage);
     onClose();
   }
-
-  // TODO new album
 
   return (
     <mui.Paper ref={ref} className={classes.paper}>
@@ -58,43 +164,12 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
       </mui.Typography>
 
       <mui.List className={classes.list} dense>
-        {albums.map(album => {
-          const usage = (albumUsage.get(album._id) || new immutable.Set()).size;
-
-          return (
-            <mui.ListItem key={album._id}>
-              <mui.ListItemIcon>
-                <mui.Checkbox
-                  edge='start'
-                  color='primary'
-                  checked={usage === documents.length}
-                  indeterminate={usage > 0 && usage < documents.length}
-                  onChange={e => onUpdate(album, e.target.checked)}
-                  tabIndex={-1}
-                  disableRipple
-                />
-              </mui.ListItemIcon>
-
-              <mui.ListItemText primary={renderObject(album)} />
-            </mui.ListItem>
-          );
-        })}
+        <NewAlbumItems newAlbums={newAlbums} setNewAlbums={setNewAlbums} />
+        <AlbumItems documents={documents} albums={albums} albumUsage={albumUsage} setAlbumUsage={setAlbumUsage} />
       </mui.List>
 
       <mui.List>
-        <mui.ListItem>
-
-          <mui.ListItemText primary={
-            <mui.TextField fullWidth placeholder='Nouvel album...'/>
-          } />
-
-          <mui.ListItemSecondaryAction>
-            <mui.IconButton edge='end' className={classes.addButton}>
-              <mui.icons.AddCircle />
-            </mui.IconButton>
-          </mui.ListItemSecondaryAction>
-
-        </mui.ListItem>
+        <NewAlbum setNewAlbums={setNewAlbums} />
 
         <mui.ListItem button onClick={onSave}>
           <mui.ListItemText primary={'Appliquer'} />
