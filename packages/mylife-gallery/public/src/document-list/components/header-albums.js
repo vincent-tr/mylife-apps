@@ -35,12 +35,12 @@ const useStyles = mui.makeStyles(theme => ({
 
 const ENTER_KEY = 13;
 
-const NewAlbum = ({ setNewAlbums }) => {
+const NewObject = ({ newTooltip, setNewObjects }) => {
   const classes = useStyles();
   const [name, setName] = useState('');
 
   const onValidate = () => {
-    setNewAlbums(newAlbums => newAlbums.push({ name, selected: true }));
+    setNewObjects(newObjects => newObjects.push({ name, selected: true }));
     setName('');
   };
 
@@ -56,7 +56,7 @@ const NewAlbum = ({ setNewAlbums }) => {
       <mui.ListItemText primary={
         <mui.TextField
           fullWidth
-          placeholder='Nouvel album...'
+          placeholder={newTooltip}
           value={name}
           onChange={e => setName(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -73,16 +73,17 @@ const NewAlbum = ({ setNewAlbums }) => {
   );
 };
 
-NewAlbum.propTypes = {
-  setNewAlbums: PropTypes.func.isRequired
+NewObject.propTypes = {
+  newTooltip: PropTypes.string.isRequired,
+  setNewObjects: PropTypes.func.isRequired
 };
 
-const NewAlbumItems = ({ newAlbums, setNewAlbums }) => {
+const NewObjectItems = ({ newObjects, setNewObjects }) => {
   const classes = useStyles();
-  const onNewUpdate = (index, selected) => setNewAlbums(newAlbums => newAlbums.update(index, album => ({ ...album, selected })));
-  const onNewDelete = (index) => setNewAlbums(newAlbums => newAlbums.delete(index));
+  const onNewUpdate = (index, selected) => setNewObjects(newObjects => newObjects.update(index, object => ({ ...object, selected })));
+  const onNewDelete = (index) => setNewObjects(newObjects => newObjects.delete(index));
 
-  return newAlbums.map(({ name, selected }, index) => (
+  return newObjects.map(({ name, selected }, index) => (
     <mui.ListItem key={index}>
       <mui.ListItemIcon>
         <mui.Checkbox
@@ -107,71 +108,68 @@ const NewAlbumItems = ({ newAlbums, setNewAlbums }) => {
   ));
 };
 
-NewAlbumItems.propTypes = {
-  newAlbums: PropTypes.object.isRequired,
-  setNewAlbums: PropTypes.func.isRequired,
+NewObjectItems.propTypes = {
+  newObjects: PropTypes.object.isRequired,
+  setNewObjects: PropTypes.func.isRequired,
 };
 
-const AlbumItems = ({ documents, albums, albumUsage, setAlbumUsage }) => {
-  const onUpdate = (album, value) => setAlbumUsage(albumUsage => (value ? albumUsage.set(album._id, new immutable.Set(documents)) : albumUsage.delete(album._id)));
+const ObjectItems = ({ documents, objects, objectUsage, setObjectUsage }) => {
+  const onUpdate = (object, value) => setObjectUsage(objectUsage => (value ? objectUsage.set(object._id, new immutable.Set(documents)) : objectUsage.delete(object._id)));
 
-  return albums.map(album => {
-    const usage = (albumUsage.get(album._id) || new immutable.Set()).size;
+  return objects.map(object => {
+    const usage = (objectUsage.get(object._id) || new immutable.Set()).size;
 
     return (
-      <mui.ListItem key={album._id}>
+      <mui.ListItem key={object._id}>
         <mui.ListItemIcon>
           <mui.Checkbox
             edge='start'
             color='primary'
             checked={usage === documents.length}
             indeterminate={usage > 0 && usage < documents.length}
-            onChange={e => onUpdate(album, e.target.checked)}
+            onChange={e => onUpdate(object, e.target.checked)}
             tabIndex={-1}
             disableRipple
           />
         </mui.ListItemIcon>
 
-        <mui.ListItemText primary={renderObject(album)} />
+        <mui.ListItemText primary={renderObject(object)} />
       </mui.ListItem>
     );
   });
 };
 
-const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
+const PopupObjects = React.forwardRef(({ title, newTooltip, documents, objects, onSave, getObjectUsage }, ref) => {
   const classes = useStyles();
-  const { albums } = useAlbumView();
-  const [albumUsage, setAlbumUsage] = useState(new immutable.Map());
-  const [initialAlbumUsage, setInitialAlbumUsage] = useState(new immutable.Map());
-  const [newAlbums, setNewAlbums] = useState(new immutable.List());
+  const [objectUsage, setObjectUsage] = useState(new immutable.Map());
+  const [initialObjectUsage, setInitialObjectUsage] = useState(new immutable.Map());
+  const [newObjects, setNewObjects] = useState(new immutable.List());
 
   useEffect(() => {
-    const value = getInitialAlbumUsage(documents);
-    setInitialAlbumUsage(value);
-    setAlbumUsage(value);
-  }, [documents, albums]);
+    const value = getObjectUsage(documents);
+    setInitialObjectUsage(value);
+    setObjectUsage(value);
+  }, [documents, objects]);
 
-
-  const onSave = () => {
-    console.log('onSave', initialAlbumUsage, albumUsage);
-    onClose();
-  }
+  const handleSave = () => {
+    onSave(newObjects, initialObjectUsage, objectUsage);
+  };
 
   return (
     <mui.Paper ref={ref} className={classes.paper}>
       <mui.Typography variant='h6' className={classes.title}>
-        {'Albums'}
+        {title}
       </mui.Typography>
 
       <mui.List className={classes.list} dense>
-        <NewAlbumItems newAlbums={newAlbums} setNewAlbums={setNewAlbums} />
-        <AlbumItems documents={documents} albums={albums} albumUsage={albumUsage} setAlbumUsage={setAlbumUsage} />
+        <NewObjectItems newObjects={newObjects} setNewObjects={setNewObjects} />
+        <ObjectItems documents={documents} objects={objects} objectUsage={objectUsage} setObjectUsage={setObjectUsage} />
       </mui.List>
 
       <mui.List>
-        <NewAlbum setNewAlbums={setNewAlbums} />
+        <NewObject newTooltip={newTooltip} setNewObjects={setNewObjects} />
 
-        <mui.ListItem button onClick={onSave}>
+        <mui.ListItem button onClick={handleSave}>
           <mui.ListItemText primary={'Appliquer'} />
         </mui.ListItem>
       </mui.List>
@@ -180,14 +178,18 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
   );
 });
 
-PopupAlbums.displayName = 'PopupAlbums';
-
-PopupAlbums.propTypes = {
+PopupObjects.propTypes = {
+  title: PropTypes.string.isRequired,
+  newTooltip: PropTypes.string.isRequired,
   documents: PropTypes.array.isRequired,
-  onClose: PropTypes.func.isRequired,
+  objects: PropTypes.array.isRequired,
+  onSave: PropTypes.func.isRequired,
+  getObjectUsage: PropTypes.func.isRequired,
 };
 
-const HeaderAlbums = ({ documents }) => {
+PopupObjects.displayName = 'PopupObjects';
+
+const HeaderObjects = ({ title, newTooltip, icon, documents, objects, onSave, getObjectUsage }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -198,25 +200,66 @@ const HeaderAlbums = ({ documents }) => {
   const handleTooltipClose = () => setTooltipOpen(false);
   const isTooltipOpen = tooltipOpen && !anchorEl; // do not show tooltip when popup is shown
 
+  const handleSave = (...args) => {
+    onSave(...args);
+    handleClose();
+  };
+
   return (
     <>
       <mui.Tooltip
-        title={'Albums'}
+        title={title}
         open={isTooltipOpen}
         onOpen={handleTooltipOpen}
         onClose={handleTooltipClose}
       >
         <mui.IconButton onClick={handleOpen}>
-          <icons.menu.Album />
+          {icon}
         </mui.IconButton>
       </mui.Tooltip>
 
       <mui.Popper open={!!anchorEl} anchorEl={anchorEl}>
         <mui.ClickAwayListener onClickAway={handleClose}>
-          <PopupAlbums documents={documents} onClose={handleClose} />
+          <PopupObjects
+            title={title}
+            newTooltip={newTooltip}
+            documents={documents}
+            objects={objects}
+            onSave={handleSave}
+            getObjectUsage={getObjectUsage}
+          />
         </mui.ClickAwayListener>
       </mui.Popper>
     </>
+  );
+};
+
+HeaderObjects.propTypes = {
+  title: PropTypes.string.isRequired,
+  newTooltip: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
+  documents: PropTypes.array.isRequired,
+  objects: PropTypes.array.isRequired,
+  onSave: PropTypes.func.isRequired,
+  getObjectUsage: PropTypes.func.isRequired,
+};
+
+const HeaderAlbums = ({ documents }) => {
+  const { albums } = useAlbumView();
+  const onSave = (newAlbums, initialAlbumUsage, albumUsage) => {
+    console.log('onSave', newAlbums, initialAlbumUsage, albumUsage);
+  };
+
+  return (
+    <HeaderObjects
+      title={'Albums'}
+      newTooltip={'Nouvel album...'}
+      icon={<icons.menu.Album />}
+      documents={documents}
+      objects={albums}
+      onSave={onSave}
+      getObjectUsage={getInitialAlbumUsage}
+    />
   );
 };
 
