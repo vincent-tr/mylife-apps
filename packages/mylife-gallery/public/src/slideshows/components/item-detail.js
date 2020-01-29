@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useMemo, ListSelector, DebouncedSlider } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useDispatch, useMemo, ListSelector, DebouncedSlider, DeleteButton } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { updateSlideshow, deleteSlideshow } from '../actions';
 import AlbumList from './album-list';
@@ -36,13 +36,6 @@ const useStyles = mui.makeStyles(theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center'
-  },
-  deleteButton: {
-    color: theme.palette.getContrastText(theme.palette.error.main),
-    backgroundColor: theme.palette.error.main,
-    '&:hover': {
-      backgroundColor: theme.palette.error.dark,
-    }
   },
 }));
 
@@ -101,16 +94,7 @@ const ItemDetail = ({ slideshow }) => {
             </mui.Grid>
           </mui.Grid>
 
-          <mui.Tooltip title={'Supprimer le diaporama'}>
-            <mui.Button
-              variant='contained'
-              className={classes.deleteButton}
-              onClick={onDelete}
-              startIcon={<icons.actions.Delete />}
-            >
-              {'Supprimer'}
-            </mui.Button>
-          </mui.Tooltip>
+          <DeleteButton tooltip={'Supprimer le diaporama'} icon text='Supprimer' onConfirmed={onDelete} />
 
         </mui.Grid>
 
