@@ -1,9 +1,17 @@
 'use strict';
 
-import { React, PropTypes, immutable, mui, useState } from 'mylife-tools-ui';
+import { React, PropTypes, immutable, mui, useState, useDispatch, useMemo } from 'mylife-tools-ui';
 import { usePersonView } from '../../common/person-view';
 import icons from '../../common/icons';
+import { savePersons } from '../actions';
 import HeaderObjects from './header-objects';
+
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return useMemo(() => ({
+    savePersons: (documents, data) => dispatch(savePersons(documents, data))
+  }), [dispatch]);
+};
 
 const useStyles = mui.makeStyles(theme => ({
   inputsContainer: {
@@ -81,9 +89,7 @@ NewPerson.propTypes = {
 
 const HeaderPersons = ({ documents }) => {
   const { persons } = usePersonView();
-  const onSave = (data) => {
-    console.log('onSave', data);
-  };
+  const { savePersons } = useConnect();
 
   return (
     <HeaderObjects
@@ -93,7 +99,7 @@ const HeaderPersons = ({ documents }) => {
       newObjectRenderer={({ firstName, lastName }) => `${firstName} ${lastName}`}
       documents={documents}
       objects={persons}
-      onSave={onSave}
+      onSave={data => savePersons(documents, data)}
       getObjectUsage={getInitialPersonUsage}
     />
   );

@@ -1,9 +1,17 @@
 'use strict';
 
-import { React, PropTypes, immutable, mui, useState } from 'mylife-tools-ui';
+import { React, PropTypes, immutable, mui, useState, useDispatch, useMemo } from 'mylife-tools-ui';
 import { useAlbumView } from '../../common/album-view';
 import icons from '../../common/icons';
+import { saveAlbums } from '../actions';
 import HeaderObjects from './header-objects';
+
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return useMemo(() => ({
+    saveAlbums: (documents, data) => dispatch(saveAlbums(documents, data))
+  }), [dispatch]);
+};
 
 const useStyles = mui.makeStyles(theme => ({
   addButton: {
@@ -61,9 +69,7 @@ NewAlbum.propTypes = {
 
 const HeaderAlbums = ({ documents }) => {
   const { albums } = useAlbumView();
-  const onSave = (data) => {
-    console.log('onSave', data);
-  };
+  const { saveAlbums } = useConnect();
 
   return (
     <HeaderObjects
@@ -73,7 +79,7 @@ const HeaderAlbums = ({ documents }) => {
       newObjectRenderer={({ name }) => name}
       documents={documents}
       objects={albums}
-      onSave={onSave}
+      onSave={data => saveAlbums(documents, data)}
       getObjectUsage={getInitialAlbumUsage}
     />
   );
