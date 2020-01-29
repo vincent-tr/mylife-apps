@@ -129,6 +129,3 @@ export function removePersonFromDocument(document, person) {
 
   };
 }
-
-
-addPersonToDocument, removePersonFromDocument, createPersonWithDocument
