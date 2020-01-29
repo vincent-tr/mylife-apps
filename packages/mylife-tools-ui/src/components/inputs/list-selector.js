@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Select, MenuItem } from '@material-ui/core';
 
-
 const NULL_ID = 'null-id';
 
 const ListSelector = ({ list, value, onChange, ...props }) => {
