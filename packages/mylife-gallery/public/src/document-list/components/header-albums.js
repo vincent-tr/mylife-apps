@@ -20,7 +20,7 @@ const useStyles = mui.makeStyles(theme => ({
     width: 300,
     height: 450,
     overflow: 'auto',
-    
+
     borderTopWidth: 1,
     borderTopColor: mui.colors.grey[300],
     borderTopStyle: 'solid',
@@ -28,16 +28,8 @@ const useStyles = mui.makeStyles(theme => ({
     borderBottomColor: mui.colors.grey[300],
     borderBottomStyle: 'solid',
   },
-  buttonContainer: {
-    '& > *:first-child': {
-      marginLeft: theme.spacing(1),
-    },
-  },
   addButton: {
     color: theme.palette.success.main
-  },
-  deleteButton: {
-    color: theme.palette.error.main
   }
 }));
 
