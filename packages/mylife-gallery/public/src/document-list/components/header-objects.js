@@ -154,9 +154,9 @@ PopupObjects.displayName = 'PopupObjects';
 const ObjectDisplay = ({ objects, initialObjectUsage }) => {
   const selectedObjects = objects.filter(object => initialObjectUsage.get(object._id));
   return (
-    <mui.Breadcrumbs>
+    <mui.Breadcrumbs separator='' maxItems={3}>
       {selectedObjects.map(object => (
-        <mui.Typography key={object._id}>{renderObject(object)}</mui.Typography>
+        <mui.Chip key={object._id} label={renderObject(object)} />
       ))}
     </mui.Breadcrumbs>
   );
