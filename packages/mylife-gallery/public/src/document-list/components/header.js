@@ -5,16 +5,6 @@ import HeaderAlbums from './header-albums';
 import HeaderPersons from './header-persons';
 import HeaderKeywords from './header-keywords';
 
-/*
-
-- Menu qui scroll avec
-  - la liste des albums et le bouton delete a cote (ou add si avec genre 2/34 si 2 docs / 34 selectionnes ont l album)
-  - un bouton add
-    - sous menu avec la liste des albums ou nouveau
-- en bas, bouton appliquer/annuler (pinned du scoll du menu)
-- si on quitte le menu, c est annulé
-*/
-
 const useStyles = mui.makeStyles(theme => ({
   toolbar: {
     backgroundColor: mui.colors.grey[300],
