@@ -6,13 +6,26 @@ import icons from '../../common/icons';
 import { renderObject } from '../../common/metadata-utils';
 
 const useStyles = mui.makeStyles(theme => ({
+  paper: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  title: {
+    margin: theme.spacing(1),
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   list: {
     width: 300,
-    height: 180,
+    height: 450,
     overflow: 'auto',
-    borderWidth: 1,
-    borderColor: mui.colors.grey[300],
-    borderStyle: 'solid',
+    borderTopWidth: 1,
+    borderTopColor: mui.colors.grey[300],
+    borderTopStyle: 'solid',
+    borderBottomWidth: 1,
+    borderBottomColor: mui.colors.grey[300],
+    borderBottomStyle: 'solid',
   },
   buttonContainer: {
     '& > *:first-child': {
@@ -20,7 +33,7 @@ const useStyles = mui.makeStyles(theme => ({
     },
   },
   addButton: {
-    color: theme.palette.success.main,
+    color: theme.palette.success.main
   },
   deleteButton: {
     color: theme.palette.error.main
@@ -29,50 +42,57 @@ const useStyles = mui.makeStyles(theme => ({
 
 const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
   const classes = useStyles();
-  const { albums, albumView } = useAlbumView();
+  const { albums } = useAlbumView();
   const albumUsage = useMemo(() => getUsedAlbumIds(documents), [documents]);
-  const albumIds = useMemo(() => new immutable.Set(albumUsage.keys()), [albumUsage]);
 
-  const addableAlbums = useMemo(() => {
-    // the same document cannot be added twice in an album
-    return albums.filter(album => !albumIds.has(album._id));
-  }, [albumIds, albums]);
-
-  const onAdd = (album) => console.log('onAdd', album);
-  const onDelete = (album) => console.log('onDelete', album);
+  const onUpdate = (album, value) => console.log('onUpdate', album, value);
+  const onSave = () => {
+    console.log('onSave');
+    onClose();
+  }
 
   return (
-    <mui.Paper ref={ref}>
-      <mui.List className={classes.list} dense>
-        {albumIds.map(albumId => {
-          const album = albumView.get(albumId);
-          if(!album) { // can happen if item view not ready
-            return null;
-          }
+    <mui.Paper ref={ref} className={classes.paper}>
+      <div className={classes.title}>
+        <mui.Typography variant='h6'>
+          {'Albums'}
+        </mui.Typography>
 
-          const canAdd = albumUsage.get(albumId) < documents.length;
+        <mui.IconButton className={classes.addButton}>
+          <mui.icons.AddCircle />
+        </mui.IconButton>
+      </div>
+
+      <mui.List className={classes.list} dense>
+        {albums.map(album => {
+          const usage = albumUsage.get(album._id);
 
           return (
             <mui.ListItem key={album._id}>
+              <mui.ListItemIcon>
+                <mui.Checkbox
+                  edge='start'
+                  color='primary'
+                  checked={usage === documents.length}
+                  indeterminate={usage > 0 && usage < documents.length}
+                  onChange={e => onUpdate(album, e.target.checked)}
+                  tabIndex={-1}
+                  disableRipple
+                />
+              </mui.ListItemIcon>
+
               <mui.ListItemText primary={renderObject(album)} />
-              <mui.ListItemSecondaryAction className={classes.buttonContainer}>
-                {canAdd && (
-                  <mui.Tooltip title={'Ajouter les documents à l\'album'}>
-                    <mui.IconButton onClick={() => onAdd(album)} className={classes.addButton}>
-                      <mui.icons.AddCircle />
-                    </mui.IconButton>
-                  </mui.Tooltip>
-                )}
-                <mui.Tooltip title={'Enlever les documents de l\'album'}>
-                  <mui.IconButton onClick={() => onDelete(album)} className={classes.deleteButton}>
-                    <mui.icons.Delete />
-                  </mui.IconButton>
-                </mui.Tooltip>
-              </mui.ListItemSecondaryAction>
             </mui.ListItem>
           );
-        }).toArray()}
+        })}
       </mui.List>
+
+      <mui.List>
+        <mui.ListItem button onClick={onSave}>
+          <mui.ListItemText primary={'Appliquer'} />
+        </mui.ListItem>
+      </mui.List>
+
     </mui.Paper>
   );
 });
@@ -93,7 +113,6 @@ const HeaderAlbums = ({ documents }) => {
   const handleTooltipOpen = () => setTooltipOpen(true);
   const handleTooltipClose = () => setTooltipOpen(false);
   const isTooltipOpen = tooltipOpen && !anchorEl; // do not show tooltip when popup is shown
-
 
   return (
     <>
