@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, immutable, useState, useMemo } from 'mylife-tools-ui';
+import { React, PropTypes, mui, immutable, useState, useEffect } from 'mylife-tools-ui';
 import { useAlbumView } from '../../common/album-view';
 import icons from '../../common/icons';
 import { renderObject } from '../../common/metadata-utils';
@@ -33,9 +33,17 @@ const useStyles = mui.makeStyles(theme => ({
 const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
   const classes = useStyles();
   const { albums } = useAlbumView();
-  const albumUsage = useMemo(() => getUsedAlbumIds(documents), [documents]);
+  const [albumUsage, setAlbumUsage] = useState(new immutable.Map());
+  const [initialAlbumUsage, setInitialAlbumUsage] = useState(new immutable.Map());
 
-  const onUpdate = (album, value) => console.log('onUpdate', album, value);
+  useEffect(() => {
+    const value = getInitialAlbumUsage(documents);
+    setInitialAlbumUsage(value);
+    setAlbumUsage(value);
+  }, [documents]);
+
+  const onUpdate = (album, value) => setAlbumUsage(albumUsage => (value ? albumUsage.set(album._id, new immutable.Set(documents)) : albumUsage.delete(album._id)));
+
   const onSave = () => {
     console.log('onSave');
     onClose();
@@ -49,7 +57,7 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
 
       <mui.List className={classes.list} dense>
         {albums.map(album => {
-          const usage = albumUsage.get(album._id);
+          const usage = (albumUsage.get(album._id) || new immutable.Set()).size;
 
           return (
             <mui.ListItem key={album._id}>
@@ -141,14 +149,20 @@ HeaderAlbums.propTypes = {
 
 export default HeaderAlbums;
 
-function getUsedAlbumIds(documents) {
-  const map = new Map();
-  for(const { info } of documents) {
-    for(const { id } of info.albums) {
-      let value = map.get(id) || 0;
-      ++value;
-      map.set(id, value);
+function getInitialAlbumUsage(documents) {
+  const albums = new Map();
+  for(const { info, document } of documents) {
+    for(const { id: albumId } of info.albums) {
+      let documents = albums.get(albumId);
+      if(!documents) {
+        documents = new Set();
+        albums.set(albumId, documents);
+      }
+
+      documents.add(document);
     }
   }
-  return new immutable.Map(map);
+  const entries = Array.from(albums.entries());
+  const setEntries = entries.map(([albumId, documents]) => [albumId, new immutable.Set(documents)]);
+  return new immutable.Map(setEntries);
 }
