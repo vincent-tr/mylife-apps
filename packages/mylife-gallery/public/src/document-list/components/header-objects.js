@@ -25,6 +25,14 @@ const useStyles = mui.makeStyles(theme => ({
   },
   deleteButton: {
     color: theme.palette.error.main
+  },
+  breadcrumbsChip: {
+    backgroundColor: mui.colors.grey[100],
+    color: mui.colors.grey[700],
+  },
+  breadcrumbsSeparator: {
+    marginLeft: theme.spacing(1),
+    marginRight: 0
   }
 }));
 
@@ -152,11 +160,18 @@ PopupObjects.propTypes = {
 PopupObjects.displayName = 'PopupObjects';
 
 const ObjectDisplay = ({ objects, initialObjectUsage }) => {
+  const classes = useStyles();
   const selectedObjects = objects.filter(object => initialObjectUsage.get(object._id));
   return (
-    <mui.Breadcrumbs separator='' maxItems={3}>
+    <mui.Breadcrumbs
+      separator=''
+      maxItems={3}
+      itemsAfterCollapse={0}
+      itemBeforeColapse={2}
+      classes={{ separator: classes.breadcrumbsSeparator}}
+    >
       {selectedObjects.map(object => (
-        <mui.Chip key={object._id} label={renderObject(object)} />
+        <mui.Chip key={object._id} label={renderObject(object)} className={classes.breadcrumbsChip} />
       ))}
     </mui.Breadcrumbs>
   );
