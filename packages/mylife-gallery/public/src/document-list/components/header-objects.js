@@ -79,7 +79,8 @@ NewObjectItems.propTypes = {
 };
 
 const ObjectItems = ({ documents, objects, objectUsage, setObjectUsage }) => {
-  const onUpdate = (object, value) => setObjectUsage(objectUsage => (value ? objectUsage.set(object._id, new immutable.Set(documents)) : objectUsage.delete(object._id)));
+  const newSet = () => new immutable.Set(documents.map(({ document }) => document));
+  const onUpdate = (object, value) => setObjectUsage(objectUsage => (value ? objectUsage.set(object._id, newSet()) : objectUsage.delete(object._id)));
 
   return objects.map(object => {
     const usage = (objectUsage.get(object._id) || new immutable.Set()).size;
@@ -116,9 +117,7 @@ const PopupObjects = React.forwardRef(({ title, newObject, newObjectRenderer, do
     setObjectUsage(value);
   }, [documents, objects]);
 
-  const handleSave = () => {
-    onSave(newObjects, initialObjectUsage, objectUsage);
-  };
+  const handleSave = () => onSave({ newObjects, ...computeObjectDiff(initialObjectUsage, objectUsage) });
 
   return (
     <mui.Paper ref={ref} className={classes.paper}>
@@ -213,3 +212,48 @@ HeaderObjects.propTypes = {
 };
 
 export default HeaderObjects;
+
+function computeObjectDiff(initialObjectUsage, currentObjectUsage) {
+  const objectsAdd = new Map();
+  const objectsRemove = new Map();
+
+  for(const [id, initialDocuments] of initialObjectUsage.entries()) {
+    const currentDocuments = currentObjectUsage.get(id);
+    if(!currentDocuments) {
+      objectsRemove.set(id, initialDocuments.toArray());
+    }
+  }
+
+  for(const [id, currentDocuments] of currentObjectUsage.entries()) {
+    const initialDocuments = initialObjectUsage.get(id);
+    if(!initialDocuments) {
+      objectsAdd.set(id, currentDocuments.toArray());
+      continue;
+    }
+
+    // updates
+    const addArray = [];
+    const removeArray = [];
+    for(const doc of initialDocuments) {
+      if(!currentDocuments.has(doc)) {
+        removeArray.push(doc);
+      }
+    }
+
+    for(const doc of currentDocuments) {
+      if(!initialDocuments.has(doc)) {
+        addArray.push(doc);
+      }
+    }
+
+    if(addArray.length > 0) {
+      objectsAdd.set(id, addArray);
+    }
+
+    if(removeArray.length > 0) {
+      objectsRemove.set(id, removeArray);
+    }
+  }
+
+  return { objectsAdd, objectsRemove };
+}

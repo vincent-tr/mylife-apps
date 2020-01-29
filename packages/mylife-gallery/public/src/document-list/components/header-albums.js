@@ -61,8 +61,8 @@ NewAlbum.propTypes = {
 
 const HeaderAlbums = ({ documents }) => {
   const { albums } = useAlbumView();
-  const onSave = (newAlbums, initialAlbumUsage, albumUsage) => {
-    console.log('onSave', newAlbums, initialAlbumUsage, albumUsage);
+  const onSave = (data) => {
+    console.log('onSave', data);
   };
 
   return (
