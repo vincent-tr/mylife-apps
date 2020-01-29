@@ -11,10 +11,7 @@ const useStyles = mui.makeStyles(theme => ({
     flexDirection: 'column'
   },
   title: {
-    margin: theme.spacing(1),
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    margin: theme.spacing(2),
   },
   list: {
     width: 300,
@@ -46,15 +43,9 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
 
   return (
     <mui.Paper ref={ref} className={classes.paper}>
-      <div className={classes.title}>
-        <mui.Typography variant='h6'>
-          {'Albums'}
-        </mui.Typography>
-
-        <mui.IconButton className={classes.addButton}>
-          <mui.icons.AddCircle />
-        </mui.IconButton>
-      </div>
+      <mui.Typography variant='h6' className={classes.title}>
+        {'Albums'}
+      </mui.Typography>
 
       <mui.List className={classes.list} dense>
         {albums.map(album => {
@@ -81,6 +72,16 @@ const PopupAlbums = React.forwardRef(({ documents, onClose }, ref) => {
       </mui.List>
 
       <mui.List>
+        <mui.ListItem>
+
+          <mui.TextField placeholder='Nouvel album...'/>
+
+          <mui.IconButton className={classes.addButton}>
+            <mui.icons.AddCircle />
+          </mui.IconButton>
+
+        </mui.ListItem>
+
         <mui.ListItem button onClick={onSave}>
           <mui.ListItemText primary={'Appliquer'} />
         </mui.ListItem>
