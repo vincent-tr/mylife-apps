@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, immutable, useState, useEffect } from 'mylife-tools-ui';
+import { React, PropTypes, mui, immutable, useState, useEffect, useMemo } from 'mylife-tools-ui';
 import { renderObject } from '../../common/metadata-utils';
 
 const useStyles = mui.makeStyles(theme => ({
@@ -105,17 +105,14 @@ const ObjectItems = ({ documents, objects, objectUsage, setObjectUsage }) => {
   });
 };
 
-const PopupObjects = React.forwardRef(({ title, newObject, newObjectRenderer, documents, objects, onSave, getObjectUsage }, ref) => {
+const PopupObjects = React.forwardRef(({ title, newObject, newObjectRenderer, documents, objects, onSave, initialObjectUsage }, ref) => {
   const classes = useStyles();
   const [objectUsage, setObjectUsage] = useState(new immutable.Map());
-  const [initialObjectUsage, setInitialObjectUsage] = useState(new immutable.Map());
   const [newObjects, setNewObjects] = useState(new immutable.List());
 
   useEffect(() => {
-    const value = getObjectUsage(documents);
-    setInitialObjectUsage(value);
-    setObjectUsage(value);
-  }, [documents, objects]);
+    setObjectUsage(initialObjectUsage);
+  }, [initialObjectUsage]);
 
   const handleSave = () => onSave({ newObjects, ...computeObjectDiff(initialObjectUsage, objectUsage) });
 
@@ -149,14 +146,31 @@ PopupObjects.propTypes = {
   documents: PropTypes.array.isRequired,
   objects: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
-  getObjectUsage: PropTypes.func.isRequired,
+  initialObjectUsage: PropTypes.object.isRequired,
 };
 
 PopupObjects.displayName = 'PopupObjects';
 
+const ObjectDisplay = ({ objects, initialObjectUsage }) => {
+  const selectedObjects = objects.filter(object => initialObjectUsage.get(object._id));
+  return (
+    <mui.Breadcrumbs>
+      {selectedObjects.map(object => (
+        <mui.Typography key={object._id}>{renderObject(object)}</mui.Typography>
+      ))}
+    </mui.Breadcrumbs>
+  );
+};
+
+ObjectDisplay.propTypes = {
+  objects: PropTypes.array.isRequired,
+  initialObjectUsage: PropTypes.object.isRequired,
+};
+
 const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, objects, onSave, getObjectUsage }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
+  const initialObjectUsage = useMemo(() => getObjectUsage(documents), [documents]);
 
   const handleOpen = e => setAnchorEl(e.target);
   const handleClose = () => setAnchorEl(null);
@@ -183,6 +197,11 @@ const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, o
         </mui.IconButton>
       </mui.Tooltip>
 
+      <ObjectDisplay
+        objects={objects}
+        initialObjectUsage={initialObjectUsage}
+      />
+
       <mui.Popper open={!!anchorEl} anchorEl={anchorEl}>
         <mui.ClickAwayListener onClickAway={handleClose}>
           <PopupObjects
@@ -192,7 +211,7 @@ const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, o
             documents={documents}
             objects={objects}
             onSave={handleSave}
-            getObjectUsage={getObjectUsage}
+            initialObjectUsage={initialObjectUsage}
           />
         </mui.ClickAwayListener>
       </mui.Popper>
