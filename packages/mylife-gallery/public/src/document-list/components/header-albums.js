@@ -20,6 +20,7 @@ const useStyles = mui.makeStyles(theme => ({
     width: 300,
     height: 450,
     overflow: 'auto',
+    
     borderTopWidth: 1,
     borderTopColor: mui.colors.grey[300],
     borderTopStyle: 'solid',
