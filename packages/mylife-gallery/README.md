@@ -4,7 +4,6 @@ MyLife photo gallery
 # TODO:
  - album:
    - album detail
-   - doc delete
    - choose album thumbnails
    - delete album
  - persons management
