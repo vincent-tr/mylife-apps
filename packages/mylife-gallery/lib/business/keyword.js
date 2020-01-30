@@ -95,7 +95,7 @@ class KeywordView extends StoreContainer {
       }
 
       case 'remove': {
-        for(const keyword of after.keywords) {
+        for(const keyword of before.keywords) {
           this.keywordUnref(keyword);
         }
         break;
