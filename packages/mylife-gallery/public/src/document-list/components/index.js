@@ -15,9 +15,13 @@ const useStyles = mui.makeStyles({
   },
 });
 
-const DocumentList = ({ documents, className, ...props }) => {
+const DocumentList = ({ documents, className, selectedItems: externalSelectedItems, onSelectionChange: externalOnSelectionChange, ...props }) => {
   const classes = useStyles();
-  const [selectedItems, onSelectionChange] = useSelectionSet(() => documents.map(doc => doc._id));
+
+  // provide internal selection management if not external
+  const [internalSelectedItems, internalOnSelectionChange] = useSelectionSet(() => documents.map(doc => doc._id));
+  const selectedItems = externalSelectedItems || internalSelectedItems;
+  const onSelectionChange = externalOnSelectionChange || internalOnSelectionChange;
 
   return (
     <div className={clsx(classes.container, className)} {...props}>
@@ -30,7 +34,9 @@ const DocumentList = ({ documents, className, ...props }) => {
 
 DocumentList.propTypes = {
   documents: PropTypes.array.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  selectedItems: PropTypes.object,
+  onSelectionChange: PropTypes.func
 };
 
 export default DocumentList;
