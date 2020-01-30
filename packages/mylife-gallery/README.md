@@ -2,10 +2,6 @@
 MyLife photo gallery
 
 # TODO:
- - album:
-   - album detail
-   - choose album thumbnails
-   - delete album
  - persons management
    - update firstName/lastName
    - choose thumbnails
