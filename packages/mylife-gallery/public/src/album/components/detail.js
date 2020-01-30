@@ -43,9 +43,6 @@ const useStyles = mui.makeStyles(theme => ({
       right: 0,
       bottom: 0,
     },
-  },
-  deleteButton: {
-//    margin: theme.spacing()
   }
 }));
 
@@ -145,7 +142,6 @@ const DeleteAlbum = () => {
         disableTypography
         primary={
           <DeleteButton
-            className={classes.deleteButton}
             tooltip={'Supprimer l\'album'}
             icon
             text='Supprimer'
