@@ -4,6 +4,10 @@ import { React, PropTypes, mui, immutable, useState, useEffect, useMemo } from '
 import { renderObject } from '../../common/metadata-utils';
 
 const useStyles = mui.makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    alignItems: 'center'
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column'
@@ -187,6 +191,7 @@ ObjectDisplay.propTypes = {
 };
 
 const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, objects, onSave, getObjectUsage }) => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const initialObjectUsage = useMemo(() => getObjectUsage(documents), [documents]);
@@ -211,15 +216,17 @@ const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, o
         onOpen={handleTooltipOpen}
         onClose={handleTooltipClose}
       >
-        <mui.IconButton onClick={handleOpen}>
-          {icon}
-        </mui.IconButton>
-      </mui.Tooltip>
+        <div className={classes.container}>
+          <mui.IconButton onClick={handleOpen}>
+            {icon}
+          </mui.IconButton>
 
-      <ObjectDisplay
-        objects={objects}
-        initialObjectUsage={initialObjectUsage}
-      />
+          <ObjectDisplay
+            objects={objects}
+            initialObjectUsage={initialObjectUsage}
+          />
+        </div>
+      </mui.Tooltip>
 
       <mui.Popper open={!!anchorEl} anchorEl={anchorEl}>
         <mui.ClickAwayListener onClickAway={handleClose}>
