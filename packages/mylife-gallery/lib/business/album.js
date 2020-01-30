@@ -16,6 +16,11 @@ exports.albumGet = (id) => {
   return albums.get(id);
 };
 
+exports.albumFind = (id) => {
+  const albums = getStoreCollection('albums');
+  return albums.find(id);
+};
+
 exports.albumIsThumbnailUsed = (thumbnailId) => {
   for(const album of getStoreCollection('albums')) {
     if(album.thumbnails.includes(thumbnailId)) {

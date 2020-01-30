@@ -171,9 +171,12 @@ function buildFilter(criteria) {
   if(criteria.albums) {
     const references = new Set();
     for(const albumId of criteria.albums) {
-      const album = business.albumGet(albumId);
-      for(const albumDocument of album.documents) {
-        references.add(`${albumDocument.type}:${albumDocument.id}`);
+      // provided albums may temporary not exist anymore
+      const album = business.albumFind(albumId);
+      if(album) {
+        for(const albumDocument of album.documents) {
+          references.add(`${albumDocument.type}:${albumDocument.id}`);
+        }
       }
     }
 
