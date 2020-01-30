@@ -35,10 +35,8 @@ const Header = ({ documents, selectedItems, onSelectionChange }) => {
     <mui.Toolbar className={classes.toolbar}>
       <mui.Checkbox checked={allSelected} indeterminate={someSelected && !allSelected} onChange={e => onAllChange(e.target.checked)} color='primary' />
       <div className={classes.separator} />
-      <mui.Typography>{'Albums'}</mui.Typography>
       <HeaderAlbums documents={selectedDocuments} />
       <div className={classes.separator} />
-      <mui.Typography>{'Personnes'}</mui.Typography>
       <HeaderPersons documents={selectedDocuments} />
       <div className={classes.separator} />
       <mui.Typography>{'Mots clés'}</mui.Typography>

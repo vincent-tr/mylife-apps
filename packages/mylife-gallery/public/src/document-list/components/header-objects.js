@@ -4,10 +4,6 @@ import { React, PropTypes, mui, immutable, useState, useEffect, useMemo } from '
 import { renderObject } from '../../common/metadata-utils';
 
 const useStyles = mui.makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    alignItems: 'center'
-  },
   menuButton: {
     margin: theme.spacing(1)
   },
@@ -207,7 +203,11 @@ const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, o
   };
 
   return (
-    <div className={classes.container}>
+    <>
+      <mui.Typography>
+        {title}
+      </mui.Typography>
+
       <mui.IconButton
         className={classes.menuButton}
         size='small'
@@ -234,7 +234,7 @@ const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, o
         objects={objects}
         initialObjectUsage={initialObjectUsage}
       />
-    </div>
+    </>
   );
 };
 
