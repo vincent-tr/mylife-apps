@@ -33,12 +33,12 @@ export default handleActions({
 
   [routing.actionTypes.LOCATION_CHANGE] : (state) => ({
     ...state,
-    showDetail: false
+    showDetail: true
   }),
 
 }, {
   albumId: null,
   albumViewId: null,
   documentViewId: null,
-  showDetail: false
+  showDetail: true
 });
