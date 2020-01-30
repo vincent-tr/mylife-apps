@@ -1,10 +1,10 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useSelector, useMemo, DebouncedTextField } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useDispatch, useSelector, useMemo, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
 import { getFieldName } from '../../common/metadata-utils';
 import { useKeywordView } from '../../common/keyword-view';
 import { THUMBNAIL_SIZE, ThumbnailAlbum } from '../../common/thumbnail';
-import { updateAlbum } from '../actions';
+import { updateAlbum, deleteAlbum } from '../actions';
 import { getAlbum } from '../selectors';
 
 const useConnect = () => {
@@ -15,6 +15,7 @@ const useConnect = () => {
     })),
     ...useMemo(() => ({
       updateAlbum: (album, values) => dispatch(updateAlbum(album, values)),
+      deleteAlbum: (album) => dispatch(deleteAlbum(album)),
     }), [dispatch])
   };
 };
@@ -42,6 +43,9 @@ const useStyles = mui.makeStyles(theme => ({
       right: 0,
       bottom: 0,
     },
+  },
+  deleteButton: {
+//    margin: theme.spacing()
   }
 }));
 
@@ -132,6 +136,28 @@ ThumbnailsField.propTypes = {
   selectedDocuments: PropTypes.array.isRequired
 };
 
+const DeleteAlbum = () => {
+  const classes = useStyles();
+  const { album, deleteAlbum } = useConnect();
+  return (
+    <mui.ListItem>
+      <mui.ListItemText
+        disableTypography
+        primary={
+          <DeleteButton
+            className={classes.deleteButton}
+            tooltip={'Supprimer l\'album'}
+            icon
+            text='Supprimer'
+            confirmText={`Etes-vous sûr de vouloir supprimer l'album '${album.title}' ?`}
+            onConfirmed={() => deleteAlbum(album)}
+          />
+        }
+      />
+    </mui.ListItem>
+  );
+};
+
 const Detail = React.forwardRef(({ selectedDocuments, ...props }, ref) => {
   const { album } = useConnect();
 
@@ -143,6 +169,7 @@ const Detail = React.forwardRef(({ selectedDocuments, ...props }, ref) => {
           <TextField field='caption' />
           <KeywordsField />
           <ThumbnailsField selectedDocuments={selectedDocuments} />
+          <DeleteAlbum />
         </>
       )}
     </mui.List>

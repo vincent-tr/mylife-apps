@@ -40,13 +40,13 @@ const clearDocuments = () => deleteView({
   setViewAction: local.setDocumentView
 });
 
-export const deleteAlbum = (id) => {
+export const deleteAlbum = (album) => {
   return async (dispatch) => {
 
     await dispatch(io.call({
       service: 'album',
       method: 'deleteAlbum',
-      id
+      id: album._id
     }));
 
   };
