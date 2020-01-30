@@ -167,6 +167,42 @@ function findPersonIndex(document, personId) {
   return document.persons.findIndex(id => id === personId);
 }
 
+exports.documentAddKeyword = (document, keyword) => {
+  const type = document._entity;
+  const documents = getDocumentStoreCollection(type);
+  const entity = getMetadataEntity(type);
+  const index = findKeywordIndex(document, keyword);
+  if(index !== -1) {
+    throw new Error('Le mot clé existe déjà sur le document');
+  }
+
+  const newKeywords = utils.immutable.arrayPush(document.keywords, keyword);
+  const newDocument = entity.getField('keywords').setValue(document, newKeywords);
+
+  logger.info(`Adding keyword '${keyword}' on document '${document._entity}:${document._id}'`);
+  documents.set(newDocument);
+};
+
+exports.documentRemoveKeyword = (document, keyword) => {
+  const type = document._entity;
+  const documents = getDocumentStoreCollection(type);
+  const entity = getMetadataEntity(type);
+  const index = findKeywordIndex(document, keyword);
+  if(index === -1) {
+    throw new Error('Le mot clé n\'existe pas sur le document');
+  }
+
+  const newKeywords = utils.immutable.arrayRemove(document.keywords, index);
+  const newDocument = entity.getField('keywords').setValue(document, newKeywords);
+
+  logger.info(`Removing keyword '$${keyword}' from document '${document._entity}:${document._id}'`);
+  documents.set(newDocument);
+};
+
+function findKeywordIndex(document, keyword) {
+  return document.keywords.indexOf(keyword);
+}
+
 exports.documentAddPath = (document, path, fileUpdateDate) => {
   logger.info(`Adding path '${path}' on document '${document._entity}:${document._id}'`);
 

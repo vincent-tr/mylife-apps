@@ -36,3 +36,15 @@ exports.removePersonToDocument = [ base, (session, message) => {
   const person = business.personGet(personId);
   return business.documentRemovePerson(document, person);
 } ];
+
+exports.addKeywordToDocument = [ base, (session, message) => {
+  const { type, id, keyword } = message;
+  const document = business.documentGet(type, id);
+  return business.documentAddKeyword(document, keyword);
+} ];
+
+exports.removeKeywordToDocument = [ base, (session, message) => {
+  const { type, id, keyword } = message;
+  const document = business.documentGet(type, id);
+  return business.documentRemoveKeyword(document, keyword);
+} ];
