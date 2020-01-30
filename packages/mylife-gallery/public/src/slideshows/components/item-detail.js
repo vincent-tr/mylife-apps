@@ -1,7 +1,6 @@
 'use strict';
 
 import { React, PropTypes, mui, useDispatch, useMemo, ListSelector, DebouncedSlider, DeleteButton } from 'mylife-tools-ui';
-import icons from '../../common/icons';
 import { updateSlideshow, deleteSlideshow } from '../actions';
 import AlbumList from './album-list';
 import AlbumAddButton from './album-add-button';
