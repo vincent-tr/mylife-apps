@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useSelector, useMemo, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
+import { React, PropTypes, mui, routing, useDispatch, useSelector, useMemo, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
 import { getFieldName } from '../../common/metadata-utils';
 import { useKeywordView } from '../../common/keyword-view';
 import { THUMBNAIL_SIZE, ThumbnailAlbum } from '../../common/thumbnail';
@@ -135,6 +135,14 @@ ThumbnailsField.propTypes = {
 
 const DeleteAlbum = () => {
   const { album, deleteAlbum } = useConnect();
+  const { navigate } = routing.useRoutingConnect();
+
+  const handleDelete = () => {
+    // navigate on delete because the album is not available right after
+    deleteAlbum(album);
+    navigate('/'); // goto home => album list
+  };
+
   return (
     <mui.ListItem>
       <mui.ListItemText
@@ -145,7 +153,7 @@ const DeleteAlbum = () => {
             icon
             text='Supprimer'
             confirmText={`Etes-vous sûr de vouloir supprimer l'album '${album.title}' ?`}
-            onConfirmed={() => deleteAlbum(album)}
+            onConfirmed={handleDelete}
           />
         }
       />
