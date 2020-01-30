@@ -2,16 +2,20 @@
 
 import { React, PropTypes, mui } from 'mylife-tools-ui';
 
-const useStyles = mui.makeStyles(theme => ({
-  // TODO: see Chip impl for colors
-  addIcon: {
-    color: 'rgba(0, 0, 0, 0.26)',
-    '&:hover': {
-      color: 'rgba(0, 0, 0, 0.54)'
-    },
-    marginRight: -theme.spacing(1)
-  }
-}));
+const useStyles = mui.makeStyles(theme => {
+  const iconColor = mui.fade(theme.palette.text.primary, 0.26);
+  return {
+    // like Chip impl
+    addIcon: {
+      color: iconColor,
+      '&:hover': {
+        color: mui.fade(iconColor, 0.4)
+      },
+      marginRight: -theme.spacing(1)
+    }
+
+  };
+});
 
 const HeaderKeywords = ({ documents }) => {
   const classes = useStyles();

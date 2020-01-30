@@ -8,6 +8,9 @@ const useStyles = mui.makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center'
   },
+  menuButton: {
+    margin: theme.spacing(1)
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column'
@@ -193,15 +196,10 @@ ObjectDisplay.propTypes = {
 const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, objects, onSave, getObjectUsage }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [tooltipOpen, setTooltipOpen] = useState(false);
   const initialObjectUsage = useMemo(() => getObjectUsage(documents), [documents]);
 
   const handleOpen = e => setAnchorEl(e.target);
   const handleClose = () => setAnchorEl(null);
-
-  const handleTooltipOpen = () => setTooltipOpen(true);
-  const handleTooltipClose = () => setTooltipOpen(false);
-  const isTooltipOpen = tooltipOpen && !anchorEl; // do not show tooltip when popup is shown
 
   const handleSave = (...args) => {
     onSave(...args);
@@ -209,24 +207,14 @@ const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, o
   };
 
   return (
-    <>
-      <mui.Tooltip
-        title={title}
-        open={isTooltipOpen}
-        onOpen={handleTooltipOpen}
-        onClose={handleTooltipClose}
+    <div className={classes.container}>
+      <mui.IconButton
+        className={classes.menuButton}
+        size='small'
+        onClick={handleOpen}
       >
-        <div className={classes.container}>
-          <mui.IconButton onClick={handleOpen}>
-            {icon}
-          </mui.IconButton>
-
-          <ObjectDisplay
-            objects={objects}
-            initialObjectUsage={initialObjectUsage}
-          />
-        </div>
-      </mui.Tooltip>
+        {icon}
+      </mui.IconButton>
 
       <mui.Popper open={!!anchorEl} anchorEl={anchorEl}>
         <mui.ClickAwayListener onClickAway={handleClose}>
@@ -241,7 +229,12 @@ const HeaderObjects = ({ title, newObject, newObjectRenderer, icon, documents, o
           />
         </mui.ClickAwayListener>
       </mui.Popper>
-    </>
+
+      <ObjectDisplay
+        objects={objects}
+        initialObjectUsage={initialObjectUsage}
+      />
+    </div>
   );
 };
 
