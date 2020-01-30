@@ -195,7 +195,3 @@ function sortDocumentReferences(references) {
 
   return refsWithDate.map(({ type, id}) => ({type, id }));
 }
-
-function removeIndexes(array, indexes) {
-
-}
