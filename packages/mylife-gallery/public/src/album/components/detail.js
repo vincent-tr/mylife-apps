@@ -24,6 +24,8 @@ const useStyles = mui.makeStyles(theme => ({
     // size + position
     height: THUMBNAIL_SIZE,
     width: THUMBNAIL_SIZE,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
 
     // border
     borderWidth: 1,
@@ -68,7 +70,7 @@ const TextField = ({ field }) => {
 
   return (
     <Field field={field}>
-      <DebouncedTextField value={value} onChange={onChanged} />
+      <DebouncedTextField value={value} onChange={onChanged} fullWidth />
     </Field>
   );
 };
