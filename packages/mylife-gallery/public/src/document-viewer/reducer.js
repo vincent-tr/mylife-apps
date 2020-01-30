@@ -10,11 +10,6 @@ export default handleActions({
     documentViewId: action.payload
   }),
 
-  [actionTypes.SET_KEYWORDS_VIEW] : (state, action) => ({
-    ...state,
-    keywordsViewId: action.payload
-  }),
-
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
     documentViewId: null,
@@ -22,6 +17,5 @@ export default handleActions({
   })
 
 }, {
-  documentViewId: null,
-  keywordsViewId: null
+  documentViewId: null
 });

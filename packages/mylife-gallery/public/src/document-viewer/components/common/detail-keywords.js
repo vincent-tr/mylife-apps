@@ -1,23 +1,15 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
-import { updateDocument, fetchKeywordsView, clearKeywordsView } from '../../actions';
-import { getKeywords } from '../../selectors';
+import { React, PropTypes, useMemo, mui, useDispatch } from 'mylife-tools-ui';
+import { updateDocument } from '../../actions';
 import { getFieldName } from '../../../common/metadata-utils';
-
+import { useKeywordView } from '../../../common/keyword-view';
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return {
-    ...useSelector(state => ({
-      keywords: getKeywords(state)
-    })),
-    ...useMemo(() => ({
-      updateDocument : (document, values) => dispatch(updateDocument(document, values)),
-      fetchKeywordsView : () => dispatch(fetchKeywordsView()),
-      clearView : () => dispatch(clearKeywordsView()),
-    }), [dispatch])
-  };
+  return useMemo(() => ({
+    updateDocument : (document, values) => dispatch(updateDocument(document, values)),
+  }), [dispatch]);
 };
 
 const ChipList = ({ values, onChange, list }) => (
@@ -50,8 +42,8 @@ ChipList.propTypes = {
 };
 
 const DetailKeywords = ({ document }) => {
-  const { updateDocument, keywords, fetchKeywordsView, clearView } = useConnect();
-  useLifecycle(fetchKeywordsView, clearView);
+  const { updateDocument } = useConnect();
+  const { keywords } = useKeywordView();
 
   const onChange = values => updateDocument(document, { keywords: values });
 
