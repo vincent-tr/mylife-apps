@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
 import DocumentList from '../../document-list/components';
@@ -43,12 +43,19 @@ const Album = ({ albumId }) => {
   const classes = useStyles();
   const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
+  const [selectedItems, onSelectionChange] = useSelectionSet(() => documents.map(doc => doc._id));
+  const selectedDocuments = useMemo(
+    () => documents
+      .filter(docWithInfo => selectedItems.has(docWithInfo._id))
+      .map(docWithInfo => docWithInfo.document),
+    [documents, selectedItems]
+  );
 
   return (
     <div className={classes.container}>
-      <DocumentList className={classes.list} documents={documents} />
+      <DocumentList className={classes.list} documents={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange} />
       <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>
-        <Detail className={classes.detail} />
+        <Detail className={classes.detail} selectedDocuments={selectedDocuments} />
       </mui.Slide>
     </div>
   );
