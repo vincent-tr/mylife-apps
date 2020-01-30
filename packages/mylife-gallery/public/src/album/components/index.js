@@ -30,7 +30,12 @@ const useStyles = mui.makeStyles({
   },
   detail: {
     width: 350,
-    overflowY: 'auto'
+    overflowY: 'auto',
+
+    // border
+    borderLeftWidth: 1,
+    borderLeftColor: mui.colors.grey[300],
+    borderLeftStyle: 'solid',
   },
 });
 
