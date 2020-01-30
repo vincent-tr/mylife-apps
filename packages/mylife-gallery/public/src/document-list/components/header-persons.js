@@ -99,7 +99,7 @@ const HeaderPersons = ({ documents }) => {
       newObjectRenderer={({ firstName, lastName }) => `${firstName} ${lastName}`}
       documents={documents}
       objects={persons}
-      onSave={data => savePersons(documents, data)}
+      onSave={data => savePersons(documents.map(docWithInfo => docWithInfo.document), data)}
       getObjectUsage={getInitialPersonUsage}
     />
   );

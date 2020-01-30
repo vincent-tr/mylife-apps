@@ -79,7 +79,7 @@ const HeaderAlbums = ({ documents }) => {
       newObjectRenderer={({ name }) => name}
       documents={documents}
       objects={albums}
-      onSave={data => saveAlbums(documents, data)}
+      onSave={data => saveAlbums(documents.map(docWithInfo => docWithInfo.document), data)}
       getObjectUsage={getInitialAlbumUsage}
     />
   );
