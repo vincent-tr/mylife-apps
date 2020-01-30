@@ -14,6 +14,7 @@ const useConnect = () => {
 
 const ChipList = ({ values, onChange, list }) => (
   <mui.Autocomplete
+    filterSelectedOptions
     multiple
     options={list}
     freeSolo
