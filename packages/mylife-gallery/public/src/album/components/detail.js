@@ -134,7 +134,6 @@ ThumbnailsField.propTypes = {
 };
 
 const DeleteAlbum = () => {
-  const classes = useStyles();
   const { album, deleteAlbum } = useConnect();
   return (
     <mui.ListItem>
