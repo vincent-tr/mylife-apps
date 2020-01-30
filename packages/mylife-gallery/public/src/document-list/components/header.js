@@ -10,8 +10,8 @@ const useStyles = mui.makeStyles(theme => ({
     backgroundColor: mui.colors.grey[300],
   },
   separator: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(4),
+    marginRight: theme.spacing(4),
     borderLeftWidth: 1,
     borderLeftStyle: 'solid',
     borderLeftColor: 'rgba(0, 0, 0, 0.3)',
@@ -39,7 +39,6 @@ const Header = ({ documents, selectedItems, onSelectionChange }) => {
       <div className={classes.separator} />
       <HeaderPersons documents={selectedDocuments} />
       <div className={classes.separator} />
-      <mui.Typography>{'Mots clés'}</mui.Typography>
       <HeaderKeywords documents={selectedDocuments} />
     </mui.Toolbar>
   );

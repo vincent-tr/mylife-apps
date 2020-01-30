@@ -22,35 +22,41 @@ const HeaderKeywords = ({ documents }) => {
   const values = ['vmot1', 'vmot2', 'vmot3'];
   const onChange = (values) => console.log(values);
   return (
-    <mui.Autocomplete
-      multiple
-      options={['mot1', 'mot2', 'mot3']}
-      freeSolo
-      disableClearable
-      renderTags={(values, getTagProps) =>
-        values.map((value, index) => (
-          <mui.Chip key={index} variant='outlined' label={
-            <>
-              {value}
-              <mui.Tooltip title={'Ajouter le mot clé à toute la sélection'}>
-                <mui.IconButton size='small' className={classes.addIcon}>
-                  <mui.icons.AddCircle />
-                </mui.IconButton>
-              </mui.Tooltip>
-            </>
-          } {...getTagProps({ index })} />
-        ))
-      }
-      renderInput={params => (
-        <mui.TextField
-          {...params}
-          placeholder='Mot clé'
-          fullWidth
-        />
-      )}
-      value={values}
-      onChange={(e, values) => onChange(values)}
-    />
+    <>
+      <mui.Typography>
+        {'Mots clés'}
+      </mui.Typography>
+      
+      <mui.Autocomplete
+        multiple
+        options={['mot1', 'mot2', 'mot3']}
+        freeSolo
+        disableClearable
+        renderTags={(values, getTagProps) =>
+          values.map((value, index) => (
+            <mui.Chip key={index} variant='outlined' label={
+              <>
+                {value}
+                <mui.Tooltip title={'Ajouter le mot clé à toute la sélection'}>
+                  <mui.IconButton size='small' className={classes.addIcon}>
+                    <mui.icons.AddCircle />
+                  </mui.IconButton>
+                </mui.Tooltip>
+              </>
+            } {...getTagProps({ index })} />
+          ))
+        }
+        renderInput={params => (
+          <mui.TextField
+            {...params}
+            placeholder='Mot clé'
+            fullWidth
+          />
+        )}
+        value={values}
+        onChange={(e, values) => onChange(values)}
+      />
+    </>
   );
 };
 
