@@ -18,9 +18,6 @@ MyLife photo gallery
    - Suggestion pour créer un script pour déplacer les fichiers dans des dossiers correspondant a l album si les fichiers sont dans un dossier commençant par _ (eg: \_ATrier)
    - Suggestion pour supprimer les albums vides
    - Suggestion pour supprimer document other avec loadingError (pour le re-sync)
- - browse (+liste album ?)
-   - sélection multiple dans liste de photo et
-     - mots clés
  - sync
    - date images foireuses ? 1/1/1970, 1980 ? timetamps bizarres ?
  - slideshow
