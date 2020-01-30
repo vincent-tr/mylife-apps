@@ -1,14 +1,24 @@
 'use strict';
 
-import { React, PropTypes, mui, immutable, useMemo } from 'mylife-tools-ui';
+import { React, PropTypes, mui, immutable, useMemo, useDispatch } from 'mylife-tools-ui';
 import { getFieldName } from '../../common/metadata-utils';
 import { useKeywordView } from '../../common/keyword-view';
+import { addKeywordToDocuments, removeKeywordFromDocuments } from '../actions';
+
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return useMemo(() => ({
+    addKeywordToDocuments: (documents, keyword) => dispatch(addKeywordToDocuments(documents, keyword)),
+    removeKeywordFromDocuments: (documents, keyword) => dispatch(removeKeywordFromDocuments(documents, keyword)),
+  }), [dispatch]);
+};
 
 const useStyles = mui.makeStyles(theme => {
   const iconColor = mui.fade(theme.palette.text.primary, 0.26);
   return {
     editor: {
-      marginLeft: theme.spacing(1)
+      marginLeft: theme.spacing(1),
+      minWidth: 200
     },
     addIcon: {
       // like Chip impl
@@ -58,15 +68,35 @@ Chip.propTypes = {
   onAdd: PropTypes.func.isRequired
 };
 
-const HeaderKeywords = ({ documents }) => {
+const HeaderKeywords = ({ documents: documentsWithInfo }) => {
   const classes = useStyles();
+  const { addKeywordToDocuments, removeKeywordFromDocuments } = useConnect();
+  const documents = useMemo(() => documentsWithInfo.map(docWithInfo => docWithInfo.document), [documentsWithInfo]);
   const keywordUsage = useMemo(() => getKeywordUsage(documents), [documents]);
   const list = useMemo(() => keywordUsage.keySeq().toArray(), [keywordUsage]);
   const { keywords: options } = useKeywordView();
 
-  console.log(keywordUsage);
-  const onValuesChange = (values) => console.log(values);
-  const onAddAll = (keyword) => console.log(keyword);
+  const onValuesChange = (newValues) => {
+    const { added, removed } = computeValueDiff(list, newValues);
+    // should only have one value, so no need to optimize the loop
+
+    for(const keyword of added) {
+      addKeywordToDocuments(documents, keyword);
+    }
+
+    for(const keyword of removed) {
+      // only remove on documents that had it
+      const usage = keywordUsage.get(keyword).toArray();
+      removeKeywordFromDocuments(usage, keyword);
+    }
+  };
+
+  const onAddAll = (keyword) => {
+    // only add on documents where it is not already
+    const usage = keywordUsage.get(keyword);
+    const targetDocuments = documents.filter(doc => !usage.has(doc));
+    addKeywordToDocuments(targetDocuments, keyword);
+  };
 
   return (
     <>
@@ -111,7 +141,7 @@ export default HeaderKeywords;
 
 function getKeywordUsage(documents) {
   const keywords = new Map();
-  for(const { document } of documents) {
+  for(const document of documents) {
     for(const keyword of document.keywords || []) {
       let documents = keywords.get(keyword);
       if(!documents) {
@@ -125,4 +155,26 @@ function getKeywordUsage(documents) {
   const entries = Array.from(keywords.entries());
   const setEntries = entries.map(([keyword, documents]) => [keyword, new immutable.Set(documents)]);
   return new immutable.Map(setEntries);
+}
+
+function computeValueDiff(oldValues, newValues) {
+  const oldValuesSet = new Set(oldValues);
+  const newValuesSet = new Set(newValues);
+
+  const added = [];
+  const removed = [];
+
+  for(const value of oldValues) {
+    if(!newValuesSet.has(value)) {
+      removed.push(value);
+    }
+  }
+
+  for(const value of newValues) {
+    if(!oldValuesSet.has(value)) {
+      added.push(value);
+    }
+  }
+
+  return { added, removed };
 }

@@ -132,3 +132,31 @@ export function savePersons(documents, { newObjects, objectsAdd, objectsRemove }
     dispatch(showSuccess('Modifications effectuées'));
   };
 }
+
+export function addKeywordToDocuments(documents, keyword) {
+  return async (dispatch) => {
+
+    for(const document of documents) {
+      await dispatch(io.call({
+        service: 'document',
+        method: 'addKeywordToDocument',
+        ... docRef(document),
+        keyword
+      }));
+    }
+
+  };}
+
+export function removeKeywordFromDocuments(documents, keyword) {
+  return async (dispatch) => {
+
+    for(const document of documents) {
+      await dispatch(io.call({
+        service: 'document',
+        method: 'removeKeywordToDocument',
+        ... docRef(document),
+        keyword
+      }));
+    }
+  };
+}
