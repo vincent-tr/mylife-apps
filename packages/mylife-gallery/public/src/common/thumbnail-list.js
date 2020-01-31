@@ -73,7 +73,7 @@ TextWithTooltipIfOveryflow.propTypes = {
 };
 
 
-const Tile = ({ data, index, selectable, getTileInfo }) => {
+const Tile = ({ data, index, showTileBar, selectable, getTileInfo }) => {
   const classes = useStyles();
   const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const { title, subtitle, thumbnail, onClick, selected, onSelect } = getTileInfo(data, index);
@@ -81,10 +81,12 @@ const Tile = ({ data, index, selectable, getTileInfo }) => {
   return (
     <mui.GridListTile classes={tileClasses} onClick={onClick}>
       {thumbnail}
-      <mui.GridListTileBar
-        title={<TextWithTooltipIfOveryflow text={title} />}
-        subtitle={<TextWithTooltipIfOveryflow text={subtitle} />}
-      />
+      {showTileBar && (
+        <mui.GridListTileBar
+          title={<TextWithTooltipIfOveryflow text={title} />}
+          subtitle={<TextWithTooltipIfOveryflow text={subtitle} />}
+        />
+      )}
       {selectable && (
         <mui.Checkbox
           checked={selected}
@@ -102,6 +104,7 @@ const Tile = ({ data, index, selectable, getTileInfo }) => {
 Tile.propTypes = {
   data: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
+  showTileBar: PropTypes.bool.isRequired,
   selectable: PropTypes.bool.isRequired,
   getTileInfo: PropTypes.func.isRequired
 };
@@ -130,7 +133,7 @@ GridList.propTypes = {
   className: PropTypes.string
 };
 
-const ThumbnailList = ({ className, data, selectable = false, getTileInfo }) => {
+const ThumbnailList = ({ className, data, showTileBar = false, selectable = false, getTileInfo }) => {
   const classes = useStyles();
 
   if(!data.length) {
@@ -150,7 +153,7 @@ const ThumbnailList = ({ className, data, selectable = false, getTileInfo }) => 
             overscan={200}
             ListContainer={GridList}
             ItemContainer={TileContainer}
-            item={index => (<Tile data={data} index={index} selectable={selectable} getTileInfo={getTileInfo} />)}
+            item={index => (<Tile data={data} index={index} showTileBar={showTileBar} selectable={selectable} getTileInfo={getTileInfo} />)}
             listClassName={classes.empty}
             itemClassName={classes.empty}
             style={{ height, width, overflowX: 'hidden' }} />
@@ -163,6 +166,7 @@ const ThumbnailList = ({ className, data, selectable = false, getTileInfo }) => 
 ThumbnailList.propTypes = {
   className: PropTypes.string,
   data: PropTypes.array.isRequired,
+  showTileBar: PropTypes.bool,
   selectable: PropTypes.bool,
   getTileInfo: PropTypes.func.isRequired
 };

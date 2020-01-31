@@ -5,7 +5,7 @@ import { ThumbnailAlbum } from '../../common/thumbnail';
 import ThumbnailList from '../../common/thumbnail-list';
 
 const List = ({ data, ...props }) => (
-  <ThumbnailList data={data} getTileInfo={getTileInfo} {...props} />
+  <ThumbnailList data={data} getTileInfo={getTileInfo} showTileBar {...props} />
 );
 
 List.propTypes = {

@@ -3,12 +3,32 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import { renderObject } from '../../common/metadata-utils';
 import ThumbnailList from '../../common/thumbnail-list';
-import { ThumbnailMono } from '../../common/thumbnail';
+import { ThumbnailMono, THUMBNAIL_SIZE } from '../../common/thumbnail';
 
 const useStyles = mui.makeStyles({
   content: {
-    height: '60vh'
-  }
+    height: '60vh',
+    display: 'flex',
+  },
+  list: {
+    flex: '1 1 auto'
+  },
+  thumbnail: {
+    // size + position
+    height: THUMBNAIL_SIZE,
+    width: THUMBNAIL_SIZE,
+
+    // inner img positionning
+    position: 'relative',
+    '& > img': {
+      position: 'absolute',
+      margin: 'auto',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    }
+  },
 });
 
 const ThumbnailSelectorDialog = ({ options, show, proceed }) => {
@@ -21,7 +41,7 @@ const ThumbnailSelectorDialog = ({ options, show, proceed }) => {
   const getTileInfo = (data, index) => {
     const thumbnail = data[index];
     const onClick = () => proceed({ result: 'ok', thumbnail });
-    const thumbnailNode = (<ThumbnailMono thumbnail={thumbnail} />);
+    const thumbnailNode = (<ThumbnailMono thumbnail={thumbnail} className={classes.thumbnail}/>);
 
     return { thumbnail: thumbnailNode, onClick };
   };
@@ -33,7 +53,7 @@ const ThumbnailSelectorDialog = ({ options, show, proceed }) => {
       </mui.DialogTitle>
 
       <mui.DialogContent dividers className={classes.content}>
-        <ThumbnailList data={thumbnails} getTileInfo={getTileInfo}/>
+        <ThumbnailList data={thumbnails} getTileInfo={getTileInfo} className={classes.list} />
       </mui.DialogContent>
 
       <mui.DialogActions>

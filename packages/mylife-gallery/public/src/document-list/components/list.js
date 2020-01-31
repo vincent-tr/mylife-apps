@@ -20,7 +20,7 @@ const List = ({ data, selectedItems, onSelectionChange, ...props }) => {
     };
 
   return (
-    <ThumbnailList data={data} selectable={selectable} getTileInfo={getTileInfo} {...props} />
+    <ThumbnailList data={data} selectable={selectable} getTileInfo={getTileInfo} showTileBar {...props} />
   );
 };
 
