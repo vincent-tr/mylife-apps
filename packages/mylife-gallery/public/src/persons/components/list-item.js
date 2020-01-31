@@ -2,13 +2,10 @@
 
 import { React, PropTypes, mui, useDispatch, useMemo, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
 import { renderObject } from '../../common/metadata-utils';
-import { ThumbnailPerson } from '../../common/thumbnail';
+import { ThumbnailPerson, THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { updatePerson, deletePerson } from '../actions';
 
 const useStyles = mui.makeStyles(theme => ({
-  panel: {
-    width: '100%',
-  },
   container: {
     width: '100%',
     maxWidth: 900,
@@ -25,8 +22,34 @@ const useStyles = mui.makeStyles(theme => ({
   editor: {
     width: 200
   },
-  runButton: {
-    marginTop: theme.spacing(8)
+  thumbnail: {
+    // size + position
+    height: THUMBNAIL_SIZE,
+    width: THUMBNAIL_SIZE,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+
+    // border
+    borderWidth: 1,
+    borderColor: mui.colors.grey[300],
+    borderStyle: 'solid',
+
+    // cursor
+    cursor: 'pointer',
+
+    // inner img positionning
+    position: 'relative',
+    '& > img': {
+      position: 'absolute',
+      margin: 'auto',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    }
+  },
+  deleteButton: {
+    marginTop: theme.spacing(4)
   }
 }));
 
@@ -48,30 +71,34 @@ const ListItem = ({ person, ...props }) => {
 
   return (
     <mui.ListItem {...props}>
-      <mui.Grid container spacing={2} className={classes.grid}>
-        <mui.Grid item xs={6}>
-          <mui.Typography>Prénom</mui.Typography>
+      <mui.Paper variant='outlined' className={classes.container}>
+        <mui.Grid container spacing={2} className={classes.grid}>
+          <mui.Grid item xs={6}>
+            <mui.Typography>Prénom</mui.Typography>
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <DebouncedTextField value={person.firstName} onChange={(value) => onUpdate('firstName', value)} className={classes.editor} />
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <mui.Typography>Nom</mui.Typography>
+          </mui.Grid>
+          <mui.Grid item xs={6}>
+            <DebouncedTextField value={person.lastName} onChange={(value) => onUpdate('lastName', value)} className={classes.editor} />
+          </mui.Grid>
+          <mui.Grid item xs={12} container>
+            <DeleteButton
+              className={classes.deleteButton}
+              tooltip={'Supprimer la personne'}
+              icon
+              text='Supprimer'
+              confirmText={`Etes-vous sûr de vouloir supprimer la personne '${renderObject(person)}' ?`}
+              onConfirmed={onDelete}
+            />
+          </mui.Grid>
         </mui.Grid>
-        <mui.Grid item xs={6}>
-          <DebouncedTextField value={person.firstName} onChange={(value) => onUpdate('firstName', value)} className={classes.editor} />
-        </mui.Grid>
-        <mui.Grid item xs={6}>
-          <mui.Typography>Nom</mui.Typography>
-        </mui.Grid>
-        <mui.Grid item xs={6}>
-          <DebouncedTextField value={person.lastName} onChange={(value) => onUpdate('lastName', value)} className={classes.editor} />
-        </mui.Grid>
-        <mui.Grid item xs={12} justify='center' container>
-          <DeleteButton
-            tooltip={'Supprimer la personne'}
-            icon
-            text='Supprimer'
-            confirmText={`Etes-vous sûr de vouloir supprimer la personne '${renderObject(person)}' ?`}
-            onConfirmed={onDelete}
-          />
-        </mui.Grid>
-      </mui.Grid>
-      <ThumbnailPerson person={person} />
+
+        <ThumbnailPerson person={person} className={classes.thumbnail} onClick={() => console.log('SELECT thumbnail')} />
+      </mui.Paper>
     </mui.ListItem>
   );
 };
