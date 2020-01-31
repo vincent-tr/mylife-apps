@@ -15,6 +15,7 @@ import Stats from './stats/components';
 import Album from './album/components';
 import AlbumTitle from './album/components/title';
 import AlbumAdditionalHeader from './album/components/additional-header';
+import Persons from './persons/components';
 
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);
@@ -26,6 +27,7 @@ const routes = [
   { location: '/slideshows', name: 'Diaporamas', icon: icons.menu.Slideshows, renderer: () => <Slideshows /> },
   { location: '/slideshow/:slideshowId', name: (<SlideshowTitle />), icon: icons.menu.Slideshows, renderer: ({ slideshowId }) => <Slideshow slideshowId={slideshowId} />},
   { location: '/browse', name: 'Parcourir', icon: icons.menu.Browse, renderer: () => <Browse /> },
+  { location: '/persons', name: 'Personnes', icon: icons.menu.Person, renderer: () => <Persons /> },
   { location: '/suggestions', name: 'Suggestions', icon: icons.menu.Suggestions, renderer: () => <Suggestions /> },
   { location: '/stats', name: 'Statistics', icon: icons.menu.Stats, renderer: () => <Stats /> },
 ];
@@ -34,6 +36,7 @@ const routes = [
 const menu = [
   { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows' },
   { id: 'browse', text: 'Parcourir', icon: icons.menu.Browse, location: '/browse' },
+  { id: 'persons', text: 'Personnes', icon: icons.menu.Person, location: '/persons' },
   { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions' },
   { id: 'stats', text: 'Statistics', icon: icons.menu.Stats, location: '/stats' },
 ];
