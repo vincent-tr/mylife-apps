@@ -58,7 +58,7 @@ class SuggestionView extends StoreContainer {
     }
 
     const albums = getStoreCollection('albums');
-    const subscription = new business.CollectionSubscription(this, albums, () => this._refreshAlbumCreations());
+    const subscription = new business.CollectionSubscription(this, albums, () => this.onAlbumsChange());
     this.subscriptions.push(subscription);
   }
 
@@ -74,14 +74,26 @@ class SuggestionView extends StoreContainer {
 
   refresh() {
     this.onCollectionChange();
+    this.onAlbumsChange();
   }
 
   onCollectionChange() {
     this._lastIntegration = findLastIntegration();
+
     this._refreshWarnSyncing();
     this._refreshCleanOthers();
     this._refreshCleanDuplicates();
     this._refreshAlbumCreations();
+    this._refreshDeleteLoadingErrors();
+    this._refreshDocumentsWithoutAlbum();
+    this._refreshSortDocumentRoots();
+  }
+
+  onAlbumsChange() {
+    this._refreshAlbumCreations();
+    this._refreshCleanEmptyAlbums();
+    this._refreshDocumentsWithoutAlbum();
+    this._refreshSortDocumentRoots();
   }
 
   _refreshWarnSyncing() {
@@ -181,6 +193,132 @@ class SuggestionView extends StoreContainer {
     // add/replace new suggestions
     for(const { root, count } of candidateRoots) {
       this._set(this.entity.newObject({ _id: `album-creation!${root}`, type: 'album-creation', definition: { root, count } }));
+    }
+  }
+
+  _refreshDeleteLoadingErrors() {
+    const count = this.collections['other'].filter(doc => doc.loadingError).length;
+    if(count) {
+      this._set(this.entity.newObject({ _id: 'delete-loading-errors', type: 'delete-loading-errors', definition: { count } }));
+    } else {
+      this._delete('delete-loading-errors');
+    }
+  }
+
+  _refreshCleanEmptyAlbums() {
+    const emptyAlbums = getStoreCollection('albums').filter(album => album.documents.length === 0);
+
+    // remove outdates suggestions
+    const idSet = new Set(emptyAlbums.map(album => album._id));
+    for(const suggestion of this.list()) {
+      if(suggestion.type === 'clean-empty-album' && !idSet.has(suggestion.definition.id)) {
+        this._delete(suggestion._id);
+      }
+    }
+
+    // add/replace new suggestions
+    for(const album of emptyAlbums) {
+      const id = album._id;
+      this._set(this.entity.newObject({ _id: `clean-empty-album!${id}`, type: 'clean-empty-album', definition: { id, name: album.name } }));
+    }
+  }
+
+  _refreshDocumentsWithoutAlbum() {
+    const documents = new Map();
+
+    // map documents
+    for(const collection of Object.values(this.collections)) {
+      for(const document of collection.list()) {
+        const type = document._entity;
+        const id = document._id;
+        documents.set(`${type}!${id}`, { type, id });
+      }
+    }
+
+    // remove all documents that have album
+    for(const album of getStoreCollection('albums').list()) {
+      for(const docref of album.documents) {
+        documents.delete(`${docref.type}!${docref.id}`);
+      }
+    }
+
+    // show remaining
+    const count = documents.size;
+    if(count) {
+      this._set(this.entity.newObject({ _id: 'documents-without-album', type: 'documents-without-album', definition: { count } }));
+    } else {
+      this._delete('documents-without-album');
+    }
+  }
+
+  _refreshSortDocumentRoots() {
+    // for each root, show
+    // - x documents to sort (=without album)
+    // - x documents to move (=with album)
+
+    const documents = new Map();
+
+    // map documents
+    for(const collection of Object.values(this.collections)) {
+      for(const document of collection.list()) {
+        const type = document._entity;
+        const id = document._id;
+        documents.set(`${type}!${id}`, { type, id, roots: document.paths.map(getRootPath), hasAlbum: false });
+      }
+    }
+
+    // set flag on document that have albums
+    for(const album of getStoreCollection('albums').list()) {
+      for(const docref of album.documents) {
+        const document = documents.get(`${docref.type}!${docref.id}`);
+        document.hasAlbum = true;
+      }
+    }
+
+    // sort them by root directory
+    const roots = new Map();
+    for(const document of documents.values()) {
+      for(const root of document.roots) {
+        let list = roots.get(root);
+        if(!list) {
+          list = [];
+          roots.set(root, list);
+        }
+
+        list.push(document);
+      }
+    }
+
+    // select candidate roots
+    const finalRoots = new Map();
+    for(const [root, documents] of roots.entries()) {
+      if(!root.startsWith(ROOT_PREFIX_TODO)) {
+        continue;
+      }
+
+      let movableCount = 0;
+      let sortableCount = 0;
+      for(const { hasAlbum } of documents) {
+        if(hasAlbum) {
+          ++movableCount;
+        } else {
+          ++sortableCount;
+        }
+      }
+
+      finalRoots.set(root, { movableCount, sortableCount });
+    }
+
+    // remove outdates suggestions
+    for(const suggestion of this.list()) {
+      if(suggestion.type === 'sort-document-root' && !finalRoots.get(suggestion.definition.root)) {
+        this._delete(suggestion._id);
+      }
+    }
+
+    // add/replace new suggestions
+    for(const [root, counts] of finalRoots.entries()) {
+      this._set(this.entity.newObject({ _id: `sort-document-root!${root}`, type: 'sort-document-root', definition: { root, ... counts } }));
     }
   }
 }
