@@ -30,7 +30,7 @@ exports.documentListByPerson = (person) => {
   const collections = [getStoreCollection('images'), getStoreCollection('videos')];
   for(const collection of collections) {
     for(const document of collection.list()) {
-      if(document.persons.inclues(person._id)) {
+      if(document.persons.includes(person._id)) {
         list.push(document);
       }
     }
