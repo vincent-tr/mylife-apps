@@ -4,6 +4,7 @@ import React, {useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography, makeStyles } from '@material-ui/core';
 import { Delete as DeleteIcon } from '@material-ui/icons';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed }) => {
+const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed, className, ...props }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -40,15 +41,16 @@ const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText =
   let button = text ? (
     <Button
       variant='contained'
-      className={classes.button}
+      className={clsx(classes.button, className)}
       onClick={handleButtonClick}
       startIcon={icon ? <DeleteIcon /> : null}
+      {...props}
     >
       {text}
     </Button>
   ) : (
     <IconButton
-      className={classes.button}
+      className={clsx(classes.button, className)}
       onClick={handleButtonClick}
     >
       <DeleteIcon />
@@ -89,7 +91,8 @@ DeleteButton.propTypes = {
   text: PropTypes.string,
   tooltip: PropTypes.string,
   confirmText: PropTypes.string,
-  onConfirmed: PropTypes.func
+  onConfirmed: PropTypes.func,
+  className: PropTypes.string,
 };
 
 export default DeleteButton;
