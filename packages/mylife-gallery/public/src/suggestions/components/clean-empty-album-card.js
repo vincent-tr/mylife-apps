@@ -7,10 +7,10 @@ import CardBase from './card-base';
 const CleanEmptyAlbumCard = ({ definition, ...props }) => {
   return (
     <CardBase
-      title={'Album vide'}
-      description={`${definition.title} à supprimer`}
+      title={definition.title}
+      description={'Album vide'}
       actions={
-        <mui.Button size='small' onClick={() => console.log('showDialog')}>Nettoyer</mui.Button>
+        <mui.Button size='small' onClick={() => console.log('showDialog')}>{'Supprimer l\'album'}</mui.Button>
       }
       {...props}
     />
