@@ -23,6 +23,12 @@ exports.createPersonFromDocuments = [ base, (session, message) => {
   return person._id;
 } ];
 
+exports.createPerson = [ base, (session, message) => {
+  const { firstName, lastName } = message;
+  const person = business.personCreate({ firstName, lastName });
+  return person._id;
+} ];
+
 exports.deletePerson = [ base, (session, message) => {
   const { id } = message;
   const person = business.personGet(id);
