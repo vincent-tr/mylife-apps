@@ -36,6 +36,17 @@ exports.suggestionCleanDuplicatesList = () => {
   return business.documentList().filter(doc => doc.paths.length > 1);
 };
 
+exports.suggestionDeleteEmptyAlbum = (id) => {
+  // only delete it if empty
+  const album = business.albumGet(id);
+  if(album.documents.length > 0) {
+    return false;
+  }
+
+  business.albumDelete(album);
+  return true;
+};
+
 class SuggestionView extends StoreContainer {
   constructor() {
     super();

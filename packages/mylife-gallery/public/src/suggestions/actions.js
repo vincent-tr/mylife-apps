@@ -45,6 +45,21 @@ export function createAlbum(root) {
   };
 }
 
+export function deleteEmptyAlbum(id) {
+  return async (dispatch) => {
+
+    const deleted = await dispatch(io.call({
+      service: 'suggestion',
+      method: 'deleteEmptyAlbum',
+      id
+    }));
+
+    if(deleted) {
+      dispatch(local.showSuccess('Album supprimé'));
+    }
+  };
+}
+
 export const enterCleanOthersDialog = () => async (dispatch) => {
   const documents = await dispatch(io.call({
     service: 'suggestion',
@@ -63,7 +78,6 @@ export const enterCleanDuplicatesDialog = () => async (dispatch) => {
 
   dispatch(local.setCleanDocuments(documents));
 };
-
 
 export const leaveCleanDialog = () => async (dispatch) => {
   dispatch(local.setCleanDocuments(null));

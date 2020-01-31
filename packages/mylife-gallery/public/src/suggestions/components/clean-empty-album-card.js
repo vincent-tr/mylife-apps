@@ -1,16 +1,30 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
-//import { showDialog } from './dialogs/clean-others-dialog';
+import { React, PropTypes, useDispatch, useMemo, DeleteButton } from 'mylife-tools-ui';
+import { deleteEmptyAlbum } from '../actions';
 import CardBase from './card-base';
 
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return useMemo(() => ({
+    deleteEmptyAlbum : (id) => dispatch(deleteEmptyAlbum(id))
+  }), [dispatch]);
+};
+
 const CleanEmptyAlbumCard = ({ definition, ...props }) => {
+  const { deleteEmptyAlbum } = useConnect();
   return (
     <CardBase
       title={definition.title}
       description={'Album vide'}
       actions={
-        <mui.Button size='small' onClick={() => console.log('showDialog')}>{'Supprimer l\'album'}</mui.Button>
+        <DeleteButton
+          tooltip={'Supprimer l\'album'}
+          icon
+          text='Supprimer'
+          confirmText={`Etes-vous sûr de vouloir supprimer l'album '${definition.title}' ?`}
+          onConfirmed={() => deleteEmptyAlbum(definition.id)}
+        />
       }
       {...props}
     />

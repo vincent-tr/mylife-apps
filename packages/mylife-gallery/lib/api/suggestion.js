@@ -23,3 +23,8 @@ exports.cleanOthersList = [ base, (/*session, message*/) => {
 exports.cleanDuplicatesList = [ base, (/*session, message*/) => {
   return business.suggestionCleanDuplicatesList();
 } ];
+
+exports.deleteEmptyAlbum = [ base, (session, message) => {
+  const { id } = message;
+  return business.suggestionDeleteEmptyAlbum(id);
+} ];
