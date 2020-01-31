@@ -2,10 +2,6 @@
 MyLife photo gallery
 
 # TODO:
- - persons management
-   - update firstName/lastName
-   - choose thumbnails
-   - delete person
  - suggestions:
    - Suggestion pour ajouter un document a un album s'il n'a pas d album et que l'abum correspondant au root existe deja (genre un doc qu on aurait sorti d un album), sauf si le dossier commence par _
    - Suggestion pour montrer les documents sans album
