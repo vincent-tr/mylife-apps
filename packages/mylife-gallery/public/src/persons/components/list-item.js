@@ -4,6 +4,7 @@ import { React, PropTypes, mui, useDispatch, useMemo, DebouncedTextField, Delete
 import { renderObject } from '../../common/metadata-utils';
 import { ThumbnailPerson, THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { updatePerson, deletePerson } from '../actions';
+import { thumbnailSelectorDialog } from './thumbnail-selector-dialog';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -69,6 +70,15 @@ const ListItem = ({ person, ...props }) => {
   const onUpdate = (prop, value) => updatePerson(person, { [prop]: value });
   const onDelete = () => deletePerson(person._id);
 
+  const onChangeThumbnail = async () => {
+    const { result, thumbnail } = await thumbnailSelectorDialog(person);
+    if(result !== 'ok') {
+      return;
+    }
+
+    updatePerson(person, { thumbnails: [thumbnail] });
+  };
+
   return (
     <mui.ListItem {...props}>
       <mui.Paper variant='outlined' className={classes.container}>
@@ -97,7 +107,7 @@ const ListItem = ({ person, ...props }) => {
           </mui.Grid>
         </mui.Grid>
 
-        <ThumbnailPerson person={person} className={classes.thumbnail} onClick={() => console.log('SELECT thumbnail')} />
+        <ThumbnailPerson person={person} className={classes.thumbnail} onClick={onChangeThumbnail} />
       </mui.Paper>
     </mui.ListItem>
   );
