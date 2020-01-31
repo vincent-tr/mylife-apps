@@ -62,7 +62,6 @@ LeftRightSlide.propTypes = {
 
 const transitions = {
   none: { wrapper: NoTransition },
-  collapse: { wrapper: NoTransition }, // TODO: does not work as-this {  wrapper: Transition, component: mui.Collapse, props: { in: true, timeout: TRANSITION_TIMEOUT } },
   fade: { wrapper: Transition, component: mui.Fade },
   grow: {  wrapper: Transition, component: mui.Grow },
   slide: {  wrapper: Transition, component: LeftRightSlide },

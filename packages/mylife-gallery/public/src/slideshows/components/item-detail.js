@@ -45,7 +45,6 @@ const orders = [
 
 const transitions = [
   { id: 'none', text: 'Aucune' },
-  { id: 'collapse', text: 'Réduction (collapse)' },
   { id: 'fade', text: 'Fondu au noir (fade)' },
   { id: 'grow', text: 'Agrandissement et fondu enchainée (grow)' },
   { id: 'slide', text: 'Défilement (slide)' },

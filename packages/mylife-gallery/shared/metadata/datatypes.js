@@ -40,5 +40,5 @@ module.exports = [
     ]
   },
   { id: 'slideshow-style-order', enum: ['ordered', 'random'] },
-  { id: 'slideshow-style-transition', enum: ['none', 'collapse', 'fade', 'grow', 'slide', 'zoom'] },
+  { id: 'slideshow-style-transition', enum: ['none', 'fade', 'grow', 'slide', 'zoom'] },
 ];
