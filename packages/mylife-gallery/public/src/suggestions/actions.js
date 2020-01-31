@@ -84,4 +84,4 @@ export const leaveCleanDialog = () => async (dispatch) => {
   dispatch(local.setCleanDocuments(null));
 };
 
-export const browseDocumentsWithoutAlbum = () => browse.changeCriteria({ noAlbum: true });
+export const browseWithCriteria = (criteria) => browse.changeCriteria(criteria);
