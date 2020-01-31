@@ -56,12 +56,10 @@ const useStyles = mui.makeStyles(theme => ({
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return {
-    ...useMemo(() => ({
-      updatePerson: (person, values) => dispatch(updatePerson(person, values)),
-      deletePerson: (id) => dispatch(deletePerson(id)),
-    }), [dispatch])
-  };
+  return useMemo(() => ({
+    updatePerson: (person, values) => dispatch(updatePerson(person, values)),
+    deletePerson: (id) => dispatch(deletePerson(id)),
+  }), [dispatch]);
 };
 
 const ListItem = ({ person, ...props }) => {
