@@ -1,6 +1,13 @@
 'use strict';
 
-import { io } from 'mylife-tools-ui';
+import { io, createAction } from 'mylife-tools-ui';
+import { createOrUpdateView, deleteView } from '../common/action-tools';
+import actionTypes from './action-types';
+import { getSelectorViewId } from './selectors';
+
+const local = {
+  setSelectorView: createAction(actionTypes.SET_SELECTOR_VIEW),
+};
 
 export const createPerson = (firstName, lastName) => {
   return async (dispatch) => {
@@ -35,3 +42,16 @@ export const updatePerson = (person, values) => {
     }));
   };
 };
+
+export const enterSelector = (personId) => createOrUpdateView({
+  criteriaSelector: () => ({ criteria: { persons: [personId] } }),
+  viewSelector: getSelectorViewId,
+  setViewAction: local.setSelectorView,
+  service: 'document',
+  method: 'notifyDocumentsWithInfo'
+});
+
+export const leaveSelector = () => deleteView({
+  viewSelector: getSelectorViewId,
+  setViewAction: local.setSelectorView
+});
