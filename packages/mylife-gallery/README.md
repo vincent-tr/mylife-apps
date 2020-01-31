@@ -3,7 +3,6 @@ MyLife photo gallery
 
 # TODO:
  - suggestions:
-   - x Suggestion pour montrer les documents sans album
    - x Suggestion pour montrer les roots qui commence par _
    - x Suggestion pour supprimer document other avec loadingError (pour le re-sync)
    - Suggestion pour ajouter un document a un album s'il n'a pas d album et que l'abum correspondant au root existe deja (genre un doc qu on aurait sorti d un album), sauf si le dossier commence par _

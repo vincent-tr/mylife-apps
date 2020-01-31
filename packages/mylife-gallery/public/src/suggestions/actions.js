@@ -4,6 +4,7 @@ import { io, createAction, dialogs } from 'mylife-tools-ui';
 import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
+import * as browse from '../browse/actions'; // import browse action to drive browse criteria on open
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
@@ -82,3 +83,5 @@ export const enterCleanDuplicatesDialog = () => async (dispatch) => {
 export const leaveCleanDialog = () => async (dispatch) => {
   dispatch(local.setCleanDocuments(null));
 };
+
+export const browseDocumentsWithoutAlbum = () => browse.changeCriteria({ noAlbum: true });
