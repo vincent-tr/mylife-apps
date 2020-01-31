@@ -1,9 +1,24 @@
 'use strict';
 
-import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
+import { React, PropTypes, mui, dialogs, useLifecycle, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
 import { renderObject } from '../../common/metadata-utils';
 import ThumbnailList from '../../common/thumbnail-list';
 import { ThumbnailMono, THUMBNAIL_SIZE } from '../../common/thumbnail';
+import { getSelectorView } from '../selectors';
+import { enterSelector, leaveSelector } from '../actions';
+
+const useConnect = () => {
+  const dispatch = useDispatch();
+  return {
+    ...useSelector(state => ({
+      documentView: getSelectorView(state)
+    })),
+    ...useMemo(() => ({
+      enterSelector: (personId) => dispatch(enterSelector(personId)),
+      leaveSelector: () => dispatch(leaveSelector()),
+    }), [dispatch])
+  };
+};
 
 const useStyles = mui.makeStyles({
   content: {
@@ -34,7 +49,10 @@ const useStyles = mui.makeStyles({
 const ThumbnailSelectorDialog = ({ options, show, proceed }) => {
   const classes = useStyles();
   const { person } = options;
-  const { thumbnails } = person; // TODO
+  const { enterSelector, leaveSelector, documentView } = useConnect();
+  useLifecycle(() => enterSelector(person._id), leaveSelector);
+
+  const thumbnails = useMemo(() => extractThumbnails(documentView), [documentView]);
 
   const handleCancel = () => proceed({ result: 'cancel' });
 
@@ -72,3 +90,25 @@ ThumbnailSelectorDialog.propTypes = {
 const showDialog = dialogs.create(ThumbnailSelectorDialog);
 
 export const thumbnailSelectorDialog = async (person) => showDialog({ options: { person } });
+
+function extractThumbnails(documentView) {
+  const thumbnails = [];
+  for(const { document } of documentView.values()) {
+    switch(document._entity) {
+
+      case 'image': {
+        thumbnails.push(document.thumbnail);
+        break;
+      }
+
+      case 'video': {
+        for(const thumbnail of document.thumbnails) {
+          thumbnails.push(thumbnail);
+        }
+        break;
+      }
+
+    }
+  }
+  return thumbnails;
+}
