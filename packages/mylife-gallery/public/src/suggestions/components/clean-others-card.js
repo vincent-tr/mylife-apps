@@ -10,7 +10,7 @@ const CleanOthersCard = ({ definition, ...props }) => {
       title={'Documents \'autres\''}
       description={`${definition.count} documents à nettoyer`}
       actions={
-        <mui.Button size='small' onClick={showDialog}>Nettoyer</mui.Button>
+        <mui.Button size='small' onClick={showDialog}>Créer un script</mui.Button>
       }
       {...props}
     />

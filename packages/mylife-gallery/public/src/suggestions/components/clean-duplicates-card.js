@@ -10,7 +10,7 @@ const CleanDuplicatesCard = ({ definition, ...props }) => {
       title={'Documents en doublons'}
       description={`${definition.count} documents à nettoyer`}
       actions={
-        <mui.Button size='small' onClick={showDialog}>Nettoyer</mui.Button>
+        <mui.Button size='small' onClick={showDialog}>Créer un script</mui.Button>
       }
       {...props}
     />
