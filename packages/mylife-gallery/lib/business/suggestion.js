@@ -219,7 +219,7 @@ class SuggestionView extends StoreContainer {
     // add/replace new suggestions
     for(const album of emptyAlbums) {
       const id = album._id;
-      this._set(this.entity.newObject({ _id: `clean-empty-album!${id}`, type: 'clean-empty-album', definition: { id, name: album.name } }));
+      this._set(this.entity.newObject({ _id: `clean-empty-album!${id}`, type: 'clean-empty-album', definition: { id, title: album.title } }));
     }
   }
 

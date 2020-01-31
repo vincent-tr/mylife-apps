@@ -7,6 +7,10 @@ import WarnSyncingCard from './warn-syncing-card';
 import CleanOthersCard from './clean-others-card';
 import CleanDuplicatesCard from './clean-duplicates-card';
 import AlbumCreationCard from './album-creation-card';
+import SortDocumentRootCard from './sort-document-root-card';
+import DocumentsWithoutAlbumCard from './documents-without-album-card';
+import DeleteLoadingErrorsCard from './delete-loading-errors-card';
+import CleanEmptyAlbumCard from './clean-empty-album-card';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -48,6 +52,14 @@ const SuggestionCard = ({ suggestion, ...props }) => {
       return (<CleanDuplicatesCard definition={suggestion.definition} {...props} />);
     case 'album-creation':
       return (<AlbumCreationCard definition={suggestion.definition} {...props} />);
+    case 'sort-document-root':
+      return (<SortDocumentRootCard definition={suggestion.definition} {...props} />);
+    case 'documents-without-album':
+      return (<DocumentsWithoutAlbumCard definition={suggestion.definition} {...props} />);
+    case 'delete-loading-errors':
+      return (<DeleteLoadingErrorsCard definition={suggestion.definition} {...props} />);
+    case 'clean-empty-album':
+      return (<CleanEmptyAlbumCard definition={suggestion.definition} {...props} />);
     default:
       throw new Error(`Unsupported suggestion type: '${suggestion.type}'`);
   }
