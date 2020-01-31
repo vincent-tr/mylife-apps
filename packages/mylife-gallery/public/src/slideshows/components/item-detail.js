@@ -1,10 +1,11 @@
 'use strict';
 
 import { React, PropTypes, mui, useDispatch, useMemo, ListSelector, DebouncedSlider, DeleteButton } from 'mylife-tools-ui';
+import { renderObject } from '../../common/metadata-utils';
+import { THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { updateSlideshow, deleteSlideshow } from '../actions';
 import AlbumList from './album-list';
 import AlbumAddButton from './album-add-button';
-import { THUMBNAIL_SIZE } from '../../common/thumbnail';
 
 const borderWidth = 1;
 
@@ -96,7 +97,7 @@ const ItemDetail = ({ slideshow }) => {
             tooltip={'Supprimer le diaporama'}
             icon
             text='Supprimer'
-            confirmText={`Etes-vous sûr de vouloir supprimer le diaporama '${slideshow.name}' ?`}
+            confirmText={`Etes-vous sûr de vouloir supprimer le diaporama '${renderObject(slideshow)}' ?`}
             onConfirmed={onDelete}
           />
 
