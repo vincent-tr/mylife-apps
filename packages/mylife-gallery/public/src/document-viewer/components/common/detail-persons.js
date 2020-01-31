@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useState, useDispatch, dialogs } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, useDispatch } from 'mylife-tools-ui';
 import { usePersonView, personComparer } from '../../../common/person-view';
 import { personAddDialog } from '../../../common/person-add-dialog';
 import DetailList from './detail-list';
