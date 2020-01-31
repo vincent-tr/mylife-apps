@@ -2,6 +2,7 @@
 
 import { React, PropTypes, useMemo, mui, useState, useDispatch, dialogs } from 'mylife-tools-ui';
 import { usePersonView, personComparer } from '../../../common/person-view';
+import { personAddDialog } from '../../../common/person-add-dialog';
 import DetailList from './detail-list';
 import { addPersonToDocument, removePersonFromDocument, createPersonWithDocument } from '../../actions';
 
@@ -13,37 +14,6 @@ const useConnect = () => {
     removePerson : (document, person) => dispatch(removePersonFromDocument(document, person)),
   }), [dispatch]);
 };
-
-const PersonAddDialog = ({ show, proceed }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  return (
-    <mui.Dialog aria-labelledby='dialog-title' open={show} scroll='paper' maxWidth='sm' fullWidth>
-      <mui.DialogTitle id='dialog-title'>
-        {'Informations de la nouvelle personne'}
-      </mui.DialogTitle>
-
-      <mui.DialogContent dividers>
-        <mui.DialogContentText>{'Prénom'}</mui.DialogContentText>
-        <mui.TextField autoFocus fullWidth value={firstName} onChange={e => setFirstName(e.target.value)} />
-        <mui.DialogContentText>{'Nom'}</mui.DialogContentText>
-        <mui.TextField fullWidth value={lastName} onChange={e => setLastName(e.target.value)} />
-      </mui.DialogContent>
-
-      <mui.DialogActions>
-        <mui.Button color='primary' onClick={() => proceed({ result: 'ok', firstName, lastName })}>OK</mui.Button>
-        <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
-      </mui.DialogActions>
-    </mui.Dialog>
-  );
-};
-
-PersonAddDialog.propTypes = {
-  show: PropTypes.bool,
-  proceed: PropTypes.func
-};
-
-const personAddDialog = dialogs.create(PersonAddDialog);
 
 const DetailPersons = ({ documentWithInfo }) => {
   const { persons, personView } = usePersonView();
