@@ -24,8 +24,8 @@ exports.createPersonFromDocuments = [ base, (session, message) => {
 } ];
 
 exports.createPerson = [ base, (session, message) => {
-  const { firstName, lastName } = message;
-  const person = business.personCreate({ firstName, lastName });
+  const { values } = message;
+  const person = business.personCreate(values);
   return person._id;
 } ];
 
