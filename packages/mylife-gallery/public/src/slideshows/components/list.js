@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, mui, dialogs, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
-import { createSlideshow,  } from '../actions';
+import { createSlideshow } from '../actions';
 import { getDisplayView } from '../selectors';
 import ListItem from './list-item';
 
