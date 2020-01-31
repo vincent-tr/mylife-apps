@@ -131,16 +131,18 @@ class SuggestionView extends StoreContainer {
 
   _refreshCleanDuplicates() {
     let count = 0;
+    let fileSizeSum = 0;
     for(const collection of Object.values(this.collections)) {
       for(const document of collection.list()) {
         if(document.paths.length > 1) {
           ++count;
+          fileSizeSum += document.fileSize;
         }
       }
     }
 
     if(count) {
-      this._set(this.entity.newObject({ _id: 'clean-duplicates', type: 'clean-duplicates', definition: { count } }));
+      this._set(this.entity.newObject({ _id: 'clean-duplicates', type: 'clean-duplicates', definition: { count, fileSizeSum } }));
     } else {
       this._delete('clean-duplicates');
     }

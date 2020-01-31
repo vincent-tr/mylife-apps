@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import humanize from 'humanize';
+import { React, PropTypes, mui, addLineBreaks } from 'mylife-tools-ui';
 import { showDialog } from './dialogs/clean-duplicates-dialog';
 import CardBase from './card-base';
 
@@ -8,7 +9,10 @@ const CleanDuplicatesCard = ({ definition, ...props }) => {
   return (
     <CardBase
       title={'Documents en doublons'}
-      description={`${definition.count} documents à nettoyer`}
+      description={addLineBreaks([
+        `${definition.count} documents à nettoyer`,
+        `${humanize.filesize(definition.fileSizeSum)} place à récupérer`
+      ])}
       actions={
         <mui.Button size='small' onClick={showDialog}>Créer un script</mui.Button>
       }
