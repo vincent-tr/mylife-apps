@@ -2,23 +2,42 @@
 
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import { renderObject } from '../../common/metadata-utils';
+import ThumbnailList from '../../common/thumbnail-list';
+import { ThumbnailMono } from '../../common/thumbnail';
+
+const useStyles = mui.makeStyles({
+  content: {
+    height: '60vh'
+  }
+});
 
 const ThumbnailSelectorDialog = ({ options, show, proceed }) => {
+  const classes = useStyles();
   const { person } = options;
+  const { thumbnails } = person; // TODO
+
+  const handleCancel = () => proceed({ result: 'cancel' });
+
+  const getTileInfo = (data, index) => {
+    const thumbnail = data[index];
+    const onClick = () => proceed({ result: 'ok', thumbnail });
+    const thumbnailNode = (<ThumbnailMono thumbnail={thumbnail} />);
+
+    return { thumbnail: thumbnailNode, onClick };
+  };
 
   return (
-    <mui.Dialog aria-labelledby='dialog-title' open={show} scroll='paper' maxWidth='sm' fullWidth>
+    <mui.Dialog aria-labelledby='dialog-title' open={show} onClose={handleCancel} maxWidth='md' fullWidth>
       <mui.DialogTitle id='dialog-title'>
         {`Sélectionner la miniature à utiliser pour '${renderObject(person)}'`}
       </mui.DialogTitle>
 
-      <mui.DialogContent dividers>
-        {'TODO'}
-        <mui.Button color='primary' onClick={() => proceed({ result: 'ok', thumbnail: person.thumbnails[0] })}>OK</mui.Button>
+      <mui.DialogContent dividers className={classes.content}>
+        <ThumbnailList data={thumbnails} getTileInfo={getTileInfo}/>
       </mui.DialogContent>
 
       <mui.DialogActions>
-        <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
+        <mui.Button onClick={handleCancel}>Annuler</mui.Button>
       </mui.DialogActions>
     </mui.Dialog>
   );
