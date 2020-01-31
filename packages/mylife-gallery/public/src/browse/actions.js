@@ -11,8 +11,8 @@ const local = {
   setDisplay: createAction(actionTypes.SET_DISPLAY)
 };
 
-const getDocuments = (criteria = {}) => createOrUpdateView({
-  criteriaSelector: () => ({ criteria: formatCriteria(criteria) }),
+const getDocuments = () => createOrUpdateView({
+  criteriaSelector: (state) => ({ criteria: formatCriteria(getCriteria(state)) }),
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'document',
@@ -40,7 +40,7 @@ export const changeCriteria = (changes) => async (dispatch, getState) => {
   const newCriteria = { ...criteria, ...changes };
   dispatch(local.setCriteria(newCriteria));
 
-  await dispatch(getDocuments(newCriteria));
+  await dispatch(getDocuments());
 };
 
 export const changeDisplay = (changes) => async (dispatch, getState) => {
