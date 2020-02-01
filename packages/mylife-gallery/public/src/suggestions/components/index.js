@@ -11,6 +11,7 @@ import SortDocumentRootCard from './sort-document-root-card';
 import DocumentsWithoutAlbumCard from './documents-without-album-card';
 import DeleteLoadingErrorsCard from './delete-loading-errors-card';
 import CleanEmptyAlbumCard from './clean-empty-album-card';
+import MoveSortedDocumentsCard from './move-sorted-documents-card';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -60,6 +61,8 @@ const SuggestionCard = ({ suggestion, ...props }) => {
       return (<DeleteLoadingErrorsCard definition={suggestion.definition} {...props} />);
     case 'clean-empty-album':
       return (<CleanEmptyAlbumCard definition={suggestion.definition} {...props} />);
+    case 'move-sorted-documents':
+      return (<MoveSortedDocumentsCard definition={suggestion.definition} {...props} />);
     default:
       throw new Error(`Unsupported suggestion type: '${suggestion.type}'`);
   }
