@@ -36,6 +36,15 @@ exports.suggestionCleanDuplicatesList = () => {
   return business.documentList().filter(doc => doc.paths.length > 1);
 };
 
+exports.suggestionMoveSortedDocumentsList = (albumId) => {
+  const album = business.albumGet(albumId);
+  const sortableDocs = album.documents.filter(docref => {
+    const document = business.documentGet(docref.type, docref.id);
+    return document.paths.some(fsItem => fsItem.path.startsWith(ROOT_PREFIX_TODO));
+  });
+  return sortableDocs;
+};
+
 exports.suggestionDeleteEmptyAlbum = (id) => {
   // only delete it if empty
   const album = business.albumGet(id);
@@ -98,6 +107,7 @@ class SuggestionView extends StoreContainer {
     this._refreshDeleteLoadingErrors();
     this._refreshDocumentsWithoutAlbum();
     this._refreshSortDocumentRoots();
+    this._refreshMoveSortedDocuments();
   }
 
   onAlbumsChange() {
@@ -105,6 +115,7 @@ class SuggestionView extends StoreContainer {
     this._refreshCleanEmptyAlbums();
     this._refreshDocumentsWithoutAlbum();
     this._refreshSortDocumentRoots();
+    this._refreshMoveSortedDocuments();
   }
 
   _refreshWarnSyncing() {
@@ -332,6 +343,33 @@ class SuggestionView extends StoreContainer {
     // add/replace new suggestions
     for(const [root, counts] of finalRoots.entries()) {
       this._set(this.entity.newObject({ _id: `sort-document-root!${root}`, type: 'sort-document-root', definition: { root, ... counts } }));
+    }
+  }
+
+  _refreshMoveSortedDocuments() {
+    const albumsInfo = new Map();
+    for(const album of getStoreCollection('albums').list()) {
+      const sortableDocs = album.documents.filter(docref => {
+        const document = business.documentGet(docref.type, docref.id);
+        return document.paths.some(fsItem => fsItem.path.startsWith(ROOT_PREFIX_TODO));
+      });
+
+      const count = sortableDocs.length;
+      if(count > 0) {
+        const id = album._id;
+        albumsInfo.set(id, { id, title: album.title, count });
+      }
+    }
+    // remove outdates suggestions
+    for(const suggestion of this.list()) {
+      if(suggestion.type === 'move-sorted-documents' && !albumsInfo.get(suggestion.definition.id)) {
+        this._delete(suggestion._id);
+      }
+    }
+
+    // add/replace new suggestions
+    for(const [id, definition] of albumsInfo.entries()) {
+      this._set(this.entity.newObject({ _id: `move-sorted-documents!${id}`, type: 'move-sorted-documents', definition }));
     }
   }
 }

@@ -28,3 +28,8 @@ exports.deleteEmptyAlbum = [ base, (session, message) => {
   const { id } = message;
   return business.suggestionDeleteEmptyAlbum(id);
 } ];
+
+exports.moveSortedDocumentsList = [ base, (session, message) => {
+  const { id } = message;
+  return business.suggestionMoveSortedDocumentsList(id);
+} ];
