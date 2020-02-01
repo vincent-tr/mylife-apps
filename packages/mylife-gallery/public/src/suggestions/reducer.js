@@ -15,12 +15,12 @@ export default handleActions({
     viewId: null
   }),
 
-  [actionTypes.SET_CLEAN_DOCUMENTS] : (state, action) => ({
+  [actionTypes.SET_DIALOG_OBJECTS] : (state, action) => ({
     ...state,
-    cleanDocuments: action.payload
+    dialogObjects: action.payload
   }),
 
 }, {
   viewId: null,
-  cleanDocuments: null
+  dialogObjects: null
 });

@@ -1,8 +1,8 @@
 'use strict';
 
 import { React, PropTypes, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
-import { enterCleanOthersDialog, leaveCleanDialog } from '../../actions';
-import { getCleanDocuments } from '../../selectors';
+import { enterCleanOthersDialog, leaveDialog } from '../../actions';
+import { getDialogObjects } from '../../selectors';
 import DialogBase from './dialog-base';
 import CleanOthersList from './clean-others-list';
 import ScriptGenerator from './script-generator';
@@ -12,11 +12,11 @@ const useConnect = () => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
-      documents : getCleanDocuments(state),
+      documents : getDialogObjects(state),
     })),
     ...useMemo(() => ({
       enter : () => dispatch(enterCleanOthersDialog()),
-      leave : () => dispatch(leaveCleanDialog()),
+      leave : () => dispatch(leaveDialog()),
     }), [dispatch])
   };
 };

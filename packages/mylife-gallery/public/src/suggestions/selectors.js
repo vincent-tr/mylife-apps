@@ -11,7 +11,7 @@ export const getSuggestions = createSelector(
   (view) => view.valueSeq().sort(suggestionComparer).toArray()
 );
 
-export const getCleanDocuments = state => getStats(state).cleanDocuments;
+export const getDialogObjects = state => getStats(state).dialogObjects;
 
 const TYPE_ORDER = {
   'warn-syncing': 0,

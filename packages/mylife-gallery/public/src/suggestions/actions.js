@@ -9,7 +9,7 @@ import * as browse from '../browse/actions'; // import browse action to drive br
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
   setView: createAction(actionTypes.SET_VIEW),
-  setCleanDocuments: createAction(actionTypes.SET_CLEAN_DOCUMENTS),
+  setDialogObjects: createAction(actionTypes.SET_DIALOG_OBJECTS),
 };
 
 const getSuggestions = () => createOrUpdateView({
@@ -67,7 +67,7 @@ export const enterCleanOthersDialog = () => async (dispatch) => {
     method: 'cleanOthersList'
   }));
 
-  dispatch(local.setCleanDocuments(documents));
+  dispatch(local.setDialogObjects(documents));
 };
 
 
@@ -77,11 +77,11 @@ export const enterCleanDuplicatesDialog = () => async (dispatch) => {
     method: 'cleanDuplicatesList'
   }));
 
-  dispatch(local.setCleanDocuments(documents));
+  dispatch(local.setDialogObjects(documents));
 };
 
-export const leaveCleanDialog = () => async (dispatch) => {
-  dispatch(local.setCleanDocuments(null));
+export const leaveDialog = () => async (dispatch) => {
+  dispatch(local.setDialogObjects(null));
 };
 
 export const browseWithCriteria = (criteria) => browse.changeCriteria(criteria);
