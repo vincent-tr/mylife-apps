@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed, className, ...props }) => {
+const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed, className, disablePortal, ...props }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -68,7 +68,7 @@ const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText =
   return (
     <>
       {button}
-      <Popper open={!!anchorEl} anchorEl={anchorEl}>
+      <Popper open={!!anchorEl} anchorEl={anchorEl} disablePortal={disablePortal}>
         <ClickAwayListener onClickAway={handleClose}>
           <Paper className={classes.paper}>
             <Typography>{confirmText}</Typography>
@@ -93,6 +93,7 @@ DeleteButton.propTypes = {
   confirmText: PropTypes.string,
   onConfirmed: PropTypes.func,
   className: PropTypes.string,
+  disablePortal: PropTypes.bool,
 };
 
 export default DeleteButton;
