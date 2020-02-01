@@ -43,6 +43,23 @@ exports.suggestionMoveSortedDocumentsList = (albumId) => {
     .filter(document => document.paths.some(fsItem => fsItem.path.startsWith(ROOT_PREFIX_TODO)));
 };
 
+exports.suggestionDeleteLoadingErrorsList = () => {
+  return business.getDocumentStoreCollection('other').filter(doc => doc.loadingError);
+};
+
+exports.suggestionDeleteLoadingErrors = async (ids) => {
+  const idSet = new Set(ids);
+  const candidates = business.getDocumentStoreCollection('other')
+    .filter(doc => doc.loadingError) // only take allowed
+    .filter(doc => idSet.has(doc._id));
+
+  for(const candidate of candidates) {
+    await business.documentRemove(candidate);
+  }
+
+  return candidates.length;
+};
+
 exports.suggestionDeleteEmptyAlbum = (id) => {
   // only delete it if empty
   const album = business.albumGet(id);

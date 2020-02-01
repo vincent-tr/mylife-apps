@@ -33,3 +33,13 @@ exports.moveSortedDocumentsList = [ base, (session, message) => {
   const { id } = message;
   return business.suggestionMoveSortedDocumentsList(id);
 } ];
+
+exports.deleteLoadingErrorsList = [ base, (session, message) => {
+  const { id } = message;
+  return business.suggestionDeleteLoadingErrorsList(id);
+} ];
+
+exports.deleteLoadingErrors = [ base, async (session, message) => {
+  const { documents } = message;
+  return business.suggestionDeleteLoadingErrors(documents);
+} ];

@@ -61,6 +61,19 @@ export function deleteEmptyAlbum(id) {
   };
 }
 
+export function deleteLoadingErrors(ids) {
+  return async (dispatch) => {
+
+    const count = await dispatch(io.call({
+      service: 'suggestion',
+      method: 'deleteLoadingErrors',
+      documents: ids
+    }));
+
+    dispatch(local.showSuccess(`${count} Documents supprimés pour ré-intégration`));
+  };
+}
+
 export const enterCleanOthersDialog = () => async (dispatch) => {
   const objects = await dispatch(io.call({
     service: 'suggestion',
@@ -85,6 +98,15 @@ export const enterMoveSortedDocumentsDialog = (albumId) => async (dispatch) => {
     service: 'suggestion',
     method: 'moveSortedDocumentsList',
     id: albumId
+  }));
+
+  dispatch(local.setDialogObjects(objects));
+};
+
+export const enterDeleteLoadingErrorsDialog = () => async (dispatch) => {
+  const objects = await dispatch(io.call({
+    service: 'suggestion',
+    method: 'deleteLoadingErrorsList'
   }));
 
   dispatch(local.setDialogObjects(objects));

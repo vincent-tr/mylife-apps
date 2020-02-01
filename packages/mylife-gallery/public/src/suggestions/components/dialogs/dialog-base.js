@@ -18,7 +18,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const DialogBase = ({ show, onClose, title, children }) => {
+const DialogBase = ({ show, onClose, title, children, actions }) => {
   const classes = useStyles();
 
   return (
@@ -36,6 +36,11 @@ const DialogBase = ({ show, onClose, title, children }) => {
       <mui.DialogContent className={classes.content}>
         {children}
       </mui.DialogContent>
+      {actions && (
+        <mui.DialogActions>
+          {actions}
+        </mui.DialogActions>
+      )}
     </FullScreenDialog>
   );
 };
@@ -45,6 +50,7 @@ DialogBase.propTypes = {
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
+  actions: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
 };
 
 export default DialogBase;
