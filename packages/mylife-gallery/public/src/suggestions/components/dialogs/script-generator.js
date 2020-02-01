@@ -27,13 +27,13 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const ScriptGenerator = ({ paths, ...props}) => {
+const ScriptGenerator = ({ paths, template: initialTemplate, ...props}) => {
   const classes = useStyles();
   const scriptElementRef = useRef(null);
 
   const [pathSeparator, setPathSeparator] = useState('\\');
   const [filePlaceholder, setFilePlaceholder] = useState('${file}');
-  const [template, setTemplate] = useState('Remove-Item –path "${file}" -whatif\n');
+  const [template, setTemplate] = useState(initialTemplate);
   const [script, setScript] = useState('');
 
   const onGenerate = () => setScript(generate({ paths, pathSeparator, filePlaceholder, template }));
@@ -99,6 +99,7 @@ const ScriptGenerator = ({ paths, ...props}) => {
 
 ScriptGenerator.propTypes = {
   className: PropTypes.string,
+  template: PropTypes.string.isRequired,
   paths: PropTypes.array.isRequired,
 };
 

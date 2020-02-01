@@ -26,7 +26,7 @@ const Stepper = ({ documents, onClose }) => {
   const [selection, setSelection] = useState(new immutable.Map());
 
   const renderList = () => (<CleanDuplicatesList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
-  const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} />);
+  const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} template={'Remove-Item -path "${file}" -whatif\n'} />);
 
   const steps = [
     { label: 'Sélection des documents à conserver', render: renderList, actions: { canNext: selection.size > 0 } },
