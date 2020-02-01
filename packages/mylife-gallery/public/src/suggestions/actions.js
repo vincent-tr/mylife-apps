@@ -62,22 +62,32 @@ export function deleteEmptyAlbum(id) {
 }
 
 export const enterCleanOthersDialog = () => async (dispatch) => {
-  const documents = await dispatch(io.call({
+  const objects = await dispatch(io.call({
     service: 'suggestion',
     method: 'cleanOthersList'
   }));
 
-  dispatch(local.setDialogObjects(documents));
+  dispatch(local.setDialogObjects(objects));
 };
 
 
 export const enterCleanDuplicatesDialog = () => async (dispatch) => {
-  const documents = await dispatch(io.call({
+  const objects = await dispatch(io.call({
     service: 'suggestion',
     method: 'cleanDuplicatesList'
   }));
 
-  dispatch(local.setDialogObjects(documents));
+  dispatch(local.setDialogObjects(objects));
+};
+
+export const enterMoveSortedDocumentsDialog = (albumId) => async (dispatch) => {
+  const objects = await dispatch(io.call({
+    service: 'suggestion',
+    method: 'moveSortedDocumentsList',
+    id: albumId
+  }));
+
+  dispatch(local.setDialogObjects(objects));
 };
 
 export const leaveDialog = () => async (dispatch) => {

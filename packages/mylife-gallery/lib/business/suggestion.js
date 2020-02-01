@@ -38,11 +38,9 @@ exports.suggestionCleanDuplicatesList = () => {
 
 exports.suggestionMoveSortedDocumentsList = (albumId) => {
   const album = business.albumGet(albumId);
-  const sortableDocs = album.documents.filter(docref => {
-    const document = business.documentGet(docref.type, docref.id);
-    return document.paths.some(fsItem => fsItem.path.startsWith(ROOT_PREFIX_TODO));
-  });
-  return sortableDocs;
+  return album.documents
+    .map(docref => business.documentGet(docref.type, docref.id))
+    .filter(document => document.paths.some(fsItem => fsItem.path.startsWith(ROOT_PREFIX_TODO)));
 };
 
 exports.suggestionDeleteEmptyAlbum = (id) => {
@@ -349,12 +347,12 @@ class SuggestionView extends StoreContainer {
   _refreshMoveSortedDocuments() {
     const albumsInfo = new Map();
     for(const album of getStoreCollection('albums').list()) {
-      const sortableDocs = album.documents.filter(docref => {
+      const sortableDocRefs = album.documents.filter(docref => {
         const document = business.documentGet(docref.type, docref.id);
         return document.paths.some(fsItem => fsItem.path.startsWith(ROOT_PREFIX_TODO));
       });
 
-      const count = sortableDocs.length;
+      const count = sortableDocRefs.length;
       if(count > 0) {
         const id = album._id;
         albumsInfo.set(id, { id, title: album.title, count });
