@@ -24,7 +24,7 @@ const useConnect = () => {
 
 const Stepper = ({ title, documents, onClose }) => {
   const classes = useStyles();
-  const [selection, setSelection] = useState(new immutable.Set());
+  const [selection, setSelection] = useState(new immutable.Set(documents.map(doc => doc._id)));
 
   const renderList = () => (<MoveSortedDocumentsList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
   const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} />);
