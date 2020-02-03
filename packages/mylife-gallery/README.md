@@ -9,6 +9,7 @@ MyLife photo gallery
    - enlever Suggestions
    - adapter nav-bar  document-viewer (si titre trop grand, peut etre sur 2 lignes ?)
    - adapter detail document-viewer (devrait etre fullscreen, ne pas afficher le doc
+   - pas de thumbnail avec multi-selection
    - adapter criteria albums
    - adapter criteria browse
    - adapter personnes
