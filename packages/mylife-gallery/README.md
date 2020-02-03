@@ -2,8 +2,6 @@
 MyLife photo gallery
 
 # TODO:
- - sync
-   - date images foireuses ? 1/1/1970, 1980 ? timestamps bizarres ?
  - slideshow
    - bug d ancienne image qui apparait un bref instant apres transition
  - mobile
