@@ -9,4 +9,3 @@ MyLife photo gallery
    - adapter detail document-viewer (devrait etre fullscreen, ne pas afficher le doc)
    - adapter detail album (devrait etre fullscreen, ne pas afficher les thumbnails)
    - pas de thumbnail avec multi-selection
-   - adapter criteria browse
