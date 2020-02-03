@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, DateOrYearSelector, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useScreenSize, DateOrYearSelector, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
 import TypeSelector from './type-selector';
 import AlbumSelector from './album-selector';
 import PersonSelector from './person-selector';
@@ -38,6 +38,7 @@ const useStyles = mui.makeStyles({
 });
 
 const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) => {
+  const screenSize = useScreenSize();
   const classes = useStyles();
 
   const onNoDateCriteriaChanged = newCriteria => {
@@ -61,7 +62,7 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
     onCriteriaChanged(newCriteria);
   };
 
-  return (
+  const normalLayout = (
     <mui.Grid container spacing={2}>
       <CriteriaGridSimpleField width={2} label='Date du document' />
       <CriteriaGridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector disabled={criteria.noDate} />
@@ -102,6 +103,20 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <CriteriaGridSimpleField width={3} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector} />
     </mui.Grid>
   );
+
+  const smallLayout = (
+    normalLayout
+  );
+
+  switch(screenSize) {
+    case 'phone':
+    case 'tablet':
+      return smallLayout;
+
+    case 'laptop':
+    case 'wide':
+      return normalLayout;
+  }
 };
 
 CriteriaGrid.propTypes = {
