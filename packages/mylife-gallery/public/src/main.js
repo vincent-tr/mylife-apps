@@ -33,7 +33,7 @@ const routes = [
 ];
 /* eslint-enable */
 
-const disableOnSmallScreens = { responsive: { sizes: [ 'laptop', 'wide' ] } };
+const disableOnSmallScreens = { responsive: { sizes: [ 'tablet', 'laptop', 'wide' ] } };
 
 const menu = [
   { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows', ... disableOnSmallScreens },
