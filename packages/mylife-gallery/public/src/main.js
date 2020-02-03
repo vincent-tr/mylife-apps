@@ -33,13 +33,14 @@ const routes = [
 ];
 /* eslint-enable */
 
-const disableOnSmallScreens = { responsive: { sizes: [ 'tablet', 'laptop', 'wide' ] } };
+const disableOnTabletPhone = { responsive: { sizes: [ 'laptop', 'wide' ] } };
+const disableOnPhone = { responsive: { sizes: [ 'tablet', 'laptop', 'wide' ] } };
 
 const menu = [
-  { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows', ... disableOnSmallScreens },
+  { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows', ... disableOnTabletPhone },
   { id: 'browse', text: 'Parcourir', icon: icons.menu.Browse, location: '/browse' },
-  { id: 'persons', text: 'Personnes', icon: icons.menu.Person, location: '/persons', ... disableOnSmallScreens },
-  { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions', ... disableOnSmallScreens },
+  { id: 'persons', text: 'Personnes', icon: icons.menu.Person, location: '/persons', ... disableOnPhone },
+  { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions', ... disableOnTabletPhone },
   { id: 'stats', text: 'Statistics', icon: icons.menu.Stats, location: '/stats' },
 ];
 
