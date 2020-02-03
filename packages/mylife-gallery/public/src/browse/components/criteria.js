@@ -81,6 +81,11 @@ class CollapsedTitleFormatter {
   }
 
   addDates() {
+    if(this.criteria.noDate) {
+      this.parts.push('aucune date');
+      return;
+    }
+
     // only format one date range
     if (this.criteria.minDate) {
       this.parts.push(this.formatDateRange(this.criteria.minDate, this.criteria.maxDate));
