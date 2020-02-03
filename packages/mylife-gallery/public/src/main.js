@@ -33,11 +33,13 @@ const routes = [
 ];
 /* eslint-enable */
 
+const disableOnSmallScreens = { responsive: { sizes: [ 'laptop', 'wide' ] } };
+
 const menu = [
-  { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows' },
+  { id: 'slideshows', text: 'Diaporamas', icon: icons.menu.Slideshows, location: '/slideshows', ... disableOnSmallScreens },
   { id: 'browse', text: 'Parcourir', icon: icons.menu.Browse, location: '/browse' },
-  { id: 'persons', text: 'Personnes', icon: icons.menu.Person, location: '/persons' },
-  { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions' },
+  { id: 'persons', text: 'Personnes', icon: icons.menu.Person, location: '/persons', ... disableOnSmallScreens },
+  { id: 'suggestions', text: 'Suggestions', icon: icons.menu.Suggestions, location: '/suggestions', ... disableOnSmallScreens },
   { id: 'stats', text: 'Statistics', icon: icons.menu.Stats, location: '/stats' },
 ];
 
