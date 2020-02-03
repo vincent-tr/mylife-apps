@@ -30,6 +30,12 @@ async function unbindCollection(collection) {
 }
 
 function handleChange(collection, change) {
+  const session = getService('database').session();
+  if(change.lsid && areSessionIdsEqual(session.id, change.lsid)) {
+    logger.debug('Got change with same session id than current session, ignored');
+    return;
+  }
+
   try {
     const id = change.documentKey && change.documentKey._id;
     logger.debug(`Database collection '${collection.name}' change (id='${id}', type='${change.operationType}')`);
@@ -40,7 +46,7 @@ function handleChange(collection, change) {
       case 'update': {
         const record = change.fullDocument;
         const object = deserializeObject(record, collection.entity);
-        
+
         collection.databaseUpdating = true;
         collection.set(object);
         collection.databaseUpdating = false;
@@ -69,6 +75,10 @@ function handleChange(collection, change) {
   }
 }
 
+function areSessionIdsEqual(sessionId1, sessionId2) {
+  return sessionId1.id.buffer.equals(sessionId2.id.buffer);
+}
+
 function registerDatabaseUpdater(collection) {
   collection.on('change', event => {
     if (collection.databaseUpdating) {
@@ -88,31 +98,34 @@ function registerDatabaseUpdater(collection) {
 }
 
 async function databaseUpdate(collection, { before, after, type }) {
-  switch(type) {
-    case 'create': {
-      const databaseCollection = collection.databaseCollection;
-      const record = serializeObject(after, collection.entity);
-      await databaseCollection.insertOne(record);
-      break;
+  const databaseCollection = collection.databaseCollection;
+  const session = getService('database').session();
+  await session.withTransaction(async () => {
+
+    switch(type) {
+      case 'create': {
+        const record = serializeObject(after, collection.entity);
+        await databaseCollection.insertOne(record, { session });
+        break;
+      }
+
+      case 'update': {
+        const record = serializeObject(after, collection.entity);
+        await databaseCollection.replaceOne({ _id: record._id }, record, { session });
+        break;
+      }
+
+      case 'remove': {
+        const id = serializeObjectId(before, collection.entity);
+        await databaseCollection.deleteOne({ _id: id }, { session });
+        break;
+      }
+
+      default:
+        throw new Error(`Unsupported event type: '${type}'`);
     }
 
-    case 'update': {
-      const databaseCollection = collection.databaseCollection;
-      const record = serializeObject(after, collection.entity);
-      await databaseCollection.replaceOne({ _id: record._id }, record);
-      break;
-    }
-
-    case 'remove': {
-      const databaseCollection = collection.databaseCollection;
-      const id = serializeObjectId(before, collection.entity);
-      await databaseCollection.deleteOne({ _id: id });
-      break;
-    }
-
-    default:
-      throw new Error(`Unsupported event type: '${type}'`);
-  }
+  });
 }
 
 class Store {

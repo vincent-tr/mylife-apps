@@ -33,18 +33,26 @@ class Database {
     const dbName = new URL(url).pathname.substring(1);
     this._db = this._client.db(dbName);
 
+    this._session = this._client.startSession();
+
     logger.info(`Connected to ${url} (database=${dbName})`);
   }
 
   async terminate() {
+    await this._session.endSession();
     await this._client.close();
     this._client = null;
     this._db = null;
+    this._session = null;
     logger.info('Close database');
   }
 
   collection(name) {
     return this._db.collection(name);
+  }
+
+  session() {
+    return this._session;
   }
 
   gridFSBucket(name, options) {
