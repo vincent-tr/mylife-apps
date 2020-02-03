@@ -5,7 +5,7 @@ const exifParser = require('exif-parser');
 exports.getMetadata = function (content) {
   const parser = exifParser.create(content);
   const { tags } = parser.parse();
-  const model = tags.Model;
+  const model = tags.Model || null;
   const date = formatExifDate(tags.DateTimeOriginal) || formatExifDate(tags.CreateDate) || formatExifDate(tags.ModifyDate);
   const gps = formatExifGPS(tags);
 
@@ -19,7 +19,7 @@ exports.getMetadata = function (content) {
 };
 
 function formatExifDate(value) {
-  if(value <= 0) {
+  if(typeof(date) !== 'number' || value <= 0) {
     // got -2211753600 for null values
     // consider all pre-epoch as nulls
     return null;
