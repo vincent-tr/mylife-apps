@@ -11,3 +11,4 @@ MyLife photo gallery
    - adapter detail document-viewer (devrait etre fullscreen, ne pas afficher le doc
    - adapter criteria albums
    - adapter criteria browse
+   - adapter personnes
