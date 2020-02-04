@@ -14,6 +14,8 @@ exports.createWebpackConfig = function ({
   dev = false
 } = {}) {
 
+  const resolverPaths = ['node_modules', mpath('mylife-tools-ui'), mpath('mylife-tools-build')];
+
   const common = {
     entry: [ 'babel-polyfill', entryPoint ],
     output: {
@@ -68,12 +70,16 @@ exports.createWebpackConfig = function ({
         template: htmlTemplate
       }),
       new ProgressBarPlugin()
-    ]
+    ],
+    resolve: {
+      modules: resolverPaths
+    },
+    resolveLoader: {
+      modules: resolverPaths
+    }
   };
 
   if(dev) {
-    const resolverPaths = ['node_modules', mpath('mylife-tools-ui'), mpath('mylife-tools-build')];
-
     return merge(common, {
       mode: 'development',
       entry: ['webpack-hot-middleware/client'],
@@ -85,12 +91,6 @@ exports.createWebpackConfig = function ({
         new webpack.NoEmitOnErrorsPlugin()
       ],
       devtool: 'inline-cheap-module-source-map',
-      resolve: {
-        modules: resolverPaths
-      },
-      resolveLoader: {
-        modules: resolverPaths
-      }
     });
   }
 
