@@ -1,20 +1,29 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 
 const useStyles = mui.makeStyles(theme => ({
-  title: {
+  pad: {
+    flex: 1
+  },
+  titleNormal: {
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+  titleSmall: {
+    flex: 1,
+    textAlign: 'center'
+  }
 }));
 
 const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNext, ...props }) => {
+  const classes = useStyles();
+  const screenSize = useScreenSize();
   const { info } = documentWithInfo;
   const downloadInfo = getDownloadInfo(documentWithInfo);
-  const classes = useStyles();
-  return (
+
+  const normalLayout = (
     <mui.AppBar {...props}>
       <mui.Toolbar>
         <mui.IconButton edge='start' color='inherit' onClick={onClose}>
@@ -26,7 +35,7 @@ const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNex
         <mui.IconButton color='inherit' onClick={onNext} disabled={!onNext}>
           <icons.actions.Next />
         </mui.IconButton>
-        <mui.Typography variant='h6' className={classes.title}>
+        <mui.Typography variant='h6' className={classes.titleNormal}>
           {info.title}
         </mui.Typography>
         {showDetail && (
@@ -40,6 +49,49 @@ const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNex
       </mui.Toolbar>
     </mui.AppBar>
   );
+
+  const smallLayout = (
+    <mui.AppBar {...props}>
+      <mui.Toolbar>
+        <mui.IconButton edge='start' color='inherit' onClick={onClose}>
+          <icons.actions.Close />
+        </mui.IconButton>
+        <mui.IconButton color='inherit' onClick={onPrev} disabled={!onPrev}>
+          <icons.actions.Previous />
+        </mui.IconButton>
+        <mui.IconButton color='inherit' onClick={onNext} disabled={!onNext}>
+          <icons.actions.Next />
+        </mui.IconButton>
+
+        <div className={classes.pad} />
+
+        {showDetail && (
+          <mui.IconButton color='inherit' onClick={onDetail}>
+            <icons.actions.Detail />
+          </mui.IconButton>
+        )}
+        <mui.IconButton edge='end' color='inherit' component={mui.Link} download={downloadInfo.filename} href={downloadInfo.url}>
+          <icons.actions.Download />
+        </mui.IconButton>
+      </mui.Toolbar>
+
+      <mui.Toolbar>
+        <mui.Typography variant='h6' className={classes.titleSmall}>
+          {info.title}
+        </mui.Typography>
+      </mui.Toolbar>
+    </mui.AppBar>
+  );
+
+  switch(screenSize) {
+    case 'phone':
+      return smallLayout;
+
+    case 'tablet':
+    case 'laptop':
+    case 'wide':
+      return normalLayout;
+  }
 };
 
 NavBar.propTypes = {
