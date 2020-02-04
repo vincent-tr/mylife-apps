@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet, useScreenSize, clsx } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
 import DocumentList from '../../document-list/components';
@@ -20,16 +20,16 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   container: {
     display: 'flex',
     flex: '1 1 auto',
   },
   list: {
-    flex: '1 1 auto'
+    flex: '1 1 auto',
+    minWidth: 0
   },
   detail: {
-    width: 350,
     overflowY: 'auto',
 
     // border
@@ -37,10 +37,18 @@ const useStyles = mui.makeStyles({
     borderLeftColor: mui.colors.grey[300],
     borderLeftStyle: 'solid',
   },
-});
+  detailLarge: {
+    width: 350,
+  },
+  detailSmall: {
+    minWidth: '100%',
+    backgroundColor: theme.palette.background.paper,
+  }
+}));
 
 const Album = ({ albumId }) => {
   const classes = useStyles();
+  const isSmallScreen = useIsSmallScreen();
   const { enter, leave, documents, isShowDetail } = useConnect();
   useLifecycle(() => enter(albumId), leave);
   const [selectedItems, onSelectionChange] = useSelectionSet(() => documents.map(doc => doc._id));
@@ -51,11 +59,12 @@ const Album = ({ albumId }) => {
     [documents, selectedItems]
   );
 
+  const detailClasses = clsx(classes.detail, isSmallScreen ? classes.detailSmall : classes.detailLarge);
   return (
     <div className={classes.container}>
       <DocumentList className={classes.list} documents={documents} selectedItems={selectedItems} onSelectionChange={onSelectionChange} />
       <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>
-        <Detail className={classes.detail} selectedDocuments={selectedDocuments} />
+        <Detail className={detailClasses} selectedDocuments={selectedDocuments} />
       </mui.Slide>
     </div>
   );
@@ -66,3 +75,17 @@ Album.propTypes = {
 };
 
 export default Album;
+
+function useIsSmallScreen() {
+  const screenSize = useScreenSize();
+
+  switch(screenSize) {
+    case 'phone':
+      return true;
+
+    case 'tablet':
+    case 'laptop':
+    case 'wide':
+      return false;
+  }
+}
