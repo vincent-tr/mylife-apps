@@ -47,17 +47,5 @@
     "socket.io-client": "^2.2.0",
     "typeface-roboto": "0.0.54"
   },
-  "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "@babel/plugin-proposal-export-namespace-from": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "@babel/preset-react": "^7.8.3",
-    "babel-eslint": "^10.0.2",
-    "babel-loader": "^8.0.6",
-    "babel-polyfill": "^6.26.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.18.0"
-  }
+  "devDependencies": {}
 }
