@@ -6,7 +6,7 @@ const REAL_API = 'https://api.ig.com/gateway/deal/';
 const DEMO_API = 'https://demo-api.ig.com/gateway/deal/';
 const MAX_REQUEST_ATTEMPTS = 4;
 
-class IgClient {
+export default class IgClient {
   private readonly api: string;
   private token: string = null;
   private cst: string = null;
@@ -19,12 +19,7 @@ class IgClient {
    * @param password Your IG Markets password.
    * @param isDemo Flag if this is demo account
    */
-  constructor(
-    private readonly key: string,
-    private readonly identifier: string,
-    private readonly password: string,
-    isDemo: boolean
-  ) {
+  constructor(private readonly key: string, private readonly identifier: string, private readonly password: string, isDemo: boolean) {
     if (!this.key || !this.identifier || !this.password) {
       throw new Error('key, identifier and password are required');
     }
@@ -40,51 +35,37 @@ class IgClient {
    * @param data The data passed to HTTP request.
    * @param version The version number passed to header.
    */
-  async request(
-    method: string,
-    action: string,
-    data: any = null,
-    version: string = '2'
-  ) {
+  async request(method: string, action: string, data: any = null, version: string = '2'): Promise<any> {
     if (!['post', 'get'].includes(method)) {
       new Error('Error: HTTP method not defined, please review API call');
     }
 
-    for(let attempt =0; attempt < MAX_REQUEST_ATTEMPTS; ++attempt) {
+    const headers = this.getHeaders(version);
+    const url = this.api + action;
+    const request = method === 'post' ? rest.postJson : rest.json;
+
+    for (let attempt = 0; attempt < MAX_REQUEST_ATTEMPTS; ++attempt) {
       try {
         return await new Promise((resolve, reject) => {
-          const headers = this.getHeaders(version);
-          const url = this.api + action;
-          const request = method === 'post' ? rest.postJson : rest.json;
-  
-          request(url, data, { headers })
-            .on('complete', (data, res) => {
-              data.res = res;
-              resolve(data);
-            })
-            .on('error', reject);
-        });
-      } catch (e) {
-        attempt++;
-        if (attempt >= MAX_REQUEST_ATTEMPTS) {
-          console.error(
-            `ERROR: Action "${action}" has been reattempted too many times.`
-          );
-        }
-        // error so try again
-        console.log(
-          `REQUEST ${action} FAILED, RETRYING ${attempt}/${MAX_REQUEST_ATTEMPTS}`
-        );
-        await wait(500);
-      }
-    }
 
-    function wait(ms: number) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve();
-        }, ms);
-      });
+          const result = request(url, data, { headers });
+
+          result.on('complete', (data, res) => {
+            data.res = res;
+            resolve(data);
+          });
+          
+          result.on('error', reject);
+        });
+      } catch (err) {
+        if (attempt >= MAX_REQUEST_ATTEMPTS) {
+          throw err;
+        }
+
+        console.error(`Request ${action} failed (${attempt}/${MAX_REQUEST_ATTEMPTS}): ${err.stack}`);
+
+        await sleep(500);
+      }
     }
   }
 
@@ -95,8 +76,8 @@ class IgClient {
   async login() {
     const credentials = {
       identifier: this.identifier,
-      password: this.password,
-      encryptedPassword: null // TODO: encryptedPassword: true
+      password: this.password
+      // encryptedPassword: null // TODO: encryptedPassword: true
     };
 
     const data = await this.request('post', 'session', credentials);
@@ -118,4 +99,8 @@ class IgClient {
       CST: this.cst || ''
     };
   }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
