@@ -7,15 +7,17 @@
   "author": "Vincent Trumpff",
   "scripts": {
     "lint": "eslint lib/* public/app/*",
-    "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-trading} WEB_PORT=8013 ./bin/server.js --dev --loglevel=debug",
+    "start:dev": "npm run build:ts && MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-trading} WEB_PORT=8013 ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
-    "build:bundle": "mylife-build-bundle",
+    "build:ts": "tsc",
+    "build:bundle": "npm run build:ts && mylife-build-bundle",
     "build:docker": "mylife-build-docker",
     "prepack": "npm run build:bundle",
     "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
   },
   "dependencies": {
-    "mylife-tools-server": "^1.0.13"
+    "mylife-tools-server": "^1.0.13",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
