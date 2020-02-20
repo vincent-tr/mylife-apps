@@ -47,14 +47,13 @@ export default class IgClient {
     for (let attempt = 0; attempt < MAX_REQUEST_ATTEMPTS; ++attempt) {
       try {
         return await new Promise((resolve, reject) => {
-
           const result = request(url, data, { headers });
 
           result.on('complete', (data, res) => {
             data.res = res;
             resolve(data);
           });
-          
+
           result.on('error', reject);
         });
       } catch (err) {
