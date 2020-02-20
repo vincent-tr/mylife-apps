@@ -18,7 +18,7 @@ const menu = [
 ];
 
 services.render({
-  appIcon: icons.Money,
+  appIcon: icons.Trading,
   appName: 'Trading',
   routes,
   menu
