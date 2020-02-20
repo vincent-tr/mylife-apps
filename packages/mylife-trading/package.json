@@ -16,7 +16,10 @@
     "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
   },
   "dependencies": {
+    "@types/restler": "^3.1.5",
     "mylife-tools-server": "^1.0.13",
+    "restler": "^3.4.0",
+    "technicalindicators": "^3.0.0",
     "typescript": "^3.7.5"
   },
   "devDependencies": {
