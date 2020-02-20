@@ -36,10 +36,6 @@ export default class IgClient {
    * @param version The version number passed to header.
    */
   async request(method: string, action: string, data: any = null, version: string = '2'): Promise<any> {
-    if (!['post', 'get'].includes(method)) {
-      new Error('Error: HTTP method not defined, please review API call');
-    }
-
     const headers = this.getHeaders(version);
     const url = this.api + action;
     const request = method === 'post' ? rest.postJson : rest.json;
@@ -69,6 +65,21 @@ export default class IgClient {
   }
 
   /**
+   * @param version
+   * @returns {{Content-Type: string, Accept: string, Version: *, X-IG-API-KEY: (string|*), X-SECURITY-TOKEN: (null|*|string), CST: (*|null|string)}}
+   */
+  private getHeaders(version: string) {
+    return {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Accept: 'application/json; charset=UTF-8',
+      Version: version,
+      'X-IG-API-KEY': this.key,
+      'X-SECURITY-TOKEN': this.token || '',
+      CST: this.cst || ''
+    };
+  }
+
+  /**
    * Creates a trading session, obtaining session tokens for subsequent API access
    * @returns {Promise.<void>}
    */
@@ -85,18 +96,10 @@ export default class IgClient {
   }
 
   /**
-   * @param version
-   * @returns {{Content-Type: string, Accept: string, Version: *, X-IG-API-KEY: (string|*), X-SECURITY-TOKEN: (null|*|string), CST: (*|null|string)}}
+   * Log out of the current session
    */
-  private getHeaders(version: string) {
-    return {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Accept: 'application/json; charset=UTF-8',
-      Version: version,
-      'X-IG-API-KEY': this.key,
-      'X-SECURITY-TOKEN': this.token || '',
-      CST: this.cst || ''
-    };
+  async logout() {
+    await this.request('delete', 'session', null, '1');
   }
 }
 
