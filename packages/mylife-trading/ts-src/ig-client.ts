@@ -81,7 +81,6 @@ export default class IgClient {
 
   /**
    * Creates a trading session, obtaining session tokens for subsequent API access
-   * @returns {Promise.<void>}
    */
   async login() {
     const credentials = {
