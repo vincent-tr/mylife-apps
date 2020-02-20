@@ -102,6 +102,6 @@ export default class IgClient {
   }
 }
 
-function sleep(ms: number): Promise<void> {
+function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }

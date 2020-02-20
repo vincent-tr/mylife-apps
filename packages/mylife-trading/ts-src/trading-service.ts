@@ -7,12 +7,12 @@ class TradingService {
   static readonly dependencies = ['store'];
   private bot: Strategy;
 
-  async init(options: any): Promise<void> {
+  async init(options: any) {
     this.bot = new Strategy1();
     await this.bot.init();
   }
 
-  async terminate(): Promise<void> {
+  async terminate() {
     await this.bot.terminate();
     this.bot = null;
   }
