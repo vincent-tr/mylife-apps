@@ -88,7 +88,7 @@ export default class IgClient {
    * @param version
    * @returns {{Content-Type: string, Accept: string, Version: *, X-IG-API-KEY: (string|*), X-SECURITY-TOKEN: (null|*|string), CST: (*|null|string)}}
    */
-  getHeaders(version: string) {
+  private getHeaders(version: string) {
     return {
       'Content-Type': 'application/json; charset=UTF-8',
       Accept: 'application/json; charset=UTF-8',
