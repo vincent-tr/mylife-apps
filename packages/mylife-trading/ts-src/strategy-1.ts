@@ -11,5 +11,7 @@ export default class Strategy1 implements Strategy {
   }
 
   async terminate(): Promise<void> {
+    await this.client.logout();
+    console.log('logout ok');
   }
 }
