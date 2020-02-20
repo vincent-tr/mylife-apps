@@ -1,8 +1,8 @@
 'use strict';
 
-const path = require("path");
+const path = require('path');
 
-require("mylife-tools-server/init")({
-  baseDirectory: path.resolve(__dirname, ".."),
-  applicationName: "mylife-trading"
+require('mylife-tools-server/init')({
+  baseDirectory: path.resolve(__dirname, '..'),
+  applicationName: 'mylife-trading'
 });
