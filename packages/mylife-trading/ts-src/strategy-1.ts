@@ -9,7 +9,7 @@ export default class Strategy1 implements Strategy {
     await this.client.login();
     console.log('login ok');
 
-    console.log(await this.client.findMarkets('Forex'))
+    console.log(await this.client.findMarkets('EURUSD'))
   }
 
   async terminate() {

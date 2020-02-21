@@ -1,6 +1,7 @@
 // from https://github.com/schopenhauer/ig-markets/blob/master/lib/ig.js
 
 import rest from 'restler';
+import IgError from './ig-error';
 
 const REAL_API = 'https://api.ig.com/gateway/deal/';
 const DEMO_API = 'https://demo-api.ig.com/gateway/deal/';
@@ -43,7 +44,12 @@ export default class IgConnection {
       const result = request(url, data, { headers });
 
       result.on('complete', (data, res) => {
-        data.res = res;
+        const { statusCode } = res;
+        
+        if(statusCode >= 400 && statusCode < 600) {
+          throw new IgError(statusCode, data.errorCode);
+        }
+
         resolve(data);
       });
 
