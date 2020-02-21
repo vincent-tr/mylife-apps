@@ -4,9 +4,8 @@ import rest from 'restler';
 
 const REAL_API = 'https://api.ig.com/gateway/deal/';
 const DEMO_API = 'https://demo-api.ig.com/gateway/deal/';
-const MAX_REQUEST_ATTEMPTS = 4;
 
-export default class IgClient {
+export default class IgConnection {
   private readonly api: string;
   private token: string = null;
   private cst: string = null;
@@ -40,28 +39,16 @@ export default class IgClient {
     const url = this.api + action;
     const request = method === 'post' ? rest.postJson : rest.json;
 
-    for (let attempt = 0; attempt < MAX_REQUEST_ATTEMPTS; ++attempt) {
-      try {
-        return await new Promise((resolve, reject) => {
-          const result = request(url, data, { headers });
+    return await new Promise((resolve, reject) => {
+      const result = request(url, data, { headers });
 
-          result.on('complete', (data, res) => {
-            data.res = res;
-            resolve(data);
-          });
+      result.on('complete', (data, res) => {
+        data.res = res;
+        resolve(data);
+      });
 
-          result.on('error', reject);
-        });
-      } catch (err) {
-        if (attempt >= MAX_REQUEST_ATTEMPTS) {
-          throw err;
-        }
-
-        console.error(`Request ${action} failed (${attempt}/${MAX_REQUEST_ATTEMPTS}): ${err.stack}`);
-
-        await sleep(500);
-      }
-    }
+      result.on('error', reject);
+    });
   }
 
   /**
