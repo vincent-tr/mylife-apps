@@ -88,7 +88,3 @@ export default class IgConnection {
     await this.request('delete', 'session', null, '1');
   }
 }
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
