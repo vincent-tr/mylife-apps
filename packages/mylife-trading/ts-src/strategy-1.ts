@@ -1,5 +1,5 @@
 import Strategy from './strategy';
-import IgClient from './ig-client';
+import IgClient from './broker/ig-client';
 
 export default class Strategy1 implements Strategy {
   private client: IgClient;
@@ -8,6 +8,8 @@ export default class Strategy1 implements Strategy {
     this.client = new IgClient(process.env.IGKEY, process.env.IGID, process.env.IGPASS, true);
     await this.client.login();
     console.log('login ok');
+
+    console.log(await this.client.findMarkets('Forex'))
   }
 
   async terminate() {
