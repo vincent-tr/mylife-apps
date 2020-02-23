@@ -1,13 +1,14 @@
 'use strict';
 
 import { React, PropTypes, mui, useState } from 'mylife-tools-ui';
-import { useCommonStyles } from '../common/styles';
+import { useCommonStyles, useDetailClasses } from '../common/styles';
 import NavBar from '../common/nav-bar';
 import Detail from './detail';
 import Viewer from './viewer';
 
 const VideoDialogContent = ({ documentWithInfo, onClose, onPrev, onNext }) => {
   const classes = useCommonStyles();
+  const detailClasses = useDetailClasses();
   const mediaUrl = `/content/video/${documentWithInfo.document._id}`;
   const [showDetail, setShowDetail] = useState(false);
   const toggleShowDetail = () => setShowDetail(value => !value);
@@ -24,7 +25,7 @@ const VideoDialogContent = ({ documentWithInfo, onClose, onPrev, onNext }) => {
         onNext={onNext} />
       <mui.DialogContent className={classes.viewerContainer}>
         <Viewer mediaUrl={mediaUrl} className={classes.viewer}/>
-        <Detail documentWithInfo={documentWithInfo} className={classes.detail} open={showDetail} />
+        <Detail documentWithInfo={documentWithInfo} className={detailClasses} open={showDetail} />
       </mui.DialogContent>
     </React.Fragment>
   );

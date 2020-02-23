@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, DateOrYearSelector, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useScreenSize, DateOrYearSelector, DebouncedTextField, ListSelector } from 'mylife-tools-ui';
 import TypeSelector from './type-selector';
 import AlbumSelector from './album-selector';
 import PersonSelector from './person-selector';
@@ -38,6 +38,7 @@ const useStyles = mui.makeStyles({
 });
 
 const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }) => {
+  const screenSize = useScreenSize();
   const classes = useStyles();
 
   const onNoDateCriteriaChanged = newCriteria => {
@@ -61,7 +62,7 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
     onCriteriaChanged(newCriteria);
   };
 
-  return (
+  const normalLayout = (
     <mui.Grid container spacing={2}>
       <CriteriaGridSimpleField width={2} label='Date du document' />
       <CriteriaGridSimpleField width={2} label='Début' editor={DateOrYearSelector} propName='minDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector disabled={criteria.noDate} />
@@ -102,6 +103,60 @@ const CriteriaGrid = ({ criteria, onCriteriaChanged, display, onDisplayChanged }
       <CriteriaGridSimpleField width={3} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector} />
     </mui.Grid>
   );
+
+  const smallLayout = (
+    <mui.Grid container spacing={2}>
+      <CriteriaGridSimpleField width={8} label='Date du document' />
+      <CriteriaGridSimpleField width={4} label='Aucune' editor={WrappedCheckbox} propName='noDate' object={criteria} onObjectChanged={onNoDateCriteriaChanged} />
+      <CriteriaGridSimpleField width={6} label='Début' editor={DateOrYearSelector} propName='minDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector disabled={criteria.noDate} />
+      <CriteriaGridSimpleField width={6} label='Fin' editor={DateOrYearSelector} propName='maxDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay disabled={criteria.noDate} />
+
+      <CriteriaGridSimpleField width={12} label={'Date d\'intégration'} />
+      <CriteriaGridSimpleField width={6} label='Début' editor={DateOrYearSelector} propName='minIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector />
+      <CriteriaGridSimpleField width={6} label='Fin' editor={DateOrYearSelector} propName='maxIntegrationDate' object={criteria} onObjectChanged={onCriteriaChanged} showYearSelector selectLastDay />
+
+      <CriteriaGridSimpleField width={12} label='Type' editor={TypeSelector} propName='type' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} />
+
+      <CriteriaGridSimpleField width={8} label='Albums' />
+      <CriteriaGridSimpleField width={4} label='Aucun' editor={WrappedCheckbox} propName='noAlbum' object={criteria} onObjectChanged={onNoAlbumCriteriaChanged} />
+      <CriteriaGridSimpleField width={12} label='' editor={AlbumSelector} propName='albums' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} disabled={criteria.noAlbum} />
+
+      <CriteriaGridSimpleField width={8} label='Personnes' />
+      <CriteriaGridSimpleField width={4} label='Aucun' editor={WrappedCheckbox} propName='noPerson' object={criteria} onObjectChanged={onNoPersonCriteriaChanged} />
+      <CriteriaGridSimpleField width={12} label='' editor={PersonSelector} propName='persons' object={criteria} onObjectChanged={onCriteriaChanged} className={classes.selector} disabled={criteria.noPerson} />
+
+      <CriteriaGridSimpleField width={12} label='Mots clés' editor={DebouncedTextField} propName='keywords' object={criteria} onObjectChanged={onCriteriaChanged} fullWidth />
+      <CriteriaGridSimpleField width={12} label='Légende' editor={DebouncedTextField} propName='caption' object={criteria} onObjectChanged={onCriteriaChanged} fullWidth />
+      <CriteriaGridSimpleField width={8} label='Chemin du fichier' editor={DebouncedTextField} propName='path' object={criteria} onObjectChanged={onCriteriaChanged} fullWidth />
+      <CriteriaGridSimpleField width={4} label='Doublons' editor={WrappedCheckbox} propName='pathDuplicate' object={criteria} onObjectChanged={onCriteriaChanged} />
+
+      <CriteriaGridSimpleField width={12} label='Image/Vidéo' />
+      <CriteriaGridSimpleField width={4} label='Largueur' />
+      <CriteriaGridSimpleField width={4} label='Min' editor={DebouncedTextField} propName='minWidth' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+      <CriteriaGridSimpleField width={4} label='Max' editor={DebouncedTextField} propName='maxWidth' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+      <CriteriaGridSimpleField width={4} label='Hauteur' />
+      <CriteriaGridSimpleField width={4} label='Min' editor={DebouncedTextField} propName='minHeight' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+      <CriteriaGridSimpleField width={4} label='Max' editor={DebouncedTextField} propName='maxHeight' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+      <CriteriaGridSimpleField width={12} label='Orientation' editor={ListSelector} propName='orientation' object={criteria} onObjectChanged={onCriteriaChanged} list={orientationFields} className={classes.selector} />
+
+      <CriteriaGridSimpleField width={12} label='Vidéo' />
+      <CriteriaGridSimpleField width={4} label='Durée (sec)' />
+      <CriteriaGridSimpleField width={4} label='Min' editor={DebouncedTextField} propName='minDuration' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+      <CriteriaGridSimpleField width={4} label='Max' editor={DebouncedTextField} propName='maxDuration' object={criteria} onObjectChanged={onCriteriaChanged} type='number' />
+
+      <CriteriaGridSimpleField width={6} label='Tri' editor={ListSelector} propName='sortField' object={display} onObjectChanged={onDisplayChanged} list={sortFields} className={classes.selector} />
+      <CriteriaGridSimpleField width={6} label='' editor={SortOrderSelector} propName='sortOrder' object={display} onObjectChanged={onDisplayChanged} className={classes.selector} />
+    </mui.Grid>  );
+
+  switch(screenSize) {
+    case 'phone':
+    case 'tablet':
+      return smallLayout;
+
+    case 'laptop':
+    case 'wide':
+      return normalLayout;
+  }
 };
 
 CriteriaGrid.propTypes = {

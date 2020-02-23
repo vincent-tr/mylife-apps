@@ -1,6 +1,6 @@
 {
   "name": "mylife-explorer",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "MyLife Explorer",
   "main": "index.js",
   "scripts": {
@@ -46,7 +46,7 @@
     "file-loader": "^2.0.0",
     "history": "^4.10.1",
     "immutable": "^3.8.2",
-    "mylife-tools-build": "^1.2.5",
+    "mylife-tools-build": "^1.2.7",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^5.1.2",

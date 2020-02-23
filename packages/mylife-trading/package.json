@@ -1,0 +1,32 @@
+{
+  "name": "mylife-trading",
+  "version": "1.0.0",
+  "description": "Mylife Trading",
+  "main": "index.js",
+  "repository": "https://github.com/vincent-tr/mylife-trading",
+  "author": "Vincent Trumpff",
+  "scripts": {
+    "lint": "eslint lib/* public/app/*",
+    "start:dev": "npm run build:ts && MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-trading} WEB_PORT=8013 ./bin/server.js --dev --loglevel=debug",
+    "start": "./bin/server.js",
+    "build:ts": "tsc",
+    "build:bundle": "npm run build:ts && mylife-build-bundle",
+    "build:docker": "mylife-build-docker",
+    "prepack": "npm run build:bundle",
+    "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
+  },
+  "dependencies": {
+    "@types/restler": "^3.1.5",
+    "mylife-tools-server": "^1.0.13",
+    "restler": "^3.4.0",
+    "technicalindicators": "^3.0.0",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.16.0",
+    "mylife-tools-build": "^1.2.7",
+    "mylife-tools-ui": "^1.0.8"
+  },
+  "license": "GPL-3.0+"
+}

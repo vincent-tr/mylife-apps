@@ -1,6 +1,6 @@
 {
   "name": "mylife-gallery",
-  "version": "1.1.7",
+  "version": "2.0.2",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --sync",
     "start": "./bin/server.js",
     "build:bundle": "mylife-build-bundle",
-    "build:docker": "mylife-build-docker",
+    "build:docker": "./bin/build-docker.sh",
     "prepack": "npm run build:bundle",
     "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
   },
@@ -31,8 +31,8 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^8.1.0",
     "jimp": "^0.9.3",
-    "mylife-tools-common": "^1.0.3",
-    "mylife-tools-server": "^1.0.11",
+    "mylife-tools-common": "^1.0.4",
+    "mylife-tools-server": "^1.0.13",
     "webp-converter": "^2.2.3"
   },
   "devDependencies": {
@@ -43,8 +43,8 @@
     "humanize": "0.0.9",
     "humanize-duration": "^3.21.0",
     "leaflet": "^1.6.0",
-    "mylife-tools-build": "^1.2.5",
-    "mylife-tools-ui": "^1.0.6",
+    "mylife-tools-build": "^1.2.7",
+    "mylife-tools-ui": "^1.0.8",
     "react-leaflet": "^2.6.1",
     "react-sortable-hoc": "^1.11.0"
   }
