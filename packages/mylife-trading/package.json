@@ -1,6 +1,6 @@
 {
   "name": "mylife-trading",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mylife Trading",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-trading",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@types/restler": "^3.1.5",
-    "mylife-tools-server": "^1.0.13",
+    "mylife-tools-server": "^1.0.14",
     "restler": "^3.4.0",
     "technicalindicators": "^3.0.0",
     "typescript": "^3.7.5"
@@ -25,8 +25,8 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.16.0",
-    "mylife-tools-build": "^1.2.7",
-    "mylife-tools-ui": "^1.0.8"
+    "mylife-tools-build": "^1.2.8",
+    "mylife-tools-ui": "^1.0.9"
   },
   "license": "GPL-3.0+"
 }
