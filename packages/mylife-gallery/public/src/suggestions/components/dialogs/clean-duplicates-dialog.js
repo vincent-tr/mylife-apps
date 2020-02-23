@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
+import { React, PropTypes, useState, useMemo, useEffect, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
 import { enterCleanDuplicatesDialog, leaveDialog } from '../../actions';
 import { getDialogObjects } from '../../selectors';
 import DialogBase from './dialog-base';
@@ -24,6 +24,7 @@ const useConnect = () => {
 const Stepper = ({ documents, onClose }) => {
   const classes = useStyles();
   const [selection, setSelection] = useState(new immutable.Map());
+  useEffect(() => setSelection(getInitialSelection(documents)), [documents]);
 
   const renderList = () => (<CleanDuplicatesList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
   const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} template={'Remove-Item -path "${file}" -whatif\n'} />);
@@ -65,6 +66,24 @@ const dialog = dialogs.create(CleanDuplicatesDialog);
 
 export async function showDialog() {
   await dialog();
+}
+
+function getInitialSelection(documents) {
+  return new immutable.Map().withMutations(map => {
+    for(const document of documents) {
+      // if a document has one path with does not start with _, then select it by default
+      const indexes = [];
+      for(const [index, { path }] of document.paths.entries()) {
+        if(!path.startsWith('_')) {
+          indexes.push(index);
+        }
+      }
+
+      if(indexes.length === 1) {
+        map.set(document._id, indexes[0]);
+      }
+    }
+  });
 }
 
 function generatePaths(documents, selection) {
