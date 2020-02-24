@@ -47,11 +47,11 @@ export default class IgConnection {
   private async processResponse(response: Response) {
     const data = await response.json();
     const { status, headers } = response;
-    if(status >= 400 && status < 600) {
+    if (status >= 400 && status < 600) {
       throw new IgError(status, data.errorCode);
     }
 
-    if(!this.token || !this.cst) {
+    if (!this.token || !this.cst) {
       this.token = headers.get('X-SECURITY-TOKEN');
       this.cst = headers.get('CST');
     }
@@ -90,7 +90,10 @@ export default class IgConnection {
   /**
    * Log out of the current session
    */
-  async logout() {
+  async logout(): Promise<void> {
     await this.request('delete', 'session', null, '1');
+
+    this.token = null;
+    this.cst = null;
   }
 }
