@@ -4,7 +4,7 @@ export default class IgError extends Error {
   constructor(readonly httpStatus: number, readonly errorCode: string) {
     super();
 
-    this.description = getErrorDescription(this.errorCode);
+    this.description = getErrorDescription(this.httpStatus, this.errorCode);
     this.message = `${this.errorCode} (${this.httpStatus}): ${this.description}`;
   }
 }
@@ -41,7 +41,18 @@ descriptions.set('error.security.api-key-invalid', 'The provided api key was not
 descriptions.set('error.security.api-key-restricted', 'The provided api key was not valid for the requesting account');
 descriptions.set('error.security.api-key-revoked', 'The provided api key was not accepted because it has been revoked');
 
-function getErrorDescription(errorCode: string) {
+function getErrorDescription(httpStatus: number, errorCode: string) {
+  if (!errorCode) {
+    switch (httpStatus) {
+      case 404:
+        errorCode = 'invalid.url';
+        break;
+      case 500:
+        errorCode = 'system.error';
+        break;
+    }
+  }
+  
   const description = descriptions.get(errorCode);
   return description || '<unknown error>';
 }

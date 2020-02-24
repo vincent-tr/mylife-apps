@@ -60,11 +60,12 @@ export default class Connection {
     return await this.processResponse(response);
   }
 
+
   private async processResponse(response: Response) {
-    const data = await response.json();
+    const data = await safeReadJson(response);
     const { status, headers } = response;
     if (status >= 400 && status < 600) {
-      throw new IgError(status, data.errorCode);
+      throw new IgError(status, data?.errorCode);
     }
 
     if (!this.token || !this.cst) {
@@ -117,5 +118,14 @@ export default class Connection {
    */
   async sessionEncryptionKey(): Promise<SessionEncryptionKey> {
     return await this.request('post', 'session/encryptionKey', null, '1');
+  }
+}
+
+async function safeReadJson(response: Response) {
+  try {
+    return await response.json();
+  }
+  catch(err) {
+    return null;
   }
 }
