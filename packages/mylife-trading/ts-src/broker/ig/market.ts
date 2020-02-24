@@ -228,6 +228,112 @@ export interface SearchMarketResponse {
   markets: Market[];
 }
 
+/**
+ * Price resolution
+ */
+export enum PriceResolution {
+  MINUTE = 'MINUTE',
+  MINUTE_2 = 'MINUTE_2',
+  MINUTE_3 = 'MINUTE_3',
+  MINUTE_5 = 'MINUTE_5',
+  MINUTE_10 = 'MINUTE_10',
+  MINUTE_15 = 'MINUTE_15',
+  MINUTE_30 = 'MINUTE_30',
+  HOUR = 'HOUR',
+  HOUR_2 = 'HOUR_2',
+  HOUR_3 = 'HOUR_3',
+  HOUR_4 = 'HOUR_4',
+  DAY = 'DAY',
+  WEEK = 'WEEK',
+  MONTH = 'MONTH'
+}
+
+/**
+ * Historical price data allowance
+ */
+export interface HistoricalPriceDataAllowance {
+  /**
+   * 	The number of seconds till the current allowance period will end and the remaining allowance field is reset
+   */
+  allowanceExpiry: number;
+
+  /**
+   * 	The number of data points still available to fetch within the current allowance period
+   */
+  remainingAllowance: number;
+
+  /**
+   * 	The number of data points the API key and account combination is allowed to fetch in any given allowance period
+   */
+  totalAllowance: number;
+}
+
+export interface Price {
+  /**
+   * Ask price
+   */
+  ask: number;
+
+  /**
+   * Bid price
+   */
+  bid: number;
+
+  /**
+   * Last traded price. This will generally be null for non exchange-traded instruments
+   */
+  lastTraded: number;
+}
+
+export interface MarketPriceSnapshot {
+  /**
+   * Price
+   */
+  closePrice: Price;
+
+  /**
+   * Price
+   */
+  highPrice: Price;
+
+  /**
+   * Price
+   */
+  lowPrice: Price;
+
+  /**
+   * Price
+   */
+  openPrice: Price;
+
+  /**
+   * Last traded volume. This will generally be null for non exchange-traded instruments
+   */
+  lastTradedVolume: number;
+
+  /**
+   * Snapshot local time, format is yyyy/MM/dd hh:mm:ss
+   */
+  snapshotTime: string;
+}
+
+export interface PriceList {
+  /**
+   * Historical price data allowance
+   */
+  allowance: HistoricalPriceDataAllowance;
+
+  /**
+   * Instrument type
+   */
+  instrumentType: InstrumentType;
+
+  /**
+   * Historical market price snapshot
+   */
+  prices: MarketPriceSnapshot[];
+}
+
 export class MarketOperations {
   constructor(readonly request: (method: string, action: string, data?: any, version?: string) => Promise<any>) {
   }
@@ -245,17 +351,19 @@ export class MarketOperations {
     return await this.request('get', 'markets?searchTerm=' + keyword, null, '1');
   }
 
+  // prices/{epic}
+
   /**
    * Returns historical prices for a particular instrument.
    * By default returns the minute prices within the last 10 minutes.
-   * @param epic
+   * @param epic Instrument epic
+   * @param resolution Price resolution
+   * @param numPoints Number of data points required
    */
-
-  async prices(epic: string) {
-    return await this.request('get', 'prices/' + epic, null, '3');
+  async prices(epic: string, resolution: PriceResolution = PriceResolution.MINUTE, numPoints: number = 10) {
+    return await this.request('get', `prices/${epic}/${resolution}/${numPoints}`);
   }
 
-  // prices/{epic}/{resolution}/{numPoints}	
   // prices/{epic}/{resolution}/{startDate}/{endDate}	
   // prices/{epic}/{resolution}?startdate={startdate}&enddate={enddate}
 }
