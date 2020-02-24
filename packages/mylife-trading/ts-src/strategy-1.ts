@@ -10,7 +10,7 @@ export default class Strategy1 implements Strategy {
     console.log('login ok');
 
     // console.log(await this.client.market.findMarkets('EURUSD'))
-    console.log(await this.client.market.prices('CS.D.EURUSD.CFD.IP'))
+    // console.log(await this.client.market.prices('CS.D.EURUSD.CFD.IP'))
   }
 
   async terminate() {

@@ -2,6 +2,7 @@
 
 import fetch, { Response } from 'node-fetch';
 import IgError from './ig-error';
+import Stream from './stream';
 import { ClientAccountInformation } from './account';
 
 const REAL_API = 'https://api.ig.com/gateway/deal/';
@@ -26,6 +27,7 @@ export default class Connection {
   private readonly api: string;
   private token: string = null;
   private cst: string = null;
+  private stream: Stream;
 
   /**
    * Constructor
@@ -100,7 +102,13 @@ export default class Connection {
       password: this.password
     };
 
-    return await this.request('post', 'session', credentials);
+    const data: ClientAccountInformation = await this.request('post', 'session', credentials);
+
+    // TODO: should we pass account id as parameter ?
+    const defaultAccount = data.accounts.find(acc => acc.preferred);
+    this.stream = new Stream(data.lightstreamerEndpoint, defaultAccount.accountId, this.cst, this.token);
+
+    return data;
   }
 
   /**
@@ -111,6 +119,9 @@ export default class Connection {
 
     this.token = null;
     this.cst = null;
+
+    this.stream.terminate();
+    this.stream = null;
   }
 
   /**
