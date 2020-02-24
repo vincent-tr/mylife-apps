@@ -1,6 +1,6 @@
 // from https://github.com/schopenhauer/ig-markets/blob/master/lib/ig.js
 
-import rest from 'restler';
+import fetch, { Response } from 'node-fetch';
 import IgError from './ig-error';
 
 const REAL_API = 'https://api.ig.com/gateway/deal/';
@@ -38,24 +38,25 @@ export default class IgConnection {
   async request(method: string, action: string, data: any = null, version: string = '2'): Promise<any> {
     const headers = this.getHeaders(version);
     const url = this.api + action;
-    const request = method === 'post' ? rest.postJson : rest.json;
+    const body = data ? JSON.stringify(data) : null;
 
-    return await new Promise((resolve, reject) => {
-      const result = request(url, data, { headers });
+    const response = await fetch(url, { method, headers, body });
+    return await this.processResponse(response);
+  }
 
-      result.on('complete', (data, res) => {
-        const { statusCode } = res;
-        
-        if(statusCode >= 400 && statusCode < 600) {
-          throw new IgError(statusCode, data.errorCode);
-        }
+  private async processResponse(response: Response) {
+    const data = await response.json();
+    const { status, headers } = response;
+    if(status >= 400 && status < 600) {
+      throw new IgError(status, data.errorCode);
+    }
 
-        data.webResult = result;
-        resolve(data);
-      });
+    if(!this.token || !this.cst) {
+      this.token = headers.get('X-SECURITY-TOKEN');
+      this.cst = headers.get('CST');
+    }
 
-      result.on('error', reject);
-    });
+    return data;
   }
 
   /**
@@ -66,7 +67,7 @@ export default class IgConnection {
     return {
       'Content-Type': 'application/json; charset=UTF-8',
       Accept: 'application/json; charset=UTF-8',
-      VERSION: version,
+      Version: version,
       'X-IG-API-KEY': this.key,
       'X-SECURITY-TOKEN': this.token || '',
       CST: this.cst || ''
@@ -83,10 +84,7 @@ export default class IgConnection {
     };
 
     const data = await this.request('post', 'session', credentials);
-    console.log('HEADERS', data.webResult.headers);
     console.log(data);
-    this.cst = data.webResult.headers['cst'];
-    this.token = data.webResult.headers['x-security-token'];
   }
 
   /**
