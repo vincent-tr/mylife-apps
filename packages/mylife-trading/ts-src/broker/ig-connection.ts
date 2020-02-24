@@ -50,6 +50,7 @@ export default class IgConnection {
           throw new IgError(statusCode, data.errorCode);
         }
 
+        data.webResult = result;
         resolve(data);
       });
 
@@ -65,7 +66,7 @@ export default class IgConnection {
     return {
       'Content-Type': 'application/json; charset=UTF-8',
       Accept: 'application/json; charset=UTF-8',
-      Version: version,
+      VERSION: version,
       'X-IG-API-KEY': this.key,
       'X-SECURITY-TOKEN': this.token || '',
       CST: this.cst || ''
@@ -79,12 +80,13 @@ export default class IgConnection {
     const credentials = {
       identifier: this.identifier,
       password: this.password
-      // encryptedPassword: null // TODO: encryptedPassword: true
     };
 
     const data = await this.request('post', 'session', credentials);
-    this.cst = data.res.headers['cst'];
-    this.token = data.res.headers['x-security-token'];
+    console.log('HEADERS', data.webResult.headers);
+    console.log(data);
+    this.cst = data.webResult.headers['cst'];
+    this.token = data.webResult.headers['x-security-token'];
   }
 
   /**
