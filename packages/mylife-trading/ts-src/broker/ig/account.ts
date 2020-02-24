@@ -206,7 +206,6 @@ export interface ClientAccountInformation {
   trailingStopsEnabled: boolean;
 }
 
-
 export class AccountOperations {
   constructor(readonly request: (method: string, action: string, data?: any, version?: string) => Promise<any>) {
   }
