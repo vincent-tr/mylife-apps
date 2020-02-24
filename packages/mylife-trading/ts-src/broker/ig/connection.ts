@@ -2,11 +2,27 @@
 
 import fetch, { Response } from 'node-fetch';
 import IgError from './ig-error';
+import { ClientAccountInformation } from './account';
 
 const REAL_API = 'https://api.ig.com/gateway/deal/';
 const DEMO_API = 'https://demo-api.ig.com/gateway/deal/';
 
-export default class IgConnection {
+/**
+ * The encryption key to use in order to send the user password in an encrypted form
+ */
+export interface SessionEncryptionKey {
+  /**
+   * Encryption key in Base 64 format
+   */
+  encryptionKey: string;
+
+  /**
+   * Current timestamp in milliseconds since epoch
+   */
+  timeStamp: number;
+}
+
+export default class Connection {
   private readonly api: string;
   private token: string = null;
   private cst: string = null;
@@ -77,14 +93,13 @@ export default class IgConnection {
   /**
    * Creates a trading session, obtaining session tokens for subsequent API access
    */
-  async login() {
+  async login(): Promise<ClientAccountInformation> {
     const credentials = {
       identifier: this.identifier,
       password: this.password
     };
 
-    const data = await this.request('post', 'session', credentials);
-    console.log(data);
+    return await this.request('post', 'session', credentials);
   }
 
   /**
@@ -95,5 +110,12 @@ export default class IgConnection {
 
     this.token = null;
     this.cst = null;
+  }
+
+  /**
+   * Creates a trading session, obtaining session tokens for subsequent API access
+   */
+  async sessionEncryptionKey(): Promise<SessionEncryptionKey> {
+    return await this.request('post', 'session/encryptionKey', null, '1');
   }
 }
