@@ -360,7 +360,7 @@ export class MarketOperations {
    * @param resolution Price resolution
    * @param numPoints Number of data points required
    */
-  async prices(epic: string, resolution: PriceResolution = PriceResolution.MINUTE, numPoints: number = 10) {
+  async prices(epic: string, resolution: PriceResolution = PriceResolution.MINUTE, numPoints: number = 10): Promise<PriceList> {
     return await this.request('get', `prices/${epic}/${resolution}/${numPoints}`);
   }
 

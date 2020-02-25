@@ -1,20 +1,33 @@
 import Strategy from './strategy';
-import Client from './broker/ig/client';
+import { Datasource, Resolution } from './datasource';
+import MovingDataset from './moving-dataset';
+
 
 export default class Strategy1 implements Strategy {
-  private client: Client;
+  private datasource: Datasource;
+  private dataset: MovingDataset;
 
   async init() {
-    this.client = new Client(process.env.IGKEY, process.env.IGID, process.env.IGPASS, true);
-    await this.client.login();
-    console.log('login ok');
+    this.datasource = new Datasource({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
+    await this.datasource.init();
+    console.log('datasource init');
 
-    // console.log(await this.client.market.findMarkets('EURUSD'))
-    // console.log(await this.client.market.prices('CS.D.EURUSD.CFD.IP'))
+    this.dataset = await this.datasource.getDataset('CS.D.EURUSD.CFD.IP', Resolution.MINUTE, 15);
+    this.dataset.on('error', err => console.error('ERROR', err));
+    this.dataset.on('add', record => console.log(record));
+
+    this.dataset.on('update', record => console.log('UPDATE', record));
+
+    for (const record of this.dataset.list) {
+      console.log(record);
+    }
+
   }
 
   async terminate() {
-    await this.client.logout();
-    console.log('logout ok');
+    this.dataset.close();
+    await this.datasource.terminate();
+    console.log('datasource terminate');
   }
 }
+

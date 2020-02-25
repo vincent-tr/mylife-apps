@@ -40,6 +40,7 @@ descriptions.set('error.security.api-key-disabled', 'The provided api key was no
 descriptions.set('error.security.api-key-invalid', 'The provided api key was not accepted');
 descriptions.set('error.security.api-key-restricted', 'The provided api key was not valid for the requesting account');
 descriptions.set('error.security.api-key-revoked', 'The provided api key was not accepted because it has been revoked');
+descriptions.set('error.security.authentication.timeout', 'Authentication time-out');
 
 function getErrorDescription(httpStatus: number, errorCode: string) {
   if (!errorCode) {

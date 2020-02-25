@@ -2,7 +2,7 @@
 
 import fetch, { Response } from 'node-fetch';
 import IgError from './ig-error';
-import Stream from './stream';
+import Stream, { StreamSubscription } from './stream';
 import { ClientAccountInformation } from './account';
 
 const REAL_API = 'https://api.ig.com/gateway/deal/';
@@ -129,6 +129,10 @@ export default class Connection {
    */
   async sessionEncryptionKey(): Promise<SessionEncryptionKey> {
     return await this.request('post', 'session/encryptionKey', null, '1');
+  }
+
+  subscribe(subscriptionMode: string, items: string[], fields: string[]): StreamSubscription {
+    return this.stream.createSubscription(subscriptionMode, items, fields);
   }
 }
 
