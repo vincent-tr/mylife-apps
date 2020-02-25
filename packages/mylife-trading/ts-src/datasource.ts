@@ -73,6 +73,5 @@ export class Datasource {
 
 function parseDate(value: string): Date {
   const result = parse(value, 'YYYY/MM/DD HH:mm:ss');
-  console.log(value, result);
   return result ? <Date>result : null;
 }
