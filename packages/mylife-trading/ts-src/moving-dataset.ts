@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { last, average } from './utils';
+import { last, average, round } from './utils';
 
 export class CandleStickData {
   constructor(readonly open: number, readonly close: number, readonly high: number, readonly low: number) {
@@ -19,7 +19,7 @@ export class Record {
 
   get average() {
     if (!this._average) {
-      this._average = new CandleStickData(average(this.ask.open, this.bid.open), average(this.ask.close, this.bid.close), average(this.ask.high, this.bid.high), average(this.ask.low, this.bid.low));
+      this._average = new CandleStickData(roundedAverage(this.ask.open, this.bid.open), roundedAverage(this.ask.close, this.bid.close), roundedAverage(this.ask.high, this.bid.high), roundedAverage(this.ask.low, this.bid.low));
     }
     return this._average;
   }
@@ -89,3 +89,7 @@ class MovingDataset extends EventEmitter {
 }
 
 export default MovingDataset;
+
+function roundedAverage(...values: number[]) {
+  return round(average(...values), 5);
+}
