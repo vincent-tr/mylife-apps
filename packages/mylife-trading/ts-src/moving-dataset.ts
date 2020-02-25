@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import { last, average } from './utils';
 
 export class CandleStickData {
   constructor(readonly open: number, readonly close: number, readonly high: number, readonly low: number) {
@@ -7,12 +8,20 @@ export class CandleStickData {
 
 export class Record {
   private _partial: boolean = true;
+  private _average: CandleStickData;
 
   constructor(readonly ask: CandleStickData, readonly bid: CandleStickData, readonly timestamp: Date) {
   }
 
   isSameTimestamp(other: Record) {
     return this.timestamp.valueOf() === other.timestamp.valueOf();
+  }
+
+  get average() {
+    if (!this._average) {
+      this._average = new CandleStickData(average(this.ask.open, this.bid.open), average(this.ask.close, this.bid.close), average(this.ask.high, this.bid.high), average(this.ask.low, this.bid.low));
+    }
+    return this._average;
   }
 
   get partial() {
@@ -47,8 +56,7 @@ class MovingDataset extends EventEmitter {
   }
 
   get last() {
-    const lastIndex = this.list.length - 1;
-    return  lastIndex > -1 ? this.list[lastIndex] : null;
+    return last(this.list);
   }
 
   add(record: Record) {
@@ -58,7 +66,7 @@ class MovingDataset extends EventEmitter {
 
     // is it an update of the last record or a new record ? let's compare timestamps
     const isUpdate = lastItem && lastItem.isSameTimestamp(record);
-    if(isUpdate) {
+    if (isUpdate) {
       this.list[lastIndex] = record;
       this.emit('update', record);
       return;
