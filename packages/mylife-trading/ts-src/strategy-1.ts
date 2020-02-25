@@ -41,12 +41,12 @@ export default class Strategy1 implements Strategy {
     const bb = last(BollingerBands.calculate({ period, values, stdDev: 2 }));
     const candle = last(fixedList);
 
-    if(rsi > 70 && candle.ask.close > bb.upper) {
-      console.log(new Date().toISOString(), 'SHOULD SELL', rsi, candle.ask.close, bb.upper);
+    if(rsi > 70 && candle.average.close > bb.upper) {
+      console.log(new Date().toISOString(), 'SHOULD SELL', rsi, candle.average.close, bb.upper);
     }
 
-    if(rsi < 30 && candle.ask.close < bb.lower) {
-      console.log(new Date().toISOString(), 'SHOULD BUY', rsi, candle.ask.close, bb.lower);
+    if(rsi < 30 && candle.average.close < bb.lower) {
+      console.log(new Date().toISOString(), 'SHOULD BUY', rsi, candle.average.close, bb.lower);
     }
   }
 
