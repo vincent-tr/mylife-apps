@@ -1,12 +1,15 @@
 // from https://github.com/schopenhauer/ig-markets/blob/master/lib/ig.js
 
 import fetch, { Response } from 'node-fetch';
+import { createLogger } from 'mylife-tools-server';
 import IgError from './ig-error';
 import Stream, { StreamSubscription } from './stream';
 import { ClientAccountInformation } from './account';
 
 const REAL_API = 'https://api.ig.com/gateway/deal/';
 const DEMO_API = 'https://demo-api.ig.com/gateway/deal/';
+
+const logger = createLogger('mylife:trading:broker:ig:connection');
 
 /**
  * The encryption key to use in order to send the user password in an encrypted form
@@ -108,6 +111,8 @@ export default class Connection {
     const defaultAccount = data.accounts.find(acc => acc.preferred);
     this.stream = new Stream(data.lightstreamerEndpoint, defaultAccount.accountId, this.cst, this.token);
 
+    logger.info(`Connection created: key='${this.key}', identifier='${this.identifier}', api=${this.api}`);
+
     return data;
   }
 
@@ -122,6 +127,8 @@ export default class Connection {
 
     this.stream.terminate();
     this.stream = null;
+
+    logger.info(`Connection closed: key='${this.key}', identifier='${this.identifier}', api=${this.api}`);
   }
 
   /**

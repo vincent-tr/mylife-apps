@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import { LightstreamerClient, Subscription, SimpleLoggerProvider, ConsoleAppender } from 'lightstreamer-client';
+import { createLogger } from 'mylife-tools-server';
 
 // https://labs.ig.com/lightstreamer-downloads
 // https://www.npmjs.com/package/lightstreamer-client/v/6.2.6
@@ -8,6 +9,8 @@ import { LightstreamerClient, Subscription, SimpleLoggerProvider, ConsoleAppende
 // const prov = new SimpleLoggerProvider();
 // prov.addLoggerAppender(new ConsoleAppender('DEBUG', null));
 // LightstreamerClient.setLoggerProvider(prov);
+
+const logger = createLogger('mylife:trading:broker:ig:stream');
 
 export declare interface StreamSubscription {
   on(event: 'subscribed', listener: () => void): this;
@@ -52,18 +55,17 @@ export default class Stream {
     this.lsClient = new LightstreamerClient(endpoint);
 
     const { connectionDetails } = this.lsClient;
-    console.log(endpoint, activeAccountId, cst, token);
     connectionDetails.setUser(activeAccountId);
     connectionDetails.setPassword(`CST-${cst}|XST-${token}`);
 
+    logger.info(`Connecting to: '${endpoint}' with account '${activeAccountId}'`);
+
     this.lsClient.addListener({
-      onStatusChange: function (status: any) {
-        // TODO: logging
-        console.log('Lightstreamer connection status:' + status);
+      onStatusChange: (status: any) => {
+        logger.info(`Connection status: '${status}'`);
       }
     });
 
-    // Connect to Lightstreamer
     this.lsClient.connect();
   }
 
