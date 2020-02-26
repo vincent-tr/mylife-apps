@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { last, average, round } from './utils';
+import { last, average, round } from '../utils';
 
 export class CandleStickData {
   constructor(readonly open: number, readonly close: number, readonly high: number, readonly low: number) {

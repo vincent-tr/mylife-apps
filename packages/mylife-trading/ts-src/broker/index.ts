@@ -1,7 +1,13 @@
 import { parse } from 'fecha';
+import Client from './ig/client';
+import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
-import Client from './broker/ig/client';
-import { PriceResolution } from './broker/ig/market';
+import Position from './position';
+
+export { MovingDataset };
+export * from './moving-dataset';
+export { Position };
+export * from './position';
 
 export interface Credentials {
   key: string;
@@ -28,7 +34,7 @@ resolutions.set(Resolution.HOUR, { rest: PriceResolution.HOUR, stream: 'HOUR' })
 
 const subscriptionFields = ['UTM', 'OFR_OPEN', 'OFR_HIGH', 'OFR_LOW', 'OFR_CLOSE', 'BID_OPEN', 'BID_HIGH', 'BID_LOW', 'BID_CLOSE'/*,'LTP_OPEN','LTP_HIGH','LTP_LOW','LTP_CLOSE'*/, 'CONS_END'];
 
-export class Datasource {
+export class Broker {
   readonly client: Client;
   constructor(credentials: Credentials) {
     this.client = new Client(credentials.key, credentials.identifier, credentials.password, credentials.isDemo);
@@ -47,7 +53,7 @@ export class Datasource {
 
     const dataset = new MovingDataset(size);
     const prices = await this.client.market.prices(epic, resolutionData.rest, size);
-    for(const price of prices.prices) {
+    for (const price of prices.prices) {
       const ask = new CandleStickData(price.openPrice.ask, price.closePrice.ask, price.highPrice.ask, price.lowPrice.ask);
       const bid = new CandleStickData(price.openPrice.bid, price.closePrice.bid, price.highPrice.bid, price.lowPrice.bid);
       dataset.add(new Record(ask, bid, parseDate(price.snapshotTime)));
@@ -60,14 +66,18 @@ export class Datasource {
       const ask = new CandleStickData(data.OFR_OPEN, data.OFR_CLOSE, data.OFR_HIGH, data.OFR_LOW);
       const bid = new CandleStickData(data.BID_OPEN, data.BID_CLOSE, data.BID_HIGH, data.BID_LOW);
       const record = new Record(ask, bid, new Date(data.UTM));
-      if(data.CONS_END) {
+      if (data.CONS_END) {
         record.fix();
       }
-      
+
       dataset.add(record);
     });
 
     return dataset;
+  }
+
+  async openPosition(): Promise<Position> {
+    return new Position();
   }
 }
 

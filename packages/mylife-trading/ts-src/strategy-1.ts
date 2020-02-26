@@ -1,16 +1,15 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import Strategy from './strategy';
-import { Datasource, Resolution } from './datasource';
-import MovingDataset from './moving-dataset';
+import { Broker, Resolution, MovingDataset } from './broker';
 import { last } from './utils'
 
 export default class Strategy1 implements Strategy {
-  private datasource: Datasource;
+  private datasource: Broker;
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
 
   async init() {
-    this.datasource = new Datasource({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
+    this.datasource = new Broker({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
     await this.datasource.init();
     console.log('datasource init');
 
