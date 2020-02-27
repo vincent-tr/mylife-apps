@@ -14,3 +14,6 @@ MyLife Trading
 - STOP garanti = stop loss garanti avec spread en plus (frais)
 - LIMITE = take profit
 - ORDRE LIMITE = déclenchement de la position à partir d'un certain seuil
+- deal reference/id (??):
+ - reference = command identifier
+ - id = position identifier
