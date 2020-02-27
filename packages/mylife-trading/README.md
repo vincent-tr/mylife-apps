@@ -8,6 +8,7 @@ MyLife Trading
 - Gestion de risque:
  - Ne pas risquer de perdre + de 2% du capital par position. (Positionner le stop loss + pas trop de levier)
  - Montant investi / stop loss (pips) / valeur du pip
+- stratégie scalping forex M1: http://knock-on-wood.over-blog.com/2018/07/forex-et-scalping.html
 
 # Glossary:
 - STOP = stop loss
