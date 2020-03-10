@@ -1,7 +1,7 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import Strategy from './strategy';
 import { Broker, Resolution, MovingDataset } from './broker';
-import { last } from './utils'
+import { last } from './utils';
 
 export default class Strategy1 implements Strategy {
   private datasource: Broker;
@@ -28,7 +28,7 @@ export default class Strategy1 implements Strategy {
   }
 
   private onDatasetChange() {
-    if(!this.shouldRun()) {
+    if (!this.shouldRun()) {
       return;
     }
 
@@ -40,11 +40,11 @@ export default class Strategy1 implements Strategy {
     const bb = last(BollingerBands.calculate({ period, values, stdDev: 2 }));
     const candle = last(fixedList);
 
-    if(rsi > 70 && candle.average.close > bb.upper) {
+    if (rsi > 70 && candle.average.close > bb.upper) {
       console.log(new Date().toISOString(), 'SHOULD SELL', rsi, candle.average.close, bb.upper);
     }
 
-    if(rsi < 30 && candle.average.close < bb.lower) {
+    if (rsi < 30 && candle.average.close < bb.lower) {
       console.log(new Date().toISOString(), 'SHOULD BUY', rsi, candle.average.close, bb.lower);
     }
   }
@@ -52,11 +52,11 @@ export default class Strategy1 implements Strategy {
   private shouldRun() {
     const fixedRecords = this.dataset.fixedList;
     const lastTimestamp = fixedRecords[fixedRecords.length - 1].timestamp.valueOf();
-    if(lastTimestamp === this.lastProcessedTimestamp) {
+    if (lastTimestamp === this.lastProcessedTimestamp) {
       return false;
     }
 
-    this.lastProcessedTimestamp = lastTimestamp
+    this.lastProcessedTimestamp = lastTimestamp;
     return true;
   }
 }
