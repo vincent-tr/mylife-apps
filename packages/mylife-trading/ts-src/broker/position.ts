@@ -1,11 +1,11 @@
 import EventEmitter from 'events';
 
-declare interface MovingDataset {
+declare interface Position {
   on(event: 'error', listener: (err: Error) => void): this;
   on(event: 'close', listener: () => void): this;
 }
 
-export default class Position extends EventEmitter {
+class Position extends EventEmitter {
   constructor() {
     super();
   }
@@ -17,3 +17,5 @@ export default class Position extends EventEmitter {
   async close() {
   }
 }
+
+export default Position;
