@@ -3,6 +3,7 @@ import Client from './ig/client';
 import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position from './position';
+import { StreamSubscription } from './ig/stream';
 
 export { MovingDataset };
 export * from './moving-dataset';
@@ -32,10 +33,33 @@ resolutions.set(Resolution.MINUTE, { rest: PriceResolution.MINUTE, stream: '1MIN
 resolutions.set(Resolution.MINUTE_5, { rest: PriceResolution.MINUTE_5, stream: '5MINUTE' });
 resolutions.set(Resolution.HOUR, { rest: PriceResolution.HOUR, stream: 'HOUR' });
 
-const subscriptionFields = ['UTM', 'OFR_OPEN', 'OFR_HIGH', 'OFR_LOW', 'OFR_CLOSE', 'BID_OPEN', 'BID_HIGH', 'BID_LOW', 'BID_CLOSE'/*,'LTP_OPEN','LTP_HIGH','LTP_LOW','LTP_CLOSE'*/, 'CONS_END'];
+const datasetSubscriptionFields = ['UTM', 'OFR_OPEN', 'OFR_HIGH', 'OFR_LOW', 'OFR_CLOSE', 'BID_OPEN', 'BID_HIGH', 'BID_LOW', 'BID_CLOSE'/*,'LTP_OPEN','LTP_HIGH','LTP_LOW','LTP_CLOSE'*/, 'CONS_END'];
+const positionSubscriptionFields = ['CONFIRMS', 'OPU'];
+
+class TradeSubscription {
+  private refCount: number = 0;
+
+  constructor(private readonly subscription: StreamSubscription) {
+  }
+
+  ref() {
+    ++this.refCount;
+    return this.subscription;
+  }
+
+  unref() {
+    const doClose = --this.refCount === 0;
+    if(doClose) {
+      this.subscription.close();
+    }
+    return doClose;
+  }
+}
 
 export class Broker {
-  readonly client: Client;
+  private readonly client: Client;
+  private tradeSubscription: TradeSubscription;
+
   constructor(credentials: Credentials) {
     this.client = new Client(credentials.key, credentials.identifier, credentials.password, credentials.isDemo);
   }
@@ -59,7 +83,7 @@ export class Broker {
       dataset.add(new Record(ask, bid, parseDate(price.snapshotTime)));
     }
 
-    const subscription = this.client.subscribe('MERGE', [`CHART:${epic}:${resolutionData.stream}`], subscriptionFields);
+    const subscription = this.client.subscribe('MERGE', [`CHART:${epic}:${resolutionData.stream}`], datasetSubscriptionFields);
     dataset.on('close', () => subscription.close());
     subscription.on('error', err => dataset.emit('error', err));
     subscription.on('update', data => {
@@ -74,6 +98,21 @@ export class Broker {
     });
 
     return dataset;
+  }
+
+  private refTradeSubscription(): StreamSubscription {
+    if(!this.tradeSubscription) {
+      const subscription = this.client.subscribe('DISTINCT', [`TRADE:${this.client.accountIdentifier()}`], datasetSubscriptionFields);
+      this.tradeSubscription = new TradeSubscription(subscription);
+    }
+
+    return this.tradeSubscription.ref();
+  }
+
+  private unrefTradeSubscription() {
+    if(this.tradeSubscription.unref()) {
+      this.tradeSubscription = null;
+    }
   }
 
   async openPosition(): Promise<Position> {
