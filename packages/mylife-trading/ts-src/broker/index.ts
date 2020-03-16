@@ -4,6 +4,7 @@ import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position from './position';
 import { StreamSubscription } from './ig/stream';
+import { OpenPositionOrder, DealDirection } from './ig/dealing';
 
 export { MovingDataset };
 export * from './moving-dataset';
@@ -115,12 +116,27 @@ export class Broker {
     }
   }
 
-  async openPosition(): Promise<Position> {
-    return new Position();
+  async openPosition(epic: string, direction: DealDirection, stopLoss: number, takeProfit: number, size: number): Promise<Position> {
+    // forceOpen: boolean;
+    // guaranteedStop: boolean;
+    // orderType: OrderType;
+    // timeInForce: TimeInForce;
+
+    const order: OpenPositionOrder = { epic, direction, dealReference: randomString(), limitLevel: takeProfit, stopLevel: stopLoss, size };
+    const dealReference = await this.client.dealing.openPosition(order);
+
+    const position = new Position(this.client, this.refTradeSubscription(), dealReference);
+    position.on('close', () => this.unrefTradeSubscription());
+
+    return position;
   }
 }
 
 function parseDate(value: string): Date {
   const result = parse(value, 'YYYY/MM/DD HH:mm:ss');
   return result ? <Date>result : null;
+}
+
+function randomString() {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
