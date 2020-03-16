@@ -1,18 +1,14 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import Strategy from './strategy';
-import { Broker, Resolution, MovingDataset } from './broker';
+import { Broker, Resolution, MovingDataset, DealDirection, Position } from './broker';
 import { last } from './utils';
-
-enum Status {
-  LOOKING,
-  ACTING
-}
+import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 
 export default class Strategy1 implements Strategy {
   private datasource: Broker;
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
-  private status: Status;
+  private position: Position;
 
   async init() {
     this.datasource = new Broker({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
@@ -23,8 +19,6 @@ export default class Strategy1 implements Strategy {
     this.dataset.on('error', err => console.error('ERROR', err));
     this.dataset.on('add', () => this.onDatasetChange());
     this.dataset.on('update', () => this.onDatasetChange());
-
-    this.status = Status.LOOKING;
 
     this.onDatasetChange();
   }
@@ -40,15 +34,7 @@ export default class Strategy1 implements Strategy {
       return;
     }
 
-    switch (this.status) {
-      case Status.LOOKING:
-        this.lookForPosition();
-        break;
-
-      case Status.ACTING:
-        this.lookForRelease();
-        break;
-    }
+    this.analyze().catch(err => console.error(err));
   }
 
   private shouldRun() {
@@ -62,7 +48,7 @@ export default class Strategy1 implements Strategy {
     return true;
   }
 
-  private lookForPosition() {
+  private getIndicators() {
     const period = 14;
     const { fixedList } = this.dataset;
     const values = fixedList.map(record => record.average.close);
@@ -71,18 +57,40 @@ export default class Strategy1 implements Strategy {
     const bb = last(BollingerBands.calculate({ period, values, stdDev: 2 }));
     const candle = last(fixedList);
 
+    return { rsi, bb, candle };
+  }
+
+  private async takePosition(direction: DealDirection, bb: BollingerBandsOutput) {
+    const size = 1; // TODO
+    this.position = await this.datasource.openPosition('CS.D.EURUSD.CFD.IP', direction, size, { distance: 5 }, { level: bb.middle });
+
+    this.position.on('close', () => {
+      console.log('POSITION CLOSED');
+      this.position = null;
+    });
+  }
+
+  private async analyze() {
+
+    const { rsi, bb, candle } = this.getIndicators();
+
+    if (this.position) {
+      // move takeprofit regarding bb
+      await this.position.updateTakeProfit(bb.middle);
+      return;
+    }
+
+    // see if we can take position
+
     if (rsi > 70 && candle.average.close > bb.upper) {
       console.log(new Date().toISOString(), 'SHOULD SELL', rsi, candle.average.close, bb.upper);
+      await this.takePosition(DealDirection.SELL, bb);
     }
 
     if (rsi < 30 && candle.average.close < bb.lower) {
       console.log(new Date().toISOString(), 'SHOULD BUY', rsi, candle.average.close, bb.lower);
+      await this.takePosition(DealDirection.BUY, bb);
     }
-
-  }
-
-  private lookForRelease() {
-    // TODO
   }
 }
 
