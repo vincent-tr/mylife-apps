@@ -31,6 +31,7 @@ export default class Connection {
   private token: string = null;
   private cst: string = null;
   private stream: Stream;
+  private accountId: string;
 
   /**
    * Constructor
@@ -109,7 +110,8 @@ export default class Connection {
 
     // TODO: should we pass account id as parameter ?
     const defaultAccount = data.accounts.find(acc => acc.preferred);
-    this.stream = new Stream(data.lightstreamerEndpoint, defaultAccount.accountId, this.cst, this.token);
+    this.accountId = defaultAccount.accountId;
+    this.stream = new Stream(data.lightstreamerEndpoint, this.accountId, this.cst, this.token);
 
     logger.info(`Connection created: key='${this.key}', identifier='${this.identifier}', api=${this.api}`);
 
@@ -136,6 +138,10 @@ export default class Connection {
    */
   async sessionEncryptionKey(): Promise<SessionEncryptionKey> {
     return await this.request('post', 'session/encryptionKey', null, '1');
+  }
+
+  accountIdentifier(): string {
+    return this.accountId;
   }
 
   subscribe(subscriptionMode: string, items: string[], fields: string[]): StreamSubscription {
