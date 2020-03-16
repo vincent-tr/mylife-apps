@@ -11,9 +11,14 @@ declare interface Position {
 
 class Position extends EventEmitter {
   private dealId: string;
+  private readonly errorCb: (err: Error) => void = (err) => this.onError(err);
+  private readonly updateCb: (data: any) => void = (data) => this.onUpdate(data);
 
   constructor(private readonly client: Client, private readonly subscription: StreamSubscription, private readonly dealReference: string) {
     super();
+
+    this.subscription.on('error', this.errorCb);
+    this.subscription.on('update', this.updateCb);
   }
 
   async updateTakeProfit(value: number) {
@@ -33,6 +38,24 @@ class Position extends EventEmitter {
   }
 
   async close() {
+    await this.client.dealing.closePosition(this.dealId);
+  }
+
+  private onError(err: Error) {
+    this.emit('error', err);
+  }
+
+  private onUpdate(data: any) {
+    // TODO: position data
+    // TODO: position close emit
+    console.log(data);
+  }
+
+  private onClose() {
+    this.subscription.removeListener('error', this.errorCb);
+    this.subscription.removeListener('update', this.errorCb);
+
+    this.emit('close');
   }
 }
 
