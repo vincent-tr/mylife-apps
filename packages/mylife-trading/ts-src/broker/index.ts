@@ -57,6 +57,11 @@ class TradeSubscription {
   }
 }
 
+export interface OpenPositionBound {
+  level?: number,
+  distance?: number
+}
+
 export class Broker {
   private readonly client: Client;
   private tradeSubscription: TradeSubscription;
@@ -116,13 +121,13 @@ export class Broker {
     }
   }
 
-  async openPosition(epic: string, direction: DealDirection, stopLoss: number, takeProfit: number, size: number): Promise<Position> {
+  async openPosition(epic: string, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
     // forceOpen: boolean;
     // guaranteedStop: boolean;
     // orderType: OrderType;
     // timeInForce: TimeInForce;
 
-    const order: OpenPositionOrder = { epic, direction, dealReference: randomString(), limitLevel: takeProfit, stopLevel: stopLoss, size };
+    const order: OpenPositionOrder = { epic, direction, dealReference: randomString(), limitLevel: takeProfit.level, limitDistance: takeProfit.distance, stopLevel: stopLoss.level, stopDistance: stopLoss.distance, size };
     const dealReference = await this.client.dealing.openPosition(order);
 
     const position = new Position(this.client, this.refTradeSubscription(), dealReference);
