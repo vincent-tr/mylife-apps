@@ -108,7 +108,7 @@ export class Broker {
 
   private refTradeSubscription(): StreamSubscription {
     if (!this.tradeSubscription) {
-      const subscription = this.client.subscribe('DISTINCT', [`TRADE:${this.client.accountIdentifier()}`], datasetSubscriptionFields);
+      const subscription = this.client.subscribe('DISTINCT', [`TRADE:${this.client.accountIdentifier()}`], positionSubscriptionFields);
       this.tradeSubscription = new TradeSubscription(subscription);
     }
 
