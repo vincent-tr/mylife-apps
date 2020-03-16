@@ -183,12 +183,12 @@ export interface OpenPositionOrder {
   /**
    * True if force open is required
    */
-  forceOpen?: boolean;
+  forceOpen: boolean;
 
   /**
    * True if a guaranteed stop is required
    */
-  guaranteedStop?: boolean;
+  guaranteedStop: boolean;
 
   /**
    * Deal level

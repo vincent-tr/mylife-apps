@@ -60,7 +60,7 @@ class TradeSubscription {
 
 export interface OpenPositionBound {
   level?: number,
-  distance?: number
+  distance?: number;
 }
 
 export class Broker {
@@ -128,7 +128,14 @@ export class Broker {
     // orderType: OrderType;
     // timeInForce: TimeInForce;
 
-    const order: OpenPositionOrder = { epic, direction, dealReference: randomString(), limitLevel: takeProfit.level, limitDistance: takeProfit.distance, stopLevel: stopLoss.level, stopDistance: stopLoss.distance, size };
+    const order: OpenPositionOrder = {
+      epic, direction, dealReference: randomString(), 
+      limitLevel: takeProfit.level, limitDistance: takeProfit.distance, 
+      stopLevel: stopLoss.level, stopDistance: stopLoss.distance,
+      size,
+      forceOpen: false,
+      guaranteedStop: false
+    };
     const dealReference = await this.client.dealing.openPosition(order);
 
     const position = new Position(this.client, this.refTradeSubscription(), dealReference);
