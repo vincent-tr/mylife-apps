@@ -8,6 +8,7 @@ import { OpenPositionOrder, DealDirection } from './ig/dealing';
 
 export { MovingDataset };
 export * from './moving-dataset';
+export { DealDirection };
 export { Position };
 export * from './position';
 
