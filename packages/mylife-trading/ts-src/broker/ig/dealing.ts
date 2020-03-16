@@ -158,119 +158,119 @@ export interface OpenPositionOrder {
    * Currency.
    * Restricted to available instrument currencies
    */
-  currencyCode: string;
+  currencyCode?: string;
 
   /**
    * A user - defined reference identifying the submission of the order
    */
-  dealReference: string;
+  dealReference?: string;
 
   /**
    * Deal direction
    */
-  direction: DealDirection;
+  direction?: DealDirection;
 
   /**
    * Instrument epic identifier
    */
-  epic: string;
+  epic?: string;
 
   /**
    * Instrument expiry
    */
-  expiry: string;
+  expiry?: string;
 
   /**
    * True if force open is required
    */
-  forceOpen: boolean;
+  forceOpen?: boolean;
 
   /**
    * True if a guaranteed stop is required
    */
-  guaranteedStop: boolean;
+  guaranteedStop?: boolean;
 
   /**
    * Deal level
    */
-  level: number;
+  level?: number;
 
   /**
    * Limit distance
    */
-  limitDistance: number;
+  limitDistance?: number;
 
   /**
    * Limit level
    */
-  limitLevel: number;
+  limitLevel?: number;
 
   /**
    * Describes the order level model to be used for a position operation
    */
-  orderType: OrderType;
+  orderType?: OrderType;
 
   /**
    * Lightstreamer price quote identifier
    */
-  quoteId: string;
+  quoteId?: string;
 
   /**
    * Deal size
    */
-  size: number;
+  size?: number;
 
   /**
   * Stop distance
   */
-  stopDistance: number;
+  stopDistance?: number;
 
   /**
    * Stop level
    */
-  stopLevel: number;
+  stopLevel?: number;
 
   /**
    * The time in force determines the order fill strategy.
    */
-  timeInForce: TimeInForce;
+  timeInForce?: TimeInForce;
 
   /**
    * Whether the stop has to be moved towards the current level in case of a favourable trade
    */
-  trailingStop: boolean;
+  trailingStop?: boolean;
 
   /**
    * increment step in pips for the trailing stop
    */
-  trailingStopIncrement: number;
+  trailingStopIncrement?: number;
 }
 
 export interface UpdatePositionOrder {
   /**
    * Limit level
    */
-  limitLevel: number;
+  limitLevel?: number;
 
   /**
    * Stop level
    */
-  stopLevel: number;
+  stopLevel?: number;
 
   /**
    * Whether the stop has to be moved towards the current level in case of a favourable trade
    */
-  trailingStop: boolean;
+  trailingStop?: boolean;
 
   /**
    * Trailing stop distance
    */
-  trailingStopDistance: number;
+  trailingStopDistance?: number;
 
   /**
    * increment step in pips for the trailing stop
    */
-  trailingStopIncrement: number;
+  trailingStopIncrement?: number;
 }
 
 /**
