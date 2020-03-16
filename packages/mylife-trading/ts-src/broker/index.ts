@@ -49,7 +49,7 @@ class TradeSubscription {
 
   unref() {
     const doClose = --this.refCount === 0;
-    if(doClose) {
+    if (doClose) {
       this.subscription.close();
     }
     return doClose;
@@ -101,7 +101,7 @@ export class Broker {
   }
 
   private refTradeSubscription(): StreamSubscription {
-    if(!this.tradeSubscription) {
+    if (!this.tradeSubscription) {
       const subscription = this.client.subscribe('DISTINCT', [`TRADE:${this.client.accountIdentifier()}`], datasetSubscriptionFields);
       this.tradeSubscription = new TradeSubscription(subscription);
     }
@@ -110,7 +110,7 @@ export class Broker {
   }
 
   private unrefTradeSubscription() {
-    if(this.tradeSubscription.unref()) {
+    if (this.tradeSubscription.unref()) {
       this.tradeSubscription = null;
     }
   }
