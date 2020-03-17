@@ -62,7 +62,8 @@ export default class Strategy1 implements Strategy {
 
   private async takePosition(direction: DealDirection, bb: BollingerBandsOutput) {
     const size = 1; // TODO
-    this.position = await this.datasource.openPosition('CS.D.EURUSD.CFD.IP', direction, size, { distance: 5 }, { level: bb.middle });
+    const currencyCode = 'EUR'; // TODO: get from instrument
+    this.position = await this.datasource.openPosition('CS.D.EURUSD.CFD.IP', currencyCode, direction, size, { distance: 5 }, { level: bb.middle });
 
     this.position.on('close', () => {
       console.log('POSITION CLOSED');

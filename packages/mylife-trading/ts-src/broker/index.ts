@@ -122,9 +122,9 @@ export class Broker {
     }
   }
 
-  async openPosition(epic: string, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
+  async openPosition(epic: string, currencyCode: string, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
     const order: OpenPositionOrder = {
-      epic, direction, dealReference: randomString(), 
+      epic, currencyCode, direction, dealReference: randomString(), 
       limitLevel: takeProfit.level, limitDistance: takeProfit.distance, 
       stopLevel: stopLoss.level, stopDistance: stopLoss.distance,
       size,
