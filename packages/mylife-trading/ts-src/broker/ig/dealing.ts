@@ -53,7 +53,8 @@ export enum OrderType {
 
   /**
    * Market orders get executed at the price seen by the IG at the time of booking the trade.
-   * A level cannot be specified.Not applicable to BINARY instruments
+   * A level cannot be specified.
+   * Not applicable to BINARY instruments
    */
   MARKET = 'MARKET',
 
@@ -178,7 +179,7 @@ export interface OpenPositionOrder {
   /**
    * Instrument expiry
    */
-  expiry?: string;
+  expiry: string;
 
   /**
    * True if force open is required
@@ -208,7 +209,7 @@ export interface OpenPositionOrder {
   /**
    * Describes the order level model to be used for a position operation
    */
-  orderType?: OrderType;
+  orderType: OrderType;
 
   /**
    * Lightstreamer price quote identifier
