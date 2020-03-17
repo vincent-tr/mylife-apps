@@ -164,17 +164,17 @@ export interface OpenPositionOrder {
   /**
    * A user - defined reference identifying the submission of the order
    */
-  dealReference?: string;
+  dealReference: string;
 
   /**
    * Deal direction
    */
-  direction?: DealDirection;
+  direction: DealDirection;
 
   /**
    * Instrument epic identifier
    */
-  epic?: string;
+  epic: string;
 
   /**
    * Instrument expiry

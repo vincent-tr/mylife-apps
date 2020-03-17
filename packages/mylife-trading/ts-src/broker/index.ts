@@ -4,7 +4,7 @@ import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position from './position';
 import { StreamSubscription } from './ig/stream';
-import { OpenPositionOrder, DealDirection } from './ig/dealing';
+import { OpenPositionOrder, DealDirection, OrderType, TimeInForce } from './ig/dealing';
 
 export { MovingDataset };
 export * from './moving-dataset';
@@ -123,19 +123,18 @@ export class Broker {
   }
 
   async openPosition(epic: string, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
-    // forceOpen: boolean;
-    // guaranteedStop: boolean;
-    // orderType: OrderType;
-    // timeInForce: TimeInForce;
-
     const order: OpenPositionOrder = {
       epic, direction, dealReference: randomString(), 
       limitLevel: takeProfit.level, limitDistance: takeProfit.distance, 
       stopLevel: stopLoss.level, stopDistance: stopLoss.distance,
       size,
-      forceOpen: false,
-      guaranteedStop: false
+      forceOpen: true,
+      guaranteedStop: false,
+      orderType: OrderType.MARKET,
+      expiry: 'DFB',
+      timeInForce: TimeInForce.FILL_OR_KILL
     };
+
     const dealReference = await this.client.dealing.openPosition(order);
 
     const position = new Position(this.client, this.refTradeSubscription(), dealReference);
