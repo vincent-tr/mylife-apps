@@ -5,12 +5,14 @@ import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position from './position';
 import { StreamSubscription } from './ig/stream';
 import { OpenPositionOrder, DealDirection, OrderType, TimeInForce } from './ig/dealing';
+import { MarketDetails, InstrumentDetails } from './ig/market';
 
 export { MovingDataset };
 export * from './moving-dataset';
-export { DealDirection };
 export { Position };
 export * from './position';
+
+export { DealDirection, MarketDetails, InstrumentDetails };
 
 export interface Credentials {
   key: string;
@@ -79,6 +81,10 @@ export class Broker {
     await this.client.logout();
   }
 
+  async getEpic(epic: string) {
+    return await this.client.market.getMarket(epic);
+  }
+
   async getDataset(epic: string, resolution: Resolution, size: number): Promise<MovingDataset> {
     const resolutionData = resolutions.get(resolution);
 
@@ -122,17 +128,19 @@ export class Broker {
     }
   }
 
-  async openPosition(epic: string, currencyCode: string, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
+  async openPosition(instrument: InstrumentDetails, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
     const order: OpenPositionOrder = {
-      epic, currencyCode, direction, dealReference: randomString(), 
-      limitLevel: takeProfit.level, limitDistance: takeProfit.distance, 
+      epic: instrument.epic,
+      expiry: instrument.expiry,
+      currencyCode: instrument.currencies[0].code,
+      direction, dealReference: randomString(),
+      limitLevel: takeProfit.level, limitDistance: takeProfit.distance,
       stopLevel: stopLoss.level, stopDistance: stopLoss.distance,
       size,
       forceOpen: true,
       guaranteedStop: false,
       orderType: OrderType.MARKET,
-      expiry: 'DFB',
-      timeInForce: TimeInForce.FILL_OR_KILL
+      timeInForce: TimeInForce.FILL_OR_KILL,
     };
 
     const dealReference = await this.client.dealing.openPosition(order);

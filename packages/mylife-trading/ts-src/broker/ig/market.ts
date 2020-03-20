@@ -1,4 +1,227 @@
 /**
+ * Client's market order trading preference
+ */
+export enum MarketOrderPreference {
+  /**
+   * Market orders are allowed for the account type and instrument, and the user has enabled market orders in their preferences but decided the default state is off.
+   */
+  AVAILABLE_DEFAULT_OFF = 'AVAILABLE_DEFAULT_OFF',	
+
+  /**
+   * Market orders are allowed for the account type and instrument, and the user has enabled market orders in their preferences and has decided the default state is on.
+   */
+  AVAILABLE_DEFAULT_ON = 'AVAILABLE_DEFAULT_ON',	
+
+  /**
+   * Market orders are not allowed for the current site and/or instrument
+   */
+  NOT_AVAILABLE = 'NOT_AVAILABLE',	
+}
+
+/**
+ * Describes the dimension for a dealing rule value
+ */
+export enum DealingRuleUnit {
+  PERCENTAGE = 'PERCENTAGE',
+  POINTS = 'POINTS'
+}
+
+/**
+ * Dealing rule
+ */
+export interface DealingRule {
+  /**
+   * Describes the dimension for a dealing rule value
+   */
+  unit: DealingRuleUnit;
+
+  /**
+   * Value
+   */
+  value: number;
+}
+
+/**
+ * Trailing stops trading preference for the specified market
+ */
+export enum TrailingStopsPreference {
+  /**
+   * Trailing stops are allowed for the current market
+   */
+  AVAILABLE,
+
+  /**
+   * Trailing stops are not allowed for the current market
+   */
+  NOT_AVAILABLE
+}
+
+/**
+ * Dealing rules
+ */
+export interface DealingRules {
+  /**
+   * Client's market order trading preference
+   */
+  marketOrderPreference: MarketOrderPreference;
+
+  /**
+   * Dealing rule
+   */
+  maxStopOrLimitDistance: DealingRule;
+
+  /**
+   * Dealing rule
+   */
+  minControlledRiskStopDistance: DealingRule;
+
+  /**
+   * Dealing rule
+   */
+  minDealSize: DealingRule;
+
+  /**
+   * Dealing rule
+   */
+  minNormalStopOrLimitDistance: DealingRule;
+
+  /**
+   * Dealing rule
+   */
+  minStepDistance: DealingRule;
+
+  /**
+   * Trailing stops trading preference for the specified market
+   */
+  trailingStopsPreference: TrailingStopsPreference;
+}
+
+/**
+ * Currency
+ */
+export interface Currency {
+  /**
+   * Base exchange rate
+   */
+  baseExchangeRate: number;	
+
+  /**
+   * Code, to be used when placing orders
+   */
+  code: string;	
+
+  /**
+   * Exchange rate.
+   */
+  exchangeRate: number;	
+
+  /**
+   * True if this is the default currency
+   */
+  isDefault: boolean;
+
+  /**
+   * Symbol, for display purposes
+   */
+  symbol: string;	
+}
+
+/**
+ * Market expiry details
+ */
+export interface MarketExpiryDetails {
+  /**
+   * Last dealing date
+   */
+  lastDealingDate:string;
+
+  /**
+   * Settlement information
+   */
+  settlementInfo:string;
+}
+
+/**
+ * Deposit band
+ */
+export interface DepositBand {
+  /**
+   * the currency for this currency band factor calculation
+   */
+  currency:string;
+
+  /**
+   * Margin Percentage
+   */
+  margin: number;
+
+  /**
+   * Band maximum
+   */
+  max: number;
+
+  /**
+   * Band minimum
+   */
+  min: number;
+}
+
+/**
+ * Time range
+ */
+export interface TimeRange {
+/**
+ * Close time
+ */
+closeTime:string;
+
+/**
+ * Open time
+ */
+openTime:string;
+}
+
+/**
+ * Market open and close times
+ */
+export interface OpeningHours {
+  /**
+   * Time range
+   */
+  marketTimes: TimeRange[];
+}
+
+/**
+ * Market rollover details
+ */
+export interface MarketRolloverDetails {
+/**
+ * Last rollover date
+ */
+lastRolloverTime:string;
+
+/**
+ * Rollover info
+ */
+rolloverInfo:string;
+}
+
+/**
+ * Slippage factor details for a given market
+ */
+export interface SlippageFactor {
+/**
+ * Unit
+ */
+unit:string;
+
+/**
+ * Value
+ */
+value: number;
+}
+
+/**
  * Instrument type
  */
 export enum InstrumentType {
@@ -100,6 +323,165 @@ export enum InstrumentType {
 }
 
 /**
+ * Unit used to qualify the size of a trade
+ */
+export enum TradeSizeUnit {
+  AMOUNT = 'AMOUNT',	
+  CONTRACTS = 'CONTRACTS',	
+  SHARES = 'SHARES'
+}
+
+/**
+ * Instrument details
+ */
+export interface InstrumentDetails {
+  /**
+   * Chart code
+   */
+  chartCode:string;
+
+  /**
+   * Contract size
+   */
+  contractSize:string;
+
+  /**
+   * True if controlled risk trades are allowed
+   */
+  controlledRiskAllowed: boolean;
+
+  /**
+   * Country
+   */
+  country:string;
+
+  /**
+   * Currencies
+   */
+  currencies: Currency[];
+
+  /**
+   * Instrument identifier
+   */
+  epic:string;
+
+  /**
+   * Expiry
+   */
+  expiry:string;
+
+  /**
+   * Market expiry details
+   */
+  expiryDetails: MarketExpiryDetails;
+
+  /**
+   * True if force open is allowed
+   */
+  forceOpenAllowed: boolean;
+
+  /**
+   * The limited risk premium.
+   */
+  limitedRiskPremium: DealingRule;
+
+  /**
+   * Lot size
+   */
+  lotSize: number;
+
+  /**
+   * Deposit band
+   */
+  marginDepositBands: DepositBand[];
+  
+  /**
+   * margin requirement factor
+   */
+  marginFactor: number;
+
+  /**
+   * describes the dimension for a dealing rule value
+   */
+  marginFactorUnit: DealingRuleUnit;
+
+  /**
+   * Market identifier
+   */
+  marketId:string;
+
+  /**
+   * Name
+   */
+  name:string;
+
+  /**
+   * Reuters news code
+   */
+  newsCode:string;
+
+  /**
+   * Meaning of one pip
+   */
+  onePipMeans:string;
+
+  /**
+   * Market open and close times
+   */
+  openingHours: OpeningHours;
+
+  /**
+   * Market rollover details
+   */
+  rolloverDetails: MarketRolloverDetails;
+
+  /**
+   * Slippage factor details for a given market
+   */
+  slippageFactor: SlippageFactor;
+
+  /**
+   * List of special information notices
+   */
+  specialInfo: string[];
+
+  /**
+   * For sprint markets only, the maximum value to be specified as the expiry of a sprint markets trade
+   */
+  sprintMarketsMaximumExpiryTime:number;
+
+  /**
+   * For sprint markets only, the minimum value to be specified as the expiry of a sprint markets trade
+   */
+  sprintMarketsMinimumExpiryTime:number;
+  
+  /**
+   * True if stops and limits are allowed
+   */
+  stopsLimitsAllowed:boolean;
+  
+  /**
+   * True if streaming prices are available, i.e. the market is open and the client has appropriate permissions
+   */
+  streamingPricesAvailable:boolean;
+
+  /**
+   * Instrument type
+   */
+  type: InstrumentType;
+
+  /**
+   * Unit used to qualify the size of a trade
+   */
+  unit: TradeSizeUnit;
+
+  /**
+   * Value of one pip
+   */
+  valueOfOnePip: string;
+}
+
+/**
  * Describes the current status of a given market
  */
 export enum MarketStatus {
@@ -137,6 +519,96 @@ export enum MarketStatus {
    * Open for trades
    */
   TRADEABLE = 'TRADEABLE',
+}
+
+/**
+ * Market snapshot data
+ */
+export interface MarketSnapshotData {
+  /**
+   * Bid price
+   */
+  bid: number;
+
+  /**
+   * Binary odds
+   */
+  binaryOdds: number;
+
+  /**
+   * the number of points to add on each side of the market as an additional spread when placing a guaranteed stop trade.
+   */
+  controlledRiskExtraSpread: number;
+
+  /**
+   * Number of decimal positions for market levels
+   */
+  decimalPlacesFactor: number;
+
+  /**
+   * Price delay
+   */
+  delayTime: number;
+
+  /**
+   * Highest price on the day
+   */
+  high: number;
+
+  /**
+   * Lowest price on the day
+   */
+  low: number;
+
+  /**
+   * Describes the current status of a given market
+   */
+  marketStatus: MarketStatus;
+
+  /**
+   * Net price change on the day
+   */
+  netChange: number;
+
+  /**
+   * Offer price
+   */
+  offer: number;
+
+  /**
+   * Percentage price change on the day
+   */
+  percentageChange: number;
+
+  /**
+   * Multiplying factor to determine actual pip value for the levels used by the instrument
+   */
+  scalingFactor: number;
+
+  /**
+   * Time of last price update
+   */
+  updateTime: string;
+}
+
+/**
+ * Details of the given market.
+ */
+export interface MarketDetails {
+  /**
+   * Dealing rules
+   */
+  dealingRules: DealingRules;
+
+  /**
+   * Instrument details
+   */
+  instrument: InstrumentDetails;
+
+  /**
+   * Market snapshot data
+   */
+  snapshot: MarketSnapshotData;
 }
 
 /**
@@ -341,7 +813,14 @@ export class MarketOperations {
   // marketnavigation	
   // marketnavigation/{nodeId}	
   // markets	
-  // markets/{epic}
+
+  /**
+   * Returns the details of the given market.
+   * @param epic 
+   */
+  async getMarket(epic: string): Promise<MarketDetails> {
+    return await this.request('get', `markets/${epic}`, null, '3');
+  }
 
   /**
    * Returns all markets matching the search term.
