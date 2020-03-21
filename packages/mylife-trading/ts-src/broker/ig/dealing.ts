@@ -814,3 +814,118 @@ export class DealingOperations {
     return await this.request('put', `confirms/${dealReference}`, null, '1');
   }
 }
+
+// used in subscriptions
+
+/**
+ * Position status
+ */
+export enum UpdatePositionStatus {
+  /**
+   * Open
+   */
+  OPEN = 'OPEN',
+
+  /**
+   * Updated
+   */
+  UPDATED = 'UPDATED',
+
+  /**
+   * Deleted
+   */
+  DELETED = 'DELETED',
+}
+
+/**
+ * Open position updates for an account
+ */
+export interface OpenPositionUpdate {
+  /**
+   * Deal direction
+   */
+  direction: DealDirection;
+
+  /**
+   * Limit level
+   */
+  limitLevel: number;	
+  
+  /**
+   * Deal identifier
+   */
+  dealId: string;
+  
+  /**
+   * Deal identifier of the originating deal
+   */
+  dealIdOrigin: string;
+  /**
+   * Stop level
+   */
+  stopLevel: number;
+  
+  /**
+   * Instrument expiry
+   */
+  expiry: string;
+
+  /**
+   * Event date and time
+   */
+  timestamp: string;	
+
+  /**
+   * Trade size
+   */
+  size: number;
+  
+  /**
+   * Position status
+   */
+  status: UpdatePositionStatus;
+  
+  /**
+   * Instrument EPIC identifier
+   */
+  epic: string;
+  /**
+   * Trade level
+   */
+  level: number;
+  
+  /**
+   * True if a guaranteed stop is in place
+   */
+  guaranteedStop: boolean;
+  
+  /**
+   * Deal reference
+   */
+  dealReference: string;
+
+  /**
+   * Deal status
+   */
+  dealStatus: DealStatus;
+  
+  /**
+   * User channel (do not bind to this value - it will be converted to a constant enum)
+   */
+  channel: string;
+  
+  /**
+   * Currency
+   */
+  currency: string;
+
+  /**
+   * Trailing stop distance
+   */
+  trailingStopDistance: number;
+  
+  /**
+   * Trailing stop increment
+   */
+  trailingStep: number;
+}
