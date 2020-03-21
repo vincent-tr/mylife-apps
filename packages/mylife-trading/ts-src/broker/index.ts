@@ -4,8 +4,9 @@ import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position from './position';
 import { StreamSubscription } from './ig/stream';
-import { OpenPositionOrder, DealDirection, OrderType, TimeInForce } from './ig/dealing';
+import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './ig/dealing';
 import { MarketDetails, InstrumentDetails } from './ig/market';
+import { ConfirmationError } from './confirmation';
 
 export { MovingDataset };
 export * from './moving-dataset';
@@ -144,8 +145,13 @@ export class Broker {
     };
 
     const dealReference = await this.client.dealing.openPosition(order);
+    const confirmation = await this.client.dealing.confirm(dealReference);
 
-    const position = new Position(this.client, this.refTradeSubscription(), dealReference);
+    if(confirmation.dealStatus == DealStatus.REJECTED) {
+      throw new ConfirmationError(confirmation.reason);
+    }
+
+    const position = new Position(this.client, this.refTradeSubscription(), confirmation);
     position.on('close', () => this.unrefTradeSubscription());
 
     return position;
