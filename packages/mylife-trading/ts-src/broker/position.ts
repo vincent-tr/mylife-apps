@@ -1,7 +1,8 @@
 import EventEmitter from 'events';
 import { StreamSubscription } from './ig/stream';
 import Client from './ig/client';
-import { UpdatePositionOrder } from './ig/dealing';
+import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './ig/dealing';
+import { ConfirmationError } from './confirmation';
 
 declare interface Position {
   on(event: 'error', listener: (err: Error) => void): this;
@@ -10,15 +11,43 @@ declare interface Position {
 }
 
 class Position extends EventEmitter {
-  private dealId: string;
+  public readonly dealReference: string;
+  public readonly dealId: string;
+  public readonly direction: DealDirection;
+  public readonly epic: string;
+
+  private _stopLoss: number;
+  private _takeProfit: number;
+  private _lastUpdateDate: Date;
+
   private readonly errorCb: (err: Error) => void = (err) => this.onError(err);
   private readonly updateCb: (data: any) => void = (data) => this.onUpdate(data);
 
-  constructor(private readonly client: Client, private readonly subscription: StreamSubscription, private readonly dealReference: string) {
+  constructor(private readonly client: Client, private readonly subscription: StreamSubscription, confirmation: DealConfirmation) {
     super();
 
     this.subscription.on('error', this.errorCb);
     this.subscription.on('update', this.updateCb);
+
+    this.dealReference = confirmation.dealReference;
+    this.dealId = confirmation.dealId;
+    this.direction = confirmation.direction;
+    this.epic = confirmation.epic;
+    this._stopLoss = confirmation.stopLevel;
+    this._takeProfit = confirmation.limitLevel;
+    this._lastUpdateDate = new Date(confirmation.date);
+  }
+
+  public get stopLoss() {
+    return this._stopLoss;
+  }
+
+  public get takeProfit() {
+    return this._takeProfit;
+  }
+
+  public get lastUpdateDate() {
+    return this._lastUpdateDate;
   }
 
   async updateTakeProfit(value: number) {
@@ -30,11 +59,9 @@ class Position extends EventEmitter {
   }
 
   private async updatePosition(order: UpdatePositionOrder) {
-    if(!this.dealId) {
-      throw new Error('Did not get dealId, cannot update for now');
-    }
-    
-    await this.client.dealing.updatePosition(this.dealId, order);
+    const dealReference = await this.client.dealing.updatePosition(this.dealId, order);
+    const confirmation = await this.client.dealing.confirm(dealReference);
+    // TODO: confirmation
   }
 
   async close() {
@@ -46,9 +73,45 @@ class Position extends EventEmitter {
   }
 
   private onUpdate(data: any) {
-    // TODO: position data
-    // TODO: position close emit
-    console.log(data);
+    const opu = data.OPU as OpenPositionUpdate;
+    if(!opu) {
+      return;
+    }
+
+    if(opu.dealIdOrigin !== this.dealId) {
+      return;
+    }
+
+    if(opu.dealStatus === DealStatus.REJECTED) {
+      return;
+    }
+
+    this._lastUpdateDate = new Date(opu.timestamp);
+
+    switch(opu.status) {
+      case UpdatePositionStatus.UPDATED:
+        this._stopLoss = opu.stopLevel;
+        this._takeProfit = opu.limitLevel;
+        break;
+
+      case UpdatePositionStatus.DELETED:
+        // TODO: can we get profit data ?
+        this.onClose();
+        break;
+    }
+  }
+
+  private onConfirm(confirmation: DealConfirmation) {
+    if(confirmation.dealId !== this.dealId) {
+      return;
+    }
+
+    if(confirmation.dealStatus == DealStatus.REJECTED) {
+      this.emit('error', new ConfirmationError(confirmation.reason));
+      return;
+    }
+
+    // TODO: position close
   }
 
   private onClose() {
