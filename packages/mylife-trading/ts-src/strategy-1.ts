@@ -77,7 +77,8 @@ export default class Strategy1 implements Strategy {
     this.position = await this.datasource.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
 
     this.position.on('close', () => {
-      console.log('POSITION CLOSED');
+      // TODO: trace it, get profit from transaction history (dealId = 'DIAAAADGRRLYCAQ', 'GRRLYCAQ' = transaction reference)
+      console.log('POSITION CLOSED', this.position.dealReference, this.position.dealId);
       this.position = null;
     });
   }
@@ -93,9 +94,6 @@ export default class Strategy1 implements Strategy {
     }
 
     // see if we can take position
-    await this.takePosition(DealDirection.BUY, bb);
-    return;
-
     if (rsi > 70 && candle.average.close > bb.upper) {
       console.log(new Date().toISOString(), 'SHOULD SELL', rsi, candle.average.close, bb.upper);
       await this.takePosition(DealDirection.SELL, bb);
