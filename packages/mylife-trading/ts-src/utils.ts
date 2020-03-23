@@ -1,3 +1,7 @@
+import { createLogger } from 'mylife-tools-server';
+
+const logger = createLogger('mylife:trading:utils');
+
 export function last<T>(array: T[]): T {
   const lastIndex = array.length - 1;
   return lastIndex === -1 ? null : array[lastIndex];
@@ -18,5 +22,5 @@ export function round(value: number, decimalCount: number) {
 }
 
 export function fireAsync<T>(target: () => Promise<T>) {
-  target().catch(err => console.error('Unhandled promise rejection', err));
+  target().catch(err => logger.error(`Unhandled promise rejection: ${err.stack}`));
 }

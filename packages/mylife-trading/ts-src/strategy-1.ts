@@ -23,7 +23,7 @@ export default class Strategy1 implements Strategy {
     this.instrument = market.instrument;
 
     this.dataset = await this.datasource.getDataset(this.instrument.epic, Resolution.MINUTE, 16);
-    this.dataset.on('error', err => console.error('ERROR', err));
+    this.dataset.on('error', err => logger.error(`Dataset error: ${err.stack}`));
     this.dataset.on('add', () => this.onDatasetChange());
     this.dataset.on('update', () => this.onDatasetChange());
 
@@ -82,7 +82,9 @@ export default class Strategy1 implements Strategy {
 
       fireAsync(async () => {
         const summary = await this.datasource.getPositionSummary(position);
-        console.log('POSITION CLOSED', summary);
+        logger.info(`Position closed: ${JSON.stringify(summary)}`);
+
+        // TODO: add stats data
       });
     });
   }
@@ -99,12 +101,12 @@ export default class Strategy1 implements Strategy {
 
     // see if we can take position
     if (rsi > 70 && candle.average.close > bb.upper) {
-      console.log(new Date().toISOString(), 'SHOULD SELL', rsi, candle.average.close, bb.upper);
+      logger.info(`Sell (rsi=${rsi}, average candle close=${candle.average.close}, bb upper=${bb.upper})`);
       await this.takePosition(DealDirection.SELL, bb);
     }
 
     if (rsi < 30 && candle.average.close < bb.lower) {
-      console.log(new Date().toISOString(), 'SHOULD BUY', rsi, candle.average.close, bb.lower);
+      logger.info(`Buy (rsi=${rsi}, average candle close=${candle.average.close}, bb lower=${bb.lower})`);
       await this.takePosition(DealDirection.BUY, bb);
     }
   }
