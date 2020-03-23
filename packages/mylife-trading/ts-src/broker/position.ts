@@ -74,6 +74,10 @@ class Position extends EventEmitter {
     const dealReference = await this.client.dealing.updatePosition(this.dealId, order);
     const confirmation = await this.client.dealing.confirm(dealReference);
 
+    if(confirmation.dealStatus == DealStatus.REJECTED) {
+      throw new ConfirmationError(confirmation.reason);
+    }
+
     this.readConfirmation(confirmation);
   }
 
