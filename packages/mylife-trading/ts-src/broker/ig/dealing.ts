@@ -811,7 +811,7 @@ export class DealingOperations {
    * @returns Deal confirmation
    */
   async confirm(dealReference: string): Promise<DealConfirmation> {
-    return await this.request('put', `confirms/${dealReference}`, null, '1');
+    return await this.request('get', `confirms/${dealReference}`, null, '1');
   }
 }
 
