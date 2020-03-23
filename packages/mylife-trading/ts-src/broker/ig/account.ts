@@ -206,6 +206,126 @@ export interface ClientAccountInformation {
   trailingStopsEnabled: boolean;
 }
 
+/**
+ * Paging metadata
+ */
+export interface PageMetadata {
+  /**
+   * Page number
+   */
+  pageNumber: number;
+
+  /**
+   * Page size
+   */
+  pageSize: number;
+
+  /**
+   * Total number of pages
+   */
+  totalPages: number;
+}
+
+/**
+ * Paging metadata
+ */
+export interface PagingMetadata {
+  /**
+   * Paging metadata
+   */
+  pageData: PageMetadata;
+
+  /**
+   * Size
+   */
+  size: number;
+}
+
+/**
+ * Transaction data
+ */
+export interface TransactionData {
+  /**
+   * True if this was a cash transaction
+   */
+  cashTransaction: boolean;
+
+  /**
+   * Level at which the order was closed
+   */
+  closeLevel: string;
+
+  /**
+   * Order currency
+   */
+  currency: string;
+
+  /**
+   * Local date
+   */
+  date: string;
+
+  /**
+   * Date
+   */
+  dateUtc: string;
+
+  /**
+   * Instrument name
+   */
+  instrumentName: string;
+
+  /**
+   * Position opened date
+   */
+  openDateUtc: string;
+
+  /**
+   * Level at which the order was opened
+   */
+  openLevel: string;
+
+  /**
+   * Period
+   */
+  period: string;
+
+  /**
+   * Profit and loss
+   */
+  profitAndLoss: string;
+
+  /**
+   * Reference
+   */
+  reference: string;
+
+  /**
+   * Formatted order size, including the direction (+ for buy, - for sell)
+   */
+  size: string;
+
+  /**
+   * Transaction type
+   */
+  transactionType: string;
+}
+
+/**
+ * List of transactions
+ */
+export interface TransactionHistory {
+  /**
+   * Paging metadata
+   */
+  metadata: PagingMetadata;
+
+  /**
+   * Transaction data
+   */
+  transactions: TransactionData[];
+}
+
 export class AccountOperations {
   constructor(readonly request: (method: string, action: string, data?: any, version?: string) => Promise<any>) {
   }
@@ -229,7 +349,7 @@ export class AccountOperations {
   /**
    * Returns the transaction history. By default returns the minute prices within the last 10 minutes.
    */
-  async  accountTransactions(): Promise<any> {
+  async  accountTransactions(): Promise<TransactionHistory> {
     return await this.request('get', 'history/transactions');
   }
 }
