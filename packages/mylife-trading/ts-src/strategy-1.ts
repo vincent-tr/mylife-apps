@@ -2,7 +2,7 @@ import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import Strategy from './strategy';
 import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails } from './broker';
-import { last } from './utils';
+import { last, round } from './utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 
 const logger = createLogger('mylife:trading:strategy-1');
@@ -19,7 +19,7 @@ export default class Strategy1 implements Strategy {
     await this.datasource.init();
     logger.debug('datasource init');
 
-    const market = await this.datasource.getEpic('CS.D.EURUSD.CFD.IP');
+    const market = await this.datasource.getEpic('CS.D.EURUSD.MINI.IP');
     this.instrument = market.instrument;
 
     this.dataset = await this.datasource.getDataset(this.instrument.epic, Resolution.MINUTE, 16);
@@ -68,8 +68,13 @@ export default class Strategy1 implements Strategy {
   }
 
   private async takePosition(direction: DealDirection, bb: BollingerBandsOutput) {
-    const size = 1; // TODO
-    this.position = await this.datasource.openPosition(this.instrument, direction, size, { distance: 10 }, { level: bb.middle }); // stop loss 10 = min for ig
+    // TODO: as parameter
+    const riskValue = 5; // risk 5eur per position
+
+    // convert risk value to contract size
+    const STOP_LOSS_DISTANCE = 5;
+    const size = computePositionSize(this.instrument, STOP_LOSS_DISTANCE, riskValue);
+    this.position = await this.datasource.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: bb.middle });
 
     this.position.on('close', () => {
       console.log('POSITION CLOSED');
@@ -103,3 +108,11 @@ export default class Strategy1 implements Strategy {
   }
 }
 
+function computePositionSize(instrument: InstrumentDetails, stopLossDistance: number, riskValue: number) {
+  const valueOfOnePip = parseFloat(instrument.valueOfOnePip);
+  const exchangeRate = instrument.currencies[0].baseExchangeRate;
+  const valueOfOnePipAccountCurrency = valueOfOnePip / exchangeRate; // conver pip value from market target currency to account currency
+
+  const size = riskValue / (valueOfOnePipAccountCurrency * stopLossDistance);
+  return round(size, 2);
+}
