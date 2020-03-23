@@ -64,17 +64,17 @@ class Position extends EventEmitter {
   }
 
   private async updatePosition(order: UpdatePositionOrder) {
-    if(!order.stopLevel) {
+    if (!order.stopLevel) {
       order.stopLevel = this._stopLoss;
     }
-    if(!order.limitLevel) {
+    if (!order.limitLevel) {
       order.limitLevel = this._takeProfit;
     }
 
     const dealReference = await this.client.dealing.updatePosition(this.dealId, order);
     const confirmation = await this.client.dealing.confirm(dealReference);
 
-    if(confirmation.dealStatus == DealStatus.REJECTED) {
+    if (confirmation.dealStatus == DealStatus.REJECTED) {
       throw new ConfirmationError(confirmation.reason);
     }
 
@@ -91,21 +91,21 @@ class Position extends EventEmitter {
 
   private onUpdate(data: any) {
     const opu = data.OPU as OpenPositionUpdate;
-    if(!opu) {
+    if (!opu) {
       return;
     }
 
-    if(opu.dealIdOrigin !== this.dealId) {
+    if (opu.dealIdOrigin !== this.dealId) {
       return;
     }
 
-    if(opu.dealStatus === DealStatus.REJECTED) {
+    if (opu.dealStatus === DealStatus.REJECTED) {
       return;
     }
 
     this._lastUpdateDate = new Date(opu.timestamp);
 
-    switch(opu.status) {
+    switch (opu.status) {
       case UpdatePositionStatus.UPDATED:
         // should be already updated with confirmation
         this._stopLoss = opu.stopLevel;
