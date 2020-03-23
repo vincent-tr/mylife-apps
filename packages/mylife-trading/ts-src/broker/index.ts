@@ -66,6 +66,18 @@ export interface OpenPositionBound {
   distance?: number;
 }
 
+export interface PositionSummary {
+  epic: string;
+  dealId: string;
+  openDate: Date;
+  closeDate: Date;
+  openLevel: number;
+  closeLevel: number;
+  size: number;
+  profitAndLoss: number;
+  currency: string;
+}
+
 export class Broker {
   private readonly client: Client;
   private tradeSubscription: TradeSubscription;
@@ -155,6 +167,34 @@ export class Broker {
     position.on('close', () => this.unrefTradeSubscription());
 
     return position;
+  }
+
+  async getPositionSummary(position: Position): Promise<PositionSummary> {
+    const history = await this.client.account.accountTransactions();
+
+    // find position
+    // DIAAAADGRPS29A7 => ref = GRPS29A7
+    const ref = position.dealId.substr(7);
+
+    const transaction = history.transactions.find(transaction => ref === transaction.reference);
+    if(!transaction) {
+      throw new Error(`Transaction not found in history for position with dealId='${position.dealId}'`);
+    }
+
+    // eg: 'E+5.3'
+    const profitAndLoss = transaction.profitAndLoss.substr(transaction.currency.length);
+
+    return {
+      epic: position.epic,
+      dealId: position.dealId,
+      openDate: new Date(transaction.openDateUtc),
+      closeDate: new Date(transaction.dateUtc),
+      openLevel: parseFloat(transaction.openLevel),
+      closeLevel: parseFloat(transaction.closeLevel),
+      size: parseFloat(transaction.size),
+      profitAndLoss: parseFloat(profitAndLoss),
+      currency: transaction.currency
+    };
   }
 }
 
