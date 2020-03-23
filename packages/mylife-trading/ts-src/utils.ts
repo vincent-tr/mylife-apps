@@ -16,3 +16,7 @@ export function round(value: number, decimalCount: number) {
   const factor = Math.pow(10, decimalCount);
   return Math.round(factor * value) / factor;
 }
+
+export function fireAsync<T>(target: () => Promise<T>) {
+  target().catch(err => console.error('Unhandled promise rejection', err));
+}
