@@ -116,13 +116,12 @@ class Position extends EventEmitter {
         // should be already updated with confirmation
         this._stopLoss = opu.stopLevel;
         this._takeProfit = opu.limitLevel;
-        
+
         logger.debug(`Updated: '${JSON.stringify(this)}'`);
         this.emit('update');
         break;
 
       case UpdatePositionStatus.DELETED:
-        // TODO: can we get profit data ?
         this.onClose();
         break;
     }
