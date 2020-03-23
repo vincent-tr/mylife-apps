@@ -74,7 +74,7 @@ export default class Strategy1 implements Strategy {
     // convert risk value to contract size
     const STOP_LOSS_DISTANCE = 5;
     const size = computePositionSize(this.instrument, STOP_LOSS_DISTANCE, riskValue);
-    this.position = await this.datasource.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: bb.middle });
+    this.position = await this.datasource.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
 
     this.position.on('close', () => {
       console.log('POSITION CLOSED');
@@ -93,7 +93,7 @@ export default class Strategy1 implements Strategy {
     }
 
     // see if we can take position
-    await this.takePosition(DealDirection.SELL, bb);
+    await this.takePosition(DealDirection.BUY, bb);
     return;
 
     if (rsi > 70 && candle.average.close > bb.upper) {
