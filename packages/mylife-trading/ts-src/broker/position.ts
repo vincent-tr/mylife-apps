@@ -61,6 +61,18 @@ class Position extends EventEmitter {
     return this._lastUpdateDate;
   }
 
+  toJSON() {
+    return {
+      dealReference: this.dealReference,
+      dealId: this.dealId,
+      direction: this.direction,
+      epic: this.epic,
+      stopLoss: this.stopLoss,
+      takeProfit: this.takeProfit,
+      lastUpdateDate: this.lastUpdateDate
+    };
+  }
+
   async updateTakeProfit(value: number) {
     await this.updatePosition({ limitLevel: value });
   }
