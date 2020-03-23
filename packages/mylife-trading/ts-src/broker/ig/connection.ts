@@ -122,7 +122,8 @@ export default class Connection {
    * Log out of the current session
    */
   async logout(): Promise<void> {
-    await this.request('delete', 'session', null, '1');
+    // seems that this close all session on the account (even web-browser session)
+    // await this.request('delete', 'session', null, '1');
 
     this.token = null;
     this.cst = null;
