@@ -2,7 +2,7 @@ import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import Strategy from './strategy';
 import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails } from './broker';
-import { last, round } from './utils';
+import { last, round, fireAsync } from './utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 
 const logger = createLogger('mylife:trading:strategy-1');
@@ -41,7 +41,7 @@ export default class Strategy1 implements Strategy {
       return;
     }
 
-    this.analyze().catch(err => console.error(err));
+    fireAsync(() => this.analyze());
   }
 
   private shouldRun() {
@@ -77,9 +77,13 @@ export default class Strategy1 implements Strategy {
     this.position = await this.datasource.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
 
     this.position.on('close', () => {
-      // TODO: trace it, get profit from transaction history (dealId = 'DIAAAADGRRLYCAQ', 'GRRLYCAQ' = transaction reference)
-      console.log('POSITION CLOSED', this.position.dealReference, this.position.dealId);
+      const position = this.position;
       this.position = null;
+
+      fireAsync(async () => {
+        const summary = await this.datasource.getPositionSummary(position);
+        console.log('POSITION CLOSED', summary);
+      });
     });
   }
 
@@ -109,7 +113,7 @@ export default class Strategy1 implements Strategy {
 function computePositionSize(instrument: InstrumentDetails, stopLossDistance: number, riskValue: number) {
   const valueOfOnePip = parseFloat(instrument.valueOfOnePip);
   const exchangeRate = instrument.currencies[0].baseExchangeRate;
-  const valueOfOnePipAccountCurrency = valueOfOnePip / exchangeRate; // conver pip value from market target currency to account currency
+  const valueOfOnePipAccountCurrency = valueOfOnePip / exchangeRate; // convert pip value from market target currency to account currency
 
   const size = riskValue / (valueOfOnePipAccountCurrency * stopLossDistance);
   return round(size, 2);
