@@ -33,6 +33,11 @@ class Position extends EventEmitter {
     this.dealId = confirmation.dealId;
     this.direction = confirmation.direction;
     this.epic = confirmation.epic;
+
+    this.readConfirmation(confirmation);
+  }
+
+  private readConfirmation(confirmation: DealConfirmation) {
     this._stopLoss = confirmation.stopLevel;
     this._takeProfit = confirmation.limitLevel;
     this._lastUpdateDate = new Date(confirmation.date);
@@ -59,9 +64,17 @@ class Position extends EventEmitter {
   }
 
   private async updatePosition(order: UpdatePositionOrder) {
+    if(!order.stopLevel) {
+      order.stopLevel = this._stopLoss;
+    }
+    if(!order.limitLevel) {
+      order.limitLevel = this._takeProfit;
+    }
+
     const dealReference = await this.client.dealing.updatePosition(this.dealId, order);
     const confirmation = await this.client.dealing.confirm(dealReference);
-    // TODO: confirmation
+
+    this.readConfirmation(confirmation);
   }
 
   async close() {
@@ -90,6 +103,7 @@ class Position extends EventEmitter {
 
     switch(opu.status) {
       case UpdatePositionStatus.UPDATED:
+        // should be already updated with confirmation
         this._stopLoss = opu.stopLevel;
         this._takeProfit = opu.limitLevel;
         break;
@@ -99,19 +113,6 @@ class Position extends EventEmitter {
         this.onClose();
         break;
     }
-  }
-
-  private onConfirm(confirmation: DealConfirmation) {
-    if(confirmation.dealId !== this.dealId) {
-      return;
-    }
-
-    if(confirmation.dealStatus == DealStatus.REJECTED) {
-      this.emit('error', new ConfirmationError(confirmation.reason));
-      return;
-    }
-
-    // TODO: position close
   }
 
   private onClose() {
