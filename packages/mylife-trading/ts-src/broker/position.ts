@@ -1,8 +1,12 @@
+import { createLogger } from 'mylife-tools-server';
 import EventEmitter from 'events';
 import { StreamSubscription } from './ig/stream';
 import Client from './ig/client';
 import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './ig/dealing';
 import { ConfirmationError } from './confirmation';
+import { parseTimestamp } from './parsing';
+
+const logger = createLogger('mylife:trading:broker:position');
 
 declare interface Position {
   on(event: 'error', listener: (err: Error) => void): this;
@@ -35,12 +39,14 @@ class Position extends EventEmitter {
     this.epic = confirmation.epic;
 
     this.readConfirmation(confirmation);
+
+    logger.debug(`Created: '${JSON.stringify(this)}'`);
   }
 
   private readConfirmation(confirmation: DealConfirmation) {
     this._stopLoss = confirmation.stopLevel;
     this._takeProfit = confirmation.limitLevel;
-    this._lastUpdateDate = new Date(confirmation.date);
+    this._lastUpdateDate = parseTimestamp(confirmation.date);
   }
 
   public get stopLoss() {
@@ -103,13 +109,16 @@ class Position extends EventEmitter {
       return;
     }
 
-    this._lastUpdateDate = new Date(opu.timestamp);
+    this._lastUpdateDate = parseTimestamp(opu.timestamp);
 
     switch (opu.status) {
       case UpdatePositionStatus.UPDATED:
         // should be already updated with confirmation
         this._stopLoss = opu.stopLevel;
         this._takeProfit = opu.limitLevel;
+        
+        logger.debug(`Updated: '${JSON.stringify(this)}'`);
+        this.emit('update');
         break;
 
       case UpdatePositionStatus.DELETED:
@@ -123,6 +132,7 @@ class Position extends EventEmitter {
     this.subscription.removeListener('error', this.errorCb);
     this.subscription.removeListener('update', this.errorCb);
 
+    logger.debug(`Closed: '${JSON.stringify(this)}'`);
     this.emit('close');
   }
 }

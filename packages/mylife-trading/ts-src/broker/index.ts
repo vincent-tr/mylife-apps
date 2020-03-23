@@ -1,4 +1,4 @@
-import { parse } from 'fecha';
+import { createLogger } from 'mylife-tools-server';
 import Client from './ig/client';
 import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
@@ -7,6 +7,9 @@ import { StreamSubscription } from './ig/stream';
 import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './ig/dealing';
 import { MarketDetails, InstrumentDetails } from './ig/market';
 import { ConfirmationError } from './confirmation';
+import { parseTimestamp, parseDate, parseISODate } from './parsing';
+
+const logger = createLogger('mylife:trading:broker');
 
 export { MovingDataset };
 export * from './moving-dataset';
@@ -115,7 +118,7 @@ export class Broker {
     subscription.on('update', data => {
       const ask = new CandleStickData(data.OFR_OPEN, data.OFR_CLOSE, data.OFR_HIGH, data.OFR_LOW);
       const bid = new CandleStickData(data.BID_OPEN, data.BID_CLOSE, data.BID_HIGH, data.BID_LOW);
-      const record = new Record(ask, bid, new Date(data.UTM));
+      const record = new Record(ask, bid, parseTimestamp(data.UTM));
       if (data.CONS_END) {
         record.fix();
       }
@@ -187,8 +190,8 @@ export class Broker {
     return {
       epic: position.epic,
       dealId: position.dealId,
-      openDate: new Date(transaction.openDateUtc),
-      closeDate: new Date(transaction.dateUtc),
+      openDate: parseISODate(transaction.openDateUtc),
+      closeDate: parseISODate(transaction.dateUtc),
       openLevel: parseFloat(transaction.openLevel),
       closeLevel: parseFloat(transaction.closeLevel),
       size: parseFloat(transaction.size),
@@ -196,11 +199,6 @@ export class Broker {
       currency: transaction.currency
     };
   }
-}
-
-function parseDate(value: string): Date {
-  const result = parse(value, 'YYYY/MM/DD HH:mm:ss');
-  return result ? <Date>result : null;
 }
 
 function randomString() {

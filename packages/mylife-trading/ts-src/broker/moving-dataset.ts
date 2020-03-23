@@ -1,5 +1,8 @@
 import EventEmitter from 'events';
+import { createLogger } from 'mylife-tools-server';
 import { last, average, round } from '../utils';
+
+const logger = createLogger('mylife:trading:broker:moving-dataset');
 
 export class CandleStickData {
   constructor(readonly open: number, readonly close: number, readonly high: number, readonly low: number) {
@@ -73,13 +76,14 @@ class MovingDataset extends EventEmitter {
     }
 
     lastItem?.fix();
+    logger.debug(`Record fixed: '${JSON.stringify(lastItem)}'`);
 
     this.list.push(record);
 
     if (this.list.length > this.maxSize) {
       this.list.shift();
     }
-
+    
     this.emit('add', record);
   }
 
