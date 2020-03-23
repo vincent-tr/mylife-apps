@@ -19,11 +19,11 @@ reasons.set(ConfirmReason.CANNOT_CHANGE_STOP_TYPE, 'Cannot change the stop type.
 reasons.set(ConfirmReason.CANNOT_REMOVE_STOP, 'Cannot remove the stop.');
 reasons.set(ConfirmReason.CLOSING_ONLY_TRADES_ACCEPTED_ON_THIS_MARKET, 'We are not taking opening deals on a Controlled Risk basis on this market');
 reasons.set(ConfirmReason.CONFLICTING_ORDER, 'Resubmitted request does not match the original order.');
-reasons.set(ConfirmReason.CONTACT_SUPPORT_INSTRUMENT_ERROR, 'Instrument has an error - check the order\'s currency is the instrument's currency(see the market's details); otherwise please contact support.');
+reasons.set(ConfirmReason.CONTACT_SUPPORT_INSTRUMENT_ERROR, 'Instrument has an error - check the order\'s currency is the instrument\'s currency (see the market\'s details) otherwise please contact support.');
 reasons.set(ConfirmReason.CR_SPACING, 'Sorry we are unable to process this order. The stop or limit level you have requested is not a valid trading level in the underlying market.');
 reasons.set(ConfirmReason.DUPLICATE_ORDER_ERROR, 'The order has been rejected as it is a duplicate of a previously issued order');
 reasons.set(ConfirmReason.EXCHANGE_MANUAL_OVERRIDE, 'Exchange check failed. Please call in for assistance.');
-reasons.set(ConfirmReason.EXPIRY_LESS_THAN_SPRINT_MARKET_MIN_EXPIRY, 'Order expiry is less than the sprint market\'s minimum expiry. Check the sprint market's market details for the allowable expiries.');;;;
+reasons.set(ConfirmReason.EXPIRY_LESS_THAN_SPRINT_MARKET_MIN_EXPIRY, 'Order expiry is less than the sprint market\'s minimum expiry. Check the sprint market\'s market details for the allowable expiries.');
 reasons.set(ConfirmReason.FINANCE_REPEAT_DEALING, 'The total size of deals placed on this market in a short period has exceeded our limits. Please wait before attempting to open further positions on this market.');
 reasons.set(ConfirmReason.FORCE_OPEN_ON_SAME_MARKET_DIFFERENT_CURRENCY, 'Ability to force open in different currencies on same market not allowed');
 reasons.set(ConfirmReason.GENERAL_ERROR, 'an error has occurred but no detailed information is available. Check transaction history or contact support for further information');
