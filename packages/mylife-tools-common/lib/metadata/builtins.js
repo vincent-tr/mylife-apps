@@ -9,6 +9,7 @@ exports.datatypes = [
   { id: 'real', primitive: 'number' },
   { id: 'date', primitive: 'timestamp' },
   { id: 'datetime', primitive: 'timestamp' },
+  { id: 'boolean', primitive: 'boolean' },
   { id: 'any', primitive: 'any' },
   { id: 'binary', primitive: 'binary' },
 ];
