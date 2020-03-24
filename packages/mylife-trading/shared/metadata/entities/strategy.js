@@ -6,7 +6,7 @@ module.exports = {
   name: 'Stratégie de trading',
   fields: [
     { id: 'display', name: 'Affichage', datatype: 'name', constraints: ['not-null', 'not-empty'] },
-    { id: 'implementation', name: 'Implémentation de la stratégie', values: ['todo'], constraints: ['not-null'] },
+    { id: 'implementation', name: 'Implémentation de la stratégie', datatype: 'strategy-implementation', constraints: ['not-null'] },
     { id: 'enabled', name: 'Activé', datatype: 'boolean', constraints: ['not-null'] },
     { id: 'datasource', name: 'Source de données', datatype: 'datasource', constraints: ['not-null'] },
     { id: 'epic', name: 'Instrument de trading', datatype: 'name', constraints: ['not-null', 'not-empty'] },

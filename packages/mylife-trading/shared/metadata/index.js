@@ -1,6 +1,6 @@
 'use strict';
 
-exports.datatypes = [];
+exports.datatypes = require('./datatypes');
 exports.entities = [
   require('./entities/datasource'),
   require('./entities/strategy'),
