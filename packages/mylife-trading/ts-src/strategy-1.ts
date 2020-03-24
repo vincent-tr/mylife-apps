@@ -7,6 +7,8 @@ import { BollingerBandsOutput } from 'technicalindicators/declarations/volatilit
 
 const logger = createLogger('mylife:trading:strategy-1');
 
+// TODO: do not take position before/when market close
+
 export default class Strategy1 implements Strategy {
   private datasource: Broker;
   private dataset: MovingDataset;
