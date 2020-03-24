@@ -44,10 +44,12 @@ export class Connection {
   }
 
   async init() {
+    logger.debug(`init ${this.key}`);
     await this.client.login();
   }
 
   async terminate() {
+    logger.debug(`terminate ${this.key}`);
     await this.client.logout();
   }
 

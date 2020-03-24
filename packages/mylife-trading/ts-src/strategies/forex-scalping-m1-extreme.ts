@@ -21,7 +21,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
   async init() {
     this.broker = new Broker();
     await this.broker.init({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
-    logger.debug('broker init');
+    logger.debug('init');
 
     const market = await this.broker.getEpic('CS.D.EURUSD.MINI.IP');
     this.instrument = market.instrument;
@@ -40,7 +40,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
     }
     this.dataset.close();
     await this.broker.terminate();
-    logger.debug('broker terminate');
+    logger.debug('terminate');
   }
 
   private onDatasetChange() {
