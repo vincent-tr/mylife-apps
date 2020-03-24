@@ -1,9 +1,7 @@
 import { createLogger } from 'mylife-tools-server';
-import Client from './ig/client';
 import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position from './position';
-import { StreamSubscription } from './ig/stream';
 import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './ig/dealing';
 import { MarketDetails, InstrumentDetails } from './ig/market';
 import { ConfirmationError } from './confirmation';
@@ -43,7 +41,6 @@ resolutions.set(Resolution.MINUTE_5, { rest: PriceResolution.MINUTE_5, stream: '
 resolutions.set(Resolution.HOUR, { rest: PriceResolution.HOUR, stream: 'HOUR' });
 
 const datasetSubscriptionFields = ['UTM', 'OFR_OPEN', 'OFR_HIGH', 'OFR_LOW', 'OFR_CLOSE', 'BID_OPEN', 'BID_HIGH', 'BID_LOW', 'BID_CLOSE'/*,'LTP_OPEN','LTP_HIGH','LTP_LOW','LTP_CLOSE'*/, 'CONS_END'];
-const positionSubscriptionFields = ['CONFIRMS', 'OPU'];
 
 export interface OpenPositionBound {
   level?: number,
