@@ -1,5 +1,6 @@
 import { registerService } from 'mylife-tools-server';
-import { Strategy, createStrategy } from './strategies';
+import { Strategy, Configuration, createStrategy } from './strategies';
+import { Credentials } from './broker';
 
 class TradingService {
   static readonly serviceName = 'trading-service';
@@ -11,6 +12,14 @@ class TradingService {
     const configuration = { epic: 'CS.D.EURUSD.MINI.IP', risk: 5, name: 'test' };
     const credentials = { key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true };
     await this.bot.init(configuration, credentials);
+  }
+
+  async add(key: string, configuration: Configuration, credentials: Credentials) {
+
+  }
+
+  async remove(key: string, ) {
+
   }
 
   async terminate() {
