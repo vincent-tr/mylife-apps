@@ -2,7 +2,7 @@
 
 exports.datatypes = require('./datatypes');
 exports.entities = [
-  require('./entities/datasource'),
+  require('./entities/broker'),
   require('./entities/strategy'),
   require('./entities/stat'),
 ];

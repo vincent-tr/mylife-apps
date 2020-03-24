@@ -3,7 +3,7 @@
 module.exports = {
   id: 'account',
   parent: 'base',
-  name: 'Source de données de trading',
+  name: 'Compte de courtier de trading',
   fields: [
     { id: 'display', name: 'Affichage', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'key', name: 'Clé IG', datatype: 'name', constraints: ['not-null', 'not-empty'] },
