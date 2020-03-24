@@ -1,6 +1,5 @@
 import { registerService } from 'mylife-tools-server';
-import Strategy1 from './strategy-1';
-import Strategy from './strategy';
+import { Strategy, createStrategy } from './strategies';
 
 class TradingService {
   static readonly serviceName = 'trading-service';
@@ -8,7 +7,7 @@ class TradingService {
   private bot: Strategy;
 
   async init(options: any) {
-    this.bot = new Strategy1();
+    this.bot = createStrategy('forex-scalping-m1-extreme');
     await this.bot.init();
   }
 

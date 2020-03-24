@@ -1,15 +1,17 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import Strategy from './strategy';
-import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails } from './broker';
-import { last, round, fireAsync } from './utils';
+import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails } from '../broker';
+import { last, round, fireAsync } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 
-const logger = createLogger('mylife:trading:strategy-1');
+const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme');
+
+// https://admiralmarkets.com/fr/formation/articles/strategie-de-forex/strategie-forex-scalping-1-minute
 
 // TODO: do not take position before/when market close
 
-export default class Strategy1 implements Strategy {
+export default class ForexScalpingM1Extreme implements Strategy {
   private datasource: Broker;
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
