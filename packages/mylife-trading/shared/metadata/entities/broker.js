@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  id: 'account',
+  id: 'broker',
   parent: 'base',
   name: 'Compte de courtier de trading',
   fields: [
