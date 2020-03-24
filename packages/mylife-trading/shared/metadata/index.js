@@ -2,5 +2,7 @@
 
 exports.datatypes = [];
 exports.entities = [
-  //require('./entities/account'),
+  require('./entities/datasource'),
+  require('./entities/strategy'),
+  require('./entities/stat'),
 ];
