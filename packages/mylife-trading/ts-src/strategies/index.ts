@@ -1,7 +1,7 @@
-import Strategy from './strategy';
+import Strategy, { Configuration } from './strategy';
 import ForexScalpingM1Extreme from './forex-scalping-m1-extreme';
 
-export { Strategy };
+export { Strategy, Configuration };
 
 type StrategyClass = { new(): Strategy; };
 
