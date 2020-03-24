@@ -8,6 +8,7 @@ import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } 
 import { MarketDetails, InstrumentDetails } from './ig/market';
 import { ConfirmationError } from './confirmation';
 import { parseTimestamp, parseDate, parseISODate } from './parsing';
+import { Connection, connectionOpen, connectionClose } from './connection';
 
 const logger = createLogger('mylife:trading:broker');
 
@@ -44,26 +45,6 @@ resolutions.set(Resolution.HOUR, { rest: PriceResolution.HOUR, stream: 'HOUR' })
 const datasetSubscriptionFields = ['UTM', 'OFR_OPEN', 'OFR_HIGH', 'OFR_LOW', 'OFR_CLOSE', 'BID_OPEN', 'BID_HIGH', 'BID_LOW', 'BID_CLOSE'/*,'LTP_OPEN','LTP_HIGH','LTP_LOW','LTP_CLOSE'*/, 'CONS_END'];
 const positionSubscriptionFields = ['CONFIRMS', 'OPU'];
 
-class TradeSubscription {
-  private refCount: number = 0;
-
-  constructor(private readonly subscription: StreamSubscription) {
-  }
-
-  ref() {
-    ++this.refCount;
-    return this.subscription;
-  }
-
-  unref() {
-    const doClose = --this.refCount === 0;
-    if (doClose) {
-      this.subscription.close();
-    }
-    return doClose;
-  }
-}
-
 export interface OpenPositionBound {
   level?: number,
   distance?: number;
@@ -82,37 +63,33 @@ export interface PositionSummary {
 }
 
 export class Broker {
-  private readonly client: Client;
-  private tradeSubscription: TradeSubscription;
+  private connection: Connection;
 
-  constructor(credentials: Credentials) {
-    this.client = new Client(credentials.key, credentials.identifier, credentials.password, credentials.isDemo);
-  }
-
-  async init() {
-    await this.client.login();
+  async init(credentials: Credentials) {
+    this.connection = await connectionOpen(credentials);
   }
 
   async terminate() {
-    await this.client.logout();
+    await connectionClose(this.connection);
+    this.connection = null;
   }
 
   async getEpic(epic: string) {
-    return await this.client.market.getMarket(epic);
+    return await this.connection.client.market.getMarket(epic);
   }
 
   async getDataset(epic: string, resolution: Resolution, size: number): Promise<MovingDataset> {
     const resolutionData = resolutions.get(resolution);
 
     const dataset = new MovingDataset(size);
-    const prices = await this.client.market.prices(epic, resolutionData.rest, size);
+    const prices = await this.connection.client.market.prices(epic, resolutionData.rest, size);
     for (const price of prices.prices) {
       const ask = new CandleStickData(price.openPrice.ask, price.closePrice.ask, price.highPrice.ask, price.lowPrice.ask);
       const bid = new CandleStickData(price.openPrice.bid, price.closePrice.bid, price.highPrice.bid, price.lowPrice.bid);
       dataset.add(new Record(ask, bid, parseDate(price.snapshotTime)));
     }
 
-    const subscription = this.client.subscribe('MERGE', [`CHART:${epic}:${resolutionData.stream}`], datasetSubscriptionFields);
+    const subscription = this.connection.client.subscribe('MERGE', [`CHART:${epic}:${resolutionData.stream}`], datasetSubscriptionFields);
     dataset.on('close', () => subscription.close());
     subscription.on('error', err => dataset.emit('error', err));
     subscription.on('update', data => {
@@ -127,21 +104,6 @@ export class Broker {
     });
 
     return dataset;
-  }
-
-  private refTradeSubscription(): StreamSubscription {
-    if (!this.tradeSubscription) {
-      const subscription = this.client.subscribe('DISTINCT', [`TRADE:${this.client.accountIdentifier()}`], positionSubscriptionFields);
-      this.tradeSubscription = new TradeSubscription(subscription);
-    }
-
-    return this.tradeSubscription.ref();
-  }
-
-  private unrefTradeSubscription() {
-    if (this.tradeSubscription.unref()) {
-      this.tradeSubscription = null;
-    }
   }
 
   async openPosition(instrument: InstrumentDetails, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
@@ -159,21 +121,21 @@ export class Broker {
       timeInForce: TimeInForce.FILL_OR_KILL,
     };
 
-    const dealReference = await this.client.dealing.openPosition(order);
-    const confirmation = await this.client.dealing.confirm(dealReference);
+    const dealReference = await this.connection.client.dealing.openPosition(order);
+    const confirmation = await this.connection.client.dealing.confirm(dealReference);
 
     if(confirmation.dealStatus == DealStatus.REJECTED) {
       throw new ConfirmationError(confirmation.reason);
     }
 
-    const position = new Position(this.client, this.refTradeSubscription(), confirmation);
-    position.on('close', () => this.unrefTradeSubscription());
+    const position = new Position(this.connection.client, this.connection.refTradeSubscription(), confirmation);
+    position.on('close', () => this.connection.unrefTradeSubscription());
 
     return position;
   }
 
   async getPositionSummary(position: Position): Promise<PositionSummary> {
-    const history = await this.client.account.accountTransactions();
+    const history = await this.connection.client.account.accountTransactions();
 
     // find position
     // DIAAAADGRPS29A7 => ref = GRPS29A7

@@ -19,8 +19,8 @@ export default class ForexScalpingM1Extreme implements Strategy {
   private instrument: InstrumentDetails;
 
   async init() {
-    this.broker = new Broker({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
-    await this.broker.init();
+    this.broker = new Broker();
+    await this.broker.init({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
     logger.debug('broker init');
 
     const market = await this.broker.getEpic('CS.D.EURUSD.MINI.IP');
