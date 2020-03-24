@@ -1,7 +1,7 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import Strategy from './strategy';
-import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails } from '../broker';
+import Strategy, { Configuration } from './strategy';
+import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails, Credentials } from '../broker';
 import { last, round, fireAsync } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 
@@ -12,22 +12,23 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 // TODO: do not take position before/when market close
 
 export default class ForexScalpingM1Extreme implements Strategy {
-  private broker: Broker;
+  private configuration: Configuration;
+  private readonly broker = new Broker();
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
   private position: Position;
   private instrument: InstrumentDetails;
 
-  async init() {
-    this.broker = new Broker();
-    await this.broker.init({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
-    logger.debug('init');
+  async init(configuration: Configuration, credentials: Credentials) {
+    this.configuration = configuration;
+    logger.debug(`(${this.configuration.name}) init`);
+    await this.broker.init(credentials);
 
-    const market = await this.broker.getEpic('CS.D.EURUSD.MINI.IP');
+    const market = await this.broker.getEpic(this.configuration.epic);
     this.instrument = market.instrument;
 
     this.dataset = await this.broker.getDataset(this.instrument.epic, Resolution.MINUTE, 16);
-    this.dataset.on('error', err => logger.error(`Dataset error: ${err.stack}`));
+    this.dataset.on('error', err => logger.error(`(${this.configuration.name}) Dataset error: ${err.stack}`));
     this.dataset.on('add', () => this.onDatasetChange());
     this.dataset.on('update', () => this.onDatasetChange());
 
@@ -39,8 +40,9 @@ export default class ForexScalpingM1Extreme implements Strategy {
       await this.position.close();
     }
     this.dataset.close();
+
     await this.broker.terminate();
-    logger.debug('terminate');
+    logger.debug(`(${this.configuration.name}) terminate`);
   }
 
   private onDatasetChange() {
@@ -75,12 +77,9 @@ export default class ForexScalpingM1Extreme implements Strategy {
   }
 
   private async takePosition(direction: DealDirection, bb: BollingerBandsOutput) {
-    // TODO: as parameter
-    const riskValue = 5; // risk 5eur per position
-
     // convert risk value to contract size
     const STOP_LOSS_DISTANCE = 5;
-    const size = computePositionSize(this.instrument, STOP_LOSS_DISTANCE, riskValue);
+    const size = computePositionSize(this.instrument, STOP_LOSS_DISTANCE, this.configuration.risk);
     this.position = await this.broker.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
 
     this.position.on('close', () => {
@@ -89,7 +88,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
 
       fireAsync(async () => {
         const summary = await this.broker.getPositionSummary(position);
-        logger.info(`Position closed: ${JSON.stringify(summary)}`);
+        logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
 
         // TODO: add stats data
       });
@@ -108,12 +107,12 @@ export default class ForexScalpingM1Extreme implements Strategy {
 
     // see if we can take position
     if (rsi > 70 && candle.average.close > bb.upper) {
-      logger.info(`Sell (rsi=${rsi}, average candle close=${candle.average.close}, bb upper=${bb.upper})`);
+      logger.info(`(${this.configuration.name}) Sell (rsi=${rsi}, average candle close=${candle.average.close}, bb upper=${bb.upper})`);
       await this.takePosition(DealDirection.SELL, bb);
     }
 
     if (rsi < 30 && candle.average.close < bb.lower) {
-      logger.info(`Buy (rsi=${rsi}, average candle close=${candle.average.close}, bb lower=${bb.lower})`);
+      logger.info(`(${this.configuration.name}) Buy (rsi=${rsi}, average candle close=${candle.average.close}, bb lower=${bb.lower})`);
       await this.takePosition(DealDirection.BUY, bb);
     }
   }

@@ -8,7 +8,9 @@ class TradingService {
 
   async init(options: any) {
     this.bot = createStrategy('forex-scalping-m1-extreme');
-    await this.bot.init();
+    const configuration = { epic: 'CS.D.EURUSD.MINI.IP', risk: 5, name: 'test' };
+    const credentials = { key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true };
+    await this.bot.init(configuration, credentials);
   }
 
   async terminate() {
