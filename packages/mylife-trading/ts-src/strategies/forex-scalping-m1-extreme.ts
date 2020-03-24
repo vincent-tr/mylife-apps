@@ -12,21 +12,21 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 // TODO: do not take position before/when market close
 
 export default class ForexScalpingM1Extreme implements Strategy {
-  private datasource: Broker;
+  private broker: Broker;
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
   private position: Position;
   private instrument: InstrumentDetails;
 
   async init() {
-    this.datasource = new Broker({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
-    await this.datasource.init();
-    logger.debug('datasource init');
+    this.broker = new Broker({ key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true });
+    await this.broker.init();
+    logger.debug('broker init');
 
-    const market = await this.datasource.getEpic('CS.D.EURUSD.MINI.IP');
+    const market = await this.broker.getEpic('CS.D.EURUSD.MINI.IP');
     this.instrument = market.instrument;
 
-    this.dataset = await this.datasource.getDataset(this.instrument.epic, Resolution.MINUTE, 16);
+    this.dataset = await this.broker.getDataset(this.instrument.epic, Resolution.MINUTE, 16);
     this.dataset.on('error', err => logger.error(`Dataset error: ${err.stack}`));
     this.dataset.on('add', () => this.onDatasetChange());
     this.dataset.on('update', () => this.onDatasetChange());
@@ -36,8 +36,8 @@ export default class ForexScalpingM1Extreme implements Strategy {
 
   async terminate() {
     this.dataset.close();
-    await this.datasource.terminate();
-    logger.debug('datasource terminate');
+    await this.broker.terminate();
+    logger.debug('broker terminate');
   }
 
   private onDatasetChange() {
@@ -78,14 +78,14 @@ export default class ForexScalpingM1Extreme implements Strategy {
     // convert risk value to contract size
     const STOP_LOSS_DISTANCE = 5;
     const size = computePositionSize(this.instrument, STOP_LOSS_DISTANCE, riskValue);
-    this.position = await this.datasource.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
+    this.position = await this.broker.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
 
     this.position.on('close', () => {
       const position = this.position;
       this.position = null;
 
       fireAsync(async () => {
-        const summary = await this.datasource.getPositionSummary(position);
+        const summary = await this.broker.getPositionSummary(position);
         logger.info(`Position closed: ${JSON.stringify(summary)}`);
 
         // TODO: add stats data
