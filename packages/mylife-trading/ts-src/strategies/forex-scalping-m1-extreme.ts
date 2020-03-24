@@ -35,6 +35,9 @@ export default class ForexScalpingM1Extreme implements Strategy {
   }
 
   async terminate() {
+    if (this.position) {
+      await this.position.close();
+    }
     this.dataset.close();
     await this.broker.terminate();
     logger.debug('broker terminate');
