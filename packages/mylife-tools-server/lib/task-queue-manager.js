@@ -124,7 +124,9 @@ class TaskQueueManager {
       throw new Error(`Cannot create queue ${id}: already exists`);
     }
 
-    this._queues.set(id, new TaskQueue(id));
+    const queue = new TaskQueue(id);
+    this._queues.set(id, queue);
+    return queue;
   }
 
   async closeQueue(id) {
