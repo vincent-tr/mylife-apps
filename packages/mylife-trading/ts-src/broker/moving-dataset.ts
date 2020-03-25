@@ -76,14 +76,17 @@ class MovingDataset extends EventEmitter {
     }
 
     lastItem?.fix();
-    logger.debug(`Record fixed: '${JSON.stringify(lastItem)}'`);
+
+    if (lastItem) {
+      logger.debug(`Record fixed: '${JSON.stringify(lastItem)}'`);
+    }
 
     this.list.push(record);
 
     if (this.list.length > this.maxSize) {
       this.list.shift();
     }
-    
+
     this.emit('add', record);
   }
 
