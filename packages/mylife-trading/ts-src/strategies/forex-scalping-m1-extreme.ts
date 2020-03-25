@@ -18,10 +18,15 @@ export default class ForexScalpingM1Extreme implements Strategy {
   private lastProcessedTimestamp: number;
   private position: Position;
   private instrument: InstrumentDetails;
+  private statusListener: (status: string) => void;
+  private currentStatus: string;
 
-  async init(configuration: Configuration, credentials: Credentials) {
+  async init(configuration: Configuration, credentials: Credentials, statusListener?: (status: string) => void) {
     this.configuration = configuration;
     logger.debug(`(${this.configuration.name}) init`);
+    this.statusListener = statusListener;
+    this.changeStatus('Initialisation');
+
     await this.broker.init(credentials);
 
     const market = await this.broker.getEpic(this.configuration.epic);
@@ -36,6 +41,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
   }
 
   async terminate() {
+    this.changeStatus('Mise à l\'arrêt');
     if (this.position) {
       await this.position.close();
     }
@@ -43,6 +49,26 @@ export default class ForexScalpingM1Extreme implements Strategy {
 
     await this.broker.terminate();
     logger.debug(`(${this.configuration.name}) terminate`);
+  }
+
+  private changeStatus(status: string) {
+    if (status === this.currentStatus) {
+      return;
+    }
+
+    logger.debug(`(${this.configuration.name}) change status: '${status}'`);
+    this.currentStatus = status;
+    if (this.statusListener) {
+      this.statusListener(status);
+    }
+  }
+
+  private changeStatusTakingPosition() {
+    this.changeStatus('Prise de position');
+  }
+
+  private changeStatusMarketLookup() {
+    this.changeStatus('Surveillance du marché');
   }
 
   private onDatasetChange() {
@@ -81,6 +107,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
     const STOP_LOSS_DISTANCE = 5;
     const size = computePositionSize(this.instrument, STOP_LOSS_DISTANCE, this.configuration.risk);
     this.position = await this.broker.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
+    this.changeStatusTakingPosition();
 
     this.position.on('close', () => {
       const position = this.position;
@@ -91,6 +118,8 @@ export default class ForexScalpingM1Extreme implements Strategy {
         logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
 
         // TODO: add stats data
+
+        this.changeStatusMarketLookup();
       });
     });
   }
@@ -100,10 +129,14 @@ export default class ForexScalpingM1Extreme implements Strategy {
     const { rsi, bb, candle } = this.getIndicators();
 
     if (this.position) {
+      this.changeStatusTakingPosition();
+      
       // move takeprofit regarding bb
       await this.position.updateTakeProfit(bb.middle);
       return;
     }
+
+    this.changeStatusMarketLookup();
 
     // see if we can take position
     if (rsi > 70 && candle.average.close > bb.upper) {
