@@ -1,4 +1,4 @@
-import { Credentials } from '../broker';
+import { Credentials, PositionSummary } from '../broker';
 
 export interface Configuration {
   name: string;
@@ -7,7 +7,12 @@ export interface Configuration {
   risk: number;
 }
 
+export interface Listeners {
+  onStatusChanged: (status: string) => void;
+  onNewPositionSummary: (summary: PositionSummary) => void;
+}
+
 export default interface Strategy {
-  init(configuration: Configuration, credentials: Credentials, statusListener?: (status: string) => void): Promise<void>;
+  init(configuration: Configuration, credentials: Credentials, listeners: Listeners): Promise<void>;
   terminate(): Promise<void>;
 }

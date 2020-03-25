@@ -1,6 +1,6 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import Strategy, { Configuration } from './strategy';
+import Strategy, { Configuration, Listeners } from './strategy';
 import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails, Credentials } from '../broker';
 import { last, round, fireAsync } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
@@ -13,18 +13,18 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 
 export default class ForexScalpingM1Extreme implements Strategy {
   private configuration: Configuration;
+  private listeners: Listeners;
   private readonly broker = new Broker();
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
   private position: Position;
   private instrument: InstrumentDetails;
-  private statusListener: (status: string) => void;
   private currentStatus: string;
 
-  async init(configuration: Configuration, credentials: Credentials, statusListener?: (status: string) => void) {
+  async init(configuration: Configuration, credentials: Credentials, listeners: Listeners) {
     this.configuration = configuration;
     logger.debug(`(${this.configuration.name}) init`);
-    this.statusListener = statusListener;
+    this.listeners = listeners;
     this.changeStatus('Initialisation');
 
     await this.broker.init(credentials);
@@ -58,9 +58,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
 
     logger.debug(`(${this.configuration.name}) change status: '${status}'`);
     this.currentStatus = status;
-    if (this.statusListener) {
-      this.statusListener(status);
-    }
+    this.listeners.onStatusChanged(status);
   }
 
   private changeStatusTakingPosition() {
@@ -117,8 +115,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
         const summary = await this.broker.getPositionSummary(position);
         logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
 
-        // TODO: add stats data
-
+        this.listeners.onNewPositionSummary(summary);
         this.changeStatusMarketLookup();
       });
     });

@@ -1,6 +1,6 @@
 import { registerService } from 'mylife-tools-server';
-import { Strategy, Configuration, createStrategy } from './strategies';
-import { Credentials } from './broker';
+import { Strategy, Configuration, Listeners, createStrategy } from './strategies';
+import { Credentials, PositionSummary } from './broker';
 import { Mutex } from 'async-mutex';
 
 export class TradingService {
@@ -12,18 +12,21 @@ export class TradingService {
   async init(options: any) {
     const configuration = { epic: 'CS.D.EURUSD.MINI.IP', implementation: 'forex-scalping-m1-extreme', risk: 5, name: 'test' };
     const credentials = { key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true };
-    const statusListener = (status: string) => console.log('STATUSLISTENER', status);
-    await this.add('test', configuration, credentials, statusListener);
+    const listeners = {
+      onStatusChanged: (status: string) => console.log('STATUSLISTENER', status),
+      onNewPositionSummary: (summary: PositionSummary) => console.log('SUMMARYLISTENER', JSON.stringify(summary))
+    }
+    await this.add('test', configuration, credentials, listeners);
   }
 
-  async add(key: string, configuration: Configuration, credentials: Credentials, statusListener?: (status: string) => void) {
+  async add(key: string, configuration: Configuration, credentials: Credentials, listeners: Listeners) {
     await this.mutex.runExclusive(async () => {
       if (this.strategies.get(key)) {
         throw new Error(`Strategy does already exist: '${key}'`);
       }
 
       const strategy = createStrategy(configuration.implementation);
-      await strategy.init(configuration, credentials, statusListener);
+      await strategy.init(configuration, credentials, listeners);
       this.strategies.set(key, strategy);
     });
   }
