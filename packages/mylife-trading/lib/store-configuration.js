@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = [
-  //{ collection: 'accounts', entity: 'account', indexes: [] },
-  //{ collection: 'groups', entity: 'group', indexes: [{ fields:  'parent' }] },
-  //{ collection: 'operations', entity: 'operation', indexes: [{ fields: ['account', 'group', 'date'] }] }
+  { collection: 'brokers', entity: 'broker', indexes: [] },
+  { collection: 'stats', entity: 'stat', indexes: [] },
+  { collection: 'strategies', entity: 'strategy', indexes: [] }
 ];
