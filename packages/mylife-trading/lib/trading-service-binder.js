@@ -4,7 +4,7 @@ const { StoreContainer, createLogger, registerService, getService, getStoreColle
 
 const logger = createLogger('mylife:trading:trading-service-binder');
 
-class StatusCollection extends StoreContainer {
+class StatusView extends StoreContainer {
   constructor() {
     super();
     this.entity = getMetadataEntity('strategy-status');
@@ -31,7 +31,7 @@ class TradingServiceBinder {
     this.brokers = getStoreCollection('brokers');
     this.strategies = getStoreCollection('strategies');
     this.stats = getStoreCollection('stats');
-    this.status = new StatusCollection();
+    this.status = new StatusView();
     this.tradingService = getService('trading-service');
     this.queue = getService('task-queue-manager').createQueue('trading-service-queue');
 
@@ -70,7 +70,7 @@ class TradingServiceBinder {
     this.tradingService = null;
   }
 
-  getStatusCollection() {
+  getStatusView() {
     return this.status;
   }
 
