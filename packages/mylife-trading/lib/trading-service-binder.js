@@ -1,8 +1,26 @@
 'use strict';
 
-const { createLogger, registerService, getService, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const { StoreContainer, createLogger, registerService, getService, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:trading:trading-service-binder');
+
+class StatusCollection extends StoreContainer {
+  constructor() {
+    super();
+    this.entity = getMetadataEntity('strategy-status');
+  }
+
+  set(key, status) {
+    // use key for both strategy and strategy-status id
+    const values = { _id: key, strategy: key, status };
+    const object = this.entity.newObject(values);
+    this._set(object);
+  }
+
+  delete(key) {
+    this._delete(key);
+  }
+}
 
 class TradingServiceBinder {
   constructor() {
@@ -13,6 +31,7 @@ class TradingServiceBinder {
     this.brokers = getStoreCollection('brokers');
     this.strategies = getStoreCollection('strategies');
     this.stats = getStoreCollection('stats');
+    this.status = new StatusCollection();
     this.tradingService = getService('trading-service');
     this.queue = getService('task-queue-manager').createQueue('trading-service-queue');
 
@@ -47,7 +66,12 @@ class TradingServiceBinder {
     this.broker = null;
     this.strategies = null;
     this.stats = null;
+    this.status = null;
     this.tradingService = null;
+  }
+
+  getStatusCollection() {
+    return this.status;
   }
 
   _strategyChanged(event) {
@@ -82,6 +106,7 @@ class TradingServiceBinder {
 
     const key = strategy._id;
     await this.tradingService.remove(key);
+    this.status.delete(key);
   }
 
   async _strategyAdd(strategy) {
@@ -98,16 +123,11 @@ class TradingServiceBinder {
     const configuration = { epic: strategy.epic, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display };
     const credentials = { key: broker.key, identifier: broker.identifier, password: broker.password, isDemo: broker.demo };
     const listeners = {
-      onStatusChanged: (status) => this._statusChanged(strategy, status),
+      onStatusChanged: (status) => this.status.set(key, status),
       onNewPositionSummary: (summary) => this._newPositionSummary(strategy, summary)
     };
 
     await this.tradingService.add(key, configuration, credentials, listeners);
-  }
-
-  _statusChanged(strategy, status) {
-    // TODO
-    console.log('STATUSLISTENER', strategy, status);
   }
 
   _newPositionSummary(strategy, summary) {
@@ -129,7 +149,7 @@ class TradingServiceBinder {
     };
 
     const entity = getMetadataEntity('stat');
-    const newStat = entity.setValues(entity, values);
+    const newStat = entity.newObject(values);
     this.stats.set(newStat);
   }
 }
