@@ -5,16 +5,17 @@ import * as reducers from './reducers';
 
 import icons from './common/icons';
 import Home from './home/components';
+import Brokers from './brokers/components';
 
 services.initStore(reducers);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
-//  { location: '/management', name: 'Gestion', icon: icons.tabs.Management, renderer: () => <Management /> },
+  { location: '/brokers', name: 'Comptes de trading', icon: icons.tabs.Broker, renderer: () => <Brokers /> },
 ];
 
 const menu = [
-//  { id: 'management', text: 'Gestion', icon: icons.tabs.Management, location: '/management' },
+  { id: 'brokers', text: 'Comptes de trading', icon: icons.tabs.Broker, location: '/brokers' },
 ];
 
 services.render({

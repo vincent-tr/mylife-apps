@@ -3,7 +3,7 @@
 import { React, mui } from 'mylife-tools-ui';
 
 const {
-  AccountBalance,
+  AccountBox,
   FormatListBulleted,
   ShowChart,
   OpenInBrowser,
@@ -31,23 +31,7 @@ export default {
 
   Trading,
 
-  actions: {
-    New     : AddCircle,
-    Edit    : Edit,
-    Delete  : Close,
-    Move    : FolderOpen,
-    Import  : OpenInBrowser,
-    Execute : Settings,
-    Comment : ModeComment,
-    Export  : SaveAlt,
-    Back    : ArrowBack,
-  },
-
   tabs: {
-    Management : FormatListBulleted,
-    Reporting  : ShowChart
+    Broker: AccountBox
   },
-
-  Account : AccountBalance,
-  Group   : FolderOpen
 };
