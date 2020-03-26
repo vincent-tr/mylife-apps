@@ -1,6 +1,7 @@
 'use strict';
 
 const { StoreContainer, createLogger, registerService, getService, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const business = require('./business');
 
 const logger = createLogger('mylife:trading:trading-service-binder');
 
@@ -121,7 +122,7 @@ class TradingServiceBinder {
 
     // format tradingService parameters
     const configuration = { epic: strategy.epic, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display };
-    const credentials = { key: broker.key, identifier: broker.identifier, password: broker.password, isDemo: broker.demo };
+    const credentials = { key: broker.key, identifier: broker.identifier, password: business.passwordDecrypt(broker.password), isDemo: broker.demo };
     const listeners = {
       onStatusChanged: (status) => this.status.set(key, status),
       onNewPositionSummary: (summary) => this._newPositionSummary(strategy, summary)
