@@ -1,6 +1,6 @@
 'use strict';
 
-const { StoreContainer, createLogger, registerService, getService, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const { StoreView, StoreContainer, createLogger, registerService, getService, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const business = require('./business');
 
 const logger = createLogger('mylife:trading:trading-service-binder');
@@ -21,6 +21,13 @@ class StatusView extends StoreContainer {
   delete(key) {
     this._delete(key);
   }
+
+  createView(filterCallback = () => true) {
+    const view = new StoreView(this);
+    view.setFilter(filterCallback);
+    return view;
+  }
+
 }
 
 class TradingServiceBinder {
@@ -71,7 +78,7 @@ class TradingServiceBinder {
     this.tradingService = null;
   }
 
-  getStatusView() {
+  getStatusCollection() {
     return this.status;
   }
 
