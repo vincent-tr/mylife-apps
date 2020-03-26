@@ -20,16 +20,16 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const Home = () => {
+const Brokers = () => {
   const classes = useStyles();
   const { enter, leave } = useConnect();
   useLifecycle(enter, leave);
 
   return (
     <div className={classes.container}>
-      Trading
+      Brokers
     </div>
   );
 };
 
-export default Home;
+export default Brokers;
