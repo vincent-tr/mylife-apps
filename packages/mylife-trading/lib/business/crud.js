@@ -16,6 +16,14 @@ exports.brokerCreate = ({ password, ...values }) => {
 };
 
 exports.brokerDelete = broker => {
+  const strategies = getStoreCollection('strategies');
+  const usage = strategies.filter(strategy => strategy.broker === broker._id);
+  if (usage.length) {
+    const strategyEntity = getMetadataEntity('strategy');
+    const list = usage.map(strategy => `'${strategyEntity.render(strategy)}'`).join(', ');
+    throw new Error(`Impossible de supprimer le compte car il est utilisé dans les stratégies suivantes : ${list}`);
+  }
+
   logger.info(`Deleting broker '${broker._id}'`);
 
   const collection = getStoreCollection('brokers');
