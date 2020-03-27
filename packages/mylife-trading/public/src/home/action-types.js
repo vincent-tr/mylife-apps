@@ -3,5 +3,6 @@
 import { constants } from 'mylife-tools-ui';
 
 export default constants.wrap({
-//  SET_OPERATION_STATS_VIEW : null,
+  SET_STRATEGY_VIEW : null,
+  SET_STRATEGY_STATUS_VIEW : null,
 }, 'home');

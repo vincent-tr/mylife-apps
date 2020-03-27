@@ -18,7 +18,7 @@ const getStrategies = () => createOrUpdateView({
   service: 'strategy',
   method: 'notify'
 });
-  
+
 const clearStrategies = () => deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
