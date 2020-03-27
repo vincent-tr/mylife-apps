@@ -5,6 +5,11 @@ const business = require('.');
 
 const logger = createLogger('mylife:trading:business:crud');
 
+exports.brokerGet = (id) => {
+  const brokers = getStoreCollection('brokers');
+  return brokers.get(id);
+};
+
 exports.brokerCreate = ({ password, ...values }) => {
   const entity = getMetadataEntity('broker');
   const brokers = getStoreCollection('brokers');
@@ -41,15 +46,21 @@ exports.brokerUpdate = (broker, values) => {
 
   const entity = getMetadataEntity('broker');
   const brokers = getStoreCollection('brokers');
-  const newbroker = entity.setValues(broker, values);
+  const item = entity.setValues(broker, values);
 
-  brokers.set(newbroker);
+  brokers.set(item);
+  return item;
 };
 
 exports.brokersNotify = (session) => {
   const brokers = getStoreCollection('brokers');
   const view = brokers.createView();
   return notifyView(session, view);
+};
+
+exports.strategyGet = (id) => {
+  const strategies = getStoreCollection('strategies');
+  return strategies.get(id);
 };
 
 exports.strategyCreate = (values) => {
@@ -76,9 +87,10 @@ exports.strategyUpdate = (strategy, values) => {
 
   const entity = getMetadataEntity('strategy');
   const strategies = getStoreCollection('strategies');
-  const newstrategy = entity.setValues(strategy, values);
+  const item = entity.setValues(strategy, values);
 
-  strategies.set(newstrategy);
+  strategies.set(item);
+  return item;
 };
 
 exports.strategiesNotify = (session) => {
