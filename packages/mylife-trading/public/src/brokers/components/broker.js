@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
 import { update, remove } from '../actions';
 import { getFieldName, renderObject } from '../../common/metadata-utils';
 import PasswordField from './password-field';
@@ -72,6 +72,10 @@ const Broker = ({ broker }) => {
       </mui.Grid>
     </mui.Paper>
   );
+};
+
+Broker.propTypes = {
+  broker: PropTypes.object.isRequired,
 };
 
 export default Broker;

@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useState, useEffect, mui } from 'mylife-tools-ui';
+import { React, PropTypes, useState, useEffect, mui } from 'mylife-tools-ui';
 
 const PasswordField = ({ crypted, onSet, ...props }) => {
   const [value, setValue] = useState('');
@@ -34,6 +34,11 @@ const PasswordField = ({ crypted, onSet, ...props }) => {
       {...props}
     />
   );
+};
+
+PasswordField.propTypes = {
+  crypted: PropTypes.string.isRequired,
+  onSet: PropTypes.func.isRequired,
 };
 
 export default PasswordField;
