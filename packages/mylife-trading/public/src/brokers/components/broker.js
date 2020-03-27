@@ -26,30 +26,35 @@ const Broker = ({ broker }) => {
   return (
     <mui.Paper variant='outlined' square className={classes.container}>
       <mui.Grid container spacing={2}>
+
         <mui.Grid item xs={6}>
           <mui.Typography>{getFieldName('broker', 'display')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
           <DebouncedTextField value={broker.display} onChange={display => update(broker, { display })} fullWidth />
         </mui.Grid>
+
         <mui.Grid item xs={6}>
           <mui.Typography>{getFieldName('broker', 'key')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
           <DebouncedTextField value={broker.key} onChange={key => update(broker, { key })} fullWidth />
         </mui.Grid>
+
         <mui.Grid item xs={6}>
           <mui.Typography>{getFieldName('broker', 'identifier')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
           <DebouncedTextField value={broker.identifier} onChange={identifier => update(broker, { identifier })} fullWidth />
         </mui.Grid>
+
         <mui.Grid item xs={6}>
           <mui.Typography>{getFieldName('broker', 'password')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
           <PasswordField crypted={broker.password} onSet={password => update(broker, { password })} fullWidth />
         </mui.Grid>
+        
         <mui.Grid item xs={6}>
           <mui.Typography>{getFieldName('broker', 'demo')}</mui.Typography>
         </mui.Grid>

@@ -4,17 +4,7 @@ import { React, mui } from 'mylife-tools-ui';
 
 const {
   AccountBox,
-  FormatListBulleted,
-  ShowChart,
-  OpenInBrowser,
   Settings,
-  AddCircle,
-  ModeComment,
-  Edit,
-  FolderOpen,
-  Close,
-  SaveAlt,
-  ArrowBack,
 } = mui.icons;
 
 const Trading = (props) => (
@@ -32,6 +22,7 @@ export default {
   Trading,
 
   tabs: {
-    Broker: AccountBox
+    Broker: AccountBox,
+    Strategy: Settings
   },
 };
