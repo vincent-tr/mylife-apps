@@ -17,8 +17,7 @@ exports.notifyStatus = [ base, (session) => {
 
 exports.create = [ base, (session, message) => {
   const { values } = message;
-  const strategy = business.strategyCreate(values);
-  return strategy._id;
+  return business.strategyCreate(values);
 } ];
 
 exports.delete = [ base, (session, message) => {
