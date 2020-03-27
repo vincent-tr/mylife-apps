@@ -93,7 +93,6 @@ const Broker = ({ broker }) => {
         <DeleteButton
           tooltip={'Supprimer le compte'}
           icon
-          text='Supprimer'
           confirmText={`Etes-vous sûr de vouloir supprimer le compte '${renderObject(broker)}' ?`}
           onConfirmed={() => remove(broker)}
         />
