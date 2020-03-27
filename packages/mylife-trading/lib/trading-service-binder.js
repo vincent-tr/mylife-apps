@@ -18,6 +18,12 @@ class StatusView extends StoreContainer {
     this._set(object);
   }
 
+  setError(key, error) {
+    const values = { _id: key, strategy: key, status: error.message, error: error.stack };
+    const object = this.entity.newObject(values);
+    this._set(object);
+  }
+
   delete(key) {
     this._delete(key);
   }
@@ -27,7 +33,6 @@ class StatusView extends StoreContainer {
     view.setFilter(filterCallback);
     return view;
   }
-
 }
 
 class TradingServiceBinder {
@@ -102,7 +107,12 @@ class TradingServiceBinder {
     logger.info(`deleting strategy '${strategy._id}'`);
 
     const key = strategy._id;
-    await this.tradingService.remove(key);
+
+    const status = this.status.get(key);
+    if (!status.error) {
+      await this.tradingService.remove(key);
+    }
+
     this.status.delete(key);
   }
 
@@ -121,7 +131,8 @@ class TradingServiceBinder {
     const credentials = { key: broker.key, identifier: broker.identifier, password: business.passwordDecrypt(broker.password), isDemo: broker.demo };
     const listeners = {
       onStatusChanged: (status) => this.status.set(key, status),
-      onNewPositionSummary: (summary) => this._newPositionSummary(strategy, summary)
+      onNewPositionSummary: (summary) => this._newPositionSummary(strategy, summary),
+      onFatalError: (error) => this._onFatalError(strategy, error)
     };
 
     await this.tradingService.add(key, configuration, credentials, listeners);
@@ -148,6 +159,14 @@ class TradingServiceBinder {
     const entity = getMetadataEntity('stat');
     const newStat = entity.newObject(values);
     this.stats.set(newStat);
+  }
+
+  _onFatalError(strategy, error) {
+    this.queue.add('strategy-update', async () => {
+      const key = strategy._id;
+      this.status.setError(key, error);
+      await this.tradingService.remove(key);
+    });
   }
 }
 

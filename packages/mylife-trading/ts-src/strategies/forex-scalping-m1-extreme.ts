@@ -40,6 +40,7 @@ export default class ForexScalpingM1Extreme implements Strategy {
   
       this.onDatasetChange();
     } catch(err) {
+      logger.error(`(${this.configuration.name}) init error: ${err.stack}`);
       this.listeners.onFatalError(err);
     }
   }
@@ -60,7 +61,10 @@ export default class ForexScalpingM1Extreme implements Strategy {
   }
 
   private fireAsync<T>(target: () => Promise<T>) {
-    target().catch(err => this.listeners.onFatalError(err));
+    target().catch(err => {
+      logger.error(`(${this.configuration.name}) runtime error: ${err.stack}`);
+      this.listeners.onFatalError(err)
+    });
   }
 
   private changeStatus(status: string) {

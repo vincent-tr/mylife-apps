@@ -7,6 +7,7 @@ module.exports = {
   fields: [
     { id: 'strategy', name: 'Stratégie', datatype: 'strategy', constraints: ['not-null'] },
     { id: 'status', name: 'Statut', datatype: 'text' },
+    { id: 'error', name: 'Erreur', datatype: 'text' },
   ],
   display: obj => obj.display
 };
