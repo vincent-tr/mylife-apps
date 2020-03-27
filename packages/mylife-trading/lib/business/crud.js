@@ -100,14 +100,14 @@ exports.strategiesNotify = (session) => {
 };
 
 exports.statusNotify = (session) => {
-  const status = getStoreCollection('strategies');
-  const view = status.createView();
+  const tradingServiceBinder = getService('trading-service-binder');
+  const stats = tradingServiceBinder.getStatusCollection('stats');
+  const view = stats.createView();
   return notifyView(session, view);
 };
 
 exports.statsNotify = (session) => {
-  const tradingServiceBinder = getService('trading-service-binder');
-  const stats = tradingServiceBinder.getStatusCollection('stats');
+  const stats = getStoreCollection('stats');
   const view = stats.createView();
   return notifyView(session, view);
 };
