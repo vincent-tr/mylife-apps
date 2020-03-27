@@ -48,17 +48,6 @@ class TradingServiceBinder {
     for (const strategy of this.strategies.list()) {
       this._strategyChanged({ type: 'create', after: strategy });
     }
-
-    /*
-    const configuration = { epic: 'CS.D.EURUSD.MINI.IP', implementation: 'forex-scalping-m1-extreme', risk: 5, name: 'test' };
-    const credentials = { key: process.env.IGKEY, identifier: process.env.IGID, password: process.env.IGPASS, isDemo: true };
-    const listeners = {
-      onStatusChanged: (status) => console.log('STATUSLISTENER', status),
-      onNewPositionSummary: (summary) => console.log('SUMMARYLISTENER', JSON.stringify(summary))
-    };
-
-    await this.tradingService.add('test', configuration, credentials, listeners);
-    */
   }
 
   async terminate() {
