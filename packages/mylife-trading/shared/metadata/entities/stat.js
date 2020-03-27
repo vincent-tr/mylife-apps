@@ -16,7 +16,7 @@ module.exports = {
     { id: 'closeLevel', name: 'Cours à la fermeture de la position', datatype: 'real', constraints: ['not-null'] },
     { id: 'size', name: 'Nombre de contrats', datatype: 'amount', constraints: ['not-null'] },
     { id: 'profitAndLoss', name: 'Profit et perte', datatype: 'amount', constraints: ['not-null'] },
-    { id: 'currency', name: 'Devise', datatype: 'string', constraints: ['not-null'] },
+    { id: 'currency', name: 'Devise', datatype: 'name', constraints: ['not-null'] },
   ],
   display: obj => obj.display
 };
