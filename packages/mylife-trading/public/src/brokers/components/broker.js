@@ -1,8 +1,9 @@
 'use strict';
 
-import { React, useMemo, useState, useEffect, mui, useDispatch, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
+import { React, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
 import { update, remove } from '../actions';
 import { getFieldName, renderObject } from '../../common/metadata-utils';
+import PasswordField from './password-field';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -17,40 +18,6 @@ const useStyles = mui.makeStyles(theme => ({
     padding: theme.spacing(2),
   },
 }));
-
-const PasswordField = ({ crypted, onSet, ...props }) => {
-  const [value, setValue] = useState('');
-  // reset value on change
-  useEffect(() => setValue(''), [crypted]);
-
-  const handleOk = () => onSet(value);
-
-  const handleMouseDownPassword = event => {
-    event.preventDefault();
-  };
-
-  const inputProps = value ? {
-    endAdornment:
-      <mui.InputAdornment position='end'>
-        <mui.IconButton
-          onClick={handleOk}
-          onMouseDown={handleMouseDownPassword}
-        >
-          <mui.icons.Create />
-        </mui.IconButton>
-      </mui.InputAdornment>
-  } : null;
-
-  return (
-    <mui.TextField 
-      value={value}
-      onChange={e => setValue(e.target.value)}
-      type='password'
-      InputProps={inputProps}
-      {...props}
-    />
-  );
-};
 
 const Broker = ({ broker }) => {
   const classes = useStyles();
