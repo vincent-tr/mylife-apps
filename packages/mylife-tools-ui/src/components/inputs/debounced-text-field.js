@@ -27,7 +27,7 @@ const DebouncedTextField = ({ value, onChange, ...props }) => {
 };
 
 DebouncedTextField.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.any,
   onChange: PropTypes.func.isRequired
 };
 
