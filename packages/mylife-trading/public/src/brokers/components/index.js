@@ -1,8 +1,9 @@
 'use strict';
 
 import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
-import { enter, leave, add, update, remove } from '../actions';
+import { enter, leave, add } from '../actions';
 import { getDisplayView } from '../selectors';
+import Broker from './broker';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -14,8 +15,6 @@ const useConnect = () => {
       enter: () => dispatch(enter()),
       leave: () => dispatch(leave()),
       add: () => dispatch(add()),
-      update: (broker, changes) => dispatch(update(broker, changes)),
-      remove: (broker) => dispatch(remove(broker)),
     }), [dispatch])
   };
 };
@@ -34,7 +33,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Brokers = () => {
   const classes = useStyles();
-  const { enter, leave, add, update, remove, data } = useConnect();
+  const { enter, leave, add, data } = useConnect();
   useLifecycle(enter, leave);
 
   return (
@@ -42,9 +41,7 @@ const Brokers = () => {
       <mui.List className={classes.main}>
         {data.map(broker => (
           <mui.ListItem key={broker._id}>
-            <mui.Grid container spacing={2}>
-              {broker.display}
-            </mui.Grid>
+            <Broker broker={broker} />
           </mui.ListItem>
         ))}
       </mui.List>

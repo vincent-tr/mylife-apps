@@ -38,7 +38,7 @@ export const add = () => async (dispatch) => {
     key: 'A remplir',
     identifier: 'A remplir',
     password: 'A remplir',
-    demo: 'A remplir'
+    demo: false
   };
 
   const broker = await dispatch(io.call({
