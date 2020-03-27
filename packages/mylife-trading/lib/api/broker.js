@@ -13,8 +13,7 @@ exports.notify = [ base, (session) => {
 
 exports.create = [ base, (session, message) => {
   const { values } = message;
-  const broker = business.brokerCreate(values);
-  return broker._id;
+  return business.brokerCreate(values);
 } ];
 
 exports.delete = [ base, (session, message) => {
