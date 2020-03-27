@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton, ListSelector } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton, ListSelector } from 'mylife-tools-ui';
 import { update, remove } from '../actions';
 import { getFieldName, renderObject } from '../../common/metadata-utils';
 import BrokerSelector from './broker-selector';
@@ -63,7 +63,7 @@ const Strategy = ({ strategy }) => {
           <mui.Typography>{getFieldName('strategy', 'epic')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
-        <DebouncedTextField value={strategy.epic} onChange={epic => update(strategy, { epic })} fullWidth />
+          <DebouncedTextField value={strategy.epic} onChange={epic => update(strategy, { epic })} fullWidth />
         </mui.Grid>
 
         <mui.Grid item xs={6}>
@@ -83,6 +83,10 @@ const Strategy = ({ strategy }) => {
       </mui.Grid>
     </mui.Paper>
   );
+};
+
+Strategy.propTypes = {
+  strategy: PropTypes.object.isRequired,
 };
 
 export default Strategy;
