@@ -2,12 +2,14 @@
 
 import { React, services, io } from 'mylife-tools-ui';
 import * as reducers from './reducers';
+import metadataDefintions from '../../shared/metadata';
 
 import icons from './common/icons';
 import Home from './home/components';
 import Brokers from './brokers/components';
 
 services.initStore(reducers);
+services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
@@ -24,13 +26,3 @@ services.render({
   routes,
   menu
 });
-/*
-services.observeStore(io.getOnline, value => {
-  if(!value) {
-    return;
-  }
-
-  const store = services.getStore();
-  store.dispatch(referenceInit());
-});
-*/
