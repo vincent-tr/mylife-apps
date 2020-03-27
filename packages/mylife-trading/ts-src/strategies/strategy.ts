@@ -10,6 +10,7 @@ export interface Configuration {
 export interface Listeners {
   onStatusChanged: (status: string) => void;
   onNewPositionSummary: (summary: PositionSummary) => void;
+  onFatalError: (error: Error) => void;
 }
 
 export default interface Strategy {
