@@ -2,27 +2,24 @@
 
 import { React, useMemo, useSelector, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave, changeState } from '../actions';
-import { getStrategyDisplayView, geStrategyStatusView } from '../selectors';
+import { getStrategyDisplayView } from '../selectors';
+import Strategy from './strategy';
 
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
       strategies: getStrategyDisplayView(state),
-      strategyStatus: geStrategyStatusView(state),
     })),
     ...useMemo(() => ({
       enter: () => dispatch(enter()),
       leave: () => dispatch(leave()),
-      changeState: (strategy, enabled) => dispatch(changeState(strategy, enabled)),
     }), [dispatch])
   };
 };
 
 const useStyles = mui.makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
+  main: {
     flex: '1 1 auto',
     overflowY: 'auto'
   }
@@ -30,13 +27,17 @@ const useStyles = mui.makeStyles({
 
 const Home = () => {
   const classes = useStyles();
-  const { enter, leave } = useConnect();
+  const { enter, leave, strategies } = useConnect();
   useLifecycle(enter, leave);
 
   return (
-    <div className={classes.container}>
-      Trading
-    </div>
+    <mui.List className={classes.main}>
+      {strategies.map(strategy => (
+        <mui.ListItem key={strategy._id}>
+          <Strategy strategy={strategy} />
+        </mui.ListItem>
+      ))}
+    </mui.List>
   );
 };
 
