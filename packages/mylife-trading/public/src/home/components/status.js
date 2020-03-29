@@ -12,6 +12,16 @@ const useStyles = mui.makeStyles(theme => ({
   container: {
     padding: theme.spacing(2),
   },
+  cell: {
+    display: 'flex',
+    alignItems: 'center',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  title: {
+    fontWeight: 'bold'
+  }
 }));
 
 const Status = ({ strategy }) => {
@@ -24,16 +34,18 @@ const Status = ({ strategy }) => {
   }
 
   return (
-    <>
-      <mui.Typography>{getFieldName('strategy-status', 'status')}</mui.Typography>
-      <mui.Typography>{status.status}</mui.Typography>
+    <mui.Grid container>
+      <mui.Grid item xs={12} className={classes.cell}>
+        <mui.Typography className={classes.title}>{getFieldName('strategy-status', 'status')}</mui.Typography>
+        <mui.Typography>{status.status}</mui.Typography>
+      </mui.Grid>
       {status.error && (
-        <>
-          <mui.Typography>{getFieldName('strategy-status', 'error')}</mui.Typography>
+        <mui.Grid item xs={12} className={classes.cell}>
+          <mui.Typography className={classes.title}>{getFieldName('strategy-status', 'error')}</mui.Typography>
           <mui.Typography>{status.error}</mui.Typography>
-        </>
+        </mui.Grid>
       )}
-    </>
+    </mui.Grid>
   );
 };
 
