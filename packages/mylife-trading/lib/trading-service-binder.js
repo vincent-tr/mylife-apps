@@ -164,8 +164,8 @@ class TradingServiceBinder {
   _onFatalError(strategy, error) {
     this.queue.add('strategy-update', async () => {
       const key = strategy._id;
-      this.status.setError(key, error);
       await this.tradingService.remove(key);
+      this.status.setError(key, error);
     });
   }
 }
