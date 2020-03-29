@@ -2,19 +2,14 @@
 
 import { React, PropTypes, useMemo, useSelector, mui, useDispatch } from 'mylife-tools-ui';
 import { changeState } from '../actions';
-import { geStatsView } from '../selectors';
 import Status from './status';
+import Stats from './stats';
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return {
-    ...useSelector(state => ({
-      stats: geStatsView(state),
-    })),
-    ...useMemo(() => ({
-      changeState: (strategy, enabled) => dispatch(changeState(strategy, enabled)),
-    }), [dispatch])
-  };
+  return useMemo(() => ({
+    changeState: (strategy, enabled) => dispatch(changeState(strategy, enabled)),
+  }), [dispatch]);
 };
 
 const useStyles = mui.makeStyles(theme => ({
@@ -25,9 +20,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Strategy = ({ strategy }) => {
   const classes = useStyles();
-  const { changeState, stats } = useConnect();
-
-  const sstats = Array.from(stats.valueSeq().filter(stat => stat.strategy === strategy._id).sortBy(stat => stat.openDate));
+  const { changeState } = useConnect();
 
   return (
     <mui.Paper variant='outlined' square className={classes.container}>
@@ -45,9 +38,8 @@ const Strategy = ({ strategy }) => {
         </mui.Grid>
 
         <mui.Grid item xs={12}>
-          <mui.Typography>{JSON.stringify(sstats)}</mui.Typography>
+          <Stats strategy={strategy} />
         </mui.Grid>
-      
 
       </mui.Grid>
     </mui.Paper>
