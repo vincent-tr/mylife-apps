@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, useSelector, mui } from 'mylife-tools-ui';
+import { React, PropTypes, useSelector, mui, clsx, addLineBreaks } from 'mylife-tools-ui';
 import { getFieldName } from '../../common/metadata-utils';
 import { geStrategyStatusView } from '../selectors';
 
@@ -21,6 +21,9 @@ const useStyles = mui.makeStyles(theme => ({
   },
   title: {
     fontWeight: 'bold'
+  },
+  error: {
+    color: theme.palette.error.main
   }
 }));
 
@@ -40,9 +43,9 @@ const Status = ({ strategy }) => {
         <mui.Typography>{status.status}</mui.Typography>
       </mui.Grid>
       {status.error && (
-        <mui.Grid item xs={12} className={classes.cell}>
+        <mui.Grid item xs={12} className={clsx(classes.cell, classes.error)}>
           <mui.Typography className={classes.title}>{getFieldName('strategy-status', 'error')}</mui.Typography>
-          <mui.Typography>{status.error}</mui.Typography>
+          <mui.Typography>{addLineBreaks(status.error)}</mui.Typography>
         </mui.Grid>
       )}
     </mui.Grid>
