@@ -8,8 +8,11 @@ const useConnect = () => useSelector(state => ({
 }));
 
 const useStyles = mui.makeStyles(theme => ({
-  container: {
-    padding: theme.spacing(2),
+  profit: {
+    color: theme.palette.success.main,
+  },
+  loss: {
+    color: theme.palette.error.main,
   },
 }));
 
@@ -23,8 +26,15 @@ const Stats = ({ strategy }) => {
     .sortBy(stat => -stat.openDate)
     .slice(0, 10));
 
-  return (
+  if(!stats.length) {
+    return null;
+  }
 
+  const currencyTotal = stats[0].currency;
+  const profitTotal = Math.round(stats.reduce((acc, stat) => (acc + stat.profitAndLoss), 0) * 100) / 100;
+  const profitClass = profitAndLoss => (profitAndLoss > 0 ? classes.profit : classes.loss);
+
+  return (
     <mui.Table size='small'>
       <mui.TableHead>
         <mui.TableRow>
@@ -42,10 +52,19 @@ const Stats = ({ strategy }) => {
             <mui.TableCell>{formatDate(stat.closeDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
             <mui.TableCell>{stat.openLevel}</mui.TableCell>
             <mui.TableCell>{stat.closeLevel}</mui.TableCell>
-            <mui.TableCell>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
+            <mui.TableCell className={profitClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
           </mui.TableRow>
         ))}
       </mui.TableBody>
+      <mui.TableFooter>
+        <mui.TableRow>
+          <mui.TableCell>Total</mui.TableCell>
+          <mui.TableCell/>
+          <mui.TableCell/>
+          <mui.TableCell/>
+          <mui.TableCell className={profitClass(profitTotal)}>{profitTotal}&nbsp;{currencyTotal}</mui.TableCell>
+        </mui.TableRow>
+      </mui.TableFooter>
     </mui.Table>
   );
 };
