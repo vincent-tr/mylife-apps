@@ -8,6 +8,7 @@ import Stats from './stats';
 const useStyles = mui.makeStyles(theme => ({
   container: {
     padding: theme.spacing(2),
+    width: '100%',
   },
   status: {
     display: 'flex',
