@@ -42,6 +42,8 @@ const Stats = ({ strategy }) => {
           <mui.TableCell>{'Date de fermeture'}</mui.TableCell>
           <mui.TableCell>{'Niveau à l\'ouverture'}</mui.TableCell>
           <mui.TableCell>{'Niveau à la fermeture'}</mui.TableCell>
+          <mui.TableCell>{'Direction'}</mui.TableCell>
+          <mui.TableCell>{'Taille'}</mui.TableCell>
           <mui.TableCell>{'Profit/perte'}</mui.TableCell>
         </mui.TableRow>
       </mui.TableHead>
@@ -52,6 +54,8 @@ const Stats = ({ strategy }) => {
             <mui.TableCell>{formatDate(stat.closeDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
             <mui.TableCell>{stat.openLevel}</mui.TableCell>
             <mui.TableCell>{stat.closeLevel}</mui.TableCell>
+            <mui.TableCell>{stat.size > 0 ? 'Achat' : 'Vente'}</mui.TableCell>
+          <mui.TableCell>{Math.abs(stat.size)}</mui.TableCell>
             <mui.TableCell className={profitClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
           </mui.TableRow>
         ))}
@@ -59,6 +63,8 @@ const Stats = ({ strategy }) => {
       <mui.TableFooter>
         <mui.TableRow>
           <mui.TableCell>Total</mui.TableCell>
+          <mui.TableCell/>
+          <mui.TableCell/>
           <mui.TableCell/>
           <mui.TableCell/>
           <mui.TableCell/>
