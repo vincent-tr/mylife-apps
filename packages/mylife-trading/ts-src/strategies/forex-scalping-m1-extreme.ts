@@ -3,22 +3,20 @@ import { createLogger } from 'mylife-tools-server';
 import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails, Credentials } from '../broker';
 import { last, round } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
-import StrategyBase from './strategy-base';
+import ForexScalpingBase from './forex-scalping-base';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme');
 
 // https://admiralmarkets.com/fr/formation/articles/strategie-de-forex/strategie-forex-scalping-1-minute
 
-// TODO: do not take position before/when market close
-
-export default class ForexScalpingM1Extreme extends StrategyBase {
+export default class ForexScalpingM1Extreme extends ForexScalpingBase {
   private broker: Broker;
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
   private position: Position;
   private instrument: InstrumentDetails;
 
-  async initImpl(credentials: Credentials) {
+  async open(credentials: Credentials) {
     this.broker = new Broker();
     await this.broker.init(credentials);
 
@@ -33,7 +31,7 @@ export default class ForexScalpingM1Extreme extends StrategyBase {
     this.onDatasetChange();
   }
 
-  async terminateImpl() {
+  async close() {
     if (this.position) {
       await this.position.close();
     }
