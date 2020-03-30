@@ -34,13 +34,14 @@ export default class ForexScalpingM1Extreme extends StrategyBase {
   }
 
   async terminateImpl() {
-    this.changeStatus('Mise à l\'arrêt');
     if (this.position) {
       await this.position.close();
     }
+
     if (this.dataset) {
       this.dataset.close();
     }
+    
     if (this.broker) {
       await this.broker.terminate();
       this.broker = null;
