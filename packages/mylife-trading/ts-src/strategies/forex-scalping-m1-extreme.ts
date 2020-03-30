@@ -12,7 +12,7 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 // TODO: do not take position before/when market close
 
 export default class ForexScalpingM1Extreme extends StrategyBase {
-  private broker = new Broker();
+  private broker: Broker;
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
   private position: Position;
