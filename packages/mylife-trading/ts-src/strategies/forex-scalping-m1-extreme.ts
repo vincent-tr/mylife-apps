@@ -1,6 +1,6 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import { Broker, Resolution, MovingDataset, DealDirection, Position, InstrumentDetails, Credentials } from '../broker';
+import { Resolution, MovingDataset, DealDirection, Position } from '../broker';
 import { last, round } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ForexScalpingBase from './forex-scalping-base';
@@ -10,19 +10,11 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 // https://admiralmarkets.com/fr/formation/articles/strategie-de-forex/strategie-forex-scalping-1-minute
 
 export default class ForexScalpingM1Extreme extends ForexScalpingBase {
-  private broker: Broker;
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
   private position: Position;
-  private instrument: InstrumentDetails;
 
-  async open(credentials: Credentials) {
-    this.broker = new Broker();
-    await this.broker.init(credentials);
-
-    const market = await this.broker.getEpic(this.configuration.epic);
-    this.instrument = market.instrument;
-
+  async open() {
     this.dataset = await this.broker.getDataset(this.instrument.epic, Resolution.MINUTE, 16);
     this.dataset.on('error', err => logger.error(`(${this.configuration.name}) Dataset error: ${err.stack}`));
     this.dataset.on('add', () => this.onDatasetChange());
@@ -38,11 +30,6 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 
     if (this.dataset) {
       this.dataset.close();
-    }
-    
-    if (this.broker) {
-      await this.broker.terminate();
-      this.broker = null;
     }
   }
 

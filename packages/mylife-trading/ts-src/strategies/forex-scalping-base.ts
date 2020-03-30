@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
-import { Credentials } from '../broker';
+import { Credentials, Broker, InstrumentDetails } from '../broker';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-base');
 
@@ -9,7 +9,18 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 	private opened: boolean;
 	private timer: NodeJS.Timer;
 
-	protected abstract open(credentials: Credentials): Promise<void>;
+	private _broker: Broker;
+	private _instrument: InstrumentDetails;
+
+	protected get broker() {
+		return this._broker;
+	}
+
+	protected get instrument() {
+		return this._instrument;
+	}
+
+	protected abstract open(): Promise<void>;
 	protected abstract close(): Promise<void>;
 
 	protected async initImpl(credentials: Credentials) {
@@ -46,7 +57,14 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 		this.opened = true;
 		try {
 			this.changeStatus('Initialisation');
-			await this.open(this.credentials);
+
+    	this._broker = new Broker();
+			await this.broker.init(this.credentials);
+			
+			const market = await this.broker.getEpic(this.configuration.epic);
+			this._instrument = market.instrument;
+	
+			await this.open();
 		} catch (err) {
 			logger.error(`(${this.configuration.name}) init error: ${err.stack}`);
 			this.fatal(err);
@@ -57,7 +75,16 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 		this.opened = false;
 		try {
 			this.changeStatus("Mise à l'arrêt");
+
 			await this.terminateImpl();
+
+			this._instrument = null;
+	
+			if (this.broker) {
+				await this.broker.terminate();
+				this._broker = null;
+			}
+
 			logger.debug(`(${this.configuration.name}) terminate`);
 			this.changeStatus("En dehors des heures d'ouverture du marché");
 		} catch (err) {
