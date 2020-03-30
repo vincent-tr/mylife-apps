@@ -27,7 +27,7 @@ export default abstract class StrategyBase implements Strategy {
 			await this.initImpl(credentials);
 		} catch (err) {
 			logger.error(`(${this.configuration.name}) init error: ${err.stack}`);
-			this.listeners.onFatalError(err);
+			this.fatal(err);
 		}
 	}
 
@@ -52,7 +52,7 @@ export default abstract class StrategyBase implements Strategy {
 	protected fireAsync<T>(target: () => Promise<T>) {
 		target().catch(err => {
 			logger.error(`(${this.configuration.name}) runtime error: ${err.stack}`);
-			this.listeners.onFatalError(err);
+			this.fatal(err);
 		});
 	}
 
