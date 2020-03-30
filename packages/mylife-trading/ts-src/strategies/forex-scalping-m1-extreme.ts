@@ -12,13 +12,14 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 // TODO: do not take position before/when market close
 
 export default class ForexScalpingM1Extreme extends StrategyBase {
-  private readonly broker = new Broker();
+  private broker = new Broker();
   private dataset: MovingDataset;
   private lastProcessedTimestamp: number;
   private position: Position;
   private instrument: InstrumentDetails;
 
   async initImpl(credentials: Credentials) {
+    this.broker = new Broker();
     await this.broker.init(credentials);
 
     const market = await this.broker.getEpic(this.configuration.epic);
@@ -37,9 +38,13 @@ export default class ForexScalpingM1Extreme extends StrategyBase {
     if (this.position) {
       await this.position.close();
     }
-    this.dataset.close();
-
-    await this.broker.terminate();
+    if (this.dataset) {
+      this.dataset.close();
+    }
+    if (this.broker) {
+      await this.broker.terminate();
+      this.broker = null;
+    }
   }
 
   private onDatasetChange() {
