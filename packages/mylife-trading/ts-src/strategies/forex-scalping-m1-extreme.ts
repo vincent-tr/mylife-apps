@@ -15,7 +15,7 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
   private position: Position;
 
   async open() {
-    this.dataset = await this.broker.getDataset(this.instrument.epic, Resolution.MINUTE, 16);
+    this.dataset = await this.broker.getDataset(this.instrument.epic, Resolution.MINUTE, 23);
     this.dataset.on('error', err => logger.error(`(${this.configuration.name}) Dataset error: ${err.stack}`));
     this.dataset.on('add', () => this.onDatasetChange());
     this.dataset.on('update', () => this.onDatasetChange());
@@ -53,12 +53,11 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
   }
 
   private getIndicators() {
-    const period = 14;
     const { fixedList } = this.dataset;
     const values = fixedList.map(record => record.average.close);
 
-    const rsi = last(RSI.calculate({ period, values }));
-    const bb = last(BollingerBands.calculate({ period, values, stdDev: 2 }));
+    const rsi = last(RSI.calculate({ values, period: 14 }));
+    const bb = last(BollingerBands.calculate({ values, period: 21, stdDev: 2 }));
     const candle = last(fixedList);
 
     return { rsi, bb, candle };
