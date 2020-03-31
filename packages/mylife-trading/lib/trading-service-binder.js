@@ -2,6 +2,7 @@
 
 const { StoreView, StoreContainer, createLogger, registerService, getService, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const business = require('./business');
+const { version } = require('../package.json');
 
 const logger = createLogger('mylife:trading:trading-service-binder');
 
@@ -144,6 +145,7 @@ class TradingServiceBinder {
     const values = {
       strategy: strategy._id,
       strategyImplementation: strategy.implementation,
+      version,
       demo: broker.demo,
       epic: strategy.epic,
       dealId: summary.dealId,
