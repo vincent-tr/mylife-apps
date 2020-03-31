@@ -10,103 +10,124 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 // https://admiralmarkets.com/fr/formation/articles/strategie-de-forex/strategie-forex-scalping-1-minute
 
 export default class ForexScalpingM1Extreme extends ForexScalpingBase {
-  private dataset: MovingDataset;
-  private lastProcessedTimestamp: number;
-  private position: Position;
+	private dataset: MovingDataset;
+	private lastProcessedTimestamp: number;
+	private position: Position;
+	private waitingMarketStable: boolean;
 
-  async open() {
-    this.dataset = await this.broker.getDataset(this.instrument.epic, Resolution.MINUTE, 23);
-    this.dataset.on('error', err => logger.error(`(${this.configuration.name}) Dataset error: ${err.stack}`));
-    this.dataset.on('add', () => this.onDatasetChange());
-    this.dataset.on('update', () => this.onDatasetChange());
+	async open() {
+		this.dataset = await this.broker.getDataset(this.instrument.epic, Resolution.MINUTE, 23);
+		this.dataset.on('error', err => logger.error(`(${this.configuration.name}) Dataset error: ${err.stack}`));
+		this.dataset.on('add', () => this.onDatasetChange());
+		this.dataset.on('update', () => this.onDatasetChange());
 
-    this.onDatasetChange();
-  }
+		this.waitingMarketStable = false;
+		this.onDatasetChange();
+	}
 
-  async close() {
-    if (this.position) {
-      await this.position.close();
-    }
+	async close() {
+		if (this.position) {
+			await this.position.close();
+		}
 
-    if (this.dataset) {
-      this.dataset.close();
-    }
-  }
+		if (this.dataset) {
+			this.dataset.close();
+		}
+	}
 
-  private onDatasetChange() {
-    if (!this.shouldRun()) {
-      return;
-    }
+	private onDatasetChange() {
+		if (!this.shouldRun()) {
+			return;
+		}
 
-    this.fireAsync(() => this.analyze());
-  }
+		this.fireAsync(() => this.analyze());
+	}
 
-  private shouldRun() {
-    const fixedRecords = this.dataset.fixedList;
-    const lastTimestamp = fixedRecords[fixedRecords.length - 1].timestamp.valueOf();
-    if (lastTimestamp === this.lastProcessedTimestamp) {
-      return false;
-    }
+	private shouldRun() {
+		const fixedRecords = this.dataset.fixedList;
+		const lastTimestamp = fixedRecords[fixedRecords.length - 1].timestamp.valueOf();
+		if (lastTimestamp === this.lastProcessedTimestamp) {
+			return false;
+		}
 
-    this.lastProcessedTimestamp = lastTimestamp;
-    return true;
-  }
+		this.lastProcessedTimestamp = lastTimestamp;
+		return true;
+	}
 
-  private getIndicators() {
-    const { fixedList } = this.dataset;
-    const values = fixedList.map(record => record.average.close);
+	private getIndicators() {
+		const { fixedList } = this.dataset;
+		const values = fixedList.map(record => record.average.close);
 
-    const rsi = last(RSI.calculate({ values, period: 14 }));
-    const bb = last(BollingerBands.calculate({ values, period: 21, stdDev: 2 }));
-    const candle = last(fixedList);
+		const rsi = last(RSI.calculate({ values, period: 14 }));
+		const bb = last(BollingerBands.calculate({ values, period: 21, stdDev: 2 }));
+		const candle = last(fixedList);
 
-    return { rsi, bb, candle };
-  }
+		return { rsi, bb, candle };
+	}
 
-  private async takePosition(direction: DealDirection, bb: BollingerBandsOutput) {
-    // convert risk value to contract size
-    const STOP_LOSS_DISTANCE = 5;
-    const size = this.computePositionSize(this.instrument, STOP_LOSS_DISTANCE);
-    this.position = await this.broker.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
-    this.changeStatusTakingPosition();
+	private async takePosition(direction: DealDirection, bb: BollingerBandsOutput) {
+		// convert risk value to contract size
+		const STOP_LOSS_DISTANCE = 5;
+		const size = this.computePositionSize(this.instrument, STOP_LOSS_DISTANCE);
+		this.position = await this.broker.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
+		this.changeStatusTakingPosition();
 
-    this.position.on('close', () => {
-      const position = this.position;
-      this.position = null;
+		// wait for market stable before taking position again
+		this.waitingMarketStable = true;
 
-      this.fireAsync(async () => {
-        const summary = await this.broker.getPositionSummary(position);
-        logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
+		this.position.on('close', () => {
+			const position = this.position;
+			this.position = null;
 
-        this.positionSummary(summary);
-        this.changeStatusMarketLookup();
-      });
-    });
-  }
+			this.fireAsync(async () => {
+				const summary = await this.broker.getPositionSummary(position);
+				logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
 
-  private async analyze() {
+				this.positionSummary(summary);
 
-    const { rsi, bb, candle } = this.getIndicators();
+				if (this.waitingMarketStable) {
+					this.changeStatus('Attente de retour à la stabilité du marché');
+				} else {
+					this.changeStatusMarketLookup();
+				}
+			});
+		});
+	}
 
-    if (this.position) {
-      this.changeStatusTakingPosition();
-      
-      // move takeprofit regarding bb
-      await this.position.updateTakeProfit(bb.middle);
-      return;
-    }
+	private async analyze() {
+		const { rsi, bb, candle } = this.getIndicators();
 
-    this.changeStatusMarketLookup();
+		if (this.position) {
+			this.changeStatusTakingPosition();
 
-    // see if we can take position
-    if (rsi > 70 && candle.average.close > bb.upper) {
-      logger.info(`(${this.configuration.name}) Sell (rsi=${rsi}, average candle close=${candle.average.close}, bb upper=${bb.upper})`);
-      await this.takePosition(DealDirection.SELL, bb);
-    }
+			// move takeprofit regarding bb
+			await this.position.updateTakeProfit(bb.middle);
+			return;
+		}
 
-    if (rsi < 30 && candle.average.close < bb.lower) {
-      logger.info(`(${this.configuration.name}) Buy (rsi=${rsi}, average candle close=${candle.average.close}, bb lower=${bb.lower})`);
-      await this.takePosition(DealDirection.BUY, bb);
-    }
-  }
+		// see if we can take position
+		if (rsi > 70 && candle.average.close > bb.upper) {
+			if (this.waitingMarketStable) {
+				return;
+			}
+
+			logger.info(`(${this.configuration.name}) Sell (rsi=${rsi}, average candle close=${candle.average.close}, bb upper=${bb.upper})`);
+			await this.takePosition(DealDirection.SELL, bb);
+			return;
+		}
+
+		if (rsi < 30 && candle.average.close < bb.lower) {
+			if (this.waitingMarketStable) {
+				return;
+			}
+
+			logger.info(`(${this.configuration.name}) Buy (rsi=${rsi}, average candle close=${candle.average.close}, bb lower=${bb.lower})`);
+			await this.takePosition(DealDirection.BUY, bb);
+			return;
+		}
+
+		// market is back to stable
+		this.waitingMarketStable = false;
+		this.changeStatusMarketLookup();
+	}
 }
