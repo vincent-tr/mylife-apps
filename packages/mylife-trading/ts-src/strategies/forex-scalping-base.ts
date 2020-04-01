@@ -1,6 +1,7 @@
 import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
 import { Credentials, Broker, InstrumentDetails } from '../broker';
+import { fireAsync } from '../utils';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-base');
 
@@ -10,14 +11,14 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 	private timer: NodeJS.Timer;
 
 	private _broker: Broker;
-	private _instrument: InstrumentDetails;
+	private _instrument: AutoRefreshInstrument;
 
 	protected get broker() {
 		return this._broker;
 	}
 
 	protected get instrument() {
-		return this._instrument;
+		return this._instrument.instrument;
 	}
 
 	protected abstract open(): Promise<void>;
@@ -61,8 +62,8 @@ export default abstract class ForexScalpingBase extends StrategyBase {
     	this._broker = new Broker();
 			await this.broker.init(this.credentials);
 			
-			const market = await this.broker.getEpic(this.configuration.epic);
-			this._instrument = market.instrument;
+			this._instrument = new AutoRefreshInstrument(this._broker, this.configuration.epic);
+			await this._instrument.init();
 	
 			await this.open();
 		} catch (err) {
@@ -78,6 +79,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 
 			await this.terminateImpl();
 
+			this._instrument.terminate();
 			this._instrument = null;
 	
 			if (this.broker) {
@@ -120,4 +122,33 @@ function isOpen(): boolean {
 	}
 
 	return OPEN_DAYS.has(day);
+}
+
+const INSTRUMENT_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 mins
+
+class AutoRefreshInstrument {
+	private _instrument: InstrumentDetails;
+	private timer: NodeJS.Timer;
+
+	public get instrument() {
+		return this._instrument;
+	}
+
+	constructor(private readonly broker: Broker, private readonly epic: string) {
+	}
+
+	async init() {
+		await this.refresh();
+
+		this.timer = setInterval(() => fireAsync(()=>this.refresh()), INSTRUMENT_REFRESH_INTERVAL);
+	}
+
+	terminate() {
+		clearInterval(this.timer);
+	}
+
+	private async refresh() {
+		const market = await this.broker.getEpic(this.epic);
+		this._instrument = market.instrument;
+	}
 }
