@@ -4,7 +4,7 @@ import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position from './position';
 import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './ig/dealing';
 import { MarketDetails, InstrumentDetails } from './ig/market';
-import { ConfirmationError } from './confirmation';
+import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp, parseDate, parseISODate } from './parsing';
 import { Connection, connectionOpen, connectionClose } from './connection';
 
@@ -118,8 +118,9 @@ export class Broker {
       timeInForce: TimeInForce.FILL_OR_KILL,
     };
 
+    const confirmationListener = ConfirmationListener.fromConnection(this.connection);
     const dealReference = await this.connection.client.dealing.openPosition(order);
-    const confirmation = await this.connection.client.dealing.confirm(dealReference);
+    const confirmation = await confirmationListener.wait(dealReference);
 
     if(confirmation.dealStatus == DealStatus.REJECTED) {
       throw new ConfirmationError(confirmation.reason);

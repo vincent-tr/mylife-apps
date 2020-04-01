@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { StreamSubscription } from './ig/stream';
 import Client from './ig/client';
 import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './ig/dealing';
-import { ConfirmationError } from './confirmation';
+import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp } from './parsing';
 
 const logger = createLogger('mylife:trading:broker:position');
@@ -89,8 +89,9 @@ class Position extends EventEmitter {
       order.limitLevel = this._takeProfit;
     }
 
+    const confirmationListener = ConfirmationListener.fromSubscription(this.subscription);
     const dealReference = await this.client.dealing.updatePosition(this.dealId, order);
-    const confirmation = await this.client.dealing.confirm(dealReference);
+    const confirmation = await confirmationListener.wait(dealReference);
 
     if (confirmation.dealStatus == DealStatus.REJECTED) {
       throw new ConfirmationError(confirmation.reason);

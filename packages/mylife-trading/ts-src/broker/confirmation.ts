@@ -1,4 +1,75 @@
-import { ConfirmReason } from './ig/dealing';
+import { ConfirmReason, DealConfirmation } from './ig/dealing';
+import { Connection } from './connection';
+import { StreamSubscription } from './ig/stream';
+
+export class ConfirmationListener {
+  private readonly listener: (data: any) => void = (data) => this.onUpdate(data);
+  // before call wait, we keep all confirmations
+  private readonly previousConfirmations = new Map<string, DealConfirmation>();
+  private onConfirmation: (confirmation: DealConfirmation) => void;
+
+  static fromConnection(connection: Connection) : ConfirmationListener {
+    const subscription = connection.refTradeSubscription();
+    return new ConfirmationListener(connection, subscription);
+  }
+
+  static fromSubscription(subscription: StreamSubscription) : ConfirmationListener {
+    return new ConfirmationListener(null, subscription);
+  }
+
+  private constructor(private readonly connection: Connection, private readonly subscription: StreamSubscription) {
+    this.subscription.on('update', this.listener);
+
+    // will be overriden when waiting
+    this.onConfirmation = (confirmation: DealConfirmation) => this.previousConfirmations.set(confirmation.dealReference, confirmation);
+  }
+
+  private onUpdate(data: any) {
+    const confirmation = data.CONFIRMS as DealConfirmation;
+    if (!confirmation) {
+      return;
+    }
+
+    this.onConfirmation(confirmation);
+  }
+
+  private cleanup() {
+    this.subscription.removeListener('update', this.listener);
+    // if we created the subscription
+    if(this.connection) {
+      this.connection.unrefTradeSubscription();
+    }
+  }
+
+  async wait(dealReference: string, timeout = 3000) {
+    // did we get it already?
+    const previous = this.previousConfirmations.get(dealReference);
+    if (previous) {
+      this.cleanup();
+      return previous;
+    }
+
+    // wait for it
+    return new Promise<DealConfirmation>((resolve, reject) => {
+      const onTimeout = () => {
+        this.cleanup();
+        reject(new Error('Timeout while waiting for confirmation'));
+      };
+
+      const timer = setTimeout(onTimeout, timeout);
+
+      this.onConfirmation = (confirmation: DealConfirmation) => {
+        if (confirmation.dealReference !== dealReference) {
+          return;
+        }
+
+        clearTimeout(timer);
+        this.cleanup();
+        resolve(confirmation);
+      };
+    });
+  }
+}
 
 export class ConfirmationError extends Error {
   readonly description: string;
