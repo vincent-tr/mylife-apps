@@ -10,12 +10,6 @@ import { Connection, connectionOpen, connectionClose } from './connection';
 
 const logger = createLogger('mylife:trading:broker');
 
-/*
-TODO stats:
- - ajouter la duree
- - ajouter l ecart entre ouverture/fermeture
-*/
-
 export { MovingDataset };
 export * from './moving-dataset';
 export { Position };

@@ -3,6 +3,12 @@
 import { React, PropTypes, useSelector, mui, formatDate, useScreenSize } from 'mylife-tools-ui';
 import { geStatsView } from '../selectors';
 
+/*
+TODO stats:
+ - ajouter la duree
+ - ajouter l ecart entre ouverture/fermeture
+*/
+
 const useConnect = () => useSelector(state => ({
   stats: geStatsView(state),
 }));
