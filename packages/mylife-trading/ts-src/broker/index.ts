@@ -1,7 +1,7 @@
 import { createLogger } from 'mylife-tools-server';
 import { PriceResolution } from './ig/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
-import Position from './position';
+import Position, { PositionOrder } from './position';
 import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './ig/dealing';
 import { MarketDetails, InstrumentDetails } from './ig/market';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
@@ -9,6 +9,12 @@ import { parseTimestamp, parseDate, parseISODate } from './parsing';
 import { Connection, connectionOpen, connectionClose } from './connection';
 
 const logger = createLogger('mylife:trading:broker');
+
+/*
+TODO stats:
+ - ajouter la duree
+ - ajouter l ecart entre ouverture/fermeture
+*/
 
 export { MovingDataset };
 export * from './moving-dataset';
@@ -57,6 +63,7 @@ export interface PositionSummary {
   size: number;
   profitAndLoss: number;
   currency: string;
+  orders: PositionOrder[];
 }
 
 export class Broker {
@@ -122,7 +129,7 @@ export class Broker {
     const dealReference = await this.connection.client.dealing.openPosition(order);
     const confirmation = await confirmationListener.wait(dealReference);
 
-    if(confirmation.dealStatus == DealStatus.REJECTED) {
+    if (confirmation.dealStatus == DealStatus.REJECTED) {
       throw new ConfirmationError(confirmation.reason);
     }
 
@@ -140,7 +147,7 @@ export class Broker {
     const ref = position.dealId.substr(7);
 
     const transaction = history.transactions.find(transaction => ref === transaction.reference);
-    if(!transaction) {
+    if (!transaction) {
       throw new Error(`Transaction not found in history for position with dealId='${position.dealId}'`);
     }
 
@@ -150,13 +157,14 @@ export class Broker {
     return {
       epic: position.epic,
       dealId: position.dealId,
+      orders: position.orders,
       openDate: parseISODate(transaction.openDateUtc),
       closeDate: parseISODate(transaction.dateUtc),
       openLevel: parseFloat(transaction.openLevel),
       closeLevel: parseFloat(transaction.closeLevel),
       size: parseFloat(transaction.size),
       profitAndLoss: parseFloat(profitAndLoss),
-      currency: transaction.currency
+      currency: transaction.currency,
     };
   }
 }

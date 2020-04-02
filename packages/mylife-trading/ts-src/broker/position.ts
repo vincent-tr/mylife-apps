@@ -8,6 +8,19 @@ import { parseTimestamp } from './parsing';
 
 const logger = createLogger('mylife:trading:broker:position');
 
+export enum PositionOrderType {
+  OPEN = 'open',
+  UPDATE = 'update',
+  CLOSE = 'close'
+}
+
+export interface PositionOrder {
+  date: Date,
+  type: PositionOrderType,
+  takeProfit?: number,
+  stopLoss?: number
+};
+
 declare interface Position {
   on(event: 'error', listener: (err: Error) => void): this;
   on(event: 'update', listener: () => void): this;
@@ -20,6 +33,7 @@ class Position extends EventEmitter {
   public readonly direction: DealDirection;
   public readonly epic: string;
 
+  private readonly _orders: PositionOrder[] = [];
   private _stopLoss: number;
   private _takeProfit: number;
   private _lastUpdateDate: Date;
@@ -38,15 +52,22 @@ class Position extends EventEmitter {
     this.direction = confirmation.direction;
     this.epic = confirmation.epic;
 
-    this.readConfirmation(confirmation);
+    this.readConfirmation(confirmation, PositionOrderType.OPEN);
 
     logger.debug(`Created: '${JSON.stringify(this)}'`);
   }
 
-  private readConfirmation(confirmation: DealConfirmation) {
+  private readConfirmation(confirmation: DealConfirmation, type: PositionOrderType) {
     this._stopLoss = confirmation.stopLevel;
     this._takeProfit = confirmation.limitLevel;
     this._lastUpdateDate = parseTimestamp(confirmation.date);
+
+    this._orders.push({
+      date: this._lastUpdateDate,
+      type,
+      takeProfit: this._takeProfit,
+      stopLoss: this._stopLoss
+    });
   }
 
   public get stopLoss() {
@@ -59,6 +80,10 @@ class Position extends EventEmitter {
 
   public get lastUpdateDate() {
     return this._lastUpdateDate;
+  }
+
+  public get orders() {
+    return this._orders;
   }
 
   toJSON() {
@@ -97,11 +122,16 @@ class Position extends EventEmitter {
       throw new ConfirmationError(confirmation.reason);
     }
 
-    this.readConfirmation(confirmation);
+    this.readConfirmation(confirmation, PositionOrderType.UPDATE);
   }
 
   async close() {
     await this.client.dealing.closePosition(this.dealId);
+
+    this._orders.push({
+      date: new Date(),
+      type: PositionOrderType.CLOSE,
+    });
   }
 
   private onError(err: Error) {

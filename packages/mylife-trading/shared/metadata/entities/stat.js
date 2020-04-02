@@ -18,6 +18,7 @@ module.exports = {
     { id: 'size', name: 'Nombre de contrats', datatype: 'amount', constraints: ['not-null'] },
     { id: 'profitAndLoss', name: 'Profit et perte', datatype: 'amount', constraints: ['not-null'] },
     { id: 'currency', name: 'Devise', datatype: 'name', constraints: ['not-null'] },
+    { id: 'orders', name: 'Ordres sur la position', datatype: 'list:stat-position-order', constraints: ['not-null'], initial: [] },
   ],
   display: obj => obj.display
 };
