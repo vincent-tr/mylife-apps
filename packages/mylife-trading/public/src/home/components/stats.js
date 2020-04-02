@@ -2,12 +2,9 @@
 
 import { React, PropTypes, useSelector, mui, formatDate, useScreenSize } from 'mylife-tools-ui';
 import { geStatsView } from '../selectors';
+import humanizeDuration from 'humanize-duration';
 
-/*
-TODO stats:
- - ajouter la duree
- - ajouter l ecart entre ouverture/fermeture
-*/
+// TODO: ajouter une fenetre de detail avec les ordres + le detail (surtout sur mobile)
 
 const useConnect = () => useSelector(state => ({
   stats: geStatsView(state),
@@ -39,33 +36,42 @@ const Stats = ({ strategy }) => {
 
   const currencyTotal = stats[0].currency;
   const profitTotal = Math.round(stats.reduce((acc, stat) => (acc + stat.profitAndLoss), 0) * 100) / 100;
-  const profitClass = profitAndLoss => (profitAndLoss > 0 ? classes.profit : classes.loss);
+  const valueClass = value => (value > 0 ? classes.profit : classes.loss);
 
-  const normalLayout = (
+  const largeLayout = (
     <mui.Table size='small'>
       <mui.TableHead>
         <mui.TableRow>
           <mui.TableCell>{'Date d\'ouverture'}</mui.TableCell>
           <mui.TableCell>{'Date de fermeture'}</mui.TableCell>
+          <mui.TableCell>{'Durée'}</mui.TableCell>
           <mui.TableCell>{'Niveau à l\'ouverture'}</mui.TableCell>
           <mui.TableCell>{'Niveau à la fermeture'}</mui.TableCell>
+          <mui.TableCell>{'Ecart'}</mui.TableCell>
           <mui.TableCell>{'Direction'}</mui.TableCell>
           <mui.TableCell>{'Taille'}</mui.TableCell>
           <mui.TableCell>{'Profit/perte'}</mui.TableCell>
         </mui.TableRow>
       </mui.TableHead>
       <mui.TableBody>
-        {stats.map((stat) => (
-          <mui.TableRow key={stat._id}>
-            <mui.TableCell>{formatDate(stat.openDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
-            <mui.TableCell>{formatDate(stat.closeDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
-            <mui.TableCell>{stat.openLevel}</mui.TableCell>
-            <mui.TableCell>{stat.closeLevel}</mui.TableCell>
-            <mui.TableCell>{stat.size > 0 ? 'Achat' : 'Vente'}</mui.TableCell>
-            <mui.TableCell>{Math.abs(stat.size)}</mui.TableCell>
-            <mui.TableCell className={profitClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
-          </mui.TableRow>
-        ))}
+        {stats.map((stat) => {
+          const dateDiff = humanizeDuration(stat.closeDate - stat.openDate, { language: 'fr' });
+          const levelDiff = stat.closeLevel - stat.openLevel;
+
+          return (
+            <mui.TableRow key={stat._id}>
+              <mui.TableCell>{formatDate(stat.openDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
+              <mui.TableCell>{formatDate(stat.closeDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
+              <mui.TableCell>{dateDiff}</mui.TableCell>
+              <mui.TableCell>{stat.openLevel.toFixed(5)}</mui.TableCell>
+              <mui.TableCell>{stat.closeLevel.toFixed(5)}</mui.TableCell>
+              <mui.TableCell className={valueClass(levelDiff)}>{levelDiff.toFixed(5)}</mui.TableCell>
+              <mui.TableCell>{stat.size > 0 ? 'Achat' : 'Vente'}</mui.TableCell>
+              <mui.TableCell>{Math.abs(stat.size)}</mui.TableCell>
+              <mui.TableCell className={valueClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
+            </mui.TableRow>
+          );
+        })}
       </mui.TableBody>
       <mui.TableFooter>
         <mui.TableRow>
@@ -75,7 +81,9 @@ const Stats = ({ strategy }) => {
           <mui.TableCell/>
           <mui.TableCell/>
           <mui.TableCell/>
-          <mui.TableCell className={profitClass(profitTotal)}>{profitTotal}&nbsp;{currencyTotal}</mui.TableCell>
+          <mui.TableCell/>
+          <mui.TableCell/>
+          <mui.TableCell className={valueClass(profitTotal)}>{profitTotal}&nbsp;{currencyTotal}</mui.TableCell>
         </mui.TableRow>
       </mui.TableFooter>
     </mui.Table>
@@ -98,10 +106,10 @@ const Stats = ({ strategy }) => {
           <mui.TableRow key={stat._id}>
             <mui.TableCell>{formatDate(stat.openDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
             <mui.TableCell>{formatDate(stat.closeDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
-            <mui.TableCell>{stat.openLevel}</mui.TableCell>
-            <mui.TableCell>{stat.closeLevel}</mui.TableCell>
+            <mui.TableCell>{stat.openLevel.toFixed(5)}</mui.TableCell>
+            <mui.TableCell>{stat.closeLevel.toFixed(5)}</mui.TableCell>
             <mui.TableCell>{stat.size > 0 ? 'Achat' : 'Vente'}</mui.TableCell>
-            <mui.TableCell className={profitClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
+            <mui.TableCell className={valueClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
           </mui.TableRow>
         ))}
       </mui.TableBody>
@@ -112,7 +120,7 @@ const Stats = ({ strategy }) => {
           <mui.TableCell/>
           <mui.TableCell/>
           <mui.TableCell/>
-          <mui.TableCell className={profitClass(profitTotal)}>{profitTotal}&nbsp;{currencyTotal}</mui.TableCell>
+          <mui.TableCell className={valueClass(profitTotal)}>{profitTotal}&nbsp;{currencyTotal}</mui.TableCell>
         </mui.TableRow>
       </mui.TableFooter>
     </mui.Table>
@@ -130,14 +138,14 @@ const Stats = ({ strategy }) => {
         {stats.map((stat) => (
           <mui.TableRow key={stat._id}>
             <mui.TableCell>{formatDate(stat.openDate, 'dd/MM/yyyy HH:mm:ss')}</mui.TableCell>
-            <mui.TableCell className={profitClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
+            <mui.TableCell className={valueClass(stat.profitAndLoss)}>{stat.profitAndLoss}&nbsp;{stat.currency}</mui.TableCell>
           </mui.TableRow>
         ))}
       </mui.TableBody>
       <mui.TableFooter>
         <mui.TableRow>
           <mui.TableCell>Total</mui.TableCell>
-          <mui.TableCell className={profitClass(profitTotal)}>{profitTotal}&nbsp;{currencyTotal}</mui.TableCell>
+          <mui.TableCell className={valueClass(profitTotal)}>{profitTotal}&nbsp;{currencyTotal}</mui.TableCell>
         </mui.TableRow>
       </mui.TableFooter>
     </mui.Table>
@@ -152,7 +160,7 @@ const Stats = ({ strategy }) => {
 
     case 'laptop':
     case 'wide':
-      return normalLayout;
+      return largeLayout;
   }
 
 };
