@@ -156,6 +156,7 @@ class TradingServiceBinder {
       size: summary.size,
       profitAndLoss: summary.profitAndLoss,
       currency: summary.currency,
+      orders: summary.orders
     };
 
     const entity = getMetadataEntity('stat');
