@@ -3,7 +3,7 @@ import Client from './api/client';
 import { StreamSubscription } from './api/stream';
 import { Mutex } from 'async-mutex';
 
-const logger = createLogger('mylife:trading:broker:connection');
+const logger = createLogger('mylife:trading:broker:ig:connection');
 
 export interface Credentials {
   key: string;
