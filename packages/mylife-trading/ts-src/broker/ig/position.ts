@@ -6,7 +6,7 @@ import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenP
 import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp } from './parsing';
 
-const logger = createLogger('mylife:trading:broker:position');
+const logger = createLogger('mylife:trading:broker:position:ig');
 
 export enum PositionOrderType {
   OPEN = 'open',

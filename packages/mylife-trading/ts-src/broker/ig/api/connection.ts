@@ -9,7 +9,7 @@ import { ClientAccountInformation } from './account';
 const REAL_API = 'https://api.ig.com/gateway/deal/';
 const DEMO_API = 'https://demo-api.ig.com/gateway/deal/';
 
-const logger = createLogger('mylife:trading:broker:ig:connection');
+const logger = createLogger('mylife:trading:broker:ig:api:connection');
 
 /**
  * The encryption key to use in order to send the user password in an encrypted form

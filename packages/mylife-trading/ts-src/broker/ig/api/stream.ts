@@ -10,7 +10,7 @@ import { createLogger } from 'mylife-tools-server';
 // prov.addLoggerAppender(new ConsoleAppender('DEBUG', null));
 // LightstreamerClient.setLoggerProvider(prov);
 
-const logger = createLogger('mylife:trading:broker:ig:stream');
+const logger = createLogger('mylife:trading:broker:ig:api:stream');
 
 export declare interface StreamSubscription {
   on(event: 'subscribed', listener: () => void): this;

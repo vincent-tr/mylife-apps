@@ -8,7 +8,7 @@ import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp, parseDate, parseISODate } from './parsing';
 import { Connection, connectionOpen, connectionClose } from './connection';
 
-const logger = createLogger('mylife:trading:broker');
+const logger = createLogger('mylife:trading:broker:ig');
 
 export { MovingDataset };
 export * from './moving-dataset';
