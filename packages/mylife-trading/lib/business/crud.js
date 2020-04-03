@@ -74,6 +74,12 @@ exports.strategyCreate = (values) => {
 };
 
 exports.strategyDelete = strategy => {
+  const stats = getStoreCollection('stats');
+  const usage = stats.filter(stat => stat.strategy === strategy._id);
+  if (usage.length) {
+    throw new Error('Impossible de supprimer la stratégie car elle a des statistiques associées');
+  }
+
   logger.info(`Deleting strategy '${strategy._id}'`);
 
   const collection = getStoreCollection('strategies');
