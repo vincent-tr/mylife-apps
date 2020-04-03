@@ -24,3 +24,5 @@ export function round(value: number, decimalCount: number) {
 export function fireAsync<T>(target: () => Promise<T>) {
   target().catch(err => logger.error(`Unhandled promise rejection: ${err.stack}`));
 }
+
+export const PIP = 0.0001;

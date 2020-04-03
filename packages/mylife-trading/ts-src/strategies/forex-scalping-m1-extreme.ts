@@ -1,7 +1,7 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import { Resolution, MovingDataset, DealDirection, Position } from '../broker';
-import { last, round } from '../utils';
+import { Resolution, MovingDataset, DealDirection, Position, Record } from '../broker';
+import { last, round, PIP } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ForexScalpingBase from './forex-scalping-base';
 
@@ -96,6 +96,7 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 
 	private async analyze() {
 		const { rsi, bb, candle } = this.getIndicators();
+		const level = candle.average.close;
 
 		if (this.position) {
 			this.changeStatusTakingPosition();
@@ -106,22 +107,22 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 		}
 
 		// see if we can take position
-		if (rsi > 70 && candle.average.close > bb.upper) {
+		if (this.canSell(rsi, bb, level)) {
 			if (this.waitingMarketStable) {
 				return;
 			}
 
-			logger.info(`(${this.configuration.name}) Sell (rsi=${rsi}, average candle close=${candle.average.close}, bb upper=${bb.upper})`);
+			logger.info(`(${this.configuration.name}) Sell (rsi=${rsi}, average candle close=${level}, bb upper=${bb.upper})`);
 			await this.takePosition(DealDirection.SELL, bb);
 			return;
 		}
 
-		if (rsi < 30 && candle.average.close < bb.lower) {
+		if (this.canBuy(rsi, bb, level)) {
 			if (this.waitingMarketStable) {
 				return;
 			}
 
-			logger.info(`(${this.configuration.name}) Buy (rsi=${rsi}, average candle close=${candle.average.close}, bb lower=${bb.lower})`);
+			logger.info(`(${this.configuration.name}) Buy (rsi=${rsi}, average candle close=${level}, bb lower=${bb.lower})`);
 			await this.takePosition(DealDirection.BUY, bb);
 			return;
 		}
@@ -129,5 +130,18 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 		// market is back to stable
 		this.waitingMarketStable = false;
 		this.changeStatusMarketLookup();
+	}
+
+	private canSell(rsi: number, bb: BollingerBandsOutput, level: number) {
+		return this.isDiffEnough(bb, level) && rsi > 70 && level > bb.upper;
+	}
+
+	private canBuy(rsi: number, bb: BollingerBandsOutput, level: number) {
+		return this.isDiffEnough(bb, level) && rsi < 30 && level < bb.lower;
+	}
+
+	// do not take position if takeprofit is too close (less than 5 pips)
+	private isDiffEnough(bb: BollingerBandsOutput, level: number) {
+		return Math.abs(level - bb.middle) >= 5 * PIP;
 	}
 }
