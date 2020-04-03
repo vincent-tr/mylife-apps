@@ -1,17 +1,18 @@
 import { createLogger } from 'mylife-tools-server';
 
 import { PriceResolution } from './api/market';
-import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './api/dealing';
-import { MarketDetails, InstrumentDetails } from './api/market';
+import { OpenPositionOrder, OrderType, TimeInForce, DealStatus } from './api/dealing';
 
-import IgPosition from './position';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp, parseDate, parseISODate, serializeDirection } from './parsing';
 import { Connection, connectionOpen, connectionClose } from './connection';
+import IgPosition from './position';
+import IgInstrument from './instrument';
 
 import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound } from '../broker';
 import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
+import Instrument from '../instrument';
 
 const logger = createLogger('mylife:trading:broker:ig');
 
@@ -40,7 +41,8 @@ export class IgBroker implements Broker {
   }
 
   async getEpic(epic: string) {
-    return await this.connection.client.market.getMarket(epic);
+    const market = await this.connection.client.market.getMarket(epic);
+    return new IgInstrument(market.instrument);
   }
 
   async getDataset(epic: string, resolution: Resolution, size: number): Promise<MovingDataset> {
@@ -71,11 +73,12 @@ export class IgBroker implements Broker {
     return dataset;
   }
 
-  async openPosition(instrument: InstrumentDetails, direction: PositionDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
+  async openPosition(instrument: Instrument, direction: PositionDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
+    const igInstrument = instrument as IgInstrument;
     const order: OpenPositionOrder = {
-      epic: instrument.epic,
-      expiry: instrument.expiry,
-      currencyCode: instrument.currencies[0].code,
+      epic: igInstrument.epic,
+      expiry: igInstrument.expiry,
+      currencyCode: igInstrument.currencyCode,
       direction: serializeDirection(direction), 
       dealReference: randomString(),
       limitLevel: takeProfit.level, limitDistance: takeProfit.distance,

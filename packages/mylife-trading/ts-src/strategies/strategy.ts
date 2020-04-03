@@ -1,4 +1,4 @@
-import { Credentials, PositionSummary } from '../broker/ig';
+import { Credentials, PositionSummary } from '../broker';
 
 export interface Configuration {
   name: string;

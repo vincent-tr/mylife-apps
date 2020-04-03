@@ -1,7 +1,14 @@
 import { Broker } from './broker';
 import { IgBroker } from './ig';
 
-export { Broker };
+export * from './broker';
+export * from './instrument';
+export * from './moving-dataset';
+export * from './position';
+
+export { default as MovingDataset} from './moving-dataset';
+export { default as Instrument} from './instrument';
+export { default as Position} from './position';
 
 type BrokerClass = { new(): Broker; };
 

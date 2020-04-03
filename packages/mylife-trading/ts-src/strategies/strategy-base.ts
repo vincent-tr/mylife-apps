@@ -1,7 +1,7 @@
 import { createLogger } from 'mylife-tools-server';
 import Strategy, { Configuration, Listeners } from './strategy';
-import { Credentials, InstrumentDetails, PositionSummary } from '../broker/ig';
 import { round } from '../utils';
+import { Instrument, Credentials, PositionSummary } from '../broker';
 
 const logger = createLogger('mylife:trading:strategy:strategy-base');
 
@@ -74,10 +74,10 @@ export default abstract class StrategyBase implements Strategy {
 		this.changeStatus('Surveillance du marché');
 	}
 
-	protected computePositionSize(instrument: InstrumentDetails, stopLossDistance: number) {
+	protected computePositionSize(instrument: Instrument, stopLossDistance: number) {
 		const riskValue = this.configuration.risk;
-		const valueOfOnePip = parseFloat(instrument.valueOfOnePip);
-		const exchangeRate = instrument.currencies[0].baseExchangeRate;
+		const valueOfOnePip = instrument.valueOfOnePip;
+		const exchangeRate = instrument.exchangeRate;
 		const valueOfOnePipAccountCurrency = valueOfOnePip / exchangeRate; // convert pip value from market target currency to account currency
 
 		const size = riskValue / (valueOfOnePipAccountCurrency * stopLossDistance);

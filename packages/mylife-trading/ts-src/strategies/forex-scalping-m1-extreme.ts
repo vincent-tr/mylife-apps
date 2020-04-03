@@ -1,6 +1,6 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import { Resolution, MovingDataset, DealDirection, Position, Record } from '../broker/ig';
+import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
 import { last, round } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ForexScalpingBase from './forex-scalping-base';
@@ -67,7 +67,7 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 		return { rsi, bb, candle };
 	}
 
-	private async takePosition(direction: DealDirection, bb: BollingerBandsOutput) {
+	private async takePosition(direction: PositionDirection, bb: BollingerBandsOutput) {
 		// convert risk value to contract size
 		const STOP_LOSS_DISTANCE = 5;
 		const size = this.computePositionSize(this.instrument, STOP_LOSS_DISTANCE);
@@ -115,7 +115,7 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 			}
 
 			logger.info(`(${this.configuration.name}) Sell (rsi=${rsi}, average candle close=${level}, bb upper=${bb.upper})`);
-			await this.takePosition(DealDirection.SELL, bb);
+			await this.takePosition(PositionDirection.SELL, bb);
 			return;
 		}
 
@@ -125,7 +125,7 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 			}
 
 			logger.info(`(${this.configuration.name}) Buy (rsi=${rsi}, average candle close=${level}, bb lower=${bb.lower})`);
-			await this.takePosition(DealDirection.BUY, bb);
+			await this.takePosition(PositionDirection.BUY, bb);
 			return;
 		}
 
@@ -144,6 +144,6 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 
 	// do not take position if takeprofit is too close (less than 5 pips)
 	private isDiffEnough(bb: BollingerBandsOutput, level: number) {
-		return Math.abs(level - bb.middle) >= 5 * this.instrument.valueOfOnPip;
+		return Math.abs(level - bb.middle) >= 5 * this.instrument.valueOfOnePip;
 	}
 }

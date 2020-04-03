@@ -1,5 +1,6 @@
 import MovingDataset from './moving-dataset';
 import Position, { PositionOrder, PositionDirection } from './position';
+import Instrument from './instrument';
 
 export interface Credentials {
   key: string;

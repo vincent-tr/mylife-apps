@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
-import { Credentials, Broker, InstrumentDetails } from '../broker/ig';
+import { Credentials, Broker, Instrument, createBroker } from '../broker';
 import { fireAsync } from '../utils';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-base');
@@ -59,7 +59,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 		try {
 			this.changeStatus('Initialisation');
 
-    	this._broker = new Broker();
+    	this._broker = createBroker('ig');
 			await this.broker.init(this.credentials);
 			
 			this._instrument = new AutoRefreshInstrument(this._broker, this.configuration.epic);
@@ -127,7 +127,7 @@ function isOpen(): boolean {
 const INSTRUMENT_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 mins
 
 class AutoRefreshInstrument {
-	private _instrument: InstrumentDetails;
+	private _instrument: Instrument;
 	private timer: NodeJS.Timer;
 
 	public get instrument() {
@@ -148,7 +148,6 @@ class AutoRefreshInstrument {
 	}
 
 	private async refresh() {
-		const market = await this.broker.getEpic(this.epic);
-		this._instrument = market.instrument;
+		this._instrument = await this.broker.getEpic(this.epic);
 	}
 }
