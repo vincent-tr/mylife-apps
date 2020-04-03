@@ -1,6 +1,6 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import { Resolution, MovingDataset, DealDirection, Position, Record } from '../broker';
+import { Resolution, MovingDataset, DealDirection, Position, Record } from '../broker/ig';
 import { last, round, PIP } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ForexScalpingBase from './forex-scalping-base';

@@ -1,6 +1,6 @@
 import { registerService } from 'mylife-tools-server';
 import { Strategy, Configuration, Listeners, createStrategy } from './strategies';
-import { Credentials, PositionSummary } from './broker';
+import { Credentials, PositionSummary } from './broker/ig';
 import { Mutex } from 'async-mutex';
 
 export class TradingService {

@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
-import { Credentials, Broker, InstrumentDetails } from '../broker';
+import { Credentials, Broker, InstrumentDetails } from '../broker/ig';
 import { fireAsync } from '../utils';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-base');

@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
 import Strategy, { Configuration, Listeners } from './strategy';
-import { Credentials, InstrumentDetails, PositionSummary } from '../broker';
+import { Credentials, InstrumentDetails, PositionSummary } from '../broker/ig';
 import { round } from '../utils';
 
 const logger = createLogger('mylife:trading:strategy:strategy-base');

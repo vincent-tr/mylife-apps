@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
-import Client from './ig/api/client';
-import { StreamSubscription } from './ig/api/stream';
+import Client from './api/client';
+import { StreamSubscription } from './api/stream';
 import { Mutex } from 'async-mutex';
 
 const logger = createLogger('mylife:trading:broker:connection');

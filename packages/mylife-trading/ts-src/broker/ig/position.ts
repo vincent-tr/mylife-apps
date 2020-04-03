@@ -1,8 +1,8 @@
 import { createLogger } from 'mylife-tools-server';
 import EventEmitter from 'events';
-import { StreamSubscription } from './ig/api/stream';
-import Client from './ig/api/client';
-import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './ig/api/dealing';
+import { StreamSubscription } from './api/stream';
+import Client from './api/client';
+import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './api/dealing';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp } from './parsing';
 
