@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 import { createLogger } from 'mylife-tools-server';
-import { last, average, round } from '../../utils';
+import { last, average, round } from '../utils';
 
 const logger = createLogger('mylife:trading:broker:moving-dataset');
 

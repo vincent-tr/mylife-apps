@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
 import { PriceResolution } from './api/market';
-import MovingDataset, { Record, CandleStickData } from './moving-dataset';
+import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionOrder } from './position';
 import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './api/dealing';
 import { MarketDetails, InstrumentDetails } from './api/market';
@@ -11,7 +11,7 @@ import { Connection, connectionOpen, connectionClose } from './connection';
 const logger = createLogger('mylife:trading:broker:ig');
 
 export { MovingDataset };
-export * from './moving-dataset';
+export * from '../moving-dataset';
 export { Position };
 export * from './position';
 
