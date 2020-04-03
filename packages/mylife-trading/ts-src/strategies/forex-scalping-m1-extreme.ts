@@ -1,7 +1,7 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import { Resolution, MovingDataset, DealDirection, Position, Record } from '../broker/ig';
-import { last, round, PIP } from '../utils';
+import { last, round } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ForexScalpingBase from './forex-scalping-base';
 
@@ -144,6 +144,6 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 
 	// do not take position if takeprofit is too close (less than 5 pips)
 	private isDiffEnough(bb: BollingerBandsOutput, level: number) {
-		return Math.abs(level - bb.middle) >= 5 * PIP;
+		return Math.abs(level - bb.middle) >= 5 * this.instrument.valueOfOnPip;
 	}
 }
