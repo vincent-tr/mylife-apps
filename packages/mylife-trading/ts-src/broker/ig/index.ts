@@ -1,34 +1,19 @@
 import { createLogger } from 'mylife-tools-server';
+
 import { PriceResolution } from './api/market';
-import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
-import Position, { PositionOrder } from './position';
 import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './api/dealing';
 import { MarketDetails, InstrumentDetails } from './api/market';
+
+import IgPosition from './position';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
-import { parseTimestamp, parseDate, parseISODate } from './parsing';
+import { parseTimestamp, parseDate, parseISODate, serializeDirection } from './parsing';
 import { Connection, connectionOpen, connectionClose } from './connection';
 
+import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound } from '../broker';
+import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
+import Position, { PositionDirection } from '../position';
+
 const logger = createLogger('mylife:trading:broker:ig');
-
-export { MovingDataset };
-export * from '../moving-dataset';
-export { Position };
-export * from './position';
-
-export { DealDirection, MarketDetails, InstrumentDetails };
-
-export interface Credentials {
-  key: string;
-  identifier: string;
-  password: string;
-  isDemo: boolean;
-}
-
-export enum Resolution {
-  MINUTE,
-  MINUTE_5,
-  HOUR
-}
 
 interface ResolutionData {
   readonly rest: PriceResolution;
@@ -42,25 +27,7 @@ resolutions.set(Resolution.HOUR, { rest: PriceResolution.HOUR, stream: 'HOUR' })
 
 const datasetSubscriptionFields = ['UTM', 'OFR_OPEN', 'OFR_HIGH', 'OFR_LOW', 'OFR_CLOSE', 'BID_OPEN', 'BID_HIGH', 'BID_LOW', 'BID_CLOSE'/*,'LTP_OPEN','LTP_HIGH','LTP_LOW','LTP_CLOSE'*/, 'CONS_END'];
 
-export interface OpenPositionBound {
-  level?: number,
-  distance?: number;
-}
-
-export interface PositionSummary {
-  epic: string;
-  dealId: string;
-  openDate: Date;
-  closeDate: Date;
-  openLevel: number;
-  closeLevel: number;
-  size: number;
-  profitAndLoss: number;
-  currency: string;
-  orders: PositionOrder[];
-}
-
-export class Broker {
+export class IgBroker implements Broker {
   private connection: Connection;
 
   async init(credentials: Credentials) {
@@ -104,12 +71,13 @@ export class Broker {
     return dataset;
   }
 
-  async openPosition(instrument: InstrumentDetails, direction: DealDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
+  async openPosition(instrument: InstrumentDetails, direction: PositionDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
     const order: OpenPositionOrder = {
       epic: instrument.epic,
       expiry: instrument.expiry,
       currencyCode: instrument.currencies[0].code,
-      direction, dealReference: randomString(),
+      direction: serializeDirection(direction), 
+      dealReference: randomString(),
       limitLevel: takeProfit.level, limitDistance: takeProfit.distance,
       stopLevel: stopLoss.level, stopDistance: stopLoss.distance,
       size,
@@ -127,7 +95,7 @@ export class Broker {
       throw new ConfirmationError(confirmation.reason);
     }
 
-    const position = new Position(this.connection.client, this.connection.refTradeSubscription(), confirmation);
+    const position = new IgPosition(this.connection.client, this.connection.refTradeSubscription(), confirmation);
     position.on('close', () => this.connection.unrefTradeSubscription());
 
     return position;

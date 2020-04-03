@@ -4,33 +4,15 @@ import { StreamSubscription } from './api/stream';
 import Client from './api/client';
 import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './api/dealing';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
-import { parseTimestamp } from './parsing';
+import { parseTimestamp, parseDirection } from './parsing';
+import Position, { PositionOrder, PositionOrderType, PositionDirection } from '../position';
 
 const logger = createLogger('mylife:trading:broker:position:ig');
 
-export enum PositionOrderType {
-  OPEN = 'open',
-  UPDATE = 'update',
-  CLOSE = 'close'
-}
-
-export interface PositionOrder {
-  date: Date,
-  type: PositionOrderType,
-  takeProfit?: number,
-  stopLoss?: number
-};
-
-declare interface Position {
-  on(event: 'error', listener: (err: Error) => void): this;
-  on(event: 'update', listener: () => void): this;
-  on(event: 'close', listener: () => void): this;
-}
-
-class Position extends EventEmitter {
+export default class IgPosition extends EventEmitter implements Position {
   public readonly dealReference: string;
   public readonly dealId: string;
-  public readonly direction: DealDirection;
+  public readonly direction: PositionDirection;
   public readonly epic: string;
 
   private readonly _orders: PositionOrder[] = [];
@@ -49,7 +31,7 @@ class Position extends EventEmitter {
 
     this.dealReference = confirmation.dealReference;
     this.dealId = confirmation.dealId;
-    this.direction = confirmation.direction;
+    this.direction = parseDirection(confirmation.direction);
     this.epic = confirmation.epic;
 
     this.readConfirmation(confirmation, PositionOrderType.OPEN);
@@ -178,5 +160,3 @@ class Position extends EventEmitter {
     this.emit('close');
   }
 }
-
-export default Position;
