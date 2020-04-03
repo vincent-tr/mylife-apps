@@ -1,6 +1,6 @@
-import { ConfirmReason, DealConfirmation } from './ig/dealing';
+import { ConfirmReason, DealConfirmation } from './ig/api/dealing';
 import { Connection } from './connection';
-import { StreamSubscription } from './ig/stream';
+import { StreamSubscription } from './ig/api/stream';
 
 export class ConfirmationListener {
   private readonly listener: (data: any) => void = (data) => this.onUpdate(data);

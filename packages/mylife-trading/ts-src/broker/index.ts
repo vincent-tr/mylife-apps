@@ -1,9 +1,9 @@
 import { createLogger } from 'mylife-tools-server';
-import { PriceResolution } from './ig/market';
+import { PriceResolution } from './ig/api/market';
 import MovingDataset, { Record, CandleStickData } from './moving-dataset';
 import Position, { PositionOrder } from './position';
-import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './ig/dealing';
-import { MarketDetails, InstrumentDetails } from './ig/market';
+import { OpenPositionOrder, DealDirection, OrderType, TimeInForce, DealStatus } from './ig/api/dealing';
+import { MarketDetails, InstrumentDetails } from './ig/api/market';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp, parseDate, parseISODate } from './parsing';
 import { Connection, connectionOpen, connectionClose } from './connection';
