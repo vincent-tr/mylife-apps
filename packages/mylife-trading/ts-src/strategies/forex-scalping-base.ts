@@ -1,21 +1,19 @@
 import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
-import { Credentials, Broker, Instrument, createBroker } from '../broker';
+import { Credentials, Broker, Instrument, createBroker, Market, MarketStatus } from '../broker';
 import { fireAsync } from '../utils';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-base');
 
 export default abstract class ForexScalpingBase extends StrategyBase {
 	private credentials: Credentials;
+
+	private broker: Broker;
+
+	private market: Market;
 	private opened: boolean;
-	private timer: NodeJS.Timer;
 
-	private _broker: Broker;
 	private _instrument: Instrument;
-
-	protected get broker() {
-		return this._broker;
-	}
 
 	protected get instrument() {
 		return this._instrument;
@@ -24,17 +22,31 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 	protected abstract open(): Promise<void>;
 	protected abstract close(): Promise<void>;
 
+	constructor() {
+		super();
+		this.broker = createBroker('ig');
+	}
+
+	async terminate() {
+		this.market.close();
+		await super.terminate();
+	}
+
 	protected async initImpl(credentials: Credentials) {
 		this.credentials = credentials;
-		this.timer = setInterval(() => this.onInterval(), 60 * 1000);
+		this.market = this.broker.getMarket('forex');
+		this.market.on('statusChanged', (status) => this.onMarketStatusChanged(status));
 
-		if (isOpen()) {
+		if (this.isMarketOpened()) {
 			await this.runOpen();
 		}
 	}
+	private isMarketOpened() {
+		return this.market.status === MarketStatus.OPENED;
+	}
 
-	private onInterval() {
-		if (isOpen() === this.opened) {
+	private onMarketStatusChanged(status: MarketStatus) {
+		if (this.isMarketOpened() === this.opened) {
 			return;
 		}
 
@@ -46,8 +58,8 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 	}
 
 	protected async terminateImpl() {
-		clearInterval(this.timer);
-		this.timer = null;
+		this.market.close();
+		this.market = null;
 
 		if (this.opened) {
 			await this.runClose();
@@ -59,11 +71,10 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 		try {
 			this.changeStatus('Initialisation');
 
-    	this._broker = createBroker('ig');
 			await this.broker.init(this.credentials);
-			
+
 			this._instrument = await this.broker.getInstrument(this.configuration.epic);
-	
+
 			await this.open();
 		} catch (err) {
 			logger.error(`(${this.configuration.name}) init error: ${err.stack}`);
@@ -80,11 +91,8 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 
 			this._instrument.close();
 			this._instrument = null;
-	
-			if (this.broker) {
-				await this.broker.terminate();
-				this._broker = null;
-			}
+
+			await this.broker.terminate();
 
 			logger.debug(`(${this.configuration.name}) terminate`);
 			this.changeStatus("En dehors des heures d'ouverture du marché");
@@ -93,32 +101,4 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 			this.fatal(err);
 		}
 	}
-}
-
-// https://admiralmarkets.com/fr/formation/articles/base-du-forex/horaire-bourse
-// Les horaire du forex sont de dimanche soir 23h heure de Paris à vendredi 22H heure de Paris
-
-// close 1 hour before, and open 1 hour later
-// Sunday - Saturday : 0 - 6
-
-const SUNDAY = 0;
-const MONDAY = 1;
-const TUESDAY = 2;
-const WEDNESDAY = 3;
-const THURSDAY = 4;
-const FRIDAY = 5;
-const SATURDAY = 6;
-
-const OPEN_DAYS = new Set([MONDAY, TUESDAY, WEDNESDAY, THURSDAY]);
-
-function isOpen(): boolean {
-	const now = new Date();
-	const day = now.getDay();
-
-	if (day === FRIDAY) {
-		// ok until 21h
-		return now.getHours() < 21;
-	}
-
-	return OPEN_DAYS.has(day);
 }
