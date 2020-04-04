@@ -13,6 +13,8 @@ import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound } f
 import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
+import Market from '../market';
+import IgMarket from './market';
 
 const logger = createLogger('mylife:trading:broker:ig');
 
@@ -30,6 +32,10 @@ const datasetSubscriptionFields = ['UTM', 'OFR_OPEN', 'OFR_HIGH', 'OFR_LOW', 'OF
 
 export class IgBroker implements Broker {
   private connection: Connection;
+
+  getMarket(market: string): Market {
+    return IgMarket.create(market);
+  }
 
   async init(credentials: Credentials) {
     this.connection = await connectionOpen(credentials);

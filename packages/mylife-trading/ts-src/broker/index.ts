@@ -1,5 +1,5 @@
 import { Broker } from './broker';
-import { IgBroker } from './ig';
+import { IgBroker } from './ig/broker';
 
 export * from './broker';
 export * from './instrument';
