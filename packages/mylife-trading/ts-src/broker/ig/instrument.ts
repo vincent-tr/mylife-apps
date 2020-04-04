@@ -1,18 +1,52 @@
+import EventEmitter from 'events';
 import Instrument from '../instrument';
-import { InstrumentDetails } from './api/market';
+import Client from './api/client';
+import { fireAsync } from '../../utils';
 
-export default class IgInstrument implements Instrument {
-  readonly epic: string;
-  readonly  expiry: string;
-  readonly valueOfOnePip: number;
-  readonly exchangeRate: number;
-  readonly currencyCode: string;
+const INSTRUMENT_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 mins
 
-  constructor(data: InstrumentDetails) {
-    this.epic = data.epic;
-    this.expiry = data.expiry
-    this.valueOfOnePip = parseFloat(data.valueOfOnePip);
-    this.exchangeRate = data.currencies[0].baseExchangeRate;
-    this.currencyCode = data.currencies[0].code;
-  }
+export default class IgInstrument extends EventEmitter implements Instrument {
+	private _expiry: string;
+	private _valueOfOnePip: number;
+	private _exchangeRate: number;
+	private _currencyCode: string;
+	private timer: NodeJS.Timer;
+
+	get expiry() {
+		return this._expiry;
+	}
+
+	get valueOfOnePip() {
+		return this._valueOfOnePip;
+	}
+
+	get exchangeRate() {
+		return this._exchangeRate;
+	}
+
+	get currencyCode() {
+		return this._currencyCode;
+	}
+
+	constructor(private readonly client: Client, readonly epic: string) {
+		super();
+	}
+
+	async init() {
+		await this.refresh();
+
+		this.timer = setInterval(() => fireAsync(()=>this.refresh()), INSTRUMENT_REFRESH_INTERVAL);
+	}
+
+	close() {
+    clearInterval(this.timer);
+	}
+	
+	private async refresh() {
+		const { instrument } = await this.client.market.getMarket(this.epic);
+		this._expiry = instrument.expiry;
+		this._valueOfOnePip = parseFloat(instrument.valueOfOnePip);
+		this._exchangeRate = instrument.currencies[0].baseExchangeRate;
+		this._currencyCode = instrument.currencies[0].code;
+	}
 }

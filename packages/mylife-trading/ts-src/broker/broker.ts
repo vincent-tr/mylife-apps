@@ -37,7 +37,7 @@ export interface Broker {
   init(credentials: Credentials): Promise<void>;
   terminate(): Promise<void>;
 
-  getEpic(epic: string): Promise<Instrument>;
+  getInstrument(epic: string): Promise<Instrument>;
   getDataset(epic: string, resolution: Resolution, size: number): Promise<MovingDataset>;
   openPosition(instrument: Instrument, direction: PositionDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position>;
   getPositionSummary(position: Position): Promise<PositionSummary>;

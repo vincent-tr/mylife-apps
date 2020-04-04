@@ -40,9 +40,10 @@ export class IgBroker implements Broker {
     this.connection = null;
   }
 
-  async getEpic(epic: string) {
-    const market = await this.connection.client.market.getMarket(epic);
-    return new IgInstrument(market.instrument);
+  async getInstrument(epic: string) {
+    const instrument = new IgInstrument(this.connection.client, epic);
+    await instrument.init();
+    return instrument;
   }
 
   async getDataset(epic: string, resolution: Resolution, size: number): Promise<MovingDataset> {
