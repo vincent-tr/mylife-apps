@@ -5,10 +5,12 @@ export * from './broker';
 export * from './instrument';
 export * from './moving-dataset';
 export * from './position';
+export * from './market';
 
 export { default as MovingDataset} from './moving-dataset';
 export { default as Instrument} from './instrument';
 export { default as Position} from './position';
+export { default as Market} from './market';
 
 type BrokerClass = { new(): Broker; };
 

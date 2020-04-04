@@ -1,6 +1,7 @@
 import MovingDataset from './moving-dataset';
 import Position, { PositionOrder, PositionDirection } from './position';
 import Instrument from './instrument';
+import Market from './market';
 
 export interface Credentials {
   key: string;
@@ -34,6 +35,7 @@ export interface PositionSummary {
 }
 
 export interface Broker {
+  getMarket(market: string): Market;
   init(credentials: Credentials): Promise<void>;
   terminate(): Promise<void>;
 
