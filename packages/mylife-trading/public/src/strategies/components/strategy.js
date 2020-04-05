@@ -60,10 +60,10 @@ const Strategy = ({ strategy }) => {
         </mui.Grid>
 
         <mui.Grid item xs={6}>
-          <mui.Typography>{getFieldName('strategy', 'epic')}</mui.Typography>
+          <mui.Typography>{getFieldName('strategy', 'instrumentId')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
-          <DebouncedTextField value={strategy.epic} onChange={epic => update(strategy, { epic })} fullWidth />
+          <DebouncedTextField value={strategy.instrumentId} onChange={instrumentId => update(strategy, { instrumentId })} fullWidth />
         </mui.Grid>
 
         <mui.Grid item xs={6}>
