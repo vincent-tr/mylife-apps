@@ -12,7 +12,6 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 
 	private _instrument: Instrument;
 
-	
 	protected get broker() {
 		return this._broker;
 	}
@@ -29,11 +28,6 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 		this._broker = createBroker('ig');
 	}
 
-	async terminate() {
-		this.market.close();
-		await super.terminate();
-	}
-
 	protected async initImpl(credentials: Credentials) {
 		this.credentials = credentials;
 		this.market = this._broker.getMarket(this.configuration.instrumentId);
@@ -45,6 +39,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 			this.changeStatusMarketClosed();
 		}
 	}
+
 	private isMarketOpened() {
 		return this.market.status === MarketStatus.OPENED;
 	}
@@ -66,8 +61,10 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 	}
 
 	protected async terminateImpl() {
-		this.market.close();
-		this.market = null;
+		if (this.market) {
+			this.market.close();
+			this.market = null;
+		}
 
 		if (this.opened) {
 			await this.runClose();
