@@ -25,7 +25,7 @@ export default interface Position extends EventEmitter {
 
   readonly dealId: string;
   readonly direction: PositionDirection;
-  readonly epic: string;
+  readonly instrumentId: string;
 
   readonly orders: PositionOrder[];
   readonly stopLoss: number;

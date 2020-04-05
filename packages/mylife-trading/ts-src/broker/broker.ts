@@ -22,7 +22,7 @@ export interface OpenPositionBound {
 }
 
 export interface PositionSummary {
-  epic: string;
+  instrumentId: string;
   dealId: string;
   openDate: Date;
   closeDate: Date;
@@ -35,12 +35,12 @@ export interface PositionSummary {
 }
 
 export interface Broker {
-  getMarket(market: string): Market;
+  getMarket(instrumentId: string): Market;
   init(credentials: Credentials): Promise<void>;
   terminate(): Promise<void>;
 
-  getInstrument(epic: string): Promise<Instrument>;
-  getDataset(epic: string, resolution: Resolution, size: number): Promise<MovingDataset>;
+  getInstrument(instrumentId: string): Promise<Instrument>;
+  getDataset(instrumentId: string, resolution: Resolution, size: number): Promise<MovingDataset>;
   openPosition(instrument: Instrument, direction: PositionDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position>;
   getPositionSummary(position: Position): Promise<PositionSummary>;
 }

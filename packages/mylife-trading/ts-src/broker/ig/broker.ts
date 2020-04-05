@@ -15,6 +15,7 @@ import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
 import Market from '../market';
 import IgMarket from './market';
+import { getInstrumentRef } from './instrument-ref';
 
 const logger = createLogger('mylife:trading:broker:ig');
 
@@ -44,7 +45,8 @@ const datasetSubscriptionFields = [
 export class IgBroker implements Broker {
 	private connection: Connection;
 
-	getMarket(market: string): Market {
+	getMarket(instrumentId: string): Market {
+		const { market } = getInstrumentRef(instrumentId);
 		return IgMarket.create(market);
 	}
 
@@ -59,13 +61,15 @@ export class IgBroker implements Broker {
 		}
 	}
 
-	async getInstrument(epic: string) {
-		const instrument = new IgInstrument(this.connection.client, epic);
+	async getInstrument(instrumentId: string) {
+		const { epic } = getInstrumentRef(instrumentId);
+		const instrument = new IgInstrument(this.connection.client, epic, instrumentId);
 		await instrument.init();
 		return instrument;
 	}
 
-	async getDataset(epic: string, resolution: Resolution, size: number): Promise<MovingDataset> {
+	async getDataset(instrumentId: string, resolution: Resolution, size: number): Promise<MovingDataset> {
+		const { epic } = getInstrumentRef(instrumentId);
 		const resolutionData = resolutions.get(resolution);
 
 		const dataset = new MovingDataset(size);
@@ -126,7 +130,7 @@ export class IgBroker implements Broker {
 			throw new ConfirmationError(confirmation.reason);
 		}
 
-		const position = new IgPosition(this.connection.client, this.connection.refTradeSubscription(), confirmation);
+		const position = new IgPosition(this.connection.client, this.connection.refTradeSubscription(), confirmation, igInstrument.instrumentId);
 		position.on('close', () => this.connection.unrefTradeSubscription());
 
 		return position;
@@ -148,7 +152,7 @@ export class IgBroker implements Broker {
 		const profitAndLoss = transaction.profitAndLoss.substr(transaction.currency.length);
 
 		return {
-			epic: position.epic,
+			instrumentId: position.instrumentId,
 			dealId: position.dealId,
 			orders: position.orders,
 			openDate: parseISODate(transaction.openDateUtc),

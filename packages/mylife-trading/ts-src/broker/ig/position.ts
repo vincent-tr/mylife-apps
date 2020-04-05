@@ -13,7 +13,6 @@ export default class IgPosition extends EventEmitter implements Position {
   public readonly dealReference: string;
   public readonly dealId: string;
   public readonly direction: PositionDirection;
-  public readonly epic: string;
 
   private readonly _orders: PositionOrder[] = [];
   private _stopLoss: number;
@@ -23,7 +22,7 @@ export default class IgPosition extends EventEmitter implements Position {
   private readonly errorCb: (err: Error) => void = (err) => this.onError(err);
   private readonly updateCb: (data: any) => void = (data) => this.onUpdate(data);
 
-  constructor(private readonly client: Client, private readonly subscription: StreamSubscription, confirmation: DealConfirmation) {
+  constructor(private readonly client: Client, private readonly subscription: StreamSubscription, confirmation: DealConfirmation, readonly instrumentId: string) {
     super();
 
     this.subscription.on('error', this.errorCb);
@@ -32,7 +31,6 @@ export default class IgPosition extends EventEmitter implements Position {
     this.dealReference = confirmation.dealReference;
     this.dealId = confirmation.dealId;
     this.direction = parseDirection(confirmation.direction);
-    this.epic = confirmation.epic;
 
     this.readConfirmation(confirmation, PositionOrderType.OPEN);
 
@@ -73,7 +71,7 @@ export default class IgPosition extends EventEmitter implements Position {
       dealReference: this.dealReference,
       dealId: this.dealId,
       direction: this.direction,
-      epic: this.epic,
+      instrumentId: this.instrumentId,
       stopLoss: this.stopLoss,
       takeProfit: this.takeProfit,
       lastUpdateDate: this.lastUpdateDate

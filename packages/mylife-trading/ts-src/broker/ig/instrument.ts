@@ -28,7 +28,7 @@ export default class IgInstrument extends EventEmitter implements Instrument {
 		return this._currencyCode;
 	}
 
-	constructor(private readonly client: Client, readonly epic: string) {
+	constructor(private readonly client: Client, readonly epic: string, readonly instrumentId: string) {
 		super();
 	}
 

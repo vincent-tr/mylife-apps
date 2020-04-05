@@ -3,7 +3,7 @@ import { Credentials, PositionSummary } from '../broker';
 export interface Configuration {
   name: string;
   implementation: string;
-  epic: string;
+  instrumentId: string;
   risk: number;
 }
 

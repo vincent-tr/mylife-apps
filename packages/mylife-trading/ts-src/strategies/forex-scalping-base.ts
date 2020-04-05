@@ -75,7 +75,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 
 			await this._broker.init(this.credentials);
 
-			this._instrument = await this._broker.getInstrument(this.configuration.epic);
+			this._instrument = await this._broker.getInstrument(this.configuration.instrumentId);
 
 			await this.open();
 		} catch (err) {
