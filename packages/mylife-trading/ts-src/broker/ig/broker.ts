@@ -25,9 +25,9 @@ interface ResolutionData {
 }
 
 const resolutions = new Map<Resolution, ResolutionData>();
-resolutions.set(Resolution.MINUTE, { rest: PriceResolution.MINUTE, stream: '1MINUTE' });
-resolutions.set(Resolution.MINUTE_5, { rest: PriceResolution.MINUTE_5, stream: '5MINUTE' });
-resolutions.set(Resolution.HOUR, { rest: PriceResolution.HOUR, stream: 'HOUR' });
+resolutions.set(Resolution.M1, { rest: PriceResolution.MINUTE, stream: '1MINUTE' });
+resolutions.set(Resolution.M5, { rest: PriceResolution.MINUTE_5, stream: '5MINUTE' });
+resolutions.set(Resolution.H1, { rest: PriceResolution.HOUR, stream: 'HOUR' });
 
 const datasetSubscriptionFields = [
 	'UTM',

@@ -11,9 +11,9 @@ export interface Credentials {
 }
 
 export enum Resolution {
-  MINUTE,
-  MINUTE_5,
-  HOUR
+  M1 = 'm1',
+  M5 = 'm5',
+  H1 = 'h1'
 }
 
 export interface OpenPositionBound {
