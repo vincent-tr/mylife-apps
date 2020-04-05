@@ -128,7 +128,7 @@ class TradingServiceBinder {
     const broker = this.brokers.get(strategy.broker);
 
     // format tradingService parameters
-    const configuration = { epic: strategy.epic, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display };
+    const configuration = { instrumentId: strategy.instrumentId, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display };
     const credentials = { key: broker.key, identifier: broker.identifier, password: business.passwordDecrypt(broker.password), isDemo: broker.demo };
     const listeners = {
       onStatusChanged: (status) => this.status.set(key, status),
@@ -147,7 +147,7 @@ class TradingServiceBinder {
       strategyImplementation: strategy.implementation,
       version,
       demo: broker.demo,
-      epic: strategy.epic,
+      instrumentId: strategy.instrumentId,
       dealId: summary.dealId,
       openDate: summary.openDate,
       closeDate: summary.closeDate,
