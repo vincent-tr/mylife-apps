@@ -1,7 +1,7 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
-import { last, round } from '../utils';
+import { last, round, PIP } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ForexScalpingBase from './forex-scalping-base';
 
@@ -9,7 +9,9 @@ const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme')
 
 // https://admiralmarkets.com/fr/formation/articles/strategie-de-forex/strategie-forex-scalping-1-minute
 
-// TODO: fermer la position a la fermeture d une bougie sur la bb.middle est entre candle.low et candle.high ?
+// TODO: fermer la position a la fermeture d une bougie si la bb.middle est entre candle.low et candle.high ?
+
+const STOP_LOSS_DISTANCE = 5;
 
 export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 	private dataset: MovingDataset;
@@ -69,7 +71,6 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 
 	private async takePosition(direction: PositionDirection, bb: BollingerBandsOutput) {
 		// convert risk value to contract size
-		const STOP_LOSS_DISTANCE = 5;
 		const size = this.computePositionSize(this.instrument, STOP_LOSS_DISTANCE);
 		this.position = await this.broker.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { level: round(bb.middle, 5) });
 		this.changeStatusTakingPosition();
@@ -99,6 +100,7 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 	private async analyze() {
 		const { rsi, bb, candle } = this.getIndicators();
 		const level = candle.average.close;
+		logger.debug(`analyze (level=${level}, rsi=${rsi}, bb={l:${bb.lower}, m:${bb.middle}, u:${bb.upper}})`);
 
 		if (this.position) {
 			this.changeStatusTakingPosition();
@@ -144,6 +146,6 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 
 	// do not take position if takeprofit is too close (less than 5 pips)
 	private isDiffEnough(bb: BollingerBandsOutput, level: number) {
-		return Math.abs(level - bb.middle) >= 5 * this.instrument.valueOfOnePip;
+		return Math.abs(level - bb.middle) >= STOP_LOSS_DISTANCE * PIP;
 	}
 }

@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
 import Strategy, { Configuration, Listeners } from './strategy';
-import { round } from '../utils';
+import { round, PIP } from '../utils';
 import { Instrument, Credentials, PositionSummary, Broker, createBroker } from '../broker';
 
 const logger = createLogger('mylife:trading:strategy:strategy-base');
@@ -90,9 +90,8 @@ export default abstract class StrategyBase implements Strategy {
 
 	protected computePositionSize(instrument: Instrument, stopLossDistance: number) {
 		const riskValue = this.configuration.risk;
-		const valueOfOnePip = instrument.valueOfOnePip;
 		const exchangeRate = instrument.exchangeRate;
-		const valueOfOnePipAccountCurrency = valueOfOnePip / exchangeRate; // convert pip value from market target currency to account currency
+		const valueOfOnePipAccountCurrency = PIP / exchangeRate; // convert pip value from market target currency to account currency
 
 		const size = riskValue / (valueOfOnePipAccountCurrency * stopLossDistance);
 		return round(size, 2);

@@ -6,17 +6,12 @@ const INSTRUMENT_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 mins
 
 export default class IgInstrument implements Instrument {
 	private _expiry: string;
-	private _valueOfOnePip: number;
 	private _exchangeRate: number;
 	private _currencyCode: string;
 	private timer: NodeJS.Timer;
 
 	get expiry() {
 		return this._expiry;
-	}
-
-	get valueOfOnePip() {
-		return this._valueOfOnePip;
 	}
 
 	get exchangeRate() {
@@ -43,7 +38,6 @@ export default class IgInstrument implements Instrument {
 	private async refresh() {
 		const { instrument } = await this.client.market.getMarket(this.epic);
 		this._expiry = instrument.expiry;
-		this._valueOfOnePip = parseFloat(instrument.valueOfOnePip);
 		this._exchangeRate = instrument.currencies[0].baseExchangeRate;
 		this._currencyCode = instrument.currencies[0].code;
 	}
