@@ -3,10 +3,15 @@ import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
 import Market from '../market';
+import { Timeline } from './timeline';
+import BacktestMarket from './market';
 
 export class BacktestBroker implements Broker {
+  private timeline: Timeline;
+
   getMarket(instrumentId: string): Market {
-    throw new Error('Method not implemented.');
+    const { market } = parseInstrumentId(instrumentId);
+    return BacktestMarket.create(this.timeline, market);
   }
 
   fireAsync(target: () => Promise<void>): void {
@@ -36,4 +41,12 @@ export class BacktestBroker implements Broker {
   async getPositionSummary(position: Position): Promise<PositionSummary> {
     throw new Error('Method not implemented.');
   }
+}
+
+function parseInstrumentId(instrumentId: string) {
+  const [market, instrument] = instrumentId.split(':');
+	if (!market || !instrument) {
+		throw new Error(`Malformed instrument id: '${instrumentId}'`);
+	}
+  return { market, instrument };
 }
