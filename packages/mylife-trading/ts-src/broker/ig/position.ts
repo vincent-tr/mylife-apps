@@ -1,5 +1,5 @@
-import { createLogger } from 'mylife-tools-server';
 import EventEmitter from 'events';
+import { createLogger } from 'mylife-tools-server';
 import { StreamSubscription } from './api/stream';
 import Client from './api/client';
 import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './api/dealing';
