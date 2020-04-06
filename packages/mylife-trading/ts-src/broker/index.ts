@@ -1,5 +1,6 @@
 import { Broker } from './broker';
 import { IgBroker } from './ig/broker';
+import { BacktestBroker } from './backtest/broker';
 
 export * from './broker';
 export * from './instrument';
@@ -16,6 +17,7 @@ type BrokerClass = { new(): Broker; };
 
 const brokers = new Map<string, BrokerClass>();
 brokers.set('ig', IgBroker);
+brokers.set('backtest', BacktestBroker);
 
 export function createBroker(implementation: string) {
   const Class = brokers.get(implementation);
