@@ -5,7 +5,7 @@ import { fireAsync } from '../../utils';
 
 const INSTRUMENT_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 mins
 
-export default class IgInstrument extends EventEmitter implements Instrument {
+export default class IgInstrument implements Instrument {
 	private _expiry: string;
 	private _valueOfOnePip: number;
 	private _exchangeRate: number;
@@ -29,7 +29,6 @@ export default class IgInstrument extends EventEmitter implements Instrument {
 	}
 
 	constructor(private readonly client: Client, readonly epic: string, readonly instrumentId: string) {
-		super();
 	}
 
 	async init() {
