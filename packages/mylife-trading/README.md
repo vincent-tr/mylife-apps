@@ -30,9 +30,8 @@ MyLife Trading
 - docker run --rm -ti -v ~/data.csv:/data.csv --network mongo_default mongo mongoimport --host=mongo --db=mylife-trading --collection=wipimport --file=/data.csv --type=csv  --columnsHaveTypes --fields="date.date(20060102 150405),open.double(),high.double(),low.double(),close.double(),volume.double()"
 - docker run --rm -ti --network mongo_default mongo mongo --host=mongo
  - use mylife-trading
- - db.wipimport.update({}, { $unset: { volume: null } }, { multi: true });
+ - db.wipimport.update({}, { $unset: { volume: null }, $set: { resolution: 'm1', instrumentId: 'forex:eurusd' } }, { multi: true });
  - db.wipimport.find().forEach((rec) => { const newDate = new Date(rec.date.getTime() + 5 * 3600 *  1000); db.wipimport.update({ _id: rec._id }, { $set: { date: newDate } }); });
-
 
 Reference:
 - https://www.histdata.com/download-free-forex-data/
