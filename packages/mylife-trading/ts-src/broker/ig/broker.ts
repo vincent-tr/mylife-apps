@@ -16,6 +16,7 @@ import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
 import Market from '../market';
+import { fireAsync } from '../../utils';
 
 const logger = createLogger('mylife:trading:broker:ig');
 
@@ -48,6 +49,10 @@ export class IgBroker implements Broker {
 	getMarket(instrumentId: string): Market {
 		const { market } = getInstrumentRef(instrumentId);
 		return IgMarket.create(market);
+	}
+
+	fireAsync(target: () => Promise<void>) {
+		fireAsync(target);
 	}
 
 	async init(credentials: Credentials) {

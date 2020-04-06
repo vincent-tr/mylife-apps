@@ -56,11 +56,18 @@ export default abstract class StrategyBase implements Strategy {
 		this.listeners.onNewPositionSummary(summary);
 	}
 
-	protected fireAsync<T>(target: () => Promise<T>) {
-		target().catch(err => {
-			logger.error(`(${this.configuration.name}) runtime error: ${err.stack}`);
-			this.fatal(err);
-		});
+	protected fireAsync(target: () => Promise<void>) {
+
+		const wrappedTarget = async () => {
+			try {
+				await target();
+			} catch(err) {
+				logger.error(`(${this.configuration.name}) runtime error: ${err.stack}`);
+				this.fatal(err);
+			}
+		};
+
+		this.broker.fireAsync(wrappedTarget);
 	}
 
 	protected changeStatus(status: string) {
