@@ -8,14 +8,14 @@ import { parseTimestamp, parseDate, parseISODate, serializeDirection } from './p
 import { Connection, connectionOpen, connectionClose } from './connection';
 import IgPosition from './position';
 import IgInstrument from './instrument';
+import IgMarket from './market';
+import { getInstrumentRef } from './instrument-ref';
 
 import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound } from '../broker';
 import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
 import Market from '../market';
-import IgMarket from './market';
-import { getInstrumentRef } from './instrument-ref';
 
 const logger = createLogger('mylife:trading:broker:ig');
 
