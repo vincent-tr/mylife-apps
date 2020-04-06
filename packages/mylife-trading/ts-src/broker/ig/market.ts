@@ -7,6 +7,7 @@ interface MarketParams {
 }
 
 const markets = new Map<string, MarketParams>();
+
 export default class IgMarket extends EventEmitter implements Market {
 	private readonly getStatus: () => MarketStatus;
 	private readonly timer: NodeJS.Timer;
@@ -39,7 +40,7 @@ export default class IgMarket extends EventEmitter implements Market {
 
 	static create(market: string): IgMarket {
 		const params = markets.get(market);
-		if(!params) {
+		if (!params) {
 			throw new Error(`Unknown market: '${market}'`);
 		}
 
