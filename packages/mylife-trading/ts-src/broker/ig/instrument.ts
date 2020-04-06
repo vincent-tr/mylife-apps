@@ -1,4 +1,3 @@
-import EventEmitter from 'events';
 import Instrument from '../instrument';
 import Client from './api/client';
 import { fireAsync } from '../../utils';
