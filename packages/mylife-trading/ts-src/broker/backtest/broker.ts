@@ -5,6 +5,7 @@ import Instrument from '../instrument';
 import Market from '../market';
 import { Timeline } from './timeline';
 import BacktestMarket from './market';
+import BacktestInstrument from './instrument';
 
 export class BacktestBroker implements Broker {
   private timeline: Timeline;
@@ -17,7 +18,7 @@ export class BacktestBroker implements Broker {
   fireAsync(target: () => Promise<void>): void {
     throw new Error('Method not implemented.');
   }
-  
+
   async init(credentials: Credentials) {
     throw new Error('Method not implemented.');
   }
@@ -25,9 +26,9 @@ export class BacktestBroker implements Broker {
   async terminate() {
     throw new Error('Method not implemented.');
   }
-  
+
   async getInstrument(instrumentId: string): Promise<Instrument> {
-    throw new Error('Method not implemented.');
+    return new BacktestInstrument(instrumentId);
   }
 
   async getDataset(instrumentId: string, resolution: Resolution, size: number): Promise<MovingDataset> {
@@ -45,8 +46,8 @@ export class BacktestBroker implements Broker {
 
 function parseInstrumentId(instrumentId: string) {
   const [market, instrument] = instrumentId.split(':');
-	if (!market || !instrument) {
-		throw new Error(`Malformed instrument id: '${instrumentId}'`);
-	}
+  if (!market || !instrument) {
+    throw new Error(`Malformed instrument id: '${instrumentId}'`);
+  }
   return { market, instrument };
 }
