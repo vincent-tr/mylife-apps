@@ -31,6 +31,7 @@ MyLife Trading
 - docker run --rm -ti --network mongo_default mongo mongo --host=mongo
  - use mylife-trading
  - db.wipimport.update({}, { $unset: { volume: null } }, { multi: true });
+ - db.wipimport.find().forEach((rec) => { const newDate = new Date(rec.date.getTime() + 5 * 3600 *  1000); db.wipimport.update({ _id: rec._id }, { $set: { date: newDate } }); });
 
 
 Reference:
