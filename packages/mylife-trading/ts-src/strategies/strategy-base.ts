@@ -1,12 +1,13 @@
 import { createLogger } from 'mylife-tools-server';
 import Strategy, { Configuration, Listeners } from './strategy';
 import { round } from '../utils';
-import { Instrument, Credentials, PositionSummary } from '../broker';
+import { Instrument, Credentials, PositionSummary, Broker, createBroker } from '../broker';
 
 const logger = createLogger('mylife:trading:strategy:strategy-base');
 
 export default abstract class StrategyBase implements Strategy {
 	private _configuration: Configuration;
+	private _broker: Broker;
 	private listeners: Listeners;
 	private currentStatus: string;
 
@@ -17,8 +18,14 @@ export default abstract class StrategyBase implements Strategy {
 		return this._configuration;
 	}
 
+	protected get broker() {
+		return this._broker;
+	}
+
 	async init(configuration: Configuration, credentials: Credentials, listeners: Listeners) {
 		this._configuration = configuration;
+		this._broker = createBroker('ig');
+		
 		logger.debug(`(${this.configuration.name}) init`);
 		this.listeners = listeners;
 		this.changeStatus('Initialisation');
