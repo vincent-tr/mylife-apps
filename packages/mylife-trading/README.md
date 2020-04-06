@@ -24,6 +24,9 @@ MyLife Trading
 ## Backtest loading
 
 - https://www.histdata.com/download-free-forex-historical-data/?/ascii/1-minute-bar-quotes/eurusd/2019
+- scp ~/Downloads/DAT_ASCII_EURUSD_M1_2019.csv arch-desktop:/home/vincent
+- ssh arch-desktop
+
 
 Reference:
 - https://www.histdata.com/download-free-forex-data/
