@@ -26,6 +26,11 @@ MyLife Trading
 - https://www.histdata.com/download-free-forex-historical-data/?/ascii/1-minute-bar-quotes/eurusd/2019
 - scp ~/Downloads/DAT_ASCII_EURUSD_M1_2019.csv arch-desktop:/home/vincent
 - ssh arch-desktop
+- tr ';' ',' < DAT_ASCII_EURUSD_M1_2019.csv > data.csv
+- docker run --rm -ti -v ~/data.csv:/data.csv --network mongo_default mongo mongoimport --host=mongo --db=mylife-trading --collection=wipimport --file=/data.csv --type=csv  --columnsHaveTypes --fields="date.date(20060102 150405),open.double(),high.double(),low.double(),close.double(),volume.double()"
+- docker run --rm -ti --network mongo_default mongo mongo --host=mongo
+ - use mylife-trading
+ - db.wipimport.update({}, { $unset: { volume: null } }, { multi: true });
 
 
 Reference:
