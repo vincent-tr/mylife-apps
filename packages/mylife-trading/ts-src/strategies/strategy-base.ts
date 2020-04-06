@@ -91,7 +91,7 @@ export default abstract class StrategyBase implements Strategy {
 	protected computePositionSize(instrument: Instrument, stopLossDistance: number) {
 		const riskValue = this.configuration.risk;
 		const exchangeRate = instrument.exchangeRate;
-		const valueOfOnePipAccountCurrency = PIP / exchangeRate; // convert pip value from market target currency to account currency
+		const valueOfOnePipAccountCurrency = PIP * instrument.contractSize / exchangeRate; // convert pip value from market target currency to account currency
 
 		const size = riskValue / (valueOfOnePipAccountCurrency * stopLossDistance);
 		return round(size, 2);

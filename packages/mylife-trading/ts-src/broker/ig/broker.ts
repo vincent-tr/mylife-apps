@@ -109,7 +109,7 @@ export class IgBroker implements Broker {
 		stopLoss: OpenPositionBound,
 		takeProfit: OpenPositionBound
 	): Promise<Position> {
-		logger.debug(`open position (instrument=${instrument.instrumentId}, direction=${direction}, size=${size}, stopLoss=${stopLoss}, takeProfit=${takeProfit})`);
+		logger.debug(`open position (instrument=${instrument.instrumentId}, direction=${direction}, size=${size}, stopLoss=${JSON.stringify(stopLoss)}, takeProfit=${JSON.stringify(takeProfit)})`);
 
 		const igInstrument = instrument as IgInstrument;
 		const order: OpenPositionOrder = {
