@@ -11,7 +11,7 @@ MyLife Trading
  - https://www.professeurforex.com/formation-forex/lecon-14-introduction-a-la-gestion-du-risque/
 - stratégie scalping forex M1: http://knock-on-wood.over-blog.com/2018/07/forex-et-scalping.html
 
-# Glossary:
+## Glossary:
 - STOP = stop loss
 - STOP garanti = stop loss garanti avec spread en plus (frais)
 - LIMITE = take profit
@@ -20,3 +20,10 @@ MyLife Trading
  - reference = command identifier
  - id = position identifier
 - effet de levier: sur IG => 1:30 possible, en fait on achete juste la quantite de lot qu on veut (en fonction de la perte possible), le broker bloque si ce n est pas possible (levier trop important par rapport au capital)
+
+## Backtest loading
+
+- https://www.histdata.com/download-free-forex-historical-data/?/ascii/1-minute-bar-quotes/eurusd/2019
+
+Reference:
+- https://www.histdata.com/download-free-forex-data/
