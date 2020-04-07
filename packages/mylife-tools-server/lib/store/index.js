@@ -174,6 +174,14 @@ class Store {
 
     throw new Error(`Collection does not exist: '${name}'`);
   }
+
+  deserializeObject(record, entity) {
+    return deserializeObject(record, entity);
+  }
+
+  serializeObject(object, entity) {
+    return serializeObject(object, entity);
+  }
 }
 
 Store.serviceName = 'store';
