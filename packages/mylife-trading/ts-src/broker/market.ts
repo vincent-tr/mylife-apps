@@ -12,5 +12,5 @@ export default interface Market extends EventEmitter {
 
 	on(event: 'statusChanged', listener: (status: MarketStatus) => void): this;
 
-	close(): void;
+	close(): Promise<void>;
 }

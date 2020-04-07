@@ -20,7 +20,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 
 	protected async initImpl(credentials: Credentials) {
 		this.credentials = credentials;
-		this.market = this.broker.getMarket(this.configuration.instrumentId);
+		this.market = await this.broker.getMarket(this.configuration.instrumentId);
 		this.market.on('statusChanged', (status) => this.onMarketStatusChanged(status));
 
 		if (this.isMarketOpened()) {
@@ -52,7 +52,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 
 	protected async terminateImpl() {
 		if (this.market) {
-			this.market.close();
+			await this.market.close();
 			this.market = null;
 		}
 

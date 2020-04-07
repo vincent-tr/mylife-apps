@@ -24,7 +24,7 @@ export default class IgMarket extends EventEmitter implements Market {
 		this.refreshMarketStatus();
 	}
 
-	close() {
+	async close() {
 		clearInterval(this.timer);
 	}
 

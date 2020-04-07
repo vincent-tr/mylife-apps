@@ -19,16 +19,16 @@ export default class BacktestMarket extends EventEmitter implements Market {
 		return this._status;
 	}
 
-	constructor(private readonly timeline: Timeline, params: MarketParams) {
+	constructor(private readonly timeline: Timeline, params: MarketParams, private readonly onClose: () => Promise<void>) {
 		super();
 		this.getStatus = params.getStatus;
 		this.timeline.on('change', this.timelineChange);
 		this.refreshMarketStatus();
 	}
 
-	close() {
+	async close() {
 		this.timeline.removeListener('change', this.timelineChange);
-		this.emit('close');
+		await this.onClose();
 	}
 
 	private refreshMarketStatus() {
@@ -41,13 +41,13 @@ export default class BacktestMarket extends EventEmitter implements Market {
 		this.emit('statusChanged', status);
 	}
 
-	static create(engine: Engine, market: string): BacktestMarket {
+	static create(engine: Engine, market: string, onClose: () => Promise<void>): BacktestMarket {
 		const params = markets.get(market);
 		if (!params) {
 			throw new Error(`Unknown market: '${market}'`);
 		}
 
-		return new BacktestMarket(engine.timeline, params);
+		return new BacktestMarket(engine.timeline, params, onClose);
 	}
 }
 

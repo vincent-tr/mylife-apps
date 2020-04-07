@@ -29,15 +29,12 @@ export class BacktestBroker implements Broker {
     });
   }
 
-  getMarket(instrumentId: string): Market {
+  async getMarket(instrumentId: string): Promise<Market> {
     // let's consider that the market "own" the timeline: market creation init it, market close terminate it
     const { market } = parseInstrumentId(instrumentId);
 
-    this.engine.init();
-    const marketObject = BacktestMarket.create(this.engine, market);
-    marketObject.on('close', () => this.engine.terminate());
-
-    return marketObject;
+    await this.engine.init();
+    return BacktestMarket.create(this.engine, market, () => this.engine.terminate());
   }
 
   fireAsync(target: () => Promise<void>): void {

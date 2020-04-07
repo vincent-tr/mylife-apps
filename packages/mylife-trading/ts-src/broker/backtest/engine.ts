@@ -13,11 +13,11 @@ export default class Engine {
   constructor(public readonly configuration: Configuration) {
   }
 
-  init() {
+  async init() {
 
   }
 
-  terminate() {
+  async terminate() {
 
   }
 }

@@ -35,7 +35,7 @@ export interface PositionSummary {
 }
 
 export interface Broker {
-  getMarket(instrumentId: string): Market;
+  getMarket(instrumentId: string): Promise<Market>;
   fireAsync(target: () => Promise<void>): void;
   init(credentials: Credentials): Promise<void>;
   terminate(): Promise<void>;

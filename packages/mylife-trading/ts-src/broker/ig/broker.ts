@@ -46,7 +46,7 @@ const datasetSubscriptionFields = [
 export class IgBroker implements Broker {
 	private connection: Connection;
 
-	getMarket(instrumentId: string): Market {
+	async getMarket(instrumentId: string): Promise<Market> {
 		const { market } = getInstrumentRef(instrumentId);
 		return IgMarket.create(market);
 	}
