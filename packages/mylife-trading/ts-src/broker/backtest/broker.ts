@@ -65,7 +65,7 @@ export class BacktestBroker implements Broker {
   }
 
   async getDataset(instrumentId: string, resolution: Resolution, size: number): Promise<MovingDataset> {
-    // TODO: greater resolution (aggregate historical data item)
+    // TODO: greater resolution (aggregate historical data items)
     if(resolution !== this.configuration.resolution) {
       throw new Error('Different resolutions than config not supported for now');
     }
