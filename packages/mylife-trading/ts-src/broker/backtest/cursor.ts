@@ -1,4 +1,4 @@
-import { createLogger, getService } from 'mylife-tools-server';
+import { getService } from 'mylife-tools-server';
 import { Resolution } from '../broker';
 
 export interface HistoricalDataItem {
