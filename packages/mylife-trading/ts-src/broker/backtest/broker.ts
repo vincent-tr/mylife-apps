@@ -5,29 +5,39 @@ import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
 import Market from '../market';
-import { Timeline } from './timeline';
+
 import BacktestMarket from './market';
 import BacktestInstrument from './instrument';
-import { PIP } from '../../utils';
 import { HistoricalDataItem } from './cursor';
+import Engine from './engine';
+
+import { PIP } from '../../utils';
 
 const logger = createLogger('mylife:trading:broker:backtest');
 
-interface Configuration {
-  readonly instrumentId: string;
-  readonly resolution: Resolution;
-  readonly spread: number;
-}
-
 export class BacktestBroker implements Broker {
-  private configuration: Configuration;
-  private timeline: Timeline;
+  private readonly engine: Engine;
   private readonly pendingPromises = new Set<Promise<void>>();
   private readonly openedDatasets = new Set<MovingDataset>();
 
+  constructor() {
+    // TODO
+    this.engine = new Engine({
+      instrumentId: 'forex:eurusd',
+      resolution: Resolution.M1,
+      spread: 1 * PIP
+    });
+  }
+
   getMarket(instrumentId: string): Market {
+    // let's consider that the market "own" the timeline: market creation init it, market close terminate it
     const { market } = parseInstrumentId(instrumentId);
-    return BacktestMarket.create(this.timeline, market);
+
+    this.engine.init();
+    const marketObject = BacktestMarket.create(this.engine, market);
+    marketObject.on('close', () => this.engine.terminate());
+
+    return marketObject;
   }
 
   fireAsync(target: () => Promise<void>): void {
@@ -46,13 +56,6 @@ export class BacktestBroker implements Broker {
   }
 
   async init(credentials: Credentials) {
-    // TODO
-    this.configuration = {
-      instrumentId: 'forex:eurusd',
-      resolution: Resolution.M1,
-      spread: 1 * PIP
-    };
-
     throw new Error('Method not implemented.');
   }
 
@@ -65,13 +68,13 @@ export class BacktestBroker implements Broker {
   }
 
   async getDataset(instrumentId: string, resolution: Resolution, size: number): Promise<MovingDataset> {
-    if (instrumentId !== this.configuration.instrumentId) {
-      throw new Error(`Only configuration instrument '${this.configuration.instrumentId}' supported`);
+    if (instrumentId !== this.engine.configuration.instrumentId) {
+      throw new Error(`Only configuration instrument '${this.engine.configuration.instrumentId}' supported`);
     }
 
     // TODO: greater resolution (aggregate historical data items)
-    if (resolution !== this.configuration.resolution) {
-      throw new Error(`Only configuration resolution '${this.configuration.resolution}' supported for now`);
+    if (resolution !== this.engine.configuration.resolution) {
+      throw new Error(`Only configuration resolution '${this.engine.configuration.resolution}' supported for now`);
     }
 
     const dataset = new MovingDataset(size);
@@ -84,7 +87,7 @@ export class BacktestBroker implements Broker {
   }
 
   private emitData(item: HistoricalDataItem) {
-    const record = createRecord(item, this.configuration.spread);
+    const record = createRecord(item, this.engine.configuration.spread);
     for (const dataset of this.openedDatasets) {
       dataset.add(record);
     }

@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import Market, { MarketStatus } from '../market';
+import Engine from './engine';
 import { Timeline } from './timeline';
 
 interface MarketParams {
@@ -27,6 +28,7 @@ export default class BacktestMarket extends EventEmitter implements Market {
 
 	close() {
 		this.timeline.removeListener('change', this.timelineChange);
+		this.emit('close');
 	}
 
 	private refreshMarketStatus() {
@@ -39,13 +41,13 @@ export default class BacktestMarket extends EventEmitter implements Market {
 		this.emit('statusChanged', status);
 	}
 
-	static create(timeline: Timeline, market: string): BacktestMarket {
+	static create(engine: Engine, market: string): BacktestMarket {
 		const params = markets.get(market);
 		if (!params) {
 			throw new Error(`Unknown market: '${market}'`);
 		}
 
-		return new BacktestMarket(timeline, params);
+		return new BacktestMarket(engine.timeline, params);
 	}
 }
 
