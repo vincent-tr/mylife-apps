@@ -17,7 +17,6 @@ const logger = createLogger('mylife:trading:broker:backtest');
 
 export class BacktestBroker implements Broker {
   private readonly engine: Engine;
-  private readonly pendingPromises = new Set<Promise<void>>();
   private readonly openedDatasets = new Set<MovingDataset>();
 
   constructor() {
@@ -38,18 +37,7 @@ export class BacktestBroker implements Broker {
   }
 
   fireAsync(target: () => Promise<void>): void {
-    const deferred = createDeferred<void>();
-    this.pendingPromises.add(deferred.promise);
-
-    target().catch(err => logger.error(`Unhandled promise rejection: ${err.stack}`)).finally(() => {
-      this.pendingPromises.delete(deferred.promise);
-      deferred.resolve();
-    });
-  }
-
-  private async waitAllAsync() {
-    const pendings = Array.from(this.pendingPromises);
-    return Promise.all(pendings);
+    this.engine.fireAsync(target);
   }
 
   async init(credentials: Credentials) {
@@ -105,24 +93,6 @@ function parseInstrumentId(instrumentId: string) {
     throw new Error(`Malformed instrument id: '${instrumentId}'`);
   }
   return { market, instrument };
-}
-
-interface Deferred<T> {
-  readonly promise: Promise<T>;
-  readonly resolve: (value: T) => void;
-  readonly reject: (err: Error) => void;
-};
-
-function createDeferred<T>(): Deferred<T> {
-  let resolve: (value: T) => void;
-  let reject: (err: Error) => void;
-
-  const promise = new Promise<T>((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
-
-  return { promise, resolve, reject };
 }
 
 function createRecord(item: HistoricalDataItem, spread: number) {
