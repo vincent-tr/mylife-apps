@@ -65,11 +65,15 @@ export class BacktestBroker implements Broker {
   }
 
   async getDataset(instrumentId: string, resolution: Resolution, size: number): Promise<MovingDataset> {
-    // TODO: greater resolution (aggregate historical data items)
-    if(resolution !== this.configuration.resolution) {
-      throw new Error('Different resolutions than config not supported for now');
+    if (instrumentId !== this.configuration.instrumentId) {
+      throw new Error(`Only configuration instrument '${this.configuration.instrumentId}' supported`);
     }
-    
+
+    // TODO: greater resolution (aggregate historical data items)
+    if (resolution !== this.configuration.resolution) {
+      throw new Error(`Only configuration resolution '${this.configuration.resolution}' supported for now`);
+    }
+
     const dataset = new MovingDataset(size);
     this.openedDatasets.add(dataset);
     dataset.on('close', () => this.openedDatasets.delete(dataset));
@@ -81,7 +85,7 @@ export class BacktestBroker implements Broker {
 
   private emitData(item: HistoricalDataItem) {
     const record = createRecord(item, this.configuration.spread);
-    for(const dataset of this.openedDatasets) {
+    for (const dataset of this.openedDatasets) {
       dataset.add(record);
     }
   }
@@ -123,7 +127,7 @@ function createDeferred<T>(): Deferred<T> {
 
 function createRecord(item: HistoricalDataItem, spread: number) {
   // spread = ask - bid, let's consider half above/half below
-  const diff = spread/2;
+  const diff = spread / 2;
   const ask = createCandleStick(item, diff);
   const bid = createCandleStick(item, -diff);
 
@@ -133,6 +137,6 @@ function createRecord(item: HistoricalDataItem, spread: number) {
 }
 
 function createCandleStick(item: HistoricalDataItem, diff: number) {
-  return new CandleStickData(item.open+diff, item.close+diff, item.high+diff, item.low+diff);
+  return new CandleStickData(item.open + diff, item.close + diff, item.high + diff, item.low + diff);
 }
 
