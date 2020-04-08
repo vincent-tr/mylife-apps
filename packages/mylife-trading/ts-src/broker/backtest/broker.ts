@@ -26,6 +26,8 @@ export class BacktestBroker implements Broker {
       resolution: Resolution.M1,
       spread: 1 * PIP
     });
+
+    this.engine.on('nextData', (item) => this.emitData(item));
   }
 
   async getMarket(instrumentId: string): Promise<Market> {
