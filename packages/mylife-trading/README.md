@@ -9,7 +9,23 @@ MyLife Trading
  - Ne pas risquer de perdre + de 2% du capital par position. (Positionner le stop loss + pas trop de levier)
  - Montant investi / stop loss (pips) / valeur du pip
  - https://www.professeurforex.com/formation-forex/lecon-14-introduction-a-la-gestion-du-risque/
-- stratégie scalping forex M1: http://knock-on-wood.over-blog.com/2018/07/forex-et-scalping.html
+
+## Stratégies:
+ - stratégie scalping forex M1: http://knock-on-wood.over-blog.com/2018/07/forex-et-scalping.html
+ - https://admiralmarkets.com/fr/formation/articles/strategie-de-forex/strategie-forex-scalping-1-minute
+ - extrême stochastique : https://youtu.be/ng6MzSuSjs8
+ - scalping de vagues : https://youtu.be/W2Jcxv5qIKE
+ - inside bar M15 :  https://www.youtube.com/watch?v=lOWyNWl4bcE
+ - scalping system 10 points (m1) : https://www.youtube.com/watch?v=6LASyXHshYs
+ - https://forexexperts.net/index.php/trade-strategy/scalping-strategies
+
+## Forex devises majeures:
+ - EURUSD (Euro - Dollar américain)
+ - USDJPY (Dollar américain - Yen japonais)
+ - GBPUSD (Livre sterling- Dollar américain)
+ - AUDUSD (Dollar australien - Dollar américain)
+ - USDCHF (Dollar américain - Franc suisse)
+ - USDCAD (Dollar américain - Dollar canadien)
 
 ## Glossary:
 - STOP = stop loss
