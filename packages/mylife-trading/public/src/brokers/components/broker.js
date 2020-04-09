@@ -1,9 +1,10 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton, ListSelector } from 'mylife-tools-ui';
 import { update, remove } from '../actions';
 import { getFieldName, renderObject } from '../../common/metadata-utils';
-import PasswordField from './password-field';
+import TestSettings from './test-settings';
+import Credentials from './credentials';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,35 @@ const useStyles = mui.makeStyles(theme => ({
     padding: theme.spacing(2),
   },
 }));
+
+const types = [
+  { id: 'backtest', text: 'Backtesting' },
+  { id: 'ig-demo', text: 'IG - Compte de démo' },
+  { id: 'ig-real', text: 'IG - Compte réel' },
+];
+
+const BrokerDetail = ({ broker, update }) => {
+  switch(broker.type) {
+    case 'backtest':
+      return (
+        <TestSettings broker={broker} update={update} />
+      )
+
+    case 'ig-demo':
+    case 'ig-real':
+      return (
+        <Credentials broker={broker} update={update} />
+      )
+
+    default:
+      throw new Error(`Unknown broker type: ${broker.type}`);
+  }
+}
+
+BrokerDetail.propTypes = {
+  broker: PropTypes.object.isRequired,
+  update: PropTypes.func.isRequired,
+};
 
 const Broker = ({ broker }) => {
   const classes = useStyles();
@@ -35,32 +65,13 @@ const Broker = ({ broker }) => {
         </mui.Grid>
 
         <mui.Grid item xs={6}>
-          <mui.Typography>{getFieldName('broker', 'key')}</mui.Typography>
+          <mui.Typography>{getFieldName('broker', 'type')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
-          <DebouncedTextField value={broker.key} onChange={key => update(broker, { key })} fullWidth />
+          <ListSelector list={types} value={broker.type} onChange={type => update(broker, { type })} fullWidth />
         </mui.Grid>
 
-        <mui.Grid item xs={6}>
-          <mui.Typography>{getFieldName('broker', 'identifier')}</mui.Typography>
-        </mui.Grid>
-        <mui.Grid item xs={6}>
-          <DebouncedTextField value={broker.identifier} onChange={identifier => update(broker, { identifier })} fullWidth />
-        </mui.Grid>
-
-        <mui.Grid item xs={6}>
-          <mui.Typography>{getFieldName('broker', 'password')}</mui.Typography>
-        </mui.Grid>
-        <mui.Grid item xs={6}>
-          <PasswordField crypted={broker.password} onSet={password => update(broker, { password })} fullWidth />
-        </mui.Grid>
-        
-        <mui.Grid item xs={6}>
-          <mui.Typography>{getFieldName('broker', 'demo')}</mui.Typography>
-        </mui.Grid>
-        <mui.Grid item xs={6}>
-          <mui.Checkbox checked={broker.demo} onChange={e => update(broker, { demo: e.target.checked })} />
-        </mui.Grid>
+        <BrokerDetail broker={broker} update={update} />
 
         <DeleteButton
           tooltip={'Supprimer le compte'}
