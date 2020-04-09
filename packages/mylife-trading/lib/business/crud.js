@@ -11,7 +11,7 @@ exports.brokerGet = (id) => {
 };
 
 exports.brokerCreate = (values) => {
-  values = prepareBrokerValues(values);
+  values = prepareBrokerValues(null, values);
   const entity = getMetadataEntity('broker');
   const brokers = getStoreCollection('brokers');
 
@@ -41,7 +41,7 @@ exports.brokerDelete = broker => {
 };
 
 exports.brokerUpdate = (broker, values) => {
-  values = prepareBrokerValues(values);
+  values = prepareBrokerValues(broker, values);
   logger.info(`Setting values '${JSON.stringify(values)}' on broker '${broker._id}'`);
 
   const entity = getMetadataEntity('broker');
@@ -53,18 +53,24 @@ exports.brokerUpdate = (broker, values) => {
   return item;
 };
 
-function prepareBrokerValues(values) {
-  const password = values.credentials && values.credentials.password;
-  if (!password) {
-    // no password change
+function prepareBrokerValues(broker, values) {
+  if (!values.credentials) {
     return values;
+  }
+
+  let password = values.credentials.password;
+  if(!password) {
+    // reuse old one, or empty if new broker/type switch
+    password = broker && broker.credentials && broker.credentials.password;
+  } else {
+    password = business.passwordEncrypt(password);
   }
 
   return {
     ...values,
     credentials: {
       ...values.credentials,
-      password: business.passwordEncrypt(password)
+      password
     }
   };
 }
