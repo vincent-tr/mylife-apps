@@ -1,10 +1,19 @@
 'use strict';
 
-import { React, PropTypes, mui, DebouncedTextField } from 'mylife-tools-ui';
+import { React, PropTypes, mui, DebouncedTextField, useRefProp } from 'mylife-tools-ui';
 import { getFieldDatatype, getStructureFieldName } from '../../common/metadata-utils';
 
-const TestSettings = ({ broker, update }) => {
+const TestSettings = ({ broker, update: updateBroker }) => {
   const structure = getFieldDatatype('broker', 'testSettings');
+  const { testSettings } = broker;
+
+  const settingsRef = useRefProp(testSettings);
+
+  const update = (values) => {
+    const testSettings = settingsRef.current;
+    const merged = { ...testSettings, ...values };
+    updateBroker(broker, { testSettings: merged });
+  };
 
   return (
     <>
@@ -12,21 +21,21 @@ const TestSettings = ({ broker, update }) => {
         <mui.Typography>{getStructureFieldName(structure, 'instrumentId')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
-        <DebouncedTextField value={broker.instrumentId} onChange={instrumentId => update(broker, { instrumentId })} fullWidth />
+        <DebouncedTextField value={testSettings.instrumentId} onChange={instrumentId => update({ instrumentId })} fullWidth />
       </mui.Grid>
 
       <mui.Grid item xs={6}>
         <mui.Typography>{getStructureFieldName(structure, 'resolution')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
-        <DebouncedTextField value={broker.resolution} onChange={resolution => update(broker, { resolution })} fullWidth />
+        <DebouncedTextField value={testSettings.resolution} onChange={resolution => update({ resolution })} fullWidth />
       </mui.Grid>
 
       <mui.Grid item xs={6}>
         <mui.Typography>{getStructureFieldName(structure, 'spread')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
-        <DebouncedTextField value={broker.spread} onChange={spread => update(broker, { spread })} type='number' fullWidth />
+        <DebouncedTextField value={testSettings.spread} onChange={spread => update({ spread })} type='number' fullWidth />
       </mui.Grid>
     </>
   );

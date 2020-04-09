@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, DebouncedTextField } from 'mylife-tools-ui';
+import { React, PropTypes, mui, DebouncedTextField, useRefProp } from 'mylife-tools-ui';
 import { getFieldDatatype, getStructureFieldName } from '../../common/metadata-utils';
 import PasswordField from './password-field';
 
@@ -8,8 +8,10 @@ const Broker = ({ broker, update: updateBroker }) => {
   const structure = getFieldDatatype('broker', 'credentials');
   const { credentials } = broker;
 
+  const credentialsRef = useRefProp(credentials);
+
   const update = (values) => {
-    console.log(credentials, values);
+    const credentials = credentialsRef.current;
     const merged = { ...credentials, ...values, password: undefined };
     if(values.password) {
       merged.password = values.password;
