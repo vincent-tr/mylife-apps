@@ -1,17 +1,17 @@
 import { createLogger } from 'mylife-tools-server';
-import Strategy, { Configuration, Listeners } from './strategy';
+import Strategy, { StrategyConfiguration, Listeners } from './strategy';
 import { round, PIP } from '../utils';
 import { Instrument, Credentials, PositionSummary, Broker, createBroker } from '../broker';
 
 const logger = createLogger('mylife:trading:strategy:strategy-base');
 
 export default abstract class StrategyBase implements Strategy {
-	private _configuration: Configuration;
+	private _configuration: StrategyConfiguration;
 	private _broker: Broker;
 	private listeners: Listeners;
 	private currentStatus: string;
 
-	protected abstract initImpl(credentials: Credentials): Promise<void>;
+	protected abstract initImpl(): Promise<void>;
 	protected abstract terminateImpl(): Promise<void>;
 
 	protected get configuration() {
@@ -22,16 +22,16 @@ export default abstract class StrategyBase implements Strategy {
 		return this._broker;
 	}
 
-	async init(configuration: Configuration, credentials: Credentials, listeners: Listeners) {
+	async init(configuration: StrategyConfiguration, listeners: Listeners) {
 		this._configuration = configuration;
-		this._broker = createBroker('ig');
+		this._broker = createBroker(configuration.broker);
 		
 		logger.debug(`(${this.configuration.name}) init`);
 		this.listeners = listeners;
 		this.changeStatus('Initialisation');
 
 		try {
-			await this.initImpl(credentials);
+			await this.initImpl();
 		} catch (err) {
 			logger.error(`(${this.configuration.name}) init error: ${err.stack}`);
 			this.fatal(err);

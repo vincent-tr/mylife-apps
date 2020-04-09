@@ -1,6 +1,6 @@
 import { createLogger } from 'mylife-tools-server';
 
-import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound } from '../broker';
+import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound, BrokerConfiguration } from '../broker';
 import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
@@ -19,7 +19,7 @@ export class BacktestBroker implements Broker {
   private readonly engine: Engine;
   private readonly openedDatasets = new Set<MovingDataset>();
 
-  constructor() {
+  constructor(configuration: BrokerConfiguration) {
     // TODO
     this.engine = new Engine({
       instrumentId: 'forex:eurusd',
@@ -42,7 +42,7 @@ export class BacktestBroker implements Broker {
     this.engine.fireAsync(target);
   }
 
-  async init(credentials: Credentials) {
+  async init() {
     throw new Error('Method not implemented.');
   }
 

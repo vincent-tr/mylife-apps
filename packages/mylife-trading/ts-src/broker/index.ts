@@ -1,4 +1,4 @@
-import { Broker } from './broker';
+import { Broker, BrokerConfiguration, BrokerConfigurationType } from './broker';
 import { IgBroker } from './ig/broker';
 import { BacktestBroker } from './backtest/broker';
 
@@ -13,17 +13,18 @@ export { default as Instrument} from './instrument';
 export { default as Position} from './position';
 export { default as Market} from './market';
 
-type BrokerClass = { new(): Broker; };
+type BrokerClass = { new(configuration: BrokerConfiguration): Broker; };
 
-const brokers = new Map<string, BrokerClass>();
-brokers.set('ig', IgBroker);
-brokers.set('backtest', BacktestBroker);
+const brokers = new Map<BrokerConfigurationType, BrokerClass>();
+brokers.set(BrokerConfigurationType.IG_DEMO, IgBroker);
+brokers.set(BrokerConfigurationType.IG_REAL, IgBroker);
+brokers.set(BrokerConfigurationType.BACKTEST, BacktestBroker);
 
-export function createBroker(implementation: string) {
-  const Class = brokers.get(implementation);
-  if(!implementation) {
-    throw new Error(`Unknown implementation: '${implementation}'`);
+export function createBroker(configuration: BrokerConfiguration) {
+  const Class = brokers.get(configuration.type);
+  if(!Class) {
+    throw new Error(`Unknown type: '${configuration.type}'`);
   }
 
-  return new Class();
+  return new Class(configuration);
 }

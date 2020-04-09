@@ -128,15 +128,19 @@ class TradingServiceBinder {
     const broker = this.brokers.get(strategy.broker);
 
     // format tradingService parameters
-    const configuration = { instrumentId: strategy.instrumentId, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display };
-    const credentials = { key: broker.key, identifier: broker.identifier, password: business.passwordDecrypt(broker.password), isDemo: broker.demo };
+    const brokerConfiguration = { type: broker.type, credentials: broker.credentials, testSettings: broker.testSettings };
+    if(brokerConfiguration.credentials) {
+      brokerConfiguration.credentials.password = business.passwordDecrypt(brokerConfiguration.credentials.password);
+    }
+    const configuration = { instrumentId: strategy.instrumentId, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display, broker: brokerConfiguration };
+
     const listeners = {
       onStatusChanged: (status) => this.status.set(key, status),
       onNewPositionSummary: (summary) => this._newPositionSummary(strategy, summary),
       onFatalError: (error) => this._onFatalError(strategy, error)
     };
 
-    await this.tradingService.add(key, configuration, credentials, listeners);
+    await this.tradingService.add(key, configuration, listeners);
   }
 
   _newPositionSummary(strategy, summary) {

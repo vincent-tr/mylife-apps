@@ -1,11 +1,10 @@
 import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
-import { Credentials, Instrument, Market, MarketStatus } from '../broker';
+import { Instrument, Market, MarketStatus } from '../broker';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-base');
 
 export default abstract class ForexScalpingBase extends StrategyBase {
-	private credentials: Credentials;
 	private market: Market;
 	private opened: boolean;
 
@@ -18,8 +17,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 	protected abstract open(): Promise<void>;
 	protected abstract close(): Promise<void>;
 
-	protected async initImpl(credentials: Credentials) {
-		this.credentials = credentials;
+	protected async initImpl() {
 		this.market = await this.broker.getMarket(this.configuration.instrumentId);
 		this.market.on('statusChanged', (status) => this.onMarketStatusChanged(status));
 
@@ -66,7 +64,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 		try {
 			this.changeStatus('Initialisation');
 
-			await this.broker.init(this.credentials);
+			await this.broker.init();
 
 			this._instrument = await this.broker.getInstrument(this.configuration.instrumentId);
 

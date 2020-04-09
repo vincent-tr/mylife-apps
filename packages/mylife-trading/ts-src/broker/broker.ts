@@ -3,41 +3,58 @@ import Position, { PositionOrder, PositionDirection } from './position';
 import Instrument from './instrument';
 import Market from './market';
 
-export interface Credentials {
-  key: string;
-  identifier: string;
-  password: string;
-  isDemo: boolean;
-}
-
 export enum Resolution {
   M1 = 'm1',
   M5 = 'm5',
   H1 = 'h1'
 }
 
+export enum BrokerConfigurationType {
+  BACKTEST = 'backtest',
+  IG_REAL = 'ig-real',
+  IG_DEMO = 'ig-demo'
+}
+
+export interface Credentials {
+  readonly key: string;
+  readonly identifier: string;
+  readonly password: string;
+}
+
+export interface TestSettings {
+  readonly instrumentId: string;
+  readonly resolution: Resolution;
+  readonly spread: number;
+}
+
+export interface BrokerConfiguration {
+  readonly type: BrokerConfigurationType;
+  readonly credentials: Credentials;
+  readonly testSettings: TestSettings;
+}
+
 export interface OpenPositionBound {
-  level?: number,
-  distance?: number;
+  readonly level?: number,
+  readonly distance?: number;
 }
 
 export interface PositionSummary {
-  instrumentId: string;
-  dealId: string;
-  openDate: Date;
-  closeDate: Date;
-  openLevel: number;
-  closeLevel: number;
-  size: number;
-  profitAndLoss: number;
-  currency: string;
-  orders: PositionOrder[];
+  readonly instrumentId: string;
+  readonly dealId: string;
+  readonly openDate: Date;
+  readonly closeDate: Date;
+  readonly openLevel: number;
+  readonly closeLevel: number;
+  readonly size: number;
+  readonly profitAndLoss: number;
+  readonly currency: string;
+  readonly orders: PositionOrder[];
 }
 
 export interface Broker {
   getMarket(instrumentId: string): Promise<Market>;
   fireAsync(target: () => Promise<void>): void;
-  init(credentials: Credentials): Promise<void>;
+  init(): Promise<void>;
   terminate(): Promise<void>;
 
   getInstrument(instrumentId: string): Promise<Instrument>;

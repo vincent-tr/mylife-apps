@@ -1,10 +1,11 @@
-import { Credentials, PositionSummary } from '../broker';
+import { PositionSummary, BrokerConfiguration } from '../broker';
 
-export interface Configuration {
-  name: string;
-  implementation: string;
-  instrumentId: string;
-  risk: number;
+export interface StrategyConfiguration {
+  readonly name: string;
+  readonly implementation: string;
+  readonly instrumentId: string;
+  readonly risk: number;
+  readonly broker: BrokerConfiguration;
 }
 
 export interface Listeners {
@@ -14,6 +15,6 @@ export interface Listeners {
 }
 
 export default interface Strategy {
-  init(configuration: Configuration, credentials: Credentials, listeners: Listeners): Promise<void>;
+  init(configuration: StrategyConfiguration, listeners: Listeners): Promise<void>;
   terminate(): Promise<void>;
 }

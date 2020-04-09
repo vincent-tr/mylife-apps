@@ -5,13 +5,13 @@ import { OpenPositionOrder, OrderType, TimeInForce, DealStatus } from './api/dea
 
 import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp, parseDate, parseISODate, serializeDirection } from './parsing';
-import { Connection, connectionOpen, connectionClose } from './connection';
+import { Connection, connectionOpen, connectionClose, Credentials } from './connection';
 import IgPosition from './position';
 import IgInstrument from './instrument';
 import IgMarket from './market';
 import { getInstrumentRef } from './instrument-ref';
 
-import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound } from '../broker';
+import { Resolution, Broker, PositionSummary, OpenPositionBound, BrokerConfigurationType, BrokerConfiguration } from '../broker';
 import MovingDataset, { Record, CandleStickData } from '../moving-dataset';
 import Position, { PositionDirection } from '../position';
 import Instrument from '../instrument';
@@ -45,6 +45,11 @@ const datasetSubscriptionFields = [
 
 export class IgBroker implements Broker {
 	private connection: Connection;
+	private readonly credentials: Credentials;
+
+	constructor(configuration: BrokerConfiguration) {
+		this.credentials = { ... configuration.credentials, isDemo: configuration.type === BrokerConfigurationType.IG_DEMO };
+	}
 
 	async getMarket(instrumentId: string): Promise<Market> {
 		const { market } = getInstrumentRef(instrumentId);
@@ -55,8 +60,8 @@ export class IgBroker implements Broker {
 		fireAsync(target);
 	}
 
-	async init(credentials: Credentials) {
-		this.connection = await connectionOpen(credentials);
+	async init() {
+		this.connection = await connectionOpen(this.credentials);
 	}
 
 	async terminate() {

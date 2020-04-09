@@ -12,10 +12,10 @@ export enum PositionOrderType {
 }
 
 export interface PositionOrder {
-  date: Date,
-  type: PositionOrderType,
-  takeProfit?: number,
-  stopLoss?: number;
+  readonly date: Date,
+  readonly type: PositionOrderType,
+  readonly takeProfit?: number,
+  readonly stopLoss?: number;
 };
 
 export default interface Position extends EventEmitter {

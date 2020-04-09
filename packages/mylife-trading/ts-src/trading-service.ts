@@ -1,6 +1,5 @@
 import { registerService } from 'mylife-tools-server';
-import { Strategy, Configuration, Listeners, createStrategy } from './strategies';
-import { Credentials, PositionSummary } from './broker';
+import { Strategy, StrategyConfiguration, Listeners, createStrategy } from './strategies';
 import { Mutex } from 'async-mutex';
 
 export class TradingService {
@@ -8,14 +7,14 @@ export class TradingService {
   private readonly strategies = new Map<string, Strategy>();
   private readonly mutex = new Mutex();
 
-  async add(key: string, configuration: Configuration, credentials: Credentials, listeners: Listeners) {
+  async add(key: string, configuration: StrategyConfiguration, listeners: Listeners) {
     await this.mutex.runExclusive(async () => {
       if (this.strategies.get(key)) {
         throw new Error(`Strategy does already exist: '${key}'`);
       }
 
       const strategy = createStrategy(configuration.implementation);
-      await strategy.init(configuration, credentials, listeners);
+      await strategy.init(configuration, listeners);
       this.strategies.set(key, strategy);
     });
   }
