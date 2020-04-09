@@ -11,8 +11,6 @@ import BacktestInstrument from './instrument';
 import { HistoricalDataItem } from './cursor';
 import Engine from './engine';
 
-import { PIP } from '../../utils';
-
 const logger = createLogger('mylife:trading:broker:backtest');
 
 export class BacktestBroker implements Broker {
@@ -20,13 +18,7 @@ export class BacktestBroker implements Broker {
   private readonly openedDatasets = new Set<MovingDataset>();
 
   constructor(configuration: BrokerConfiguration) {
-    // TODO
-    this.engine = new Engine({
-      instrumentId: 'forex:eurusd',
-      resolution: Resolution.M1,
-      spread: 1 * PIP
-    });
-
+    this.engine = new Engine(configuration.testSettings);
     this.engine.on('nextData', (item) => this.emitData(item));
   }
 
@@ -43,11 +35,11 @@ export class BacktestBroker implements Broker {
   }
 
   async init() {
-    throw new Error('Method not implemented.');
+    // TODO
   }
 
   async terminate() {
-    throw new Error('Method not implemented.');
+    // TODO
   }
 
   async getInstrument(instrumentId: string): Promise<Instrument> {

@@ -1,17 +1,11 @@
 import EventEmitter from 'events';
 import { createLogger } from 'mylife-tools-server';
 
-import { Resolution } from '../broker';
+import { TestSettings } from '../broker';
 import { Timeline } from './timeline';
 import Cursor, { HistoricalDataItem } from './cursor';
 
 const logger = createLogger('mylife:trading:broker:backtest:engine');
-
-export interface Configuration {
-  readonly instrumentId: string;
-  readonly resolution: Resolution; // always m1
-  readonly spread: number;
-}
 
 interface Engine extends EventEmitter {
   on(event: 'nextData', listener: (item: HistoricalDataItem) => void): this;
@@ -22,7 +16,7 @@ class Engine extends EventEmitter implements Engine {
   private readonly cursor: Cursor;
   private readonly pendingPromises = new Set<Promise<void>>();
 
-  constructor(public readonly configuration: Configuration) {
+  constructor(public readonly configuration: TestSettings) {
     super();
 
     this.timeline = new Timeline(this.configuration.resolution);
@@ -30,8 +24,11 @@ class Engine extends EventEmitter implements Engine {
   }
 
   async init() {
-    // TODO: init timeline
-    //this.timeline.set();
+    const data = await this.cursor.next();
+    this.timeline.set(data.date);
+
+    this.emit('nextData', data);
+    await this.waitAllAsync();
   }
 
   // TODO: call it
@@ -45,7 +42,6 @@ class Engine extends EventEmitter implements Engine {
     }
 
     this.emit('nextData', data);
-
     await this.waitAllAsync();
   }
 
