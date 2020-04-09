@@ -119,6 +119,7 @@ exports.Datatype = class Datatype {
     if(!field) {
       throw new Error(`Field not found '${id}' on '${this.id}' datatype`)
     }
+    return field;
   }
 
   get constraints() {
