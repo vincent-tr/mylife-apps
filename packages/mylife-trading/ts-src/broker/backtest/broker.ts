@@ -20,6 +20,8 @@ export class BacktestBroker implements Broker {
   constructor(configuration: BrokerConfiguration) {
     this.engine = new Engine(configuration.testSettings);
     this.engine.on('nextData', (item) => this.emitData(item));
+    // TODO: report end
+    //this.engine.on('end', () => )
   }
 
   async getMarket(instrumentId: string): Promise<Market> {

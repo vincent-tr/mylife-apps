@@ -9,11 +9,37 @@ const logger = createLogger('mylife:trading:broker:backtest:engine');
 
 interface Engine extends EventEmitter {
   on(event: 'nextData', listener: (item: HistoricalDataItem) => void): this;
+  on(event: 'end', listener: () => void): this;
+}
+
+class TickStream {
+  private readonly end: Promise<void>;
+  private closeFlag = false;
+
+  constructor(private readonly next: () => Promise<void>) {
+    this.end = this.run();
+  }
+
+  async terminate() {
+    this.closeFlag = true;
+    await this.end;
+  }
+
+  terminateFromInside() {
+    this.closeFlag = true;
+  }
+
+  private async run() {
+    while (!this.closeFlag) {
+      await this.next();
+    }
+  }
 }
 
 class Engine extends EventEmitter implements Engine {
   public readonly timeline: Timeline;
   private readonly cursor: Cursor;
+  private runner: TickStream;
   private readonly pendingPromises = new Set<Promise<void>>();
   private _lastItem: HistoricalDataItem;
 
@@ -36,12 +62,21 @@ class Engine extends EventEmitter implements Engine {
 
     this.emit('nextData', item);
     await this.waitAllAsync();
+
+    this.runner = new TickStream(() => this.tick());
   }
 
   // TODO: call it
   private async tick() {
     const item = await this.cursor.next();
-    // TODO: handle finish
+
+    if (!item) {
+      this.runner.terminateFromInside();
+      this.runner = null;
+      this.emit('end');
+      return;
+    }
+
     this.timeline.increment();
 
     if (this.timeline.current.getTime() !== item.date.getTime()) {
@@ -55,6 +90,7 @@ class Engine extends EventEmitter implements Engine {
   }
 
   async terminate() {
+    await this.runner.terminate();
     await this.waitAllAsync();
     await this.cursor.close();
   }
