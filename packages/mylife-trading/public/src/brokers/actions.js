@@ -11,6 +11,18 @@ const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
 };
 
+const defaultTestSettings = {
+  instrumentId: 'A remplir',
+  resolution: 'A remplir',
+  spread: 1
+};
+
+const defaultCredentials = {
+  key: 'A remplir',
+  identifier: 'A remplir',
+  password: 'A remplir'
+}
+
 const getBrokers = () => createOrUpdateView({
   criteriaSelector: () => null,
   viewSelector: getViewId,
@@ -35,10 +47,8 @@ export const leave = () => async (dispatch) => {
 export const add = () => async (dispatch) => {
   const values = {
     display: 'Nouveau',
-    key: 'A remplir',
-    identifier: 'A remplir',
-    password: 'A remplir',
-    demo: false
+    type: 'backtest',
+    testSettings: defaultTestSettings
   };
 
   const broker = await dispatch(io.call({
@@ -51,6 +61,27 @@ export const add = () => async (dispatch) => {
 };
 
 export const update = (broker, changes) => async (dispatch) => {
+  switch(changes.type) {
+    case 'ig-demo':
+    case 'ig-real':
+      if(broker.testSettings) {
+        changes.testSettings = null;
+      }
+      if(!broker.credentials && !changes.credentials) {
+        changes.credentials = defaultCredentials;
+      }
+      break;
+
+    case 'backtest':
+      if(broker.credentials) {
+        changes.credentials = null;
+      }
+      if(!broker.testSettings && !changes.testSettings) {
+        changes.testSettings = defaultTestSettings;
+      }
+      break;
+  }
+
   await dispatch(io.call({
     service: 'broker',
     method: 'update',
