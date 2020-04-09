@@ -12,4 +12,19 @@ module.exports = [
       { id: 'stopLoss', name: 'Nouvelle valeur de \'stop loss\'', datatype: 'amount' },
     ]
   },
+  { id: 'broker-type', enum: ['backtest', 'ig-demo', 'ig-real'] },
+  { 
+    id: 'broker-credentials', structure: [
+      { id: 'key', name: 'Clé IG', datatype: 'name', constraints: ['not-null', 'not-empty'] },
+      { id: 'identifier', name: 'Identifiant IG', datatype: 'name', constraints: ['not-null', 'not-empty'] },
+      { id: 'password', name: 'Mot de passe IG', datatype: 'password', constraints: ['not-null', 'not-empty'] },
+    ]
+  },
+  { 
+    id: 'broker-test-settings', structure: [
+      { id: 'instrumentId', name: 'Instrument de trading', datatype: 'name', constraints: ['not-null', 'not-empty'] },
+      { id: 'resolution', name: 'Resolution', datatype: 'name', constraints: ['not-null', 'not-empty'] },
+      { id: 'spread', name: 'Spread (en pips)', datatype: 'real', constraints: ['not-null', 'positive'] },
+    ]
+  },
 ];
