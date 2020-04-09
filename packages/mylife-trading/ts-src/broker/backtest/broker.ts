@@ -61,6 +61,11 @@ export class BacktestBroker implements Broker {
     dataset.on('close', () => this.openedDatasets.delete(dataset));
 
     // TODO: fill it with prev data
+    // for now, fill it with lastItem
+    const record = createRecord(this.engine.lastItem, this.engine.configuration.spread);
+    for(let i=0; i<size; ++i) {
+      dataset.add(record);
+    }
 
     return dataset;
   }

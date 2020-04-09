@@ -15,6 +15,11 @@ class Engine extends EventEmitter implements Engine {
   public readonly timeline: Timeline;
   private readonly cursor: Cursor;
   private readonly pendingPromises = new Set<Promise<void>>();
+  private _lastItem: HistoricalDataItem;
+
+  get lastItem() {
+    return this._lastItem;
+  }
 
   constructor(public readonly configuration: TestSettings) {
     super();
@@ -24,25 +29,29 @@ class Engine extends EventEmitter implements Engine {
   }
 
   async init() {
-    const data = await this.cursor.next();
-    this.timeline.set(data.date);
+    const item = await this.cursor.next();
+    // at bootstrap, _lastItem = item
+    this._lastItem = item;
+    this.timeline.set(item.date);
 
-    this.emit('nextData', data);
+    this.emit('nextData', item);
     await this.waitAllAsync();
   }
 
   // TODO: call it
   private async tick() {
-    const data = await this.cursor.next();
+    const item = await this.cursor.next();
     // TODO: handle finish
     this.timeline.increment();
 
-    if (this.timeline.current.getTime() !== data.date.getTime()) {
-      throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${data.date.toISOString()})`);
+    if (this.timeline.current.getTime() !== item.date.getTime()) {
+      throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${item.date.toISOString()})`);
     }
 
-    this.emit('nextData', data);
+    this.emit('nextData', item);
     await this.waitAllAsync();
+
+    this._lastItem = item;
   }
 
   async terminate() {
