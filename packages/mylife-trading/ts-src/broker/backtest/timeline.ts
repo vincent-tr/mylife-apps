@@ -46,4 +46,8 @@ export class Timeline extends EventEmitter implements Timeline {
     this._current = new Date(this._current.getTime() + this.stepMs);
     this.emit('change', this._current);
   }
+
+  prevTick(size: number) {
+    return new Date(this._current.getTime() - (this.stepMs * size));
+  }
 }

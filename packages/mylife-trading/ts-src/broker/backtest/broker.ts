@@ -62,8 +62,9 @@ export class BacktestBroker implements Broker {
 
     // TODO: fill it with prev data
     // for now, fill it with lastItem
-    const record = createRecord(this.engine.lastItem, this.engine.configuration.spread);
-    for(let i=0; i<size; ++i) {
+    for (let i = size; i > 0; --i) {
+      const item = { ...this.engine.lastItem, date: this.engine.timeline.prevTick(i) };
+      const record = createRecord(item, this.engine.configuration.spread);
       dataset.add(record);
     }
 
