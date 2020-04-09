@@ -1,6 +1,6 @@
 {
   "name": "mylife-tools-server",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "MyLife Tools Server",
   "main": "lib/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "express": "^4.17.1",
     "fast-deep-equal": "^2.0.1",
     "mongodb": "^3.4.0",
-    "mylife-tools-common": "^1.0.6",
+    "mylife-tools-common": "^1.0.7",
     "read-config": "^2.0.0",
     "serve-favicon": "^2.5.0",
     "server-destroy": "^1.0.1",
