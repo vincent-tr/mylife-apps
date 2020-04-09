@@ -1,7 +1,10 @@
 import EventEmitter from 'events';
+import { createLogger } from 'mylife-tools-server';
 import Market, { MarketStatus } from '../market';
 import Engine from './engine';
 import { Timeline } from './timeline';
+
+const logger = createLogger('mylife:trading:broker:backtest:market');
 
 interface MarketParams {
 	readonly refreshInterval: number;
@@ -37,6 +40,7 @@ export default class BacktestMarket extends EventEmitter implements Market {
 			return;
 		}
 
+		logger.debug(`Market status change: '${status}'`);
 		this._status = status;
 		this.emit('statusChanged', status);
 	}
