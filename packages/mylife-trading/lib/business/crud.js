@@ -10,10 +10,13 @@ exports.brokerGet = (id) => {
   return brokers.get(id);
 };
 
-exports.brokerCreate = ({ password, ...values }) => {
+exports.brokerCreate = (values) => {
+  values = prepareBrokerValues(values);
   const entity = getMetadataEntity('broker');
   const brokers = getStoreCollection('brokers');
-  const newBroker = entity.newObject({ password: business.passwordEncrypt(password), ...values });
+
+  const newBroker = entity.newObject(values);
+  validateBroker(newBroker);
 
   const item = brokers.set(newBroker);
   logger.info(`Created broker '${item._id}'`);
@@ -38,19 +41,59 @@ exports.brokerDelete = broker => {
 };
 
 exports.brokerUpdate = (broker, values) => {
-  const { password } = values;
-  if (password) {
-    values = { ...values, password: business.passwordEncrypt(password) };
-  }
+  values = prepareBrokerValues(values);
   logger.info(`Setting values '${JSON.stringify(values)}' on broker '${broker._id}'`);
 
   const entity = getMetadataEntity('broker');
   const brokers = getStoreCollection('brokers');
   const item = entity.setValues(broker, values);
+  validateBroker(item);
 
   brokers.set(item);
   return item;
 };
+
+function prepareBrokerValues(values) {
+  const password = values.credentials && values.credentials.password;
+  if (!password) {
+    // no password change
+    return values;
+  }
+
+  return {
+    ...values,
+    credentials: {
+      ...values.credentials,
+      password: business.passwordEncrypt(password)
+    }
+  };
+}
+
+function validateBroker(broker) {
+  switch(broker.type) {
+    case 'backtest':
+      if(!broker.testSettings) {
+        throw new Error('missing testSettings');
+      }
+      if(broker.credentials) {
+        throw new Error('unexpected credentials');
+      }
+      break;
+
+    case 'ig-demo':
+    case 'ig-real':
+      if(!broker.credentials) {
+        throw new Error('missing credentials');
+      }
+      if(broker.testSettings) {
+        throw new Error('unexpected testSettings');
+      }
+      break;
+
+    default:
+      throw new Error(`Unsupported broker type: ${broker.type}`);
+  }
+}
 
 exports.brokersNotify = (session) => {
   const brokers = getStoreCollection('brokers');
