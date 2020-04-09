@@ -51,14 +51,12 @@ export const add = () => async (dispatch) => {
 };
 
 export const update = (broker, changes) => async (dispatch) => {
-  const updatedBroker = await dispatch(io.call({
+  await dispatch(io.call({
     service: 'broker',
     method: 'update',
     id: broker._id,
     values: changes
   }));
-
-  dispatch(local.showSuccess(`${renderObject(updatedBroker)} mis à jour`));
 };
 
 export const remove = (broker) => async (dispatch) => {

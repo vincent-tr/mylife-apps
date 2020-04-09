@@ -52,14 +52,12 @@ export const add = () => async (dispatch) => {
 };
 
 export const update = (strategy, changes) => async (dispatch) => {
-  const updatedStrategy = await dispatch(io.call({
+  await dispatch(io.call({
     service: 'strategy',
     method: 'update',
     id: strategy._id,
     values: changes
   }));
-
-  dispatch(local.showSuccess(`${renderObject(updatedStrategy)} mis à jour`));
 };
 
 export const remove = (strategy) => async (dispatch) => {
