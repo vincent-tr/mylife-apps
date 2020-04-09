@@ -127,13 +127,8 @@ class TradingServiceBinder {
     const key = strategy._id;
     const broker = this.brokers.get(strategy.broker);
 
-    // format tradingService parameters
-    const brokerConfiguration = { type: broker.type, credentials: broker.credentials, testSettings: broker.testSettings };
-    if(brokerConfiguration.credentials) {
-      brokerConfiguration.credentials.password = business.passwordDecrypt(brokerConfiguration.credentials.password);
-    }
-    const configuration = { instrumentId: strategy.instrumentId, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display, broker: brokerConfiguration };
-
+    const configuration = mapConfiguration(strategy, broker);
+    
     const listeners = {
       onStatusChanged: (status) => this.status.set(key, status),
       onNewPositionSummary: (summary) => this._newPositionSummary(strategy, summary),
@@ -181,3 +176,10 @@ TradingServiceBinder.serviceName = 'trading-service-binder';
 TradingServiceBinder.dependencies = ['trading-service', 'store', 'task-queue-manager'];
 
 registerService(TradingServiceBinder);
+
+function mapConfiguration(strategy, broker) {
+  const testSettings = broker.testSettings && { ...broker.testSettings };
+  const credentials = broker.credentials && { ...broker.credentials, password: business.passwordDecrypt(broker.credentials.password) };
+  const brokerConfiguration = { type: broker.type, credentials, testSettings };
+  return { instrumentId: strategy.instrumentId, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display, broker: brokerConfiguration };
+}
