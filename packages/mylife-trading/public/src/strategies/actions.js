@@ -38,7 +38,7 @@ export const add = () => async (dispatch) => {
     implementation: 'forex-scalping-m1-extreme',
     enabled: false,
     broker: null,
-    epic: 'A remplir',
+    instrumentId: 'A remplir',
     risk: 5
   };
 
