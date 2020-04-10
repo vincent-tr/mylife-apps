@@ -44,10 +44,10 @@ class Engine extends EventEmitter implements Engine {
   private readonly cursor: Cursor;
   private runner: TickStream;
   private readonly pendingPromises = new Set<Promise<void>>();
-  private _lastRecord: Record;
+  private _currentRecord: Record;
 
-  get lastRecord() {
-    return this._lastRecord;
+  get currentRecord() {
+    return this._currentRecord;
   }
 
   constructor(public readonly configuration: TestSettings) {
@@ -61,8 +61,7 @@ class Engine extends EventEmitter implements Engine {
   async init() {
     const item = await this.cursor.next();
     const record = createRecord(item, this.spread);
-    // at bootstrap, _lastRecord = item
-    this._lastRecord = record;
+    this._currentRecord = record;
     this.timeline.set(record.timestamp);
 
     this.emit('nextData', item);
@@ -71,7 +70,6 @@ class Engine extends EventEmitter implements Engine {
     this.runner = new TickStream(() => this.tick());
   }
 
-  // TODO: call it
   private async tick() {
     const item = await this.cursor.next();
 
@@ -81,6 +79,7 @@ class Engine extends EventEmitter implements Engine {
       this.emit('end');
       return;
     }
+
     const record = createRecord(item, this.spread);
 
     this.timeline.increment();
@@ -89,10 +88,9 @@ class Engine extends EventEmitter implements Engine {
       throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${record.timestamp.toISOString()})`);
     }
 
+    this._currentRecord = record;
     this.emit('nextData', record);
     await this.waitAllAsync();
-
-    this._lastRecord = record;
   }
 
   async terminate() {

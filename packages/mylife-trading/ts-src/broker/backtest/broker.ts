@@ -9,8 +9,9 @@ import Market from '../market';
 import BacktestMarket from './market';
 import BacktestInstrument from './instrument';
 import BacktestPosition from './position';
-import { HistoricalDataItem } from './cursor';
 import Engine from './engine';
+
+import { PIP } from '../../utils';
 
 const logger = createLogger('mylife:trading:broker:backtest');
 
@@ -65,10 +66,10 @@ export class BacktestBroker implements Broker {
     dataset.on('close', () => this.openedDatasets.delete(dataset));
 
     // TODO: fill it with prev data
-    // for now, fill it with lastItem
+    // for now, fill it with current data
     for (let i = size; i > 0; --i) {
-      const { lastRecord } = this.engine;
-      const record = new Record(lastRecord.ask, lastRecord.bid, this.engine.timeline.prevTick(i));
+      const { currentRecord } = this.engine;
+      const record = new Record(currentRecord.ask, currentRecord.bid, this.engine.timeline.prevTick(i));
       dataset.add(record);
     }
 
@@ -85,11 +86,36 @@ export class BacktestBroker implements Broker {
   }
 
   async openPosition(instrument: Instrument, direction: PositionDirection, size: number, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound): Promise<Position> {
-    throw new Error('Method not implemented.');
+    if (instrument.instrumentId !== this.engine.configuration.instrumentId) {
+      throw new Error(`Only configuration instrument '${this.engine.configuration.instrumentId}' supported`);
+    }
+
+    const { currentRecord } = this.engine;
+    const stopLossValue = computeBound(currentRecord, stopLoss, direction, false);
+    const takeProfitValue = computeBound(currentRecord, takeProfit, direction, true);
+
+    const position = new BacktestPosition(this.engine, instrument, direction, size, stopLossValue, takeProfitValue);
+    this.openedPositions.add(position);
+    position.on('close', () => this.openedPositions.delete(position));
+
+    return position;
   }
 
   async getPositionSummary(position: Position): Promise<PositionSummary> {
-    throw new Error('Method not implemented.');
+    const btPosition = position as BacktestPosition;
+
+    return {
+      instrumentId: btPosition.instrumentId,
+      dealId: btPosition.dealId,
+      openDate: btPosition.openDate,
+      closeDate: btPosition.closeDate,
+      openLevel: btPosition.openLevel,
+      closeLevel: btPosition.closeLevel,
+      size: btPosition.size,
+      profitAndLoss: computeProfitAndLoss(btPosition),
+      currency: 'E',
+      orders: btPosition.orders
+    };
   }
 }
 
@@ -99,4 +125,41 @@ function parseInstrumentId(instrumentId: string) {
     throw new Error(`Malformed instrument id: '${instrumentId}'`);
   }
   return { market, instrument };
+}
+
+function computeBound(currentRecord: Record, bound: OpenPositionBound, direction: PositionDirection, isTakeProfit: boolean) {
+  if (bound.level) {
+    return bound.level;
+  }
+
+  if (!bound.distance) {
+    return null;
+  }
+
+  const baseLevel = currentRecord.average.close;
+  const distance = bound.distance * PIP;
+
+  let add: boolean;
+  switch (direction) {
+    case PositionDirection.BUY:
+      add = isTakeProfit;
+      break;
+
+    case PositionDirection.SELL:
+      add = !isTakeProfit;
+      break;
+  }
+
+  return add ? baseLevel + distance : baseLevel - distance;
+}
+
+function computeProfitAndLoss(position: BacktestPosition) {
+  const { instrument } = position;
+  let levelDiff = position.closeLevel - position.openLevel;
+  if (position.direction === PositionDirection.SELL) {
+    levelDiff -= levelDiff;
+  }
+
+  const profitAndLoss = levelDiff * (position.size * instrument.contractSize);
+  return profitAndLoss * instrument.exchangeRate;
 }
