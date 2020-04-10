@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 
@@ -64,6 +64,7 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
   const classes = useStyles();
   const screenSize = useScreenSize();
   const [menuState, setMenuState] = useState(initialMenuState[screenSize]);
+  useEffect(() => setMenuState(initialMenuState[screenSize]), [screenSize]);
 
   const menuSelect = () => {
     const state = afterSelectMenuState[screenSize];
