@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { createLogger } from 'mylife-tools-server';
+import { createLogger, getService } from 'mylife-tools-server';
 
 import { TestSettings } from '../broker';
 import { Record, CandleStickData } from '../moving-dataset';
@@ -110,6 +110,9 @@ class Engine extends EventEmitter implements Engine {
   private async waitAllAsync() {
     const pendings = Array.from(this.pendingPromises);
     await Promise.all(pendings);
+
+    // don't let the store task queue grow too much with stats inserts
+    await getService('store').waitTaskQueueEmpty();
   }
 }
 
