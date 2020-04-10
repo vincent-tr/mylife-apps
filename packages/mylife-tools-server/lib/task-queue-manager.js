@@ -28,18 +28,18 @@ class TaskQueue {
   }
 
   async close() {
-    if(!this.running) {
-      this.closed = true;
-      return;
-    }
-
     this.closing = true;
     await this.waitEmpty();
     this.closing = false;
+
     this.closed = true;
   }
 
   async waitEmpty() {
+    if(!this.running) {
+      return;
+    }
+
     return new Promise(resolve => { this.pendingEmptyCbs.add(resolve); });
   }
 
