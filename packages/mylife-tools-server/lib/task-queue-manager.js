@@ -24,6 +24,7 @@ class TaskQueue {
     this.closing = false;
     this.closed = false;
     this.running = false;
+    this.pendingEmptyCbs = new Set();
   }
 
   async close() {
@@ -33,13 +34,13 @@ class TaskQueue {
     }
 
     this.closing = true;
-    await this._waitClose();
+    await this.waitEmpty();
     this.closing = false;
     this.closed = true;
   }
 
-  async _waitClose() {
-    return new Promise(resolve => { this.pendingCloseCb = resolve; });
+  async waitEmpty() {
+    return new Promise(resolve => { this.pendingEmptyCbs.add(resolve); });
   }
 
   add(name, func) {
@@ -83,9 +84,10 @@ class TaskQueue {
       }
 
       this.running = false;
-      if(this.pendingCloseCb) {
-        this.pendingCloseCb();
+      for(const emptyCb of this.pendingEmptyCbs) {
+        emptyCb();
       }
+      this.pendingEmptyCbs.clear();
     });
   }
 
