@@ -10,9 +10,9 @@ import Position, { PositionOrder, PositionOrderType, PositionDirection } from '.
 const logger = createLogger('mylife:trading:broker:position:ig');
 
 export default class IgPosition extends EventEmitter implements Position {
-  public readonly dealReference: string;
-  public readonly dealId: string;
-  public readonly direction: PositionDirection;
+  readonly dealReference: string;
+  readonly dealId: string;
+  readonly direction: PositionDirection;
 
   private readonly _orders: PositionOrder[] = [];
   private _stopLoss: number;
@@ -50,19 +50,19 @@ export default class IgPosition extends EventEmitter implements Position {
     });
   }
 
-  public get stopLoss() {
+  get stopLoss() {
     return this._stopLoss;
   }
 
-  public get takeProfit() {
+  get takeProfit() {
     return this._takeProfit;
   }
 
-  public get lastUpdateDate() {
+  get lastUpdateDate() {
     return this._lastUpdateDate;
   }
 
-  public get orders() {
+  get orders() {
     return this._orders;
   }
 
