@@ -10,7 +10,6 @@ import Cursor, { HistoricalDataItem } from './cursor';
 const logger = createLogger('mylife:trading:broker:backtest:engine');
 
 interface Engine extends EventEmitter {
-  on(event: 'nextData', listener: (item: Record) => void): this;
   on(event: 'end', listener: () => void): this;
 }
 
@@ -61,10 +60,10 @@ class Engine extends EventEmitter implements Engine {
   async init() {
     const item = await this.cursor.next();
     const record = createRecord(item, this.spread);
+    
     this._currentRecord = record;
     this.timeline.set(record.timestamp);
 
-    this.emit('nextData', item);
     await this.waitAllAsync();
 
     this.runner = new TickStream(() => this.tick());
@@ -81,6 +80,7 @@ class Engine extends EventEmitter implements Engine {
     }
 
     const record = createRecord(item, this.spread);
+    this._currentRecord = record;
 
     this.timeline.increment();
 
@@ -88,8 +88,6 @@ class Engine extends EventEmitter implements Engine {
       throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${record.timestamp.toISOString()})`);
     }
 
-    this._currentRecord = record;
-    this.emit('nextData', record);
     await this.waitAllAsync();
   }
 

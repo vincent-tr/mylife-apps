@@ -6,7 +6,6 @@ import { Record } from '../moving-dataset';
 import Engine from './engine';
 import BacktestInstrument from './instrument';
 
-
 export default class BacktestPosition extends EventEmitter implements Position {
   readonly dealId = randomString();
 
@@ -91,27 +90,65 @@ export default class BacktestPosition extends EventEmitter implements Position {
       stopLoss: this._stopLoss
     });
 
+    if (type === PositionOrderType.UPDATE) {
+      this.emit('update');
+    }
+
     this.checkClose();
   }
 
   async close() {
-    // TODO
-    throw new Error('Method not implemented.');
+    const candle = this.engine.currentRecord.average;
+    // consider we close at the end
+    this.closeImpl(candle.close);
   }
 
   tick(record: Record) {
-    // TODO
+    this.checkClose();
   }
 
-  private closeImpl() {
-    // TODO
+  private closeImpl(level: number) {
     const { currentRecord } = this.engine;
     this._closeDate = currentRecord.timestamp;
-    this._closeLevel = currentRecord.average.close;
+    this._closeLevel = level;
+
+    this._orders.push({
+      date: this._lastUpdateDate,
+      type: PositionOrderType.CLOSE
+    });
+
+    this.emit('close');
   }
 
   private checkClose() {
-    // TODO
+    const candle = this.engine.currentRecord.average;
+    switch (this.direction) {
+      case PositionDirection.BUY:
+        if (this.takeProfit && this.takeProfit <= candle.high) {
+          this.closeImpl(this.takeProfit);
+          return;
+        }
+
+        if (this.stopLoss && this.stopLoss >= candle.low) {
+          this.closeImpl(this.stopLoss);
+          return;
+        }
+
+        break;
+
+      case PositionDirection.SELL:
+        if (this.takeProfit && this.takeProfit >= candle.low) {
+          this.closeImpl(this.takeProfit);
+          return;
+        }
+
+        if (this.stopLoss && this.stopLoss <= candle.high) {
+          this.closeImpl(this.stopLoss);
+          return;
+        }
+
+        break;
+    }
   }
 }
 

@@ -22,7 +22,7 @@ export class BacktestBroker implements Broker {
 
   constructor(configuration: BrokerConfiguration) {
     this.engine = new Engine(configuration.testSettings);
-    this.engine.on('nextData', (record) => this.emitData(record));
+    this.engine.timeline.on('change', () => this.emitData());
     // TODO: report end
     //this.engine.on('end', () => )
   }
@@ -76,7 +76,8 @@ export class BacktestBroker implements Broker {
     return dataset;
   }
 
-  private emitData(record: Record) {
+  private emitData() {
+    const record = this.engine.currentRecord;
     for (const dataset of this.openedDatasets) {
       dataset.add(record);
     }

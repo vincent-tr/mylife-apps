@@ -40,6 +40,7 @@ export class Timeline extends EventEmitter implements Timeline {
 
   set(value: Date) {
     this._current = value;
+    this.emit('change', this._current);
   }
 
   increment() {
