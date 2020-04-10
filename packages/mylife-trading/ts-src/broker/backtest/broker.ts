@@ -11,7 +11,7 @@ import BacktestInstrument from './instrument';
 import BacktestPosition from './position';
 import Engine from './engine';
 
-import { PIP } from '../../utils';
+import { PIP, round } from '../../utils';
 
 const logger = createLogger('mylife:trading:broker:backtest');
 
@@ -161,6 +161,6 @@ function computeProfitAndLoss(position: BacktestPosition) {
     levelDiff -= levelDiff;
   }
 
-  const profitAndLoss = levelDiff * (position.size * instrument.contractSize);
-  return profitAndLoss * instrument.exchangeRate;
+  const profitAndLoss = levelDiff * position.size * instrument.contractSize;
+  return round(profitAndLoss * instrument.exchangeRate, 2);
 }
