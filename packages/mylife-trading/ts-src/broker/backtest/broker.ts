@@ -8,6 +8,7 @@ import Market from '../market';
 
 import BacktestMarket from './market';
 import BacktestInstrument from './instrument';
+import BacktestPosition from './position';
 import { HistoricalDataItem } from './cursor';
 import Engine from './engine';
 
@@ -16,10 +17,11 @@ const logger = createLogger('mylife:trading:broker:backtest');
 export class BacktestBroker implements Broker {
   private readonly engine: Engine;
   private readonly openedDatasets = new Set<MovingDataset>();
+  private readonly openedPositions = new Set<BacktestPosition>();
 
   constructor(configuration: BrokerConfiguration) {
     this.engine = new Engine(configuration.testSettings);
-    this.engine.on('nextData', (item) => this.emitData(item));
+    this.engine.on('nextData', (record) => this.emitData(record));
     // TODO: report end
     //this.engine.on('end', () => )
   }
@@ -65,18 +67,20 @@ export class BacktestBroker implements Broker {
     // TODO: fill it with prev data
     // for now, fill it with lastItem
     for (let i = size; i > 0; --i) {
-      const item = { ...this.engine.lastItem, date: this.engine.timeline.prevTick(i) };
-      const record = createRecord(item, this.engine.configuration.spread);
+      const { lastRecord } = this.engine;
+      const record = new Record(lastRecord.ask, lastRecord.bid, this.engine.timeline.prevTick(i));
       dataset.add(record);
     }
 
     return dataset;
   }
 
-  private emitData(item: HistoricalDataItem) {
-    const record = createRecord(item, this.engine.configuration.spread);
+  private emitData(record: Record) {
     for (const dataset of this.openedDatasets) {
       dataset.add(record);
+    }
+    for (const position of this.openedPositions) {
+      position.tick(record);
     }
   }
 
@@ -96,19 +100,3 @@ function parseInstrumentId(instrumentId: string) {
   }
   return { market, instrument };
 }
-
-function createRecord(item: HistoricalDataItem, spread: number) {
-  // spread = ask - bid, let's consider half above/half below
-  const diff = spread / 2;
-  const ask = createCandleStick(item, diff);
-  const bid = createCandleStick(item, -diff);
-
-  const record = new Record(ask, bid, item.date);
-  record.fix();
-  return record;
-}
-
-function createCandleStick(item: HistoricalDataItem, diff: number) {
-  return new CandleStickData(item.open + diff, item.close + diff, item.high + diff, item.low + diff);
-}
-
