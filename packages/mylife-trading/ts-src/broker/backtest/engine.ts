@@ -94,7 +94,7 @@ class Engine extends EventEmitter implements Engine {
 			} while (this.market.status === MarketStatus.CLOSED);
 
 			while (this.timeline.current.getTime() < record.timestamp.getTime()) {
-				logger.warning(`Missing record: ${this.timeline.current.toISOString()}`);
+				logger.warn(`Missing record: ${this.timeline.current.toISOString()}`);
 				this.timeline.increment();
 			}
 
