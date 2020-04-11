@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import MovingDataset from './moving-dataset';
 import Position, { PositionOrder, PositionDirection } from './position';
 import Instrument from './instrument';
@@ -51,7 +52,10 @@ export interface PositionSummary {
   readonly orders: PositionOrder[];
 }
 
-export interface Broker {
+export interface Broker extends EventEmitter {
+
+  on(event: 'error', listener: (err: Error) => void): this;
+
   getMarket(instrumentId: string): Promise<Market>;
   fireAsync(target: () => Promise<void>): void;
   init(): Promise<void>;

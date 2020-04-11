@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import { createLogger } from 'mylife-tools-server';
 
 import { Resolution, Credentials, Broker, PositionSummary, OpenPositionBound, BrokerConfiguration } from '../broker';
@@ -15,16 +16,17 @@ import { PIP, round } from '../../utils';
 
 const logger = createLogger('mylife:trading:broker:backtest');
 
-export class BacktestBroker implements Broker {
+export class BacktestBroker extends EventEmitter implements Broker {
   private readonly engine: Engine;
   private readonly openedDatasets = new Set<MovingDataset>();
   private readonly openedPositions = new Set<BacktestPosition>();
 
   constructor(configuration: BrokerConfiguration) {
+    super();
+
     this.engine = new Engine(configuration.testSettings);
     this.engine.timeline.on('change', () => this.emitData());
-    // TODO: report end
-    //this.engine.on('end', () => )
+    this.engine.on('error', () => this.emit('error'));
   }
 
   async getMarket(instrumentId: string): Promise<Market> {

@@ -41,7 +41,6 @@ export class Record {
 }
 
 declare interface MovingDataset {
-  on(event: 'error', listener: (err: Error) => void): this;
   on(event: 'add', listener: (record: Record) => void): this;
   on(event: 'update', listener: (record: Record) => void): this;
   on(event: 'close', listener: () => void): this;

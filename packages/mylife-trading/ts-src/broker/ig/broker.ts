@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import { createLogger } from 'mylife-tools-server';
 
 import { PriceResolution } from './api/market';
@@ -43,11 +44,12 @@ const datasetSubscriptionFields = [
 	'CONS_END',
 ];
 
-export class IgBroker implements Broker {
+export class IgBroker extends EventEmitter implements Broker {
 	private connection: Connection;
 	private readonly credentials: Credentials;
 
 	constructor(configuration: BrokerConfiguration) {
+		super();
 		this.credentials = { ... configuration.credentials, isDemo: configuration.type === BrokerConfigurationType.IG_DEMO };
 	}
 
@@ -92,7 +94,7 @@ export class IgBroker implements Broker {
 
 		const subscription = this.connection.client.subscribe('MERGE', [`CHART:${epic}:${resolutionData.stream}`], datasetSubscriptionFields);
 		dataset.on('close', () => subscription.close());
-		subscription.on('error', (err) => dataset.emit('error', err));
+		subscription.on('error', (err) => this.emit('error', err));
 		subscription.on('update', (data) => {
 			const ask = new CandleStickData(data.OFR_OPEN, data.OFR_CLOSE, data.OFR_HIGH, data.OFR_LOW);
 			const bid = new CandleStickData(data.BID_OPEN, data.BID_CLOSE, data.BID_HIGH, data.BID_LOW);
