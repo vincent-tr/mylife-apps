@@ -3,9 +3,11 @@ import { createLogger, getService } from 'mylife-tools-server';
 
 import { TestSettings } from '../broker';
 import { Record, CandleStickData } from '../moving-dataset';
+import { MarketStatus } from '../market';
 
 import { Timeline } from './timeline';
 import Cursor, { HistoricalDataItem } from './cursor';
+import BacktestMarket from './market';
 
 const logger = createLogger('mylife:trading:broker:backtest:engine');
 
@@ -44,6 +46,11 @@ class Engine extends EventEmitter implements Engine {
 	private runner: TickStream;
 	private readonly pendingPromises = new Set<Promise<void>>();
 	private _currentRecord: Record;
+	private market: BacktestMarket;
+
+	setMarket(market: BacktestMarket) {
+		this.market = market;
+	}
 
 	get currentRecord() {
 		return this._currentRecord;
@@ -82,7 +89,9 @@ class Engine extends EventEmitter implements Engine {
 			const record = createRecord(item, this.spread);
 			this._currentRecord = record;
 
-			this.timeline.increment();
+			do {
+				this.timeline.increment();
+			} while (this.market.status === MarketStatus.CLOSED);
 
 			if (this.timeline.current.getTime() !== record.timestamp.getTime()) {
 				throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${record.timestamp.toISOString()})`);

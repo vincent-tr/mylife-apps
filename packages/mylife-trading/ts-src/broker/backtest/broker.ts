@@ -34,7 +34,9 @@ export class BacktestBroker extends EventEmitter implements Broker {
     const { market } = parseInstrumentId(instrumentId);
 
     await this.engine.init();
-    return BacktestMarket.create(this.engine, market, () => this.engine.terminate());
+    const marketObj = BacktestMarket.create(this.engine, market, () => this.engine.terminate());
+    this.engine.setMarket(marketObj);
+    return marketObj;
   }
 
   fireAsync(target: () => Promise<void>): void {
