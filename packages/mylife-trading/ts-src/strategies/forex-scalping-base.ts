@@ -80,7 +80,7 @@ export default abstract class ForexScalpingBase extends StrategyBase {
 		try {
 			this.changeStatus("Mise à l'arrêt");
 
-			await this.terminateImpl();
+			await this.close();
 
 			this._instrument.close();
 			this._instrument = null;
