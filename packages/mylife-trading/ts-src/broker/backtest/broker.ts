@@ -44,11 +44,9 @@ export class BacktestBroker extends EventEmitter implements Broker {
   }
 
   async init() {
-    // TODO
   }
 
   async terminate() {
-    // TODO
   }
 
   async getInstrument(instrumentId: string): Promise<Instrument> {
