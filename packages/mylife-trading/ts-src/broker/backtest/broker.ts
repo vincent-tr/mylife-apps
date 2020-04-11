@@ -26,7 +26,7 @@ export class BacktestBroker extends EventEmitter implements Broker {
 
     this.engine = new Engine(configuration.testSettings);
     this.engine.timeline.on('change', () => this.emitData());
-    this.engine.on('error', () => this.emit('error'));
+    this.engine.on('error', (err) => this.emit('error', err));
   }
 
   async getMarket(instrumentId: string): Promise<Market> {
