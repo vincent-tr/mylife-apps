@@ -58,7 +58,7 @@ export default class BacktestMarket extends EventEmitter implements Market {
 const MINUTE = 60 * 1000;
 
 // https://admiralmarkets.com/fr/formation/articles/base-du-forex/horaire-bourse
-// Les horaire du forex sont de dimanche soir 23h heure de Paris à vendredi 22H heure de Paris
+// Les horaire du forex sont de dimanche soir 23h heure de Paris à vendredi 23H heure de Paris
 
 // close 1 hour before, and open 1 hour later
 // Sunday - Saturday : 0 - 6
@@ -77,10 +77,10 @@ function getForexStatus(now: Date): MarketStatus {
 	const day = now.getDay();
 
 	if (day === FRIDAY) {
-		if (now.getHours() < 21) {
+		if (now.getHours() < 22) {
 			return MarketStatus.OPENED;
 		}
-		if (now.getHours() < 22) {
+		if (now.getHours() < 23) {
 			return MarketStatus.CLOSING_SOON;
 		}
 	}
