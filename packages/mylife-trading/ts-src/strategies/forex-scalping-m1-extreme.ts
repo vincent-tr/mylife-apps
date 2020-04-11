@@ -21,7 +21,6 @@ export default class ForexScalpingM1Extreme extends ForexScalpingBase {
 
 	async open() {
 		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 23);
-		this.dataset.on('error', err => logger.error(`(${this.configuration.name}) Dataset error: ${err.stack}`));
 		this.dataset.on('add', () => this.onDatasetChange());
 		this.dataset.on('update', () => this.onDatasetChange());
 

@@ -25,7 +25,11 @@ export default abstract class StrategyBase implements Strategy {
 	async init(configuration: StrategyConfiguration, listeners: Listeners) {
 		this._configuration = configuration;
 		this._broker = createBroker(configuration.broker);
-		
+		this._broker.on('error', err => {
+			logger.error(`(${this.configuration.name}) broker error: ${err.stack}`);
+			this.fatal(err);
+		});
+
 		logger.debug(`(${this.configuration.name}) init`);
 		this.listeners = listeners;
 		this.changeStatus('Initialisation');
