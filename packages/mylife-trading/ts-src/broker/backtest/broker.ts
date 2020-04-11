@@ -151,14 +151,15 @@ function computeBound(currentRecord: Record, bound: OpenPositionBound, direction
       break;
   }
 
-  return add ? baseLevel + distance : baseLevel - distance;
+  const level = add ? baseLevel + distance : baseLevel - distance;
+  return round(level, 5);
 }
 
 function computeProfitAndLoss(position: BacktestPosition) {
   const { instrument } = position;
   let levelDiff = position.closeLevel - position.openLevel;
   if (position.direction === PositionDirection.SELL) {
-    levelDiff -= levelDiff;
+    levelDiff = -levelDiff;
   }
 
   const profitAndLoss = levelDiff * position.size * instrument.contractSize;
