@@ -93,6 +93,11 @@ class Engine extends EventEmitter implements Engine {
 				this.timeline.increment();
 			} while (this.market.status === MarketStatus.CLOSED);
 
+			while (this.timeline.current.getTime() < record.timestamp.getTime()) {
+				logger.warning(`Missing record: ${this.timeline.current.toISOString()}`);
+				this.timeline.increment();
+			}
+
 			if (this.timeline.current.getTime() !== record.timestamp.getTime()) {
 				throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${record.timestamp.toISOString()})`);
 			}
