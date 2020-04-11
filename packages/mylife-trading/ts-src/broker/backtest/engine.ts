@@ -10,144 +10,148 @@ import Cursor, { HistoricalDataItem } from './cursor';
 const logger = createLogger('mylife:trading:broker:backtest:engine');
 
 interface Engine extends EventEmitter {
-  on(event: 'end', listener: () => void): this;
+	on(event: 'error', listener: (error: Error) => void): this;
 }
 
 class TickStream {
-  private readonly end: Promise<void>;
-  private closeFlag = false;
+	private readonly end: Promise<void>;
+	private closeFlag = false;
 
-  constructor(private readonly next: () => Promise<void>) {
-    this.end = this.run();
-  }
+	constructor(private readonly next: () => Promise<void>) {
+		this.end = this.run();
+	}
 
-  async terminate() {
-    this.closeFlag = true;
-    await this.end;
-  }
+	async terminate() {
+		this.closeFlag = true;
+		await this.end;
+	}
 
-  terminateFromInside() {
-    this.closeFlag = true;
-  }
+	terminateFromInside() {
+		this.closeFlag = true;
+	}
 
-  private async run() {
-    while (!this.closeFlag) {
-      await this.next();
-    }
-  }
+	private async run() {
+		while (!this.closeFlag) {
+			await this.next();
+		}
+	}
 }
 
 class Engine extends EventEmitter implements Engine {
-  private readonly spread: number;
-  public readonly timeline: Timeline;
-  private readonly cursor: Cursor;
-  private runner: TickStream;
-  private readonly pendingPromises = new Set<Promise<void>>();
-  private _currentRecord: Record;
+	private readonly spread: number;
+	public readonly timeline: Timeline;
+	private readonly cursor: Cursor;
+	private runner: TickStream;
+	private readonly pendingPromises = new Set<Promise<void>>();
+	private _currentRecord: Record;
 
-  get currentRecord() {
-    return this._currentRecord;
-  }
+	get currentRecord() {
+		return this._currentRecord;
+	}
 
-  constructor(public readonly configuration: TestSettings) {
-    super();
+	constructor(public readonly configuration: TestSettings) {
+		super();
 
-    this.spread = configuration.spread;
-    this.timeline = new Timeline(this.configuration.resolution);
-    this.cursor = new Cursor(this.configuration.resolution, this.configuration.instrumentId);
-  }
+		this.spread = configuration.spread;
+		this.timeline = new Timeline(this.configuration.resolution);
+		this.cursor = new Cursor(this.configuration.resolution, this.configuration.instrumentId);
+	}
 
-  async init() {
-    const item = await this.cursor.next();
-    const record = createRecord(item, this.spread);
-    
-    this._currentRecord = record;
-    this.timeline.set(record.timestamp);
+	async init() {
+		const item = await this.cursor.next();
+		const record = createRecord(item, this.spread);
 
-    await this.waitAllAsync();
+		this._currentRecord = record;
+		this.timeline.set(record.timestamp);
 
-    this.runner = new TickStream(() => this.tick());
-  }
+		await this.waitAllAsync();
 
-  private async tick() {
-    const item = await this.cursor.next();
+		this.runner = new TickStream(() => this.tick());
+	}
 
-    if (!item) {
-      this.runner.terminateFromInside();
-      this.runner = null;
-      this.emit('end');
-      return;
-    }
+	private async tick() {
+		try {
+			const item = await this.cursor.next();
 
-    const record = createRecord(item, this.spread);
-    this._currentRecord = record;
+			if (!item) {
+				this.runner.terminateFromInside();
+				this.runner = null;
+				throw new Error('No more data');
+			}
 
-    this.timeline.increment();
+			const record = createRecord(item, this.spread);
+			this._currentRecord = record;
 
-    if (this.timeline.current.getTime() !== record.timestamp.getTime()) {
-      throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${record.timestamp.toISOString()})`);
-    }
+			this.timeline.increment();
 
-    await this.waitAllAsync();
-  }
+			if (this.timeline.current.getTime() !== record.timestamp.getTime()) {
+				throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${record.timestamp.toISOString()})`);
+			}
+		} catch (err) {
+			this.emit('error', err);
+		}
 
-  async terminate() {
-    await this.runner.terminate();
-    await this.waitAllAsync();
-    await this.cursor.close();
-  }
+		await this.waitAllAsync();
+	}
 
-  fireAsync(target: () => Promise<void>): void {
-    const deferred = createDeferred<void>();
-    this.pendingPromises.add(deferred.promise);
+	async terminate() {
+		await this.runner.terminate();
+		await this.waitAllAsync();
+		await this.cursor.close();
+	}
 
-    target().catch(err => logger.error(`Unhandled promise rejection: ${err.stack}`)).finally(() => {
-      this.pendingPromises.delete(deferred.promise);
-      deferred.resolve();
-    });
-  }
+	fireAsync(target: () => Promise<void>): void {
+		const deferred = createDeferred<void>();
+		this.pendingPromises.add(deferred.promise);
 
-  private async waitAllAsync() {
-    const pendings = Array.from(this.pendingPromises);
-    await Promise.all(pendings);
+		target()
+			.catch((err) => logger.error(`Unhandled promise rejection: ${err.stack}`))
+			.finally(() => {
+				this.pendingPromises.delete(deferred.promise);
+				deferred.resolve();
+			});
+	}
 
-    // don't let the store task queue grow too much with stats inserts
-    await getService('store').waitTaskQueueEmpty();
-  }
+	private async waitAllAsync() {
+		const pendings = Array.from(this.pendingPromises);
+		await Promise.all(pendings);
+
+		// don't let the store task queue grow too much with stats inserts
+		await getService('store').waitTaskQueueEmpty();
+	}
 }
 
 export default Engine;
 
 interface Deferred<T> {
-  readonly promise: Promise<T>;
-  readonly resolve: (value: T) => void;
-  readonly reject: (err: Error) => void;
-};
+	readonly promise: Promise<T>;
+	readonly resolve: (value: T) => void;
+	readonly reject: (err: Error) => void;
+}
 
 function createDeferred<T>(): Deferred<T> {
-  let resolve: (value: T) => void;
-  let reject: (err: Error) => void;
+	let resolve: (value: T) => void;
+	let reject: (err: Error) => void;
 
-  const promise = new Promise<T>((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
+	const promise = new Promise<T>((res, rej) => {
+		resolve = res;
+		reject = rej;
+	});
 
-  return { promise, resolve, reject };
+	return { promise, resolve, reject };
 }
 
 function createRecord(item: HistoricalDataItem, spread: number) {
-  // spread = ask - bid, let's consider half above/half below
-  const diff = spread / 2;
-  const ask = createCandleStick(item, diff);
-  const bid = createCandleStick(item, -diff);
+	// spread = ask - bid, let's consider half above/half below
+	const diff = spread / 2;
+	const ask = createCandleStick(item, diff);
+	const bid = createCandleStick(item, -diff);
 
-  const record = new Record(ask, bid, item.date);
-  record.fix();
-  return record;
+	const record = new Record(ask, bid, item.date);
+	record.fix();
+	return record;
 }
 
 function createCandleStick(item: HistoricalDataItem, diff: number) {
-  return new CandleStickData(item.open + diff, item.close + diff, item.high + diff, item.low + diff);
+	return new CandleStickData(item.open + diff, item.close + diff, item.high + diff, item.low + diff);
 }
-
