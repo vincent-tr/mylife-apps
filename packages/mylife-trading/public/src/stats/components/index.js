@@ -17,7 +17,8 @@ const useStyles = mui.makeStyles(theme => ({
 
 const DEFAULT_CRITERIA = {
   strategy: null,
-  timeAggregation: 'day'
+  groupBy: 'day',
+  aggregation: 'count'
 };
 
 const Stats = () => {

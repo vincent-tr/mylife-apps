@@ -4,11 +4,19 @@ import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField, ListSelect
 import { useStrategyView } from '../../common/strategy-view';
 import StrategySelector from './strategy-selector';
 
-const timeAggregation = [
+const groupBy = [
   { id: 'day', text: 'Jour' },
   { id: 'month', text: 'Mois' },
   { id: 'year', text: 'Année' },
   { id: 'day-hour', text: 'Heure de la journée' }
+];
+
+const aggregation = [
+  { id: 'count', text: 'Nombre de prises de position' },
+  { id: 'sum', text: 'Profits et pertes cumulés' },
+  { id: 'average', text: 'Profits et pertes moyens par position' },
+  { id: 'sumMax', text: 'Niveau maxium atteint' },
+  { id: 'sumMin', text: 'Niveau minimum atteint' },
 ];
 
 const ExpandedSummary = () => {
@@ -20,9 +28,10 @@ const ExpandedSummary = () => {
 const CollapsedSummary = ({ criteria }) => {
   const { strategyView } = useStrategyView();
   const strategy = criteria.strategy && strategyView.get(criteria.strategy);
-  const aggregation = timeAggregation.find(item => item.id === criteria.timeAggregation);
+  const groupByItem = groupBy.find(item => item.id === criteria.groupBy);
+  const aggregationItem = aggregation.find(item => item.id === criteria.aggregation);
   return (
-    <mui.Typography>{`${strategy ? strategy.display : '(Pas de stratégie)'} aggrégé par ${aggregation.text}`}</mui.Typography>
+    <mui.Typography>{`${strategy ? strategy.display : '(Pas de stratégie)'}: '${aggregationItem.text}' groupé par '${groupByItem.text}'`}</mui.Typography>
   );
 };
 
@@ -39,15 +48,21 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
       collapsedSummary={<CollapsedSummary criteria={criteria} />}>
       <mui.Grid container spacing={2}>
 
-        <mui.Grid item xs={6}>
+        <mui.Grid item xs={12}>
           <CriteriaField label='Stratégie'>
             <StrategySelector value={criteria.strategy} onChange={(value) => setCriteria('strategy', value)} width={200} />
           </CriteriaField>
         </mui.Grid>
 
-        <mui.Grid item xs={6}>
-          <CriteriaField label='Aggrégation de temps'>
-            <ListSelector list={timeAggregation} value={criteria.timeAggregation} onChange={(value) => setCriteria('timeAggregation', value)} width={200} />
+        <mui.Grid item xs={12}>
+          <CriteriaField label='Regroupement'>
+            <ListSelector list={groupBy} value={criteria.groupBy} onChange={(value) => setCriteria('groupBy', value)} width={200} />
+          </CriteriaField>
+        </mui.Grid>
+
+        <mui.Grid item xs={12}>
+          <CriteriaField label='Aggrégation'>
+            <ListSelector list={aggregation} value={criteria.aggregation} onChange={(value) => setCriteria('aggregation', value)} width={200} />
           </CriteriaField>
         </mui.Grid>
 
