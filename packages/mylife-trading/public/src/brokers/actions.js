@@ -1,13 +1,9 @@
 'use strict';
 
-import { createAction, io, dialogs } from 'mylife-tools-ui';
-import { createOrUpdateView, deleteView } from '../common/action-tools';
-import actionTypes from './action-types';
-import { getViewId } from './selectors';
+import { io, dialogs } from 'mylife-tools-ui';
 import { renderObject } from '../common/metadata-utils';
 
 const local = {
-  setView: createAction(actionTypes.SET_VIEW),
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
 };
 
@@ -22,27 +18,6 @@ const defaultCredentials = {
   identifier: 'A remplir',
   password: 'A remplir'
 }
-
-const getBrokers = () => createOrUpdateView({
-  criteriaSelector: () => null,
-  viewSelector: getViewId,
-  setViewAction: local.setView,
-  service: 'broker',
-  method: 'notify'
-});
-  
-const clearBrokers = () => deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
-});
-
-export const enter = () => async (dispatch) => {
-  await dispatch(getBrokers());
-};
-
-export const leave = () => async (dispatch) => {
-  await dispatch(clearBrokers());
-};
 
 export const add = () => async (dispatch) => {
   const values = {
