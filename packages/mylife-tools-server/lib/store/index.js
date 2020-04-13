@@ -182,11 +182,6 @@ class Store {
   serializeObject(object, entity) {
     return serializeObject(object, entity);
   }
-
-  async waitTaskQueueEmpty() {
-    const taskQueue = getService('task-queue-manager').getQueue('store');
-    await taskQueue.waitEmpty();
-  }
 }
 
 Store.serviceName = 'store';

@@ -131,7 +131,11 @@ class Engine extends EventEmitter implements Engine {
 		await Promise.all(pendings);
 
 		// don't let the store task queue grow too much with stats inserts
-		await getService('store').waitTaskQueueEmpty();
+		const taskQueueManager = getService('task-queue-manager');
+		await Promise.all([
+			taskQueueManager.getQueue('store').waitEmpty(),
+			taskQueueManager.getQueue('io').waitEmpty()
+		]);
 	}
 }
 
