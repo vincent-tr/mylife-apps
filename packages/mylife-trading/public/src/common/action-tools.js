@@ -30,6 +30,26 @@ export function createOrUpdateView({ criteriaSelector, viewSelector, setViewActi
   };
 }
 
+export function createOrSkipView({ viewSelector, setViewAction, service, method }) {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    const viewId = viewSelector(state);
+
+    if(viewId) {
+      return;
+    }
+
+    const newViewId = await dispatch(io.call({
+      service,
+      method,
+      criteria: {}
+    }));
+
+    dispatch(setViewAction(newViewId));
+  };
+}
+
 export function deleteView({ viewSelector, setViewAction }) {
   return async (dispatch, getState) => {
     const state = getState();

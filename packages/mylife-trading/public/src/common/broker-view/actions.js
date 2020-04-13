@@ -1,7 +1,7 @@
 'use strict';
 
 import { createAction } from 'mylife-tools-ui';
-import { createOrUpdateView, deleteView } from '../action-tools';
+import { createOrSkipView, deleteView } from '../action-tools';
 import { createDebouncedRefresh } from '../ref-view-tools';
 import actionTypes from './action-types';
 import { getViewId, getRefCount } from './selectors';
@@ -12,8 +12,7 @@ const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-const fetchBrokers = () => createOrUpdateView({
-  criteriaSelector: () => ({ criteria: {}}),
+const fetchBrokers = () => createOrSkipView({
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'broker',
