@@ -5,6 +5,7 @@ import { React, mui } from 'mylife-tools-ui';
 const {
   AccountBox,
   Settings,
+  Equalizer,
 } = mui.icons;
 
 const Trading = (props) => (
@@ -23,6 +24,7 @@ export default {
 
   tabs: {
     Broker: AccountBox,
-    Strategy: Settings
+    Strategy: Settings,
+    Stat: Equalizer,
   },
 };
