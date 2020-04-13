@@ -16,7 +16,8 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const DEFAULT_CRITERIA = {
-  strategy: null
+  strategy: null,
+  timeAggregation: 'day'
 };
 
 const Stats = () => {

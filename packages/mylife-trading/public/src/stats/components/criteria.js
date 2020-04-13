@@ -1,8 +1,15 @@
 'use strict';
 
-import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField } from 'mylife-tools-ui';
+import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField, ListSelector } from 'mylife-tools-ui';
 import { useStrategyView } from '../../common/strategy-view';
 import StrategySelector from './strategy-selector';
+
+const timeAggregation = [
+  { id: 'day', text: 'Jour' },
+  { id: 'month', text: 'Mois' },
+  { id: 'year', text: 'Année' },
+  { id: 'day-hour', text: 'Heure de la journée' }
+];
 
 const ExpandedSummary = () => {
   return (
@@ -13,8 +20,9 @@ const ExpandedSummary = () => {
 const CollapsedSummary = ({ criteria }) => {
   const { strategyView } = useStrategyView();
   const strategy = criteria.strategy && strategyView.get(criteria.strategy);
+  const aggregation = timeAggregation.find(item => item.id === criteria.timeAggregation);
   return (
-    <mui.Typography>{`${strategy ? strategy.display : '(Pas de stratégie)'}`}</mui.Typography>
+    <mui.Typography>{`${strategy ? strategy.display : '(Pas de stratégie)'} aggrégé par ${aggregation.text}`}</mui.Typography>
   );
 };
 
@@ -30,11 +38,19 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
       expandedSummary={<ExpandedSummary criteria={criteria} />}
       collapsedSummary={<CollapsedSummary criteria={criteria} />}>
       <mui.Grid container spacing={2}>
-        <mui.Grid item xs={12}>
+
+        <mui.Grid item xs={6}>
           <CriteriaField label='Stratégie'>
             <StrategySelector value={criteria.strategy} onChange={(value) => setCriteria('strategy', value)} width={200} />
           </CriteriaField>
         </mui.Grid>
+
+        <mui.Grid item xs={6}>
+          <CriteriaField label='Aggrégation de temps'>
+            <ListSelector list={timeAggregation} value={criteria.timeAggregation} onChange={(value) => setCriteria('timeAggregation', value)} width={200} />
+          </CriteriaField>
+        </mui.Grid>
+
       </mui.Grid>
     </SummaryExpansionPanel>
   );
