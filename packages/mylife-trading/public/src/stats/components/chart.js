@@ -2,25 +2,20 @@
 
 import { React, PropTypes, chart, useChartColors, AutoSizer } from 'mylife-tools-ui';
 
-const Chart = ({ data, display, periodKey, amountSelector, ...props }) => {
+const Chart = ({ data, valueText, ...props }) => {
   const colors = useChartColors();
-
-  if(!data.length) { return null; }
-
-  const bars = createBars(groups, display, groupStacks, groupChildren, colors);
 
   return (
     <div {...props}>
       <AutoSizer>
         {({ height, width }) => (
-          <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-            <chart.XAxis dataKey={periodKey} name='Date' />
-            <chart.YAxis name='Montant' />
-            <chart.CartesianGrid strokeDasharray='3 3'/>
-            <chart.Tooltip/>
-            <chart.Legend />
-            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
-          </chart.BarChart>
+          <chart.LineChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
+            <chart.XAxis dataKey='date' name='Date' />
+            <chart.YAxis name={valueText} />
+            <chart.CartesianGrid strokeDasharray='3 3' />
+            <chart.Tooltip />
+            <chart.Line dataKey='value' stroke={colors[0]} name={valueText} />
+          </chart.LineChart>
         )}
       </AutoSizer>
     </div>
@@ -29,37 +24,7 @@ const Chart = ({ data, display, periodKey, amountSelector, ...props }) => {
 
 Chart.propTypes = {
   data: PropTypes.array.isRequired,
-  groups: PropTypes.array,
-  display: PropTypes.object.isRequired,
-  periodKey: PropTypes.string.isRequired,
-  amountSelector: PropTypes.func.isRequired,
+  valueText: PropTypes.string.isRequired,
 };
 
 export default Chart;
-
-function createBars(groups, display, groupStacks, groupChildren, colors) {
-  const bars = [];
-  let index = 0;
-  for(const group of groups) {
-    bars.push(createBar(colors, display, groupStacks, group, group, index++, true));
-    if(display.children && group) {
-      for(const child of groupChildren[group]) {
-        bars.push(createBar(colors, display, groupStacks, group, child, index++, false));
-      }
-    }
-  }
-  return bars;
-}
-
-function createBar(colors, display, groupStacks, stackId, group, index, root) {
-  const path = groupStacks.get(group).map(group => group.display);
-  const name = display.fullnames ? path.join('/') : path[path.length - 1];
-  return {
-    index,
-    stackId,
-    group,
-    name,
-    fill: colors[index % colors.length],
-    root
-  };
-}

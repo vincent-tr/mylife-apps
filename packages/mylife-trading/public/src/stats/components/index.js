@@ -2,7 +2,7 @@
 
 import { React, mui, useState } from 'mylife-tools-ui';
 import Criteria from './criteria';
-//import Chart from './chart';
+import Chart from './chart';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -21,6 +21,11 @@ const DEFAULT_CRITERIA = {
   aggregation: 'count'
 };
 
+const test = [
+  { date: 'date1', value: 1 },
+  { date: 'date2', value: 2 },
+]
+
 const Stats = () => {
   const classes = useStyles();
   const [criteria, setCriteria] = useState(DEFAULT_CRITERIA);
@@ -28,11 +33,9 @@ const Stats = () => {
   return (
     <div className={classes.container}>
       <Criteria criteria={criteria} onCriteriaChanged={setCriteria} />
-      Chart
+      <Chart className={classes.chart} data={test} valueText={'Toto'} />
     </div>
   );
 };
 
 export default Stats;
-
-// <Chart periodKey={periodKey} data={data} groups={groups} display={chartDisplay} className={classes.chart} amountSelector={amountSelectorFactory({ display, criteria })}/>
