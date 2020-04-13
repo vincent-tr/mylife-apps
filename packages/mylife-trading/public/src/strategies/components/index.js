@@ -1,22 +1,15 @@
 'use strict';
 
-import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
-import { enter, leave, add } from '../actions';
-import { getDisplayView } from '../selectors';
+import { React, useMemo, mui, useDispatch } from 'mylife-tools-ui';
+import { useStrategyView } from '../../common/strategy-view';
+import { add } from '../actions';
 import Strategy from './strategy';
 
 const useConnect = () => {
   const dispatch = useDispatch();
-  return {
-    ...useSelector(state => ({
-      data: getDisplayView(state),
-    })),
-    ...useMemo(() => ({
-      enter: () => dispatch(enter()),
-      leave: () => dispatch(leave()),
-      add: () => dispatch(add()),
-    }), [dispatch])
-  };
+  return useMemo(() => ({
+    add: () => dispatch(add()),
+  }), [dispatch]);
 };
 
 const useStyles = mui.makeStyles(theme => ({
@@ -33,13 +26,13 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Strategies = () => {
   const classes = useStyles();
-  const { enter, leave, add, data } = useConnect();
-  useLifecycle(enter, leave);
+  const { add } = useConnect();
+  const { strategies } = useStrategyView();
 
   return (
     <>
       <mui.List className={classes.main}>
-        {data.map(strategy => (
+        {strategies.map(strategy => (
           <mui.ListItem key={strategy._id}>
             <Strategy strategy={strategy} />
           </mui.ListItem>

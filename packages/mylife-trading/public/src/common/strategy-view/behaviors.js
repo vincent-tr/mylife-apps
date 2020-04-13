@@ -8,8 +8,8 @@ const useConnect = () => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
-      brokerView: getStrategyView(state),
-      brokers: getStrategies(state)
+      strategyView: getStrategyView(state),
+      strategies: getStrategies(state)
     })),
     ...useMemo(() => ({
       enter: () => dispatch(refStrategyView()),
@@ -19,7 +19,7 @@ const useConnect = () => {
 };
 
 export function useStrategyView() {
-  const { enter, leave, brokers, brokerView } = useConnect();
+  const { enter, leave, strategies, strategyView } = useConnect();
   useLifecycle(enter, leave);
-  return { brokers, brokerView };
+  return { strategies, strategyView };
 }
