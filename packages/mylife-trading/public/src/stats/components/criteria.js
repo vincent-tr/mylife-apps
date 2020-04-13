@@ -3,21 +3,7 @@
 import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField, ListSelector } from 'mylife-tools-ui';
 import { useStrategyView } from '../../common/strategy-view';
 import StrategySelector from './strategy-selector';
-
-const groupBy = [
-  { id: 'day', text: 'Jour' },
-  { id: 'month', text: 'Mois' },
-  { id: 'year', text: 'Année' },
-  { id: 'day-hour', text: 'Heure de la journée' }
-];
-
-const aggregation = [
-  { id: 'count', text: 'Nombre de prises de position' },
-  { id: 'sum', text: 'Profits et pertes cumulés' },
-  { id: 'average', text: 'Profits et pertes moyens par position' },
-  { id: 'sumMax', text: 'Niveau maxium atteint' },
-  { id: 'sumMin', text: 'Niveau minimum atteint' },
-];
+import { groupBy, aggregation } from './lists';
 
 const ExpandedSummary = () => {
   return (
