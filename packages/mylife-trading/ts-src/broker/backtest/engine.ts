@@ -46,6 +46,7 @@ class Engine extends EventEmitter implements Engine {
 	private runner: TickStream;
 	private readonly pendingPromises = new Set<Promise<void>>();
 	private _currentRecord: Record;
+	private nextRecord: Record;
 	private market: BacktestMarket;
 
 	setMarket(market: BacktestMarket) {
@@ -78,34 +79,45 @@ class Engine extends EventEmitter implements Engine {
 
 	private async tick() {
 		try {
-			const item = await this.cursor.next();
+			await this.fetchNextRecord();
 
-			if (!item) {
-				this.runner.terminateFromInside();
-				this.runner = null;
-				throw new Error('No more data');
-			}
+			const nextRecordTime = this.nextRecord.timestamp.getTime();
+			const nextTimeLineTime = this.timeline.nextTick().getTime();
 
-			const record = createRecord(item, this.spread);
-			this._currentRecord = record;
-
-			do {
+			if (nextRecordTime === nextTimeLineTime) {
+				this._currentRecord = this.nextRecord;
+				this.nextRecord = null;
 				this.timeline.increment();
-			} while (this.market.status === MarketStatus.CLOSED);
-
-			while (this.timeline.current.getTime() < record.timestamp.getTime()) {
-				logger.warn(`Missing record: ${this.timeline.current.toISOString()}`);
+			} else if (nextRecordTime < nextTimeLineTime) {
+				logger.warn(`Unexpected record: ${this.nextRecord.timestamp.toISOString()}`);
+				this.nextRecord = null;
+			} else {
+				// nextRecordTime > nextTimeLineTime
 				this.timeline.increment();
+				if (this.market.status !== MarketStatus.CLOSED) {
+					logger.warn(`Missing record: ${this.timeline.current.toISOString()}`);
+				}
 			}
 
-			if (this.timeline.current.getTime() !== record.timestamp.getTime()) {
-				throw new Error(`Timeline (${this.timeline.current.toISOString()}) does not correspond to cursor (${record.timestamp.toISOString()})`);
-			}
+			await this.waitAllAsync();
 		} catch (err) {
 			this.emit('error', err);
 		}
+	}
 
-		await this.waitAllAsync();
+	private async fetchNextRecord() {
+		if (this.nextRecord) {
+			return;
+		}
+
+		const item = await this.cursor.next();
+
+		if (!item) {
+			this.runner.terminateFromInside();
+			throw new Error('No more data');
+		}
+
+		this.nextRecord = createRecord(item, this.spread);
 	}
 
 	async terminate() {
@@ -132,10 +144,7 @@ class Engine extends EventEmitter implements Engine {
 
 		// don't let the store task queue grow too much with stats inserts
 		const taskQueueManager = getService('task-queue-manager');
-		await Promise.all([
-			taskQueueManager.getQueue('store').waitEmpty(),
-			taskQueueManager.getQueue('io').waitEmpty()
-		]);
+		await Promise.all([taskQueueManager.getQueue('store').waitEmpty(), taskQueueManager.getQueue('io').waitEmpty()]);
 	}
 }
 
