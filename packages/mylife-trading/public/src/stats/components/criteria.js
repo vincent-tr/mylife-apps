@@ -1,6 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField } from 'mylife-tools-ui';
+import { useStrategyView } from '../../common/strategy-view';
 import StrategySelector from './strategy-selector';
 
 const ExpandedSummary = () => {
@@ -10,8 +11,10 @@ const ExpandedSummary = () => {
 };
 
 const CollapsedSummary = ({ criteria }) => {
+  const { strategyView } = useStrategyView();
+  const strategy = criteria.strategy && strategyView.get(criteria.strategy);
   return (
-    <mui.Typography>{`TODO collapsed title`}</mui.Typography>
+    <mui.Typography>{`${strategy ? strategy.display : '(Pas de stratégie)'}`}</mui.Typography>
   );
 };
 
