@@ -14,6 +14,3 @@ export const getStrategyDisplayView = createSelector(
 
 export const getStrategyStatusViewId = state => getHome(state).strategyStatusViewId;
 export const geStrategyStatusView = state => io.getView(state, getStrategyStatusViewId(state));
-
-export const getStatsViewId = state => getHome(state).statsViewId;
-export const geStatsView = state => io.getView(state, getStatsViewId(state));

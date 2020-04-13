@@ -1,14 +1,10 @@
 'use strict';
 
-import { React, PropTypes, useSelector, mui, formatDate, useScreenSize } from 'mylife-tools-ui';
-import { geStatsView } from '../selectors';
+import { React, PropTypes, mui, formatDate, useScreenSize } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
+import { useStatView } from '../../common/stat-view';
 
 // TODO: ajouter une fenetre de detail avec les ordres + le detail (surtout sur mobile)
-
-const useConnect = () => useSelector(state => ({
-  stats: geStatsView(state),
-}));
 
 const useStyles = mui.makeStyles(theme => ({
   profit: {
@@ -22,9 +18,9 @@ const useStyles = mui.makeStyles(theme => ({
 const Stats = ({ strategy }) => {
   const classes = useStyles();
   const screenSize = useScreenSize();
-  const { stats: allStats } = useConnect();
+  const { statView } = useStatView();
 
-  const stats = Array.from(allStats
+  const stats = Array.from(statView
     .valueSeq()
     .filter(stat => stat.strategy === strategy._id)
     .sortBy(stat => -stat.openDate)

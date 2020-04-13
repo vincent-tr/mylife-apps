@@ -15,11 +15,6 @@ export default handleActions({
     strategyStatusViewId: action.payload,
   }),
 
-  [actionTypes.SET_STATS_VIEW] : (state, action) => ({
-    ...state,
-    statsViewId: action.payload,
-  }),
-
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
     strategyViewId: null,
@@ -30,5 +25,4 @@ export default handleActions({
 }, {
   strategyViewId: null,
   strategyStatusViewId: null,
-  statsViewId: null,
 });
