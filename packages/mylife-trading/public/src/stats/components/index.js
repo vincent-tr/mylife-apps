@@ -5,6 +5,7 @@ import { useStatView } from '../../common/stat-view';
 import Criteria from './criteria';
 import Chart from './chart';
 import { groupBy, aggregation } from './lists';
+import { computeData } from './engine';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -40,15 +41,3 @@ const Stats = () => {
 };
 
 export default Stats;
-
-function computeData(statView, criteria) {
-  if(!criteria.strategy) {
-    return [];
-  }
-
-  // TODO
-  return [
-    { date: 'date1', value: 1 },
-    { date: 'date2', value: 2 },
-  ];
-}
