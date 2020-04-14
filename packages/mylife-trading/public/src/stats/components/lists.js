@@ -15,3 +15,8 @@ export const aggregation = [
   { id: 'sumMax', text: 'Niveau maxium atteint' },
   { id: 'sumMin', text: 'Niveau minimum atteint' },
 ];
+
+export const chartType = [
+  { id: 'line-chart', text: 'Line Chart' },
+  { id: 'bar-chart', text: 'Bar Chart' },
+];

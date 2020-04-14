@@ -4,7 +4,7 @@ import { React, mui, useState, useMemo } from 'mylife-tools-ui';
 import { useStatView } from '../../common/stat-view';
 import Criteria from './criteria';
 import Chart from './chart';
-import { groupBy, aggregation } from './lists';
+import { groupBy, aggregation, chartType } from './lists';
 import { computeData } from './engine';
 
 const useStyles = mui.makeStyles(theme => ({
@@ -21,7 +21,8 @@ const useStyles = mui.makeStyles(theme => ({
 const DEFAULT_CRITERIA = {
   strategy: null,
   groupBy: groupBy[0].id,
-  aggregation: aggregation[0].id
+  aggregation: aggregation[0].id,
+  chartType: chartType[0].id
 };
 
 const Stats = () => {
@@ -35,7 +36,7 @@ const Stats = () => {
   return (
     <div className={classes.container}>
       <Criteria criteria={criteria} onCriteriaChanged={setCriteria} />
-      <Chart className={classes.chart} data={data} valueText={aggregationItem.text} />
+      <Chart className={classes.chart} data={data} valueText={aggregationItem.text} chartType={criteria.chartType} />
     </div>
   );
 };

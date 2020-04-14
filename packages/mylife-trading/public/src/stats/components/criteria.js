@@ -3,7 +3,7 @@
 import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField, ListSelector } from 'mylife-tools-ui';
 import { useStrategyView } from '../../common/strategy-view';
 import StrategySelector from './strategy-selector';
-import { groupBy, aggregation } from './lists';
+import { groupBy, aggregation, chartType } from './lists';
 
 const ExpandedSummary = () => {
   return (
@@ -49,6 +49,12 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
         <mui.Grid item xs={12}>
           <CriteriaField label='Aggrégation'>
             <ListSelector list={aggregation} value={criteria.aggregation} onChange={(value) => setCriteria('aggregation', value)} width={200} />
+          </CriteriaField>
+        </mui.Grid>
+
+        <mui.Grid item xs={12}>
+          <CriteriaField label='Type de chart'>
+            <ListSelector list={chartType} value={criteria.chartType} onChange={(value) => setCriteria('chartType', value)} width={200} />
           </CriteriaField>
         </mui.Grid>
 
