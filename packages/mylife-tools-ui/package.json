@@ -1,6 +1,6 @@
 {
   "name": "mylife-tools-ui",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "MyLife Tools UI",
   "main": "src/index.js",
   "sideEffects": false,
