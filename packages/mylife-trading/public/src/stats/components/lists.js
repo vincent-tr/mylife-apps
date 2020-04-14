@@ -4,7 +4,8 @@ export const groupBy = [
   { id: 'day', text: 'Jour' },
   { id: 'month', text: 'Mois' },
   { id: 'year', text: 'Année' },
-  { id: 'day-hour', text: 'Heure de la journée' }
+  { id: 'day-hour', text: 'Heure de la journée' },
+  { id: 'week-day', text: 'Jour de la semaine' },
 ];
 
 export const aggregation = [
