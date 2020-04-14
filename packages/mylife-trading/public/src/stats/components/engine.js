@@ -146,12 +146,44 @@ const groupFactories = {
       return WEEK_DAYS[weekDay];
     }
   }
-}
+};
 
 const aggregators = {
   count(stats) {
     return stats.length;
   },
+  sum(stats) {
+    return round(stats.reduce((acc, stat) => acc + stat.profitAndLoss, 0), 2);
+  },
+  average(stats) {
+    const count = aggregators.count(stats);
+    const sum = aggregators.sum(stats);
+    return round(sum / count, 5);
+  },
+  sumMax(stats) {
+    sortByDate(stats);
+
+    let max = Number.MIN_SAFE_INTEGER;
+    let sum = 0;
+    for(const stat of stats) {
+      sum += stat.profitAndLoss;
+      max = Math.max(sum, max);
+    }
+
+    return round(max, 2);
+  },
+  sumMin(stats) {
+    sortByDate(stats);
+
+    let min = Number.MAX_SAFE_INTEGER;
+    let sum = 0;
+    for(const stat of stats) {
+      sum += stat.profitAndLoss;
+      min = Math.min(sum, min);
+    }
+
+    return round(min, 2);
+  }
 };
 
 function dateOnly(value) {
@@ -160,4 +192,13 @@ function dateOnly(value) {
 
 function dateAdd(date, value) {
   return new Date(date.getTime() + value);
+}
+
+function round(value, decimalCount) {
+  const factor = Math.pow(10, decimalCount);
+  return Math.round(factor * value) / factor;
+}
+
+function sortByDate(stats) {
+  stats.sort((s1, s2) => s1.openDate - s2.openDate);
 }
