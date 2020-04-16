@@ -7,10 +7,6 @@ import ForexScalpingBase from './forex-scalping-base';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme');
 
-// https://admiralmarkets.com/fr/formation/articles/strategie-de-forex/strategie-forex-scalping-1-minute
-
-// TODO: fermer la position a la fermeture d une bougie si la bb.middle est entre candle.low et candle.high ?
-
 const STOP_LOSS_DISTANCE = 5;
 
 export default class ForexScalpingM1Extreme extends ForexScalpingBase {
