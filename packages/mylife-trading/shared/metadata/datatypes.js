@@ -2,7 +2,7 @@
 
 module.exports = [
   { id: 'password', primitive: 'string' },
-  { id: 'strategy-implementation', enum: ['forex-scalping-m1-extreme'] },
+  { id: 'strategy-implementation', enum: ['forex-scalping-m1-extreme', 'forex-scalping-m1-extreme-stochastic'] },
   { id: 'stat-position-order-type', enum: ['open', 'update', 'close'] },
   { 
     id: 'stat-position-order', structure: [

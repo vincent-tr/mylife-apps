@@ -21,6 +21,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const implementations = [
   { id: 'forex-scalping-m1-extreme', text: 'Forex scalping M1 extrême' },
+  { id: 'forex-scalping-m1-extreme-stochastic', text: 'Forex scalping M1 extrême stochastique' },
 ];
 
 const Strategy = ({ strategy }) => {
