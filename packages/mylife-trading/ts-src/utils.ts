@@ -26,3 +26,36 @@ export function fireAsync<T>(target: () => Promise<T>) {
 }
 
 export const PIP = 0.0001;
+
+// 1 = up, -1 = down, 0 = unknown
+export function analyzeTrend(values: number[]) {
+  let result = 0;
+
+  for (let i = 0; i < values.length - 1; ++i) {
+    const comparison = compare(values[i], values[i + 1]);
+    if (!comparison) {
+      continue;
+    }
+
+    if (!result) {
+      result = comparison;
+      continue;
+    }
+
+    if (result !== comparison) {
+      return 0;
+    }
+  }
+
+  return result;
+}
+
+function compare(val1: number, val2: number) {
+  if (val1 < val2) {
+    return 1;
+  }
+  if (val1 > val2) {
+    return -1;
+  }
+  return 0;
+}
