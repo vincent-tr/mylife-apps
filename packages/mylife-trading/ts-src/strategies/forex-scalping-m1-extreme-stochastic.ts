@@ -92,14 +92,14 @@ export default class ForexScalpingM1ExtremeStochastic extends ForexScalpingBase 
 	}
 
 	private async analyze() {
-		const { trend, stochastic } = this.getIndicators();
-		logger.debug(`analyze (trend=${trend}, stochastic=${JSON.stringify(stochastic)})`);
-
 		if (this.position) {
 			return;
 		}
 
 		this.changeStatusMarketLookup();
+
+		const { trend, stochastic } = this.getIndicators();
+		logger.debug(`analyze (trend=${trend}, stochastic=${JSON.stringify(stochastic)})`);
 
 		// see if we can take position
 		if (this.canSell(trend, stochastic)) {
