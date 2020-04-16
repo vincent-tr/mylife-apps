@@ -18,6 +18,7 @@ MyLife Trading
  - inside bar M15 :  https://www.youtube.com/watch?v=lOWyNWl4bcE
  - scalping system 10 points (m1) : https://www.youtube.com/watch?v=6LASyXHshYs
  - https://forexexperts.net/index.php/trade-strategy/scalping-strategies
+ - forex scalping m1 sar/sma (hit&run) https://www.forexmt4indicators.com/sma-parabolic-sar-forex-scalping-strategy/
 
 ## Forex devises majeures:
  - EURUSD (Euro - Dollar américain)
