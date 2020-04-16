@@ -1,7 +1,7 @@
 import { SMA, Stochastic } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
-import { last, round, PIP, analyzeTrend } from '../utils';
+import { analyzeTrend } from '../utils';
 import ForexScalpingBase from './forex-scalping-base';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme-stochastic');
@@ -15,7 +15,7 @@ export default class ForexScalpingM1ExtremeStochastic extends ForexScalpingBase 
 	private position: Position;
 
 	async open() {
-		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 1010);
+		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 1020);
 		this.dataset.on('add', () => this.onDatasetChange());
 		this.dataset.on('update', () => this.onDatasetChange());
 
@@ -53,18 +53,20 @@ export default class ForexScalpingM1ExtremeStochastic extends ForexScalpingBase 
 
 	private getIndicators() {
 		const { fixedList } = this.dataset;
+
     const values = fixedList.map(record => record.average.close);
-    
-    const sma = SMA.calculate({period : 1000, values : values});
+		const sma = SMA.calculate({period : 1000, values : values});
     const trend = analyzeTrend(sma);
 
-    const stochastic = Stochastic.calculate({
-      high: fixedList.map(record => record.average.high),
-      low: fixedList.map(record => record.average.low),
-      close: values,
+		const lasts = fixedList.slice(-30);
+    const stochasticRaw = Stochastic.calculate({
+      high: lasts.map(record => record.average.high),
+      low: lasts.map(record => record.average.low),
+      close: lasts.map(record => record.average.close),
       period: 14,
       signalPeriod: 3
 		});
+		const stochastic = stochasticRaw.slice(-2).map(item => item.k);
 
 		return { trend, stochastic };
 	}
@@ -96,41 +98,28 @@ export default class ForexScalpingM1ExtremeStochastic extends ForexScalpingBase 
 		if (this.position) {
 			return;
 		}
-/*
+
+		this.changeStatusMarketLookup();
+
 		// see if we can take position
-		if (this.canSell(rsi, bb, level)) {
-			if (this.waitingMarketStable) {
-				return;
-			}
-
-			logger.info(`(${this.configuration.name}) Sell (rsi=${rsi}, average candle close=${level}, bb upper=${bb.upper})`);
-			await this.takePosition(PositionDirection.SELL, bb);
+		if (this.canSell(trend, stochastic)) {
+			logger.info(`(${this.configuration.name}) Sell (trend=${trend}, stochastic=${JSON.stringify(stochastic)})`);
+			await this.takePosition(PositionDirection.SELL);
 			return;
 		}
 
-		if (this.canBuy(rsi, bb, level)) {
-			if (this.waitingMarketStable) {
-				return;
-			}
-
-			logger.info(`(${this.configuration.name}) Buy (rsi=${rsi}, average candle close=${level}, bb lower=${bb.lower})`);
-			await this.takePosition(PositionDirection.BUY, bb);
+		if (this.canBuy(trend, stochastic)) {
+			logger.info(`(${this.configuration.name}) Buy (trend=${trend}, stochastic=${JSON.stringify(stochastic)})`);
+			await this.takePosition(PositionDirection.BUY);
 			return;
 		}
-*/
-	}
-/*
-	private canSell(rsi: number, bb: BollingerBandsOutput, level: number) {
-		return this.isDiffEnough(bb, level) && rsi > 70 && level > bb.upper;
 	}
 
-	private canBuy(rsi: number, bb: BollingerBandsOutput, level: number) {
-		return this.isDiffEnough(bb, level) && rsi < 30 && level < bb.lower;
+	private canSell(trend: number, stochastic: number[]) {
+		return trend === -1 && stochastic[0] > 80 && stochastic[1] < 80;
 	}
 
-	// do not take position if takeprofit is too close (less than 5 pips)
-	private isDiffEnough(bb: BollingerBandsOutput, level: number) {
-		return Math.abs(level - bb.middle) >= STOP_LOSS_DISTANCE * PIP;
+	private canBuy(trend: number, stochastic: number[]) {
+		return trend === 1 && stochastic[0] < 20 && stochastic[1] > 20; 
 	}
-*/
 }
