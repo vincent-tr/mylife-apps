@@ -161,6 +161,21 @@ exports.statusNotify = (session) => {
   return notifyView(session, view);
 };
 
+exports.statsDeleteByStrategy = (strategyId) => {
+  // ensure that strategy exists
+  business.strategyGet(strategyId);
+
+  const stats = getStoreCollection('stats');
+  let count = 0;
+  for (const stat of stats.list()) {
+    if(stat.strategy === strategyId) {
+      stats.delete(stat._id);
+      ++count;
+    }
+  }
+  return count;
+};
+
 exports.statsNotify = (session) => {
   const stats = getStoreCollection('stats');
   const view = stats.createView();
