@@ -27,4 +27,10 @@ module.exports = [
       { id: 'spread', name: 'Spread (en pips)', datatype: 'real', constraints: ['not-null', 'positive'] },
     ]
   },
+  { 
+    id: 'strategy-ui-settings', structure: [
+      { id: 'showLastPositions', name: 'Affichage des dernières positions', datatype: 'boolean' },
+      { id: 'lastPositionsCount', name: 'Nombre de dernières positions à afficher', datatype: 'count' },
+    ]
+  },
 ];
