@@ -78,26 +78,30 @@ class TradingServiceBinder {
   }
 
   _strategyChanged(event) {
-    this.queue.add('strategy-update', async () => {
-      const { type, before, after } = event;
-      switch (type) {
-        case 'create': {
-          await this._strategyAdd(after);
-          break;
-        }
-
-        case 'update': {
-          await this._strategyRemove(before);
-          await this._strategyAdd(after);
-          break;
-        }
-
-        case 'remove': {
-          await this._strategyRemove(before);
-          break;
-        }
+    const { type, before, after } = event;
+    switch (type) {
+      case 'create': {
+        this.queue.add('strategy-add', async () => this._strategyAdd(after));
+        break;
       }
-    });
+
+      case 'update': {
+        if(type === 'update' && isSame(before, after, STRATEGY_CHANGE_PROPS)) {
+          return;
+        }
+
+        this.queue.add('strategy-update', async () => {
+          await this._strategyRemove(before);
+          await this._strategyAdd(after);
+        });
+        break;
+      }
+
+      case 'remove': {
+        this.queue.add('strategy-remove', async () => this._strategyRemove(before));
+        break;
+      }
+    }
   }
 
   async _strategyRemove(strategy) {
@@ -182,4 +186,19 @@ function mapConfiguration(strategy, broker) {
   const credentials = broker.credentials && { ...broker.credentials, password: business.passwordDecrypt(broker.credentials.password) };
   const brokerConfiguration = { type: broker.type, credentials, testSettings };
   return { instrumentId: strategy.instrumentId, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display, broker: brokerConfiguration };
+}
+
+const STRATEGY_CHANGE_PROPS = ['implementation', 'enabled', 'broker', 'instrumentId', 'risk']
+
+function isSame(obj1, obj2, props) {
+  for(const prop in props) {
+    const val1 = obj1[prop];
+    const val2 = obj2[prop];
+    
+    if(!Object.is(val1, val2)) {
+      return false;
+    }
+  }
+
+  return true;
 }

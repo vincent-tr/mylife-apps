@@ -11,7 +11,20 @@ const useConnect = () => {
   }), [dispatch]);
 };
 
+const useStyles = mui.makeStyles(theme => ({
+  summaryRoot: {
+    padding: 0,
+    paddingLeft: 8,
+    minHeight: '0 !important',
+  },
+  summaryContent: {
+    margin: '0 !important',
+    cursor: 'default'
+  }
+}));
+
 const Stats = ({ strategy }) => {
+  const classes = useStyles();
   const { setUiSettings } = useConnect();
   const settings = getUiSettings(strategy);
   const changeSettings = changes => setUiSettings(strategy, formatUiSettings({ ...settings, ...changes }));
@@ -23,21 +36,23 @@ const Stats = ({ strategy }) => {
   // TODO: change ExpansionPanelSummary cursor
   // TODO: remove borders
   return (
-    <mui.ExpansionPanel expanded={expanded}>
-      <mui.ExpansionPanelSummary>
-        <mui.IconButton onClick={() => changeSettings({ showLastPositions: !expanded })}>
-          {expanded ? (<mui.icons.ExpandLess />) : (<mui.icons.ExpandMore />)}
-        </mui.IconButton>
+    <mui.ExpansionPanel expanded={expanded} elevation={0}>
+      <mui.ExpansionPanelSummary classes={{ root: classes.summaryRoot, content: classes.summaryContent }}>
+        <mui.Tooltip title={expanded ? 'Cacher les statistiques' : 'Afficher les statistiques'}>
+          <mui.IconButton onClick={() => changeSettings({ showLastPositions: !expanded })}>
+            {expanded ? (<mui.icons.ExpandLess />) : (<mui.icons.ExpandMore />)}
+          </mui.IconButton>
+        </mui.Tooltip>
 
         {expanded && (
           <>
-           <mui.Tooltip title='Afficher plus de données de statistiques'>
+           <mui.Tooltip title='Afficher plus de statistiques'>
             <mui.IconButton onClick={() => diffPositionCount(1)}>
                 <mui.icons.Add />
               </mui.IconButton>
            </mui.Tooltip>
 
-            <mui.Tooltip title='Afficher moins de données de statistiques'>
+            <mui.Tooltip title='Afficher moins de statistiques'>
               <mui.IconButton onClick={() => diffPositionCount(-1)}>
                 <mui.icons.Remove />
               </mui.IconButton>
