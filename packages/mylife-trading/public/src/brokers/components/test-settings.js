@@ -35,7 +35,7 @@ const TestSettings = ({ broker, update: updateBroker }) => {
         <mui.Typography>{getStructureFieldName(structure, 'spread')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
-        <DebouncedTextField value={testSettings.spread} onChange={spread => update({ spread })} type='number' fullWidth />
+        <DebouncedTextField value={testSettings.spread} onChange={value => update({ spread: parseFloat(value) })} type='number' fullWidth />
       </mui.Grid>
     </>
   );

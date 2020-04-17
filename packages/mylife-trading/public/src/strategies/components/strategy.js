@@ -24,6 +24,7 @@ const useStyles = mui.makeStyles(theme => ({
 const implementations = [
   { id: 'forex-scalping-m1-extreme', text: 'Forex scalping M1 extrême' },
   { id: 'forex-scalping-m1-extreme-stochastic', text: 'Forex scalping M1 extrême stochastique' },
+  { id: 'forex-scalping-m1-sma-sar', text: 'Forex scalping M1 SMA SAR' },
 ];
 
 const Strategy = ({ strategy }) => {
@@ -73,7 +74,7 @@ const Strategy = ({ strategy }) => {
           <mui.Typography>{getFieldName('strategy', 'risk')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={8}>
-          <DebouncedTextField value={strategy.risk} onChange={risk => update(strategy, { risk })} type='number' fullWidth />
+          <DebouncedTextField value={strategy.risk} onChange={value => update(strategy, { risk: parseFloat(value) })} type='number' fullWidth />
         </mui.Grid>
 
         <mui.Grid item xs={4}>
