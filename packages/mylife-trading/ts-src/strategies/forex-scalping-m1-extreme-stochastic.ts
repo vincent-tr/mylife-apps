@@ -1,7 +1,7 @@
 import { SMA, Stochastic } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
-import { analyzeTrend } from '../utils';
+import { analyzeTrend, last } from '../utils';
 import ForexScalpingBase from './forex-scalping-base';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme-stochastic');
@@ -49,26 +49,28 @@ export default class ForexScalpingM1ExtremeStochastic extends ForexScalpingBase 
 
 		this.lastProcessedTimestamp = lastTimestamp;
 		return true;
-  }
+	}
 
 	private getIndicators() {
 		const { fixedList } = this.dataset;
 
-    const values = fixedList.map(record => record.average.close);
-		const sma = SMA.calculate({period : 1000, values : values});
-    const trend = analyzeTrend(sma);
+		const values = fixedList.map(record => record.average.close);
+		const sma = SMA.calculate({ period: 1000, values: values });
+		const trend = analyzeTrend(sma);
 
 		const lasts = fixedList.slice(-30);
-    const stochasticRaw = Stochastic.calculate({
-      high: lasts.map(record => record.average.high),
-      low: lasts.map(record => record.average.low),
-      close: lasts.map(record => record.average.close),
-      period: 14,
-      signalPeriod: 3
+		const stochasticRaw = Stochastic.calculate({
+			high: lasts.map(record => record.average.high),
+			low: lasts.map(record => record.average.low),
+			close: lasts.map(record => record.average.close),
+			period: 14,
+			signalPeriod: 3
 		});
 		const stochastic = stochasticRaw.slice(-2).map(item => item.k);
 
-		return { trend, stochastic };
+		const candle = last(fixedList);
+
+		return { candle, sma: last(sma), trend, stochastic };
 	}
 
 	private async takePosition(direction: PositionDirection) {
@@ -98,28 +100,30 @@ export default class ForexScalpingM1ExtremeStochastic extends ForexScalpingBase 
 
 		this.changeStatusMarketLookup();
 
-		const { trend, stochastic } = this.getIndicators();
-		logger.debug(`analyze (trend=${trend}, stochastic=${JSON.stringify(stochastic)})`);
+		const { candle, sma, trend, stochastic } = this.getIndicators();
+		const level = candle.average.close;
+		logger.debug(`analyze (level=${level}, trend=${trend}, sma=${sma}, stochastic=${JSON.stringify(stochastic)})`);
 
 		// see if we can take position
-		if (this.canSell(trend, stochastic)) {
-			logger.info(`(${this.configuration.name}) Sell (trend=${trend}, stochastic=${JSON.stringify(stochastic)})`);
-			await this.takePosition(PositionDirection.SELL);
-			return;
-		}
-
-		if (this.canBuy(trend, stochastic)) {
-			logger.info(`(${this.configuration.name}) Buy (trend=${trend}, stochastic=${JSON.stringify(stochastic)})`);
+		if (this.canBuy(level, sma, trend, stochastic)) {
+			logger.info(`(${this.configuration.name}) Buy (level=${level}, trend=${trend}, sma=${sma}, stochastic=${JSON.stringify(stochastic)})`);
 			await this.takePosition(PositionDirection.BUY);
 			return;
 		}
+
+		if (this.canSell(level, sma, trend, stochastic)) {
+			logger.info(`(${this.configuration.name}) Sell (level=${level}, trend=${trend}, sma=${sma}, stochastic=${JSON.stringify(stochastic)})`);
+			await this.takePosition(PositionDirection.SELL);
+			return;
+		}
 	}
 
-	private canSell(trend: number, stochastic: number[]) {
-		return trend === -1 && stochastic[0] > 80 && stochastic[1] < 80;
+	private canBuy(level: number, sma: number, trend: number, stochastic: number[]) {
+		return trend === 1 && level > sma && stochastic[0] < 20 && stochastic[1] > 20;
 	}
 
-	private canBuy(trend: number, stochastic: number[]) {
-		return trend === 1 && stochastic[0] < 20 && stochastic[1] > 20; 
+	private canSell(level: number, sma: number, trend: number, stochastic: number[]) {
+		return trend === -1 && level < sma && stochastic[0] > 80 && stochastic[1] < 80;
 	}
+
 }
