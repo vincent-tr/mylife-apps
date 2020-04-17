@@ -53,3 +53,7 @@ MyLife Trading
 
 Reference:
 - https://www.histdata.com/download-free-forex-data/
+
+## TODO
+
+ - home/stats: Add detail window on stat to see orders + details (especially on mobile device)

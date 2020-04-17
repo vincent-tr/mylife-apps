@@ -4,8 +4,6 @@ import { React, PropTypes, mui, formatDate, useScreenSize } from 'mylife-tools-u
 import humanizeDuration from 'humanize-duration';
 import { useStatView } from '../../common/stat-view';
 
-// TODO: ajouter une fenetre de detail avec les ordres + le detail (surtout sur mobile)
-
 const useStyles = mui.makeStyles(theme => ({
   profit: {
     color: theme.palette.success.main,
