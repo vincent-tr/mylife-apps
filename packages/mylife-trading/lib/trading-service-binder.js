@@ -86,7 +86,7 @@ class TradingServiceBinder {
       }
 
       case 'update': {
-        if(type === 'update' && isSame(before, after, STRATEGY_CHANGE_PROPS)) {
+        if(isSame(before, after, STRATEGY_CHANGE_PROPS)) {
           return;
         }
 
@@ -191,7 +191,7 @@ function mapConfiguration(strategy, broker) {
 const STRATEGY_CHANGE_PROPS = ['implementation', 'enabled', 'broker', 'instrumentId', 'risk'];
 
 function isSame(obj1, obj2, props) {
-  for(const prop in props) {
+  for(const prop of props) {
     const val1 = obj1[prop];
     const val2 = obj2[prop];
 
