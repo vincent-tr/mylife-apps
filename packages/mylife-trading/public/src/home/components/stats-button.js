@@ -4,7 +4,7 @@ import { React, PropTypes, mui } from 'mylife-tools-ui';
 import { useUiSettings } from './ui-settings';
 
 const StatsButton = ({ strategy }) => {
-  const [settings, changeSettings] = useUiSettings(strategy);
+  const { settings, changeSettings } = useUiSettings(strategy);
   const expanded = settings.showLastPositions;
   return (
     <mui.Tooltip title={expanded ? 'Cacher les statistiques' : 'Afficher les statistiques'}>

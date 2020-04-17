@@ -26,7 +26,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Strategy = ({ strategy }) => {
   const classes = useStyles();
-  const [settings] = useUiSettings(strategy);
+  const { settings } = useUiSettings(strategy);
 
   return (
     <mui.Paper variant='outlined' square className={classes.container}>

@@ -5,9 +5,8 @@ import StatsTable from './stats-table';
 import { useUiSettings } from './ui-settings';
 
 const Stats = ({ strategy }) => {
-  const [settings, changeSettings] = useUiSettings(strategy);
+  const { settings, changeSettings, resetSettings } = useUiSettings(strategy);
   const diffPositionCount = value => changeSettings({lastPositionsCount: settings.lastPositionsCount + value })
-  const resetSettings = () => changeSettings(DEFAULT_SETTINGS);
 
   return (
     <>

@@ -14,8 +14,9 @@ export function useUiSettings(strategy) {
   const { setUiSettings } = useConnect();
   const settings = getUiSettings(strategy);
   const changeSettings = changes => setUiSettings(strategy, formatUiSettings({ ...settings, ...changes }));
+  const resetSettings = () => changeSettings(DEFAULT_SETTINGS);
 
-  return [settings, changeSettings];
+  return { settings, changeSettings, resetSettings };
 }
 
 const DEFAULT_SETTINGS = {
