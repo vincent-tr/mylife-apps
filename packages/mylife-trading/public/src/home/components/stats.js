@@ -15,16 +15,44 @@ const Stats = ({ strategy }) => {
   const { setUiSettings } = useConnect();
   const settings = getUiSettings(strategy);
   const changeSettings = changes => setUiSettings(strategy, formatUiSettings({ ...settings, ...changes }));
+  const diffPositionCount = value => changeSettings({lastPositionsCount: settings.lastPositionsCount + value })
+  const resetSettings = () => changeSettings(DEFAULT_SETTINGS);
 
   const expanded = settings.showLastPositions;
 
+  // TODO: change ExpansionPanelSummary cursor
+  // TODO: remove borders
   return (
-    <mui.ExpansionPanel expanded={expanded} onChange={() => changeSettings({ showLastPositions: !expanded })}>
-      <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
-        <mui.Typography>{'TOTO'}</mui.Typography>
+    <mui.ExpansionPanel expanded={expanded}>
+      <mui.ExpansionPanelSummary>
+        <mui.IconButton onClick={() => changeSettings({ showLastPositions: !expanded })}>
+          {expanded ? (<mui.icons.ExpandLess />) : (<mui.icons.ExpandMore />)}
+        </mui.IconButton>
+
+        {expanded && (
+          <>
+           <mui.Tooltip title='Afficher plus de données de statistiques'>
+            <mui.IconButton onClick={() => diffPositionCount(1)}>
+                <mui.icons.Add />
+              </mui.IconButton>
+           </mui.Tooltip>
+
+            <mui.Tooltip title='Afficher moins de données de statistiques'>
+              <mui.IconButton onClick={() => diffPositionCount(-1)}>
+                <mui.icons.Remove />
+              </mui.IconButton>
+            </mui.Tooltip>
+
+            <mui.Tooltip title={'Ré-initialiser l\'affichage'}>
+              <mui.IconButton onClick={() => resetSettings()}>
+                <mui.icons.Clear />
+              </mui.IconButton>
+            </mui.Tooltip>
+          </>
+        )}
       </mui.ExpansionPanelSummary>
       <mui.ExpansionPanelDetails>
-      <StatsTable strategy={strategy} count={settings.lastPositionsCount} />
+        <StatsTable strategy={strategy} count={settings.lastPositionsCount} />
       </mui.ExpansionPanelDetails>
     </mui.ExpansionPanel>
   );
