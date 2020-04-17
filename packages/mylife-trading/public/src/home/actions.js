@@ -37,3 +37,12 @@ export const changeState = (strategy, enabled) => async (dispatch) => {
     values: { enabled }
   }));
 };
+
+export const setUiSettings = (strategy, uiSettings) => async (dispatch) => {
+  await dispatch(io.call({
+    service: 'strategy',
+    method: 'update',
+    id: strategy._id,
+    values: { uiSettings }
+  }));
+};
