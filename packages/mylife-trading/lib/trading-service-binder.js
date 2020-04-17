@@ -188,13 +188,13 @@ function mapConfiguration(strategy, broker) {
   return { instrumentId: strategy.instrumentId, implementation: strategy.implementation, risk: strategy.risk, name: strategy.display, broker: brokerConfiguration };
 }
 
-const STRATEGY_CHANGE_PROPS = ['implementation', 'enabled', 'broker', 'instrumentId', 'risk']
+const STRATEGY_CHANGE_PROPS = ['implementation', 'enabled', 'broker', 'instrumentId', 'risk'];
 
 function isSame(obj1, obj2, props) {
   for(const prop in props) {
     const val1 = obj1[prop];
     const val2 = obj2[prop];
-    
+
     if(!Object.is(val1, val2)) {
       return false;
     }
