@@ -17,6 +17,7 @@ const useConnect = () => {
 const useStyles = mui.makeStyles(theme => ({
   container: {
     padding: theme.spacing(2),
+    width: 1400
   },
 }));
 

@@ -44,3 +44,13 @@ export const remove = (strategy) => async (dispatch) => {
 
   dispatch(local.showSuccess(`${renderObject(strategy)} supprimé`));
 };
+
+export const removeStats = (strategy) => async (dispatch) => {
+  const count = await dispatch(io.call({
+    service: 'stat',
+    method: 'deleteByStrategy',
+    strategyId: strategy._id
+  }));
+
+  dispatch(local.showSuccess(`${count} données de statistiques supprimées`));
+};
