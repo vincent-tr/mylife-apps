@@ -20,6 +20,8 @@ MyLife Trading
  - https://forexexperts.net/index.php/trade-strategy/scalping-strategies
  - forex scalping m1 sar/sma (hit&run) https://www.forexmt4indicators.com/sma-parabolic-sar-forex-scalping-strategy/
  - 50 SMA plate = détection de range ? https://forex-strategies-revealed.com/range-bound-trading/50maangle
+ - ig 4 stratégies : https://www.ig.com/en/trading-strategies/four-simple-scalping-trading-strategies-190131
+ - The Most Simple Scalping Strategy To Trade The Forex Market! : https://www.forex.academy/the-most-simple-scalping-strategy-to-trade-the-forex-market/
 
 ## Forex devises majeures:
  - EURUSD (Euro - Dollar américain)
