@@ -22,6 +22,7 @@ MyLife Trading
  - 50 SMA plate = détection de range ? https://forex-strategies-revealed.com/range-bound-trading/50maangle
  - ig 4 stratégies : https://www.ig.com/en/trading-strategies/four-simple-scalping-trading-strategies-190131
  - The Most Simple Scalping Strategy To Trade The Forex Market! : https://www.forex.academy/the-most-simple-scalping-strategy-to-trade-the-forex-market/
+ - 3 EMA: https://www.google.com/amp/s/www.netpicks.com/three-moving-average-crossover/amp/ (seul ou en combinaison pour detection de range ?)
 
 ## Forex devises majeures:
  - EURUSD (Euro - Dollar américain)
