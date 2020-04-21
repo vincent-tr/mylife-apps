@@ -2,7 +2,7 @@ import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
 import { Instrument, Market, MarketStatus } from '../broker';
 
-const logger = createLogger('mylife:trading:strategy:forex-scalping-base');
+const logger = createLogger('mylife:trading:strategy:scalping-base');
 
 export default abstract class ScalpingBase extends StrategyBase {
 	private market: Market;

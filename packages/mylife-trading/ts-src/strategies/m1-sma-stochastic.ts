@@ -4,7 +4,7 @@ import { Resolution, MovingDataset, Position, PositionDirection } from '../broke
 import { analyzeTrend, last } from '../utils';
 import ScalpingBase from './scalping-base';
 
-const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme-stochastic');
+const logger = createLogger('mylife:trading:strategy:m1-sma-stochastic');
 
 const STOP_LOSS_DISTANCE = 20;
 const TAKE_PROFIT_DISTANCE = 10;

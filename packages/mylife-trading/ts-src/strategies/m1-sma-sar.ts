@@ -4,7 +4,7 @@ import { Resolution, MovingDataset, Position, PositionDirection } from '../broke
 import { last } from '../utils';
 import ScalpingBase from './scalping-base';
 
-const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-sma-sar');
+const logger = createLogger('mylife:trading:strategy:m1-sma-sar');
 
 // https://forexexperts.net/index.php/trade-strategy/scalping-strategies/62-hit-run-scalping-trading
 const STOP_LOSS_DISTANCE = 15;

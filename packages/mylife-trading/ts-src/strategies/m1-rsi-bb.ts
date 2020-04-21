@@ -5,7 +5,7 @@ import { last, round, PIP } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ScalpingBase from './scalping-base';
 
-const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme');
+const logger = createLogger('mylife:trading:strategy:m1-rsi-bb');
 
 const STOP_LOSS_DISTANCE = 5;
 
