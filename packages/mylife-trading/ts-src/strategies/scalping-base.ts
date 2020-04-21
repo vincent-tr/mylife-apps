@@ -4,7 +4,7 @@ import { Instrument, Market, MarketStatus } from '../broker';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-base');
 
-export default abstract class ForexScalpingBase extends StrategyBase {
+export default abstract class ScalpingBase extends StrategyBase {
 	private market: Market;
 	private opened: boolean;
 

@@ -1,22 +1,21 @@
-import { SMA, PSAR } from 'technicalindicators';
+import { SMA, Stochastic } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
-import { last } from '../utils';
-import ForexScalpingBase from './forex-scalping-base';
+import { analyzeTrend, last } from '../utils';
+import ScalpingBase from './scalping-base';
 
-const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-sma-sar');
+const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme-stochastic');
 
-// https://forexexperts.net/index.php/trade-strategy/scalping-strategies/62-hit-run-scalping-trading
-const STOP_LOSS_DISTANCE = 15;
+const STOP_LOSS_DISTANCE = 20;
 const TAKE_PROFIT_DISTANCE = 10;
 
-export default class ForexScalpingM1SmaSar extends ForexScalpingBase {
+export default class M1SmaStochastic extends ScalpingBase {
 	private dataset: MovingDataset;
 	private lastProcessedTimestamp: number;
 	private position: Position;
 
 	async open() {
-		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 52);
+		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 1020);
 		this.dataset.on('add', () => this.onDatasetChange());
 		this.dataset.on('update', () => this.onDatasetChange());
 
@@ -56,20 +55,22 @@ export default class ForexScalpingM1SmaSar extends ForexScalpingBase {
 		const { fixedList } = this.dataset;
 
 		const values = fixedList.map(record => record.average.close);
-		const sma = SMA.calculate({ period: 50, values: values });
+		const sma = SMA.calculate({ period: 1000, values: values });
+		const trend = analyzeTrend(sma);
 
 		const lasts = fixedList.slice(-30);
-		const sarRaw = PSAR.calculate({
+		const stochasticRaw = Stochastic.calculate({
 			high: lasts.map(record => record.average.high),
 			low: lasts.map(record => record.average.low),
-			step: 0.02,
-			max: 0.2
+			close: lasts.map(record => record.average.close),
+			period: 14,
+			signalPeriod: 3
 		});
-		const sar = sarRaw.slice(-2);
+		const stochastic = stochasticRaw.slice(-2).map(item => item.k);
 
 		const candle = last(fixedList);
 
-		return { candle, sma: last(sma), sar };
+		return { candle, sma: last(sma), trend, stochastic };
 	}
 
 	private async takePosition(direction: PositionDirection) {
@@ -99,30 +100,30 @@ export default class ForexScalpingM1SmaSar extends ForexScalpingBase {
 
 		this.changeStatusMarketLookup();
 
-		const { candle, sma, sar } = this.getIndicators();
+		const { candle, sma, trend, stochastic } = this.getIndicators();
 		const level = candle.average.close;
-		logger.debug(`analyze (level=${level}, sma=${sma}, sar=${JSON.stringify(sar)})`);
+		logger.debug(`analyze (level=${level}, trend=${trend}, sma=${sma}, stochastic=${JSON.stringify(stochastic)})`);
 
 		// see if we can take position
-		if (this.canBuy(level, sma, sar)) {
-			logger.info(`(${this.configuration.name}) Buy (level=${level}, sma=${sma}, sar=${JSON.stringify(sar)})`);
+		if (this.canBuy(level, sma, trend, stochastic)) {
+			logger.info(`(${this.configuration.name}) Buy (level=${level}, trend=${trend}, sma=${sma}, stochastic=${JSON.stringify(stochastic)})`);
 			await this.takePosition(PositionDirection.BUY);
 			return;
 		}
 
-		if (this.canSell(level, sma, sar)) {
-			logger.info(`(${this.configuration.name}) Sell (level=${level}, sma=${sma}, sar=${JSON.stringify(sar)})`);
+		if (this.canSell(level, sma, trend, stochastic)) {
+			logger.info(`(${this.configuration.name}) Sell (level=${level}, trend=${trend}, sma=${sma}, stochastic=${JSON.stringify(stochastic)})`);
 			await this.takePosition(PositionDirection.SELL);
 			return;
 		}
 	}
 
-	private canBuy(level: number, sma: number, sar: number[]) {
-		return level > sma && sar[0] < level && sar[1] > level;
+	private canBuy(level: number, sma: number, trend: number, stochastic: number[]) {
+		return trend === 1 && level > sma && stochastic[0] < 20 && stochastic[1] > 20;
 	}
 
-	private canSell(level: number, sma: number, sar: number[]) {
-		return level < sma && sar[0] > level && sar[1] < level;
+	private canSell(level: number, sma: number, trend: number, stochastic: number[]) {
+		return trend === -1 && level < sma && stochastic[0] > 80 && stochastic[1] < 80;
 	}
 
 }

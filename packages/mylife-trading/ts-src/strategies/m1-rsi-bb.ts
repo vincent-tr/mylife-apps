@@ -3,13 +3,13 @@ import { createLogger } from 'mylife-tools-server';
 import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
 import { last, round, PIP } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
-import ForexScalpingBase from './forex-scalping-base';
+import ScalpingBase from './scalping-base';
 
 const logger = createLogger('mylife:trading:strategy:forex-scalping-m1-extreme');
 
 const STOP_LOSS_DISTANCE = 5;
 
-export default class ForexScalpingM1Extreme extends ForexScalpingBase {
+export default class M1RsiBb extends ScalpingBase {
 	private dataset: MovingDataset;
 	private lastProcessedTimestamp: number;
 	private position: Position;

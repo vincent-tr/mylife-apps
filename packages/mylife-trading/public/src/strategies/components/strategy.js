@@ -22,9 +22,9 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const implementations = [
-  { id: 'forex-scalping-m1-extreme', text: 'Forex scalping M1 extrême' },
-  { id: 'forex-scalping-m1-extreme-stochastic', text: 'Forex scalping M1 extrême stochastique' },
-  { id: 'forex-scalping-m1-sma-sar', text: 'Forex scalping M1 SMA SAR' },
+  { id: 'm1-rsi-bb', text: 'Scalping M1 RSI BB' },
+  { id: 'm1-sma-stochastic', text: 'Scalping M1 SMA Stochastique' },
+  { id: 'm1-sma-sar', text: 'Scalping M1 SMA SAR' },
 ];
 
 const Strategy = ({ strategy }) => {

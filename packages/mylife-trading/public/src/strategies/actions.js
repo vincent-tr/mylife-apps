@@ -10,7 +10,7 @@ const local = {
 export const add = () => async (dispatch) => {
   const values = {
     display: 'Nouveau',
-    implementation: 'forex-scalping-m1-extreme',
+    implementation: 'm1-rsi-bb',
     enabled: false,
     broker: null,
     instrumentId: 'A remplir',
