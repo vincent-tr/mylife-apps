@@ -1,7 +1,7 @@
 import { EMA } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
 import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
-import { last } from '../utils';
+import { last, PIP } from '../utils';
 import ScalpingBase from './scalping-base';
 
 const logger = createLogger('mylife:trading:strategy:m1-3ema');
@@ -74,7 +74,7 @@ export default class M13Ema extends ScalpingBase {
 
 	private async takePosition(direction: PositionDirection, level: number, stopLoss: number) {
 		// convert risk value to contract size
-		const size = this.computePositionSize(this.instrument, Math.abs(level - stopLoss));
+		const size = this.computePositionSize(this.instrument, Math.abs(level - stopLoss) / PIP);
 		this.position = await this.broker.openPosition(this.instrument, direction, size, { level: stopLoss }, {});
 		this.changeStatusTakingPosition();
 
