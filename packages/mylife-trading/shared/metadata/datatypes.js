@@ -2,7 +2,7 @@
 
 module.exports = [
   { id: 'password', primitive: 'string' },
-  { id: 'strategy-implementation', enum: ['m1-rsi-bb', 'm1-sma-stochastic', 'm1-sma-sar'] },
+  { id: 'strategy-implementation', enum: ['m1-rsi-bb', 'm1-sma-stochastic', 'm1-sma-sar', 'm1-3ema'] },
   { id: 'stat-position-order-type', enum: ['open', 'update', 'close'] },
   { 
     id: 'stat-position-order', structure: [

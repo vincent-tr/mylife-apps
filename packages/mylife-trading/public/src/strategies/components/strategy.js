@@ -25,6 +25,7 @@ const implementations = [
   { id: 'm1-rsi-bb', text: 'Scalping M1 RSI BB' },
   { id: 'm1-sma-stochastic', text: 'Scalping M1 SMA Stochastique' },
   { id: 'm1-sma-sar', text: 'Scalping M1 SMA SAR' },
+  { id: 'm1-3ema', text: 'Scalping M1 3EMA' },
 ];
 
 const Strategy = ({ strategy }) => {
