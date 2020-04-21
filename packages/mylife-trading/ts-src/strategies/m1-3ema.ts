@@ -14,7 +14,7 @@ export default class M13Ema extends ScalpingBase {
 	private position: Position;
 
 	async open() {
-		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 52);
+		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 150);
 		this.dataset.on('add', () => this.onDatasetChange());
 		this.dataset.on('update', () => this.onDatasetChange());
 
