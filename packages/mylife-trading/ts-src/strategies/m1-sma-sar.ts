@@ -118,11 +118,11 @@ export default class M1SmaSar extends ScalpingBase {
 	}
 
 	private canBuy(level: number, sma: number, sar: number[]) {
-		return level > sma && sar[0] < level && sar[1] > level;
+		return level > sma && sar[0] > level && sar[1] < level;
 	}
 
 	private canSell(level: number, sma: number, sar: number[]) {
-		return level < sma && sar[0] > level && sar[1] < level;
+		return level < sma && sar[0] < level && sar[1] > level;
 	}
 
 }
