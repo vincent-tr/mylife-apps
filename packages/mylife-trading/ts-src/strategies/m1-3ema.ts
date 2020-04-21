@@ -75,7 +75,7 @@ export default class M13Ema extends ScalpingBase {
 	private async takePosition(direction: PositionDirection, level: number, stopLoss: number) {
 		// convert risk value to contract size
 		const size = this.computePositionSize(this.instrument, Math.abs(level - stopLoss));
-		this.position = await this.broker.openPosition(this.instrument, direction, size, { level: stopLoss }, { distance: TAKE_PROFIT_DISTANCE });
+		this.position = await this.broker.openPosition(this.instrument, direction, size, { level: stopLoss }, {});
 		this.changeStatusTakingPosition();
 
 		this.position.on('close', () => {
@@ -92,8 +92,20 @@ export default class M13Ema extends ScalpingBase {
 		});
 	}
 
+	private async checkPositionClose() {
+		const { ema1, ema2 } = this.getIndicators();
+
+		// close when em1 and em2 cross again
+		const shouldClose = this.position.direction === PositionDirection.BUY ? ema1[1] < ema2[1] : ema1[1] > ema2[1];
+		if (shouldClose) {
+			logger.info(`(${this.configuration.name}) Close (direction=${this.position.direction}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)})`);
+			await this.position.close();
+		}
+	}
+
 	private async analyze() {
 		if (this.position) {
+			await this.checkPositionClose();
 			return;
 		}
 
@@ -119,12 +131,12 @@ export default class M13Ema extends ScalpingBase {
 
 	private canBuy(level: number, ema1: number[], ema2: number[], ema3: number[]) {
 		// price above all
-		if(level <= ema1[1] || level <= ema2[1] || level <= ema3[1]) {
+		if (level <= ema1[1] || level <= ema2[1] || level <= ema3[1]) {
 			return false;
 		}
 
 		// ema1 and 2 above ema3
-		if(ema1[0] <= ema3[0] || ema1[1] <= ema3[1] || ema2[0] <= ema3[0] || ema2[1] <= ema3[1]) {
+		if (ema1[0] <= ema3[0] || ema1[1] <= ema3[1] || ema2[0] <= ema3[0] || ema2[1] <= ema3[1]) {
 			return false;
 		}
 
@@ -134,12 +146,12 @@ export default class M13Ema extends ScalpingBase {
 
 	private canSell(level: number, ema1: number[], ema2: number[], ema3: number[]) {
 		// price below all
-		if(level >= ema1[1] || level >= ema2[1] || level >= ema3[1]) {
+		if (level >= ema1[1] || level >= ema2[1] || level >= ema3[1]) {
 			return false;
 		}
 
 		// ema1 and 2 below ema3
-		if(ema1[0] >= ema3[0] || ema1[1] >= ema3[1] || ema2[0] >= ema3[0] || ema2[1] >= ema3[1]) {
+		if (ema1[0] >= ema3[0] || ema1[1] >= ema3[1] || ema2[0] >= ema3[0] || ema2[1] >= ema3[1]) {
 			return false;
 		}
 
