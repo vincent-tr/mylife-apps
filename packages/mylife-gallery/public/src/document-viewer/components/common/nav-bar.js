@@ -107,8 +107,9 @@ export default NavBar;
 
 function getDownloadInfo(documentWithInfo) {
   const { document, info } = documentWithInfo;
+  const extension = document.paths[0].path.split('.').pop();
   return {
-    filename: info.title,
+    filename: `${info.title}.${extension}`,
     url: `/content/raw/${document._entity}/${document._id}`
   };
 }
