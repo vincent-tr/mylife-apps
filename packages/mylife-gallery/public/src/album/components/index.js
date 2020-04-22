@@ -1,10 +1,11 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet, useScreenSize, clsx } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet, clsx } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
 import DocumentList from '../../document-list/components';
 import Detail from './detail';
+import { useIsSmallScreen } from './behaviors';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -75,17 +76,3 @@ Album.propTypes = {
 };
 
 export default Album;
-
-function useIsSmallScreen() {
-  const screenSize = useScreenSize();
-
-  switch(screenSize) {
-    case 'phone':
-      return true;
-
-    case 'tablet':
-    case 'laptop':
-    case 'wide':
-      return false;
-  }
-}
