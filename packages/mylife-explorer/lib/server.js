@@ -4,8 +4,8 @@ const WebServer = require('./web/server');
 
 module.exports = class Server {
 
-  async init(options) {
-    this._web = new WebServer(options);
+  async init() {
+    this._web = new WebServer();
   }
 
   async close() {

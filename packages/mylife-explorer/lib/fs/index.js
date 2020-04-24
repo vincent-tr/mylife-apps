@@ -3,13 +3,12 @@
 const path = require('path');
 const fs   = require('fs');
 const mime = require('mime-types');
+const { getConfig } = require('mylife-tools-server');
 
-exports.create = function(options) {
-
+exports.create = function() {
   const roots = new Map();
-  for(const root of options.roots) {
-    roots.set(root.name, root);
-  }
+  const root = { name: 'Root', path: getConfig('root') };
+  roots.set(root.name, root);
 
   function getFullPath(p) {
     const { root : rootName, path : relative } = splitPath(p);

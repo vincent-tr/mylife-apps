@@ -5,6 +5,7 @@ const path              = require('path');
 const http              = require('http');
 const express           = require('express');
 const enableDestroy     = require('server-destroy');
+const { getConfig, getArg } = require('mylife-tools-server');
 const createIndexRoutes = require('./index-routes');
 const createApiRoutes   = require('./api-routes');
 
@@ -12,10 +13,12 @@ const debug = require('debug')('mylife:explorer:web:server');
 
 module.exports = class Server {
 
-  constructor(options) {
+  constructor() {
     const app = express();
+    const config = getConfig('webServer');
+    const dev = getArg('dev');
 
-    if(options.dev) {
+    if(dev) {
       debug('setup webpack dev middleware');
 
       // lazy require dev dependencies
@@ -31,13 +34,13 @@ module.exports = class Server {
     app.use(express.static(publicDirectory, { index : false }));
 
     app.use(createIndexRoutes());
-    app.use('/api', createApiRoutes(options));
+    app.use('/api', createApiRoutes());
 
     this._server = http.Server(app);
     enableDestroy(this._server);
 
-    debug(`Start listening on port ${options.port}`);
-    this._server.listen(options.port);
+    debug(`Start listening on port ${config.port}`);
+    this._server.listen(config.port);
   }
 
   async close() {

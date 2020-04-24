@@ -4,9 +4,9 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { create : fsCreate } = require('../fs');
 
-module.exports = (options) => {
+module.exports = () => {
   const router = express.Router();
-  const fs = fsCreate(options);
+  const fs = fsCreate();
 
   router.get(/\/metadata\/(.*)/, asyncHandler(async (req, res) => {
     const path = req.params[0];

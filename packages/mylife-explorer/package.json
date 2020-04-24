@@ -4,14 +4,13 @@
   "description": "MyLife Explorer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint lib/* public/app/*",
-    "start:dev": "DEBUG=mylife:gallery:* node bin/server.js --dev",
+    "lint": "eslint lib/ public/src/",
+    "start:dev": "ROOT_PATH=${ROOT_PATH:-~/} WEB_PORT=8014 ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
-    "build:bundle": "webpack --config webpack.config.js --mode=production",
+    "build:bundle": "mylife-build-bundle",
     "build:docker": "mylife-build-docker",
     "prepack": "npm run build:bundle",
-    "postpack": "find ./public -maxdepth 1 -type f -not -name 'index.html' -not -name '.npmignore' -delete"
+    "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
   },
   "repository": {
     "type": "git",
@@ -28,6 +27,8 @@
     "express": "^4.16.3",
     "express-async-handler": "^1.1.4",
     "mime-types": "^2.1.25",
+    "mylife-tools-common": "^1.0.7",
+    "mylife-tools-server": "^1.0.17",
     "server-destroy": "^1.0.1"
   },
   "devDependencies": {

@@ -2,6 +2,7 @@
 
 'use strict';
 
+require('../lib/init');
 const debug = require('debug')('mylife:explorer:bin:server');
 const configFile = require('../conf/config');
 const Server = require('../lib/server');
