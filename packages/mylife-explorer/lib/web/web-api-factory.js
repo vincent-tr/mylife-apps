@@ -8,7 +8,7 @@ const logger = createLogger('mylife:explorer:web:content-routes');
 exports.webApiFactory = ({ app, express, asyncHandler }) => {
   const router = express.Router();
 
-  router.get(/(.*)/, asyncHandler(async (req, res) => {
+  router.route(/(.*)/).get(asyncHandler(async (req, res) => {
     const path           = req.params[0];
     const { size, mime } = await business.getInfos(path);
     const { range }      = req.headers;
