@@ -1,4 +1,4 @@
-'use sitrct';
+'use strict';
 
 Object.assign(exports,
   require('./common'),
