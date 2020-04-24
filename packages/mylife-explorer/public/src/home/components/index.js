@@ -11,12 +11,12 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const Home = () => {
+const Home = ({ path }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      Hello
+      {path}
     </div>
   );
 };
