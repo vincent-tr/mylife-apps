@@ -1,15 +1,10 @@
 'use strict';
 
-import { handleActions, io } from 'mylife-tools-ui';
-//import actionTypes from './action-types';
+import { handleActions } from 'mylife-tools-ui';
+import actionTypes from './action-types';
 
 export default handleActions({
 
-  [io.actionTypes.SET_ONLINE] : (state) => ({
-    ...state,
-    //
-  })
+  [actionTypes.SET_DATA] : (state) => (state),
 
-}, {
-  //
-});
+}, null);

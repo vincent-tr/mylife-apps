@@ -10,7 +10,7 @@ services.initStore(reducers);
 
 /* eslint-disable react/display-name, react/prop-types */
 const routes = [
-  { location: '/', renderer: () => <Home /> },
+  { location: '/:path*', renderer: ({ path }) => <Home path={formatPath(path)} /> },
 ];
 /* eslint-enable */
 
@@ -19,3 +19,7 @@ services.render({
   appName: 'Explorer',
   routes,
 });
+
+function formatPath(value) {
+  return value.join('/');
+}
