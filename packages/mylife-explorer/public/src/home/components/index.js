@@ -1,7 +1,6 @@
 'use strict';
 
 import { React, PropTypes, mui, useEffect, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
-
 import { getData } from '../selectors';
 import { fetchInfos } from '../actions';
 

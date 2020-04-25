@@ -1,3 +1,3 @@
 'use strict';
 
-const getData = state => state.home;
+export const getData = state => state.home;

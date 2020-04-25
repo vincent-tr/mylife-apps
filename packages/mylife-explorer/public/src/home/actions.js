@@ -6,7 +6,7 @@ import actionTypes from './action-types';
 const setData = createAction(actionTypes.SET_DATA);
 
 export const fetchInfos = (path) => async (dispatch) => {
-  setData(null);
+  dispatch(setData(null));
 
   const data = await dispatch(io.call({
     service: 'metadata',
@@ -14,5 +14,5 @@ export const fetchInfos = (path) => async (dispatch) => {
     path
   }));
 
-  setData(data);
+  dispatch(setData(data));
 };

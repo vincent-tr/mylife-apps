@@ -5,6 +5,6 @@ import actionTypes from './action-types';
 
 export default handleActions({
 
-  [actionTypes.SET_DATA] : (state) => (state),
+  [actionTypes.SET_DATA] : (state, action) => (action.payload),
 
 }, null);
