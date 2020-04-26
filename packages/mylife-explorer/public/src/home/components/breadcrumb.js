@@ -6,20 +6,24 @@ const Breadcrumb = ({ path }) => {
   const { navigate } = routing.useRoutingConnect();
   const nodes = useMemo(() => path.split('/'), [path]);
   
+  const createNavigate = (path) => {
+    return e => {
+      e.preventDefault();
+      navigate(`/${path}`);
+    };
+  };
+
   return (
     <mui.Breadcrumbs>
-      {nodes.map((node, index) => {
-        const clickHandler = e => {
-          e.preventDefault();
-          navigate(makeTarget(nodes, index));
-        };
+        <mui.Link color='inherit' href='/' onClick={createNavigate('')}>
+          {'<Racine>'}
+        </mui.Link>
 
-        return (
-          <mui.Link key={`${index}-${node}`} color='inherit' href='/' onClick={clickHandler}>
-            {node}
-          </mui.Link>
-        );
-      })}
+      {nodes.map((node, index) => (
+        <mui.Link key={`${index}-${node}`} color='inherit' href='/' onClick={createNavigate(makePath(nodes, index))}>
+          {node}
+        </mui.Link>
+      ))}
     </mui.Breadcrumbs>
   );
 };
@@ -30,7 +34,7 @@ Breadcrumb.propTypes = {
 
 export default Breadcrumb;
 
-function makeTarget(nodes, index) {
-  const path = nodes.slice(0, index + 1);
-  return `/${path}`;
+function makePath(nodes, index) {
+  return nodes.slice(0, index + 1);
 }
+
