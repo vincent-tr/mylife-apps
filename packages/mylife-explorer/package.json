@@ -30,6 +30,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.17.0",
+    "humanize": "0.0.9",
     "mylife-tools-build": "^1.2.9",
     "mylife-tools-ui": "^1.0.12"
   }
