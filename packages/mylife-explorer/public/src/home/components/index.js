@@ -3,7 +3,6 @@
 import { React, PropTypes, mui, useEffect, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
 import { getData } from '../selectors';
 import { fetchInfos } from '../actions';
-import Breadcrumb from './breadcrumb';
 import Viewer from './viewer';
 
 const useConnect = () => {
@@ -34,7 +33,6 @@ const Home = ({ path }) => {
 
   return (
     <div className={classes.container}>
-      <Breadcrumb path={path} />
       <Viewer path={path} data={data} />
     </div>
   );
