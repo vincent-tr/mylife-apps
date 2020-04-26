@@ -3,6 +3,7 @@
 import { React, PropTypes, mui, useEffect, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
 import { getData } from '../selectors';
 import { fetchInfos } from '../actions';
+import Breadcrumb from './breadcrumb';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const Home = ({ path }) => {
 
   return (
     <div className={classes.container}>
-      <p>{path}</p>
+      <Breadcrumb path={path} />
       <p>{JSON.stringify(data)}</p>
     </div>
   );
