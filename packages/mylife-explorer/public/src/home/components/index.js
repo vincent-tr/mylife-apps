@@ -45,6 +45,8 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
+const NullDetail = React.forwardRef((props, ref) => (<div ref={ref} />));
+
 const Home = ({ path }) => {
   const classes = useStyles();
   const { data, isShowDetail, fetchInfos } = useConnect();
@@ -52,15 +54,17 @@ const Home = ({ path }) => {
   const isSmallScreen = useIsSmallScreen();
   const detailClasses = clsx(classes.detail, isSmallScreen ? classes.detailSmall : classes.detailLarge);
 
-  if(!data) {
-    return null;
-  }
-
   return (
     <div className={classes.container}>
-      <Viewer className={classes.viewer} path={path} data={data} />
+      {data && (
+        <Viewer className={classes.viewer} path={path} data={data} />
+      )}
       <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>
-        <Detail className={detailClasses} path={path} data={data} />
+        {data ? (
+          <Detail className={detailClasses} path={path} data={data} />
+        ) : (
+          <NullDetail />
+        )}
       </mui.Slide>
     </div>
   );
