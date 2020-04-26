@@ -4,6 +4,7 @@ import { React, PropTypes, mui, useEffect, useDispatch, useSelector, useMemo } f
 import { getData } from '../selectors';
 import { fetchInfos } from '../actions';
 import Breadcrumb from './breadcrumb';
+import Viewer from './viewer';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const Home = ({ path }) => {
   return (
     <div className={classes.container}>
       <Breadcrumb path={path} />
-      <p>{JSON.stringify(data)}</p>
+      <Viewer path={path} data={data} />
     </div>
   );
 };
