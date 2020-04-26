@@ -56,7 +56,7 @@ Detail.propTypes = {
 export default Detail;
 
 function getName(path) {
-  const nodes = path.split('/');
+  const nodes = path.split('/').filter(n => n);
   if(nodes.length) {
     return nodes[nodes.length - 1];
   }
