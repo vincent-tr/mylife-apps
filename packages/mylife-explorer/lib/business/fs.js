@@ -16,6 +16,10 @@ exports.metadata = async (p) => {
       const names = await fs.promises.readdir(fullPath);
       const list = result.content = [];
       for(const name of names) {
+        if(name.startsWith('.')) {
+          continue;
+        }
+        
         list.push({
           name,
           ... await infos(path.join(fullPath, name))
