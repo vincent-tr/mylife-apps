@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, onMenuButtonClick, ...props }) => {
+const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, onMenuButtonClick, ...props }) => {
   const AppIcon = appIcon;
   const ViewIcon = viewIcon;
   const classes = useStyles();
@@ -57,6 +57,7 @@ const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
               {viewName}
             </Typography>
           )}
+          {viewAdditionalBreadcrumb}
         </Breadcrumbs>
 
         <div className={classes.pad} />
@@ -74,6 +75,7 @@ Header.propTypes = {
   viewName: PropTypes.node,
   viewIcon: PropTypes.elementType,
   viewAdditionalHeader: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
+  viewAdditionalBreadcrumb: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
   onMenuButtonClick: PropTypes.func
 };
 

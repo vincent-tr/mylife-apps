@@ -18,6 +18,7 @@ const LayoutRouter = ({ routes, menu, ...props }) => {
       viewName={routeMatch.renderName()}
       viewIcon={routeMatch.renderIcon()}
       viewAdditionalHeader={routeMatch.renderAdditionalHeader()}
+      viewAdditionalBreadcrumb={routeMatch.routerAdditionalBreadcrumb()}
       menu={mappedMenu}
       {...props}>
       {routeMatch.render()}
@@ -43,6 +44,8 @@ LayoutRouter.propTypes = {
       iconRenderer: PropTypes.func,
       additionalHeader: Layout.propTypes.additionalHeader,
       additionalHeaderRenderer: PropTypes.func,
+      additionalBreadcrumb: Layout.propTypes.additionalBreadcrumb,
+      additionalBreadcrumbRenderer: PropTypes.func,
       renderer: PropTypes.func.isRequired
     }).isRequired
   ).isRequired
@@ -124,6 +127,13 @@ class RouteMatch {
       return this.route.additionalHeaderRenderer(this.parameters);
     }
     return this.route.additionalHeader;
+  }
+
+  routerAdditionalBreadcrumb() {
+    if(this.route.additionalBreadcrumbRenderer) {
+      return this.route.additionalBreadcrumbRenderer(this.parameters);
+    }
+    return this.route.additionalBreadcrumb;
   }
 
   render() {

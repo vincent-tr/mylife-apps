@@ -60,7 +60,7 @@ const hideValueMenuState = {
   wide: menuStates.REDUCED
 };
 
-const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, menu, children }) => {
+const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, menu, children }) => {
   const classes = useStyles();
   const screenSize = useScreenSize();
   const [menuState, setMenuState] = useState(initialMenuState[screenSize]);
@@ -88,6 +88,7 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
         onMainClick={onMainClick}
         viewName={viewName}
         viewAdditionalHeader={viewAdditionalHeader}
+        viewAdditionalBreadcrumb={viewAdditionalBreadcrumb}
         viewIcon={viewIcon}
         className={classes.appBar} />
 
@@ -111,6 +112,7 @@ Layout.propTypes = {
   viewName: Header.propTypes.viewName,
   viewIcon: Header.propTypes.viewIcon,
   viewAdditionalHeader: Header.propTypes.viewAdditionalHeader,
+  viewAdditionalBreadcrumb: Header.propTypes.viewAdditionalBreadcrumb,
   children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
   menu: Menu.propTypes.items
 };
