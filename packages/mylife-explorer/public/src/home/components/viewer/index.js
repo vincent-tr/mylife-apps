@@ -3,6 +3,10 @@
 import { React, PropTypes } from 'mylife-tools-ui';
 
 const Viewer = ({ path, data }) => {
+  if(!data) {
+    return null;
+  }
+
   return (
     <div>
       Viewer
@@ -12,7 +16,7 @@ const Viewer = ({ path, data }) => {
 
 Viewer.propTypes = {
   path: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired
+  data: PropTypes.object
 };
 
 export default Viewer;
