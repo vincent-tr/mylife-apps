@@ -4,7 +4,7 @@ import { io, createAction } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 const setData = createAction(actionTypes.SET_DATA);
-export const setDetail = createAction(actionTypes.SET_DETAIL);
+export const showDetail = createAction(actionTypes.SET_DETAIL);
 
 export const fetchInfos = (path) => async (dispatch) => {
   dispatch(setData(null));

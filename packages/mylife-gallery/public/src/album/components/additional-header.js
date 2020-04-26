@@ -17,7 +17,7 @@ const useConnect = () => {
   };
 };
 
-const AlbumAdditionalHeader = () => {
+const AdditionalHeader = () => {
   const { isShowDetail, showDetail } = useConnect();
   return (
     <mui.IconButton color='inherit' onClick={() => showDetail(!isShowDetail)}>
@@ -26,4 +26,4 @@ const AlbumAdditionalHeader = () => {
   );
 }
 
-export default AlbumAdditionalHeader;
+export default AdditionalHeader;
