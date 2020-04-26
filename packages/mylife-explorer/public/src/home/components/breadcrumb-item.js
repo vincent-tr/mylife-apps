@@ -15,7 +15,7 @@ const BreadcrumbItem = ({ path, index }) => {
   const { navigate } = routing.useRoutingConnect();
   const { text, onClick } = useMemo(() => {
     const nodes = path.split('/');
-    const url = nodes.slice(0, index + 1).map(n => '/' + n);
+    const url = '/' + nodes.slice(0, index + 1).join('/');
     const text = nodes[index];
     const onClick = e => {
       e.preventDefault();
