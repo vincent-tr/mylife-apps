@@ -3,6 +3,7 @@
 import humanize from 'humanize';
 import { React, PropTypes, mui, formatDate } from 'mylife-tools-ui';
 import FileIcon from './file-icon';
+import { getName } from './tools';
 
 const Field = ({ name, value }) => (
   <mui.ListItem>
@@ -53,14 +54,6 @@ Detail.propTypes = {
 };
 
 export default Detail;
-
-function getName(data) {
-  const nodes = data.path.split('/').filter(n => n);
-  if(nodes.length) {
-    return nodes[nodes.length - 1];
-  }
-  return '<Racine>';
-}
 
 function formatTimestamp(value) {
   return formatDate(value, 'dd/MM/yyyy HH:mm:ss');

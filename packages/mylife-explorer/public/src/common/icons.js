@@ -3,7 +3,8 @@
 import { React, mui } from 'mylife-tools-ui';
 
 const {
-  Info
+  Info,
+  CloudDownload
 } = mui.icons;
 
 const Explorer = (props) => (
@@ -18,5 +19,6 @@ export default {
 
   actions: {
     Detail: Info,
+    Download: CloudDownload,
   },
 };

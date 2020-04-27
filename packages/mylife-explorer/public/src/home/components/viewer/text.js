@@ -2,7 +2,7 @@
 
 import { React, PropTypes } from 'mylife-tools-ui';
 import { LazyLog } from 'react-lazylog';
-import { makeUrl } from './tools';
+import { makeUrl } from '../tools';
 
 const Text = ({ data, ...props }) => {
   return (
