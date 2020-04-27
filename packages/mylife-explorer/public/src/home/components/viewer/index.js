@@ -1,11 +1,9 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
+import { getFileTypeViewer } from '../file-types';
 import Default from './default';
 import Directory from './directory';
-import Text from './text';
-import Image from './image';
-import Video from './video';
 
 const Viewer = ({ data, ...props }) => {
   const ViewerType = getViewerType(data) || Default;
@@ -26,31 +24,6 @@ function getViewerType(data) {
       return Directory;
 
     case 'File':
-      return getFileViewerType(data.mime);
-  }
-}
-
-function getFileViewerType(mime) {
-  if(!mime) {
-    return;
-  }
-  
-  const [type, subtype] = mime.split('/');
-  switch(type) {
-    case 'application':
-      switch(subtype) {
-        case 'json':
-          return Text;
-      }
-      break;
-
-    case 'text':
-      return Text;
-
-    case 'image':
-      return Image;
-
-    case 'video':
-      return Video;
+      return getFileTypeViewer(data.mime);
   }
 }
