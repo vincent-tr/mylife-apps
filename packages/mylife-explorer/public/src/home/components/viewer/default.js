@@ -44,7 +44,7 @@ const Default = ({ data, className, ...props }) => {
     console.log(type);
     const ViewerType = types[type];
     return (
-      <ViewerType data={data} {...props} />
+      <ViewerType data={data} className={className} {...props} />
     );
   }
 
