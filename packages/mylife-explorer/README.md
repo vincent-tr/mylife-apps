@@ -1,9 +1,7 @@
 # mylife-explorer
 MyLife Explorer
 
-## Build
- - npm update
- - npm version major|minor|patch
- - git push && git push --tags
- - npm run build
- - docker push vincenttr/mylife-explorer
+## Viewers
+ - text: https://www.npmjs.com/package/react-lazylog
+ - video: https://docs.videojs.com/tutorial-react.html
+ - pdf: https://github.com/mozilla/pdf.js/blob/master/examples/create-react-app/src/pdf.tsx
