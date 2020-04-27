@@ -3,6 +3,7 @@
 import { React, PropTypes, mui, useEffect, useDispatch, useSelector, useMemo, clsx, useScreenSize } from 'mylife-tools-ui';
 import { getData, isShowDetail } from '../selectors';
 import { fetchInfos } from '../actions';
+import { useIsSmallScreen } from './behaviors';
 import Viewer from './viewer';
 import Detail from './detail';
 
@@ -76,16 +77,3 @@ Home.propTypes = {
 
 export default Home;
 
-function useIsSmallScreen() {
-  const screenSize = useScreenSize();
-
-  switch(screenSize) {
-    case 'phone':
-      return true;
-
-    case 'tablet':
-    case 'laptop':
-    case 'wide':
-      return false;
-  }
-}

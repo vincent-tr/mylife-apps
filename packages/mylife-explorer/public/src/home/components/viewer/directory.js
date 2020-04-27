@@ -3,6 +3,7 @@
 import humanize from 'humanize';
 import { React, PropTypes, mui, useState, useMemo, routing, VirtualizedTable, formatDate } from 'mylife-tools-ui';
 import FileIcon from '../file-icon';
+import { useIsSmallScreen } from '../behaviors';
 
 const useStyles = mui.makeStyles(theme => ({
   icon: {
@@ -13,6 +14,7 @@ const useStyles = mui.makeStyles(theme => ({
 const Directory = ({ path, data, ...props }) => {
   const classes = useStyles();
   const { navigate } = routing.useRoutingConnect();
+  const isSmallScreen = useIsSmallScreen();
   const [sort, setSort] = useState({ key: 'name', direction: 'asc' });
   const list = useMemo(() => sortList(data.content, sort), [data.content, sort]);
 
@@ -43,11 +45,11 @@ const Directory = ({ path, data, ...props }) => {
   
   const columns = [
     { dataKey: 'name', headerRenderer: createHeaderRenderer('Nom'), cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellName },
-    { dataKey: 'ctime', headerRenderer: createHeaderRenderer('Créé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.ctime) },
-    { dataKey: 'mtime', headerRenderer: createHeaderRenderer('Modifié'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.mtime) },
-    { dataKey: 'atime', headerRenderer: createHeaderRenderer('Accédé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.atime) },
+    !isSmallScreen && { dataKey: 'ctime', headerRenderer: createHeaderRenderer('Créé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.ctime) },
+    !isSmallScreen && { dataKey: 'mtime', headerRenderer: createHeaderRenderer('Modifié'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.mtime) },
+    !isSmallScreen && { dataKey: 'atime', headerRenderer: createHeaderRenderer('Accédé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.atime) },
     { dataKey: 'size', width: 100, headerRenderer: createHeaderRenderer('Taille'), cellDataGetter: ({ rowData }) => humanize.filesize(rowData.size) },
-  ];
+  ].filter(col => col);
 
   const handleSelectClick = (item) => {
     const url = path ? `/${path}/${item.name}` : `/${item.name}`;
