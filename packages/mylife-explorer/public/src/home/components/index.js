@@ -58,11 +58,11 @@ const Home = ({ path }) => {
   return (
     <div className={classes.container}>
       {data && (
-        <Viewer className={classes.viewer} path={path} data={data} />
+        <Viewer className={classes.viewer} data={data} />
       )}
       <mui.Slide direction='left' in={isShowDetail} mountOnEnter unmountOnExit>
         {data ? (
-          <Detail className={detailClasses} path={path} data={data} />
+          <Detail className={detailClasses} data={data} />
         ) : (
           <NullDetail />
         )}

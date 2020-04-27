@@ -11,7 +11,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const Directory = ({ path, data, ...props }) => {
+const Directory = ({ data, ...props }) => {
   const classes = useStyles();
   const { navigate } = routing.useRoutingConnect();
   const isSmallScreen = useIsSmallScreen();
@@ -52,7 +52,7 @@ const Directory = ({ path, data, ...props }) => {
   ].filter(col => col);
 
   const handleSelectClick = (item) => {
-    const url = path ? `/${path}/${item.name}` : `/${item.name}`;
+    const url = data.path ? `/${data.path}/${item.name}` : `/${item.name}`;
     navigate(url);
   };
 
@@ -63,7 +63,6 @@ const Directory = ({ path, data, ...props }) => {
 };
 
 Directory.propTypes = {
-  path: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired
 };
 

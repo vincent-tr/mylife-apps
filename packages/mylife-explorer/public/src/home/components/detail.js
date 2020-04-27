@@ -25,7 +25,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const Detail = React.forwardRef(({ path, data, ...props }, ref) => {
+const Detail = React.forwardRef(({ data, ...props }, ref) => {
   const classes = useStyles();
   return (
     <mui.List ref={ref} {...props}>
@@ -34,7 +34,7 @@ const Detail = React.forwardRef(({ path, data, ...props }, ref) => {
           <div className={classes.titleContainer}>
             <FileIcon data={data} />
             <mui.Typography variant='h6' className={classes.titleText}>
-              {getName(path)}
+              {getName(data)}
             </mui.Typography>
           </div>
         } />
@@ -49,14 +49,13 @@ const Detail = React.forwardRef(({ path, data, ...props }, ref) => {
 });
 
 Detail.propTypes = {
-  path: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired
 };
 
 export default Detail;
 
-function getName(path) {
-  const nodes = path.split('/').filter(n => n);
+function getName(data) {
+  const nodes = data.path.split('/').filter(n => n);
   if(nodes.length) {
     return nodes[nodes.length - 1];
   }

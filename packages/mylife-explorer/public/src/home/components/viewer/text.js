@@ -1,17 +1,18 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
+import { LazyLog } from 'react-lazylog';
+import { makeUrl } from './tools';
 
-const Text = ({ path, data, ...props }) => {
+const Text = ({ data, ...props }) => {
   return (
     <div {...props}>
-      Text Viewer
+      <LazyLog url={makeUrl(data)} />
     </div>
   );
 };
 
 Text.propTypes = {
-  path: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired
 };
 

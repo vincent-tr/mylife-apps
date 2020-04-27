@@ -15,5 +15,7 @@ export const fetchInfos = (path) => async (dispatch) => {
     path
   }));
 
+  data.path = path;
+
   dispatch(setData(data));
 };

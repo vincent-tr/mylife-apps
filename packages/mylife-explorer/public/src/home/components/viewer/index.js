@@ -13,7 +13,6 @@ const Viewer = ({ data, ...props }) => {
 };
 
 Viewer.propTypes = {
-  path: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired
 };
 
@@ -37,6 +36,7 @@ function getFileViewerType(mime) {
         case 'json':
           return Text;
       }
+      break;
 
     case 'text':
       return Text;
