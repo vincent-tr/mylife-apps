@@ -45,10 +45,10 @@ const Directory = ({ data, ...props }) => {
   
   const columns = [
     { dataKey: 'name', headerRenderer: createHeaderRenderer('Nom'), cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellName },
-    !isSmallScreen && { dataKey: 'ctime', headerRenderer: createHeaderRenderer('Créé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.ctime) },
-    !isSmallScreen && { dataKey: 'mtime', headerRenderer: createHeaderRenderer('Modifié'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.mtime) },
-    !isSmallScreen && { dataKey: 'atime', headerRenderer: createHeaderRenderer('Accédé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.atime) },
-    { dataKey: 'size', width: 100, headerRenderer: createHeaderRenderer('Taille'), cellDataGetter: ({ rowData }) => humanize.filesize(rowData.size) },
+    !isSmallScreen && { dataKey: 'ctime', width: 180, headerRenderer: createHeaderRenderer('Créé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.ctime) },
+    !isSmallScreen && { dataKey: 'mtime', width: 180, headerRenderer: createHeaderRenderer('Modifié'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.mtime) },
+    !isSmallScreen && { dataKey: 'atime', width: 180, headerRenderer: createHeaderRenderer('Accédé'), cellDataGetter: ({ rowData }) => formatTimestamp(rowData.atime) },
+    { dataKey: 'size', width: 130, headerRenderer: createHeaderRenderer('Taille'), cellDataGetter: ({ rowData }) => humanize.filesize(rowData.size) },
   ].filter(col => col);
 
   const handleSelectClick = (item) => {
