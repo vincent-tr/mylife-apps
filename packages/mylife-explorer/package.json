@@ -25,7 +25,8 @@
   "dependencies": {
     "mime-types": "^2.1.27",
     "mylife-tools-common": "^1.0.7",
-    "mylife-tools-server": "^1.0.17"
+    "mylife-tools-server": "^1.0.17",
+    "react-video-js-player": "^1.1.1"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

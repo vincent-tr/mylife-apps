@@ -5,6 +5,7 @@ import Default from './default';
 import Directory from './directory';
 import Text from './text';
 import Image from './image';
+import Video from './video';
 
 const Viewer = ({ data, ...props }) => {
   const ViewerType = getViewerType(data) || Default;
@@ -44,5 +45,8 @@ function getFileViewerType(mime) {
 
     case 'image':
       return Image;
+
+    case 'video':
+      return Video;
   }
 }

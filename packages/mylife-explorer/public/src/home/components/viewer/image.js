@@ -1,12 +1,19 @@
 'use strict';
 
-import { React, PropTypes } from 'mylife-tools-ui';
+import { React, PropTypes, mui } from 'mylife-tools-ui';
 import ReactPanZoom from 'react-image-pan-zoom-rotate';
 import { makeUrl } from '../tools';
 
+const useStyles = mui.makeStyles({
+  container: {
+    position: 'relative'
+  }
+});
+
 const Text = ({ data, ...props }) => {
+  const classes = useStyles();
   return (
-    <div {...props} style={{ position: 'relative'}}>
+    <div {...props} className={classes.container}>
       <ReactPanZoom image={makeUrl(data)} />
     </div>
   );
