@@ -1,12 +1,13 @@
 'use strict';
 
 import { React, PropTypes } from 'mylife-tools-ui';
+import Default from './default';
+import Directory from './directory';
 
-const Viewer = ({ path, data, ...props }) => {
+const Viewer = ({ data, ...props }) => {
+  const ViewerType = getViewerType(data);
   return (
-    <div {...props}>
-      Viewer
-    </div>
+    <ViewerType data={data} {...props} />
   );
 };
 
@@ -16,3 +17,13 @@ Viewer.propTypes = {
 };
 
 export default Viewer;
+
+function getViewerType(data) {
+  switch(data.type) {
+    case 'Directory':
+      return Directory;
+
+    default:
+      return Default;
+  }
+}
