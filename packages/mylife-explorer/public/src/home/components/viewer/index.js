@@ -31,6 +31,10 @@ function getViewerType(data) {
 }
 
 function getFileViewerType(mime) {
+  if(!mime) {
+    return;
+  }
+  
   const [type, subtype] = mime.split('/');
   switch(type) {
     case 'application':
