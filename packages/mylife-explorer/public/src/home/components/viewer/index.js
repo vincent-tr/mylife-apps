@@ -4,6 +4,7 @@ import { React, PropTypes } from 'mylife-tools-ui';
 import Default from './default';
 import Directory from './directory';
 import Text from './text';
+import Image from './image';
 
 const Viewer = ({ data, ...props }) => {
   const ViewerType = getViewerType(data) || Default;
@@ -40,5 +41,8 @@ function getFileViewerType(mime) {
 
     case 'text':
       return Text;
+
+    case 'image':
+      return Image;
   }
 }
