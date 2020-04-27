@@ -3,9 +3,10 @@
 import { React, PropTypes } from 'mylife-tools-ui';
 import Default from './default';
 import Directory from './directory';
+import Text from './text';
 
 const Viewer = ({ data, ...props }) => {
-  const ViewerType = getViewerType(data);
+  const ViewerType = getViewerType(data) || Default;
   return (
     <ViewerType data={data} {...props} />
   );
@@ -23,7 +24,21 @@ function getViewerType(data) {
     case 'Directory':
       return Directory;
 
-    default:
-      return Default;
+    case 'File':
+      return getFileViewerType(data.mime);
+  }
+}
+
+function getFileViewerType(mime) {
+  const [type, subtype] = mime.split('/');
+  switch(type) {
+    case 'application':
+      switch(subtype) {
+        case 'json':
+          return Text;
+      }
+
+    case 'text':
+      return Text;
   }
 }
