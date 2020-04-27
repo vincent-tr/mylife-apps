@@ -1,7 +1,7 @@
 'use strict';
 
 import humanize from 'humanize';
-import { React, PropTypes, mui, useState, useMemo, VirtualizedTable, formatDate } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useState, useMemo, routing, VirtualizedTable, formatDate } from 'mylife-tools-ui';
 import FileIcon from '../file-icon';
 
 const useStyles = mui.makeStyles(theme => ({
@@ -12,6 +12,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Directory = ({ path, data, ...props }) => {
   const classes = useStyles();
+  const { navigate } = routing.useRoutingConnect();
   const [sort, setSort] = useState({ key: 'name', direction: 'asc' });
   const list = useMemo(() => sortList(data.content, sort), [data.content, sort]);
 
@@ -49,7 +50,8 @@ const Directory = ({ path, data, ...props }) => {
   ];
 
   const handleSelectClick = (item) => {
-    console.log('go', item);
+    const url = path ? `/${path}/${item.name}` : `/${item.name}`;
+    navigate(url);
   };
 
   return (
