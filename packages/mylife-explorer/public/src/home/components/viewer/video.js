@@ -6,24 +6,23 @@ import { makeUrl } from '../tools';
 // https://github.com/Afterster/videojs-vlc/blob/HEAD/example.html
 // https://github.com/videojs/video.js/issues/2750#issuecomment-151939927
 
-import 'video.js/dist/video-js.css';
-import 'expose-loader?videojs!video.js/dist/video';
-// import 'videojs-vlc/lib/videojs-vlc';
+// import 'video.js/dist/video-js.css';
+// import 'script-loader!video.js/dist/video';
+// import 'script-loader!videojs-vlc/lib/videojs-vlc';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = mui.makeStyles({
   video: {
     width: '100%',
     height: '100%'
   }
-}));
+});
 
 const Video = ({ data, className, ...props }) => {
   const classes = useStyles();
   return (
     <video 
       controls
-      data-setup='{ "techOrder": ["vlc"] }'
-      className={clsx(className, 'video-js', 'vjs-default-skin', classes.video)}
+      className={clsx(className)}
       {...props}
     >
       <source src={makeUrl(data)} />
