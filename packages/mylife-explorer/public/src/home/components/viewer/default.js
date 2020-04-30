@@ -41,7 +41,6 @@ const Default = ({ data, className, ...props }) => {
   }
 
   if(type) {
-    console.log(type);
     const ViewerType = types[type];
     return (
       <ViewerType data={data} className={className} {...props} />
