@@ -21,7 +21,7 @@ function getIcon(data) {
     case 'Directory':
       return mui.icons.Folder;
     case 'File':
-      return getFileTypeIcon(data.mime) || mui.icons.InsertDriveFile;
+      return getFileTypeIcon(data) || mui.icons.InsertDriveFile;
     default:
       return mui.icons.Help;
   }

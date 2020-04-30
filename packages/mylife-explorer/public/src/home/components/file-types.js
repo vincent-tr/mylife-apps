@@ -5,19 +5,38 @@ import Text from './viewer/text';
 import Image from './viewer/image';
 import Video from './viewer/video';
 import Pdf from './viewer/pdf';
+import Url from './viewer/url';
 
 const types = {
   text: { viewer: Text, icon: mui.icons.Description },
   image: { viewer: Image, icon: mui.icons.Image },
   video: { viewer: Video, icon: mui.icons.OndemandVideo },
   pdf: { viewer: Pdf, icon: mui.icons.PictureAsPdf },
+  url: { viewer: Url, icon: mui.icons.OpenInNew },
 }
 
-function getFileType(mime) {
-  if(!mime) {
-    return;
+export function getFileTypeViewer(data) {
+  const type = getFileType(data);
+  return type && type.viewer;
+}
+
+export function getFileTypeIcon(data) {
+  const type = getFileType(data);
+  return type && type.icon;
+}
+
+function getFileType(data) {
+  if(data.mime) {
+    return getByMime(data.mime);
   }
-  
+
+  const ext = getExtension(data);
+  if(ext) {
+    return getByExtension(ext);
+  }
+}
+
+function getByMime(mime) {
   const [type, subtype] = mime.split('/');
   switch(type) {
     case 'application':
@@ -40,12 +59,15 @@ function getFileType(mime) {
   }
 }
 
-export function getFileTypeViewer(mime) {
-  const type = getFileType(mime);
-  return type && type.viewer;
+function getByExtension(ext) {
+  switch(ext) {
+    case 'url':
+      return types.url;
+  }
 }
 
-export function getFileTypeIcon(mime) {
-  const type = getFileType(mime);
-  return type && type.icon;
+function getExtension(data) {
+  const name = data.name || data.path.split('/').pop();
+  const index = name.lastIndexOf('.');
+  return index === -1 ? '' : name.substring(index + 1);
 }

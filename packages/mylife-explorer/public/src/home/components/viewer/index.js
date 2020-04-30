@@ -24,6 +24,6 @@ function getViewerType(data) {
       return Directory;
 
     case 'File':
-      return getFileTypeViewer(data.mime);
+      return getFileTypeViewer(data);
   }
 }
