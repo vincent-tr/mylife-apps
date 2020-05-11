@@ -110,7 +110,7 @@ export default class IgPosition extends EventEmitter implements Position {
   async close() {
     const order: ClosePositionOrder = {
       dealId: this.dealId,
-      direction: serializeDirection(this.direction),
+      direction: serializeDirection(reverseDirection(this.direction)),
       orderType: OrderType.MARKET,
       size: this.size
     };
@@ -171,5 +171,16 @@ export default class IgPosition extends EventEmitter implements Position {
 
     logger.debug(`Closed: '${JSON.stringify(this)}'`);
     this.emit('close');
+  }
+}
+
+function reverseDirection(direction: PositionDirection) {
+  switch (direction) {
+    case PositionDirection.BUY:
+      return PositionDirection.SELL;
+    case PositionDirection.SELL:
+      return PositionDirection.BUY;
+    default:
+      throw new Error(`Unknown direction: '${direction}'`);
   }
 }
