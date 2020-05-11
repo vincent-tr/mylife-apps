@@ -87,6 +87,11 @@ export default class M13Ema extends ScalpingBase {
 				logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
 
 				this.positionSummary(summary);
+
+				if (this.closing) {
+					return;
+				}
+
 				this.changeStatusMarketLookup();
 			});
 		});

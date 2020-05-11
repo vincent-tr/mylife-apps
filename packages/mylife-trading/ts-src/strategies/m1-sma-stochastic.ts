@@ -88,6 +88,11 @@ export default class M1SmaStochastic extends ScalpingBase {
 				logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
 
 				this.positionSummary(summary);
+
+				if (this.closing) {
+					return;
+				}
+
 				this.changeStatusMarketLookup();
 			});
 		});

@@ -83,6 +83,10 @@ export default class M1RsiBb extends ScalpingBase {
 
 				this.positionSummary(summary);
 
+				if (this.closing) {
+					return;
+				}
+
 				if (this.waitingMarketStable) {
 					this.changeStatus('Attente de retour à la stabilité du marché');
 				} else {
