@@ -274,6 +274,53 @@ export interface UpdatePositionOrder {
   trailingStopIncrement?: number;
 }
 
+export interface ClosePositionOrder {
+  /**
+   * Deal identifier
+   */
+  dealId?: string;
+
+  /**
+   * Deal direction
+   */
+  direction?: DealDirection;
+
+  /**
+   * Instrument epic identifier
+   */
+  epic?: string;
+
+  /**
+   * Instrument expiry
+   */
+  expiry?: string;
+
+  /**
+   * Closing deal level
+   */
+  level?: number;
+
+  /**
+   * Describes the order level model to be used for a position operation
+   */
+  orderType?: OrderType;
+
+  /**
+   * Lightstreamer price quote identifier
+   */
+  quoteId?: string;
+
+  /**
+   * Deal size
+   */
+  size: number;
+
+  /**
+   * The time in force determines the order fill strategy.
+   */
+  timeInForce?: TimeInForce;
+}
+
 /**
  * Deal status
  */
@@ -776,7 +823,7 @@ export class DealingOperations {
 
   /**
    * Creates an OTC position.
-   * @param data
+   * @param order
    * @returns Deal reference of the transaction
    */
   async openPosition(order: OpenPositionOrder): Promise<string> {
@@ -786,12 +833,11 @@ export class DealingOperations {
 
   /**
    * Closes an OTC position
-   * @param dealId Deal identifier
+   * @param order
    * @returns Deal reference
    */
-  async closePosition(dealId: string): Promise<string> {
-    const data = { dealId };
-    const { dealReference } = await this.request('delete', 'positions/otc', data, '1');
+  async closePosition(order: ClosePositionOrder): Promise<string> {
+    const { dealReference } = await this.request('delete', 'positions/otc', order, '1');
     return dealReference;
   }
 

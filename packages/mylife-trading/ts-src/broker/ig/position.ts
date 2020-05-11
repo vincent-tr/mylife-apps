@@ -2,9 +2,9 @@ import EventEmitter from 'events';
 import { createLogger } from 'mylife-tools-server';
 import { StreamSubscription } from './api/stream';
 import Client from './api/client';
-import { UpdatePositionOrder, DealConfirmation, DealDirection, DealStatus, OpenPositionUpdate, UpdatePositionStatus } from './api/dealing';
+import { UpdatePositionOrder, DealConfirmation, DealStatus, OpenPositionUpdate, UpdatePositionStatus, ClosePositionOrder, OrderType } from './api/dealing';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
-import { parseTimestamp, parseDirection } from './parsing';
+import { parseTimestamp, parseDirection, serializeDirection } from './parsing';
 import Position, { PositionOrder, PositionOrderType, PositionDirection } from '../position';
 
 const logger = createLogger('mylife:trading:broker:position:ig');
@@ -13,6 +13,7 @@ export default class IgPosition extends EventEmitter implements Position {
   readonly dealReference: string;
   readonly dealId: string;
   readonly direction: PositionDirection;
+  private readonly size: number; // needed for close
 
   private readonly _orders: PositionOrder[] = [];
   private _stopLoss: number;
@@ -31,6 +32,7 @@ export default class IgPosition extends EventEmitter implements Position {
     this.dealReference = confirmation.dealReference;
     this.dealId = confirmation.dealId;
     this.direction = parseDirection(confirmation.direction);
+    this.size = confirmation.size;
 
     this.readConfirmation(confirmation, PositionOrderType.OPEN);
 
@@ -106,7 +108,20 @@ export default class IgPosition extends EventEmitter implements Position {
   }
 
   async close() {
-    await this.client.dealing.closePosition(this.dealId);
+    const order: ClosePositionOrder = {
+      dealId: this.dealId,
+      direction: serializeDirection(this.direction),
+      orderType: OrderType.MARKET,
+      size: this.size
+    };
+
+    const confirmationListener = ConfirmationListener.fromSubscription(this.subscription);
+    const dealReference = await this.client.dealing.closePosition(order);
+    const confirmation = await confirmationListener.wait(dealReference);
+
+    if (confirmation.dealStatus == DealStatus.REJECTED) {
+      throw new ConfirmationError(confirmation.reason);
+    }
 
     this._orders.push({
       date: new Date(),
