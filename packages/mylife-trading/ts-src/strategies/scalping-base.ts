@@ -85,9 +85,13 @@ export default abstract class ScalpingBase extends StrategyBase {
 		try {
 			this.changeStatus("Mise à l'arrêt");
 
-			this._closing = false;
-			await this.close();
 			this._closing = true;
+			try {
+				await this.close();
+			} catch(err) {
+				logger.error(`Stop failure: ${err.stack}`);
+			}
+			this._closing = false;
 
 			this._instrument.close();
 			this._instrument = null;
