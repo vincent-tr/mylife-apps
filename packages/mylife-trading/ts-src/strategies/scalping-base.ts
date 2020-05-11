@@ -9,9 +9,14 @@ export default abstract class ScalpingBase extends StrategyBase {
 	private opened: boolean;
 
 	private _instrument: Instrument;
+	private _closing = false;
 
 	protected get instrument() {
 		return this._instrument;
+	}
+
+	protected get closing() {
+		return this._closing;
 	}
 
 	protected abstract open(): Promise<void>;
@@ -80,7 +85,9 @@ export default abstract class ScalpingBase extends StrategyBase {
 		try {
 			this.changeStatus("Mise à l'arrêt");
 
+			this._closing = false;
 			await this.close();
+			this._closing = true;
 
 			this._instrument.close();
 			this._instrument = null;
