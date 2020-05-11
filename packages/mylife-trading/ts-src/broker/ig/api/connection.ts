@@ -58,9 +58,15 @@ export default class Connection {
    * @param version The version number passed to header.
    */
   async request(method: string, action: string, data: any = null, version: string = '2'): Promise<any> {
-    const headers = this.getHeaders(version);
+    const headers: any = this.getHeaders(version);
     const url = this.api + action;
     const body = data ? JSON.stringify(data) : null;
+
+    // https://labs.ig.com/node/36
+    if(method.toLowerCase() === 'delete') {
+      headers['_method'] = 'DELETE';
+      method = 'post';
+    }
 
     const response = await fetch(url, { method, headers, body });
     return await this.processResponse(response);
