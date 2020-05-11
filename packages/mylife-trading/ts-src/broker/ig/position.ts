@@ -115,9 +115,9 @@ export default class IgPosition extends EventEmitter implements Position {
       size: this.size
     };
 
-    const confirmationListener = ConfirmationListener.fromSubscription(this.subscription);
     const dealReference = await this.client.dealing.closePosition(order);
-    const confirmation = await confirmationListener.wait(dealReference);
+    // seems this confirm is not streamed
+    const confirmation = await this.client.dealing.confirm(dealReference);
 
     if (confirmation.dealStatus == DealStatus.REJECTED) {
       throw new ConfirmationError(confirmation.reason);
