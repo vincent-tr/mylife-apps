@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, PropTypes, useSelector, mui, clsx, addLineBreaks } from 'mylife-tools-ui';
+import humanizeDuration from 'humanize-duration';
+import { React, PropTypes, useSelector, mui, clsx, addLineBreaks, useState, useEffect, useInterval } from 'mylife-tools-ui';
 import { getFieldName } from '../../common/metadata-utils';
 import { geStrategyStatusView } from '../selectors';
 
@@ -30,8 +31,9 @@ const useStyles = mui.makeStyles(theme => ({
 const Status = ({ strategy }) => {
   const classes = useStyles();
   const { strategyStatus } = useConnect();
-
   const status = strategyStatus.get(strategy._id);
+  const delay = useFormatDelay(status);
+
   if(!status) {
     return null;
   }
@@ -40,7 +42,7 @@ const Status = ({ strategy }) => {
     <mui.Grid container>
       <mui.Grid item xs={12} className={classes.cell}>
         <mui.Typography className={classes.title}>{getFieldName('strategy-status', 'status')}</mui.Typography>
-        <mui.Typography>{status.status}</mui.Typography>
+        <mui.Typography>{`(${delay}) ${status.status}`}</mui.Typography>
       </mui.Grid>
       {status.error && (
         <mui.Grid item xs={12} className={clsx(classes.cell, classes.error)}>
@@ -55,5 +57,29 @@ const Status = ({ strategy }) => {
 Status.propTypes = {
   strategy: PropTypes.object.isRequired,
 };
-  
+
 export default Status;
+
+function useFormatDelay(status) {
+  const [delay, setDelay] = useState();
+
+  useEffect(computeDelay, [status]);
+  useInterval(computeDelay, 500);
+
+  return delay;
+
+  function computeDelay() {
+    if(!status) {
+      setDelay(null);
+      return;
+    }
+  
+    const duration = new Date() - status.timestamp;
+    const formatted = humanizeDuration(duration, { language: 'fr', largest: 2, round: true });
+    setDelay(formatted);
+  
+  }
+}
+
+function computeDelay(status) {
+}

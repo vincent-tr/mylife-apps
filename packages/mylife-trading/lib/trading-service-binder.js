@@ -14,13 +14,13 @@ class StatusView extends StoreContainer {
 
   set(key, status) {
     // use key for both strategy and strategy-status id
-    const values = { _id: key, strategy: key, status };
+    const values = { _id: key, strategy: key, timestamp: new Date(), status };
     const object = this.entity.newObject(values);
     this._set(object);
   }
 
   setError(key, error) {
-    const values = { _id: key, strategy: key, status: error.message, error: error.stack };
+    const values = { _id: key, strategy: key, timestamp: new Date(), status: error.message, error: error.stack };
     const object = this.entity.newObject(values);
     this._set(object);
   }
