@@ -80,6 +80,3 @@ function useFormatDelay(status) {
   
   }
 }
-
-function computeDelay(status) {
-}
