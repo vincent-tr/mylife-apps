@@ -86,7 +86,6 @@ class NagiosService {
       throw new Error(`HTTP error: ${res.status}: ${res.statusText}`);
     }
 
-    console.log(res);
     const { result, data } = await res.json();
     if(result.type_code !== 0) {
       throw new Error(`Nagios api error (${result.type_code}): ${result.type_text} - ${result.message}`);
