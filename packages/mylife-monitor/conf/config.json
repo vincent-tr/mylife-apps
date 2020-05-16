@@ -1,4 +1,9 @@
 {
   "webServer": { "port": "%{WEB_PORT|80}" },
-  "nagiosUrl" : "%{NAGIOS_URL}"
+  "nagios" : {
+    "url": "%{NAGIOS_URL}",
+    "user": "%{NAGIOS_USER}",
+    "pass": "%{NAGIOS_PASS}",
+    "interval": 30
+  }
 }

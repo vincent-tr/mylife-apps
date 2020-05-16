@@ -1,10 +1,8 @@
 'use strict';
 
-const { StoreView, StoreContainer, createLogger, registerService, getService, getMetadataEntity } = require('mylife-tools-server');
+const { StoreView, StoreContainer, createLogger, registerService, getService, getMetadataEntity, getConfig } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:monitor:nagios-service');
-
-const REFRESH_INTERVAL = 30000;
 
 class NagiosView extends StoreContainer {
   constructor() {
@@ -28,7 +26,8 @@ class NagiosView extends StoreContainer {
 }
 
 class NagiosService {
-  async init(options) {
+  async init() {
+    this.config = getConfig('nagios');
     this.collection = new NagiosView();
     this.entities = {
       group: getMetadataEntity('nagios-host-group'),
@@ -37,7 +36,8 @@ class NagiosService {
     };
 
     this.queue = getService('task-queue-manager').createQueue('nagios-service-queue');
-    this.timer = setInterval(() => this.queue.add('refresh', async () => this._refresh()), REFRESH_INTERVAL);
+    logger.debug(`Configure timer interval at ${this.config.interval} seconds`);
+    this.timer = setInterval(() => this.queue.add('refresh', async () => this._refresh()), this.config.interval * 1000);
   }
 
   async terminate() {
