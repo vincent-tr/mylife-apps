@@ -2,3 +2,4 @@
 
 Object.assign(exports,
   require('./nagios'),
+);

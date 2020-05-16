@@ -2,6 +2,5 @@
 
 exports.apiServices = [
   require('./common'),
-  require('./management'),
-  require('./reporting'),
+  require('./nagios'),
 ];
