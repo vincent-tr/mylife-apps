@@ -7,6 +7,6 @@ exports.meta = {
   name : 'nagios'
 };
 
-exports.notifyNagios = [ base, (session/*, message*/) => {
+exports.notify = [ base, (session/*, message*/) => {
   return business.notifyNagios(session);
 } ];
