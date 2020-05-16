@@ -1,0 +1,25 @@
+{
+  "name": "mylife-monitor",
+  "version": "1.0.0",
+  "description": "MyLife Monitor",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint lib/ public/src/",
+    "start:dev": "WEB_PORT=8015 ./bin/server.js --dev --loglevel=debug",
+    "start": "./bin/server.js",
+    "build:bundle": "mylife-build-bundle",
+    "build:docker": "mylife-build-docker",
+    "prepack": "npm run build:bundle",
+    "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vincent-tr/mylife-monitor.git"
+  },
+  "author": "Vincent Trumpff",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/vincent-tr/mylife-monitor/issues"
+  },
+  "homepage": "https://github.com/vincent-tr/mylife-monitor#readme",
+}
