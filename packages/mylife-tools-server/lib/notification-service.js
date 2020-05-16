@@ -124,7 +124,7 @@ class NotificationService {
 }
 
 NotificationService.serviceName = 'notification-service';
-NotificationService.dependencies = ['session-manager', 'store', 'io'];
+NotificationService.dependencies = ['session-manager', 'io'];
 
 registerService(NotificationService);
 
