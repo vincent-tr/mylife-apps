@@ -1,20 +1,16 @@
 {
     "env": {
-        "browser": true,
         "es6": true,
         "node": true
     },
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "extends": ["eslint:recommended"],
     "parserOptions": {
+        "ecmaVersion": 2018,
         "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
+            "experimentalObjectRestSpread": true
         },
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
     "rules": {
         "indent": [
             "error",
@@ -32,10 +28,6 @@
         "semi": [
             "error",
             "always"
-        ],
-        "react/prop-types": [
-            2,
-            { "ignore": ["muiTheme"] }
         ]
     }
 }
