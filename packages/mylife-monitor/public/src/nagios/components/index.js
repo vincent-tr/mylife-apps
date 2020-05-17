@@ -139,11 +139,13 @@ const Nagios = () => {
               <mui.TableCell>{'Texte'}</mui.TableCell>
             </mui.TableRow>
           </mui.TableHead>
-          <mui.TableBody>
-            {data.map(item => (
-              <Group key={item.group._id} criteria={criteria} item={item} />
-            ))}
-          </mui.TableBody>
+          <mui.ThemeProvider theme={mui.createMuiTheme({ typography: { fontSize: 10 } })}>
+            <mui.TableBody>
+              {data.map(item => (
+                <Group key={item.group._id} criteria={criteria} item={item} />
+              ))}
+            </mui.TableBody>
+          </mui.ThemeProvider>
         </mui.Table>
       </mui.TableContainer>
     </div>
