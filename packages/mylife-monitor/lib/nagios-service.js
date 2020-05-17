@@ -190,7 +190,7 @@ class Schema {
           continue;
         }
 
-        host.group = group.code;
+        host.group = group._id;
       }
       
       objects.push(entities.group.newObject(group));
