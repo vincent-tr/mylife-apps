@@ -3,7 +3,15 @@
 import { handleActions, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
+const initialCriteria = {
+};
+
 export default handleActions({
+
+  [actionTypes.SET_CRITERIA] : (state, action) => ({
+    ...state,
+    criteria: action.payload || initialCriteria
+  }),
 
   [actionTypes.SET_VIEW] : (state, action) => ({
     ...state,
@@ -17,4 +25,5 @@ export default handleActions({
 
 }, {
   viewId: null,
+  criteria: initialCriteria,
 });
