@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, useMemo, mui, useDispatch, useSelector, useLifecycle, formatDate } from 'mylife-tools-ui';
+import humanizeDuration from 'humanize-duration';
+import { React, useMemo, useState, useEffect, mui, useDispatch, useSelector, useLifecycle, formatDate, useInterval } from 'mylife-tools-ui';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
 
@@ -28,16 +29,19 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const CommonState = ({ item }) => (
-  <>
-    <mui.TableCell>{item.isFlapping.toString()}</mui.TableCell>
-    <mui.TableCell>{format(item.lastCheck)}</mui.TableCell>
-    <mui.TableCell>{format(item.nextCheck)}</mui.TableCell>
-    <mui.TableCell>{`${item.currentAttempt}/${item.maxAttempts}`}</mui.TableCell>
-    <mui.TableCell>{'Durée'}</mui.TableCell>
-    <mui.TableCell>{item.statusText}</mui.TableCell>
-  </>
-);
+const CommonState = ({ item }) => {
+  const duration = useSince(item.lastStateChange);
+  return (
+    <>
+      <mui.TableCell>{item.isFlapping.toString()}</mui.TableCell>
+      <mui.TableCell>{format(item.lastCheck)}</mui.TableCell>
+      <mui.TableCell>{format(item.nextCheck)}</mui.TableCell>
+      <mui.TableCell>{`${item.currentAttempt}/${item.maxAttempts}`}</mui.TableCell>
+      <mui.TableCell>{duration}</mui.TableCell>
+      <mui.TableCell>{item.statusText}</mui.TableCell>
+    </>
+  );
+};
 
 const Service = ({ service }) => (
   <mui.TableRow>
@@ -123,11 +127,26 @@ const Nagios = () => {
 
 export default Nagios;
 
-
 function format(date) {
   return formatDate(date, 'dd/MM/yyyy HH:mm:ss');
 }
 
-/*
-{ id: 'lastStateChange', name: 'Dernier changement d\'état', datatype: 'datetime' },
-*/
+function useSince(timestamp) {
+  const [duration, setDuration] = useState();
+
+  useEffect(computeDuration, [timestamp]);
+  useInterval(computeDuration, 500);
+
+  return duration;
+
+  function computeDuration() {
+    if(!timestamp) {
+      setDelay(null);
+      return;
+    }
+  
+    const rawDuration = new Date() - timestamp;
+    const formatted = humanizeDuration(rawDuration, { language: 'fr', largest: 2, round: true });
+    setDuration(formatted);
+  }
+}
