@@ -106,7 +106,7 @@ const Group = ({ item }) => (
 
 const Nagios = () => {
   const classes = useStyles();
-  const { enter, leave, data } = useConnect();
+  const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
   return (
@@ -118,7 +118,16 @@ const Nagios = () => {
               <mui.TableCell>{'Groupe'}</mui.TableCell>
               <mui.TableCell>{'Hôte'}</mui.TableCell>
               <mui.TableCell>{'Service'}</mui.TableCell>
-              <mui.TableCell>{'Statut'}</mui.TableCell>
+              <mui.TableCell>
+                {'Statut'}
+                <mui.Tooltip title={'N\'afficher que les problèmes'}>
+                  <mui.Checkbox
+                    color='primary' 
+                    checked={criteria.onlyProblems}
+                    onChange={e => changeCriteria({ onlyProblems: e.target.checked })}
+                  />
+                </mui.Tooltip>
+              </mui.TableCell>
               <mui.TableCell>{'Dernier check'}</mui.TableCell>
               <mui.TableCell>{'Prochain check'}</mui.TableCell>
               <mui.TableCell>{'Essai'}</mui.TableCell>

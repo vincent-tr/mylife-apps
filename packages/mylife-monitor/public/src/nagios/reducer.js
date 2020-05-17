@@ -4,6 +4,7 @@ import { handleActions, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 const initialCriteria = {
+  onlyProblems: false
 };
 
 export default handleActions({
