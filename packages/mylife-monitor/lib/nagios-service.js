@@ -165,14 +165,15 @@ class Schema {
   }
 
   addStatusService(item) {
+    const host = item.host_name;
     const service = {
-      host: item.host_name,
+      host: `host:${host}`,
       code: item.description,
       display: item.description,
       status: parseServiceStatus(item.status)
     };
 
-    service._id = `service:${service.host}:${service.code}`;
+    service._id = `service:${host}:${service.code}`;
     this.addStatusData(service, item);
     this.services.set(service._id, service);
   }
@@ -205,7 +206,7 @@ class Schema {
     }
 
     for(const service of this.services.values()) {
-      const host = this.hosts.get(`host:${service.host}`);
+      const host = this.hosts.get(service.host);
       // no atomicity, drop it
       if(!host) {
         continue;
