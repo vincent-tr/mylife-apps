@@ -4,6 +4,7 @@ import humanizeDuration from 'humanize-duration';
 import { React, useMemo, useState, useEffect, mui, useDispatch, useSelector, useLifecycle, formatDate, useInterval } from 'mylife-tools-ui';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
+import { HOST_STATUS_PROBLEM } from '../problems';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -51,13 +52,13 @@ const CommonState = ({ item }) => {
   );
 };
 
-const Service = ({ service }) => {
+const Service = ({ criteria, service, hostDisplay }) => {
   const classes = useStyles();
   const lclasses = serviceStatusClass(service.status, classes);
   return (
     <mui.TableRow className={lclasses.row}>
       <mui.TableCell />
-      <mui.TableCell />
+      <mui.TableCell>{criteria.onlyProblems && hostDisplay}</mui.TableCell>
       <mui.TableCell>{service.display}</mui.TableCell>
       <mui.TableCell className={lclasses.cell}>{formatStatus(service)}</mui.TableCell>
       <CommonState item={service} />
@@ -65,27 +66,30 @@ const Service = ({ service }) => {
   );
 };
 
-const Host = ({ item }) => {
+const Host = ({ criteria, item }) => {
   const classes = useStyles();
   const { host, services } = item;
   const lclasses = hostStatusClass(host.status, classes);
+  const displayRow = !criteria.onlyProblems || HOST_STATUS_PROBLEM[host.status];
   return (
     <>
-      <mui.TableRow className={lclasses.row}>
-        <mui.TableCell />
-        <mui.TableCell>{host.display}</mui.TableCell>
-        <mui.TableCell />
-        <mui.TableCell className={lclasses.cell}>{formatStatus(host)}</mui.TableCell>
-        <CommonState item={host} />
-      </mui.TableRow>
+      {displayRow && (
+        <mui.TableRow className={lclasses.row}>
+          <mui.TableCell />
+          <mui.TableCell>{host.display}</mui.TableCell>
+          <mui.TableCell />
+          <mui.TableCell className={lclasses.cell}>{formatStatus(host)}</mui.TableCell>
+          <CommonState item={host} />
+        </mui.TableRow>
+      )}
       {services.map(service => (
-        <Service key={service._id} service={service} />
+        <Service key={service._id} criteria={criteria} service={service} hostDisplay={host.display} />
       ))}
     </>
   );
 };
 
-const Group = ({ item }) => (
+const Group = ({ criteria, item }) => (
   <>
     <mui.TableRow>
       <mui.TableCell>{item.group.display}</mui.TableCell>
@@ -99,7 +103,7 @@ const Group = ({ item }) => (
       <mui.TableCell />
     </mui.TableRow>
     {item.hosts.map(child => (
-      <Host key={child.host._id} item={child} />
+      <Host key={child.host._id} criteria={criteria} item={child} />
     ))}
   </>
 );
@@ -137,7 +141,7 @@ const Nagios = () => {
           </mui.TableHead>
           <mui.TableBody>
             {data.map(item => (
-              <Group key={item.group._id} item={item} />
+              <Group key={item.group._id} criteria={criteria} item={item} />
             ))}
           </mui.TableBody>
         </mui.Table>

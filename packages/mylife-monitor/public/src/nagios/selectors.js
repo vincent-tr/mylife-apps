@@ -1,6 +1,7 @@
 'use strict';
 
 import { io, createSelector } from 'mylife-tools-ui';
+import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 
 const getNagios = state => state.nagios;
 export const getCriteria = state => getNagios(state).criteria;
@@ -53,7 +54,20 @@ export const getDisplayView = createSelector(
       }
     }
 
-    return data;
+    if(!criteria.onlyProblems) {
+      return data;
+    }
+
+    const filtered = data.filter(groupHasProblem);
+    for(const group of filtered) {
+      group.hosts = group.hosts.filter(hostHasProblem);
+
+      for(const host of group.hosts) {
+        host.services = host.services.filter(serviceHasProblem);
+      }
+    }
+
+    return filtered;
   }
 );
 
@@ -62,4 +76,32 @@ function createDisplayComparer(propName) {
     return (obj1, obj2) => obj1[propName].display < obj2[propName].display ? -1 : 1;
   }
   return (obj1, obj2) => obj1.display < obj2.display ? -1 : 1;
+}
+  
+function groupHasProblem(item) {
+  for(const host of item.hosts) {
+    if(hostHasProblem(host)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function hostHasProblem(item) {
+  if(HOST_STATUS_PROBLEM[item.host.status]) {
+    return true;
+  }
+
+  for(const service of item.services) {
+    if(serviceHasProblem(service)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function serviceHasProblem(service) {
+  return SERVICE_STATUS_PROBLEM[service.status];
 }
