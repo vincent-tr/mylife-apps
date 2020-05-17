@@ -30,8 +30,10 @@ const useStyles = mui.makeStyles({
 
 const Nagios = () => {
   const classes = useStyles();
-  const { enter, leave } = useConnect();
+  const { enter, leave, data } = useConnect();
   useLifecycle(enter, leave);
+
+  console.log(data);
 
   return (
     <div className={classes.container}>
