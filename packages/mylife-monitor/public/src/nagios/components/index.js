@@ -20,14 +20,23 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles({
+const useStyles = mui.makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
     flex: '1 1 auto',
     overflowY: 'auto'
+  },
+  success: {
+    backgroundColor: mui.fade(theme.palette.success.main, 0.25),
+  },
+  warning: {
+    backgroundColor: mui.fade(theme.palette.warning.main, 0.25),
+  },
+  error: {
+    backgroundColor: mui.fade(theme.palette.error.main, 0.25),
   }
-});
+}));
 
 const CommonState = ({ item }) => {
   const duration = useSince(item.lastStateChange);
@@ -42,25 +51,31 @@ const CommonState = ({ item }) => {
   );
 };
 
-const Service = ({ service }) => (
-  <mui.TableRow>
-    <mui.TableCell />
-    <mui.TableCell />
-    <mui.TableCell>{service.display}</mui.TableCell>
-    <mui.TableCell>{formatStatus(service)}</mui.TableCell>
-    <CommonState item={service} />
-  </mui.TableRow>
-);
+const Service = ({ service }) => {
+  const classes = useStyles();
+  const lclasses = serviceStatusClass(service.status, classes);
+  return (
+    <mui.TableRow className={lclasses.row}>
+      <mui.TableCell />
+      <mui.TableCell />
+      <mui.TableCell>{service.display}</mui.TableCell>
+      <mui.TableCell className={lclasses.cell}>{formatStatus(service)}</mui.TableCell>
+      <CommonState item={service} />
+    </mui.TableRow>
+  );
+};
 
 const Host = ({ item }) => {
+  const classes = useStyles();
   const { host, services } = item;
+  const lclasses = hostStatusClass(host.status, classes);
   return (
     <>
-      <mui.TableRow>
+      <mui.TableRow className={lclasses.row}>
         <mui.TableCell />
         <mui.TableCell>{host.display}</mui.TableCell>
         <mui.TableCell />
-        <mui.TableCell>{formatStatus(host)}</mui.TableCell>
+        <mui.TableCell className={lclasses.cell}>{formatStatus(host)}</mui.TableCell>
         <CommonState item={host} />
       </mui.TableRow>
       {services.map(service => (
@@ -160,4 +175,41 @@ function useSince(timestamp) {
     const formatted = humanizeDuration(rawDuration, { language: 'fr', largest: 1, round: true });
     setDuration(formatted);
   }
+}
+
+const HOST_STATUS_CLASSES = {
+  pending: null,
+  up: 'success',
+  down: 'error',
+  unreachable: 'error'
+};
+
+const SERVICE_STATUS_CLASSES = {
+  pending: null,
+  ok: 'success',
+  warning: 'warning',
+  unknown: 'error',
+  critical: 'error',
+};
+
+function statusClass(value, classes) {
+  if(!value) {
+    return { row: null, cell: null };
+  }
+
+  if(value === 'success') {
+    return { row: null, cell: classes[value] };
+  }
+
+  return { row: classes[value] , cell: null };
+}
+
+function hostStatusClass(status, classes) {
+  const value = HOST_STATUS_CLASSES[status];
+  return statusClass(value, classes);
+}
+
+function serviceStatusClass(status, classes) {
+  const value = SERVICE_STATUS_CLASSES[status];
+  return statusClass(value, classes);
 }
