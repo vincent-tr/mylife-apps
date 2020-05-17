@@ -18,11 +18,11 @@ export const getDisplayView = createSelector(
       switch(item._entity) {
 
         case 'nagios-host-group':
-          groups.set(item._id, { group: item, children: [] });
+          groups.set(item._id, { group: item, hosts: [] });
           break;
 
         case 'nagios-host':
-          hosts.set(item._id, { host: item, children: [] });
+          hosts.set(item._id, { host: item, services: [] });
           break;
 
         case 'nagios-service':
@@ -33,23 +33,23 @@ export const getDisplayView = createSelector(
 
     for(const service of services.values()) {
       const host = hosts.get(service.host);
-      host.children.push(service);
+      host.services.push(service);
     }
 
     for(const item of hosts.values()) {
       const { host } = item;
       const group = groups.get(host.group);
-      group.children.push(item);
+      group.hosts.push(item);
     }
 
     const data = Array.from(groups.values());
     data.sort(createDisplayComparer('group'));
 
     for(const group of data) {
-      group.children.sort(createDisplayComparer('host'));
+      group.hosts.sort(createDisplayComparer('host'));
 
-      for(const host of group.children) {
-        host.children.sort(createDisplayComparer(null));
+      for(const host of group.hosts) {
+        host.services.sort(createDisplayComparer(null));
       }
     }
 
