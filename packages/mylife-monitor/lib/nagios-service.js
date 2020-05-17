@@ -10,13 +10,8 @@ class NagiosView extends StoreContainer {
     super();
   }
 
-  set(key, entity, values) {
-    const object = entity.newObject({ _id: key, ...values });
-    this._set(object);
-  }
-
-  delete(key) {
-    this._delete(key);
+  replaceAll(objects) {
+    this._replaceAll(objects);
   }
 
   createView(filterCallback = () => true) {
@@ -27,7 +22,9 @@ class NagiosView extends StoreContainer {
 }
 
 const URL_SUFFIXES = {
-  hostGroupList: 'nagios/cgi-bin/objectjson.cgi?query=hostgrouplist&details=true'
+  objectHostGroupList: 'nagios/cgi-bin/objectjson.cgi?query=hostgrouplist&details=true',
+  statusHostList: 'nagios/cgi-bin/statusjson.cgi?query=hostlist&details=true',
+  statusServiceList: 'nagios/cgi-bin/statusjson.cgi?query=servicelist&details=true';
 };
 
 class NagiosService {
@@ -73,8 +70,11 @@ class NagiosService {
   }
 
   async _refresh() {
-    // TODO
-    console.log(await this._query(URL_SUFFIXES.hostGroupList));
+    const schema = new Schema();
+    schema.addObjectHostGroupList(await this._query(URL_SUFFIXES.objectHostGroupList));
+    schema.addStatusHostList(await this._query(URL_SUFFIXES.statusHostList));
+    schema.addStatusServiceList(await this._query(URL_SUFFIXES.statusServiceList));
+    this.collection.replaceAll(schema.buildObjects(this.entities));
   }
 
   async _query(urlSuffix) {
@@ -99,3 +99,117 @@ NagiosService.serviceName = 'nagios-service';
 NagiosService.dependencies = ['task-queue-manager', 'metadata-manager'];
 
 registerService(NagiosService);
+
+class Schema {
+  constructor() {
+    this.groups = new Map();
+    this.hosts = new Map();
+    this.services = new Map();
+  }
+
+  addObjectHostGroupList(data) {
+    for(const item of Object.values(data.hostgrouplist)) {
+      this.addObjectHostGroup(item);
+    }
+  }
+
+  addObjectHostGroup(item) {
+    const group = { 
+      code: item.groupe_name,
+      display: item.alias,
+      members: item.members
+    };
+
+    group._id = `group:${group.code}`;
+    this.groups.set(group._id, group);
+  }
+
+  addStatusHostList(data) {
+    for(const item of Object.values(data.hostlist)) {
+      this.addStatusHost(item);
+    }
+  }
+
+  addStatusData(object, item) {
+    object.statusText = item.plugin_output;
+    object.currentAttempt = item.current_attempt;
+    object.maxAttempts = item.max_attempts;
+    object.lastCheck = new Date(item.last_check);
+    object.nextCheck = new Date(item.next_check);
+    object.lastStateChange = new Date(item.last_state_change);
+    object.isFlapping = item.is_flapping;
+  }
+
+  addStatusHost(item) {
+    const host = {
+      code: item.name,
+      display: item.name,
+      status: item.status // TODO: enum
+    };
+
+    host._id = `host:${host.code}`;
+    this.addStatusData(host, item);
+    this.hosts.set(host._id, host);
+  }
+
+  addStatusServiceList(data) {
+    for(const host of Object.values(data.servicelist)) {
+      for(const item of Object.values(host)) {
+        this.addStatusService(item);
+      }
+    }
+  }
+
+  addStatusService(item) {
+    const service = {
+      host: item.host_name,
+      code: item.description,
+      display: item.description,
+      status: item.status // TODO: enum
+    };
+
+    service._id = `service:${service.host}:${service.code}`;
+    this.addStatusData(service, item);
+    this.services.set(service._id, service);
+  }
+
+  buildObjects(entities) {
+    const objects = [];
+
+    for(const group of this.groups.values()) {
+      for(const member of group.members) {
+        const host = this.hosts.get(`host:${member}`);
+
+        // no atomicity
+        if(!host) {
+          continue;
+        }
+
+        host.group = group.code;
+      }
+      
+      objects.push(entities.group.newObject(group));
+    }
+
+    for(const host of this.hosts.values()) {
+      // no atomicity, drop it
+      if(!host.group) {
+        continue;
+      }
+
+      objects.push(entities.host.newObject(host));
+    }
+
+    for(const service of this.services.values()) {
+      const host = this.hosts.get(`host:${service.host}`);
+      // no atomicity, drop it
+      if(!host) {
+        continue;
+      }
+
+      objects.push(entities.service.newObject(service));
+    }
+
+    return objects;
+  }
+}
