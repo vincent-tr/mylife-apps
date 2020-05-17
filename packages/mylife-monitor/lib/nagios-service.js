@@ -1,5 +1,9 @@
 'use strict';
 
+// http://nagios.mti-team2.dyndns.org/nagios/jsonquery.html 
+// https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/ 
+// https://github.com/NagiosEnterprises/nagioscore/blob/master/include/statusdata.h
+
 const fetch = require('node-fetch');
 const { StoreView, StoreContainer, createLogger, registerService, getService, getMetadataEntity, getConfig } = require('mylife-tools-server');
 
@@ -24,7 +28,7 @@ class NagiosView extends StoreContainer {
 const URL_SUFFIXES = {
   objectHostGroupList: 'nagios/cgi-bin/objectjson.cgi?query=hostgrouplist&details=true',
   statusHostList: 'nagios/cgi-bin/statusjson.cgi?query=hostlist&details=true',
-  statusServiceList: 'nagios/cgi-bin/statusjson.cgi?query=servicelist&details=true';
+  statusServiceList: 'nagios/cgi-bin/statusjson.cgi?query=servicelist&details=true'
 };
 
 class NagiosService {
@@ -53,7 +57,7 @@ class NagiosService {
 
     const user = encodeURIComponent(config.user);
     const pass = encodeURIComponent(config.pass);
-    this.authHeader = 'Basic ' + new Buffer(`${user}:${pass}`).toString('base64');
+    this.authHeader = 'Basic ' + Buffer.from(`${user}:${pass}`).toString('base64');
   }
 
   async terminate() {
@@ -115,7 +119,7 @@ class Schema {
 
   addObjectHostGroup(item) {
     const group = { 
-      code: item.groupe_name,
+      code: item.group_name,
       display: item.alias,
       members: item.members
     };
@@ -144,7 +148,7 @@ class Schema {
     const host = {
       code: item.name,
       display: item.name,
-      status: item.status // TODO: enum
+      status: parseHostStatus(item.status)
     };
 
     host._id = `host:${host.code}`;
@@ -165,7 +169,7 @@ class Schema {
       host: item.host_name,
       code: item.description,
       display: item.description,
-      status: item.status // TODO: enum
+      status: parseServiceStatus(item.status)
     };
 
     service._id = `service:${service.host}:${service.code}`;
@@ -212,4 +216,25 @@ class Schema {
 
     return objects;
   }
+}
+
+const hostStatusMap = new Map();
+hostStatusMap.set(1, 'pending');
+hostStatusMap.set(2, 'up');
+hostStatusMap.set(4, 'down');
+hostStatusMap.set(8, 'unreachable');
+
+function parseHostStatus(value) {
+  return hostStatusMap.get(value) || null;
+}
+
+const serviceStatusMap = new Map();
+serviceStatusMap.set(1, 'pending');
+serviceStatusMap.set(2, 'ok');
+serviceStatusMap.set(4, 'warning');
+serviceStatusMap.set(8, 'unknown');
+serviceStatusMap.set(16, 'critical');
+
+function parseServiceStatus(value) {
+  return serviceStatusMap.get(value) || null;
 }
