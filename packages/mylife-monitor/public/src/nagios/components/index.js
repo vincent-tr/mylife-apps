@@ -33,9 +33,8 @@ const CommonState = ({ item }) => {
   const duration = useSince(item.lastStateChange);
   return (
     <>
-      <mui.TableCell>{item.isFlapping.toString()}</mui.TableCell>
-      <mui.TableCell>{format(item.lastCheck)}</mui.TableCell>
-      <mui.TableCell>{format(item.nextCheck)}</mui.TableCell>
+      <mui.TableCell>{formatTimestamp(item.lastCheck)}</mui.TableCell>
+      <mui.TableCell>{formatTimestamp(item.nextCheck)}</mui.TableCell>
       <mui.TableCell>{`${item.currentAttempt}/${item.maxAttempts}`}</mui.TableCell>
       <mui.TableCell>{duration}</mui.TableCell>
       <mui.TableCell>{item.statusText}</mui.TableCell>
@@ -48,7 +47,7 @@ const Service = ({ service }) => (
     <mui.TableCell />
     <mui.TableCell />
     <mui.TableCell>{service.display}</mui.TableCell>
-    <mui.TableCell>{service.status.toUpperCase()}</mui.TableCell>
+    <mui.TableCell>{formatStatus(service)}</mui.TableCell>
     <CommonState item={service} />
   </mui.TableRow>
 );
@@ -61,7 +60,7 @@ const Host = ({ item }) => {
         <mui.TableCell />
         <mui.TableCell>{host.display}</mui.TableCell>
         <mui.TableCell />
-        <mui.TableCell>{host.status.toUpperCase()}</mui.TableCell>
+        <mui.TableCell>{formatStatus(host)}</mui.TableCell>
         <CommonState item={host} />
       </mui.TableRow>
       {services.map(service => (
@@ -75,7 +74,6 @@ const Group = ({ item }) => (
   <>
     <mui.TableRow>
       <mui.TableCell>{item.group.display}</mui.TableCell>
-      <mui.TableCell />
       <mui.TableCell />
       <mui.TableCell />
       <mui.TableCell />
@@ -106,7 +104,6 @@ const Nagios = () => {
               <mui.TableCell>{'Hôte'}</mui.TableCell>
               <mui.TableCell>{'Service'}</mui.TableCell>
               <mui.TableCell>{'Statut'}</mui.TableCell>
-              <mui.TableCell>{'Instable'}</mui.TableCell>
               <mui.TableCell>{'Dernier check'}</mui.TableCell>
               <mui.TableCell>{'Prochain check'}</mui.TableCell>
               <mui.TableCell>{'Essai'}</mui.TableCell>
@@ -127,8 +124,22 @@ const Nagios = () => {
 
 export default Nagios;
 
-function format(date) {
-  return formatDate(date, 'dd/MM/yyyy HH:mm:ss');
+function formatStatus(item) {
+  let value = item.status.toUpperCase();
+  if(item.isFlapping) {
+    value += ' (instable)';
+  }
+  return value;
+}
+
+function formatTimestamp(date) {
+  const today = new Date();
+  const isToday =
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+
+  return formatDate(date, isToday ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss');
 }
 
 function useSince(timestamp) {
@@ -146,7 +157,7 @@ function useSince(timestamp) {
     }
   
     const rawDuration = new Date() - timestamp;
-    const formatted = humanizeDuration(rawDuration, { language: 'fr', largest: 2, round: true });
+    const formatted = humanizeDuration(rawDuration, { language: 'fr', largest: 1, round: true });
     setDuration(formatted);
   }
 }
