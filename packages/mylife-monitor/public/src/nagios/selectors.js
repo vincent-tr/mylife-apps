@@ -15,7 +15,20 @@ export const getDisplayView = createSelector(
     const services = new Map();
 
     for(const item of view.values()) {
-      console.log(item);
+      switch(item._entity) {
+
+        case 'nagios-host-group':
+          groups.set(item._id, item);
+          break;
+
+        case 'nagios-host':
+          hosts.set(item._id, item);
+          break;
+
+        case 'nagios-service':
+          services.set(item._id, item);
+          break;
+      }
     }
 
     return [];
