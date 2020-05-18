@@ -3,6 +3,7 @@
 import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getNagiosView } from '../selectors';
+import NagiosSummary from './nagios-summary';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -19,11 +20,9 @@ const useConnect = () => {
 
 const useStyles = mui.makeStyles({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
     flex: '1 1 auto',
     overflowY: 'auto'
-  }
+  },
 });
 
 const Home = () => {
@@ -33,7 +32,9 @@ const Home = () => {
 
   return (
     <div className={classes.container}>
-      {JSON.stringify(nagios)}
+      {nagios.valueSeq().map(summary => (
+        <NagiosSummary key={summary._id} data={summary} />
+      ))}
     </div>
   );
 };
