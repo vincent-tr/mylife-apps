@@ -97,7 +97,6 @@ export class ViewReference {
   }
 
   async _getView() {
-    console.log('_getView');
     await this._dispatch(createOrUpdateView({
       criteriaSelector: this.criteriaSelector,
       viewSelector: this.viewSelector,
