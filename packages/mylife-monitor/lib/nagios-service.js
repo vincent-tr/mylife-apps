@@ -9,7 +9,23 @@ const { StoreView, StoreContainer, createLogger, registerService, getService, ge
 
 const logger = createLogger('mylife:monitor:nagios-service');
 
-class NagiosView extends StoreContainer {
+class NagiosDataView extends StoreContainer {
+  constructor() {
+    super();
+  }
+
+  replaceAll(objects) {
+    this._replaceAll(objects);
+  }
+
+  createView(filterCallback = () => true) {
+    const view = new StoreView(this);
+    view.setFilter(filterCallback);
+    return view;
+  }
+}
+
+class NagiosSummaryView extends StoreContainer {
   constructor() {
     super();
   }
@@ -36,11 +52,13 @@ class NagiosService {
     const config = getConfig('nagios');
     this.prepareConfigData(config);
 
-    this.collection = new NagiosView();
+    this.dataCollection = new NagiosDataView();
+    this.summaryCollection = new NagiosSummaryView();
     this.entities = {
       group: getMetadataEntity('nagios-host-group'),
       host: getMetadataEntity('nagios-host'),
       service: getMetadataEntity('nagios-service'),
+      summary: getMetadataEntity('nagios-summary'),
     };
 
     this.queue = getService('task-queue-manager').createQueue('nagios-service-queue');
@@ -65,12 +83,17 @@ class NagiosService {
     this.timer = null;
     await getService('task-queue-manager').closeQueue('nagios-service-queue');
 
-    this.collection = null;
+    this.dataCollection = null;
+    this.summaryCollection = null;
     this.entities = null;
   }
 
-  getCollection() {
-    return this.collection;
+  getDataCollection() {
+    return this.dataCollection;
+  }
+
+  getSummaryCollection() {
+    return this.summaryCollection;
   }
 
   async _refresh() {
@@ -78,7 +101,8 @@ class NagiosService {
     schema.addObjectHostGroupList(await this._query(URL_SUFFIXES.objectHostGroupList));
     schema.addStatusHostList(await this._query(URL_SUFFIXES.statusHostList));
     schema.addStatusServiceList(await this._query(URL_SUFFIXES.statusServiceList));
-    this.collection.replaceAll(schema.buildObjects(this.entities));
+    this.dataCollection.replaceAll(schema.buildDataObjects(this.entities));
+    this.summaryCollection.replaceAll(schema.buildSummaryObjects(this.entities));
   }
 
   async _query(urlSuffix) {
@@ -178,7 +202,7 @@ class Schema {
     this.services.set(service._id, service);
   }
 
-  buildObjects(entities) {
+  buildDataObjects(entities) {
     const objects = [];
 
     for(const group of this.groups.values()) {
@@ -216,6 +240,49 @@ class Schema {
     }
 
     return objects;
+  }
+
+  buildSummaryObjects(entities) {
+    const hosts = { _id: 'hosts', type: 'host', ok: 0, warnings: 0, errors: 0 };
+
+    for(const host of this.hosts.values()) {
+      switch(host.status) {
+        case 'pending':
+        case 'up':
+          ++hosts.ok;
+          break;
+
+        case 'down':
+        case 'unreachable':
+          ++hosts.errors;
+          break;
+      }
+    }
+
+    const services = { _id: 'services', type: 'service', ok: 0, warnings: 0, errors: 0 };
+
+    for(const service of this.services.values()) {
+      switch(service.status) {
+        case 'pending':
+        case 'ok':
+          ++services.ok;
+          break;
+
+        case 'warning':
+          ++services.warnings;
+          break;
+  
+        case 'unknown':
+        case 'critical':
+          ++services.errors;
+          break;
+      }
+    }
+
+    return [
+      entities.summary.newObject(hosts),
+      entities.summary.newObject(services),
+    ];
   }
 }
 
