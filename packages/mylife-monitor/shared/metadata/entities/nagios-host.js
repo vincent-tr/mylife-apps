@@ -8,7 +8,7 @@ module.exports = {
     { id: 'code', name: 'Code', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'display', name: 'Affichage', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'group', name: 'Groupe', datatype: 'nagios-host-group', constraints: ['not-null'] },
-    { id: 'status', name: 'Statut', datatype: 'host-status' },
+    { id: 'status', name: 'Statut', datatype: 'nagios-host-status' },
     { id: 'statusText', name: 'Texte du statut', datatype: 'text' },
     { id: 'currentAttempt', name: 'Tentative courante', datatype: 'count' },
     { id: 'maxAttempts', name: 'Tentatives totales', datatype: 'count' },
