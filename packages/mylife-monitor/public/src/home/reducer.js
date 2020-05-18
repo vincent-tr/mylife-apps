@@ -5,16 +5,16 @@ import actionTypes from './action-types';
 
 export default handleActions({
 
-  [actionTypes.SET_VIEW] : (state, action) => ({
+  [actionTypes.SET_NAGIOS_VIEW] : (state, action) => ({
     ...state,
-    viewId: action.payload
+    nagiosViewId: action.payload
   }),
 
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
-    viewId: null
+    nagiosViewId: null
   })
 
 }, {
-  viewId: null,
+  nagiosViewId: null,
 });
