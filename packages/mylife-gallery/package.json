@@ -1,6 +1,6 @@
 {
   "name": "mylife-gallery",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "fs-extra": "^8.1.0",
     "jimp": "^0.9.3",
     "mylife-tools-common": "^1.0.7",
-    "mylife-tools-server": "^1.0.17",
+    "mylife-tools-server": "^1.0.18",
     "webp-converter": "^2.2.3"
   },
   "devDependencies": {

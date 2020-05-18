@@ -1,6 +1,6 @@
 {
   "name": "mylife-trading",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Mylife Trading",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-trading",
@@ -24,7 +24,7 @@
     "humanize-duration": "^3.22.0",
     "lightstreamer-client": "^6.2.6",
     "mylife-tools-common": "^1.0.7",
-    "mylife-tools-server": "^1.0.17",
+    "mylife-tools-server": "^1.0.18",
     "node-fetch": "^2.6.0",
     "technicalindicators": "^3.0.0",
     "typescript": "^3.7.5"
