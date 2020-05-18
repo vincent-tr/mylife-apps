@@ -1,7 +1,8 @@
 'use strict';
 
-import { React, mui } from 'mylife-tools-ui';
+import { React, mui, clsx } from 'mylife-tools-ui';
 import icons from '../../common/icons';
+import { useStatusColorStyles } from '../../common/status-colors';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -23,7 +24,7 @@ const TYPE_DISPLAY = {
 };
 
 const NagiosSummary = ({ data }) => {
-  const classes = useStyles();
+  const classes = { ...useStatusColorStyles(), ...useStyles() };
   return (
     <mui.TableContainer component={mui.Paper} className={classes.container}>
       <mui.Table size='small'>
@@ -45,9 +46,9 @@ const NagiosSummary = ({ data }) => {
 
         <mui.TableBody>
           <mui.TableRow>
-            <mui.TableCell className={classes.column}>{data.ok.toString()}</mui.TableCell>
-            <mui.TableCell className={classes.column}>{data.warnings.toString()}</mui.TableCell>
-            <mui.TableCell className={classes.column}>{data.errors.toString()}</mui.TableCell>
+            <mui.TableCell className={clsx(classes.column, classes.success)}>{data.ok.toString()}</mui.TableCell>
+            <mui.TableCell className={clsx(classes.column, classes.warning)}>{data.warnings.toString()}</mui.TableCell>
+            <mui.TableCell className={clsx(classes.column, classes.error)}>{data.errors.toString()}</mui.TableCell>
           </mui.TableRow>
         </mui.TableBody>
       </mui.Table>

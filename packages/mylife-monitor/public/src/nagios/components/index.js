@@ -2,6 +2,7 @@
 
 import humanizeDuration from 'humanize-duration';
 import { React, useMemo, useState, useEffect, mui, useDispatch, useSelector, useLifecycle, formatDate, useInterval } from 'mylife-tools-ui';
+import { useStatusColorStyles } from '../../common/status-colors';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
 import { HOST_STATUS_PROBLEM } from '../problems';
@@ -27,15 +28,6 @@ const useStyles = mui.makeStyles(theme => ({
     flexDirection: 'column',
     flex: '1 1 auto',
     overflowY: 'auto'
-  },
-  success: {
-    backgroundColor: mui.fade(theme.palette.success.main, 0.25),
-  },
-  warning: {
-    backgroundColor: mui.fade(theme.palette.warning.main, 0.25),
-  },
-  error: {
-    backgroundColor: mui.fade(theme.palette.error.main, 0.25),
   }
 }));
 
@@ -53,7 +45,7 @@ const CommonState = ({ item }) => {
 };
 
 const Service = ({ criteria, service, hostDisplay }) => {
-  const classes = useStyles();
+  const classes = useStatusColorStyles();
   const lclasses = serviceStatusClass(service.status, classes);
   return (
     <mui.TableRow className={lclasses.row}>
@@ -67,7 +59,7 @@ const Service = ({ criteria, service, hostDisplay }) => {
 };
 
 const Host = ({ criteria, item }) => {
-  const classes = useStyles();
+  const classes = useStatusColorStyles();
   const { host, services } = item;
   const lclasses = hostStatusClass(host.status, classes);
   const displayRow = !criteria.onlyProblems || HOST_STATUS_PROBLEM[host.status];
