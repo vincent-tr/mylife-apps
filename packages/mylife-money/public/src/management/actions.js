@@ -3,7 +3,6 @@
 import { createAction, io, dialogs } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId, getOperationIdDetail } from './selectors';
-import { createOrUpdateView, deleteView } from '../common/action-tools';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
@@ -13,7 +12,7 @@ const local = {
   setDetail: createAction(actionTypes.SET_DETAIL),
 };
 
-export const getOperations = () => createOrUpdateView({
+export const getOperations = () => io.createOrUpdateView({
   criteriaSelector: getCriteria,
   viewSelector: getOperationViewId,
   setViewAction: local.setOperationView,
@@ -21,7 +20,7 @@ export const getOperations = () => createOrUpdateView({
   method: 'notifyOperations'
 });
 
-const clearOperations = () => deleteView({
+const clearOperations = () => io.deleteView({
   viewSelector: getOperationViewId,
   setViewAction: local.setOperationView
 });

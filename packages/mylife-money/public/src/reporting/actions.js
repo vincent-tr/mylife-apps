@@ -3,13 +3,12 @@
 import { createAction, io, download } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
-import { createOrUpdateView, deleteView } from '../common/action-tools';
 
 const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-export const getGroupByMonth = (criteria) => createOrUpdateView({
+export const getGroupByMonth = (criteria) => io.createOrUpdateView({
   criteriaSelector: () => criteria,
   viewSelector: getViewId,
   setViewAction: local.setView,
@@ -17,7 +16,7 @@ export const getGroupByMonth = (criteria) => createOrUpdateView({
   method: 'notifyGroupByMonth'
 });
 
-export const getGroupByYear = (criteria) => createOrUpdateView({
+export const getGroupByYear = (criteria) => io.createOrUpdateView({
   criteriaSelector: () => criteria,
   viewSelector: getViewId,
   setViewAction: local.setView,
@@ -25,7 +24,7 @@ export const getGroupByYear = (criteria) => createOrUpdateView({
   method: 'notifyGroupByYear'
 });
 
-const clearReportingView = () => deleteView({
+const clearReportingView = () => io.deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });
