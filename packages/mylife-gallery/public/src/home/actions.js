@@ -1,7 +1,6 @@
 'use strict';
 
-import { createAction } from 'mylife-tools-ui';
-import { createOrUpdateView, deleteView } from '../common/action-tools';
+import { createAction, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getCriteria, getDisplay, getViewId } from './selectors';
 
@@ -11,7 +10,7 @@ const local = {
   setDisplay: createAction(actionTypes.SET_DISPLAY)
 };
 
-const getAlbums = (criteria = {}) => createOrUpdateView({
+const getAlbums = (criteria = {}) => io.createOrUpdateView({
   criteriaSelector: () => ({ criteria }),
   viewSelector: getViewId,
   setViewAction: local.setView,
@@ -19,7 +18,7 @@ const getAlbums = (criteria = {}) => createOrUpdateView({
   method: 'notifyAlbums'
 });
 
-const clearAlbums = () => deleteView({
+const clearAlbums = () => io.deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });

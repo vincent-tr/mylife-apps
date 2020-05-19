@@ -1,7 +1,6 @@
 'use strict';
 
 import { io, createAction, dialogs } from 'mylife-tools-ui';
-import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
 import * as browse from '../browse/actions'; // import browse action to drive browse criteria on open
@@ -12,7 +11,7 @@ const local = {
   setDialogObjects: createAction(actionTypes.SET_DIALOG_OBJECTS),
 };
 
-const getSuggestions = () => createOrUpdateView({
+const getSuggestions = () => io.createOrUpdateView({
   criteriaSelector: () => null,
   viewSelector: getViewId,
   setViewAction: local.setView,
@@ -20,7 +19,7 @@ const getSuggestions = () => createOrUpdateView({
   method: 'notifySuggestions'
 });
 
-const clearSuggestions = () => deleteView({
+const clearSuggestions = () => io.deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });

@@ -1,7 +1,6 @@
 'use strict';
 
 import { io, createAction } from 'mylife-tools-ui';
-import { createOrUpdateView, deleteView } from '../common/action-tools';
 import actionTypes from './action-types';
 import { getSelectorViewId } from './selectors';
 
@@ -43,7 +42,7 @@ export const updatePerson = (person, values) => {
   };
 };
 
-export const enterSelector = (personId) => createOrUpdateView({
+export const enterSelector = (personId) => io.createOrUpdateView({
   criteriaSelector: () => ({ criteria: { persons: [personId] } }),
   viewSelector: getSelectorViewId,
   setViewAction: local.setSelectorView,
@@ -51,7 +50,7 @@ export const enterSelector = (personId) => createOrUpdateView({
   method: 'notifyDocumentsWithInfo'
 });
 
-export const leaveSelector = () => deleteView({
+export const leaveSelector = () => io.deleteView({
   viewSelector: getSelectorViewId,
   setViewAction: local.setSelectorView
 });
