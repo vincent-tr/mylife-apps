@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes } from 'mylife-tools-ui';
-import { getFieldName } from '../../../common/metadata-utils';
+import { React, PropTypes, services } from 'mylife-tools-ui';
 import DetailItem from './detail-item';
 import DetailCaption from './detail-caption';
 import DetailKeywords from './detail-keywords';
@@ -13,13 +12,13 @@ const DocumentValue = ({ documentWithInfo, field }) => {
   const { document } = documentWithInfo;
   switch(field) {
     case 'hash':
-      return (<DetailItem name={getFieldName('document', 'hash')} value={document.hash} />);
+      return (<DetailItem name={services.getFieldName('document', 'hash')} value={document.hash} />);
     case 'paths':
-      return (<DetailItem name={getFieldName('document', 'paths')} value={document.paths.map(item => item.path)} />);
+      return (<DetailItem name={services.getFieldName('document', 'paths')} value={document.paths.map(item => item.path)} />);
     case 'integrationDate':
-      return (<DetailItem name={getFieldName('document', 'integrationDate')} value={document.integrationDate} />);
+      return (<DetailItem name={services.getFieldName('document', 'integrationDate')} value={document.integrationDate} />);
     case 'fileSize':
-      return (<DetailItem name={getFieldName('document', 'fileSize')} value={document.fileSize} type='filesize' />);
+      return (<DetailItem name={services.getFieldName('document', 'fileSize')} value={document.fileSize} type='filesize' />);
     case 'caption':
       return (<DetailCaption document={document} />);
     case 'keywords':

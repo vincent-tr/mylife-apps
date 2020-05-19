@@ -1,9 +1,8 @@
 'use strict';
 
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
-import { React, PropTypes, mui, useDispatch, useMemo } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useDispatch, useMemo, services } from 'mylife-tools-ui';
 import { useAlbumView } from '../../common/album-view';
-import { renderObject } from '../../common/metadata-utils';
 import { removeAlbumFromSlideshow, moveAlbumInSlideshow } from '../actions';
 
 const useConnect = () => {
@@ -44,7 +43,7 @@ const Item = ({ album, onDelete }) => {
   return (
     <mui.ListItem>
       <ItemSortableHandle />
-      <mui.ListItemText primary={renderObject(album)} />
+      <mui.ListItemText primary={services.renderObject(album)} />
       <mui.ListItemSecondaryAction>
         <mui.Tooltip title={'Enlever l\'album du diaporama'}>
           <mui.IconButton className={classes.deleteButton} onClick={() => onDelete(album)}>

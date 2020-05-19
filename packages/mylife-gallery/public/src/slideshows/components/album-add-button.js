@@ -1,9 +1,8 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useDispatch, clsx } from 'mylife-tools-ui';
+import { React, PropTypes, mui, useMemo, useDispatch, clsx, services } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { useAlbumView } from '../../common/album-view';
-import { renderObject } from '../../common/metadata-utils';
 import { addAlbumToSlideshow } from '../actions';
 
 const useConnect = () => {
@@ -63,7 +62,7 @@ const AlbumAddButton = ({ slideshow, className, ...props }) => {
         onClose={onClose}
       >
         {addableAlbums.map(album => (
-          <mui.MenuItem key={album._id} onClick={() => onAdd(album)}>{renderObject(album)}</mui.MenuItem>
+          <mui.MenuItem key={album._id} onClick={() => onAdd(album)}>{services.renderObject(album)}</mui.MenuItem>
         ))}
       </mui.Menu>
     </>

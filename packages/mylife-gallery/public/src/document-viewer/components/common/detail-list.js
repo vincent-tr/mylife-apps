@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
-import { renderObject } from '../../../common/metadata-utils';
+import { React, PropTypes, mui, services } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({
   list: {
@@ -58,7 +57,7 @@ const AddButton = ({ addTooltip, newTooltip, items, onAdd, onNew, ...props }) =>
         {newTooltip}
       </mui.MenuItem>
       {items.map(item => (
-        <mui.MenuItem key={item._id} onClick={() => handleAdd(item)}>{renderObject(item)}</mui.MenuItem>
+        <mui.MenuItem key={item._id} onClick={() => handleAdd(item)}>{services.renderObject(item)}</mui.MenuItem>
       ))}
     </mui.Menu>
     </>
@@ -102,7 +101,7 @@ const DetailList = ({ title, addTooltip, newTooltip, deleteTooltip, onAdd, onNew
 
               return (
                 <mui.ListItem key={item._id}>
-                  <mui.ListItemText primary={renderObject(item)} />
+                  <mui.ListItemText primary={services.renderObject(item)} />
                   <mui.ListItemSecondaryAction>
                     <mui.Tooltip title={deleteTooltip}>
                       <mui.IconButton className={classes.deleteButton} onClick={() => onDelete(item)}>

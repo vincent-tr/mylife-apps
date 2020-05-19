@@ -1,10 +1,9 @@
 'use strict';
 
-import { React, PropTypes, mui, DebouncedTextField, useRefProp } from 'mylife-tools-ui';
-import { getFieldDatatype, getStructureFieldName } from '../../common/metadata-utils';
+import { React, PropTypes, mui, DebouncedTextField, useRefProp, services } from 'mylife-tools-ui';
 
 const TestSettings = ({ broker, update: updateBroker }) => {
-  const structure = getFieldDatatype('broker', 'testSettings');
+  const structure = services.getFieldDatatype('broker', 'testSettings');
   const { testSettings } = broker;
 
   const settingsRef = useRefProp(testSettings);
@@ -18,21 +17,21 @@ const TestSettings = ({ broker, update: updateBroker }) => {
   return (
     <>
       <mui.Grid item xs={6}>
-        <mui.Typography>{getStructureFieldName(structure, 'instrumentId')}</mui.Typography>
+        <mui.Typography>{services.getStructureFieldName(structure, 'instrumentId')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
         <DebouncedTextField value={testSettings.instrumentId} onChange={instrumentId => update({ instrumentId })} fullWidth />
       </mui.Grid>
 
       <mui.Grid item xs={6}>
-        <mui.Typography>{getStructureFieldName(structure, 'resolution')}</mui.Typography>
+        <mui.Typography>{services.getStructureFieldName(structure, 'resolution')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
         <DebouncedTextField value={testSettings.resolution} onChange={resolution => update({ resolution })} fullWidth />
       </mui.Grid>
 
       <mui.Grid item xs={6}>
-        <mui.Typography>{getStructureFieldName(structure, 'spread')}</mui.Typography>
+        <mui.Typography>{services.getStructureFieldName(structure, 'spread')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
         <DebouncedTextField value={testSettings.spread} onChange={value => update({ spread: parseFloat(value) })} type='number' fullWidth />

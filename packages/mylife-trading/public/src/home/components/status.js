@@ -1,8 +1,7 @@
 'use strict';
 
 import humanizeDuration from 'humanize-duration';
-import { React, PropTypes, useSelector, mui, clsx, addLineBreaks, useState, useEffect, useInterval } from 'mylife-tools-ui';
-import { getFieldName } from '../../common/metadata-utils';
+import { React, PropTypes, useSelector, mui, clsx, addLineBreaks, useState, useEffect, useInterval, services } from 'mylife-tools-ui';
 import { geStrategyStatusView } from '../selectors';
 
 const useConnect = () => useSelector(state => ({
@@ -41,12 +40,12 @@ const Status = ({ strategy }) => {
   return (
     <mui.Grid container>
       <mui.Grid item xs={12} className={classes.cell}>
-        <mui.Typography className={classes.title}>{getFieldName('strategy-status', 'status')}</mui.Typography>
+        <mui.Typography className={classes.title}>{services.getFieldName('strategy-status', 'status')}</mui.Typography>
         <mui.Typography>{`(${delay}) ${status.status}`}</mui.Typography>
       </mui.Grid>
       {status.error && (
         <mui.Grid item xs={12} className={clsx(classes.cell, classes.error)}>
-          <mui.Typography className={classes.title}>{getFieldName('strategy-status', 'error')}</mui.Typography>
+          <mui.Typography className={classes.title}>{services.getFieldName('strategy-status', 'error')}</mui.Typography>
           <mui.Typography>{addLineBreaks(status.error)}</mui.Typography>
         </mui.Grid>
       )}

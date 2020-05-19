@@ -1,7 +1,6 @@
 'use strict';
 
-import { io, dialogs } from 'mylife-tools-ui';
-import { renderObject } from '../common/metadata-utils';
+import { io, dialogs, services } from 'mylife-tools-ui';
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
@@ -32,7 +31,7 @@ export const add = () => async (dispatch) => {
     values
   }));
 
-  dispatch(local.showSuccess(`${renderObject(broker)} créé`));
+  dispatch(local.showSuccess(`${services.renderObject(broker)} créé`));
 };
 
 export const update = (broker, changes) => async (dispatch) => {
@@ -72,5 +71,5 @@ export const remove = (broker) => async (dispatch) => {
     id: broker._id
   }));
 
-  dispatch(local.showSuccess(`${renderObject(broker)} supprimé`));
+  dispatch(local.showSuccess(`${services.renderObject(broker)} supprimé`));
 };

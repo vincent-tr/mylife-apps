@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, routing, useDispatch, useSelector, useMemo, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
-import { getFieldName } from '../../common/metadata-utils';
+import { React, PropTypes, mui, routing, useDispatch, useSelector, useMemo, DebouncedTextField, DeleteButton, services } from 'mylife-tools-ui';
 import { useKeywordView } from '../../common/keyword-view';
 import { THUMBNAIL_SIZE, ThumbnailAlbum } from '../../common/thumbnail';
 import { updateAlbum, deleteAlbum } from '../actions';
@@ -52,7 +51,7 @@ const Field = ({ field, children }) => (
       disableTypography
       primary={
         <mui.Typography>
-          {getFieldName('album', field)}
+          {services.getFieldName('album', field)}
         </mui.Typography>
       }
       secondary={children} />

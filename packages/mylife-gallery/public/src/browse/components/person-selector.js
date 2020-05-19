@@ -1,8 +1,7 @@
 'use strict';
 
-import { React, PropTypes, mui, immutable } from 'mylife-tools-ui';
+import { React, PropTypes, mui, immutable, services } from 'mylife-tools-ui';
 import { usePersonView } from '../../common/person-view';
-import { renderObject } from '../../common/metadata-utils';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -34,7 +33,7 @@ const PersonSelector = ({ value, onChange, ...props }) => {
       {persons.map(person => (
         <mui.MenuItem key={person._id} value={person._id}>
           <mui.Checkbox checked={value.has(person._id)} />
-          <mui.ListItemText primary={renderObject(person)} />
+          <mui.ListItemText primary={services.renderObject(person)} />
         </mui.MenuItem>
       ))}
     </mui.Select>
@@ -49,5 +48,5 @@ PersonSelector.propTypes = {
 export default PersonSelector;
 
 function createSelectorValueRenderer(personView) {
-  return selection => selection.map(personId => renderObject(personView.get(personId))).join(', ');
+  return selection => selection.map(personId => services.renderObject(personView.get(personId))).join(', ');
 }

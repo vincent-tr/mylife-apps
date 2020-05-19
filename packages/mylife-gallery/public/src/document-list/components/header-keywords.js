@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, immutable, useMemo, useDispatch } from 'mylife-tools-ui';
-import { getFieldName } from '../../common/metadata-utils';
+import { React, PropTypes, mui, immutable, useMemo, useDispatch, services } from 'mylife-tools-ui';
 import { useKeywordView } from '../../common/keyword-view';
 import { addKeywordToDocuments, removeKeywordFromDocuments } from '../actions';
 
@@ -101,7 +100,7 @@ const HeaderKeywords = ({ documents: documentsWithInfo }) => {
   return (
     <>
       <mui.Typography>
-        {getFieldName('document', 'keywords')}
+        {services.getFieldName('document', 'keywords')}
       </mui.Typography>
 
       <mui.Autocomplete

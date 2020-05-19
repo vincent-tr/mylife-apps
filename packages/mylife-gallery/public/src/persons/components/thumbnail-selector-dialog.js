@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, dialogs, useLifecycle, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
-import { renderObject } from '../../common/metadata-utils';
+import { React, PropTypes, mui, dialogs, useLifecycle, useDispatch, useSelector, useMemo, services } from 'mylife-tools-ui';
 import ThumbnailList from '../../common/thumbnail-list';
 import { ThumbnailMono, THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { getSelectorView } from '../selectors';
@@ -67,7 +66,7 @@ const ThumbnailSelectorDialog = ({ options, show, proceed }) => {
   return (
     <mui.Dialog aria-labelledby='dialog-title' open={show} onClose={handleCancel} maxWidth='md' fullWidth>
       <mui.DialogTitle id='dialog-title'>
-        {`Sélectionner la miniature à utiliser pour '${renderObject(person)}'`}
+        {`Sélectionner la miniature à utiliser pour '${services.renderObject(person)}'`}
       </mui.DialogTitle>
 
       <mui.DialogContent dividers className={classes.content}>

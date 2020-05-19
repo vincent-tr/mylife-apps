@@ -1,8 +1,7 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton, ListSelector } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton, ListSelector, services } from 'mylife-tools-ui';
 import { update, remove } from '../actions';
-import { getFieldName, renderObject } from '../../common/metadata-utils';
 import TestSettings from './test-settings';
 import Credentials from './credentials';
 
@@ -59,14 +58,14 @@ const Broker = ({ broker }) => {
       <mui.Grid container spacing={2}>
 
         <mui.Grid item xs={6}>
-          <mui.Typography>{getFieldName('broker', 'display')}</mui.Typography>
+          <mui.Typography>{services.getFieldName('broker', 'display')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
           <DebouncedTextField value={broker.display} onChange={display => update(broker, { display })} fullWidth />
         </mui.Grid>
 
         <mui.Grid item xs={6}>
-          <mui.Typography>{getFieldName('broker', 'type')}</mui.Typography>
+          <mui.Typography>{services.getFieldName('broker', 'type')}</mui.Typography>
         </mui.Grid>
         <mui.Grid item xs={6}>
           <ListSelector list={types} value={broker.type} onChange={type => update(broker, { type })} fullWidth />
@@ -77,7 +76,7 @@ const Broker = ({ broker }) => {
         <DeleteButton
           tooltip={'Supprimer le compte'}
           icon
-          confirmText={`Etes-vous sûr de vouloir supprimer le compte '${renderObject(broker)}' ?`}
+          confirmText={`Etes-vous sûr de vouloir supprimer le compte '${services.renderObject(broker)}' ?`}
           onConfirmed={() => remove(broker)}
         />
 

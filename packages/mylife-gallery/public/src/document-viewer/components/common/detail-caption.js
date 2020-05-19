@@ -1,8 +1,7 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, services } from 'mylife-tools-ui';
 import { updateDocument } from '../../actions';
-import { getFieldName } from '../../../common/metadata-utils';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,7 @@ const DetailCaption = ({ document }) => {
       <mui.ListItemText
         disableTypography
         primary={
-          <mui.Typography>{getFieldName('document', 'caption')}</mui.Typography>
+          <mui.Typography>{services.getFieldName('document', 'caption')}</mui.Typography>
         }
         secondary={
           <DebouncedTextField value={document.caption} onChange={onChanged} />

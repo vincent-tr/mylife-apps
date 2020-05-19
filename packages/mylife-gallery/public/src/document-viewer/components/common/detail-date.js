@@ -1,8 +1,7 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch, formatDate, addLineBreaks } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, formatDate, addLineBreaks, services } from 'mylife-tools-ui';
 import { updateDocument } from '../../actions';
-import { getFieldName } from '../../../common/metadata-utils';
 
 const useConnect = () => {
   const dispatch = useDispatch();
@@ -72,7 +71,7 @@ DetailDate.propTypes = {
 export default DetailDate;
 
 function getName(document) {
-  return getFieldName(document._entity, 'date');
+  return services.getFieldName(document._entity, 'date');
 }
 
 function dateEquals(date1, date2) {

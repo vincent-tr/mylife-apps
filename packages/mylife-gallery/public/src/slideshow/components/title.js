@@ -1,8 +1,7 @@
 'use strict';
 
-import { useSelector } from 'mylife-tools-ui';
+import { useSelector, services } from 'mylife-tools-ui';
 import { getSlideshow } from '../selectors';
-import { renderObject } from '../../common/metadata-utils';
 
 const useConnect = () => useSelector(state => ({
   slideshow: getSlideshow(state)
@@ -10,7 +9,7 @@ const useConnect = () => useSelector(state => ({
 
 const SlideshowTitle = () => {
   const { slideshow } = useConnect();
-  const title = slideshow ? renderObject(slideshow) : '<inconnu>';
+  const title = slideshow ? services.renderObject(slideshow) : '<inconnu>';
   return `Diaporama ${title}`;
 };
 

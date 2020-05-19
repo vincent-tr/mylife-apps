@@ -1,8 +1,7 @@
 'use strict';
 
-import { React, PropTypes, useMemo, mui, useDispatch } from 'mylife-tools-ui';
+import { React, PropTypes, useMemo, mui, useDispatch, services } from 'mylife-tools-ui';
 import { updateDocument } from '../../actions';
-import { getFieldName } from '../../../common/metadata-utils';
 import { useKeywordView } from '../../../common/keyword-view';
 
 const useConnect = () => {
@@ -53,7 +52,7 @@ const DetailKeywords = ({ document }) => {
       <mui.ListItemText
         disableTypography
         primary={
-          <mui.Typography>{getFieldName('document', 'keywords')}</mui.Typography>
+          <mui.Typography>{services.getFieldName('document', 'keywords')}</mui.Typography>
         }
         secondary={
           <ChipList values={document.keywords} onChange={onChange} list={keywords} />

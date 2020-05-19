@@ -1,8 +1,7 @@
 'use strict';
 
-import { useSelector } from 'mylife-tools-ui';
+import { useSelector, services } from 'mylife-tools-ui';
 import { getAlbum } from '../selectors';
-import { renderObject } from '../../common/metadata-utils';
 import { useIsSmallScreen } from './behaviors';
 
 const useConnect = () => useSelector(state => ({
@@ -17,7 +16,7 @@ const AlbumTitle = () => {
     return 'Album';
   }
 
-  const title = album ? renderObject(album) : '<inconnu>';
+  const title = album ? services.renderObject(album) : '<inconnu>';
   return `Album ${title}`;
 };
 

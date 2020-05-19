@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, useDispatch, useMemo, DebouncedTextField, DeleteButton } from 'mylife-tools-ui';
-import { renderObject } from '../../common/metadata-utils';
+import { React, PropTypes, mui, useDispatch, useMemo, DebouncedTextField, DeleteButton, services } from 'mylife-tools-ui';
 import { ThumbnailPerson, THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { updatePerson, deletePerson } from '../actions';
 import { thumbnailSelectorDialog } from './thumbnail-selector-dialog';
@@ -99,7 +98,7 @@ const ListItem = ({ person, ...props }) => {
               tooltip={'Supprimer la personne'}
               icon
               text='Supprimer'
-              confirmText={`Etes-vous sûr de vouloir supprimer la personne '${renderObject(person)}' ?`}
+              confirmText={`Etes-vous sûr de vouloir supprimer la personne '${services.renderObject(person)}' ?`}
               onConfirmed={onDelete}
             />
           </mui.Grid>

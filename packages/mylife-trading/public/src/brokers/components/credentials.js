@@ -1,11 +1,10 @@
 'use strict';
 
-import { React, PropTypes, mui, DebouncedTextField, useRefProp } from 'mylife-tools-ui';
-import { getFieldDatatype, getStructureFieldName } from '../../common/metadata-utils';
+import { React, PropTypes, mui, DebouncedTextField, useRefProp, services } from 'mylife-tools-ui';
 import PasswordField from './password-field';
 
 const Broker = ({ broker, update: updateBroker }) => {
-  const structure = getFieldDatatype('broker', 'credentials');
+  const structure = services.getFieldDatatype('broker', 'credentials');
   const { credentials } = broker;
 
   const credentialsRef = useRefProp(credentials);
@@ -23,21 +22,21 @@ const Broker = ({ broker, update: updateBroker }) => {
   return (
     <>
       <mui.Grid item xs={6}>
-        <mui.Typography>{getStructureFieldName(structure, 'key')}</mui.Typography>
+        <mui.Typography>{services.getStructureFieldName(structure, 'key')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
         <DebouncedTextField value={credentials.key} onChange={key => update({ key })} fullWidth />
       </mui.Grid>
 
       <mui.Grid item xs={6}>
-        <mui.Typography>{getStructureFieldName(structure, 'identifier')}</mui.Typography>
+        <mui.Typography>{services.getStructureFieldName(structure, 'identifier')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
         <DebouncedTextField value={credentials.identifier} onChange={identifier => update({ identifier })} fullWidth />
       </mui.Grid>
 
       <mui.Grid item xs={6}>
-        <mui.Typography>{getStructureFieldName(structure, 'password')}</mui.Typography>
+        <mui.Typography>{services.getStructureFieldName(structure, 'password')}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={6}>
         <PasswordField crypted={credentials.password} onSet={password => update({ password })} fullWidth />

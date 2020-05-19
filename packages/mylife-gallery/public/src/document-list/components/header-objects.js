@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, immutable, useState, useEffect, useMemo } from 'mylife-tools-ui';
-import { renderObject } from '../../common/metadata-utils';
+import { React, PropTypes, mui, immutable, useState, useEffect, useMemo, services } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({
   menuButton: {
@@ -110,7 +109,7 @@ const ObjectItems = ({ documents, objects, objectUsage, setObjectUsage }) => {
           />
         </mui.ListItemIcon>
 
-        <mui.ListItemText primary={renderObject(object)} />
+        <mui.ListItemText primary={services.renderObject(object)} />
       </mui.ListItem>
     );
   });
@@ -176,7 +175,7 @@ const ObjectDisplay = ({ objects, initialObjectUsage }) => {
       {selectedObjects.map(object => (
         <mui.Chip
           key={object._id}
-          label={renderObject(object)}
+          label={services.renderObject(object)}
           className={classes.breadcrumbsChip}
         />
       ))}
