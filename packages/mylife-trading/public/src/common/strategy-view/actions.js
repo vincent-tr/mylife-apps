@@ -1,7 +1,6 @@
 'use strict';
 
-import { createAction } from 'mylife-tools-ui';
-import { createOrSkipView, deleteView } from '../action-tools';
+import { io, createAction } from 'mylife-tools-ui';
 import { createDebouncedRefresh } from '../ref-view-tools';
 import actionTypes from './action-types';
 import { getViewId, getRefCount } from './selectors';
@@ -12,14 +11,14 @@ const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-const fetchStrategies = () => createOrSkipView({
+const fetchStrategies = () => io.createOrSkipView({
   viewSelector: getViewId,
   setViewAction: local.setView,
   service: 'strategy',
   method: 'notify'
 });
 
-const clearStrategies = () => deleteView({
+const clearStrategies = () => io.deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });
