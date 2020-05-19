@@ -73,7 +73,7 @@ export class ViewReference {
     this.service = service;
     this.method = method;
 
-    this.canUpdate = canUpdate;
+    this.canUpdate = !!canUpdate;
   }
 
   async attach() {
@@ -97,7 +97,8 @@ export class ViewReference {
   }
 
   async _getView() {
-    await this._dispatch(createOrUpdateView({
+    const method = this.canUpdate ? createOrUpdateView : createOrRenewView;
+    await this._dispatch(method({
       criteriaSelector: this.criteriaSelector,
       viewSelector: this.viewSelector,
       setViewAction: this.setViewAction,

@@ -1,7 +1,6 @@
 'use strict';
 
-import { createAction } from 'mylife-tools-ui';
-import { ViewReference } from '../common/action-tools';
+import { createAction, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getNagiosViewId } from './selectors';
 
@@ -9,7 +8,7 @@ const local = {
   setNagiosView: createAction(actionTypes.SET_NAGIOS_VIEW),
 };
 
-const nagiosViewRef = new ViewReference({
+const nagiosViewRef = new io.ViewReference({
   criteriaSelector: () => null,
   viewSelector: getNagiosViewId,
   setViewAction: local.setNagiosView,

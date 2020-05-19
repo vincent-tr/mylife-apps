@@ -1,7 +1,6 @@
 'use strict';
 
-import { createAction } from 'mylife-tools-ui';
-import { ViewReference } from '../common/action-tools';
+import { createAction, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getViewId, getCriteria } from './selectors';
 
@@ -10,7 +9,7 @@ const local = {
   setCriteria: createAction(actionTypes.SET_CRITERIA),
 };
 
-const viewRef = new ViewReference({
+const viewRef = new io.ViewReference({
   criteriaSelector: () => null,
   viewSelector: getViewId,
   setViewAction: local.setView,
