@@ -11,11 +11,18 @@ export enum PositionOrderType {
   CLOSE = 'close'
 }
 
+export enum PositionCloseReason {
+  NORMAL = 'normal',
+  ERROR = 'error',
+  EXITING = 'exiting'
+}
+
 export interface PositionOrder {
   readonly date: Date,
   readonly type: PositionOrderType,
   readonly takeProfit?: number,
   readonly stopLoss?: number;
+  readonly closeReason?: PositionCloseReason
 };
 
 export default interface Position extends EventEmitter {
@@ -34,5 +41,5 @@ export default interface Position extends EventEmitter {
 
   updateTakeProfit(value: number): Promise<void>;
   updateStopLoss(value: number): Promise<void>;
-  close(): Promise<void>;
+  close(reason: PositionCloseReason): Promise<void>;
 }

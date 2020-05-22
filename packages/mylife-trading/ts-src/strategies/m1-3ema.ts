@@ -1,6 +1,6 @@
 import { EMA } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
+import { Resolution, MovingDataset, Position, PositionDirection, PositionCloseReason } from '../broker';
 import { last, PIP } from '../utils';
 import ScalpingBase from './scalping-base';
 
@@ -23,7 +23,7 @@ export default class M13Ema extends ScalpingBase {
 
 	async close() {
 		if (this.position) {
-			await this.position.close();
+			await this.position.close(PositionCloseReason.EXITING);
 		}
 
 		if (this.dataset) {
@@ -104,7 +104,7 @@ export default class M13Ema extends ScalpingBase {
 		const shouldClose = this.position.direction === PositionDirection.BUY ? ema1[1] < ema2[1] : ema1[1] > ema2[1];
 		if (shouldClose) {
 			logger.info(`(${this.configuration.name}) Close (direction=${this.position.direction}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)})`);
-			await this.position.close();
+			await this.position.close(PositionCloseReason.NORMAL);
 		}
 	}
 

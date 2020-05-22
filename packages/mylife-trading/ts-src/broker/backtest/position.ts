@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import Position, { PositionOrder, PositionOrderType, PositionDirection } from '../position';
+import Position, { PositionOrder, PositionOrderType, PositionDirection, PositionCloseReason } from '../position';
 import { Record } from '../moving-dataset';
 
 import Engine from './engine';
@@ -97,24 +97,25 @@ export default class BacktestPosition extends EventEmitter implements Position {
     this.checkClose();
   }
 
-  async close() {
+  async close(reason: PositionCloseReason) {
     const candle = this.engine.currentRecord.average;
     // consider we close at the end
-    this.closeImpl(candle.close);
+    this.closeImpl(candle.close, reason);
   }
 
   tick(record: Record) {
     this.checkClose();
   }
 
-  private closeImpl(level: number) {
+  private closeImpl(level: number, reason: PositionCloseReason) {
     const { currentRecord } = this.engine;
     this._closeDate = currentRecord.timestamp;
     this._closeLevel = level;
 
     this._orders.push({
       date: this._lastUpdateDate,
-      type: PositionOrderType.CLOSE
+      type: PositionOrderType.CLOSE,
+      closeReason: reason
     });
 
     this.emit('close');
@@ -125,12 +126,12 @@ export default class BacktestPosition extends EventEmitter implements Position {
     switch (this.direction) {
       case PositionDirection.BUY:
         if (this.takeProfit && this.takeProfit <= candle.high) {
-          this.closeImpl(this.takeProfit);
+          this.closeImpl(this.takeProfit, PositionCloseReason.NORMAL);
           return;
         }
 
         if (this.stopLoss && this.stopLoss >= candle.low) {
-          this.closeImpl(this.stopLoss);
+          this.closeImpl(this.stopLoss, PositionCloseReason.NORMAL);
           return;
         }
 
@@ -138,12 +139,12 @@ export default class BacktestPosition extends EventEmitter implements Position {
 
       case PositionDirection.SELL:
         if (this.takeProfit && this.takeProfit >= candle.low) {
-          this.closeImpl(this.takeProfit);
+          this.closeImpl(this.takeProfit, PositionCloseReason.NORMAL);
           return;
         }
 
         if (this.stopLoss && this.stopLoss <= candle.high) {
-          this.closeImpl(this.stopLoss);
+          this.closeImpl(this.stopLoss, PositionCloseReason.NORMAL);
           return;
         }
 

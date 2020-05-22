@@ -5,7 +5,8 @@ import Client from './api/client';
 import { UpdatePositionOrder, DealConfirmation, DealStatus, OpenPositionUpdate, UpdatePositionStatus, ClosePositionOrder, OrderType } from './api/dealing';
 import { ConfirmationError, ConfirmationListener } from './confirmation';
 import { parseTimestamp, parseDirection, serializeDirection } from './parsing';
-import Position, { PositionOrder, PositionOrderType, PositionDirection } from '../position';
+import Position, { PositionOrder, PositionOrderType, PositionDirection, PositionCloseReason } from '../position';
+import { sleep } from '../../utils';
 
 const logger = createLogger('mylife:trading:broker:position:ig');
 
@@ -107,7 +108,7 @@ export default class IgPosition extends EventEmitter implements Position {
     this.readConfirmation(confirmation, PositionOrderType.UPDATE);
   }
 
-  async close() {
+  async close(reason: PositionCloseReason) {
     const order: ClosePositionOrder = {
       dealId: this.dealId,
       direction: serializeDirection(reverseDirection(this.direction)),
@@ -115,7 +116,7 @@ export default class IgPosition extends EventEmitter implements Position {
       size: this.size
     };
 
-    const dealReference = await this.client.dealing.closePosition(order);
+    const dealReference = await this.closeWithRetries(order);
     // seems this confirm is not streamed
     const confirmation = await this.client.dealing.confirm(dealReference);
 
@@ -126,7 +127,36 @@ export default class IgPosition extends EventEmitter implements Position {
     this._orders.push({
       date: new Date(),
       type: PositionOrderType.CLOSE,
+      closeReason: reason
     });
+  }
+
+  private async closeWithRetries(order: ClosePositionOrder) {
+    const MAX_ATTEMPTS = 10;
+    const RETRY_DELAY = 1000;
+
+    let currentAttempt = 0;
+    while(true) {
+      try {
+        return await this.client.dealing.closePosition(order);
+      } catch (err) {
+        const canRetry = err.message.includes('error.service.marketdata.position.notional.details.null.error');
+        if(!canRetry) {
+          throw err;
+        }
+
+        err.message = `${err.message} - (attempt ${currentAttempt}/${MAX_ATTEMPTS})`;
+
+        if(currentAttempt === MAX_ATTEMPTS) {
+          throw err;
+        }
+
+        logger.error(`Error closing position: ${err.stack}`);
+
+        // wait and retry
+        await sleep(RETRY_DELAY);
+      }
+    }
   }
 
   private onError(err: Error) {

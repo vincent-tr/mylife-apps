@@ -1,6 +1,6 @@
 import { RSI, BollingerBands } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
+import { Resolution, MovingDataset, Position, PositionDirection, PositionCloseReason } from '../broker';
 import { last, round, PIP } from '../utils';
 import { BollingerBandsOutput } from 'technicalindicators/declarations/volatility/BollingerBands';
 import ScalpingBase from './scalping-base';
@@ -26,7 +26,7 @@ export default class M1RsiBb extends ScalpingBase {
 
 	async close() {
 		if (this.position) {
-			await this.position.close();
+			await this.position.close(PositionCloseReason.EXITING);
 		}
 
 		if (this.dataset) {

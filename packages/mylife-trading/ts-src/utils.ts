@@ -25,6 +25,10 @@ export function fireAsync<T>(target: () => Promise<T>) {
   target().catch(err => logger.error(`Unhandled promise rejection: ${err.stack}`));
 }
 
+export async function sleep(delay: number) {
+  return new Promise((resolve) => setTimeout(resolve, delay));
+}
+
 export const PIP = 0.0001;
 
 // 1 = up, -1 = down, 0 = unknown

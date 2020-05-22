@@ -1,6 +1,6 @@
 import { SMA, PSAR } from 'technicalindicators';
 import { createLogger } from 'mylife-tools-server';
-import { Resolution, MovingDataset, Position, PositionDirection } from '../broker';
+import { Resolution, MovingDataset, Position, PositionDirection, PositionCloseReason } from '../broker';
 import { last } from '../utils';
 import ScalpingBase from './scalping-base';
 
@@ -25,7 +25,7 @@ export default class M1SmaSar extends ScalpingBase {
 
 	async close() {
 		if (this.position) {
-			await this.position.close();
+			await this.position.close(PositionCloseReason.EXITING);
 		}
 
 		if (this.dataset) {
