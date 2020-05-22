@@ -6,7 +6,7 @@
   "repository": "https://github.com/vincent-tr/mylife-trading",
   "author": "Vincent Trumpff",
   "scripts": {
-    "lint": "eslint lib/* public/app/*",
+    "lint": "eslint lib/* public/src/*",
     "start:dev": "npm run build:ts && MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-trading} WEB_PORT=8013 ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
     "build:ts": "tsc",

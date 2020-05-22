@@ -16,7 +16,7 @@ const defaultCredentials = {
   key: 'A remplir',
   identifier: 'A remplir',
   password: 'A remplir'
-}
+};
 
 export const add = () => async (dispatch) => {
   const values = {
