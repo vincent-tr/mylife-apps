@@ -45,6 +45,7 @@ class TradingServiceBinder {
     this.brokers = getStoreCollection('brokers');
     this.strategies = getStoreCollection('strategies');
     this.stats = getStoreCollection('stats');
+    this.errors = getStoreCollection('errors');
     this.status = new StatusView();
     this.tradingService = getService('trading-service');
     this.queue = getService('task-queue-manager').createQueue('trading-service-queue');
@@ -69,6 +70,7 @@ class TradingServiceBinder {
     this.broker = null;
     this.strategies = null;
     this.stats = null;
+    this.errors = null;
     this.status = null;
     this.tradingService = null;
   }
@@ -167,11 +169,32 @@ class TradingServiceBinder {
     this.stats.set(newStat);
   }
 
+  _newError(strategy, error) {
+    const broker = this.brokers.get(strategy.broker);
+
+    const values = {
+      strategy: strategy._id,
+      strategyImplementation: strategy.implementation,
+      version,
+      demo: broker.demo,
+      date: new Date(),
+      message: error.message,
+      stack: error.stack
+    };
+
+    const entity = getMetadataEntity('error');
+    const newError = entity.newObject(values);
+    this.errors.set(newError);
+  }
+
   _onFatalError(strategy, error) {
+    this._newError(strategy, error);
+
     this.queue.add('strategy-update', async () => {
       const key = strategy._id;
       await this.tradingService.remove(key);
       this.status.setError(key, error);
+
     });
   }
 }

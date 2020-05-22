@@ -6,5 +6,6 @@ exports.entities = [
   require('./entities/strategy'),
   require('./entities/strategy-status'),
   require('./entities/stat'),
+  require('./entities/error'),
   require('./entities/historical-data'),
 ];
