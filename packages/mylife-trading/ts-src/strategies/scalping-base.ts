@@ -1,6 +1,7 @@
 import { createLogger } from 'mylife-tools-server';
 import StrategyBase from './strategy-base';
-import { Instrument, Market, MarketStatus } from '../broker';
+import { Instrument, Market, MarketStatus, MovingDataset, Record, Resolution, Position, PositionDirection, OpenPositionBound, PositionCloseReason } from '../broker';
+import { last, PIP } from '../utils';
 
 const logger = createLogger('mylife:trading:strategy:scalping-base');
 
@@ -11,6 +12,12 @@ export default abstract class ScalpingBase extends StrategyBase {
 	private _instrument: Instrument;
 	private _closing = false;
 
+	private dataset: MovingDataset;
+	private _datasetRecords: Record[];
+	private _currentLevel: number;
+	private lastProcessedTimestamp: number;
+	private position: Position;
+
 	protected get instrument() {
 		return this._instrument;
 	}
@@ -19,8 +26,102 @@ export default abstract class ScalpingBase extends StrategyBase {
 		return this._closing;
 	}
 
-	protected abstract open(): Promise<void>;
-	protected abstract close(): Promise<void>;
+	protected get datasetRecords() {
+		return this._datasetRecords;
+	}
+
+	protected get currentLevel() {
+		return this._currentLevel;
+	}
+
+	protected get hasPosition() {
+		return !!this.position;
+	}
+
+	protected get positionDirection() {
+		return this.position ? this.position.direction : null;
+	}
+
+	protected abstract readonly datasetResolution: Resolution;
+	protected abstract readonly datasetSize: number;
+
+	protected abstract analyze(): Promise<void>;
+
+	protected async open() {
+		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, this.datasetResolution, this.datasetSize);
+		this.dataset.on('add', () => this.onDatasetChange());
+		this.dataset.on('update', () => this.onDatasetChange());
+
+		this.onDatasetChange();
+	}
+
+	protected async close() {
+		if (this.position) {
+			await this.position.close(PositionCloseReason.EXITING);
+		}
+
+		if (this.dataset) {
+			this.dataset.close();
+		}
+	}
+
+	private onDatasetChange() {
+		if (!this.shouldRun()) {
+			return;
+		}
+
+		this._datasetRecords = this.dataset.fixedList;
+		const candle = last(this._datasetRecords);
+		this._currentLevel = candle.average.close;
+
+		this.fireAsync(() => this.analyze());
+	}
+
+	private shouldRun() {
+		const fixedRecords = this.dataset.fixedList;
+		const lastTimestamp = fixedRecords[fixedRecords.length - 1].timestamp.valueOf();
+		if (lastTimestamp === this.lastProcessedTimestamp) {
+			return false;
+		}
+
+		this.lastProcessedTimestamp = lastTimestamp;
+		return true;
+	}
+
+	protected async takePosition(direction: PositionDirection, stopLoss: OpenPositionBound, takeProfit: OpenPositionBound) {
+		// convert risk value to contract size
+		const stopLossDistance = stopLoss.distance || Math.abs(this.currentLevel - stopLoss.level) / PIP;
+		const size = this.computePositionSize(this.instrument, stopLossDistance);
+
+		this.position = await this.broker.openPosition(this.instrument, direction, size, stopLoss, takeProfit);
+		this.changeStatusTakingPosition();
+
+		this.position.on('close', () => {
+			const position = this.position;
+			this.position = null;
+
+			this.fireAsync(async () => {
+				const summary = await this.broker.getPositionSummary(position);
+				logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
+
+				this.positionSummary(summary);
+
+				if (this.closing) {
+					return;
+				}
+
+				this.changeStatusMarketLookup();
+			});
+		});
+	}
+
+	protected async closePosition() {
+		await this.position.close(PositionCloseReason.NORMAL);
+	}
+
+	protected async updatePositionTakeProfit(value: number) {
+		await this.position.updateTakeProfit(value);
+	}
 
 	protected async initImpl() {
 		this.market = await this.broker.getMarket(this.configuration.instrumentId);

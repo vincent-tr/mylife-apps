@@ -11,54 +11,14 @@ const STOP_LOSS_DISTANCE = 15;
 const TAKE_PROFIT_DISTANCE = 10;
 
 export default class M1SmaSar extends ScalpingBase {
-	private dataset: MovingDataset;
-	private lastProcessedTimestamp: number;
-	private position: Position;
-
-	async open() {
-		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 52);
-		this.dataset.on('add', () => this.onDatasetChange());
-		this.dataset.on('update', () => this.onDatasetChange());
-
-		this.onDatasetChange();
-	}
-
-	async close() {
-		if (this.position) {
-			await this.position.close(PositionCloseReason.EXITING);
-		}
-
-		if (this.dataset) {
-			this.dataset.close();
-		}
-	}
-
-	private onDatasetChange() {
-		if (!this.shouldRun()) {
-			return;
-		}
-
-		this.fireAsync(() => this.analyze());
-	}
-
-	private shouldRun() {
-		const fixedRecords = this.dataset.fixedList;
-		const lastTimestamp = fixedRecords[fixedRecords.length - 1].timestamp.valueOf();
-		if (lastTimestamp === this.lastProcessedTimestamp) {
-			return false;
-		}
-
-		this.lastProcessedTimestamp = lastTimestamp;
-		return true;
-	}
+	protected readonly datasetResolution = Resolution.M1;
+	protected readonly datasetSize = 52;
 
 	private getIndicators() {
-		const { fixedList } = this.dataset;
-
-		const values = fixedList.map(record => record.average.close);
+		const values = this.datasetRecords.map(record => record.average.close);
 		const sma = SMA.calculate({ period: 50, values: values });
 
-		const lasts = fixedList.slice(-30);
+		const lasts = this.datasetRecords.slice(-30);
 		const sarRaw = PSAR.calculate({
 			high: lasts.map(record => record.average.high),
 			low: lasts.map(record => record.average.low),
@@ -67,67 +27,39 @@ export default class M1SmaSar extends ScalpingBase {
 		});
 		const sar = sarRaw.slice(-2);
 
-		const candle = last(fixedList);
-
-		return { candle, sma: last(sma), sar };
+		return { sma: last(sma), sar };
 	}
 
-	private async takePosition(direction: PositionDirection) {
-		// convert risk value to contract size
-		const size = this.computePositionSize(this.instrument, STOP_LOSS_DISTANCE);
-		this.position = await this.broker.openPosition(this.instrument, direction, size, { distance: STOP_LOSS_DISTANCE }, { distance: TAKE_PROFIT_DISTANCE });
-		this.changeStatusTakingPosition();
-
-		this.position.on('close', () => {
-			const position = this.position;
-			this.position = null;
-
-			this.fireAsync(async () => {
-				const summary = await this.broker.getPositionSummary(position);
-				logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
-
-				this.positionSummary(summary);
-
-				if (this.closing) {
-					return;
-				}
-
-				this.changeStatusMarketLookup();
-			});
-		});
-	}
-
-	private async analyze() {
-		if (this.position) {
+	protected async analyze() {
+		if (this.hasPosition) {
 			return;
 		}
 
 		this.changeStatusMarketLookup();
 
-		const { candle, sma, sar } = this.getIndicators();
-		const level = candle.average.close;
-		logger.debug(`analyze (level=${level}, sma=${sma}, sar=${JSON.stringify(sar)})`);
+		const { sma, sar } = this.getIndicators();
+		logger.debug(`analyze (level=${this.currentLevel}, sma=${sma}, sar=${JSON.stringify(sar)})`);
 
 		// see if we can take position
-		if (this.canBuy(level, sma, sar)) {
-			logger.info(`(${this.configuration.name}) Buy (level=${level}, sma=${sma}, sar=${JSON.stringify(sar)})`);
-			await this.takePosition(PositionDirection.BUY);
+		if (this.canBuy(sma, sar)) {
+			logger.info(`(${this.configuration.name}) Buy (level=${this.currentLevel}, sma=${sma}, sar=${JSON.stringify(sar)})`);
+			await this.takePosition(PositionDirection.BUY, { distance: STOP_LOSS_DISTANCE }, { distance: TAKE_PROFIT_DISTANCE });
 			return;
 		}
 
-		if (this.canSell(level, sma, sar)) {
-			logger.info(`(${this.configuration.name}) Sell (level=${level}, sma=${sma}, sar=${JSON.stringify(sar)})`);
-			await this.takePosition(PositionDirection.SELL);
+		if (this.canSell(sma, sar)) {
+			logger.info(`(${this.configuration.name}) Sell (level=${this.currentLevel}, sma=${sma}, sar=${JSON.stringify(sar)})`);
+			await this.takePosition(PositionDirection.SELL, { distance: STOP_LOSS_DISTANCE }, { distance: TAKE_PROFIT_DISTANCE });
 			return;
 		}
 	}
 
-	private canBuy(level: number, sma: number, sar: number[]) {
-		return level > sma && sar[0] > level && sar[1] < level;
+	private canBuy(sma: number, sar: number[]) {
+		return this.currentLevel > sma && sar[0] > this.currentLevel && sar[1] < this.currentLevel;
 	}
 
-	private canSell(level: number, sma: number, sar: number[]) {
-		return level < sma && sar[0] < level && sar[1] > level;
+	private canSell(sma: number, sar: number[]) {
+		return this.currentLevel < sma && sar[0] < this.currentLevel && sar[1] > this.currentLevel;
 	}
 
 }

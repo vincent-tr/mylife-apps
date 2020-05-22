@@ -9,46 +9,8 @@ const logger = createLogger('mylife:trading:strategy:m1-3ema');
 // https://www.forexstrategiesresources.com/trend-following-forex-strategies/70-3ema-s/
 
 export default class M13Ema extends ScalpingBase {
-	private dataset: MovingDataset;
-	private lastProcessedTimestamp: number;
-	private position: Position;
-
-	async open() {
-		this.dataset = await this.broker.getDataset(this.instrument.instrumentId, Resolution.M1, 150);
-		this.dataset.on('add', () => this.onDatasetChange());
-		this.dataset.on('update', () => this.onDatasetChange());
-
-		this.onDatasetChange();
-	}
-
-	async close() {
-		if (this.position) {
-			await this.position.close(PositionCloseReason.EXITING);
-		}
-
-		if (this.dataset) {
-			this.dataset.close();
-		}
-	}
-
-	private onDatasetChange() {
-		if (!this.shouldRun()) {
-			return;
-		}
-
-		this.fireAsync(() => this.analyze());
-	}
-
-	private shouldRun() {
-		const fixedRecords = this.dataset.fixedList;
-		const lastTimestamp = fixedRecords[fixedRecords.length - 1].timestamp.valueOf();
-		if (lastTimestamp === this.lastProcessedTimestamp) {
-			return false;
-		}
-
-		this.lastProcessedTimestamp = lastTimestamp;
-		return true;
-	}
+	protected readonly datasetResolution = Resolution.M1;
+	protected readonly datasetSize = 150;
 
 	private getEma(values: number[], period: number) {
 		const ema = EMA.calculate({ period, values });
@@ -56,87 +18,58 @@ export default class M13Ema extends ScalpingBase {
 	}
 
 	private getIndicators() {
-		const { fixedList } = this.dataset;
 
-		const values = fixedList.map(record => record.average.close);
+		const values = this.datasetRecords.map(record => record.average.close);
 		const ema1 = this.getEma(values, 3);
 		const ema2 = this.getEma(values, 13);
 		const ema3 = this.getEma(values, 144);
 
-		const candle = last(fixedList);
-
-		const lasts = fixedList.slice(-5);
+		const lasts = this.datasetRecords.slice(-5);
 		const lastLows = Math.min(...lasts.map(record => record.average.low));
 		const lastHighs = Math.max(...lasts.map(record => record.average.high));
 
-		return { candle, ema1, ema2, ema3, lastLows, lastHighs };
-	}
-
-	private async takePosition(direction: PositionDirection, level: number, stopLoss: number) {
-		// convert risk value to contract size
-		const size = this.computePositionSize(this.instrument, Math.abs(level - stopLoss) / PIP);
-		this.position = await this.broker.openPosition(this.instrument, direction, size, { level: stopLoss }, {});
-		this.changeStatusTakingPosition();
-
-		this.position.on('close', () => {
-			const position = this.position;
-			this.position = null;
-
-			this.fireAsync(async () => {
-				const summary = await this.broker.getPositionSummary(position);
-				logger.info(`(${this.configuration.name}) Position closed: ${JSON.stringify(summary)}`);
-
-				this.positionSummary(summary);
-
-				if (this.closing) {
-					return;
-				}
-
-				this.changeStatusMarketLookup();
-			});
-		});
+		return { ema1, ema2, ema3, lastLows, lastHighs };
 	}
 
 	private async checkPositionClose() {
 		const { ema1, ema2 } = this.getIndicators();
 
 		// close when em1 and em2 cross again
-		const shouldClose = this.position.direction === PositionDirection.BUY ? ema1[1] < ema2[1] : ema1[1] > ema2[1];
+		const shouldClose = this.positionDirection === PositionDirection.BUY ? ema1[1] < ema2[1] : ema1[1] > ema2[1];
 		if (shouldClose) {
-			logger.info(`(${this.configuration.name}) Close (direction=${this.position.direction}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)})`);
-			await this.position.close(PositionCloseReason.NORMAL);
+			logger.info(`(${this.configuration.name}) Close (direction=${this.positionDirection}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)})`);
+			await this.closePosition();
 		}
 	}
 
-	private async analyze() {
-		if (this.position) {
+	protected async analyze() {
+		if (this.hasPosition) {
 			await this.checkPositionClose();
 			return;
 		}
 
 		this.changeStatusMarketLookup();
 
-		const { candle, ema1, ema2, ema3, lastLows, lastHighs } = this.getIndicators();
-		const level = candle.average.close;
-		logger.debug(`analyze (level=${level}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)}, ema3=${JSON.stringify(ema3)})`);
+		const { ema1, ema2, ema3, lastLows, lastHighs } = this.getIndicators();
+		logger.debug(`analyze (level=${this.currentLevel}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)}, ema3=${JSON.stringify(ema3)})`);
 
 		// see if we can take position
-		if (this.canBuy(level, ema1, ema2, ema3)) {
-			logger.info(`(${this.configuration.name}) Buy (level=${level}, stopLoss=${lastLows}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)}, ema3=${JSON.stringify(ema3)})`);
-			await this.takePosition(PositionDirection.BUY, level, lastLows);
+		if (this.canBuy(ema1, ema2, ema3)) {
+			logger.info(`(${this.configuration.name}) Buy (level=${this.currentLevel}, stopLoss=${lastLows}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)}, ema3=${JSON.stringify(ema3)})`);
+			await this.takePosition(PositionDirection.BUY, { level: lastLows }, {});
 			return;
 		}
 
-		if (this.canSell(level, ema1, ema2, ema3)) {
-			logger.info(`(${this.configuration.name}) Sell (level=${level}, stopLoss=${lastHighs}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)}, ema3=${JSON.stringify(ema3)})`);
-			await this.takePosition(PositionDirection.SELL, level, lastHighs);
+		if (this.canSell(ema1, ema2, ema3)) {
+			logger.info(`(${this.configuration.name}) Sell (level=${this.currentLevel}, stopLoss=${lastHighs}, ema1=${JSON.stringify(ema1)}, ema2=${JSON.stringify(ema2)}, ema3=${JSON.stringify(ema3)})`);
+			await this.takePosition(PositionDirection.SELL, { level: lastHighs }, {});
 			return;
 		}
 	}
 
-	private canBuy(level: number, ema1: number[], ema2: number[], ema3: number[]) {
+	private canBuy(ema1: number[], ema2: number[], ema3: number[]) {
 		// price above all
-		if (level <= ema1[1] || level <= ema2[1] || level <= ema3[1]) {
+		if (this.currentLevel <= ema1[1] || this.currentLevel <= ema2[1] || this.currentLevel <= ema3[1]) {
 			return false;
 		}
 
@@ -149,9 +82,9 @@ export default class M13Ema extends ScalpingBase {
 		return ema1[0] < ema2[0] && ema1[1] > ema2[1];
 	}
 
-	private canSell(level: number, ema1: number[], ema2: number[], ema3: number[]) {
+	private canSell(ema1: number[], ema2: number[], ema3: number[]) {
 		// price below all
-		if (level >= ema1[1] || level >= ema2[1] || level >= ema3[1]) {
+		if (this.currentLevel >= ema1[1] || this.currentLevel >= ema2[1] || this.currentLevel >= ema3[1]) {
 			return false;
 		}
 
