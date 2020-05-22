@@ -87,7 +87,7 @@ export function createOrSkipView({ viewSelector, setViewAction, service, method 
       return;
     }
 
-    const newViewId = await dispatch(io.call({
+    const newViewId = await dispatch(call({
       service,
       method,
       criteria: {}
