@@ -1,6 +1,6 @@
 'use strict';
 
-import { io.createAction } from 'mylife-tools-ui';
+import { io, createAction } from 'mylife-tools-ui';
 import { createDebouncedRefresh } from '../ref-view-tools';
 import actionTypes from './action-types';
 import { getViewId, getRefCount } from './selectors';
