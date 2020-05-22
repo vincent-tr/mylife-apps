@@ -194,7 +194,6 @@ class TradingServiceBinder {
       const key = strategy._id;
       await this.tradingService.remove(key);
       this.status.setError(key, error);
-
     });
   }
 }
