@@ -151,7 +151,7 @@ class TradingServiceBinder {
       strategy: strategy._id,
       strategyImplementation: strategy.implementation,
       version,
-      demo: broker.demo,
+      brokerType: broker.type,
       instrumentId: strategy.instrumentId,
       dealId: summary.dealId,
       openDate: summary.openDate,
@@ -176,7 +176,7 @@ class TradingServiceBinder {
       strategy: strategy._id,
       strategyImplementation: strategy.implementation,
       version,
-      demo: broker.demo,
+      brokerType: broker.type,
       date: new Date(),
       message: error.message,
       stack: error.stack

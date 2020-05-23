@@ -8,7 +8,7 @@ module.exports = {
     { id: 'strategy', name: 'Stratégie', datatype: 'strategy', constraints: ['not-null'] },
     { id: 'strategyImplementation', name: 'Implémentation de la stratégie', datatype: 'strategy-implementation', constraints: ['not-null'] },
     { id: 'version', name: 'Numéro de version du moteur', datatype: 'name', constraints: ['not-null'] },
-    { id: 'demo', name: 'Démo', datatype: 'boolean', constraints: ['not-null'] },
+    { id: 'brokerType', name: 'Type de courtier', datatype: 'broker-type', constraints: ['not-null'] },
     { id: 'instrumentId', name: 'Instrument utilisé', datatype: 'name', constraints: ['not-null'] },
     { id: 'dealId', name: 'Identifiant de transaction', datatype: 'name', constraints: ['not-null'] },
     { id: 'openDate', name: 'Date/heure d\'ouverture de la position', datatype: 'datetime', constraints: ['not-null'] },
