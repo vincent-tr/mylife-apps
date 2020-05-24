@@ -40,8 +40,7 @@ const Status = ({ strategy }) => {
   return (
     <mui.Grid container>
       <mui.Grid item xs={12} className={classes.cell}>
-        <mui.Typography className={classes.title}>{services.getFieldName('strategy-status', 'status')}</mui.Typography>
-        <mui.Typography className={classes.since}>{status.status}</mui.Typography>
+        <mui.Typography>{status.status}</mui.Typography>
       </mui.Grid>
       <mui.Grid item xs={12} className={classes.cell}>
         <mui.Typography variant='caption'>{since}</mui.Typography>
