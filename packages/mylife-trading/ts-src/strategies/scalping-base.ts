@@ -5,12 +5,19 @@ import { last, PIP } from '../utils';
 
 const logger = createLogger('mylife:trading:strategy:scalping-base');
 
+export enum ScalpingStrategyState {
+	CLOSED = 'closed',
+	OPENING = 'opening',
+	OPENED = 'opened',
+	CLOSING = 'closing',
+}
+
 export default abstract class ScalpingBase extends StrategyBase {
 	private market: Market;
 	private opened: boolean;
 
 	private _instrument: Instrument;
-	private _closing = false;
+	private _state = ScalpingStrategyState.CLOSED;
 
 	private dataset: MovingDataset;
 	private _datasetRecords: Record[];
@@ -22,8 +29,8 @@ export default abstract class ScalpingBase extends StrategyBase {
 		return this._instrument;
 	}
 
-	protected get closing() {
-		return this._closing;
+	protected get state() {
+		return this._state;
 	}
 
 	protected get datasetRecords() {
@@ -106,7 +113,7 @@ export default abstract class ScalpingBase extends StrategyBase {
 
 				this.positionSummary(summary);
 
-				if (this.closing) {
+				if (this._state !== ScalpingStrategyState.OPENED) {
 					return;
 				}
 
@@ -139,14 +146,16 @@ export default abstract class ScalpingBase extends StrategyBase {
 	}
 
 	private onMarketStatusChanged(status: MarketStatus) {
-		if (this.isMarketOpened() === this.opened) {
+		const marketOpened = this.isMarketOpened();
+		const stateOpened = this.state === ScalpingStrategyState.OPENED;
+		if (marketOpened === stateOpened) {
 			return;
 		}
 
-		if (this.opened) {
-			this.fireAsync(() => this.runClose());
-		} else {
+		if (marketOpened) {
 			this.fireAsync(() => this.runOpen());
+		} else {
+			this.fireAsync(() => this.runClose());
 		}
 	}
 
@@ -166,7 +175,7 @@ export default abstract class ScalpingBase extends StrategyBase {
 	}
 
 	private async runOpen() {
-		this.opened = true;
+		this._state = ScalpingStrategyState.OPENING;
 		try {
 			this.changeStatus('Initialisation');
 
@@ -175,6 +184,8 @@ export default abstract class ScalpingBase extends StrategyBase {
 			this._instrument = await this.broker.getInstrument(this.configuration.instrumentId);
 
 			await this.open();
+
+			this._state = ScalpingStrategyState.OPENED;
 		} catch (err) {
 			logger.error(`(${this.configuration.name}) init error: ${err.stack}`);
 			this.fatal(err);
@@ -186,13 +197,13 @@ export default abstract class ScalpingBase extends StrategyBase {
 		try {
 			this.changeStatus("Mise à l'arrêt");
 
-			this._closing = true;
+			this._state = ScalpingStrategyState.CLOSING;
 			try {
 				await this.close();
 			} catch(err) {
 				logger.error(`Stop failure: ${err.stack}`);
 			}
-			this._closing = false;
+			this._state = ScalpingStrategyState.CLOSED;
 
 			this._instrument.close();
 			this._instrument = null;
