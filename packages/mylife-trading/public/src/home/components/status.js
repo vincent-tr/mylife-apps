@@ -31,7 +31,7 @@ const Status = ({ strategy }) => {
   const classes = useStyles();
   const { strategyStatus } = useConnect();
   const status = strategyStatus.get(strategy._id);
-  const delay = useFormatDelay(status);
+  const since = useFormatSince(status);
 
   if(!status) {
     return null;
@@ -41,7 +41,10 @@ const Status = ({ strategy }) => {
     <mui.Grid container>
       <mui.Grid item xs={12} className={classes.cell}>
         <mui.Typography className={classes.title}>{services.getFieldName('strategy-status', 'status')}</mui.Typography>
-        <mui.Typography>{`(${delay}) ${status.status}`}</mui.Typography>
+        <mui.Typography className={classes.since}>{status.status}</mui.Typography>
+      </mui.Grid>
+      <mui.Grid item xs={12} className={classes.cell}>
+        <mui.Typography variant='caption'>{since}</mui.Typography>
       </mui.Grid>
       {status.error && (
         <mui.Grid item xs={12} className={clsx(classes.cell, classes.error)}>
@@ -59,23 +62,23 @@ Status.propTypes = {
 
 export default Status;
 
-function useFormatDelay(status) {
-  const [delay, setDelay] = useState();
+function useFormatSince(status) {
+  const [since, setSince] = useState();
 
   useEffect(computeDelay, [status]);
   useInterval(computeDelay, 500);
 
-  return delay;
+  return since;
 
   function computeDelay() {
     if(!status) {
-      setDelay(null);
+      setSince(null);
       return;
     }
   
     const duration = new Date() - status.timestamp;
     const formatted = humanizeDuration(duration, { language: 'fr', largest: 2, round: true });
-    setDelay(formatted);
+    setSince(formatted);
   
   }
 }
