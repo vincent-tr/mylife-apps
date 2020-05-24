@@ -3,7 +3,7 @@
 import { debounce } from 'debounce';
 import { Mutex } from 'async-mutex';
 
-// needed  because refrsh impl is not atomic
+// needed  because refresh impl is not atomic
 const mutex = new Mutex();
 
 export function createDebouncedRefresh(refresh, timeout = 10) {

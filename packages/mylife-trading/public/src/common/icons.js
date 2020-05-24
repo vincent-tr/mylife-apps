@@ -6,6 +6,7 @@ const {
   AccountBox,
   Settings,
   Equalizer,
+  ErrorOutline,
 } = mui.icons;
 
 const Trading = (props) => (
@@ -26,5 +27,6 @@ export default {
     Broker: AccountBox,
     Strategy: Settings,
     Stat: Equalizer,
+    Error: ErrorOutline,
   },
 };
