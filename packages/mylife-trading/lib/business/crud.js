@@ -124,9 +124,15 @@ exports.strategyCreate = (values) => {
 
 exports.strategyDelete = strategy => {
   const stats = getStoreCollection('stats');
-  const usage = stats.filter(stat => stat.strategy === strategy._id);
-  if (usage.length) {
+  const statsUsage = stats.filter(stat => stat.strategy === strategy._id);
+  if (statsUsage.length) {
     throw new Error('Impossible de supprimer la stratégie car elle a des statistiques associées');
+  }
+
+  const errors = getStoreCollection('errors');
+  const errorsUsage = errors.filter(stat => stat.strategy === strategy._id);
+  if (errorsUsage.length) {
+    throw new Error('Impossible de supprimer la stratégie car elle a des erreurs associées');
   }
 
   logger.info(`Deleting strategy '${strategy._id}'`);
@@ -156,7 +162,7 @@ exports.strategiesNotify = (session) => {
 
 exports.statusNotify = (session) => {
   const tradingServiceBinder = getService('trading-service-binder');
-  const stats = tradingServiceBinder.getStatusCollection('stats');
+  const stats = tradingServiceBinder.getStatusCollection();
   const view = stats.createView();
   return notifyView(session, view);
 };
@@ -179,5 +185,26 @@ exports.statsDeleteByStrategy = (strategyId) => {
 exports.statsNotify = (session) => {
   const stats = getStoreCollection('stats');
   const view = stats.createView();
+  return notifyView(session, view);
+};
+
+exports.errorsDeleteByStrategy = (strategyId) => {
+  // ensure that strategy exists
+  business.strategyGet(strategyId);
+
+  const errors = getStoreCollection('errors');
+  let count = 0;
+  for (const stat of errors.list()) {
+    if(stat.strategy === strategyId) {
+      errors.delete(stat._id);
+      ++count;
+    }
+  }
+  return count;
+};
+
+exports.errorsNotify = (session) => {
+  const errors = getStoreCollection('errors');
+  const view = errors.createView();
   return notifyView(session, view);
 };

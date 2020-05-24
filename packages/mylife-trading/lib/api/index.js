@@ -5,4 +5,5 @@ exports.apiServices = [
   require('./broker'),
   require('./strategy'),
   require('./stat'),
+  require('./error'),
 ];
