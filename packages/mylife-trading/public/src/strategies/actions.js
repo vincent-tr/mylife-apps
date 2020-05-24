@@ -53,3 +53,13 @@ export const removeStats = (strategy) => async (dispatch) => {
 
   dispatch(local.showSuccess(`${count} données de statistiques supprimées`));
 };
+
+export const removeErrors = (strategy) => async (dispatch) => {
+  const count = await dispatch(io.call({
+    service: 'error',
+    method: 'deleteByStrategy',
+    strategyId: strategy._id
+  }));
+
+  dispatch(local.showSuccess(`${count} données d'erreurs supprimées`));
+};

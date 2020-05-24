@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, DeleteButton, ListSelector, services } from 'mylife-tools-ui';
-import { update, remove, removeStats } from '../actions';
+import { update, remove, removeStats, removeErrors } from '../actions';
 import BrokerSelector from './broker-selector';
 
 const useConnect = () => {
@@ -10,6 +10,7 @@ const useConnect = () => {
     update: (strategy, changes) => dispatch(update(strategy, changes)),
     remove: (strategy) => dispatch(remove(strategy)),
     removeStats: (strategy) => dispatch(removeStats(strategy)),
+    removeErrors: (strategy) => dispatch(removeErrors(strategy)),
   }), [dispatch]);
 };
 
@@ -18,6 +19,9 @@ const useStyles = mui.makeStyles(theme => ({
     padding: theme.spacing(2),
     width: 1400
   },
+  deleteButton: {
+    marginRight: theme.spacing(2),
+  }
 }));
 
 const implementations = [
@@ -29,7 +33,7 @@ const implementations = [
 
 const Strategy = ({ strategy }) => {
   const classes = useStyles();
-  const { update, remove, removeStats } = useConnect();
+  const { update, remove, removeStats, removeErrors } = useConnect();
 
   return (
     <mui.Paper variant='outlined' square className={classes.container}>
@@ -87,11 +91,20 @@ const Strategy = ({ strategy }) => {
         </mui.Grid>
         <mui.Grid item xs={8}>
           <DeleteButton
+            className={classes.deleteButton}
             text={'Stats'}
             tooltip={'Supprimer les statistiques associées à la stratégie'}
             icon
             confirmText={`Etes-vous sûr de vouloir supprimer les statistiques associées à la stratégie '${services.renderObject(strategy)}' ?`}
             onConfirmed={() => removeStats(strategy)}
+          />
+          <DeleteButton
+            className={classes.deleteButton}
+            text={'Erreurs'}
+            tooltip={'Supprimer les erreurs associées à la stratégie'}
+            icon
+            confirmText={`Etes-vous sûr de vouloir supprimer les erreurs associées à la stratégie '${services.renderObject(strategy)}' ?`}
+            onConfirmed={() => removeErrors(strategy)}
           />
         </mui.Grid>
 
