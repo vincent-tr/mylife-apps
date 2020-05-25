@@ -162,7 +162,7 @@ const Header = () => {
   const denseHeader = (
     <React.Fragment>
       <SummaryExpansionPanel
-        collapsedSummary={<mui.Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup.display}`}</mui.Typography>}
+        collapsedSummary={<mui.Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup && selectedGroup.display}`}</mui.Typography>}
         expandedSummary={<mui.Typography>{'Critères d\'affichage'}</mui.Typography>}>
         <div className={classes.expansionPanelContainer}>
           <mui.Toolbar variant='dense'>
