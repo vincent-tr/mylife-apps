@@ -1,19 +1,18 @@
 'use strict';
 
-import { io, immutable, createSelector } from 'mylife-tools-ui';
+import { views, immutable, createSelector } from 'mylife-tools-ui';
+import { ACCOUNTS, GROUPS } from './view-ids';
 
-const getAccountViewId = state => state.reference.accounts;
-const getGroupViewId = state => state.reference.groups;
-
-export const getAccounts = (state) => io.getViewList(state, getAccountViewId(state));
-export const getAccount  = (state, { account }) => io.getViewItem(state, getAccountViewId(state), account);
+const getAccountView = (state) => views.getView(state, ACCOUNTS);
+export const getAccounts = (state) => getAccountView(state).valueSeq().toArray()
+export const getAccount  = (state, { account }) => getAccountView(state).get(account);
 
 const defaultGroup = Object.freeze({
   _id     : null,
   display : 'Non triés'
 });
 
-const getGroupView = createSelector([ state => io.getView(state, getGroupViewId(state)) ], view => view.set(null, defaultGroup));
+const getGroupView = createSelector([ state => views.getView(state, GROUPS) ], view => view.set(null, defaultGroup));
 
 export const getGroups = (state) => getGroupView(state).valueSeq().toArray();
 export const getGroup  = (state, { group }) => getGroupView(state).get(group);

@@ -33,11 +33,5 @@ services.render({
   menu
 });
 
-services.observeStore(io.getOnline, value => {
-  if(!value) {
-    return;
-  }
-
-  const store = services.getStore();
-  store.dispatch(referenceInit());
-});
+const store = services.getStore();
+store.dispatch(referenceInit());

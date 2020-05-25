@@ -1,33 +1,22 @@
 'use strict';
 
-import { createAction } from 'mylife-tools-ui';
-import actionTypes from './action-types';
-import { io } from 'mylife-tools-ui';
+import { views } from 'mylife-tools-ui';
+import { ACCOUNTS, GROUPS } from './view-ids';
 
-const local = {
-  setAccountView: createAction(actionTypes.SET_ACCOUNT_VIEW),
-  setGroupView: createAction(actionTypes.SET_GROUP_VIEW),
-};
+const accountViewRef = new views.ViewReference({
+  uid: ACCOUNTS,
+  service: 'common',
+  method: 'notifyAccounts'
+});
 
-const getAccounts = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'common',
-    method: 'notifyAccounts'
-  }));
 
-  dispatch(local.setAccountView(viewId));
-};
-
-const getGroups = () => async (dispatch) => {
-  const viewId = await dispatch(io.call({
-    service: 'common',
-    method: 'notifyGroups'
-  }));
-
-  dispatch(local.setGroupView(viewId));
-};
+const groupViewRef = new views.ViewReference({
+  uid: GROUPS,
+  service: 'common',
+  method: 'notifyGroups'
+});
 
 export const referenceInit = () => async (dispatch) => {
-  await dispatch(getAccounts());
-  await dispatch(getGroups());
+  await accountViewRef.attach();
+  await groupViewRef.attach();
 };
