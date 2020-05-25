@@ -1,11 +1,11 @@
 'use strict';
 
-import Immutable from 'immutable';
+import immutable from 'immutable';
 import { getInternalState } from '../../selectors/base';
 
 const getIo = state => getInternalState(state).io;
 
-const emptyView = new Immutable.Map();
+const emptyView = new immutable.Map();
 
 export const getOnline = state => getIo(state).online;
 export const getView = (state, viewId) => getIo(state).views.get(viewId) || emptyView;

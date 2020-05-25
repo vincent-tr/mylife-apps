@@ -1,12 +1,12 @@
 'use strict';
 
-import Immutable         from 'immutable';
+import immutable         from 'immutable';
 import { handleActions } from 'redux-actions';
 import actionTypes       from './action-types';
 
 const defaultState = {
   online : false,
-  views: new Immutable.Map()
+  views: new immutable.Map()
 };
 
 export default handleActions({
@@ -52,7 +52,7 @@ export default handleActions({
 
 function viewMutations(views, viewId, mutator) {
   if(!views.has(viewId)) {
-    views = views.set(viewId, new Immutable.Map());
+    views = views.set(viewId, new immutable.Map());
   }
   return views.update(viewId, view => view.withMutations(mutator));
 }

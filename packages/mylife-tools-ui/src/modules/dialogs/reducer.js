@@ -1,13 +1,13 @@
 'use strict';
 
-import Immutable         from 'immutable';
+import immutable         from 'immutable';
 import { handleActions } from 'redux-actions';
 import actionTypes       from './action-types';
 
 const defaultState = {
   busy          : false,
   error         : null,
-  notifications : new Immutable.List()
+  notifications : new immutable.List()
 };
 
 const others = handleActions({
