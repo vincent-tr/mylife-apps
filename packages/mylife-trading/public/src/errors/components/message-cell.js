@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import { React, PropTypes, mui, addLineBreaks } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({
   noMaxWidth: {
@@ -22,7 +22,7 @@ const MessageCell = ({ rowData }) => {
           classes={{ tooltip: classes.noMaxWidth }}
           title={
             <mui.Typography component='div'>
-              {stack}
+              {addLineBreaks(stack)}
             </mui.Typography>
           }
         >
