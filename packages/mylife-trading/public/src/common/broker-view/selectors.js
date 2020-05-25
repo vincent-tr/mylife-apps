@@ -1,10 +1,9 @@
 'use strict';
 
-import { io, createSelector } from 'mylife-tools-ui';
+import { views, createSelector } from 'mylife-tools-ui';
 
 const getBase = state => state.commonBrokerView;
-export const getViewId = state => getBase(state).viewId;
-export const getBrokerView = state => io.getView(state, getViewId(state));
+export const getBrokerView = state => views.getViewReference(state, 'brokers');
 
 export const getBrokers = createSelector(
   [ getBrokerView ],

@@ -3,7 +3,7 @@
 import { views, createAction } from 'mylife-tools-ui';
 import { createDebouncedRefresh } from '../ref-view-tools';
 import actionTypes from './action-types';
-import { getViewId, getRefCount } from './selectors';
+import { getRefCount } from './selectors';
 
 const local = {
   ref: createAction(actionTypes.REF),
@@ -11,29 +11,26 @@ const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-const fetchBrokers = () => views.createOrSkipView({
-  viewSelector: getViewId,
-  setViewAction: local.setView,
+
+const brokersViewRef = new views.ViewReference({
+  uid: 'brokers',
   service: 'broker',
   method: 'notify'
 });
 
-const clearBrokers = () => views.deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
-});
-
-async function refreshBrokersImpl(dispatch, oldRefCount, newRefCount) {
+async function refreshBrokersImpl(oldRefCount, newRefCount) {
   const wasRef = oldRefCount > 0;
   const isRef = newRefCount > 0;
   if(wasRef === isRef) {
     return;
   }
 
+  await brokersViewRef.attach();
+
   if(isRef) {
-    await dispatch(fetchBrokers());
+    await brokersViewRef.attach();
   } else {
-    await dispatch(clearBrokers());
+    await brokersViewRef.detach();
   }
 }
 
@@ -43,12 +40,12 @@ export const refBrokerView = () => (dispatch, getState) => {
   const prevRef = getRefCount(getState());
   dispatch(local.ref());
   const currentRef = getRefCount(getState());
-  refreshBrokers(dispatch, prevRef, currentRef);
+  refreshBrokers(prevRef, currentRef);
 };
 
 export const unrefBrokerView = () => (dispatch, getState) => {
   const prevRef = getRefCount(getState());
   dispatch(local.unref());
   const currentRef = getRefCount(getState());
-  refreshBrokers(dispatch, prevRef, currentRef);
+  refreshBrokers(prevRef, currentRef);
 };
