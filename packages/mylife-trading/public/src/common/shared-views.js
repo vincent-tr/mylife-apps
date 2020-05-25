@@ -3,7 +3,7 @@
 import { views } from 'mylife-tools-ui';
 
 const brokerViewRef = new views.SharedViewReference({
-  uid: 'shared-brokers',
+  uid: 'brokers',
   service: 'broker',
   method: 'notify'
 });
@@ -17,7 +17,7 @@ export function useBrokerView() {
 // ---
 
 const strategyViewRef = new views.SharedViewReference({
-  uid: 'shared-strategies',
+  uid: 'strategies',
   service: 'strategy',
   method: 'notify'
 });
@@ -30,8 +30,20 @@ export function useStrategyView() {
 
 // ---
 
+const strategyStatusViewRef = new views.SharedViewReference({
+  uid: 'strategy-status',
+  service: 'strategy',
+  method: 'notifyStatus'
+});
+
+export function useStrategyStatusView() {
+  return views.useSharedView(strategyStatusViewRef);
+}
+
+// ---
+
 const statViewRef = new views.SharedViewReference({
-  uid: 'shared-stat',
+  uid: 'stats',
   service: 'stat',
   method: 'notify'
 });
@@ -43,7 +55,7 @@ export function useStatView() {
 // ---
 
 const errorViewRef = new views.SharedViewReference({
-  uid: 'shared-error',
+  uid: 'errors',
   service: 'error',
   method: 'notify'
 });

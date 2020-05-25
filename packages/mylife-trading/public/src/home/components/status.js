@@ -2,7 +2,7 @@
 
 import humanizeDuration from 'humanize-duration';
 import { React, PropTypes, useSelector, mui, clsx, addLineBreaks, useState, useEffect, useInterval, services } from 'mylife-tools-ui';
-import { geStrategyStatusView } from '../selectors';
+import { useStrategyStatusView } from '../../common/shared-views';
 
 const useConnect = () => useSelector(state => ({
   strategyStatus: geStrategyStatusView(state),
@@ -29,8 +29,8 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Status = ({ strategy }) => {
   const classes = useStyles();
-  const { strategyStatus } = useConnect();
-  const status = strategyStatus.get(strategy._id);
+  const { view } = useStrategyStatusView();
+  const status = view.get(strategy._id);
   const since = useFormatSince(status);
 
   if(!status) {

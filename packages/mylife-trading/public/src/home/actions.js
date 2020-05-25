@@ -1,32 +1,6 @@
 'use strict';
 
-import { createAction, views, io } from 'mylife-tools-ui';
-import actionTypes from './action-types';
-import { getStrategyStatusViewId } from './selectors';
-
-const local = {
-  setStrategyStatusView: createAction(actionTypes.SET_STRATEGY_STATUS_VIEW),
-};
-
-const getStrategyStatus = () => views.createOrSkipView({
-  viewSelector: getStrategyStatusViewId,
-  setViewAction: local.setStrategyStatusView,
-  service: 'strategy',
-  method: 'notifyStatus'
-});
-    
-const clearStrategyStatus = () => views.deleteView({
-  viewSelector: getStrategyStatusViewId,
-  setViewAction: local.setStrategyStatusView
-});
-
-export const enter = () => async (dispatch) => {
-  await dispatch(getStrategyStatus());
-};
-
-export const leave = () => async (dispatch) => {
-  await dispatch(clearStrategyStatus());
-};
+import { io } from 'mylife-tools-ui';
 
 export const changeState = (strategy, enabled) => async (dispatch) => {
   await dispatch(io.call({

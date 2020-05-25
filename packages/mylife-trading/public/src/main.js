@@ -1,7 +1,6 @@
 'use strict';
 
-import { React, services, io } from 'mylife-tools-ui';
-import * as reducers from './reducers';
+import { React, services } from 'mylife-tools-ui';
 import metadataDefintions from '../../shared/metadata';
 
 import icons from './common/icons';
@@ -11,7 +10,7 @@ import Strategies from './strategies/components';
 import Stats from './stats/components';
 import Errors from './errors/components';
 
-services.initStore(reducers);
+services.initStore({});
 services.initMetadata(metadataDefintions);
 
 const routes = [
