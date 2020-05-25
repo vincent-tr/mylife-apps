@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction, views, io } from 'mylife-tools-ui';
+import { createAction, views } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getCriteria, getDisplay, getViewId } from './selectors';
 
