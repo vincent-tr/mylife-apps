@@ -1,7 +1,6 @@
 'use strict';
 
-import { io } from 'mylife-tools-ui';
+import { views } from 'mylife-tools-ui';
+import * as viewUids from './view-uids';
 
-const getHome = state => state.home;
-export const getNagiosViewId = state => getHome(state).nagiosViewId;
-export const getNagiosView = state => io.getView(state, getNagiosViewId(state));
+export const getNagiosView = state => views.getViewReference(state, viewUids.NAGIOS_SUMMARY);

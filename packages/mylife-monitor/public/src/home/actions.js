@@ -1,17 +1,10 @@
 'use strict';
 
-import { createAction, io } from 'mylife-tools-ui';
-import actionTypes from './action-types';
-import { getNagiosViewId } from './selectors';
+import { views } from 'mylife-tools-ui';
+import * as viewUids from './view-uids';
 
-const local = {
-  setNagiosView: createAction(actionTypes.SET_NAGIOS_VIEW),
-};
-
-const nagiosViewRef = new io.ViewReference({
-  criteriaSelector: () => null,
-  viewSelector: getNagiosViewId,
-  setViewAction: local.setNagiosView,
+const nagiosViewRef = new views.ViewReference({
+  uid: viewUids.NAGIOS_SUMMARY,
   service: 'nagios',
   method: 'notifySummary'
 });

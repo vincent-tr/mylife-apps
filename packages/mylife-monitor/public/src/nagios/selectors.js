@@ -1,12 +1,12 @@
 'use strict';
 
-import { io, createSelector } from 'mylife-tools-ui';
+import { views, createSelector } from 'mylife-tools-ui';
+import * as viewUids from './view-uids';
 import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 
 const getNagios = state => state.nagios;
 export const getCriteria = state => getNagios(state).criteria;
-export const getViewId = state => getNagios(state).viewId;
-export const getView = state => io.getView(state, getViewId(state));
+export const getView = state => views.getViewReference(state, viewUids.NAGIOS_DATA);
 
 export const getDisplayView = createSelector(
   [ getView, getCriteria ],
