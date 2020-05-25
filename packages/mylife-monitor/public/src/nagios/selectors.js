@@ -6,7 +6,7 @@ import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 
 const getNagios = state => state.nagios;
 export const getCriteria = state => getNagios(state).criteria;
-export const getView = state => views.getViewReference(state, viewUids.NAGIOS_DATA);
+export const getView = state => views.getView(state, viewUids.NAGIOS_DATA);
 
 export const getDisplayView = createSelector(
   [ getView, getCriteria ],

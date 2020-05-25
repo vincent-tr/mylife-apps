@@ -1,12 +1,16 @@
 'use strict';
 
+import { debounce } from 'debounce';
+import { Mutex } from 'async-mutex';
 import { createAction } from 'redux-actions';
 import { observeStore, getStore } from '../../services/store-factory';
 import * as io from '../io';
 import actionTypes from './action-types';
-import { getViewReferenceId } from './selectors';
+import { getViewId, getRefCount } from './selectors';
 
-const setViewReference = createAction(actionTypes.SET_VIEW_REFERENCE);
+const setView = createAction(actionTypes.SET_VIEW);
+const ref = createAction(actionTypes.REF);
+const unref = createAction(actionTypes.UNREF);
 
 export function createOrUpdateView({ criteriaSelector, viewSelector, setViewAction, service, method }) {
 	return async (dispatch, getState) => {
@@ -104,10 +108,11 @@ export class ViewReference {
 		if (!uid) {
 			throw new Error('Cannot create ViewReference without uid');
 		}
+		this.uid = uid;
 
 		this.criteriaSelector = criteriaSelector;
-		this.viewSelector = (state) => getViewReferenceId(state, uid);
-		this.setViewAction = (viewId) => setViewReference({ uid, viewId });
+		this.viewSelector = (state) => getViewId(state, uid);
+		this.setViewAction = (viewId) => setView({ uid, viewId });
 		this.service = service;
 		this.method = method;
 
@@ -161,4 +166,72 @@ export class ViewReference {
 		const store = getStore();
 		return store.dispatch(...args);
 	}
+}
+
+export class SharedViewReference extends ViewReference {
+  constructor(...args) {
+    super(...args);
+
+    this._refresh = createDebouncedRefresh((...args) => this._refreshImpl(...args));
+  }
+
+  ref() {
+    const store = getStore();
+
+    const prevRef = getRefCount(store.getState(), this.uid);
+    store.dispatch(ref(this.uid));
+    const currentRef = getRefCount(store.getState(), this.uid);
+    this._refresh(prevRef, currentRef);
+  
+  }
+
+  unref() {
+    const store = getStore();
+
+    const prevRef = getRefCount(store.getState(), this.uid);
+    store.dispatch(unref(this.uid));
+    const currentRef = getRefCount(store.getState(), this.uid);
+    this._refresh(prevRef, currentRef);
+  }
+
+  async _refreshImpl(oldRefCount, newRefCount) {
+    const wasRef = oldRefCount > 0;
+    const isRef = newRefCount > 0;
+    if(wasRef === isRef) {
+      return;
+    }
+  
+    if(isRef) {
+      await this.attach();
+    } else {
+      await this.detach();
+    }
+  }
+}
+
+// needed  because refresh impl is not atomic
+const mutex = new Mutex();
+
+function createDebouncedRefresh(refresh, timeout = 10) {
+  let initRefs;
+  let finalRefs;
+
+  const callRefresh = async () => {
+    const local = { initRefs, finalRefs };
+    initRefs = finalRefs = undefined;
+
+    await mutex.runExclusive(async () => {
+      await refresh(local.initRefs, local.finalRefs);
+    });
+  };
+
+  const debounced = debounce(callRefresh, timeout);
+
+  return (prevState, currentState) => {
+    if(initRefs === undefined) {
+      initRefs = prevState;
+    }
+    finalRefs = currentState;
+    debounced();
+  };
 }

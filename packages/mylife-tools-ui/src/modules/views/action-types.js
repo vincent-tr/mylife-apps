@@ -5,6 +5,8 @@ import { STATE_PREFIX } from '../../constants/defines';
 
 export default wrap({
 
-  SET_VIEW_REFERENCE: null
+  SET_VIEW: null,
+  REF: null,
+  UNREF: null
 
 }, STATE_PREFIX, 'views');
