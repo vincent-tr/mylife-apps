@@ -19,7 +19,7 @@ exports.getMetadata = function (content) {
 };
 
 function formatExifDate(value) {
-  if(typeof(date) !== 'number' || value <= 0) {
+  if(typeof(value) !== 'number' || value <= 0) {
     // got -2211753600 for null values
     // consider all pre-epoch as nulls
     return null;
