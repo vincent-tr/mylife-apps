@@ -1,6 +1,6 @@
 {
   "name": "mylife-gallery",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,7 @@
     "humanize-duration": "^3.21.0",
     "leaflet": "^1.6.0",
     "mylife-tools-build": "^1.2.9",
-    "mylife-tools-ui": "^1.0.14",
+    "mylife-tools-ui": "^1.0.15",
     "react-leaflet": "^2.6.1",
     "react-sortable-hoc": "^1.11.0"
   }
