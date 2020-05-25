@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, useMemo, ListSelector } from 'mylife-tools-ui';
-import { useStrategyView } from '../../common/strategy-view';
+import { useStrategyView } from '../../common/shared-views';
 
 const StrategySelector = ({ value, onChange }) => {
   const { strategies } = useStrategyView();

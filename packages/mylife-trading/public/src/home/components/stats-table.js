@@ -2,7 +2,7 @@
 
 import { React, PropTypes, mui, formatDate, useScreenSize } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
-import { useStatView } from '../../common/stat-view';
+import { useStatView } from '../../common/shared-views';
 
 const useStyles = mui.makeStyles(theme => ({
   profit: {
@@ -16,9 +16,9 @@ const useStyles = mui.makeStyles(theme => ({
 const StatsTable = ({ strategy, count }) => {
   const classes = useStyles();
   const screenSize = useScreenSize();
-  const { statView } = useStatView();
+  const { view } = useStatView();
 
-  const stats = Array.from(statView
+  const stats = Array.from(view
     .valueSeq()
     .filter(stat => stat.strategy === strategy._id)
     .sortBy(stat => -stat.openDate)

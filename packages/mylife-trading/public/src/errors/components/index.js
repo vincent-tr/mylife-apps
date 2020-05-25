@@ -1,7 +1,7 @@
 'use strict';
 
-import { React, mui, useState, useMemo } from 'mylife-tools-ui';
-import { useErrorView } from '../../common/error-view';
+import { React, mui } from 'mylife-tools-ui';
+import { useErrorView } from '../../common/shared-views';
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -13,7 +13,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Errors = () => {
   const classes = useStyles();
-  const { errorView } = useErrorView();
+  const { view } = useErrorView();
 
   return (
     <div className={classes.container}>

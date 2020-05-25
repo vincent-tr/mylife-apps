@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, mui, useState, useMemo } from 'mylife-tools-ui';
-import { useStatView } from '../../common/stat-view';
+import { useStatView } from '../../common/shared-views';
 import Criteria from './criteria';
 import Chart from './chart';
 import { groupBy, aggregation, chartType } from './lists';
@@ -27,11 +27,11 @@ const DEFAULT_CRITERIA = {
 
 const Stats = () => {
   const classes = useStyles();
-  const { statView } = useStatView();
+  const { view } = useStatView();
   const [criteria, setCriteria] = useState(DEFAULT_CRITERIA);
   const aggregationItem = aggregation.find(item => item.id === criteria.aggregation);
 
-  const data = useMemo(() => computeData(statView, criteria), [statView, criteria]);
+  const data = useMemo(() => computeData(view, criteria), [view, criteria]);
 
   return (
     <div className={classes.container}>

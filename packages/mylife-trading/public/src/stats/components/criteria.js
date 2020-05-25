@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField, ListSelector } from 'mylife-tools-ui';
-import { useStrategyView } from '../../common/strategy-view';
+import { useStrategyView } from '../../common/shared-views';
 import StrategySelector from './strategy-selector';
 import { groupBy, aggregation, chartType } from './lists';
 
@@ -12,8 +12,8 @@ const ExpandedSummary = () => {
 };
 
 const CollapsedSummary = ({ criteria }) => {
-  const { strategyView } = useStrategyView();
-  const strategy = criteria.strategy && strategyView.get(criteria.strategy);
+  const { view } = useStrategyView();
+  const strategy = criteria.strategy && view.get(criteria.strategy);
   const groupByItem = groupBy.find(item => item.id === criteria.groupBy);
   const aggregationItem = aggregation.find(item => item.id === criteria.aggregation);
   return (

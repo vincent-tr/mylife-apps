@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
-import { useStrategyView } from '../../common/strategy-view';
+import { useStrategyView } from '../../common/shared-views';
 import { enter, leave } from '../actions';
 import Strategy from './strategy';
 

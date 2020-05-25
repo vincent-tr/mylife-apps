@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, useMemo, ListSelector } from 'mylife-tools-ui';
-import { useBrokerView } from '../../common/broker-view';
+import { useBrokerView } from '../../common/shared-views';
 
 const BrokerSelector = ({ value, onChange, ...props }) => {
   const { brokers } = useBrokerView();
