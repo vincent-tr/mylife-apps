@@ -131,6 +131,10 @@ export class ViewReference {
 		await this._clearView();
 	}
 
+	async update() {
+		await this._getView();
+	}
+
 	_onlineChange(value) {
 		if (!value || this.registering) {
 			return;
