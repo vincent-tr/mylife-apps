@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction, io, download } from 'mylife-tools-ui';
+import { createAction, io, views, download } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getViewId } from './selectors';
 
@@ -8,7 +8,7 @@ const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-export const getGroupByMonth = (criteria) => io.createOrUpdateView({
+export const getGroupByMonth = (criteria) => views.createOrUpdateView({
   criteriaSelector: () => criteria,
   viewSelector: getViewId,
   setViewAction: local.setView,
@@ -16,7 +16,7 @@ export const getGroupByMonth = (criteria) => io.createOrUpdateView({
   method: 'notifyGroupByMonth'
 });
 
-export const getGroupByYear = (criteria) => io.createOrUpdateView({
+export const getGroupByYear = (criteria) => views.createOrUpdateView({
   criteriaSelector: () => criteria,
   viewSelector: getViewId,
   setViewAction: local.setView,
@@ -24,7 +24,7 @@ export const getGroupByYear = (criteria) => io.createOrUpdateView({
   method: 'notifyGroupByYear'
 });
 
-const clearReportingView = () => io.deleteView({
+const clearReportingView = () => views.deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });

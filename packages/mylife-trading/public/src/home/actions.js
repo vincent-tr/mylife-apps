@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction, io } from 'mylife-tools-ui';
+import { createAction, views, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getStrategyStatusViewId } from './selectors';
 
@@ -8,14 +8,14 @@ const local = {
   setStrategyStatusView: createAction(actionTypes.SET_STRATEGY_STATUS_VIEW),
 };
 
-const getStrategyStatus = () => io.createOrSkipView({
+const getStrategyStatus = () => views.createOrSkipView({
   viewSelector: getStrategyStatusViewId,
   setViewAction: local.setStrategyStatusView,
   service: 'strategy',
   method: 'notifyStatus'
 });
     
-const clearStrategyStatus = () => io.deleteView({
+const clearStrategyStatus = () => views.deleteView({
   viewSelector: getStrategyStatusViewId,
   setViewAction: local.setStrategyStatusView
 });

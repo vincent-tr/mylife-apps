@@ -1,6 +1,6 @@
 'use strict';
 
-import { io, createAction } from 'mylife-tools-ui';
+import { io, views, createAction } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getAlbumId, getAlbumViewId, getDocumentViewId } from './selectors';
 
@@ -13,7 +13,7 @@ const local = {
 
 export const showDetail = local.showDetail;
 
-const fetchAlbum = () => io.createOrUpdateView({
+const fetchAlbum = () => views.createOrUpdateView({
   criteriaSelector: (state) => ({ id: getAlbumId(state) }),
   viewSelector: getAlbumViewId,
   setViewAction: local.setAlbumView,
@@ -21,12 +21,12 @@ const fetchAlbum = () => io.createOrUpdateView({
   method: 'notifyAlbum'
 });
 
-const clearAlbums = () => io.deleteView({
+const clearAlbums = () => views.deleteView({
   viewSelector: getAlbumViewId,
   setViewAction: local.setAlbumView
 });
 
-const fetchDocuments = () => io.createOrUpdateView({
+const fetchDocuments = () => views.createOrUpdateView({
   criteriaSelector: (state) => ({ criteria: { albums: [getAlbumId(state)] } }),
   viewSelector: getDocumentViewId,
   setViewAction: local.setDocumentView,
@@ -34,7 +34,7 @@ const fetchDocuments = () => io.createOrUpdateView({
   method: 'notifyDocumentsWithInfo'
 });
 
-const clearDocuments = () => io.deleteView({
+const clearDocuments = () => views.deleteView({
   viewSelector: getDocumentViewId,
   setViewAction: local.setDocumentView
 });

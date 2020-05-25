@@ -1,6 +1,6 @@
 'use strict';
 
-import { io, createAction } from 'mylife-tools-ui';
+import { io, views, createAction } from 'mylife-tools-ui';
 import { createDebouncedRefresh } from '../ref-view-tools';
 import actionTypes from './action-types';
 import { getViewId, getRefCount } from './selectors';
@@ -11,7 +11,7 @@ const local = {
   setView: createAction(actionTypes.SET_VIEW),
 };
 
-const fetchPersons = () => io.createOrUpdateView({
+const fetchPersons = () => views.createOrUpdateView({
   criteriaSelector: () => ({ criteria: {} }),
   viewSelector: getViewId,
   setViewAction: local.setView,

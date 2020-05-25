@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction, io } from 'mylife-tools-ui';
+import { createAction, views, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getCriteria, getDisplay, getViewId } from './selectors';
 
@@ -10,7 +10,7 @@ const local = {
   setDisplay: createAction(actionTypes.SET_DISPLAY)
 };
 
-const getDocuments = () => io.createOrUpdateView({
+const getDocuments = () => views.createOrUpdateView({
   criteriaSelector: (state) => ({ criteria: formatCriteria(getCriteria(state)) }),
   viewSelector: getViewId,
   setViewAction: local.setView,
@@ -18,7 +18,7 @@ const getDocuments = () => io.createOrUpdateView({
   method: 'notifyDocumentsWithInfo'
 });
 
-const clearDocuments = () => io.deleteView({
+const clearDocuments = () => views.deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-import { createAction, io } from 'mylife-tools-ui';
+import { createAction, views } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getSlideshowId, getSlideshowViewId } from './selectors';
 
@@ -9,7 +9,7 @@ const local = {
   setSlideshowView: createAction(actionTypes.SET_SLIDESHOW_VIEW),
 };
 
-const fetchSlideshow = () => io.createOrUpdateView({
+const fetchSlideshow = () => views.createOrUpdateView({
   criteriaSelector: (state) => ({ id: getSlideshowId(state) }),
   viewSelector: getSlideshowViewId,
   setViewAction: local.setSlideshowView,
@@ -17,7 +17,7 @@ const fetchSlideshow = () => io.createOrUpdateView({
   method: 'notifySlideshow'
 });
 
-const clearSlideshows = () => io.deleteView({
+const clearSlideshows = () => views.deleteView({
   viewSelector: getSlideshowViewId,
   setViewAction: local.setSlideshowView
 });

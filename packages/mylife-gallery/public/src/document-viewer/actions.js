@@ -1,6 +1,6 @@
 'use strict';
 
-import { io, createAction } from 'mylife-tools-ui';
+import { io, views, createAction } from 'mylife-tools-ui';
 import { docRef } from '../common/document-utils';
 import actionTypes from './action-types';
 import { getDocumentViewId } from './selectors';
@@ -10,7 +10,7 @@ const local = {
 };
 
 // notifyDocument views cannot be updated (because type can change)
-export const fetchDocumentView = (type, id) => io.createOrRenewView({
+export const fetchDocumentView = (type, id) => views.createOrRenewView({
   criteriaSelector: () => ({ type, id }),
   viewSelector: getDocumentViewId,
   setViewAction: local.setDocumentView,
@@ -18,7 +18,7 @@ export const fetchDocumentView = (type, id) => io.createOrRenewView({
   method: 'notifyDocumentWithInfo'
 });
 
-export const clearDocumentView = () => io.deleteView({
+export const clearDocumentView = () => views.deleteView({
   viewSelector: getDocumentViewId,
   setViewAction: local.setDocumentView
 });
