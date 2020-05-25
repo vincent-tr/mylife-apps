@@ -98,11 +98,11 @@ export async function connectionOpen(credentials: Credentials): Promise<Connecti
 }
 
 export async function connectionClose(connection: Connection) {
-  if(!connection.unref()) {
-    return;
-  }
-
   await mutex.runExclusive(async () => {
+    if(!connection.unref()) {
+      return;
+    }
+
     await connection.terminate();
     connections.delete(connection.key);
   });
