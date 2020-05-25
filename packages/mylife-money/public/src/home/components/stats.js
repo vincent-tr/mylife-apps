@@ -1,12 +1,7 @@
 'use strict';
 
-import { React, mui, useSelector, formatDate } from 'mylife-tools-ui';
-import { getOperationStatsView } from '../selectors';
-
-const useConnect = () => useSelector(state => ({
-  stats : getOperationStatsView(state),
-}));
-
+import { React, mui, formatDate } from 'mylife-tools-ui';
+import { useOperationStats } from '../views';
 
 const useStyles = mui.makeStyles({
   container: {
@@ -19,9 +14,9 @@ const useStyles = mui.makeStyles({
 
 const Stats = (props) => {
   const classes = useStyles();
-  const { stats } = useConnect();
-  const count = statValue(stats, 'count');
-  const lastDate = statValue(stats, 'lastDate');
+  const { view } = useOperationStats();
+  const count = statValue(view, 'count');
+  const lastDate = statValue(view, 'lastDate');
 
   return (
     <div {...props}>

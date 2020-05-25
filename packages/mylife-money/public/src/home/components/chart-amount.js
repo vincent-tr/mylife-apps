@@ -1,14 +1,10 @@
 'use strict';
 
 import { React, mui, useSelector, chart, useChartColors } from 'mylife-tools-ui';
-import { getSortedTotalByMonth } from '../selectors';
-
-const useConnect = () => useSelector(state => ({
-  data : getSortedTotalByMonth(state),
-}));
+import { useTotalByMonth } from '../views';
 
 const ChartAmount = (props) => {
-  const { data } = useConnect();
+  const { sorted: data } = useTotalByMonth();
   const chartColors = useChartColors();
 
   const colors = {
