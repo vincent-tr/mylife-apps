@@ -2,12 +2,11 @@
 
 import { io, views, createAction } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getAlbumId } from './selectors';
 import { ALBUM_VIEW, DOCUMENT_VIEW } from './view-ids';
 
 const albumViewRef = new views.ViewReference({
   uid: ALBUM_VIEW,
-  criteriaSelector: (state) => ({ id: getAlbumId(state) }),
+  criteriaSelector: (state, { albumId }) => ({ id: albumId }),
   service: 'album',
   method: 'notifyAlbum',
   canUpdate: true
@@ -15,13 +14,12 @@ const albumViewRef = new views.ViewReference({
 
 const documentViewRef = new views.ViewReference({
   uid: DOCUMENT_VIEW,
-  criteriaSelector: (state) => ({ criteria: { albums: [getAlbumId(state)] } }),
+  criteriaSelector: (state, { albumId }) => ({ criteria: { albums: [albumId] } }),
   service: 'document',
   method: 'notifyDocumentsWithInfo',
   canUpdate: true
 });
 
-const setAlbumId = createAction(actionTypes.SET_ALBUM_ID);
 export const showDetail = createAction(actionTypes.SHOW_DETAIL);
 
 export const deleteAlbum = (album) => {
@@ -50,13 +48,11 @@ export const updateAlbum = (album, values) => {
 };
 
 export const enter = (albumId) => async (dispatch) => {
-  dispatch(setAlbumId(albumId));
-  await albumViewRef.attach();
-  await documentViewRef.attach();
+  await albumViewRef.attach({ albumId });
+  await documentViewRef.attach({ albumId });
 };
 
 export const leave = () => async (dispatch) => {
-  dispatch(setAlbumId(null));
   await albumViewRef.detach();
   await documentViewRef.detach();
 };
