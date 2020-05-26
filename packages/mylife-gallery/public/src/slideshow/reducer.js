@@ -1,6 +1,6 @@
 'use strict';
 
-import { handleActions, io } from 'mylife-tools-ui';
+import { handleActions } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 export default handleActions({
@@ -10,17 +10,6 @@ export default handleActions({
     slideshowId: action.payload
   }),
 
-  [actionTypes.SET_SLIDESHOW_VIEW] : (state, action) => ({
-    ...state,
-    slideshowViewId: action.payload
-  }),
-
-  [io.actionTypes.SET_ONLINE] : (state) => ({
-    ...state,
-    slideshowViewId: null
-  })
-
 }, {
   slideshowId: null,
-  slideshowViewId: null,
 });
