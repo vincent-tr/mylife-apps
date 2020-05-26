@@ -2,49 +2,41 @@
 
 import { createAction, views } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getCriteria, getDisplay, getViewId } from './selectors';
+import { getCriteria, getDisplay } from './selectors';
+import { VIEW } from './view-ids';
 
-const local = {
-  setView: createAction(actionTypes.SET_VIEW),
-  setCriteria: createAction(actionTypes.SET_CRITERIA),
-  setDisplay: createAction(actionTypes.SET_DISPLAY)
-};
-
-const getAlbums = (criteria = {}) => views.createOrUpdateView({
-  criteriaSelector: () => ({ criteria }),
-  viewSelector: getViewId,
-  setViewAction: local.setView,
+const viewRef = new views.ViewReference({
+  uid: VIEW,
+  criteriaSelector: (state, { criteria }) => ({ criteria }),
   service: 'album',
   method: 'notifyAlbums'
 });
 
-const clearAlbums = () => views.deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
-});
+const setCriteria = createAction(actionTypes.SET_CRITERIA);
+const setDisplay = createAction(actionTypes.SET_DISPLAY);
 
 export const enter = () => async (dispatch) => {
-  await dispatch(getAlbums());
+  await viewRef.attach({ criteria: {} });
 };
 
 export const leave = () => async (dispatch) => {
-  dispatch(local.setDisplay(null));
-  dispatch(local.setCriteria(null));
-  await dispatch(clearAlbums());
+  dispatch(setDisplay(null));
+  dispatch(setCriteria(null));
+  await viewRef.detach();
 };
 
 export const changeCriteria = (changes) => async (dispatch, getState) => {
   const state = getState();
   const criteria = getCriteria(state);
   const newCriteria = { ...criteria, ...changes };
-  dispatch(local.setCriteria(newCriteria));
+  dispatch(setCriteria(newCriteria));
 
-  await dispatch(getAlbums(newCriteria));
+  await viewRef.update({ criteria: newCriteria });
 };
 
 export const changeDisplay = (changes) => async (dispatch, getState) => {
   const state = getState();
   const display = getDisplay(state);
   const newDisplay = { ...display, ...changes };
-  dispatch(local.setDisplay(newDisplay));
+  dispatch(setDisplay(newDisplay));
 };
