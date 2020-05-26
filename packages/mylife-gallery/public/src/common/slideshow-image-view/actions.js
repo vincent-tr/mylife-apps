@@ -1,7 +1,6 @@
 'use strict';
 
-import { views, createAction } from 'mylife-tools-ui';
-import { createDebouncedRefresh } from '../ref-view-tools';
+import { views, createAction, services } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getViewId, getRefs } from './selectors';
 
@@ -24,15 +23,16 @@ const clearSlideshowImages = () => views.deleteView({
   setViewAction: local.setView
 });
 
-async function refreshSlideshowImagesImpl(dispatch, oldRefs, newRefs) {
+async function refreshSlideshowImagesImpl(oldRefs, newRefs) {
   if(oldRefs.keySeq().toSet().equals(newRefs.keySeq().toSet())) {
     return;
   }
 
+  const store = services.getStore();
   if(newRefs.size > 0) {
-    await dispatch(fetchSlideshowImages());
+    await store.dispatch(fetchSlideshowImages());
   } else {
-    await dispatch(clearSlideshowImages());
+    await store.dispatch(clearSlideshowImages());
   }
 }
 
@@ -42,18 +42,18 @@ function getCriteriaFromState(state) {
   return { criteria: { slideshows } };
 }
 
-const refreshSlideshowImages = createDebouncedRefresh(refreshSlideshowImagesImpl);
+const refreshSlideshowImages = views.createDebouncedRefresh(refreshSlideshowImagesImpl);
 
 export const refSlideshowImageView = (slideshowId) => (dispatch, getState) => {
   const prevRef = getRefs(getState());
   dispatch(local.ref(slideshowId));
   const currentRef = getRefs(getState());
-  refreshSlideshowImages(dispatch, prevRef, currentRef);
+  refreshSlideshowImages(prevRef, currentRef);
 };
 
 export const unrefSlideshowImageView = (slideshowId) => (dispatch, getState) => {
   const prevRef = getRefs(getState());
   dispatch(local.unref(slideshowId));
   const currentRef = getRefs(getState());
-  refreshSlideshowImages(dispatch, prevRef, currentRef);
+  refreshSlideshowImages(prevRef, currentRef);
 };
