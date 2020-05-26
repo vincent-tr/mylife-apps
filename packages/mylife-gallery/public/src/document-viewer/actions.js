@@ -1,33 +1,26 @@
 'use strict';
 
-import { io, views, createAction } from 'mylife-tools-ui';
+import { io, views } from 'mylife-tools-ui';
 import { docRef } from '../common/document-utils';
-import actionTypes from './action-types';
 import { VIEW } from './view-ids';
-import { getCriteria } from './selectors';
 
 // notifyDocument views cannot be updated (because type can change)
 const viewRef = new views.ViewReference({
   uid: VIEW,
-  criteriaSelector: getCriteria,
+  criteriaSelector: (state, { type, id }) => ({ type, id }),
   service: 'document',
   method: 'notifyDocumentWithInfo'
 });
 
-const setCriteria = createAction(actionTypes.SET_CRITERIA);
-
 export const enter = (type, id) => async (dispatch) => {
-  dispatch(setCriteria({ type, id }));
-  await viewRef.attach();
+  await viewRef.attach({ type, id });
 };
 
 export const update = (type, id) => async (dispatch) => {
-  dispatch(setCriteria({ type, id }));
-  await viewRef.update();
+  await viewRef.update({ type, id });
 };
 
 export const leave = () => async (dispatch) => {
-  dispatch(setCriteria(null));
   await viewRef.detach();
 };
 
