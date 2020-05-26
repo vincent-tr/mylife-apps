@@ -1,18 +1,15 @@
 'use strict';
 
-import { io, createSelector } from 'mylife-tools-ui';
+import { views, createSelector } from 'mylife-tools-ui';
+import { ALBUM_VIEW, DOCUMENT_VIEW } from './view-ids';
 
 const getAlbumState = state => state.album;
 export const getAlbumId = state => getAlbumState(state).albumId;
-
 export const isShowDetail = state => getAlbumState(state).showDetail;
 
-export const getAlbumViewId = state => getAlbumState(state).albumViewId;
-const getAlbumView = state => io.getView(state, getAlbumViewId(state));
-export const getAlbum = state => getAlbumView(state).first();
+export const getAlbum = state => views.getView(state, ALBUM_VIEW).first();
 
-export const getDocumentViewId = state => getAlbumState(state).documentViewId;
-const getDocumentView = state => io.getView(state, getDocumentViewId(state));
+const getDocumentView = state => views.getView(state, DOCUMENT_VIEW);
 
 export const getDocuments = createSelector(
   [ getAlbum, getDocumentView ],

@@ -2,42 +2,27 @@
 
 import { io, views, createAction } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getAlbumId, getAlbumViewId, getDocumentViewId } from './selectors';
+import { getAlbumId } from './selectors';
+import { ALBUM_VIEW, DOCUMENT_VIEW } from './view-ids';
 
-const local = {
-  setAlbumId: createAction(actionTypes.SET_ALBUM_ID),
-  setAlbumView: createAction(actionTypes.SET_ALBUM_VIEW),
-  setDocumentView: createAction(actionTypes.SET_DOCUMENT_VIEW),
-  showDetail: createAction(actionTypes.SHOW_DETAIL),
-};
-
-export const showDetail = local.showDetail;
-
-const fetchAlbum = () => views.createOrUpdateView({
+const albumViewRef = new views.ViewReference({
+  uid: ALBUM_VIEW,
   criteriaSelector: (state) => ({ id: getAlbumId(state) }),
-  viewSelector: getAlbumViewId,
-  setViewAction: local.setAlbumView,
   service: 'album',
-  method: 'notifyAlbum'
+  method: 'notifyAlbum',
+  canUpdate: true
 });
 
-const clearAlbums = () => views.deleteView({
-  viewSelector: getAlbumViewId,
-  setViewAction: local.setAlbumView
-});
-
-const fetchDocuments = () => views.createOrUpdateView({
+const documentViewRef = new views.ViewReference({
+  uid: DOCUMENT_VIEW,
   criteriaSelector: (state) => ({ criteria: { albums: [getAlbumId(state)] } }),
-  viewSelector: getDocumentViewId,
-  setViewAction: local.setDocumentView,
   service: 'document',
-  method: 'notifyDocumentsWithInfo'
+  method: 'notifyDocumentsWithInfo',
+  canUpdate: true
 });
 
-const clearDocuments = () => views.deleteView({
-  viewSelector: getDocumentViewId,
-  setViewAction: local.setDocumentView
-});
+const setAlbumId = createAction(actionTypes.SET_ALBUM_ID);
+export const showDetail = createAction(actionTypes.SHOW_DETAIL);
 
 export const deleteAlbum = (album) => {
   return async (dispatch) => {
@@ -65,13 +50,13 @@ export const updateAlbum = (album, values) => {
 };
 
 export const enter = (albumId) => async (dispatch) => {
-  dispatch(local.setAlbumId(albumId));
-  await dispatch(fetchAlbum());
-  await dispatch(fetchDocuments());
+  dispatch(setAlbumId(albumId));
+  await albumViewRef.attach();
+  await documentViewRef.attach();
 };
 
 export const leave = () => async (dispatch) => {
-  dispatch(local.setAlbumId(null));
-  await dispatch(clearAlbums());
-  await dispatch(clearDocuments());
+  dispatch(setAlbumId(null));
+  await albumViewRef.detach();
+  await documentViewRef.detach();
 };
