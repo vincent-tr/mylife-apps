@@ -19,7 +19,7 @@ const fetchPersons = () => views.createOrUpdateView({
   method: 'notifyPersons'
 });
 
-const clearPersons = () => io.deleteView({
+const clearPersons = () => views.deleteView({
   viewSelector: getViewId,
   setViewAction: local.setView
 });
