@@ -42,3 +42,37 @@ export function useKeywordView() {
 }
 
 // ---
+
+const personViewRef = new views.SharedViewReference({
+  uid: 'persons',
+  criteriaSelector: () => ({ criteria: {} }),
+  service: 'person',
+  method: 'notifyPersons'
+});
+
+const getPersons = views.createViewSelector((view) => view.valueSeq().sort(personComparer).toArray());
+
+export function personComparer(person1, person2) {
+  // sort by first name then last name (ignore case)
+  const firstName1 = person1.firstName.toUpperCase();
+  const firstName2 = person2.firstName.toUpperCase();
+
+  if(firstName1 !== firstName2) {
+    return firstName1 < firstName2 ? -1 : 1;
+  }
+
+  const lastName1 = person1.lastName.toUpperCase();
+  const lastName2 = person2.lastName.toUpperCase();
+
+  if(lastName1 !== lastName2) {
+    return lastName1 < lastName2 ? -1 : 1;
+  }
+
+  return person1._id < person2._id ? -1 : 1;
+}
+
+export function usePersonView() {
+  return views.useSharedView(personViewRef, { persons: getPersons });
+}
+
+// ---

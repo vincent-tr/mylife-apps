@@ -9,5 +9,4 @@ export { default as persons } from './persons/reducer';
 export { default as slideshows } from './slideshows/reducer';
 export { default as slideshow } from './slideshow/reducer';
 export { default as documentViewer } from './document-viewer/reducer';
-export { default as commonPersonView } from './common/person-view/reducer';
 export { default as commonSlideshowImageView } from './common/slideshow-image-view/reducer';

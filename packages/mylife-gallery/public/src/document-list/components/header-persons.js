@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, immutable, mui, useState, useDispatch, useMemo } from 'mylife-tools-ui';
-import { usePersonView } from '../../common/person-view';
+import { usePersonView } from '../../common/shared-views';
 import icons from '../../common/icons';
 import { savePersons } from '../actions';
 import HeaderObjects from './header-objects';

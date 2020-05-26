@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, immutable, services } from 'mylife-tools-ui';
-import { usePersonView } from '../../common/person-view';
+import { usePersonView } from '../../common/shared-views';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -15,10 +15,10 @@ const MenuProps = {
 };
 
 const PersonSelector = ({ value, onChange, ...props }) => {
-  const { persons, personView } = usePersonView();
+  const { persons, view } = usePersonView();
   const handleChange = event => onChange(new immutable.Set(event.target.value));
   const selectorValue = value.toArray();
-  const renderSelectorValue = createSelectorValueRenderer(personView);
+  const renderSelectorValue = createSelectorValueRenderer(view);
 
   return (
     <mui.Select
@@ -47,6 +47,6 @@ PersonSelector.propTypes = {
 
 export default PersonSelector;
 
-function createSelectorValueRenderer(personView) {
-  return selection => selection.map(personId => services.renderObject(personView.get(personId))).join(', ');
+function createSelectorValueRenderer(view) {
+  return selection => selection.map(personId => services.renderObject(view.get(personId))).join(', ');
 }

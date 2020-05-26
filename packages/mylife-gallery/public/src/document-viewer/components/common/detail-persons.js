@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, useMemo, useDispatch } from 'mylife-tools-ui';
-import { usePersonView, personComparer } from '../../../common/person-view';
+import { usePersonView, personComparer } from '../../../common/shared-views';
 import { personAddDialog } from '../../../common/person-add-dialog';
 import DetailList from './detail-list';
 import { addPersonToDocument, removePersonFromDocument, createPersonWithDocument } from '../../actions';
@@ -16,7 +16,7 @@ const useConnect = () => {
 };
 
 const DetailPersons = ({ documentWithInfo }) => {
-  const { persons, personView } = usePersonView();
+  const { persons, view } = usePersonView();
   const { addPerson, removePerson, createPerson } = useConnect();
 
   const { document } = documentWithInfo;
@@ -31,9 +31,9 @@ const DetailPersons = ({ documentWithInfo }) => {
   const personList = useMemo(() => {
     const list = [];
     for(const id of personIds) {
-      const person = personView.get(id);
+      const person = view.get(id);
       if(!person) {
-        // personView not ready
+        // view not ready
         continue;
       }
 
@@ -42,7 +42,7 @@ const DetailPersons = ({ documentWithInfo }) => {
 
     list.sort(personComparer);
     return list;
-  }, [personIds, personView]);
+  }, [personIds, view]);
 
   const onNew = async () => {
     const { result, firstName, lastName } = await personAddDialog();
