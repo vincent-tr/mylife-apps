@@ -2,27 +2,18 @@
 
 import { io, views, createAction } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getViewId, getSelectedId } from './selectors';
+import { getSelectedId } from './selectors';
+import { VIEW } from './view-ids';
 
-const local = {
-  setView: createAction(actionTypes.SET_VIEW),
-  setSelected: createAction(actionTypes.SET_SELECTED)
-};
-
-const getSlideshows = () => views.createOrUpdateView({
-  criteriaSelector: () => null,
-  viewSelector: getViewId,
-  setViewAction: local.setView,
+const viewRef = new views.ViewReference({
+  uid: VIEW,
   service: 'slideshow',
   method: 'notifySlideshows'
 });
 
-const clearSlideshows = () => views.deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
-});
+const setSelected = createAction(actionTypes.SET_SELECTED);
 
-export const changeSelected = local.setSelected;
+export const changeSelected = setSelected;
 
 export const createSlideshow = (name) => {
   return async (dispatch) => {
@@ -33,7 +24,7 @@ export const createSlideshow = (name) => {
       values: { name }
     }));
 
-    dispatch(local.setSelected(slideshow._id));
+    dispatch(setSelected(slideshow._id));
   };
 };
 
@@ -43,7 +34,7 @@ export const deleteSlideshow = (id) => {
     const state = getState();
     const selectedId = getSelectedId(state);
     if(selectedId === id) {
-      dispatch(local.setSelected(null));
+      dispatch(setSelected(null));
     }
 
     await dispatch(io.call({
@@ -107,9 +98,11 @@ export function moveAlbumInSlideshow(slideshow, oldIndex, newIndex) {
 }
 
 export const enter = () => async (dispatch) => {
-  await dispatch(getSlideshows());
+  dispatch(setSelected(null));
+  await viewRef.attach();
 };
 
 export const leave = () => async (dispatch) => {
-  await dispatch(clearSlideshows());
+  dispatch(setSelected(null));
+  await viewRef.detach();
 };
