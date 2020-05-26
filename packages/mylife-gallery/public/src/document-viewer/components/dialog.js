@@ -6,7 +6,7 @@ import DialogContentImage from './image/dialog-content';
 import DialogContentVideo from './video/dialog-content';
 import DialogContentOther from './other/dialog-content';
 import { getDocument } from '../selectors';
-import { fetchDocumentView, clearDocumentView } from '../actions';
+import { enter, leave, update } from '../actions';
 
 const DialogSelector = ({ documentWithInfo, ...props }) => {
   switch(documentWithInfo.document._entity) {
@@ -30,20 +30,19 @@ const useConnect = () => {
       documentWithInfo: getDocument(state)
     })),
     ...useMemo(() => ({
-      fetchDocumentView : (type, id) => dispatch(fetchDocumentView(type, id)),
-      clearView : () => dispatch(clearDocumentView()),
+      enter : (type, id) => dispatch(enter(type, id)),
+      leave : () => dispatch(leave()),
+      update : (type, id) => dispatch(update(type, id)),
     }), [dispatch])
   };
 };
 
 const DialogContainer = ({ documentType, documentId, onPrev: prev, onNext: next, canPrev, canNext, ...props }) => {
-  const { fetchDocumentView, clearView, documentWithInfo } = useConnect();
-  const enter = () => fetchDocumentView(documentType, documentId);
-  const leave = clearView;
-  useLifecycle(enter, leave);
+  const { enter, leave, update, documentWithInfo } = useConnect();
+  useLifecycle(() => enter(documentType, documentId), leave);
 
-  const onPrev = createViewFetcher(fetchDocumentView, prev, canPrev);
-  const onNext = createViewFetcher(fetchDocumentView, next, canNext);
+  const onPrev = createViewFetcher(update, prev, canPrev);
+  const onNext = createViewFetcher(update, next, canNext);
 
   if(!documentWithInfo) {
     return null;
@@ -61,7 +60,7 @@ DialogContainer.propTypes = {
   canNext: PropTypes.func,
 };
 
-function createViewFetcher(fetchDocumentView, documentSelector, checkEnabled) {
+function createViewFetcher(update, documentSelector, checkEnabled) {
   if(!documentSelector || !checkEnabled) {
     return null;
   }
@@ -72,7 +71,7 @@ function createViewFetcher(fetchDocumentView, documentSelector, checkEnabled) {
 
   return () => {
     const { type, id } = documentSelector();
-    fetchDocumentView(type, id);
+    update(type, id);
   };
 }
 

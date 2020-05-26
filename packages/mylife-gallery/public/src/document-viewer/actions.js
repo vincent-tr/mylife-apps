@@ -3,25 +3,33 @@
 import { io, views, createAction } from 'mylife-tools-ui';
 import { docRef } from '../common/document-utils';
 import actionTypes from './action-types';
-import { getDocumentViewId } from './selectors';
-
-const local = {
-  setDocumentView: createAction(actionTypes.SET_DOCUMENT_VIEW),
-};
+import { VIEW } from './view-ids';
+import { getCriteria } from './selectors';
 
 // notifyDocument views cannot be updated (because type can change)
-export const fetchDocumentView = (type, id) => views.createOrRenewView({
-  criteriaSelector: () => ({ type, id }),
-  viewSelector: getDocumentViewId,
-  setViewAction: local.setDocumentView,
+const viewRef = new views.ViewReference({
+  uid: VIEW,
+  criteriaSelector: getCriteria,
   service: 'document',
   method: 'notifyDocumentWithInfo'
 });
 
-export const clearDocumentView = () => views.deleteView({
-  viewSelector: getDocumentViewId,
-  setViewAction: local.setDocumentView
-});
+const setCriteria = createAction(actionTypes.SET_CRITERIA);
+
+export const enter = (type, id) => async (dispatch) => {
+  dispatch(setCriteria({ type, id }));
+  await viewRef.attach();
+};
+
+export const update = (type, id) => async (dispatch) => {
+  dispatch(setCriteria({ type, id }));
+  await viewRef.update();
+};
+
+export const leave = () => async (dispatch) => {
+  dispatch(setCriteria(null));
+  await viewRef.detach();
+};
 
 export function updateDocument(document, values) {
   return async (dispatch) => {

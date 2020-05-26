@@ -1,9 +1,9 @@
 'use strict';
 
-import { io } from 'mylife-tools-ui';
+import { views } from 'mylife-tools-ui';
+import { VIEW } from './view-ids';
 
 const getDocumentViewer = state => state.documentViewer;
 
-export const getDocumentViewId = state => getDocumentViewer(state).documentViewId;
-const getDocumentView = state => io.getView(state, getDocumentViewId(state));
-export const getDocument = state => getDocumentView(state).first();
+export const getCriteria = state => getDocumentViewer(state).criteria;
+export const getDocument = state => views.getView(state, VIEW).first();
