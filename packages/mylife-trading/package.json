@@ -18,7 +18,6 @@
   "dependencies": {
     "@types/node-fetch": "^2.5.4",
     "async-mutex": "^0.1.4",
-    "debounce": "^1.2.0",
     "fecha": "^4.2.0",
     "fetcha": "0.0.0",
     "humanize-duration": "^3.22.0",
