@@ -2,34 +2,26 @@
 
 import { io, views, createAction, dialogs } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getViewId } from './selectors';
+import { VIEW } from './view-ids';
 import * as browse from '../browse/actions'; // import browse action to drive browse criteria on open
 
 const local = {
   showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
-  setView: createAction(actionTypes.SET_VIEW),
   setDialogObjects: createAction(actionTypes.SET_DIALOG_OBJECTS),
 };
 
-const getSuggestions = () => views.createOrUpdateView({
-  criteriaSelector: () => null,
-  viewSelector: getViewId,
-  setViewAction: local.setView,
+const viewRef = new views.ViewReference({
+  uid: VIEW,
   service: 'suggestion',
   method: 'notifySuggestions'
 });
 
-const clearSuggestions = () => views.deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
-});
-
 export const enter = () => async (dispatch) => {
-  await dispatch(getSuggestions());
+  await viewRef.attach();
 };
 
 export const leave = () => async (dispatch) => {
-  await dispatch(clearSuggestions());
+  await viewRef.detach();
 };
 
 export function createAlbum(root) {

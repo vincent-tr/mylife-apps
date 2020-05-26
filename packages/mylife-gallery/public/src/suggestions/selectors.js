@@ -1,17 +1,17 @@
 'use strict';
 
-import { io, createSelector } from 'mylife-tools-ui';
+import { views, createSelector } from 'mylife-tools-ui';
+import { VIEW } from './view-ids';
 
 const getStats = state => state.suggestion;
-export const getViewId = state => getStats(state).viewId;
-const getView = state => io.getView(state, getViewId(state));
+export const getDialogObjects = state => getStats(state).dialogObjects;
+
+const getView = state => views.getView(state, VIEW);
 
 export const getSuggestions = createSelector(
   [ getView ],
   (view) => view.valueSeq().sort(suggestionComparer).toArray()
 );
-
-export const getDialogObjects = state => getStats(state).dialogObjects;
 
 const TYPE_ORDER = {
   'warn-syncing': 0,
