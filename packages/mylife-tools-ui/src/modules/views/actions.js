@@ -12,11 +12,11 @@ const setView = createAction(actionTypes.SET_VIEW);
 const ref = createAction(actionTypes.REF);
 const unref = createAction(actionTypes.UNREF);
 
-export function createOrUpdateView({ criteriaSelector, viewSelector, setViewAction, service, method }) {
+export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }) {
 	return async (dispatch, getState) => {
 		const state = getState();
 
-		const criteria = criteriaSelector(state);
+		const criteria = criteriaSelector(state, selectorProps);
 		const viewId = viewSelector(state);
 
 		if (viewId) {
@@ -45,7 +45,7 @@ export function createOrUpdateView({ criteriaSelector, viewSelector, setViewActi
 }
 
 // call on views that cannot be updated
-export function createOrRenewView({ criteriaSelector, viewSelector, setViewAction, service, method }) {
+export function createOrRenewView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }) {
 	return async (dispatch, getState) => {
 		const state = getState();
 
@@ -55,7 +55,7 @@ export function createOrRenewView({ criteriaSelector, viewSelector, setViewActio
 			await dispatch(io.unnotify(oldViewId));
 		}
 
-		const criteria = criteriaSelector(state);
+		const criteria = criteriaSelector(state, selectorProps);
 		const newViewId = await dispatch(
 			io.call({
 				service,
@@ -119,7 +119,8 @@ export class ViewReference {
 		this.canUpdate = !!canUpdate;
 	}
 
-	async attach() {
+	async attach(selectorProps) {
+		this.selectorProps = selectorProps;
 		await this._getView();
 		this.registering = true;
 		this.unsubscribe = observeStore(io.getOnline, (value) => this._onlineChange(value));
@@ -131,7 +132,8 @@ export class ViewReference {
 		await this._clearView();
 	}
 
-	async update() {
+	async update(selectorProps) {
+		this.selectorProps = selectorProps;
 		await this._getView();
 	}
 
@@ -144,11 +146,11 @@ export class ViewReference {
 	}
 
 	async _getView() {
-		// TODO: handle createOrSkipView
 		const method = this.canUpdate ? createOrUpdateView : createOrRenewView;
 		await this._dispatch(
 			method({
 				criteriaSelector: this.criteriaSelector,
+				selectorProps: this.selectorProps,
 				viewSelector: this.viewSelector,
 				setViewAction: this.setViewAction,
 				service: this.service,
