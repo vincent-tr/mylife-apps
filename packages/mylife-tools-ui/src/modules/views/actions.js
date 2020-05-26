@@ -216,7 +216,7 @@ export class SharedViewReference extends ViewReference {
 // needed  because refresh impl is not atomic
 const mutex = new Mutex();
 
-function createDebouncedRefresh(refresh, timeout = 10) {
+export function createDebouncedRefresh(refresh, timeout = 10) {
   let initRefs;
   let finalRefs;
 
