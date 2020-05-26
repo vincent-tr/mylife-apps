@@ -4,13 +4,26 @@ import { views } from 'mylife-tools-ui';
 
 const albumViewRef = new views.SharedViewReference({
   uid: 'albums',
+  criteriaSelector: () => ({ criteria: {}}),
   service: 'album',
   method: 'notifyAlbums'
 });
 
-const getAlbums = views.createViewSelector((view) => view.valueSeq().sortBy(strategy => strategy.display).toArray());
+const getAlbums = views.createViewSelector((view) => view.valueSeq().sort(albumComparer).toArray());
 
-export function useStrategyView() {
+function albumComparer(album1, album2) {
+  // sort by title (ignore case)
+  const title1 = album1.title.toUpperCase();
+  const title2 = album2.title.toUpperCase();
+
+  if(title1 === title2) {
+    return album1._id < album2._id ? -1 : 1;
+  }
+
+  return title1 < title2 ? -1 : 1;
+}
+
+export function useAlbumView() {
   return views.useSharedView(albumViewRef, { albums: getAlbums });
 }
 

@@ -2,7 +2,7 @@
 
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import { React, PropTypes, mui, useDispatch, useMemo, services } from 'mylife-tools-ui';
-import { useAlbumView } from '../../common/album-view';
+import { useAlbumView } from '../../common/shared-views';
 import { removeAlbumFromSlideshow, moveAlbumInSlideshow } from '../actions';
 
 const useConnect = () => {
@@ -78,10 +78,10 @@ List.propTypes = {
 const SortableList = SortableContainer(List);
 
 const AlbumList = ({ slideshow, ...props }) => {
-  const { albumView } = useAlbumView();
+  const { view } = useAlbumView();
   const { removeAlbumFromSlideshow, moveAlbumInSlideshow } = useConnect();
   const albumIds = slideshow.albums;
-  const albums = albumIds.map(id => albumView.get(id)).filter(album => album);
+  const albums = albumIds.map(id => view.get(id)).filter(album => album);
 
   return (
     <SortableList

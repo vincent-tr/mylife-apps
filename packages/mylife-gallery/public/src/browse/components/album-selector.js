@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, immutable, services } from 'mylife-tools-ui';
-import { useAlbumView } from '../../common/album-view';
+import { useAlbumView } from '../../common/shared-views';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -15,10 +15,10 @@ const MenuProps = {
 };
 
 const AlbumSelector = ({ value, onChange, ...props }) => {
-  const { albums, albumView } = useAlbumView();
+  const { albums, view } = useAlbumView();
   const handleChange = event => onChange(new immutable.Set(event.target.value));
   const selectorValue = value.toArray();
-  const renderSelectorValue = createSelectorValueRenderer(albumView);
+  const renderSelectorValue = createSelectorValueRenderer(view);
 
   return (
     <mui.Select
@@ -47,6 +47,6 @@ AlbumSelector.propTypes = {
 
 export default AlbumSelector;
 
-function createSelectorValueRenderer(albumView) {
-  return selection => selection.map(albumId => services.renderObject(albumView.get(albumId))).join(', ');
+function createSelectorValueRenderer(view) {
+  return selection => selection.map(albumId => services.renderObject(view.get(albumId))).join(', ');
 }

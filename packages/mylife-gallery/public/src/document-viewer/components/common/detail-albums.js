@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, useMemo, useDispatch, dialogs } from 'mylife-tools-ui';
-import { useAlbumView } from '../../../common/album-view';
+import { useAlbumView } from '../../../common/shared-views';
 import DetailList from './detail-list';
 import { addDocumentToAlbum, removeDocumentFromAlbum, createAlbumWithDocument } from '../../actions';
 
@@ -15,7 +15,7 @@ const useConnect = () => {
 };
 
 const DetailAlbums = ({ documentWithInfo }) => {
-  const { albums, albumView } = useAlbumView();
+  const { albums, view } = useAlbumView();
   const { addAlbum, removeAlbum, createAlbum } = useConnect();
 
   const { document, info } = documentWithInfo;
@@ -45,7 +45,7 @@ const DetailAlbums = ({ documentWithInfo }) => {
       onAdd={album => addAlbum(document, album)}
       onNew={onNew}
       onDelete={album => removeAlbum(document, album)}
-      items={albumIds.map(id => albumView.get(id))}
+      items={albumIds.map(id => view.get(id))}
       addableItems={addableAlbums}
     />
   );

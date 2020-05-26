@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, immutable, mui, useState, useDispatch, useMemo } from 'mylife-tools-ui';
-import { useAlbumView } from '../../common/album-view';
+import { useAlbumView } from '../../common/shared-views';
 import icons from '../../common/icons';
 import { saveAlbums } from '../actions';
 import HeaderObjects from './header-objects';

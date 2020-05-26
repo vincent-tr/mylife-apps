@@ -2,7 +2,7 @@
 
 import { React, PropTypes, mui, useMemo, useDispatch, clsx, services } from 'mylife-tools-ui';
 import icons from '../../common/icons';
-import { useAlbumView } from '../../common/album-view';
+import { useAlbumView } from '../../common/shared-views';
 import { addAlbumToSlideshow } from '../actions';
 
 const useConnect = () => {
