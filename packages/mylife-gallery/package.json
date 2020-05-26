@@ -36,8 +36,6 @@
     "webp-converter": "^2.2.3"
   },
   "devDependencies": {
-    "async-mutex": "^0.1.4",
-    "debounce": "^1.2.0",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.16.0",
     "humanize": "0.0.9",
