@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, routing, useDispatch, useSelector, useMemo, DebouncedTextField, DeleteButton, services } from 'mylife-tools-ui';
-import { useKeywordView } from '../../common/keyword-view';
+import { useKeywordView } from '../../common/shared-views';
 import { THUMBNAIL_SIZE, ThumbnailAlbum } from '../../common/thumbnail';
 import { updateAlbum, deleteAlbum } from '../actions';
 import { getAlbum } from '../selectors';

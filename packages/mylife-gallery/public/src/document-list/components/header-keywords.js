@@ -1,7 +1,7 @@
 'use strict';
 
 import { React, PropTypes, mui, immutable, useMemo, useDispatch, services } from 'mylife-tools-ui';
-import { useKeywordView } from '../../common/keyword-view';
+import { useKeywordView } from '../../common/shared-views';
 import { addKeywordToDocuments, removeKeywordFromDocuments } from '../actions';
 
 const useConnect = () => {

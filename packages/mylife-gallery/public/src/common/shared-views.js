@@ -28,3 +28,17 @@ export function useAlbumView() {
 }
 
 // ---
+
+const keywordViewRef = new views.SharedViewReference({
+  uid: 'keywords',
+  service: 'keyword',
+  method: 'notifyKeywords'
+});
+
+const getKeywords = views.createViewSelector((view) => view.keySeq().sort().toArray());
+
+export function useKeywordView() {
+  return views.useSharedView(keywordViewRef, { keywords: getKeywords });
+}
+
+// ---

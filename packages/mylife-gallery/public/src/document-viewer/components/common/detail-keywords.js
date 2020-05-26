@@ -2,7 +2,7 @@
 
 import { React, PropTypes, useMemo, mui, useDispatch, services } from 'mylife-tools-ui';
 import { updateDocument } from '../../actions';
-import { useKeywordView } from '../../../common/keyword-view';
+import { useKeywordView } from '../../../common/shared-views';
 
 const useConnect = () => {
   const dispatch = useDispatch();
