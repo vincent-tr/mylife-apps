@@ -3,7 +3,7 @@
 import { views } from 'mylife-tools-ui';
 
 const albumViewRef = new views.SharedViewReference({
-  uid: 'albums',
+  uid: 'shared-albums',
   criteriaSelector: () => ({ criteria: {}}),
   service: 'album',
   method: 'notifyAlbums'
@@ -30,7 +30,7 @@ export function useAlbumView() {
 // ---
 
 const keywordViewRef = new views.SharedViewReference({
-  uid: 'keywords',
+  uid: 'shared-keywords',
   service: 'keyword',
   method: 'notifyKeywords'
 });
@@ -44,7 +44,7 @@ export function useKeywordView() {
 // ---
 
 const personViewRef = new views.SharedViewReference({
-  uid: 'persons',
+  uid: 'shared-persons',
   criteriaSelector: () => ({ criteria: {} }),
   service: 'person',
   method: 'notifyPersons'
