@@ -1,6 +1,6 @@
 'use strict';
 
-import { handleActions, io, immutable } from 'mylife-tools-ui';
+import { handleActions, immutable } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 // empty set means all
@@ -32,11 +32,6 @@ const initialDisplay = {
 
 export default handleActions({
 
-  [actionTypes.SET_VIEW] : (state, action) => ({
-    ...state,
-    viewId: action.payload
-  }),
-
   [actionTypes.SET_DISPLAY] : (state, action) => ({
     ...state,
     display: action.payload || initialDisplay
@@ -47,13 +42,7 @@ export default handleActions({
     criteria: action.payload || initialCriteria
   }),
 
-  [io.actionTypes.SET_ONLINE] : (state) => ({
-    ...state,
-    viewId: null
-  })
-
 }, {
-  viewId: null,
   criteria: initialCriteria,
   display: initialDisplay
 });

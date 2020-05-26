@@ -2,35 +2,29 @@
 
 import { createAction, views } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getCriteria, getDisplay, getViewId } from './selectors';
+import { getCriteria, getDisplay } from './selectors';
+import { VIEW } from './view-ids';
 
-const local = {
-  setView: createAction(actionTypes.SET_VIEW),
-  setCriteria: createAction(actionTypes.SET_CRITERIA),
-  setDisplay: createAction(actionTypes.SET_DISPLAY)
-};
-
-const getDocuments = () => views.createOrUpdateView({
+const viewRef = new views.ViewReference({
+  uid: VIEW,
   criteriaSelector: (state) => ({ criteria: formatCriteria(getCriteria(state)) }),
-  viewSelector: getViewId,
-  setViewAction: local.setView,
   service: 'document',
   method: 'notifyDocumentsWithInfo'
 });
 
-const clearDocuments = () => views.deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
-});
+const local = {
+  setCriteria: createAction(actionTypes.SET_CRITERIA),
+  setDisplay: createAction(actionTypes.SET_DISPLAY)
+};
 
 export const enter = () => async (dispatch) => {
-  await dispatch(getDocuments());
+  await viewRef.attach();
 };
 
 export const leave = () => async (dispatch) => {
   dispatch(local.setDisplay(null));
   dispatch(local.setCriteria(null));
-  await dispatch(clearDocuments());
+  await viewRef.detach();
 };
 
 export const changeCriteria = (changes) => async (dispatch, getState) => {
@@ -39,7 +33,7 @@ export const changeCriteria = (changes) => async (dispatch, getState) => {
   const newCriteria = { ...criteria, ...changes };
   dispatch(local.setCriteria(newCriteria));
 
-  await dispatch(getDocuments());
+  await viewRef.update();
 };
 
 export const changeDisplay = (changes) => async (dispatch, getState) => {
