@@ -1,12 +1,14 @@
 'use strict';
 
-import { io, views, createAction } from 'mylife-tools-ui';
-import actionTypes from './action-types';
-import { getSelectorViewId } from './selectors';
+import { io, views } from 'mylife-tools-ui';
+import { SELECTOR_VIEW } from './view-ids';
 
-const local = {
-  setSelectorView: createAction(actionTypes.SET_SELECTOR_VIEW),
-};
+const selectorViewRef = new views.ViewReference({
+  uid: SELECTOR_VIEW,
+  criteriaSelector: (state, { personId }) => ({ criteria: { persons: [personId] } }),
+  service: 'document',
+  method: 'notifyDocumentsWithInfo'
+});
 
 export const createPerson = (firstName, lastName) => {
   return async (dispatch) => {
@@ -42,15 +44,10 @@ export const updatePerson = (person, values) => {
   };
 };
 
-export const enterSelector = (personId) => views.createOrUpdateView({
-  criteriaSelector: () => ({ criteria: { persons: [personId] } }),
-  viewSelector: getSelectorViewId,
-  setViewAction: local.setSelectorView,
-  service: 'document',
-  method: 'notifyDocumentsWithInfo'
-});
+export const enterSelector = (personId) => async (dispatch) => {
+  await selectorViewRef.attach({ personId });
+};
 
-export const leaveSelector = () => views.deleteView({
-  viewSelector: getSelectorViewId,
-  setViewAction: local.setSelectorView
-});
+export const leaveSelector = () => async (dispatch) => {
+  await selectorViewRef.detach();
+};

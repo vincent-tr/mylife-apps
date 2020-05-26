@@ -1,8 +1,6 @@
 'use strict';
 
-import { io } from 'mylife-tools-ui';
+import { views } from 'mylife-tools-ui';
+import { SELECTOR_VIEW } from './view-ids';
 
-const getPersonsState = state => state.persons;
-
-export const getSelectorViewId = state => getPersonsState(state).selectorViewId;
-export const getSelectorView = state => io.getView(state, getSelectorViewId(state));
+export const getSelectorView = state => views.getView(state, SELECTOR_VIEW);
