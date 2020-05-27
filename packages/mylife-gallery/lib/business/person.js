@@ -16,7 +16,8 @@ exports.personGet = (id) => {
 };
 
 exports.personIsThumbnailUsed = (thumbnailId) => {
-  for(const person of getStoreCollection('persons')) {
+  const persons = getStoreCollection('persons');
+  for(const person of persons.list()) {
     if(person.thumbnails.includes(thumbnailId)) {
       return true;
     }
