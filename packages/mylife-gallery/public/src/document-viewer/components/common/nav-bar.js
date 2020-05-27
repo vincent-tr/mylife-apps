@@ -43,9 +43,11 @@ const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNex
             <icons.actions.Detail />
           </mui.IconButton>
         )}
-        <mui.IconButton edge='end' color='inherit' component={mui.Link} download={downloadInfo.filename} href={downloadInfo.url}>
-          <icons.actions.Download />
-        </mui.IconButton>
+        {downloadInfo && (
+          <mui.IconButton edge='end' color='inherit' component={mui.Link} download={downloadInfo.filename} href={downloadInfo.url}>
+            <icons.actions.Download />
+          </mui.IconButton>
+        )}
       </mui.Toolbar>
     </mui.AppBar>
   );
@@ -107,6 +109,10 @@ export default NavBar;
 
 function getDownloadInfo(documentWithInfo) {
   const { document, info } = documentWithInfo;
+  if(document.paths.length === 0) {
+    return null;
+  }
+  
   const extension = document.paths[0].path.split('.').pop();
   return {
     filename: `${info.title}.${extension}`,

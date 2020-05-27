@@ -124,9 +124,14 @@ function buildTitle(document, albumWithIndex) {
   }
 
   // file name
-  const path = document.paths[0].path;
-  const fileName = path.replace(/^.*[\\/]/, '');
-  return fileName;
+  if(document.paths.length) {
+    const path = document.paths[0].path;
+    const fileName = path.replace(/^.*[\\/]/, '');
+    return fileName;
+  }
+
+  // no name
+  return '(sans nom)';
 }
 
 function buildSubtitle(document, albumWithIndex) {
@@ -143,7 +148,12 @@ function buildSubtitle(document, albumWithIndex) {
     return null;
   }
 
-  return document.paths[0].path;
+  if(document.paths.length) {
+    return document.paths[0].path;
+  }
+
+  // no name
+  return null;
 }
 
 function buildFilter(criteria) {

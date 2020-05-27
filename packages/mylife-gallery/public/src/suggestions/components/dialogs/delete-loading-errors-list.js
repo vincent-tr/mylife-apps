@@ -104,6 +104,9 @@ DeleteLoadingErrorsList.propTypes = {
 export default DeleteLoadingErrorsList;
 
 function getFilename(document) {
+  if(document.paths.length === 0) {
+    return '';
+  }
   const path = document.paths[0].path;
   const fileName = path.replace(/^.*[\\/]/, '');
   return fileName;

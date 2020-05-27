@@ -53,6 +53,10 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
 };
 
 function getFullPath(document) {
+  if(document.paths.length === 0) {
+    throw new Error(`Cannot get full path of document '${document._entity}:${document._id}' because it has no path`);
+  }
+
   const basePath = getConfig('gallery');
   const relativePath = document.paths[0].path;
   return path.join(basePath, relativePath);
