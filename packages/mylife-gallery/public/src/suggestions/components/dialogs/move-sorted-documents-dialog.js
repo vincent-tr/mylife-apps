@@ -27,7 +27,7 @@ const Stepper = ({ title, documents, onClose }) => {
   const [selection, setSelection] = useState(new immutable.Set(documents.map(doc => doc._id)));
 
   const renderList = () => (<MoveSortedDocumentsList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
-  const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} template={`Move-Item -path "\${file}" -destination "${title}\\" -whatif\n`} />);
+  const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} template={`mkdir "${title}\\" -ea 0\nMove-Item -path "\${file}" -destination "${title}\\" -whatif\n`} />);
 
   const steps = [
     { label: `Sélection des documents à déplacer pour l'album '${title}'`, render: renderList, actions: { canNext: selection.size > 0 } },
