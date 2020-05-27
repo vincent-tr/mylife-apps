@@ -72,9 +72,11 @@ const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNex
             <icons.actions.Detail />
           </mui.IconButton>
         )}
-        <mui.IconButton edge='end' color='inherit' component={mui.Link} download={downloadInfo.filename} href={downloadInfo.url}>
-          <icons.actions.Download />
-        </mui.IconButton>
+        {downloadInfo && (
+          <mui.IconButton edge='end' color='inherit' component={mui.Link} download={downloadInfo.filename} href={downloadInfo.url}>
+            <icons.actions.Download />
+          </mui.IconButton>
+        )}
       </mui.Toolbar>
 
       <mui.Toolbar>
