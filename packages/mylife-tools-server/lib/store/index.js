@@ -8,7 +8,7 @@ const logger = createLogger('mylife:tools:server:store');
 const { Container } = require('./container');
 const { Collection } = require('./collection');
 const { View } = require('./view');
-const { deserializeObject, serializeObject, serializeObjectId } = require('./serializer');
+const { deserializeObject, serializeObject, serializeObjectId, deserializeObjectId } = require('./serializer');
 
 async function bindCollection(collection) {
   logger.info(`loading database collection '${collection.name}' (entity='${collection.entity.id}', databaseCollection='${collection.databaseCollection.collectionName}')`);
@@ -37,7 +37,7 @@ function handleChange(collection, change) {
   }
 
   try {
-    const id = change.documentKey && change.documentKey._id;
+    const id = getChangedDocumentId(collection, change);
     logger.debug(`Database collection '${collection.name}' change (id='${id}', type='${change.operationType}')`);
 
     switch(change.operationType) {
@@ -60,7 +60,6 @@ function handleChange(collection, change) {
         break;
       }
 
-
       case 'drop':
       case 'rename':
       case 'dropDatabase':
@@ -77,6 +76,11 @@ function handleChange(collection, change) {
 
 function areSessionIdsEqual(sessionId1, sessionId2) {
   return sessionId1.id.buffer.equals(sessionId2.id.buffer);
+}
+
+function getChangedDocumentId(collection, change) {
+  const objectId = change.documentKey && change.documentKey._id;
+  return objectId && deserializeObjectId(collection.entity, objectId);
 }
 
 function registerDatabaseUpdater(collection) {

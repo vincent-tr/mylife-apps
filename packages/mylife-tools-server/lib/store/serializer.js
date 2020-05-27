@@ -6,6 +6,7 @@ const { getService } = require('../service-manager');
 exports.deserializeObject = deserializeObject;
 exports.serializeObject = serializeObject;
 exports.serializeObjectId = serializeObjectId;
+exports.deserializeObjectId = deserializeObjectId;
 
 const identity = x => x;
 
@@ -73,6 +74,12 @@ function serializeObjectId(object, entity) {
   const field = entity.getField('_id');
   const value = field.getValue(object);
   return getDatatypeSerializer(field.datatype).serialize(value);
+}
+
+function deserializeObjectId(entity, raw) {
+  const { datatype } = entity.getField('_id');
+  const serializer = getDatatypeSerializer(datatype);
+  return serializer.deserialize(raw, datatype);
 }
 
 function deserializeValue(datatype, raw) {
