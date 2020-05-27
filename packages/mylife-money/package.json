@@ -1,6 +1,6 @@
 {
   "name": "mylife-money",
-  "version": "2.0.22",
+  "version": "2.0.23",
   "description": "Mylife Money",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-money",
@@ -17,7 +17,7 @@
   "dependencies": {
     "csv-parse": "^4.6.5",
     "moment": "^2.24.0",
-    "mylife-tools-server": "^1.0.18"
+    "mylife-tools-server": "^1.0.19"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
