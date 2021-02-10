@@ -1,6 +1,6 @@
 {
   "name": "mylife-trading",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Mylife Trading",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-trading",
@@ -22,8 +22,8 @@
     "fetcha": "0.0.0",
     "humanize-duration": "^3.22.0",
     "lightstreamer-client": "^6.2.6",
-    "mylife-tools-common": "^1.0.7",
-    "mylife-tools-server": "^1.0.19",
+    "mylife-tools-common": "^1.0.8",
+    "mylife-tools-server": "^1.0.20",
     "node-fetch": "^2.6.0",
     "technicalindicators": "^3.0.0",
     "typescript": "^3.7.5"
@@ -31,8 +31,8 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.16.0",
-    "mylife-tools-build": "^1.2.9",
-    "mylife-tools-ui": "^1.0.16"
+    "mylife-tools-build": "^1.2.10",
+    "mylife-tools-ui": "^1.0.17"
   },
   "license": "GPL-3.0+"
 }
