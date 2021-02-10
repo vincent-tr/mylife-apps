@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
   menuButton: {
     marginRight: theme.spacing(4),
   },
+  breadcrumbs: {
+    overflowX: 'auto'
+  },
   breadcrumbList: {
     flexWrap: 'nowrap'
   },
@@ -46,7 +49,7 @@ const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
             <MenuIcon />
           </IconButton>
         )}
-        <Breadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />} classes={{ ol: classes.breadcrumbList }}>
+        <Breadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />} classes={{ root: classes.breadcrumbs, ol: classes.breadcrumbList }}>
           <Link color='inherit' component='button' variant='h6' className={classes.titleLink} onClick={onMainClick} noWrap>
             <AppIcon className={classes.titleIcon} />
             {appName}
