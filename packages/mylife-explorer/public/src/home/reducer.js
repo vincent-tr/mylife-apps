@@ -18,5 +18,5 @@ export default handleActions({
 
 }, {
   data: null,
-  detail: true
+  detail: false
 });
