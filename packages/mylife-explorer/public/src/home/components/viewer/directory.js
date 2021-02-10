@@ -73,17 +73,50 @@ function formatTimestamp(value) {
 }
 
 function sortList(content, sort) {
-  const comparer = (item1, item2) => {
-    const value1 = item1[sort.key];
-    const value2 = item2[sort.key];
-    
-    if(Object.is(value1, value2)) {
-      return 0;
-    }
-
-    const diff = value1 < value2 ? -1 : 1;
-    return sort.direction === 'asc' ? diff : -diff;
-  };
+  const comparer = createsortComparer(sort);
 
   return content.slice().sort(comparer);
+}
+
+function createsortComparer(sort) {
+  if(sort.key === 'name') {
+    // sort by directoy/file then name
+    return (item1, item2) => {
+      const type1 = typeToSortable(item1);
+      const type2 = typeToSortable(item2);
+
+      if (type1 !== type2) {
+        return compareValue(type1, type2, sort.direction);
+      }
+
+      return compareValue(item1.name, item2.name, sort.direction);
+    }
+  }
+
+  // default comparer
+  return (item1, item2) => {
+    const value1 = item1[sort.key];
+    const value2 = item2[sort.key];
+    return compareValue(value1, value2, sort.direction);
+  };
+}
+
+function compareValue(value1, value2, direction) {
+  if(Object.is(value1, value2)) {
+    return 0;
+  }
+
+  const diff = value1 < value2 ? -1 : 1;
+  return direction === 'asc' ? diff : -diff;
+}
+
+function typeToSortable(data) {
+  switch(data.type) {
+    case 'Directory':
+      return 0;
+    case 'File':
+      return 1;
+    default:
+      return 2;
+  }
 }

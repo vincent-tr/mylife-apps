@@ -7,7 +7,7 @@ const logger = createLogger('mylife:explorer:web:content-routes');
 
 exports.webApiFactory = ({ app, express, asyncHandler }) => {
   const dev = getArg('dev');
-  if (!dev) {
+  if(!dev) {
     return;
   }
 
