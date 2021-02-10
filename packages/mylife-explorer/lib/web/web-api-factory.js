@@ -1,11 +1,16 @@
 'use strict';
 
-const { createLogger } = require('mylife-tools-server');
+const { createLogger, getArg } = require('mylife-tools-server');
 const business = require('../business');
 
 const logger = createLogger('mylife:explorer:web:content-routes');
 
 exports.webApiFactory = ({ app, express, asyncHandler }) => {
+  const dev = getArg('dev');
+  if (!dev) {
+    return;
+  }
+
   const router = express.Router();
 
   router.route(/(.*)/).get(asyncHandler(async (req, res) => {
