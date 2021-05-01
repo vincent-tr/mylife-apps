@@ -1,6 +1,6 @@
 {
   "name": "mylife-tools-server",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "MyLife Tools Server",
   "main": "lib/index.js",
   "scripts": {
@@ -33,6 +33,6 @@
     "yargs": "^13.3.0"
   },
   "devDependencies": {
-    "mylife-tools-build": "^1.2.10"
+    "mylife-tools-build": "^1.2.11"
   }
 }

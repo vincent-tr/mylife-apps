@@ -1,6 +1,6 @@
 {
   "name": "mylife-monitor",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "MyLife Monitor",
   "main": "index.js",
   "scripts": {
@@ -26,11 +26,11 @@
     "eslint": "^7.0.0",
     "eslint-plugin-react": "^7.20.0",
     "humanize-duration": "^3.22.0",
-    "mylife-tools-build": "^1.2.10",
+    "mylife-tools-build": "^1.2.11",
     "mylife-tools-ui": "^1.0.17"
   },
   "dependencies": {
-    "mylife-tools-server": "^1.0.20",
+    "mylife-tools-server": "^1.0.21",
     "node-fetch": "^2.6.0"
   }
 }
