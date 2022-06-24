@@ -7,7 +7,7 @@ const express       = require('express');
 const bodyParser    = require('body-parser');
 const favicon       = require('serve-favicon');
 const enableDestroy = require('server-destroy');
-const IOServer      = require('socket.io');
+const { Server: IOServer }      = require('socket.io');
 
 const { createLogger } = require('./logging');
 const { getDefine } = require('./defines');

@@ -2,7 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
@@ -43,7 +43,7 @@ exports.createWebpackConfig = function ({
         use : [{
           loader : 'babel-loader',
           //include : [ entryPoint ],
-          query : {
+          options : {
             presets: [
               [ require.resolve('@babel/preset-env'), { targets : 'last 2 versions' } ],
               require.resolve('@babel/preset-react')
