@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate, SummaryExpansionPanel, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
+import { React, PropTypes, mui, formatDate, SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
 
 import AccountSelector from '../../../common/components/account-selector';
 import GroupCriteriaField from '../common/group-field';
@@ -142,11 +142,11 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
   );
 
   return (
-    <SummaryExpansionPanel
+    <SummaryAccordion
       expandedSummary={<ExpandedSummary criteria={criteria} display={display} onExport={onExport} />}
       collapsedSummary={<CollapsedSummary criteria={criteria} display={display} onExport={onExport} />}>
       {grid}
-    </SummaryExpansionPanel>
+    </SummaryAccordion>
   );
 };
 

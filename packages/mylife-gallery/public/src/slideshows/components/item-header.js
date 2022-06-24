@@ -41,7 +41,7 @@ const ItemHeader = ({ slideshow }) => {
   const onUpdate = (prop, value) => updateSlideshow(slideshow, { [prop]: value });
 
   return (
-    <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
+    <mui.AccordionSummary expandIcon={<mui.icons.ExpandMore />}>
       <StopPropagationContainer className={classes.container}>
         <mui.Grid container spacing={2} className={classes.grid}>
           <mui.Grid item xs={6}>
@@ -50,7 +50,7 @@ const ItemHeader = ({ slideshow }) => {
           <mui.Grid item xs={6}>
             <DebouncedTextField value={slideshow.name} onChange={(value) => onUpdate('name', value)} className={classes.editor} />
           </mui.Grid>
-          <mui.Grid item xs={12} justify='center' container>
+          <mui.Grid item xs={12} justifyContent='center' container>
             <mui.Button
               className={classes.runButton}
               variant='contained'
@@ -64,7 +64,7 @@ const ItemHeader = ({ slideshow }) => {
         </mui.Grid>
         <Preview slideshow={slideshow} />
       </StopPropagationContainer>
-    </mui.ExpansionPanelSummary>
+    </mui.AccordionSummary>
   );
 };
 

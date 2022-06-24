@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, SummaryExpansionPanel, CriteriaField, ListSelector } from 'mylife-tools-ui';
+import { React, PropTypes, mui, SummaryAccordion, CriteriaField, ListSelector } from 'mylife-tools-ui';
 import { useStrategyView } from '../../common/shared-views';
 import StrategySelector from './strategy-selector';
 import { groupBy, aggregation, chartType } from './lists';
@@ -29,7 +29,7 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
 
   return (
-    <SummaryExpansionPanel
+    <SummaryAccordion
       expandedSummary={<ExpandedSummary criteria={criteria} />}
       collapsedSummary={<CollapsedSummary criteria={criteria} />}>
       <mui.Grid container spacing={2}>
@@ -59,7 +59,7 @@ const Criteria = ({ criteria, onCriteriaChanged }) => {
         </mui.Grid>
 
       </mui.Grid>
-    </SummaryExpansionPanel>
+    </SummaryAccordion>
   );
 };
 

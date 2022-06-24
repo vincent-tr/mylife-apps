@@ -37,22 +37,24 @@ ListItemContent.propTypes = {
 
 const CleanDuplicatesList = ({ documents, selection, setSelection, ...props }) => (
   <Virtuoso
-    ListContainer={({ listRef, className, style, children }) => (
-      <mui.List
-        ref={listRef}
-        style={{ margin: 0, padding: 0, ...style }}
-        className={className}
-      >
-        {children}
-      </mui.List>
-    )}
-    ItemContainer={({ children, ...props }) => (
-      <mui.ListItem {...props} style={{ margin: 0 }}>
-        {children}
-      </mui.ListItem>
-    )}
+    components={{
+      List: ({ listRef, className, style, children }) => (
+        <mui.List
+          ref={listRef}
+          style={{ margin: 0, padding: 0, ...style }}
+          className={className}
+        >
+          {children}
+        </mui.List>
+      ),
+      Item: ({ children, ...props }) => (
+        <mui.ListItem {...props} style={{ margin: 0 }}>
+          {children}
+        </mui.ListItem>
+      )
+    }}
     totalCount={documents.length}
-    item={index => (<ListItemContent document={documents[index]} selection={selection} setSelection={setSelection} />)}
+    itemContent={index => (<ListItemContent document={documents[index]} selection={selection} setSelection={setSelection} />)}
     style={{ height: '100%', width: '100%', overflowX: 'hidden' }}
     {...props}
   />

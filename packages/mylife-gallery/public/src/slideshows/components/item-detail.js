@@ -66,7 +66,7 @@ const ItemDetail = ({ slideshow }) => {
   const onDelete = () => deleteSlideshow(slideshow._id);
 
   return (
-    <mui.ExpansionPanelDetails>
+    <mui.AccordionDetails>
       <mui.Grid container spacing={2}>
 
         <mui.Grid item xs={6} className={classes.leftPanel}>
@@ -106,7 +106,7 @@ const ItemDetail = ({ slideshow }) => {
           <mui.Grid item xs={6}>
             <mui.Typography>Albums</mui.Typography>
           </mui.Grid>
-          <mui.Grid item xs={6} container justify='flex-end'>
+          <mui.Grid item xs={6} container justifyContent='flex-end'>
             <AlbumAddButton slideshow={slideshow} />
           </mui.Grid>
           <mui.Grid item xs={12}>
@@ -115,7 +115,7 @@ const ItemDetail = ({ slideshow }) => {
         </mui.Grid>
 
       </mui.Grid>
-    </mui.ExpansionPanelDetails>
+    </mui.AccordionDetails>
   );
 };
 

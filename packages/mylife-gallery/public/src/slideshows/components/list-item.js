@@ -33,10 +33,10 @@ const ListItem = ({ slideshow, ...props }) => {
 
   return (
     <mui.ListItem {...props}>
-      <mui.ExpansionPanel expanded={selected} onChange={toggleSelect} className={classes.panel}>
+      <mui.Accordion expanded={selected} onChange={toggleSelect} className={classes.panel}>
         <ItemHeader slideshow={slideshow} />
         <ItemDetail slideshow={slideshow} />
-      </mui.ExpansionPanel>
+      </mui.Accordion>
     </mui.ListItem>
   );
 };

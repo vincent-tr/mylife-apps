@@ -159,11 +159,11 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
   };
 
   return (
-    <mui.ExpansionPanel>
-      <mui.ExpansionPanelSummary expandIcon={<mui.icons.ExpandMore />}>
+    <mui.Accordion>
+      <mui.AccordionSummary expandIcon={<mui.icons.ExpandMore />}>
         <mui.Typography>{`Règles (${rules.length})`}</mui.Typography>
-      </mui.ExpansionPanelSummary>
-      <mui.ExpansionPanelDetails>
+      </mui.AccordionSummary>
+      <mui.AccordionDetails>
         <mui.Table>
           <mui.TableHead>
             <mui.TableRow>
@@ -187,8 +187,8 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
             })}
           </mui.TableBody>
         </mui.Table>
-      </mui.ExpansionPanelDetails>
-    </mui.ExpansionPanel>
+      </mui.AccordionDetails>
+    </mui.Accordion>
   );
 };
 

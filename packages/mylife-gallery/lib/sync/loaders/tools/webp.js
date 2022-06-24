@@ -1,6 +1,6 @@
 'use strict';
 
-const cwebp = require('webp-converter/cwebp');
+const cwebp = require('webp-converter/src/cwebp');
 const child_process = require('child_process');
 const { fsScope } = require('./fs-helper');
 

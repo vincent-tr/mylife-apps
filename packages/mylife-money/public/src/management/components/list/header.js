@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryExpansionPanel, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
+import { React, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
 import { getSelectedOperations, getCriteria } from '../../selectors';
@@ -161,7 +161,7 @@ const Header = () => {
 
   const denseHeader = (
     <React.Fragment>
-      <SummaryExpansionPanel
+      <SummaryAccordion
         collapsedSummary={<mui.Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup && selectedGroup.display}`}</mui.Typography>}
         expandedSummary={<mui.Typography>{'Critères d\'affichage'}</mui.Typography>}>
         <div className={classes.expansionPanelContainer}>
@@ -177,7 +177,7 @@ const Header = () => {
             {search}
           </mui.Toolbar>
         </div>
-      </SummaryExpansionPanel>
+      </SummaryAccordion>
       <mui.Toolbar variant='dense'>
         {toolbar}
       </mui.Toolbar>
