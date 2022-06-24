@@ -75,7 +75,7 @@ TextWithTooltipIfOveryflow.propTypes = {
 
 const Tile = ({ data, index, showTileBar, selectable, getTileInfo }) => {
   const classes = useStyles();
-  const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
+  const tileClasses = { item: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const { title, subtitle, thumbnail, onClick, selected, onSelect } = getTileInfo(data, index);
 
   return (
@@ -120,16 +120,14 @@ TileContainer.propTypes = {
   className: PropTypes.string
 };
 
-const ImageList = ({ listRef, className, ...props }) => {
+const ImageList = React.forwardRef(({ className, ...props }, ref) => {
   const classes = useStyles();
   return (
-    <mui.ImageList ref={listRef} cols={0} cellHeight={THUMBNAIL_SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
+    <mui.ImageList ref={ref} cols={0} rowHeight={THUMBNAIL_SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
   );
-};
+});
 
 ImageList.propTypes = {
-  // https://stackoverflow.com/questions/48007326/what-is-the-correct-proptype-for-a-ref-in-react
-  listRef: PropTypes.oneOfType([ PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
   className: PropTypes.string
 };
 
