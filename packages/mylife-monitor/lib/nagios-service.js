@@ -4,7 +4,8 @@
 // https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/ 
 // https://github.com/NagiosEnterprises/nagioscore/blob/master/include/statusdata.h
 
-const fetch = require('node-fetch');
+// TODO: use this when going to modules/TS
+// import fetch from 'node-fetch';
 const { StoreView, StoreContainer, createLogger, registerService, getService, getMetadataEntity, getConfig } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:monitor:nagios-service');
@@ -49,6 +50,10 @@ const URL_SUFFIXES = {
 
 class NagiosService {
   async init() {
+    // TODO: remove this when going to modules/TS
+    const { default: fetch } = await import('node-fetch');
+    global.fetch = fetch;
+
     const config = getConfig('nagios');
     this.prepareConfigData(config);
 

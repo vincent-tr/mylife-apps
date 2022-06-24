@@ -1,6 +1,6 @@
 'use strict';
 
-import { colors, createMuiTheme } from '@material-ui/core';
+import { colors, createTheme } from '@material-ui/core';
 
 const defaultConfig = {
   palette: {
@@ -9,10 +9,10 @@ const defaultConfig = {
   }
 };
 
-let theme = createMuiTheme(defaultConfig);
+let theme = createTheme(defaultConfig);
 
 export function initTheme(config) {
-  theme = createMuiTheme(config);
+  theme = createTheme(config);
 }
 
 export function getTheme() {

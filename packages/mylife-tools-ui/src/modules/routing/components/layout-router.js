@@ -42,9 +42,9 @@ LayoutRouter.propTypes = {
       nameRenderer: PropTypes.func,
       icon: Layout.propTypes.viewIcon,
       iconRenderer: PropTypes.func,
-      additionalHeader: Layout.propTypes.additionalHeader,
+      additionalHeader: Layout.propTypes.viewAdditionalHeader,
       additionalHeaderRenderer: PropTypes.func,
-      additionalBreadcrumb: Layout.propTypes.additionalBreadcrumb,
+      additionalBreadcrumb: Layout.propTypes.viewAdditionalBreadcrumb,
       additionalBreadcrumbRenderer: PropTypes.func,
       renderer: PropTypes.func.isRequired
     }).isRequired
