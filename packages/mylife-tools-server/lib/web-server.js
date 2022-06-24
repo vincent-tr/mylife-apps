@@ -81,7 +81,8 @@ async function setupDev(app, providedWebpackConfig, indexReference) {
   // update index content
   compiler.hooks.done.tap('WebServerIndex', () => {
     logger.info('install new index.html');
-    indexReference.content = middleware.fileSystem.readFileSync(path.join(webpackConfig.output.path, 'index.html'));
+
+    indexReference.content = middleware.context.outputFileSystem.readFileSync(path.join(webpackConfig.output.path, 'index.html'));
   });
 }
 
