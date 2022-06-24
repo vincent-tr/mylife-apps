@@ -13,7 +13,7 @@ const useConnect = () => {
 };
 
 const useStyles = mui.makeStyles(theme => {
-  const iconColor = mui.fade(theme.palette.text.primary, 0.26);
+  const iconColor = mui.alpha(theme.palette.text.primary, 0.26);
   return {
     editor: {
       marginLeft: theme.spacing(1),
@@ -23,7 +23,7 @@ const useStyles = mui.makeStyles(theme => {
       // like Chip impl
       color: iconColor,
       '&:hover': {
-        color: mui.fade(iconColor, 0.4)
+        color: mui.alpha(iconColor, 0.4)
       },
       marginRight: -theme.spacing(1)
     }
