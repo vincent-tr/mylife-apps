@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate, SummaryExpansionPanel } from 'mylife-tools-ui';
+import { React, PropTypes, mui, formatDate, SummaryAccordion } from 'mylife-tools-ui';
 import CriteriaGrid from './criteria-grid';
 import { DOCUMENT_TYPE_MAP } from '../../common/document-utils';
 
@@ -42,12 +42,12 @@ CollapsedSummary.propTypes = {
 
 const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayChanged }) => {
   return (
-    <SummaryExpansionPanel
+    <SummaryAccordion
       className={className}
       expandedSummary={<ExpandedSummary criteria={criteria} display={display} />}
       collapsedSummary={<CollapsedSummary criteria={criteria} display={display} />}>
       <CriteriaGrid criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={onDisplayChanged} />
-    </SummaryExpansionPanel>
+    </SummaryAccordion>
   );
 };
 

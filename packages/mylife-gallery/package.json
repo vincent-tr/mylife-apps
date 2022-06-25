@@ -24,26 +24,26 @@
   },
   "homepage": "https://github.com/vincent-tr/mylife-gallery#readme",
   "dependencies": {
-    "date-fns": "^2.9.0",
+    "date-fns": "^2.28.0",
     "exif-parser": "^0.1.12",
-    "ffmpeg-static": "^2.7.0",
-    "ffprobe-static": "^3.0.0",
+    "ffmpeg-static": "^5.0.0",
+    "ffprobe-static": "^3.1.0",
     "fluent-ffmpeg": "^2.1.2",
-    "fs-extra": "^8.1.0",
-    "jimp": "^0.9.3",
+    "fs-extra": "^10.1.0",
+    "jimp": "^0.16.1",
     "mylife-tools-common": "^1.0.8",
     "mylife-tools-server": "^1.0.21",
-    "webp-converter": "^2.2.3"
+    "webp-converter": "^2.3.3"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.16.0",
+    "eslint": "^8.18.0",
+    "eslint-plugin-react": "^7.30.1",
     "humanize": "0.0.9",
-    "humanize-duration": "^3.21.0",
-    "leaflet": "^1.6.0",
+    "humanize-duration": "^3.27.2",
+    "leaflet": "^1.8.0",
     "mylife-tools-build": "^1.2.11",
     "mylife-tools-ui": "^1.0.17",
-    "react-leaflet": "^2.6.1",
-    "react-sortable-hoc": "^1.11.0"
+    "react-leaflet": "^4.0.0",
+    "react-sortable-hoc": "^2.0.0"
   }
 }

@@ -16,21 +16,21 @@
     "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
   },
   "dependencies": {
-    "@types/node-fetch": "^2.5.4",
-    "async-mutex": "^0.1.4",
-    "fecha": "^4.2.0",
+    "@types/node-fetch": "^2.6.2",
+    "async-mutex": "^0.3.2",
+    "fecha": "^4.2.3",
     "fetcha": "0.0.0",
-    "humanize-duration": "^3.22.0",
-    "lightstreamer-client": "^6.2.6",
+    "humanize-duration": "^3.27.2",
+    "lightstreamer-client": "^7.3.2",
     "mylife-tools-common": "^1.0.8",
     "mylife-tools-server": "^1.0.21",
-    "node-fetch": "^3.1.1",
-    "technicalindicators": "^3.0.0",
-    "typescript": "^3.7.5"
+    "node-fetch": "^3.2.6",
+    "technicalindicators": "^3.1.0",
+    "typescript": "^4.7.4"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.16.0",
+    "eslint": "^8.18.0",
+    "eslint-plugin-react": "^7.30.1",
     "mylife-tools-build": "^1.2.11",
     "mylife-tools-ui": "^1.0.17"
   },

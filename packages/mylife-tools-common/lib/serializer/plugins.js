@@ -1,7 +1,7 @@
 'use strict';
 
 const { addPlugin } = require('./engine');
-const isNode = !!(process && process.release && process.release.name === 'node');
+const isNode = (typeof process !== 'undefined') && (process.release.name === 'node');
 
 addPlugin({
   name: 'error',

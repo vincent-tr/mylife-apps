@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, PropTypes, mui, SummaryExpansionPanel } from 'mylife-tools-ui';
+import { React, PropTypes, mui, SummaryAccordion } from 'mylife-tools-ui';
 import CriteriaGrid from './criteria-grid';
 
 const useStyles = mui.makeStyles(theme => ({
@@ -41,13 +41,13 @@ CollapsedSummary.propTypes = {
 
 const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayChanged }) => {
   return (
-    <SummaryExpansionPanel
+    <SummaryAccordion
       className={className}
       initialExpanded={false}
       expandedSummary={<ExpandedSummary criteria={criteria} display={display} />}
       collapsedSummary={<CollapsedSummary criteria={criteria} display={display} />}>
       <CriteriaGrid criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={onDisplayChanged} />
-    </SummaryExpansionPanel>
+    </SummaryAccordion>
   );
 };
 

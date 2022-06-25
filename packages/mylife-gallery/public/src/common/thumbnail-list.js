@@ -75,14 +75,14 @@ TextWithTooltipIfOveryflow.propTypes = {
 
 const Tile = ({ data, index, showTileBar, selectable, getTileInfo }) => {
   const classes = useStyles();
-  const tileClasses = { tile: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
+  const tileClasses = { item: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const { title, subtitle, thumbnail, onClick, selected, onSelect } = getTileInfo(data, index);
 
   return (
-    <mui.GridListTile classes={tileClasses} onClick={onClick}>
+    <mui.ImageListItem classes={tileClasses} onClick={onClick}>
       {thumbnail}
       {showTileBar && (
-        <mui.GridListTileBar
+        <mui.ImageListItemBar
           title={<TextWithTooltipIfOveryflow text={title} />}
           subtitle={<TextWithTooltipIfOveryflow text={subtitle} />}
         />
@@ -97,7 +97,7 @@ const Tile = ({ data, index, showTileBar, selectable, getTileInfo }) => {
           className={classes.checkbox}
         />
       )}
-    </mui.GridListTile>
+    </mui.ImageListItem>
   );
 };
 
@@ -120,16 +120,14 @@ TileContainer.propTypes = {
   className: PropTypes.string
 };
 
-const GridList = ({ listRef, className, ...props }) => {
+const ImageList = React.forwardRef(({ className, ...props }, ref) => {
   const classes = useStyles();
   return (
-    <mui.GridList ref={listRef} cols={0} cellHeight={THUMBNAIL_SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
+    <mui.ImageList ref={ref} cols={0} rowHeight={THUMBNAIL_SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
   );
-};
+});
 
-GridList.propTypes = {
-  // https://stackoverflow.com/questions/48007326/what-is-the-correct-proptype-for-a-ref-in-react
-  listRef: PropTypes.oneOfType([ PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
+ImageList.propTypes = {
   className: PropTypes.string
 };
 
@@ -138,9 +136,9 @@ const ThumbnailList = ({ className, data, showTileBar = false, selectable = fals
 
   if(!data.length) {
     return (
-      <GridList className={className}>
+      <ImageList className={className}>
         {[]}
-      </GridList>
+      </ImageList>
     );
   }
 
@@ -151,9 +149,8 @@ const ThumbnailList = ({ className, data, showTileBar = false, selectable = fals
           <VirtuosoGrid
             totalCount={data.length}
             overscan={200}
-            ListContainer={GridList}
-            ItemContainer={TileContainer}
-            item={index => (<Tile data={data} index={index} showTileBar={showTileBar} selectable={selectable} getTileInfo={getTileInfo} />)}
+            components={{ List: ImageList, Item: TileContainer }}
+            itemContent={index => (<Tile data={data} index={index} showTileBar={showTileBar} selectable={selectable} getTileInfo={getTileInfo} />)}
             listClassName={classes.empty}
             itemClassName={classes.empty}
             style={{ height, width, overflowX: 'hidden' }} />

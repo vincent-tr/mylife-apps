@@ -18,7 +18,7 @@ class SelectableListItem extends React.Component {
     const style = {};
     if(this.context.isSelectedNode(value)) {
       const textColor = muiTheme.palette.textColor;
-      const selectedColor = muiColorManipulator.fade(textColor, 0.2);
+      const selectedColor = muiColorManipulator.alpha(textColor, 0.2);
       style.backgroundColor = selectedColor;
     }
 

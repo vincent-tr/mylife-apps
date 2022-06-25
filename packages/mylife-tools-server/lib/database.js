@@ -24,8 +24,7 @@ class Database {
 
     const options = {
       logger: mongoLogger,
-      useNewUrlParser: true,
-      useUnifiedTopology: true
+      directConnection: true,
     };
 
     this._client = await MongoClient.connect(url, options);

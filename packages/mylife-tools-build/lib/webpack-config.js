@@ -2,7 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
@@ -14,7 +14,7 @@ exports.createWebpackConfig = function ({
   dev = false
 } = {}) {
 
-  const resolverPaths = ['node_modules', mpath('mylife-tools-ui'), mpath('mylife-tools-build')];
+  const resolverPaths = [mpath('mylife-tools-ui'), mpath('mylife-tools-build'), 'node_modules'];
 
   const common = {
     entry: [ 'babel-polyfill', entryPoint ],
@@ -43,7 +43,7 @@ exports.createWebpackConfig = function ({
         use : [{
           loader : 'babel-loader',
           //include : [ entryPoint ],
-          query : {
+          options : {
             presets: [
               [ require.resolve('@babel/preset-env'), { targets : 'last 2 versions' } ],
               require.resolve('@babel/preset-react')

@@ -25,7 +25,7 @@ const Busy = () => {
   const { online } = useConnect();
   const classes = useStyles();
   return (
-    <Dialog disableBackdropClick disableEscapeKeyDown open={!online} aria-labelledby='alert-dialog-title'>
+    <Dialog open={!online} aria-labelledby='alert-dialog-title'>
       <DialogTitle id='alert-dialog-title' disableTypography>
         <Typography variant='h6' className={classes.container}>
           <CircularProgress color='inherit' className={classes.progress} />

@@ -1,6 +1,6 @@
 'use strict';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'mylife-tools-ui';
 import { useSlideshowImageView } from '../slideshow-image-view';
 import { SlideshowEngine } from './slideshow-engine';
 import { createOrchestrator } from './orchestrators';

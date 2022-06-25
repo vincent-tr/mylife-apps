@@ -33,7 +33,7 @@ const Error = () => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={clear} color='primary' autoFocus>
+        <Button onClick={clear} color='primary'>
           Ok
         </Button>
       </DialogActions>

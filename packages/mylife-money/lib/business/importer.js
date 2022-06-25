@@ -1,6 +1,6 @@
 'use strict';
 
-const csv    = require('csv-parse/lib/sync');
+const { parse: csv }    = require('csv-parse/sync');
 const moment = require('moment');
 const { createLogger, getStoreCollection } = require('mylife-tools-server');
 

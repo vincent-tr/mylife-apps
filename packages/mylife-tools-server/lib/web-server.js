@@ -7,7 +7,7 @@ const express       = require('express');
 const bodyParser    = require('body-parser');
 const favicon       = require('serve-favicon');
 const enableDestroy = require('server-destroy');
-const IOServer      = require('socket.io');
+const { Server: IOServer }      = require('socket.io');
 
 const { createLogger } = require('./logging');
 const { getDefine } = require('./defines');
@@ -81,7 +81,8 @@ async function setupDev(app, providedWebpackConfig, indexReference) {
   // update index content
   compiler.hooks.done.tap('WebServerIndex', () => {
     logger.info('install new index.html');
-    indexReference.content = middleware.fileSystem.readFileSync(path.join(webpackConfig.output.path, 'index.html'));
+
+    indexReference.content = middleware.context.outputFileSystem.readFileSync(path.join(webpackConfig.output.path, 'index.html'));
   });
 }
 
