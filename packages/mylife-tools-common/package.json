@@ -1,6 +1,6 @@
 {
   "name": "mylife-tools-common",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "MyLife Tools Common",
   "main": "lib/index.js",
   "sideEffects": false,
