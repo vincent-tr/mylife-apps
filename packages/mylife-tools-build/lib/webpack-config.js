@@ -14,7 +14,7 @@ exports.createWebpackConfig = function ({
   dev = false
 } = {}) {
 
-  const resolverPaths = ['node_modules', mpath('mylife-tools-ui'), mpath('mylife-tools-build')];
+  const resolverPaths = [mpath('mylife-tools-ui'), mpath('mylife-tools-build'), 'node_modules'];
 
   const common = {
     entry: [ 'babel-polyfill', entryPoint ],
