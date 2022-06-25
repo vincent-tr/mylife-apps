@@ -12,7 +12,7 @@
     "start": "./bin/server.js",
     "build:ts": "tsc",
     "build:bundle": "npm run build:ts && mylife-build-bundle",
-    "build:docker": "mylife-build-docker",
+    "__build:docker__": "mylife-build-docker",
     "prepack": "npm run build:bundle",
     "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
   },
