@@ -17,9 +17,10 @@ MyLife Applications
 
 # Notes
 
-## TODO bump + TS
+- portal bug CSS
 
-- faire marcher money, gallery, monitor, explorer
+## TODO TS
+
 - passer avec le build de mylife-home (+build server), mettre TS en mode permissif et renommer tous les .js? en .ts?
 - livrer
 
