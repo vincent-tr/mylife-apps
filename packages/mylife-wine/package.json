@@ -5,6 +5,7 @@
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-wine",
   "author": "Vincent Trumpff",
+  "private": true,
   "dependencies": {
     "async": "*",
     "babel-core": "^6.26.3",
