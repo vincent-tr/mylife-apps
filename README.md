@@ -26,6 +26,7 @@ MyLife Applications
 
 ## Update
 
+- portal: bootstrap 3 -> 5
 - mui v5
 - mui pickers not supported (update to mui v5)
 - gallery => webpconverter not supported => https://www.npmjs.com/package/sharp
