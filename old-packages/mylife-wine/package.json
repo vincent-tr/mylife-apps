@@ -5,7 +5,6 @@
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-wine",
   "author": "Vincent Trumpff",
-  "private": true,
   "dependencies": {
     "async": "*",
     "babel-core": "^6.26.3",
@@ -57,7 +56,7 @@
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-wine} WEB_PORT=8004 node ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
     "build:bundle": "webpack -d",
-    "__build:docker__": "mylife-build-docker",
+    "build:docker": "mylife-build-docker",
     "prepack": "npm run build:bundle",
     "postpack": "find ./public -maxdepth 1 -type f -not -name 'index.html' -not -name '.npmignore' -delete"
   },
