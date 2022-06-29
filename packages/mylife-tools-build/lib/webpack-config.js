@@ -55,7 +55,7 @@ exports.createWebpackConfig = function ({
         test : /\.ts(x?)$/,
         use : [
           { loader : 'babel-loader', options : babelOptions },
-          { loader: 'ts-loader', options: { configFile: path.join(outputPath, 'tsconfig.json') } }
+          { loader: 'ts-loader', options: { context: outputPath, configFile: path.join(__dirname, 'tsconfig.json') } }
         ]
       }, {
         test: /\.(png|jpg|gif|svg|eot|woff|woff2|ttf|ico)$/,
