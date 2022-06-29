@@ -105,7 +105,6 @@ exports.createWebpackConfig = function ({
     devtool: 'source-map'
   });
 
-  // in dev mode, we are linked with lerna, so we need to add modules to dependency lookup
   function mpath(moduleName) {
     return path.join(baseDirectory, 'node_modules', moduleName, 'node_modules');
   }
