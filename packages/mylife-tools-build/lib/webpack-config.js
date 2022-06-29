@@ -36,20 +36,7 @@ exports.createWebpackConfig = function ({
     },
     module : {
       rules : [{
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      }, {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
-      }, {
-        test : /\.js$/,
+        test : /\.js(x?)$/,
         use : [{ loader : 'babel-loader', options : babelOptions }]
       }, {
         test : /\.ts(x?)$/,
