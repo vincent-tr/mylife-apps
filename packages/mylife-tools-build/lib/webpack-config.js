@@ -9,12 +9,24 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 exports.createWebpackConfig = function ({
   baseDirectory,
   outputPath = path.join(baseDirectory, 'public'),
-  entryPoint = path.join(baseDirectory, 'public/src/main.js'),
+  entryPoint = path.join(baseDirectory, 'public/src/main.tsx'),
   htmlTemplate = path.join(baseDirectory, 'public/src/index.html'),
   dev = false
 } = {}) {
 
   const resolverPaths = [mpath('mylife-tools-ui'), mpath('mylife-tools-build'), 'node_modules'];
+
+  const babelOptions = {
+    presets: [
+      [ require.resolve('@babel/preset-env'), { targets : 'last 2 versions' } ],
+      require.resolve('@babel/preset-react')
+    ],
+    plugins: [
+      require.resolve('@babel/plugin-proposal-export-default-from'),
+      require.resolve('@babel/plugin-proposal-export-namespace-from'),
+      require.resolve('@babel/plugin-proposal-class-properties')
+    ]
+  };
 
   const common = {
     entry: [ 'babel-polyfill', entryPoint ],
@@ -24,37 +36,27 @@ exports.createWebpackConfig = function ({
     },
     module : {
       rules : [{
-        // TODO: https://webpack.js.org/plugins/mini-css-extract-plugin/#minimizing-for-production
         test: /\.css$/,
         use: [
           'style-loader',
           'css-loader'
         ]
       }, {
-        // TODO: // TODO: https://webpack.js.org/plugins/mini-css-extract-plugin/#minimizing-for-production
         test: /\.scss$/,
         use: [
-          'style-loader', // creates style nodes from JS strings
-          'css-loader', // translates CSS into CommonJS
-          'sass-loader' // compiles Sass to CSS, using Node Sass by default
+          'style-loader',
+          'css-loader',
+          'sass-loader'
         ]
       }, {
         test : /\.js$/,
-        use : [{
-          loader : 'babel-loader',
-          //include : [ entryPoint ],
-          options : {
-            presets: [
-              [ require.resolve('@babel/preset-env'), { targets : 'last 2 versions' } ],
-              require.resolve('@babel/preset-react')
-            ],
-            plugins: [
-              require.resolve('@babel/plugin-proposal-export-default-from'),
-              require.resolve('@babel/plugin-proposal-export-namespace-from'),
-              require.resolve('@babel/plugin-proposal-class-properties')
-            ]
-          }
-        }]
+        use : [{ loader : 'babel-loader', options : babelOptions }]
+      }, {
+        test : /\.ts(x?)$/,
+        use : [
+          { loader : 'babel-loader', options : babelOptions },
+          { loader: 'ts-loader', options: { configFile: path.join(outputPath, 'tsconfig.json') } }
+        ]
       }, {
         test: /\.(png|jpg|gif|svg|eot|woff|woff2|ttf|ico)$/,
         use: [ 'file-loader' ]
@@ -72,7 +74,8 @@ exports.createWebpackConfig = function ({
       new ProgressBarPlugin()
     ],
     resolve: {
-      modules: resolverPaths
+      modules: resolverPaths,
+      extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json']
     },
     resolveLoader: {
       modules: resolverPaths
