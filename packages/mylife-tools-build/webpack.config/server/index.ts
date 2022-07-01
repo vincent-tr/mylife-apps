@@ -11,7 +11,9 @@ export default function (baseDirectory: string, dev: boolean) {
 
   const config: webpack.Configuration = {
     name: 'server',
-    entry: entryPoint,
+    entry: { 
+      'server': entryPoint,
+    },
     output: {
       filename: '[name].js',
       path: outputPath,

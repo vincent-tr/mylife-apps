@@ -37,3 +37,8 @@ MyLife Applications
 - mui pickers not supported (update to mui v5)
 - gallery => webpconverter not supported => https://www.npmjs.com/package/sharp
 - */bin/* : cleanup other than server?
+
+
+__dirname usage :
+- http server public dir
+- config dir

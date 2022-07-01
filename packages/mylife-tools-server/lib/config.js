@@ -23,7 +23,7 @@ exports.getConfig = (name, defaultValue) => {
 };
 
 function loadConfig() {
-  const configFile = getArg('config') || path.join(getDefine('baseDirectory'), 'conf/config.json');
+  const configFile = getArg('config') || path.join(getDefine('baseDirectory'), 'config.json');
   const result = readConfig(configFile);
   deepFreeze(result);
   return result;

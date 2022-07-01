@@ -33,12 +33,12 @@ WebServer.dependencies = ['io'];
 
 registerService(WebServer);
 
-async function setupServer({ config = getConfig('webServer'), dev = getArg('dev'), webpackConfig, webApiFactory }) {
+async function setupServer({ config = getConfig('webServer'), webApiFactory }) {
   const app = express();
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json({ limit: '100mb' }));
 
-  const publicDirectory = path.resolve(getDefine('baseDirectory'), 'public');
+  const publicDirectory = path.resolve(getDefine('baseDirectory'), 'static');
 
   logger.info(`using public directoy : ${publicDirectory}`);
 
@@ -48,13 +48,7 @@ async function setupServer({ config = getConfig('webServer'), dev = getArg('dev'
   }
   app.use(express.static(publicDirectory));
 
-  const indexReference = { content: null };
-  if(dev) {
-    await setupDev(app, webpackConfig, indexReference);
-  } else {
-    loadDefaultIndex(publicDirectory, indexReference);
-  }
-  app.use(historyApiFallback(indexReference));
+  app.use(historyApiFallback(publicDirectory));
 
   const server = http.createServer(app);
   enableDestroy(server);
@@ -72,26 +66,9 @@ async function asyncCall(target) {
   return new Promise((resolve, reject) => target((err, res) => (err ? reject(err) : resolve(res))));
 }
 
-async function setupDev(app, providedWebpackConfig, indexReference) {
-  logger.info('setup webpack dev middleware');
-
-  const { setupDevMiddleware } = require('mylife-tools-build');
-  const { webpackConfig, compiler, middleware } = setupDevMiddleware(app, providedWebpackConfig, getDefine('baseDirectory'));
-
-  // update index content
-  compiler.hooks.done.tap('WebServerIndex', () => {
-    logger.info('install new index.html');
-
-    indexReference.content = middleware.context.outputFileSystem.readFileSync(path.join(webpackConfig.output.path, 'index.html'));
-  });
-}
-
-function loadDefaultIndex(publicDirectory, indexReference) {
-  indexReference.content = fs.readFileSync(path.join(publicDirectory, 'index.html'));
-}
-
-function historyApiFallback(indexReference) {
-  return (req, res) => res.end(indexReference.content);
+function historyApiFallback(publicDirectory) {
+  const content = fs.readFileSync(path.join(publicDirectory, 'index.html'));
+  return (req, res) => res.end(content);
 }
 
 function asyncHandler(handler) {

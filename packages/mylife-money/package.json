@@ -9,6 +9,7 @@
     "lint": "eslint lib/* public/app/*",
     "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 ./bin/server.js --dev --loglevel=debug",
     "start": "./bin/server.js",
+    "new-start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json",
     "build:bundle": "mylife-build-bundle",
     "build:docker": "mylife-build-docker",
     "prepack": "npm run build:bundle",
