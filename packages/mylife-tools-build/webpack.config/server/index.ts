@@ -1,5 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
 
 export default function (baseDirectory: string, dev: boolean) {
   const sourcePath = path.join(baseDirectory, 'src');
