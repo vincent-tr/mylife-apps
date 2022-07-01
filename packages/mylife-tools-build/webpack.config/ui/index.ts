@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 
 export default function (baseDirectory: string, dev: boolean) {
   const sourcePath = path.join(baseDirectory, 'public');
@@ -63,6 +64,19 @@ export default function (baseDirectory: string, dev: boolean) {
     },
     devtool: dev ? 'inline-source-map' : 'nosources-source-map',
   };
+
+  if (!dev) {
+    config.optimization = {
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            keep_classnames: true,
+            keep_fnames: true,
+          },
+        }),
+      ],
+    };
+  }
 
   return config;
 

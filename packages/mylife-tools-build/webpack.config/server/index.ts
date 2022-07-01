@@ -42,6 +42,19 @@ export default function (baseDirectory: string, dev: boolean) {
     },
   };
 
+  if (!dev) {
+    config.optimization = {
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            keep_classnames: true,
+            keep_fnames: true,
+          },
+        }),
+      ],
+    };
+  }
+  
   return config;
 
   function mpath(moduleName: string) {
