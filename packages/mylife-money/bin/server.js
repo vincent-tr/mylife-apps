@@ -2,11 +2,11 @@
 
 'use strict';
 
-require('../lib/init');
+require('../src/init');
 const { runServices } = require('mylife-tools-server');
-const { apiServices } = require('../lib/api');
+const { apiServices } = require('../src/api');
 const metadataDefintions = require('../shared/metadata');
-const storeConfiguration = require('../lib/store-configuration');
+const storeConfiguration = require('../src/store-configuration');
 
 const services = ['web-server', 'store', 'notification-service'];
 const parameters = { apiServices, metadataDefintions, storeConfiguration };

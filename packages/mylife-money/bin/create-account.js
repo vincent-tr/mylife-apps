@@ -2,11 +2,11 @@
 
 'use strict';
 
-require('../lib/init');
+require('../src/init');
 const { createLogger, runTask } = require('mylife-tools-server');
-const business = require('../lib/business');
+const business = require('../src/business');
 const metadataDefintions = require('../shared/metadata');
-const storeConfiguration = require('../lib/store-configuration');
+const storeConfiguration = require('../src/store-configuration');
 
 const logger = createLogger('mylife:money:create-account');
 

@@ -2,7 +2,7 @@
 
 'use strict';
 
-require('../lib/init');
+require('../src/init');
 const { createLogger, runTask, getDatabaseCollection, getService } = require('mylife-tools-server');
 
 const logger = createLogger('mylife:money:migration');
