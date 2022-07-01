@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 export default function (baseDirectory: string, dev: boolean) {
   const sourcePath = path.join(baseDirectory, 'public');
@@ -53,6 +54,11 @@ export default function (baseDirectory: string, dev: boolean) {
     plugins: [
       new HtmlWebpackPlugin({
         template: htmlTemplate,
+      }),
+      new CopyPlugin({
+        patterns: [
+          { from: path.join(sourcePath, 'images'), to: 'images' },
+        ],
       }),
     ],
     resolve: {
