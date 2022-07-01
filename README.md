@@ -21,8 +21,13 @@ MyLife Applications
 
 ## TODO TS
 
-- passer avec le build de mylife-home (+build server), mettre TS en mode permissif et renommer tous les .js? en .ts?
-- livrer
+- webpack watch client
+- web-server sert toujours un bundle static
+- webpack build server
+- build image docker a partir des fichiers locaux de release
+
+- webpack dev server ?
+- remove fonts ? (2 first includes of ui/src/index.js + webpack css loader)
 
 ## Update
 
