@@ -25,9 +25,10 @@ MyLife Applications
 - web-server sert toujours un bundle static
 - webpack build server
 - build image docker a partir des fichiers locaux de release
+- can we remove babel ? is ts-loader enough ?
 
 - webpack dev server ?
-- remove fonts ? (2 first includes of ui/src/index.js + webpack css loader)
+- remove fonts ? (2 first includes of ui/src/index.js)
 
 ## Update
 
@@ -35,3 +36,4 @@ MyLife Applications
 - mui v5
 - mui pickers not supported (update to mui v5)
 - gallery => webpconverter not supported => https://www.npmjs.com/package/sharp
+- */bin/* : cleanup other than server?

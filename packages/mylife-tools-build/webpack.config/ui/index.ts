@@ -20,6 +20,7 @@ export default function (baseDirectory: string, dev: boolean) {
   };
 
   const config: webpack.Configuration = {
+    name: 'ui',
     entry: entryPoint,
     output: {
       publicPath: '/',
@@ -49,11 +50,6 @@ export default function (baseDirectory: string, dev: boolean) {
       ],
     },
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          //DEBUG: JSON.stringify('mylife:tools:ui:*')
-        },
-      }),
       new HtmlWebpackPlugin({
         template: htmlTemplate,
       }),

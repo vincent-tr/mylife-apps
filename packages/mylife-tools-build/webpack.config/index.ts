@@ -1,11 +1,13 @@
 import createUiConfig from './ui';
+import createServerConfig from './server';
 
 export default (env: Record<string, any>, argv: Record<string, any>) => {
   const baseDirectory = process.cwd();
   const dev = isDev(argv);
 
   return [
-    createUiConfig(baseDirectory, dev)
+    createUiConfig(baseDirectory, dev),
+    createServerConfig(baseDirectory, dev),
   ]
 }
 

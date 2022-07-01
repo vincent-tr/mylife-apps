@@ -4,12 +4,10 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "target": "ES5",
+        "target": "ES2019",
         "noImplicitAny": false,
         "moduleResolution": "node",
         "sourceMap": true,
-        "baseUrl": ".",
-        "jsx": "react",
         "resolveJsonModule": true
     }
 }
