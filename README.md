@@ -21,14 +21,8 @@ MyLife Applications
 
 ## TODO TS
 
-- webpack watch client
-- web-server sert toujours un bundle static
-- webpack build server
 - build image docker a partir des fichiers locaux de release
-- can we remove babel ? is ts-loader enough ?
 
-- webpack dev server ?
-- remove fonts ? (2 first includes of ui/src/index.js)
 
 ## Update
 
@@ -37,6 +31,8 @@ MyLife Applications
 - mui pickers not supported (update to mui v5)
 - gallery => webpconverter not supported => https://www.npmjs.com/package/sharp
 - */bin/* : cleanup other than server?
+- remove babel after we have no jsx, only tsx
+- remove fonts ? (2 first includes of ui/src/index.js)
 
 
 __dirname usage :
