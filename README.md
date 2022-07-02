@@ -17,8 +17,6 @@ MyLife Applications
 
 # Notes
 
-- portal bug CSS
-
 ## TODO TS
 
 - tag docker image build
