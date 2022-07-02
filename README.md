@@ -24,6 +24,8 @@ MyLife Applications
 - tag docker image build
 - cleanup build scripts
 - do repos : portal, gallery, monitor, explorer
+- do not publish tools
+- publish = docker build (no npm) => a tester
 
 
 ## Update
@@ -35,6 +37,7 @@ MyLife Applications
 - */bin/* : cleanup other than server?
 - remove babel after we have no jsx, only tsx
 - remove fonts ? (2 first includes of ui/src/index.js)
+- review lint
 
 
 __dirname usage :

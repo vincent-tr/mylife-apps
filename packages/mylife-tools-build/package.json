@@ -4,8 +4,9 @@
   "description": "MyLife Tools Build",
   "main": "lib/index.js",
   "bin": {
-    "mylife-build-bundle": "./bin/build-bundle.js",
-    "mylife-build-docker": "./bin/build-docker.sh"
+    "mylife-build": "./bin/build.sh",
+    "mylife-publish": "./bin/publish.sh",
+    "mylife-watch": "./bin/watch.sh"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
