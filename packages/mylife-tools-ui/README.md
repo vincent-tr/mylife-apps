@@ -1,12 +1,6 @@
 # mylife-tools-ui
 MyLife Tools UI
 
- ## Build
-  - npm update
-  - npm version major|minor|patch
-  - git push && git push --tags
-  - npm publish
-
 ## Tips :
 * Tout accessible en 3 clics
 

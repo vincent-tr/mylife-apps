@@ -21,7 +21,7 @@ MyLife Applications
 
 ## TODO TS
 
-- build image docker a partir des fichiers locaux de release
+- tag docker image build
 - cleanup build scripts
 - do repos : portal, gallery, monitor, explorer
 

@@ -1,2 +1,2 @@
-# mylife-wine
+# mylife-monitor
 MyLife Monitor
