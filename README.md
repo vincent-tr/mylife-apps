@@ -19,11 +19,7 @@ MyLife Applications
 
 ## TODO TS
 
-- tag docker image build
-- cleanup build scripts
 - do repos : portal, gallery, monitor, explorer
-- do not publish tools
-- publish = docker build (no npm) => a tester
 
 
 ## Update
@@ -41,3 +37,5 @@ MyLife Applications
 __dirname usage :
 - http server public dir
 - config dir
+
+ramener la TODO liste ici
