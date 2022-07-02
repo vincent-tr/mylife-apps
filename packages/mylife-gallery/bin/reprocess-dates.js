@@ -5,14 +5,14 @@
 const exifParser = require('exif-parser');
 const fs = require('fs');
 const path = require('path');
-require('../lib/init');
-require('../lib/index-service');
+require('../src/init');
+require('../src/index-service');
 const { runTask, getConfig, getService } = require('mylife-tools-server');
 const metadataDefintions = require('../shared/metadata');
-const storeConfiguration = require('../lib/store-configuration');
-require('../lib/sync');
+const storeConfiguration = require('../src/store-configuration');
+require('../src/sync');
 
-const business = require('../lib/business');
+const business = require('../src/business');
 
 const services = ['store', 'database', 'index-service'];
 const parameters = { metadataDefintions, storeConfiguration };

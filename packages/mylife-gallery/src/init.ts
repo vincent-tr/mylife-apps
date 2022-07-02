@@ -1,8 +1,6 @@
 'use strict';
 
-const path = require('path');
-
 require('mylife-tools-server/init')({
-  baseDirectory: path.resolve(__dirname, '..'),
+  baseDirectory: __dirname,
   applicationName: 'mylife-gallery'
 });

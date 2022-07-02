@@ -2,10 +2,10 @@
 
 'use strict';
 
-require('../lib/init');
+require('../src/init');
 const { runServices } = require('mylife-tools-server');
-const { webApiFactory } = require('../lib/web');
-const { apiServices } = require('../lib/api');
+const { webApiFactory } = require('../src/web');
+const { apiServices } = require('../src/api');
 
 const services = ['web-server'];
 const parameters = { webApiFactory, apiServices };

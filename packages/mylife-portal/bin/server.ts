@@ -2,11 +2,11 @@
 
 'use strict';
 
-require('../lib/init');
-require('../lib/portal-web-server');
+require('../src/init');
+require('../src/portal-web-server');
 const { runServices } = require('mylife-tools-server');
-const metadataDefintions = require('../lib/metadata');
-const storeConfiguration = require('../lib/store-configuration');
+const metadataDefintions = require('../src/metadata');
+const storeConfiguration = require('../src/store-configuration');
 
 const services = ['portal-web-server'];
 const parameters = { metadataDefintions, storeConfiguration };

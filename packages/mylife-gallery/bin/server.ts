@@ -2,14 +2,14 @@
 
 'use strict';
 
-require('../lib/init');
-require('../lib/index-service');
+require('../src/init');
+require('../src/index-service');
 const { runServices, getArg } = require('mylife-tools-server');
-const { webApiFactory } = require('../lib/web');
-const { apiServices } = require('../lib/api');
+const { webApiFactory } = require('../src/web');
+const { apiServices } = require('../src/api');
 const metadataDefintions = require('../shared/metadata');
-const storeConfiguration = require('../lib/store-configuration');
-require('../lib/sync');
+const storeConfiguration = require('../src/store-configuration');
+require('../src/sync');
 
 const runWeb = !!getArg('web');
 const runSync = !!getArg('sync');

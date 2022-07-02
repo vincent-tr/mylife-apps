@@ -2,11 +2,11 @@
 
 'use strict';
 
-require('../lib/init');
+require('../src/init');
 const fetch = require('node-fetch');
 const { createLogger, getArg, runTask, getStoreCollection } = require('mylife-tools-server');
-const metadataDefintions = require('../lib/metadata');
-const storeConfiguration = require('../lib/store-configuration');
+const metadataDefintions = require('../src/metadata');
+const storeConfiguration = require('../src/store-configuration');
 
 const logger = createLogger('mylife:portal:update-image');
 
