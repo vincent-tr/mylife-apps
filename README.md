@@ -37,3 +37,4 @@ MyLife Applications
     - http server public dir
     - config dir
 - ramener la TODO liste ici
+- centraliser tous les README ici
