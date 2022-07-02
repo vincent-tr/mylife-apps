@@ -2,6 +2,7 @@
   "name": "mylife-tools-build",
   "version": "1.2.12",
   "description": "MyLife Tools Build",
+  "private": true,
   "main": "lib/index.js",
   "bin": {
     "mylife-build": "./bin/build.sh",
