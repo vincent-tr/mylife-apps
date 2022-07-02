@@ -15,14 +15,14 @@ MyLife Applications
  - `lerna run build:docker`
  - `cd repo; npm run build:docker` (or for one repository)
 
-# Notes
+# TODO
 
 ## TODO TS
 
 - do repos : portal, gallery, monitor, explorer
 
 
-## Update
+## Next
 
 - portal: bootstrap 3 -> 5
 - mui v5
@@ -32,10 +32,8 @@ MyLife Applications
 - remove babel after we have no jsx, only tsx
 - remove fonts ? (2 first includes of ui/src/index.js)
 - review lint
-
-
-__dirname usage :
-- http server public dir
-- config dir
-
-ramener la TODO liste ici
+- review defines :
+  - __dirname usage :
+    - http server public dir
+    - config dir
+- ramener la TODO liste ici
