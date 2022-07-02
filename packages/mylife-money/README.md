@@ -1,2 +1,0 @@
-# mylife-money
-MyLife Money
