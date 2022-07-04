@@ -12,7 +12,7 @@ export default (env: Record<string, any>, argv: Record<string, any>) => {
       { from: path.join(baseDirectory, 'node_modules/bootstrap/dist/css/bootstrap.min.css'), to: 'static/bootstrap/css/bootstrap.min.css' },
       { from: path.join(baseDirectory, 'node_modules/bootstrap/dist/fonts'), to: 'static/bootstrap/fonts' }
     ],
-  }))
+  }));
 
   return config;
 }
