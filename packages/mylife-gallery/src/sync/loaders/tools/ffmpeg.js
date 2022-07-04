@@ -1,12 +1,11 @@
 'use strict';
 
+const path = require('path');
 const ffmpeg = require('fluent-ffmpeg');
-const ffmpegStatic = require('ffmpeg-static');
-const ffprobeStatic = require('ffprobe-static');
 const { createLogger } = require('mylife-tools-server');
 
-ffmpeg.setFfmpegPath(ffmpegStatic.path);
-ffmpeg.setFfprobePath(ffprobeStatic.path);
+ffmpeg.setFfmpegPath(path.join(__dirname, 'ffmpeg/ffmpeg'));
+ffmpeg.setFfprobePath(path.join(__dirname, 'ffmpeg/ffprobe'));
 
 const logger = createLogger('mylife:gallery:sync:loaders:tools:ffmpeg');
 
@@ -93,3 +92,10 @@ async function webmPass1(fullPath) {
 
   await promise;
 }
+
+exports.toWebPStream = async function (fullPath, outputStream) {
+  const command = ffmpeg(fullPath);
+  command.format('webp');
+
+  command.pipe(outputStream, { end: true });
+};
