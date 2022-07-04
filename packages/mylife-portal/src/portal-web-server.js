@@ -31,14 +31,13 @@ registerService(PortalWebServer);
 async function setupServer({ config = getConfig('webServer') }) {
   const app = express();
   const baseDirectory = getDefine('baseDirectory');
-  const publicDirectory = path.resolve(baseDirectory, 'public');
+  const publicDirectory = path.resolve(baseDirectory, 'static');
   logger.info(`using public directoy : ${publicDirectory}`);
 
   app.use(favicon(path.resolve(publicDirectory, 'favicon.ico')));
-  app.use('/dist/bootstrap', express.static(resolveModuleDistPath('bootstrap')));
-  app.use('/dist/jquery', express.static(resolveModuleDistPath('jquery')));
   app.get('/', createIndexRenderer(path.resolve(publicDirectory, 'index.template')));
   app.get('/images/:code', createImagesRenderer());
+  app.use(express.static(publicDirectory));
 
   const server = http.createServer(app);
   enableDestroy(server);
@@ -47,11 +46,6 @@ async function setupServer({ config = getConfig('webServer') }) {
   logger.info(`server created : ${JSON.stringify(config)}`);
 
   return server;
-}
-
-function resolveModuleDistPath(moduleName) {
-  const basePath = path.dirname(require.resolve(path.join(moduleName, 'package.json')));
-  return path.join(basePath, 'dist');
 }
 
 async function asyncCall(target) {
