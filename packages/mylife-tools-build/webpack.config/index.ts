@@ -1,15 +1,49 @@
+import path from 'path';
+import webpack from 'webpack';
+import CopyPlugin from 'copy-webpack-plugin';
 import createUiConfig from './ui';
 import createServerConfig from './server';
 
-export default (env: Record<string, any>, argv: Record<string, any>) => {
-  const baseDirectory = process.cwd();
-  const dev = isDev(argv);
+type CreateConfig = (env: Record<string, any>, argv: Record<string, any>) => Promise<webpack.Configuration | webpack.Configuration[]>;
+
+export default async (env: Record<string, any>, argv: Record<string, any>) => {
+  const createConfig = await loadCreateConfig();
+  return await createConfig(env, argv);
+}
+
+async function loadCreateConfig(): Promise<CreateConfig> {
+  try {
+    const { default: customBuild } = await import(path.join(process.cwd(), 'build/webpack.config'));
+    return customBuild;
+  } catch(err) {
+    console.log('Could not load custom build, using default');
+    return defaultBuild;
+  }
+}
+
+async function defaultBuild(env: Record<string, any>, argv: Record<string, any>) {
+  const { baseDirectory, dev } = prepare(env, argv);
 
   return [
     createUiConfig(baseDirectory, dev),
     createServerConfig(baseDirectory, dev),
-  ]
+  ];
 }
+
+// export for build customization
+
+export { createUiConfig, createServerConfig };
+
+export function prepare(env: Record<string, any>, argv: Record<string, any>) {
+  const baseDirectory = process.cwd();
+  const dev = isDev(argv);
+
+  return { baseDirectory, dev };
+}
+
+export { CopyPlugin };
+
+// ---
 
 function isDev( argv: Record<string, any>) {
   switch(argv.mode) {
