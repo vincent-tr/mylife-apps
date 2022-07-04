@@ -2,6 +2,8 @@ import path from 'path';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 
+export const DEFAULT_WARNING_FILTERS = ['yargs', 'yargs-parser', 'mongodb', 'ws', 'express'];
+
 export default function (baseDirectory: string, dev: boolean) {
   const sourcePath = path.join(baseDirectory, 'src');
   const outputPath = path.join(baseDirectory, 'dist', dev ? 'dev' : 'prod');
@@ -43,6 +45,9 @@ export default function (baseDirectory: string, dev: boolean) {
       __dirname: false,
       __filename: false,
     },
+    stats: {
+      warningsFilter: createWarningFilter(...DEFAULT_WARNING_FILTERS)
+    }
   };
 
   if (!dev) {
@@ -62,5 +67,22 @@ export default function (baseDirectory: string, dev: boolean) {
 
   function mpath(moduleName: string) {
     return path.join(baseDirectory, 'node_modules', moduleName, 'node_modules');
+  }
+}
+
+export function createWarningFilter(...modules: string[]) {
+  return (warning: any) => {
+    const name: string = warning.moduleName;
+    if (typeof name !== 'string') {
+      return false;
+    }
+
+    for (const module of modules) {
+      if (name.includes(`/node_modules/${module}/`)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

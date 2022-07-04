@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { webpack, prepare, createServerConfig, createUiConfig, CopyPlugin } from 'mylife-tools-build/webpack.config';
+import { webpack, prepare, createServerConfig, createUiConfig, CopyPlugin, createWarningFilter, DEFAULT_WARNING_FILTERS } from 'mylife-tools-build/webpack.config';
 import ffmpegStatic from 'ffmpeg-static';
 import ffprobeStatic from 'ffprobe-static';
 
@@ -11,6 +11,7 @@ export default (env: Record<string, any>, argv: Record<string, any>) => {
   const serverConfig = createServerConfig(baseDirectory, dev);
 
   serverConfig.plugins = serverConfig.plugins || [];
+
   serverConfig.plugins.push(new CopyPlugin({
     patterns: [
       { from: ffmpegStatic, to: 'ffmpeg' },
@@ -22,6 +23,16 @@ export default (env: Record<string, any>, argv: Record<string, any>) => {
     'ffmpeg/ffmpeg',
     'ffmpeg/ffprobe',
   ] }));
+
+  // ignore import which is only used by sepcial env var
+  serverConfig.plugins.push(new webpack.IgnorePlugin({ 
+    contextRegExp: /mylife-gallery\/node_modules\/fluent-ffmpeg$/,
+    resourceRegExp: /^\.\/lib-cov\/fluent-ffmpeg$/
+  }));
+
+  serverConfig.stats = {
+    warningsFilter: createWarningFilter(...DEFAULT_WARNING_FILTERS, 'fluent-ffmpeg')
+  };
 
   return [
     uiConfig,

@@ -2,7 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import CopyPlugin from 'copy-webpack-plugin';
 import createUiConfig from './ui';
-import createServerConfig from './server';
+import createServerConfig, { createWarningFilter, DEFAULT_WARNING_FILTERS } from './server';
 
 type CreateConfig = (env: Record<string, any>, argv: Record<string, any>) => Promise<webpack.Configuration | webpack.Configuration[]>;
 
@@ -41,7 +41,7 @@ export function prepare(env: Record<string, any>, argv: Record<string, any>) {
   return { baseDirectory, dev };
 }
 
-export { webpack, CopyPlugin };
+export { webpack, CopyPlugin, createWarningFilter, DEFAULT_WARNING_FILTERS };
 
 // ---
 
