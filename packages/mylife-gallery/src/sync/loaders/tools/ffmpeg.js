@@ -23,6 +23,7 @@ exports.createThumbnails = async function(baseDirectory, fullPath, { timestamps,
   let filenames;
 
   const command = ffmpeg(fullPath);
+
   command.on('filenames', value => (filenames = value));
 
   const promise = new Promise((resolve, reject) => {
@@ -30,7 +31,7 @@ exports.createThumbnails = async function(baseDirectory, fullPath, { timestamps,
     command.on('error', reject);
   });
 
-  command.thumbnails({ folder: baseDirectory, filename: '%b-thumbnail-%i', timestamps, size });
+  command.thumbnails({ folder: baseDirectory, filename: '%b-thumbnail-%i.webp', timestamps, size });
 
   await promise;
 

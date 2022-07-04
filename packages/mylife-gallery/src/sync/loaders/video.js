@@ -8,7 +8,7 @@ const { PassThrough } = require('stream');
 const { createLogger } = require('mylife-tools-server');
 const business = require('../../business');
 const { getMetadata, createThumbnails, toWebMStream } = require('./tools/ffmpeg');
-const { convertBufferToWebpBuffer } = require('./tools/webp');
+//const { convertBufferToWebpBuffer } = require('./tools/webp');
 
 const logger = createLogger('mylife:gallery:sync:loaders:video');
 
@@ -77,9 +77,7 @@ async function createThumbnailsValues(fsh, contentPath, values) {
 
   values.thumbnails = [];
   for(const thumbnailContent of thumbnailContents) {
-    // TODO: do not load and save thumbnailContent
-    const thumbnailWebp = await convertBufferToWebpBuffer(thumbnailContent);
-    const thumbnail = await business.thumbnailCreate(thumbnailWebp);
+    const thumbnail = await business.thumbnailCreate(thumbnailContent);
     values.thumbnails.push(thumbnail);
   }
 }
