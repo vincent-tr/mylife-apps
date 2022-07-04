@@ -1,6 +1,6 @@
 'use strict';
 
-const jimp = require('jimp');
+const { default: jimp } = require('jimp');
 
 fixJimpRotate();
 
