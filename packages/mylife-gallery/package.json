@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint lib/ public/src/",
-    "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --web",
-    "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --sync",
-    "start": "./bin/server.js",
-    "build:bundle": "mylife-build-bundle",
-    "build:docker": "./bin/build-docker.sh",
-    "prepack": "npm run build:bundle",
-    "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
+    "watch": "mylife-watch",
+    "start-web": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json --web",
+    "start-sync": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json --sync",
+    "build:dev": "mylife-build development",
+    "build:prod": "mylife-build production",
+    "docker-publish": "mylife-publish",
+    "publish": "mylife-build production && mylife-publish"
   },
   "repository": {
     "type": "git",
