@@ -41,7 +41,7 @@ export function prepare(env: Record<string, any>, argv: Record<string, any>) {
   return { baseDirectory, dev };
 }
 
-export { CopyPlugin };
+export { webpack, CopyPlugin };
 
 // ---
 
