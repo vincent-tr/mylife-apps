@@ -1,4 +1,4 @@
-'use strict';
+import 'source-map-support/register';
 
 require('../src/init');
 const { runServices } = require('mylife-tools-server');

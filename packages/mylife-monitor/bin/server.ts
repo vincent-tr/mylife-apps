@@ -1,6 +1,4 @@
-#!/usr/bin/env node
-
-'use strict';
+import 'source-map-support/register';
 
 require('../src/init');
 require('../src/nagios-service');
