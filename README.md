@@ -19,7 +19,9 @@ MyLife Applications
 
 ## TODO TS
 
-- do repos : portal, gallery, monitor, explorer
+- do repos : gallery
+
+npm publish vs npm run publish
 
 
 ## Next
