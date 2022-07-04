@@ -32,8 +32,7 @@
     "fs-extra": "^10.1.0",
     "jimp": "^0.16.1",
     "mylife-tools-common": "^1.0.9",
-    "mylife-tools-server": "^1.0.22",
-    "webp-converter": "^2.3.3"
+    "mylife-tools-server": "^1.0.22"
   },
   "devDependencies": {
     "@types/ffmpeg-static": "^3.0.1",
