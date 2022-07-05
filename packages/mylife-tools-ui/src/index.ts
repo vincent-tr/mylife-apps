@@ -1,5 +1,3 @@
-'use strict';
-
 import 'typeface-roboto';
 import 'material-icons/iconfont/material-icons.css';
 
