@@ -1,2 +1,2 @@
-export Application from './application';
-export ToolsProvider from './tools-provider';
+export { default as Application } from './application';
+export { default as ToolsProvider } from './tools-provider';

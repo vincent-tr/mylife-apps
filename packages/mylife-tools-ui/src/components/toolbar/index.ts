@@ -1,2 +1,2 @@
-export ToolbarFieldTitle from './toolbar-field-title';
-export ToolbarSeparator from './toolbar-separator';
+export { default as ToolbarFieldTitle } from './toolbar-field-title';
+export { default as ToolbarSeparator } from './toolbar-separator';

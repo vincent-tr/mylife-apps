@@ -1,1 +1,1 @@
-export StepperControl from './stepper-control';
+export { default as StepperControl } from './stepper-control';

@@ -1,1 +1,1 @@
-export VirtualizedTable from './virtualized-table';
+export { default as VirtualizedTable } from './virtualized-table';
