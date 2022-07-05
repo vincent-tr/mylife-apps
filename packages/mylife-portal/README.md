@@ -1,2 +1,0 @@
-# mylife-portal
-MyLife Portal
