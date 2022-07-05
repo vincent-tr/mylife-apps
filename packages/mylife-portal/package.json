@@ -9,8 +9,8 @@
     "start": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8015 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json",
     "build:dev": "mylife-build development",
     "build:prod": "mylife-build production",
-    "docker-publish": "mylife-publish",
-    "publish": "mylife-build production && mylife-publish"
+    "docker-publish-only": "mylife-publish",
+    "docker-publish": "mylife-build production && mylife-publish"
   },
   "repository": {
     "type": "git",

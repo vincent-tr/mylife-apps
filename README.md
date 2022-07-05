@@ -8,23 +8,11 @@ MyLife Applications
  - `lerna bootstrap`
 
 ## Build
- - `lerna publish`
- - `lerna publish from-package` (without bump version)
-
-## Docker Build
- - `lerna run build:docker`
- - `cd repo; npm run build:docker` (or for one repository)
+ - `lerna version`
+ - `lerna run docker-publish`
+ - `cd repo; npm run docker-publish` (or for one repository)
 
 # TODO
-
-## TODO TS
-
-- do repos : gallery
-
-npm publish vs npm run publish
-
-
-## Next
 
 - portal: bootstrap 3 -> 5
 - mui v5
