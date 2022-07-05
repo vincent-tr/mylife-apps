@@ -14,7 +14,6 @@ MyLife Applications
 
 # TODO
 
-- portal: bootstrap 3 -> 5
 - mui v5
 - mui pickers not supported (update to mui v5)
 - */bin/* : cleanup other than server?
@@ -25,8 +24,11 @@ MyLife Applications
   - __dirname usage :
     - http server public dir
     - config dir
-- ramener la TODO liste ici
 - centraliser tous les README ici
+
+## Portal
+
+- bootstrap 3 -> 5
 
 ## Gallery
 
@@ -38,4 +40,4 @@ MyLife Applications
 
 ## Money
 
-- apres import csv, les operations n apparaissent pas dans "non triés" mais la date de derniere integration est mise a jour
+- apres import csv, les operations n'apparaissent pas dans "non triés" mais la date de derniere integration est mise a jour
