@@ -1,31 +1,36 @@
-
-'use strict';
-
 const datatypes = new Map();
 const entities = new Map();
 
-exports.registerDatatype = datatype => datatypes.set(datatype.id, datatype);
+export function registerDatatype(datatype) {
+  datatypes.set(datatype.id, datatype);
+}
 
-exports.findDatatype = id => datatypes.get(id);
+export function findDatatype(id) {
+  return datatypes.get(id);
+}
 
-exports.getDatatype = id => {
+export function getDatatype(id) {
   const datatype = datatypes.get(id);
   if(datatype) {
     return datatype;
   }
 
   throw new Error(`Datatype not found: '${id}'`);
-};
+}
 
-exports.registerEntity = entity => entities.set(entity.id, entity);
+export function registerEntity(entity) {
+  entities.set(entity.id, entity);
+}
 
-exports.findEntity = id => entities.get(id);
+export function findEntity(id) {
+  return entities.get(id);
+}
 
-exports.getEntity = id => {
+export function getEntity(id) {
   const entity = entities.get(id);
   if(entity) {
     return entity;
   }
 
   throw new Error(`Entity not found: '${id}'`);
-};
+}

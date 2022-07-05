@@ -1,6 +1,4 @@
-'use strict';
-
-exports.datatypes = [
+export const datatypes = [
   { id: 'identifier', primitive: 'string', constraints: ['not-null', 'read-only'] },
   { id: 'name', primitive: 'string' },
   { id: 'text', primitive: 'string' },
@@ -14,7 +12,7 @@ exports.datatypes = [
   { id: 'binary', primitive: 'binary' },
 ];
 
-exports.entities = [
+export const entities = [
   {
     id: 'base',
     fields: [

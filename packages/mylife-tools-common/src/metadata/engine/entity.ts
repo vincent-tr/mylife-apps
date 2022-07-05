@@ -1,8 +1,6 @@
-'use strict';
-
-const { Constraint } = require('./constraint');
-const registry = require('./registry');
-const { lock, Validator } = require('./utils');
+import Constraint from './constraint';
+import * as registry from './registry';
+import { lock, Validator } from './utils';
 
 class Field {
   constructor(definition) {
@@ -88,7 +86,7 @@ function setValueImpl(object, propChain, value) {
   return Object.freeze(Object.assign({}, object, { [prop] : value }));
 }
 
-exports.Entity = class Entity {
+export default class Entity {
   constructor(definition) {
     const validator = new Validator(this);
 

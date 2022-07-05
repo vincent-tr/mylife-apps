@@ -1,6 +1,4 @@
-'use strict';
-
-exports.lock = (obj) => {
+export function lock(obj) {
 
   const config = { enumerable: false };
   for (const propName of Object.getOwnPropertyNames(obj)) {
@@ -10,9 +8,9 @@ exports.lock = (obj) => {
   }
 
   Object.freeze(obj);
-};
+}
 
-exports.Validator = class Validator {
+export class Validator {
   constructor(obj) {
     this._objectType = obj.constructor.name;
   }
@@ -75,7 +73,7 @@ exports.Validator = class Validator {
   validateConstraints(value) {
     return this.validate(value, 'constraints', { type: 'array', defaultValue: [] });
   }
-};
+}
 
 function getType(obj) {
   if(obj instanceof Function) {

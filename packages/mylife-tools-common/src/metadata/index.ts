@@ -1,29 +1,23 @@
+import * as registry from './engine/registry';
+import Datatype from './engine/datatype';
+import Entity from './engine/entity';
+import * as builtins from './builtins';
 
-'use strict';
+export const findDatatype = registry.findDatatype;
+export const getDatatype = registry.getDatatype;
+export const findEntity = registry.findEntity;
+export const getEntity = registry.getEntity;
 
-const registry = require('./engine/registry');
-const { Datatype } = require('./engine/datatype');
-const { Entity } = require('./engine/entity');
-const builtins = require('./builtins');
-
-exports.registerDatatype = registerDatatype;
-exports.findDatatype = registry.findDatatype;
-exports.getDatatype = registry.getDatatype;
-
-exports.registerEntity = registerEntity;
-exports.findEntity = registry.findEntity;
-exports.getEntity = registry.getEntity;
-
-for(const definition of builtins.datatypes) {
+for (const definition of builtins.datatypes) {
   registerDatatype(definition);
 }
 
-for(const definition of builtins.entities) {
+for (const definition of builtins.entities) {
   registerEntity(definition);
 }
 
-function registerDatatype(definition) {
-  if(registry.findDatatype(definition.id)) {
+export function registerDatatype(definition) {
+  if (registry.findDatatype(definition.id)) {
     throw new Error(`Datatype already exists: '${definition.id}'`);
   }
 
@@ -34,8 +28,8 @@ function registerDatatype(definition) {
   registry.registerDatatype(new Datatype({ id: `map:${datatype.id}`, map: datatype.id }));
 }
 
-function registerEntity(definition) {
-  if(registry.findEntity(definition.id)) {
+export function registerEntity(definition) {
+  if (registry.findEntity(definition.id)) {
     throw new Error(`Entity already exists: '${definition.id}'`);
   }
 

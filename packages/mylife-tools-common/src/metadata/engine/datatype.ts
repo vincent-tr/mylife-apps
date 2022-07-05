@@ -1,9 +1,7 @@
-'use strict';
-
-const { Constraint } = require('./constraint');
-const registry = require('./registry');
-const { lock, Validator } = require('./utils');
-const utils = require('../../utils');
+import Constraint from './constraint';
+import * as registry from './registry';
+import { lock, Validator } from './utils';
+import * as utils from '../../utils';
 
 class StructureField {
   constructor(definition) {
@@ -34,7 +32,7 @@ class StructureField {
   }
 }
 
-exports.Datatype = class Datatype {
+export default class Datatype {
   constructor(definition) {
     const validator = new Validator(this);
 

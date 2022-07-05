@@ -1,8 +1,6 @@
-'use strict';
+import { lock, Validator } from './utils';
 
-const { lock, Validator } = require('./utils');
-
-exports.Constraint = class Constraint {
+export default class Constraint {
   constructor(definition) {
     if(Array.isArray(definition)) {
       const [id, ...args] = definition;
