@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, services, io } from 'mylife-tools-ui';
+import { React, services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
 
 import { referenceInit } from './reference/actions';
