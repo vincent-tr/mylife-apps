@@ -14,9 +14,10 @@ export default async (env: Record<string, any>, argv: Record<string, any>) => {
 async function loadCreateConfig(): Promise<CreateConfig> {
   try {
     const { default: customBuild } = await import(path.join(process.cwd(), 'build/webpack.config'));
+    console.log('Using custom build');
     return customBuild;
   } catch(err) {
-    console.log('Could not load custom build, using default');
+    console.log('Using default build');
     return defaultBuild;
   }
 }
