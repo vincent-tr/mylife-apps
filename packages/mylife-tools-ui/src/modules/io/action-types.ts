@@ -1,12 +1,11 @@
-'use strict';
-
 import wrap from '../../constants/wrapper';
 import { STATE_PREFIX } from '../../constants/defines';
 
 export default wrap({
 
-  SET_VIEW: null,
-  REF: null,
-  UNREF: null
+  SET_ONLINE : null,
+  CALL : null,
+  VIEW_CHANGE : null,
+  VIEW_CLOSE : null
 
-}, STATE_PREFIX, 'views');
+}, STATE_PREFIX, 'io');

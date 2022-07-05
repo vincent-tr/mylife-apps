@@ -1,5 +1,3 @@
-'use strict';
-
 export * from './behaviors';
 export * from './chart';
 export * from './editors';

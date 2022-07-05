@@ -1,5 +1,3 @@
-'use strict';
-
 import io from 'socket.io-client';
 import actionTypes from './action-types';
 import { setOnline } from './actions';

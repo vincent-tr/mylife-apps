@@ -1,5 +1,3 @@
-'use strict';
-
 import { useSelector } from 'react-redux';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
 import { getView } from './selectors';

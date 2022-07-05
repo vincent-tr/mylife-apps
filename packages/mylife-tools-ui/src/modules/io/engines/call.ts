@@ -1,5 +1,3 @@
-'use strict';
-
 import { utils } from 'mylife-tools-common';
 import { busySet } from '../../dialogs';
 

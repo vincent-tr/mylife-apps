@@ -1,5 +1,3 @@
-'use strict';
-
 import { debounce } from 'debounce';
 import { Mutex } from 'async-mutex';
 import { createAction } from 'redux-actions';

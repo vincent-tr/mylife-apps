@@ -1,5 +1,3 @@
-'use strict';
-
 import { viewChange } from '../actions';
 
 class NotifyEngine {

@@ -1,5 +1,3 @@
-'use strict';
-
 import immutable from 'immutable';
 import { getInternalState } from '../../selectors/base';
 

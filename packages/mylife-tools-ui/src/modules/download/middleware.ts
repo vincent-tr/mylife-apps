@@ -1,5 +1,3 @@
-'use strict';
-
 import actionTypes from './action-types';
 
 const toBase64 = array => btoa(String.fromCharCode.apply(null, array));
@@ -15,7 +13,7 @@ const download = (name, link) => {
 
 export default (/*store*/) => next => action => {
 
-  if(action.type === actionTypes.FILE) {
+  if (action.type === actionTypes.FILE) {
     const { name, mime, content } = action.payload;
     download(name, `data:${mime};base64,${toBase64(content)}`);
   }
