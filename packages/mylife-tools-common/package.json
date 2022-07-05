@@ -2,6 +2,7 @@
   "name": "mylife-tools-common",
   "version": "1.0.9",
   "description": "MyLife Tools Common",
+  "private": true,
   "main": "lib/index.js",
   "sideEffects": false,
   "scripts": {

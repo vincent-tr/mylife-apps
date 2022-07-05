@@ -1,18 +1,18 @@
 {
   "name": "mylife-money",
-  "version": "2.0.26",
+  "version": "2.0.27",
   "description": "Mylife Money",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-money",
   "author": "Vincent Trumpff",
   "scripts": {
     "lint": "eslint lib/* public/app/*",
-    "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 ./bin/server.js --dev --loglevel=debug",
-    "start": "./bin/server.js",
-    "build:bundle": "mylife-build-bundle",
-    "build:docker": "mylife-build-docker",
-    "prepack": "npm run build:bundle",
-    "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
+    "watch": "mylife-watch",
+    "start": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json",
+    "build:dev": "mylife-build development",
+    "build:prod": "mylife-build production",
+    "docker-publish": "mylife-publish",
+    "publish": "mylife-build production && mylife-publish"
   },
   "dependencies": {
     "csv-parse": "^5.2.0",

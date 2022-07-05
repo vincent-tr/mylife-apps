@@ -1,17 +1,17 @@
 {
   "name": "mylife-gallery",
-  "version": "2.0.17",
+  "version": "2.0.18",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
     "lint": "eslint lib/ public/src/",
-    "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --web",
-    "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 ./bin/server.js --dev --loglevel=debug --sync",
-    "start": "./bin/server.js",
-    "build:bundle": "mylife-build-bundle",
-    "build:docker": "./bin/build-docker.sh",
-    "prepack": "npm run build:bundle",
-    "postpack": "find ./public -maxdepth 1 -type f -not -name '.npmignore' -delete"
+    "watch": "mylife-watch",
+    "start-web": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json --web",
+    "start-sync": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json --sync",
+    "build:dev": "mylife-build development",
+    "build:prod": "mylife-build production",
+    "docker-publish": "mylife-publish",
+    "publish": "mylife-build production && mylife-publish"
   },
   "repository": {
     "type": "git",
@@ -32,10 +32,11 @@
     "fs-extra": "^10.1.0",
     "jimp": "^0.16.1",
     "mylife-tools-common": "^1.0.9",
-    "mylife-tools-server": "^1.0.22",
-    "webp-converter": "^2.3.3"
+    "mylife-tools-server": "^1.0.22"
   },
   "devDependencies": {
+    "@types/ffmpeg-static": "^3.0.1",
+    "@types/ffprobe-static": "^2.0.1",
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
     "humanize": "0.0.9",
