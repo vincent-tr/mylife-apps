@@ -2,12 +2,12 @@
 
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 
-exports.OperationStats = class OperationStats extends StoreContainer {
+export class OperationStats extends StoreContainer {
   constructor() {
     super();
     this.collection = getStoreCollection('operations');
 
-    this._changeCallback = event => this._onCollectionChange(event);
+    this._changeCallback = () => this._onCollectionChange();
     this.collection.on('change', this._changeCallback);
 
     this._countId = this.collection.newId();
@@ -34,7 +34,7 @@ exports.OperationStats = class OperationStats extends StoreContainer {
     this.collection.off('change', this._changeCallback);
     this._reset();
   }
-};
+}
 
 function findLastDate(operations) {
   const result = operations.reduce((acc, op) => Math.max(acc, op.date), -Infinity);

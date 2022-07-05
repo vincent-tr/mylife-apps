@@ -3,7 +3,7 @@
 const { dateToMonth, monthRange } = require('./tools');
 const { GroupByPeriod } = require('./group-by-period');
 
-exports.GroupByMonth = class GroupByMonth extends GroupByPeriod {
+export class GroupByMonth extends GroupByPeriod {
   constructor() {
     super('report-group-by-month');
   }
@@ -22,4 +22,4 @@ exports.GroupByMonth = class GroupByMonth extends GroupByPeriod {
   dateToPeriod(date) {
     return dateToMonth(date);
   }
-};
+}

@@ -3,11 +3,11 @@
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const { roundCurrency, createGroupHierarchy } = require('./tools');
 
-exports.GroupByPeriod = class GroupByPeriod extends StoreContainer {
+export class GroupByPeriod extends StoreContainer {
   constructor(entityName) {
     super();
     this.groups = getStoreCollection('groups');
-    this._groupChangeCallback = event => this._onGroupChange(event);
+    this._groupChangeCallback = () => this._onGroupChange();
     this.groups.on('change', this._groupChangeCallback);
 
     this.operations = getStoreCollection('operations');
@@ -118,17 +118,17 @@ exports.GroupByPeriod = class GroupByPeriod extends StoreContainer {
     return items;
   }
 
-  periodRange(minDate, maxDate) {
+  periodRange(minDate, maxDate): string[] {
     void minDate, maxDate;
     throw new Error('Not implemented');
   }
 
-  itemFactory(period) {
+  itemFactory(period: string): any {
     void period;
     throw new Error('Not implemented');
   }
 
-  dateToPeriod(date) {
+  dateToPeriod(date): string {
     void date;
     throw new Error('Not implemented');
   }
@@ -138,7 +138,7 @@ exports.GroupByPeriod = class GroupByPeriod extends StoreContainer {
     this.groups.off('change', this._groupChangeCallback);
     this._reset();
   }
-};
+}
 
 function computeDateRange(criteria, operationCollection) {
   let { minDate, maxDate } = criteria;

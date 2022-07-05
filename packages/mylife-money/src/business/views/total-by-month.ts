@@ -3,12 +3,12 @@
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const { dateToMonth, roundCurrency, monthRange } = require('./tools');
 
-exports.TotalByMonth = class TotalByMonth extends StoreContainer {
+export class TotalByMonth extends StoreContainer {
   constructor() {
     super();
     this.collection = getStoreCollection('operations');
 
-    this._changeCallback = event => this._onCollectionChange(event);
+    this._changeCallback = () => this._onCollectionChange();
     this.collection.on('change', this._changeCallback);
 
     this._skeletons = createSkeletons();
@@ -54,7 +54,7 @@ exports.TotalByMonth = class TotalByMonth extends StoreContainer {
     this.collection.off('change', this._changeCallback);
     this._reset();
   }
-};
+}
 
 function createSkeletons() {
   const now = new Date();

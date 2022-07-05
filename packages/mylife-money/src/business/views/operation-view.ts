@@ -3,7 +3,7 @@
 const { StoreView, getStoreCollection } = require('mylife-tools-server');
 const { createGroupHierarchy } = require('./tools');
 
-exports.OperationView = class OperationView extends StoreView {
+export class OperationView extends StoreView {
   constructor() {
     super(getStoreCollection('operations'));
 
@@ -51,7 +51,7 @@ exports.OperationView = class OperationView extends StoreView {
     this._groupCollection.off('change', this._changeCallback);
     super.close();
   }
-};
+}
 
 function filterOperationByText(operation, text) {
   return matchText(operation.label, text) || matchText(operation.note, text);

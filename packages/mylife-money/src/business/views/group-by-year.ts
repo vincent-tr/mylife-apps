@@ -3,7 +3,7 @@
 const { dateToYear, yearRange } = require('./tools');
 const { GroupByPeriod } = require('./group-by-period');
 
-exports.GroupByYear = class GroupByYear extends GroupByPeriod {
+export class GroupByYear extends GroupByPeriod {
   constructor() {
     super('report-group-by-year');
   }
@@ -22,4 +22,4 @@ exports.GroupByYear = class GroupByYear extends GroupByPeriod {
   dateToPeriod(date) {
     return dateToYear(date);
   }
-};
+}

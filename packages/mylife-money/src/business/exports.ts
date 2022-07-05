@@ -5,18 +5,18 @@ const { GroupByMonth } = require('./views/group-by-month');
 const { GroupByYear } = require('./views/group-by-year');
 const { roundCurrency } = require('./views/tools');
 
-exports.exportGroupByMonth = (session, criteria, display) => {
+export function exportGroupByMonth(session, criteria, display) {
   const view = new GroupByMonth();
   view.setCriteria({ ...criteria, noChildSub: true });
   return exportGroupByPeriodView(view, display, 'month');
-};
+}
 
-exports.exportGroupByYear = (session, criteria, display) => {
+export function exportGroupByYear(session, criteria, display) {
   const view = new GroupByYear();
   view.setCriteria({ ...criteria, noChildSub: true });
   const amountTransform = display.monthAverage ? (x => roundCurrency(x / 12)) : (x => x);
   return exportGroupByPeriodView(view, display, 'year', amountTransform);
-};
+}
 
 function exportGroupByPeriodView(view, displayOptions, periodKey, amountTransform = x => x) {
   const periodItems = view.list();
@@ -25,7 +25,7 @@ function exportGroupByPeriodView(view, displayOptions, periodKey, amountTransfor
   }
 
   const groups = [];
-  for(const [root, item] of Object.entries(periodItems[0].groups)) {
+  for(const [root, item] of Object.entries<any>(periodItems[0].groups)) {
     const display = groupDisplay(root, false, displayOptions);
     groups.push({ root, display });
 

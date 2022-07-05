@@ -1,36 +1,25 @@
-'use strict';
-
-exports.dateToMonth = dateToMonth;
-exports.dateToYear = dateToYear;
-exports.formatTwoDigits = formatTwoDigits;
-exports.roundCurrency = roundCurrency;
-exports.monthRange = monthRange;
-exports.yearRange = yearRange;
-exports.createGroupHierarchy = createGroupHierarchy;
-exports.computeDateRange = computeDateRange;
-
-function dateToMonth(date) {
+export function dateToMonth(date) {
   const year = date.getFullYear();
   const month = formatTwoDigits(date.getMonth() + 1);
   return `${year}/${month}`;
 }
 
-function dateToYear(date) {
+export function dateToYear(date) {
   return `${date.getFullYear()}`;
 }
 
-function formatTwoDigits(number) {
+export function formatTwoDigits(number) {
   return number.toLocaleString(undefined, { minimumIntegerDigits: 2 });
 }
 
-function roundCurrency(number) {
+export function roundCurrency(number) {
   if(!isFinite(number)) {
     return number;
   }
   return Math.round(number * 100) / 100;
 }
 
-function monthRange(minDate, maxDate) {
+export function monthRange(minDate, maxDate) {
   const months = [];
   const minYear = minDate.getFullYear();
   const minMonth = minDate.getMonth();
@@ -53,7 +42,7 @@ function monthRange(minDate, maxDate) {
   return months;
 }
 
-function yearRange(minDate, maxDate) {
+export function yearRange(minDate, maxDate) {
   const years = [];
   const minYear = minDate.getFullYear();
   const maxYear = maxDate.getFullYear();
@@ -65,7 +54,7 @@ function yearRange(minDate, maxDate) {
   return years;
 }
 
-function createGroupHierarchy(groupCollection, groupId) {
+export function createGroupHierarchy(groupCollection, groupId) {
   // no criteria
   if(groupId === undefined) {
     return null;
@@ -95,7 +84,7 @@ function createGroupHierarchy(groupCollection, groupId) {
   return hierarchy;
 }
 
-function computeDateRange(criteria, operations) {
+export function computeDateRange(criteria, operations) {
   let { minDate, maxDate } = criteria;
   if((!minDate || !maxDate) && operations.size) {
     let computedMinDate = Infinity;
