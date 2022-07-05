@@ -69,7 +69,6 @@ MyLife Applications
   - __dirname usage :
     - http server public dir
     - config dir
-- centraliser tous les README ici
 
 ## Tools UI
 
