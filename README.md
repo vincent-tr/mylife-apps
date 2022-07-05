@@ -12,6 +12,51 @@ MyLife Applications
  - `lerna run docker-publish`
  - `cd repo; npm run docker-publish` (or for one repository)
 
+# Framework (tools)
+
+## Orgnization
+
+### common
+- datatypes/entities
+- localization
+
+### ui
+- material ui
+- editors
+- shared workers/offline ?
+- web socket -> dataview with update notifications
+- request/response on top of web socket
+- each tab = websocket
+- no offline mode
+- no service worker for now
+- routing
+- master layout
+- redux base
+- dialogs
+
+### server
+- config management
+- docker
+- mongo
+- business
+- web api, session, websocket
+
+## Notes
+
+### UI
+
+- Tout accessible en 3 clics
+
+### DATABASE
+- < 1 million record -> in memory store(cf node-dirty)
+- whole DB in memory
+- with freeze on each object => update = replace whole object
+- keep update history + version + tracability (ts + user)
+- event fired on update
+- collections
+- indexes (auto create on requests ?)
+- dataview with filters and event on change
+
 # TODO
 
 - mui v5
@@ -54,10 +99,3 @@ MyLife Applications
 ## Money
 
 - apres import csv, les operations n'apparaissent pas dans "non triés" mais la date de derniere integration est mise a jour
-
-# Notes tools
-
-## UI
-
-### Tips :
-* Tout accessible en 3 clics
