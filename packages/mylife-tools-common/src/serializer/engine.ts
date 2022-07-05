@@ -1,18 +1,12 @@
-'use strict';
-
-exports.serialize = serialize;
-exports.deserialize = deserialize;
-exports.addPlugin = addPlugin;
-
 const plugins = [];
 const pluginByNames = new Map();
 
-function addPlugin(plugin) {
+export function addPlugin(plugin) {
   plugins.push(plugin);
   pluginByNames.set(plugin.name, plugin);
 }
 
-function serialize(payload) {
+export function serialize(payload) {
   if(typeof payload !== 'object' || payload === null) {
     return payload;
   }
@@ -41,7 +35,7 @@ function serialize(payload) {
   throw new Error(`Cannot serialize value : ${payload}`);
 }
 
-function deserialize(raw) {
+export function deserialize(raw) {
   if(typeof raw !== 'object' || raw === null) {
     return raw;
   }

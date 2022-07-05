@@ -1,6 +1,6 @@
-'use strict';
+import { addPlugin } from './engine';
 
-const { addPlugin } = require('./engine');
+// @ts-ignore: process has no def
 const isNode = (typeof process !== 'undefined') && (process.release.name === 'node');
 
 addPlugin({
