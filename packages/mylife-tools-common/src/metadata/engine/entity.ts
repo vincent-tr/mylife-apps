@@ -1,59 +1,56 @@
-import Constraint from './constraint';
+import Constraint, { ConstraintDefinition } from './constraint';
 import * as registry from './registry';
 import { lock, Validator } from './utils';
 
+export type FieldDefinition = {
+  id: string;
+  name?: string;
+  description?: string;
+  datatype: string;
+  initial?: unknown;
+  constraints?: ConstraintDefinition[];
+};
+
 class Field {
-  constructor(definition) {
+  public readonly id: string;
+  public readonly name: string;
+  public readonly description: string;
+  private readonly _datatype: string;
+  public readonly initialValue: unknown;
+  public readonly constraints: Constraint[];
+  private readonly propChain: string[];
+
+  constructor(definition: FieldDefinition) {
     const validator = new Validator(this);
 
-    this._id = validator.validateId(definition.id);
-    this._name = validator.validate(definition.name, 'name', { type: 'string' }, this._id);
-    this._description = validator.validate(definition.description, 'description', { type: 'string' });
+    this.id = validator.validateId(definition.id);
+    this.name = validator.validate(definition.name, 'name', { type: 'string' });
+    this.description = validator.validate(definition.description, 'description', { type: 'string' });
     this._datatype = validator.validate(definition.datatype, 'datatype', { type: 'string', mandatory: true });
-    this._initialValue = typeof definition.initial === undefined ? null : definition.initial;
+    this.initialValue = typeof definition.initial === undefined ? null : definition.initial;
 
-    this._constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
+    this.constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
 
-    this._propChain = this._id.split('.');
+    this.propChain = this.id.split('.');
 
-    Object.freeze(this._constraints);
+    Object.freeze(this.constraints);
     lock(this);
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  get description() {
-    return this._description;
   }
 
   get datatype() {
     return registry.getDatatype(this._datatype);
   }
 
-  get initialValue() {
-    return this._initialValue;
-  }
-
-  get constraints() {
-    return this._constraints;
-  }
-
   setValue(object, value) {
-    return setValueImpl(object, this._propChain, value);
+    return setValueImpl(object, this.propChain, value);
   }
 
   resetValue(object) {
-    return this.setValue(object, this._initialValue);
+    return this.setValue(object, this.initialValue);
   }
 
   setValueMutable(object, value) {
-    const chain = Array.from(this._propChain);
+    const chain = Array.from(this.propChain);
     const last = chain.pop();
     let current = object;
     for(const part of chain) {
@@ -68,7 +65,7 @@ class Field {
 
   getValue(object) {
     let current = object;
-    for(const prop of this._propChain) {
+    for(const prop of this.propChain) {
       current = current[prop];
       if(current === undefined || current === null) {
         break;
@@ -86,88 +83,79 @@ function setValueImpl(object, propChain, value) {
   return Object.freeze(Object.assign({}, object, { [prop] : value }));
 }
 
+export type EntityDefinition = {
+  id: string;
+  parent?: string;
+  name?: string;
+  description?: string;
+  display?: (obj: unknown) => string;
+  fields: FieldDefinition[];
+  constraints?: ConstraintDefinition[];
+};
+
 export default class Entity {
-  constructor(definition) {
+  public readonly id: string;
+  public readonly parent: Entity;
+  public readonly name: string;
+  public readonly description: string;
+  public readonly display: (obj: unknown) => string;
+  public readonly fields: Field[];
+  private readonly fieldsById: Map<string, Field>;
+  public readonly constraints: Constraint[];
+
+  constructor(definition: EntityDefinition) {
     const validator = new Validator(this);
 
-    this._id = validator.validateId(definition.id);
+    this.id = validator.validateId(definition.id);
 
     const parent = validator.validate(definition.parent, 'parent', { type: 'string' });
     if(parent) {
-      this._parent = registry.getEntity(parent);
+      this.parent = registry.getEntity(parent);
     }
 
-    this._name = validator.validate(definition.name, 'name', { type: 'string' }, this._id);
-    this._description = validator.validate(definition.description, 'description', { type: 'string' });
-    this._display = validator.validate(definition.display, 'display', { type: 'function' });
+    this.name = validator.validate(definition.name, 'name', { type: 'string' });
+    this.description = validator.validate(definition.description, 'description', { type: 'string' });
+    this.display = validator.validate(definition.display, 'display', { type: 'function' });
 
-    const parentFields = this._parent ? this._parent.fields : [];
+    const parentFields = this.parent?.fields ?? [];
     const localFields = validator.validate(definition.fields, 'fields', { type: 'array', defaultValue: [] }).map(fdef => new Field(fdef));
-    this._fields = [...parentFields, ...localFields];
+    this.fields = [...parentFields, ...localFields];
 
-    const parentConstraints = this._parent ? this._parent.constraints : [];
+    const parentConstraints = this.parent ? this.parent.constraints : [];
     const localConstraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
-    this._constraints = [...parentConstraints, ...localConstraints];
+    this.constraints = [...parentConstraints, ...localConstraints];
 
-    validator.validateUnique(this._fields.map(({ id }) => id), 'fields');
-    this._fieldsById = new Map();
-    for(const field of this._fields) {
-      this._fieldsById.set(field.id, field);
+    validator.validateUnique(this.fields.map(({ id }) => id), 'fields');
+    this.fieldsById = new Map();
+    for(const field of this.fields) {
+      this.fieldsById.set(field.id, field);
     }
 
-    Object.freeze(this._fieldsById);
-    Object.freeze(this._fields);
-    Object.freeze(this._constraints);
+    Object.freeze(this.fieldsById);
+    Object.freeze(this.fields);
+    Object.freeze(this.constraints);
     lock(this);
   }
 
-  get id() {
-    return this._id;
-  }
-
-  get parent() {
-    return this._parent;
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  get description() {
-    return this._description;
-  }
-
-  get display() {
-    return this._display;
-  }
-
   render(object) {
-    return this._display(object);
+    return this.display(object);
   }
 
-  get fields() {
-    return this._fields;
-  }
-
-  findField(id) {
-    return this._fieldsById.get(id);
+  findField(id: string) {
+    return this.fieldsById.get(id);
   }
 
   getField(id) {
-    const field = this._fieldsById.get(id);
+    const field = this.fieldsById.get(id);
     if(field) {
       return field;
     }
-    throw new Error(`Field '${id}' not found on entity '${this._id}'`);
-  }
-
-  get constraints() {
-    return this._constraints;
+    throw new Error(`Field '${id}' not found on entity '${this.id}'`);
   }
 
   newObject(values = {}) {
-    let object = { _entity: this._id };
-    for(const field of this._fields) {
+    let object = { _entity: this.id };
+    for(const field of this.fields) {
       const value = field.getValue(values);
       if(value === undefined) {
         object = field.resetValue(object);
@@ -179,7 +167,7 @@ export default class Entity {
   }
 
   setValues(object, values) {
-    for(const field of this._fields) {
+    for(const field of this.fields) {
       const value = field.getValue(values);
       if(value === undefined) {
         continue;

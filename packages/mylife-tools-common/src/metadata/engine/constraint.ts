@@ -1,29 +1,26 @@
 import { lock, Validator } from './utils';
 
+export type ConstraintDefinition = string | [string, ...unknown[]];
+
 export default class Constraint {
-  constructor(definition) {
+  public readonly id: string;
+  public readonly args: unknown[];
+
+  constructor(definition: ConstraintDefinition) {
     if(Array.isArray(definition)) {
       const [id, ...args] = definition;
-      this._id = id;
-      this._args = args;
+      this.id = id;
+      this.args = args;
     } else {
-      this._id = definition;
-      this._args = [];
+      this.id = definition;
+      this.args = [];
     }
 
     const validator = new Validator(this);
-    validator.validateId(this._id);
-    validator.validate(this._args, 'args', { type: 'array' });
+    validator.validateId(this.id);
+    validator.validate(this.args, 'args', { type: 'array' });
 
-    Object.freeze(this._args);
+    Object.freeze(this.args);
     lock(this);
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  get args() {
-    return this._args;
   }
 };

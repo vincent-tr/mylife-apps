@@ -3,6 +3,12 @@ import { addPlugin } from './engine';
 // @ts-ignore: process has no def
 const isNode = (typeof process !== 'undefined') && (process.release.name === 'node');
 
+class RemoteError extends Error {
+  constructor(message: string, public readonly stacktrace: string) {
+    super(message);
+  }
+}
+
 addPlugin({
   name: 'error',
   is: payload => payload instanceof Error,
@@ -11,9 +17,7 @@ addPlugin({
     stacktrace: payload.stacktrace
   }),
   deserialize: raw => {
-    const err = new Error(raw.message);
-    err.remoteStacktrace = raw.stacktrace;
-    return err;
+    return new RemoteError(raw.message, raw.stacktrace);
   }
 });
 

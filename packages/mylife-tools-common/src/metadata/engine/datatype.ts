@@ -1,30 +1,30 @@
-import Constraint from './constraint';
+import Constraint, { ConstraintDefinition } from './constraint';
 import * as registry from './registry';
 import { lock, Validator } from './utils';
 import * as utils from '../../utils';
 
+export type StructureFieldDefinition = {
+  id: string;
+  name?: string;
+  description?: string;
+  datatype: string;
+};
+
 class StructureField {
-  constructor(definition) {
+  public readonly id: string;
+  public readonly name: string;
+  public readonly description: string;
+  private readonly _datatype: string;
+
+  constructor(definition: StructureFieldDefinition) {
     const validator = new Validator(this);
 
-    this._id = validator.validateId(definition.id);
-    this._name = validator.validate(definition.name, 'name', { type: 'string' }, this._id);
-    this._description = validator.validate(definition.description, 'description', { type: 'string' });
+    this.id = validator.validateId(definition.id);
+    this.name = validator.validate(definition.name, 'name', { type: 'string' });
+    this.description = validator.validate(definition.description, 'description', { type: 'string' });
     this._datatype = validator.validate(definition.datatype, 'datatype', { type: 'string', mandatory: true });
 
     lock(this);
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  get description() {
-    return this._description;
   }
 
   get datatype() {
@@ -32,55 +32,67 @@ class StructureField {
   }
 }
 
+export type DatatypeDefinition = {
+  id: string;
+  primitive?: string;
+  enum?: string[];
+  reference?: string;
+  list?: string;
+  map?: string;
+  structure?: StructureFieldDefinition[];
+  constraints?: ConstraintDefinition[];
+};
+
 export default class Datatype {
-  constructor(definition) {
+  public readonly id: string;
+  public readonly primitive: string;
+  private readonly _values: string[];
+  private readonly _target: string;
+  private readonly _item: string;
+  private readonly _fields: StructureField[];
+  private readonly _fieldMap: { [id: string]: StructureField };
+  public readonly constraints: Constraint[];
+
+  constructor(definition: DatatypeDefinition) {
     const validator = new Validator(this);
 
-    this._id = validator.validateId(definition.id);
-    this._primitive = definition.primitive;
+    this.id = validator.validateId(definition.id);
+    this.primitive = definition.primitive;
 
     if(definition.enum) {
-      this._primitive = 'enum'
+      this.primitive = 'enum'
       this._values = validator.validate(definition.enum, 'enum', { type: 'string-array', mandatory: true });
     }
 
     if(definition.reference) {
-      this._primitive = 'reference';
+      this.primitive = 'reference';
       this._target = validator.validate(definition.reference, 'reference', { type: 'string', mandatory: true });
     }
 
     if(definition.list) {
-      this._primitive = 'list';
+      this.primitive = 'list';
       this._item = validator.validate(definition.list, 'list', { type: 'string', mandatory: true });
     }
 
     if(definition.map) {
-      this._primitive = 'map';
+      this.primitive = 'map';
       this._item = validator.validate(definition.map, 'map', { type: 'string', mandatory: true });
     }
 
     if(definition.structure) {
-      this._primitive = 'structure';
+      this.primitive = 'structure';
       this._fields = validator.validate(definition.structure, 'structure', { type: 'array', defaultValue: [] }).map(fdef => new StructureField(fdef));
       this._fieldMap = utils.indexBy(this._fields, 'id');
       Object.freeze(this._fields);
       Object.freeze(this._fieldMap);
     }
 
-    validator.validate(this._primitive, 'primitive', { type: 'string', mandatory: true });
+    validator.validate(this.primitive, 'primitive', { type: 'string', mandatory: true });
 
-    this._constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
+    this.constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
 
-    Object.freeze(this._constraints);
+    Object.freeze(this.constraints);
     lock(this);
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  get primitive() {
-    return this._primitive;
   }
 
   get values() {
@@ -111,16 +123,14 @@ export default class Datatype {
     return this._fields;
   }
 
-  getField(id) {
+  getField(id: string) {
     this.fields; // access check
+
     const field = this._fieldMap[id];
     if(!field) {
       throw new Error(`Field not found '${id}' on '${this.id}' datatype`)
     }
+    
     return field;
-  }
-
-  get constraints() {
-    return this._constraints;
   }
 };
