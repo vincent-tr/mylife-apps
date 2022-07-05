@@ -1,6 +1,4 @@
-'use strict';
-
-const { metadata } = require('mylife-tools-common');
+import { metadata } from 'mylife-tools-common';
 
 export function initMetadata(metadataDefintions) {
   const { datatypes = [], entities = [] } = metadataDefintions;

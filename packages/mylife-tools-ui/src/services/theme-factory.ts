@@ -1,5 +1,3 @@
-'use strict';
-
 import { colors, createTheme } from '@material-ui/core';
 
 const defaultConfig = {

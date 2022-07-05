@@ -1,5 +1,3 @@
-'use strict';
-
 import { createAction } from 'redux-actions';
 
 const errorAction = createAction('noop-error');
@@ -10,7 +8,7 @@ export default (store) => next => action => {
   }
 
   let result = action(store.dispatch, store.getState);
-  if(isPromise(result)) {
+  if (isPromise(result)) {
     result = result.catch(err => {
       next(errorAction(err));
     });
