@@ -96,6 +96,7 @@ MyLife Applications
   - __dirname usage :
     - http server public dir
     - config dir
+- redux toolkit for state updates instead of immutable objects
 
 ## Tools UI
 
