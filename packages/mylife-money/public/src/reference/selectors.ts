@@ -21,7 +21,7 @@ const getChildren = (state, { group }) => {
   if(!group) {
     return getGroupView(state).filter(it => !it.parent); // Root elements
   } else if (!group._id) {
-    return new immutable.Map(); // Non tries -> no children
+    return immutable.Map(); // Non tries -> no children
   } else {
     return getGroupView(state).filter(it => it.parent === group._id);
   }
@@ -61,7 +61,7 @@ export const getGroupStacks = createSelector([ getGroups ], groups => {
     groupStacks.set(group._id, stack);
   }
 
-  return new immutable.Map(groupStacks);
+  return immutable.Map(groupStacks);
 });
 
 export const getGroupStack = (state, { group }) => getGroupStacks(state).get(group);

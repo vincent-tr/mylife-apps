@@ -23,7 +23,7 @@ const useConnect = () => {
 
 const Stepper = ({ documents, onClose }) => {
   const classes = useStyles();
-  const [selection, setSelection] = useState(new immutable.Map());
+  const [selection, setSelection] = useState(immutable.Map());
   useEffect(() => setSelection(getInitialSelection(documents)), [documents]);
 
   const renderList = () => (<CleanDuplicatesList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
@@ -69,7 +69,7 @@ export async function showDialog() {
 }
 
 function getInitialSelection(documents) {
-  return new immutable.Map().withMutations(map => {
+  return immutable.Map().withMutations(map => {
     for(const document of documents) {
       // if a document has one path with does not start with _, then select it by default
       const indexes = [];

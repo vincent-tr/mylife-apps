@@ -153,7 +153,7 @@ function getKeywordUsage(documents) {
   }
   const entries = Array.from(keywords.entries());
   const setEntries = entries.map(([keyword, documents]) => [keyword, new immutable.Set(documents)]);
-  return new immutable.Map(setEntries);
+  return immutable.Map(setEntries);
 }
 
 function computeValueDiff(oldValues, newValues) {

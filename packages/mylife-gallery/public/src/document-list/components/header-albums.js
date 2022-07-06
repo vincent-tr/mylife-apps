@@ -106,5 +106,5 @@ function getInitialAlbumUsage(documents) {
   }
   const entries = Array.from(albums.entries());
   const setEntries = entries.map(([albumId, documents]) => [albumId, new immutable.Set(documents)]);
-  return new immutable.Map(setEntries);
+  return immutable.Map(setEntries);
 }

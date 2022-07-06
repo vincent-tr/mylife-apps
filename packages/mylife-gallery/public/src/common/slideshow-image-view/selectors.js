@@ -24,7 +24,7 @@ const getImagesBySlideshow = createSelector(
       map.set(key, new immutable.List(list));
     }
 
-    return new immutable.Map(map);
+    return immutable.Map(map);
   }
 );
 

@@ -28,7 +28,7 @@ export default handleActions({
 
 }, {
   viewId: null,
-  refs: new immutable.Map()
+  refs: immutable.Map()
 });
 
 function ref(refs, id) {

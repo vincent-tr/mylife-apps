@@ -117,7 +117,7 @@ const ObjectItems = ({ documents, objects, objectUsage, setObjectUsage }) => {
 
 const PopupObjects = React.forwardRef(({ title, newObject, newObjectRenderer, documents, objects, onSave, initialObjectUsage }, ref) => {
   const classes = useStyles();
-  const [objectUsage, setObjectUsage] = useState(new immutable.Map());
+  const [objectUsage, setObjectUsage] = useState(immutable.Map());
   const [newObjects, setNewObjects] = useState(new immutable.List());
 
   useEffect(() => {
