@@ -28,6 +28,11 @@ GroupSelectorDialog.propTypes = {
 
 const selectorDialog = dialogs.create(GroupSelectorDialog);
 
+interface GroupSelectorButton extends Omit<React.ComponentProps<typeof mui.IconButton>, 'ref' | 'onClick'> {
+  onSelect: (group: string) => void;
+  options?: {};
+}
+
 const GroupSelectorButton = React.forwardRef(({ onSelect, options, ...props }, ref) => {
   const clickHandler = async () => {
     const { result, group } = await selectorDialog({ options });

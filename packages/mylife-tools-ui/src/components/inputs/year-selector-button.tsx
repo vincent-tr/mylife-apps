@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as dialogs from '../../modules/dialogs/helpers';
@@ -44,7 +42,16 @@ YearSelectorDialog.propTypes = {
 
 const selectorDialog = dialogs.create(YearSelectorDialog);
 
-const YearSelectorButton = React.forwardRef(({ value, onChange, selectLastDay, ...props }, ref) => {
+interface YearSelectorButtonProps {
+  disabled?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+  value: Date;
+  onChange: (value: Date) => void;
+  selectLastDay?: boolean;
+}
+
+const YearSelectorButton = React.forwardRef<HTMLButtonElement, YearSelectorButtonProps>(({ value, onChange, selectLastDay = false, ...props }, ref) => {
 
   const clickHandler = async () => {
     const { result, selectedValue } = await selectorDialog({ options: { value } });
@@ -76,17 +83,18 @@ YearSelectorButton.propTypes = {
 
 export default YearSelectorButton;
 
-function getSelectedDate(selectedValue, selectLastDay) {
-  if(!selectedValue) {
+function getSelectedDate(selectedValue: Date, selectLastDay: boolean) {
+  if (!selectedValue) {
     return null;
   }
+  
   return selectLastDay ? lastDayOfYear(selectedValue) : firstDayOfYear(selectedValue);
 }
 
-function firstDayOfYear(date) {
+function firstDayOfYear(date: Date) {
   return new Date(date.getFullYear(), 0, 1);
 }
 
-function lastDayOfYear(date) {
+function lastDayOfYear(date: Date) {
   return new Date(date.getFullYear(), 11, 31);
 }

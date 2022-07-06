@@ -7,7 +7,7 @@ const timer = (performance && typeof performance.now === 'function') ? performan
 const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
 
 class Pending {
-  private readonly timeout: Timeout;
+  private readonly timeout: NodeJS.Timeout;
   private readonly begin: number;
   private end: number;
 

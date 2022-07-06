@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 export function useInterval(callback, interval) {
-  const savedCallback = useRef();
+  const savedCallback = useRef<() => void>();
 
   // Remember the latest callback.
   useEffect(() => {
