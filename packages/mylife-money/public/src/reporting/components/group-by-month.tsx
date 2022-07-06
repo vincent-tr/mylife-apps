@@ -10,7 +10,7 @@ const initialCriteria = {
   minDate: null,
   maxDate: null,
   account: null,
-  groups: new immutable.List([ null ])
+  groups: immutable.List([ null ])
 };
 
 const initialDisplay = {

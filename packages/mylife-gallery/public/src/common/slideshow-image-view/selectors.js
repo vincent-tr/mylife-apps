@@ -21,14 +21,14 @@ const getImagesBySlideshow = createSelector(
 
     for(const [key, list] of map) {
       list.sort((it1, it2) => it1.index - it2.index);
-      map.set(key, new immutable.List(list));
+      map.set(key, immutable.List(list));
     }
 
     return immutable.Map(map);
   }
 );
 
-const emptyList = new immutable.List();
+const emptyList = immutable.List();
 
 export const getSlideshowImages = (state, slideshowId) => getImagesBySlideshow(state).get(slideshowId) || emptyList;
 
