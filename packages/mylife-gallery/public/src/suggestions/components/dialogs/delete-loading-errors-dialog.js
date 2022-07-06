@@ -25,7 +25,7 @@ const DeleteLoadingErrorsDialog = ({ show, proceed }) => {
   const classes = useStyles();
   const { enter, leave, documents, deleteLoadingErrors } = useConnect();
   useLifecycle(enter, leave);
-  const [selection, setSelection] = useState(new immutable.Set());
+  const [selection, setSelection] = useState(immutable.Set());
 
   const onDelete = () => {
     deleteLoadingErrors(selection.toArray());

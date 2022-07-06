@@ -103,7 +103,7 @@ export function deleteView({ viewSelector, setViewAction }) {
 
 interface ViewReferenceOptions {
 	uid: string;
-	criteriaSelector;
+	criteriaSelector?;
 	service: string;
 	method: string;
 	canUpdate?: boolean;

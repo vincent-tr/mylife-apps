@@ -89,11 +89,11 @@ NewObjectItems.propTypes = {
 };
 
 const ObjectItems = ({ documents, objects, objectUsage, setObjectUsage }) => {
-  const newSet = () => new immutable.Set(documents.map(({ document }) => document));
+  const newSet = () => immutable.Set(documents.map(({ document }) => document));
   const onUpdate = (object, value) => setObjectUsage(objectUsage => (value ? objectUsage.set(object._id, newSet()) : objectUsage.delete(object._id)));
 
   return objects.map(object => {
-    const usage = (objectUsage.get(object._id) || new immutable.Set()).size;
+    const usage = (objectUsage.get(object._id) || immutable.Set()).size;
 
     return (
       <mui.ListItem key={object._id}>

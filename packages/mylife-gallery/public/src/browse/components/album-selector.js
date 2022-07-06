@@ -16,7 +16,7 @@ const MenuProps = {
 
 const AlbumSelector = ({ value, onChange, ...props }) => {
   const { albums, view } = useAlbumView();
-  const handleChange = event => onChange(new immutable.Set(event.target.value));
+  const handleChange = event => onChange(immutable.Set(event.target.value));
   const selectorValue = value.toArray();
   const renderSelectorValue = createSelectorValueRenderer(view);
 

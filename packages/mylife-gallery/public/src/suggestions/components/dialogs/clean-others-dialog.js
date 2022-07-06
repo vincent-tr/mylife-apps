@@ -23,7 +23,7 @@ const useConnect = () => {
 
 const Stepper = ({ documents, onClose }) => {
   const classes = useStyles();
-  const [selection, setSelection] = useState(new immutable.Set());
+  const [selection, setSelection] = useState(immutable.Set());
 
   const renderList = () => (<CleanOthersList documents={documents} selection={selection} setSelection={setSelection} className={classes.list} />);
   const renderGenerator = () => (<ScriptGenerator paths={generatePaths(documents, selection)} template={'Remove-Item -path "${file}" -whatif\n'} />);

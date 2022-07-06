@@ -56,10 +56,10 @@ function valueToSelector(value) {
 
 function valueFromSelector(value) {
   if(value.length === emptySelectorValue.length) {
-    return new immutable.Set();
+    return immutable.Set();
   }
 
-  return new immutable.Set(value);
+  return immutable.Set(value);
 }
 
 function renderSelectorValue(selection) {

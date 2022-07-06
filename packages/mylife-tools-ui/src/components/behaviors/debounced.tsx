@@ -5,22 +5,22 @@ import { useEffect, useState, useRef } from 'react';
 const WAIT_INTERVAL = 300;
 
 class Debounce {
-  constructor(callback, waitInterval) {
+  private timer: Timeout;
+
+  constructor(private readonly callback, private readonly waitInterval) {
     this.timer = null;
-    this.callback = callback;
-    this.waitInterval = waitInterval;
   }
 
   call(args) {
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => this._doCall(args), this.waitInterval);
+    this.timer = setTimeout(() => this.doCall(args), this.waitInterval);
   }
 
   forceCall(args) {
-    this._doCall(args);
+    this.doCall(args);
   }
 
-  _doCall(args) {
+  private doCall(args) {
     this.reset();
     this.callback(args);
   }

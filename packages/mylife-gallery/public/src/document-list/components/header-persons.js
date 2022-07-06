@@ -125,6 +125,6 @@ function getInitialPersonUsage(documents) {
     }
   }
   const entries = Array.from(persons.entries());
-  const setEntries = entries.map(([personId, documents]) => [personId, new immutable.Set(documents)]);
+  const setEntries = entries.map(([personId, documents]) => [personId, immutable.Set(documents)]);
   return immutable.Map(setEntries);
 }

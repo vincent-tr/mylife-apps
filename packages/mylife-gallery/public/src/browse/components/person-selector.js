@@ -16,7 +16,7 @@ const MenuProps = {
 
 const PersonSelector = ({ value, onChange, ...props }) => {
   const { persons, view } = usePersonView();
-  const handleChange = event => onChange(new immutable.Set(event.target.value));
+  const handleChange = event => onChange(immutable.Set(event.target.value));
   const selectorValue = value.toArray();
   const renderSelectorValue = createSelectorValueRenderer(view);
 

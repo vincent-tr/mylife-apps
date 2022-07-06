@@ -60,7 +60,7 @@ export default handleActions({
   },
   operations : {
     view     : null,
-    selected : new immutable.Set(),
+    selected : immutable.Set(),
     detail   : null
   }
 });
