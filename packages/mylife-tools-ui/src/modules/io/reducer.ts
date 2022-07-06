@@ -4,7 +4,7 @@ import actionTypes       from './action-types';
 
 const defaultState = {
   online : false,
-  views: new immutable.Map()
+  views: immutable.Map()
 };
 
 export default handleActions({
@@ -50,7 +50,7 @@ export default handleActions({
 
 function viewMutations(views, viewId, mutator) {
   if(!views.has(viewId)) {
-    views = views.set(viewId, new immutable.Map());
+    views = views.set(viewId, immutable.Map());
   }
   return views.update(viewId, view => view.withMutations(mutator));
 }

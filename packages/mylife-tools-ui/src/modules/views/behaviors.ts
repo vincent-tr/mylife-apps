@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
 import { getView } from './selectors';
 
-export function useSharedView(sharedViewRef, selectors = {}) {
+export function useSharedView(sharedViewRef, selectors: { [key: string]: (state) => any} = {}) {
   const enter = () => sharedViewRef.ref();
   const leave = () => sharedViewRef.unref();
   useLifecycle(enter, leave);

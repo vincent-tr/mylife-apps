@@ -30,8 +30,8 @@ export default handleActions({
   }),
 
 }, {
-  viewReferences: new immutable.Map(),
-  refCounts: new immutable.Map(),
+  viewReferences: immutable.Map(),
+  refCounts: immutable.Map(),
 });
 
 function addRef(refCounts, uid, value) {

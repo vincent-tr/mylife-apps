@@ -7,10 +7,11 @@ const timer = (performance && typeof performance.now === 'function') ? performan
 const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
 
 class Pending {
-  constructor(engine, request, deferred) {
-    this.engine = engine;
-    this.request = request;
-    this.deferred = deferred;
+  private readonly timeout: Timeout;
+  private readonly begin: number;
+  private end: number;
+
+  constructor(private readonly engine, private readonly request, private readonly deferred) {
     this.timeout = setTimeout(() => this.onTimeout(), CALL_TIMEOUT);
     this.begin = timer.now();
   }
@@ -19,14 +20,14 @@ class Pending {
     return this.request.transaction;
   }
 
-  finish(error, result) {
+  private finish(error, result?) {
     this.end = timer.now();
     clearTimeout(this.timeout);
     this.engine.removePending(this);
 
     logger(this, error, result);
 
-    if(error) {
+    if (error) {
       this.deferred.reject(error);
     } else {
       this.deferred.resolve(result);
@@ -48,11 +49,10 @@ class Pending {
 }
 
 class CallEngine {
-  constructor(emitter, dispatch) {
-    this.emitter = emitter;
-    this.dispatch = dispatch;
-    this.pendings = new Map();
-    this.transactionCounter = 0;
+  private readonly pendings = new Map();
+  private transactionCounter = 0;
+
+  constructor(private readonly emitter, private readonly dispatch) {
   }
 
   onDisconnect() {

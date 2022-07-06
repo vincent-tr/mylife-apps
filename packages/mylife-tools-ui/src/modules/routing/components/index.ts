@@ -1,2 +1,2 @@
-export LayoutRouter from './layout-router';
+export { default as LayoutRouter } from './layout-router';
 export * from './behaviors';

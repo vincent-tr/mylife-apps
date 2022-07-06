@@ -70,6 +70,8 @@ const nullRenderer = () => null;
 const defaultRouteMatch = { renderName: nullRenderer, renderIcon: nullRenderer, render: nullRenderer };
 
 class RoutesInfo {
+  private readonly routesInfo;
+  
   constructor(routes) {
     this.routesInfo = routes.map(route => new RouteInfo(route));
   }
@@ -87,8 +89,9 @@ class RoutesInfo {
 }
 
 class RouteInfo {
-  constructor(route) {
-    this.route = route;
+  private readonly parser;
+
+  constructor(private readonly route) {
     this.parser = new PathToRegex(route.location);
   }
 
@@ -103,9 +106,7 @@ class RouteInfo {
 }
 
 class RouteMatch {
-  constructor(route, parameters) {
-    this.route = route;
-    this.parameters = parameters;
+  constructor(private readonly route, private readonly parameters) {
   }
 
   renderName() {

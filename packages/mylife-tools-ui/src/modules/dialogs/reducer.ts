@@ -7,7 +7,7 @@ import actionTypes       from './action-types';
 const defaultState = {
   busy          : false,
   error         : null,
-  notifications : new immutable.List()
+  notifications : immutable.List()
 };
 
 const others = handleActions({

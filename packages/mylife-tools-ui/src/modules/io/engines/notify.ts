@@ -1,9 +1,7 @@
 import { viewChange } from '../actions';
 
 class NotifyEngine {
-  constructor(emitter, dispatch) {
-    this.emitter = emitter;
-    this.dispatch = dispatch;
+  constructor(private readonly emitter, private readonly dispatch) {
   }
 
   onDisconnect() {

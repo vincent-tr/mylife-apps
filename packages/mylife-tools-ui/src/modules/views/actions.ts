@@ -101,8 +101,27 @@ export function deleteView({ viewSelector, setViewAction }) {
 	};
 }
 
+interface ViewReferenceOptions {
+	uid: string;
+	criteriaSelector;
+	service: string;
+	method: string;
+	canUpdate?: boolean;
+}
+
 export class ViewReference {
-	constructor({ uid, criteriaSelector = () => null, service, method, canUpdate }) {
+	public readonly uid: string;
+	private readonly criteriaSelector;
+	private readonly viewSelector;
+	private readonly setViewAction;
+	private readonly service: string;
+	private readonly method: string;
+	private readonly canUpdate: boolean;
+	private selectorProps;
+	private registering = false;
+	private unsubscribe: () => void;
+
+	constructor({ uid, criteriaSelector = () => null, service, method, canUpdate = false }: ViewReferenceOptions) {
 		if (!uid) {
 			throw new Error('Cannot create ViewReference without uid');
 		}
@@ -114,12 +133,12 @@ export class ViewReference {
 		this.service = service;
 		this.method = method;
 
-		this.canUpdate = !!canUpdate;
+		this.canUpdate = canUpdate;
 	}
 
-	async attach(selectorProps) {
+	async attach(selectorProps?) {
 		this.selectorProps = selectorProps;
-		await this._getView();
+		await this.getView();
 		this.registering = true;
 		this.unsubscribe = observeStore(io.getOnline, (value) => this._onlineChange(value));
 		this.registering = false;
@@ -127,12 +146,12 @@ export class ViewReference {
 
 	async detach() {
 		this.unsubscribe();
-		await this._clearView();
+		await this.clearView();
 	}
 
 	async update(selectorProps) {
 		this.selectorProps = selectorProps;
-		await this._getView();
+		await this.getView();
 	}
 
 	_onlineChange(value) {
@@ -140,12 +159,12 @@ export class ViewReference {
 			return;
 		}
 
-		this._getView();
+		this.getView();
 	}
 
-	async _getView() {
+	private async getView() {
 		const method = this.canUpdate ? createOrUpdateView : createOrRenewView;
-		await this._dispatch(
+		await this.dispatch(
 			method({
 				criteriaSelector: this.criteriaSelector,
 				selectorProps: this.selectorProps,
@@ -157,8 +176,8 @@ export class ViewReference {
 		);
 	}
 
-	async _clearView() {
-		await this._dispatch(
+	private async clearView() {
+		await this.dispatch(
 			deleteView({
 				viewSelector: this.viewSelector,
 				setViewAction: this.setViewAction,
@@ -166,17 +185,19 @@ export class ViewReference {
 		);
 	}
 
-	_dispatch(...args) {
+	private dispatch(...args) {
 		const store = getStore();
 		return store.dispatch(...args);
 	}
 }
 
 export class SharedViewReference extends ViewReference {
-  constructor(...args) {
-    super(...args);
+	private readonly refresh: (prevState: number, currentState: number) => void;
 
-    this._refresh = createDebouncedRefresh((...args) => this._refreshImpl(...args));
+  constructor(options: ViewReferenceOptions) {
+    super(options);
+
+    this.refresh = createDebouncedRefresh(this.refreshImpl);
   }
 
   ref() {
@@ -185,7 +206,7 @@ export class SharedViewReference extends ViewReference {
     const prevRef = getRefCount(store.getState(), this.uid);
     store.dispatch(ref(this.uid));
     const currentRef = getRefCount(store.getState(), this.uid);
-    this._refresh(prevRef, currentRef);
+    this.refresh(prevRef, currentRef);
   
   }
 
@@ -195,10 +216,10 @@ export class SharedViewReference extends ViewReference {
     const prevRef = getRefCount(store.getState(), this.uid);
     store.dispatch(unref(this.uid));
     const currentRef = getRefCount(store.getState(), this.uid);
-    this._refresh(prevRef, currentRef);
+    this.refresh(prevRef, currentRef);
   }
 
-  async _refreshImpl(oldRefCount, newRefCount) {
+  private readonly refreshImpl = async(oldRefCount: number, newRefCount: number) => {
     const wasRef = oldRefCount > 0;
     const isRef = newRefCount > 0;
     if(wasRef === isRef) {
@@ -210,15 +231,15 @@ export class SharedViewReference extends ViewReference {
     } else {
       await this.detach();
     }
-  }
+  };
 }
 
 // needed  because refresh impl is not atomic
 const mutex = new Mutex();
 
 export function createDebouncedRefresh(refresh, timeout = 10) {
-  let initRefs;
-  let finalRefs;
+  let initRefs: number;
+  let finalRefs: number;
 
   const callRefresh = async () => {
     const local = { initRefs, finalRefs };
@@ -231,7 +252,7 @@ export function createDebouncedRefresh(refresh, timeout = 10) {
 
   const debounced = debounce(callRefresh, timeout);
 
-  return (prevState, currentState) => {
+  return (prevState: number, currentState: number) => {
     if(initRefs === undefined) {
       initRefs = prevState;
     }
