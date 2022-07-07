@@ -2,15 +2,17 @@ import { React, useState, useMemo, PropTypes, mui, useSelector } from 'mylife-to
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../reference/selectors';
 
+type FIXME_any = any;
+
 const useConnect = ({ group }) => {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
-  return useSelector(state => ({
+  return useSelector((state: FIXME_any) => ({
     children : getSortedChildren(state, { group })
   }));
 };
 
 const useStyles = mui.makeStyles(theme => ({
-  listItem: props => ({
+  listItem: (props: FIXME_any) => ({
     paddingLeft: theme.spacing(2 * (props.level + 1))
   })
 }));

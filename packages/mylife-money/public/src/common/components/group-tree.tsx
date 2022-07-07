@@ -4,6 +4,8 @@ import { React, useMemo, PropTypes, mui, useSelector } from 'mylife-tools-ui';
 import { makeGetSortedChildren } from '../../reference/selectors';
 import GroupNode from './group-node';
 
+type FIXME_any = any;
+
 const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }) => {
   const { groups } = useConnect();
   return (
@@ -25,7 +27,7 @@ export default GroupTree;
 
 function useConnect() {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
-  return useSelector(state => ({
+  return useSelector((state: FIXME_any) => ({
     groups : getSortedChildren(state, {})
   }));
 }

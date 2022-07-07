@@ -8,10 +8,12 @@ import Criteria from './criteria';
 import Chart from './chart';
 import { formatCriteria } from './tools';
 
+type FIXME_any = any;
+
 const useConnect = ({ refreshAction, exportAction }) => {
   const dispatch = useDispatch();
   return {
-    ...useSelector(state => ({
+    ...useSelector((state: FIXME_any) => ({
       data: getSortedViewList(state)
     })),
     ...useMemo(() => ({
