@@ -19,35 +19,6 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const ExpandedSummary = ({ onExport }) => {
-  const classes = useStyles();
-  return (
-    <div className={classes.container}>
-      <mui.Typography variant='h6' className={classes.title}>Critères de sélection</mui.Typography>
-      <ExportButton onClick={onExport} className={classes.button} />
-    </div>
-  );
-};
-
-ExpandedSummary.propTypes = {
-  onExport: PropTypes.func.isRequired
-};
-
-const CollapsedSummary = ({ criteria, onExport }) => {
-  const classes = useStyles();
-  return (
-    <div className={classes.container}>
-      <mui.Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</mui.Typography>
-      <ExportButton onClick={onExport} className={classes.button} />
-    </div>
-  );
-};
-
-CollapsedSummary.propTypes = {
-  criteria: PropTypes.object.isRequired,
-  onExport: PropTypes.func.isRequired
-};
-
 const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }) => {
   const isPhone = useScreenPhone();
 
@@ -143,8 +114,8 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
 
   return (
     <SummaryAccordion
-      expandedSummary={<ExpandedSummary criteria={criteria} display={display} onExport={onExport} />}
-      collapsedSummary={<CollapsedSummary criteria={criteria} display={display} onExport={onExport} />}>
+      expandedSummary={<ExpandedSummary onExport={onExport} />}
+      collapsedSummary={<CollapsedSummary criteria={criteria} onExport={onExport} />}>
       {grid}
     </SummaryAccordion>
   );
@@ -160,6 +131,35 @@ Criteria.propTypes = {
 };
 
 export default Criteria;
+
+const ExpandedSummary = ({ onExport }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.container}>
+      <mui.Typography variant='h6' className={classes.title}>Critères de sélection</mui.Typography>
+      <ExportButton onClick={onExport} className={classes.button} />
+    </div>
+  );
+};
+
+ExpandedSummary.propTypes = {
+  onExport: PropTypes.func.isRequired
+};
+
+const CollapsedSummary = ({ criteria, onExport }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.container}>
+      <mui.Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</mui.Typography>
+      <ExportButton onClick={onExport} className={classes.button} />
+    </div>
+  );
+};
+
+CollapsedSummary.propTypes = {
+  criteria: PropTypes.object.isRequired,
+  onExport: PropTypes.func.isRequired
+};
 
 function format(date) {
   if(!date) {
