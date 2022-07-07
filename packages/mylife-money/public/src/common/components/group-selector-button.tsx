@@ -32,6 +32,7 @@ interface GroupSelectorButton {
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  children?: React.ReactNode;
   onSelect: (group: string) => void;
   options?: {};
 }

@@ -3,7 +3,13 @@
 import { React, mui, PropTypes } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 
-class Header extends React.Component {
+interface HeaderProps {
+  onImport;
+  accounts;
+}
+
+class Header extends React.Component<HeaderProps, { account?; anchorEl?; open; }> {
+  private fileInput;
 
   constructor(props, context) {
     super(props, context);
@@ -71,11 +77,11 @@ class Header extends React.Component {
 
     );
   }
-}
 
-Header.propTypes = {
-  accounts : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  onImport : PropTypes.func.isRequired
-};
+  static propTypes = {
+    accounts : PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    onImport : PropTypes.func.isRequired
+  };
+}
 
 export default Header;
