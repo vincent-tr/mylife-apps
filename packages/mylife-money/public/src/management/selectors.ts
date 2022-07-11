@@ -1,6 +1,6 @@
-'use strict';
-
 import { io, createSelector } from 'mylife-tools-ui';
+
+type FIXME_any = any;
 
 export const getOperationViewId = state => state.management.operations.view;
 const getOperationView = state => io.getView(state, getOperationViewId(state));
@@ -25,7 +25,7 @@ export const getSelectedGroupId = state => getCriteria(state).group;
 
 export const getSortedOperations = createSelector(
   [ getOperationList ],
-  (operations) => {
+  (operations: FIXME_any[]) => {
     const ret = Array.from(operations);
     ret.sort((op1, op2) => {
       let comp = op1.date - op2.date;

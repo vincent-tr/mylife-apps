@@ -13,7 +13,7 @@ export const onLocationChanged = createAction(
 
 // This action type will be dispatched by the history actions below.
 // If you're writing a middleware to watch for navigation events, be sure to look for actions of this type.
-const createHistoryAction = method => createAction(actionTypes.CALL_HISTORY_METHOD, (...args) => ({ method, args}));
+const createHistoryAction = method => createAction(actionTypes.CALL_HISTORY_METHOD, (args) => ({ method, args}), null);
 
 // These actions correspond to the history API.
 // The associated routerMiddleware will capture these events before they get to
