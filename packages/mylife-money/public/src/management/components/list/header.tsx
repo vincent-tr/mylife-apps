@@ -11,8 +11,10 @@ import ImportButton from './import-button';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import GroupDenseSelector from './group-dense-selector';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => {
       const selectedOperations = getSelectedOperations(state);

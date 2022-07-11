@@ -5,8 +5,10 @@ import GroupTree from '../../../common/components/group-tree';
 import { getSelectedGroupId } from '../../selectors';
 import { selectGroup } from '../../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       selectedGroupId : getSelectedGroupId(state),

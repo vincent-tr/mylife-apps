@@ -6,7 +6,13 @@ import GroupNode from './group-node';
 
 type FIXME_any = any;
 
-const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }) => {
+interface GroupTreeProps {
+  onSelect;
+  selectedGroupId;
+  disabledGroupIds?;
+}
+
+const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }: GroupTreeProps) => {
   const { groups } = useConnect();
   return (
     <mui.List component='div' {...props}>

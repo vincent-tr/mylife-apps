@@ -8,7 +8,7 @@ import { selectOperation, showDetail } from '../../actions';
 type FIXME_any = any;
 
 export const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector((state: FIXME_any) => {
       const selectedGroup = getSelectedGroupId(state) || null;

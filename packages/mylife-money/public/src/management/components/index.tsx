@@ -8,6 +8,8 @@ import Tree from './tree';
 import List from './list';
 import Detail from './detail';
 
+type FIXME_any = any;
+
 const { makeStyles } = mui;
 
 const useStyles = makeStyles({
@@ -28,7 +30,7 @@ const useStyles = makeStyles({
 });
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       detail: isOperationDetail(state)

@@ -8,8 +8,10 @@ import { getSelectedGroupId } from '../../selectors';
 import { createGroup, updateGroup, deleteGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => {
       const selected = getSelectedGroupId(state);

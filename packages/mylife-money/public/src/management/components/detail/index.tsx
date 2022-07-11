@@ -5,6 +5,8 @@ import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup }
 import { getOperationDetail } from '../../selectors';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
 
+type FIXME_any = any;
+
 import Title from './title';
 import Row from './row';
 import GroupBreadcrumbs from './group-breadcrumbs';
@@ -13,7 +15,7 @@ import AmountValue from './amount-value';
 const { makeStyles } = mui;
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => {
       const operation = getOperationDetail(state);

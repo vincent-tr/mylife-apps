@@ -11,7 +11,7 @@ import { formatCriteria } from './tools';
 type FIXME_any = any;
 
 const useConnect = ({ refreshAction, exportAction }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector((state: FIXME_any) => ({
       data: getSortedViewList(state)

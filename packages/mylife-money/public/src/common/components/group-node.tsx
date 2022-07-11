@@ -17,7 +17,16 @@ const useStyles = mui.makeStyles(theme => ({
   })
 }));
 
-const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, parentDisabled }) => {
+interface GroupNodeProps {
+  level;
+  group;
+  selectedGroupId;
+  onSelect;
+  disabledGroupIds?;
+  parentDisabled;
+}
+
+const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, parentDisabled }: GroupNodeProps) => {
   const [open, setOpen] = useState(true);
   const classes = useStyles({ level });
   const { children } = useConnect({ group });
