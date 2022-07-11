@@ -109,10 +109,9 @@ MyLife Applications
 - globalization
 - charts : http://recharts.org/
 
+## Explorer
 
-## Portal
-
-- bootstrap 3 -> 5
+- bug quand les noms de dossier ont un espace
 
 ## Gallery
 
@@ -126,3 +125,7 @@ MyLife Applications
 ## Money
 
 - apres import csv, les operations n'apparaissent pas dans "non triés" mais la date de derniere integration est mise a jour
+
+## Portal
+
+- bootstrap 3 -> 5
