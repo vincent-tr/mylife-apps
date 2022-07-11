@@ -3,8 +3,10 @@
 import { handleActions, io, immutable } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
+type FIXME_any = any;
+
 export default handleActions({
-  [actionTypes.SET_CRITERIA] : (state, action) => ({
+  [actionTypes.SET_CRITERIA] : (state, action: FIXME_any) => ({
     ...state,
     criteria: {
       ...state.criteria,
@@ -17,7 +19,7 @@ export default handleActions({
     }
   }),
 
-  [actionTypes.SET_OPERATION_VIEW] : (state, action) => ({
+  [actionTypes.SET_OPERATION_VIEW] : (state, action: FIXME_any) => ({
     ...state,
     operations: {
       ...state.operations,
@@ -26,14 +28,15 @@ export default handleActions({
     }
   }),
 
-  [actionTypes.SELECT_OPERATIONS] : (state, action) => ({
-    ...state, operations: {
+  [actionTypes.SELECT_OPERATIONS] : (state, action: FIXME_any) => ({
+    ...state,
+    operations: {
       ...state.operations,
       selected: applySelection(state.operations.selected, action.payload)
     }
   }),
 
-  [actionTypes.SET_DETAIL] : (state, action) => ({
+  [actionTypes.SET_DETAIL] : (state, action: FIXME_any) => ({
     ...state,
     operations: {
       ...state.operations,
@@ -72,6 +75,7 @@ function applySelection(set, { selected, id, ids }) {
 
   if(selected) {
     return set.add(id);
+  } else {
+    return set.remove(id);
   }
-  return set.remove(id);
 }

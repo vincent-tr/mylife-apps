@@ -5,9 +5,11 @@ import { handleActions } from 'redux-actions';
 import * as io           from '../io';
 import actionTypes       from './action-types';
 
+type FIXME_any = any;
+
 export default handleActions({
 
-  [actionTypes.SET_VIEW] : (state, action) => {
+  [actionTypes.SET_VIEW] : (state, action: FIXME_any) => {
     const { viewId, uid } = action.payload;
     let { viewReferences } = state;
     viewReferences = viewId === null ? viewReferences.delete(uid) : viewReferences.set(uid, viewId);
@@ -19,7 +21,7 @@ export default handleActions({
     viewReferences: state.viewReferences.clear()
   }),
 
-  [actionTypes.REF] : (state, action) => ({
+  [actionTypes.REF] : (state, action: FIXME_any) => ({
     ...state,
     refCounts: addRef(state.refCounts, action.payload, 1)
   }),

@@ -10,7 +10,16 @@ const setView = createAction(actionTypes.SET_VIEW);
 const ref = createAction(actionTypes.REF);
 const unref = createAction(actionTypes.UNREF);
 
-export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }) {
+interface CreateOrUpdateViewOptions {
+	criteriaSelector;
+	selectorProps?;
+	viewSelector;
+	setViewAction;
+	service;
+	method;
+}
+
+export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions) {
 	return async (dispatch, getState) => {
 		const state = getState();
 

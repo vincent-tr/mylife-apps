@@ -2,6 +2,8 @@ import immutable         from 'immutable';
 import { handleActions } from 'redux-actions';
 import actionTypes       from './action-types';
 
+type FIXME_any = any;
+
 const defaultState = {
   online : false,
   views: immutable.Map()
@@ -9,13 +11,13 @@ const defaultState = {
 
 export default handleActions({
 
-  [actionTypes.SET_ONLINE] : (state, action) => ({
+  [actionTypes.SET_ONLINE] : (state, action: FIXME_any) => ({
     ...state,
     online: action.payload,
     views: state.views.clear()
   }),
 
-  [actionTypes.VIEW_CHANGE] : (state, action) => {
+  [actionTypes.VIEW_CHANGE] : (state, action: FIXME_any) => {
     const { viewId, list } = action.payload;
     return {
       ...state,
@@ -41,7 +43,7 @@ export default handleActions({
     };
   },
 
-  [actionTypes.VIEW_CLOSE] : (state, action) => ({
+  [actionTypes.VIEW_CLOSE] : (state, action: FIXME_any) => ({
     ...state,
     views: state.views.delete(action.payload.viewId)
   }),

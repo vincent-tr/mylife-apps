@@ -4,15 +4,17 @@ import immutable         from 'immutable';
 import { handleActions } from 'redux-actions';
 import actionTypes       from './action-types';
 
+type FIXME_any = any;
+
 const defaultState = {
   busy          : false,
   error         : null,
-  notifications : immutable.List()
+  notifications : immutable.List<FIXME_any>()
 };
 
 const others = handleActions({
 
-  [actionTypes.BUSY_SET] : (state, action) => ({
+  [actionTypes.BUSY_SET] : (state, action: FIXME_any) => ({
     ...state,
     busy : action.payload
   }),
@@ -23,12 +25,12 @@ const others = handleActions({
   }),
 
   //https://gist.github.com/markerikson/7621fca0e9704e99db5598bed0db861d
-  [actionTypes.NOTIFICATION_SHOW] : (state, action) => ({
+  [actionTypes.NOTIFICATION_SHOW] : (state, action: FIXME_any) => ({
     ...state,
     notifications : state.notifications.unshift(action.payload)
   }),
 
-  [actionTypes.NOTIFICATION_DISMISS] : (state, action) => ({
+  [actionTypes.NOTIFICATION_DISMISS] : (state, action: FIXME_any) => ({
     ...state,
     notifications : state.notifications.filter(n => n.id !== action.payload)
   }),
