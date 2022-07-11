@@ -7,6 +7,8 @@ import { getGroup } from '../../../reference/selectors';
 import { selectGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 
+type FIXME_any = any;
+
 const { makeStyles } = mui;
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       selectedGroup : getGroup(state, { group: getSelectedGroupId(state) }),
@@ -34,7 +36,11 @@ const useConnect = () => {
   };
 };
 
-const GroupDenseSelector = ({ className, ...props }) => {
+interface GroupDenseSelectorProps {
+  className?: string;
+}
+
+const GroupDenseSelector = ({ className, ...props }: GroupDenseSelectorProps) => {
   const { selectedGroup, onSelect } = useConnect();
   const classes = useStyles();
 

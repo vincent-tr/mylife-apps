@@ -7,6 +7,7 @@ import GroupNode from './group-node';
 type FIXME_any = any;
 
 interface GroupTreeProps {
+  height?: number;
   onSelect;
   selectedGroupId;
   disabledGroupIds?;
