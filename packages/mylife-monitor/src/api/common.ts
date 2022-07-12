@@ -3,8 +3,8 @@
 const { api } = require('mylife-tools-server');
 const { base } = require('./decorators');
 
-exports.meta = {
+export const meta = {
   name : 'common'
 };
 
-exports.unnotify = [ base, api.services.createUnnotify() ];
+export const unnotify = [ base, api.services.createUnnotify() ];

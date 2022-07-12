@@ -4,9 +4,10 @@
 // https://labs.nagios.com/2014/06/19/exploring-the-new-json-cgis-in-nagios-core-4-0-7-part-1/ 
 // https://github.com/NagiosEnterprises/nagioscore/blob/master/include/statusdata.h
 
-// TODO: use this when going to modules/TS
-// import fetch from 'node-fetch';
+import fetch from 'node-fetch';
 const { StoreView, StoreContainer, createLogger, registerService, getService, getMetadataEntity, getConfig } = require('mylife-tools-server');
+
+type FIXME_any = any;
 
 const logger = createLogger('mylife:monitor:nagios-service');
 
@@ -49,11 +50,15 @@ const URL_SUFFIXES = {
 };
 
 class NagiosService {
-  async init() {
-    // TODO: remove this when going to modules/TS
-    const { default: fetch } = await import('node-fetch');
-    global.fetch = fetch;
+  private dataCollection;
+  private summaryCollection;
+  private entities;
+  private queue;
+  private timer;
+  private baseUrl;
+  private authHeader;
 
+  async init() {
     const config = getConfig('nagios');
     this.prepareConfigData(config);
 
@@ -119,26 +124,24 @@ class NagiosService {
       throw new Error(`HTTP error: ${res.status}: ${res.statusText}`);
     }
 
-    const { result, data } = await res.json();
+    const { result, data } = await res.json() as FIXME_any;
     if(result.type_code !== 0) {
       throw new Error(`Nagios api error (${result.type_code}): ${result.type_text} - ${result.message}`);
     }
 
     return data;
   }
-}
 
-NagiosService.serviceName = 'nagios-service';
-NagiosService.dependencies = ['task-queue-manager', 'metadata-manager'];
+  static serviceName = 'nagios-service';
+  static dependencies = ['task-queue-manager', 'metadata-manager'];
+}
 
 registerService(NagiosService);
 
 class Schema {
-  constructor() {
-    this.groups = new Map();
-    this.hosts = new Map();
-    this.services = new Map();
-  }
+  private readonly groups = new Map();
+  private readonly hosts = new Map();
+  private readonly services = new Map();
 
   addObjectHostGroupList(data) {
     for(const item of Object.values(data.hostgrouplist)) {
@@ -148,12 +151,12 @@ class Schema {
 
   addObjectHostGroup(item) {
     const group = { 
+      _id: `group:${item.group_name}`,
       code: item.group_name,
       display: item.alias,
       members: item.members
     };
 
-    group._id = `group:${group.code}`;
     this.groups.set(group._id, group);
   }
 
@@ -175,12 +178,12 @@ class Schema {
 
   addStatusHost(item) {
     const host = {
+      _id: `host:${item.name}`,
       code: item.name,
       display: item.name,
       status: parseHostStatus(item.status)
     };
 
-    host._id = `host:${host.code}`;
     this.addStatusData(host, item);
     this.hosts.set(host._id, host);
   }
@@ -196,13 +199,13 @@ class Schema {
   addStatusService(item) {
     const host = item.host_name;
     const service = {
+      _id: `service:${host}:${item.description}`,
       host: `host:${host}`,
       code: item.description,
       display: item.description,
       status: parseServiceStatus(item.status)
     };
 
-    service._id = `service:${host}:${service.code}`;
     this.addStatusData(service, item);
     this.services.set(service._id, service);
   }
