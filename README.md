@@ -97,6 +97,11 @@ MyLife Applications
     - http server public dir
     - config dir
 - redux toolkit for state updates instead of immutable objects
+- move to TS
+  - tools-server
+  - explorer
+  - gallery
+  - portal
 
 ## Tools UI
 
