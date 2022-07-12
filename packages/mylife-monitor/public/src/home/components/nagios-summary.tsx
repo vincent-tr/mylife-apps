@@ -16,6 +16,8 @@ const useStyles = mui.makeStyles(theme => ({
       marginRight: theme.spacing(2)
     },
   },
+  column: {
+  }
 }));
 
 const TYPE_DISPLAY = {

@@ -5,8 +5,10 @@ import { enter, leave } from '../actions';
 import { getNagiosView } from '../selectors';
 import NagiosSummary from './nagios-summary';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       nagios: getNagiosView(state)

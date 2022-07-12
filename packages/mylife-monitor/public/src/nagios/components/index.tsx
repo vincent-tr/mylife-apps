@@ -7,8 +7,10 @@ import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
 import { HOST_STATUS_PROBLEM } from '../problems';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       criteria: getCriteria(state),
@@ -165,7 +167,7 @@ function formatTimestamp(date) {
 }
 
 function useSince(timestamp) {
-  const [duration, setDuration] = useState();
+  const [duration, setDuration] = useState<string>();
 
   useEffect(computeDuration, [timestamp]);
   useInterval(computeDuration, 500);
@@ -174,11 +176,11 @@ function useSince(timestamp) {
 
   function computeDuration() {
     if(!timestamp) {
-      setDelay(null);
+      setDuration(null);
       return;
     }
   
-    const rawDuration = new Date() - timestamp;
+    const rawDuration = Date.now() - timestamp;
     const formatted = humanizeDuration(rawDuration, { language: 'fr', largest: 1, round: true });
     setDuration(formatted);
   }
