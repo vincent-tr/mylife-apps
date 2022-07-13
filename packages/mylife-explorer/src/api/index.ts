@@ -1,5 +1,5 @@
 'use strict';
 
-exports.apiServices = [
+export const apiServices = [
   require('./metadata'),
 ];

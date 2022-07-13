@@ -2,4 +2,4 @@
 
 const { /*api,*/ createDecoratorGroup } = require('mylife-tools-server');
 
-exports.base = createDecoratorGroup(/*api.decorators.methodLogger*/);
+export const base = createDecoratorGroup(/*api.decorators.methodLogger*/);

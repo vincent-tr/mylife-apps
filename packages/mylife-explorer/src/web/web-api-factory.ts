@@ -5,7 +5,7 @@ const business = require('../business');
 
 const logger = createLogger('mylife:explorer:web:content-routes');
 
-exports.webApiFactory = ({ app, express, asyncHandler }) => {
+export function webApiFactory({ app, express, asyncHandler }) {
   const dev = getArg('dev');
   if(!dev) {
     return;
@@ -46,4 +46,4 @@ exports.webApiFactory = ({ app, express, asyncHandler }) => {
   }));
 
   app.use('/_content', router);
-};
+}

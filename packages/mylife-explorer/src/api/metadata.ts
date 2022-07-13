@@ -3,11 +3,11 @@
 const business = require('../business');
 const { base } = require('./decorators');
 
-exports.meta = {
+export const meta = {
   name : 'metadata'
 };
 
-exports.get = [ base, (session, message) => {
+export const get = [ base, (session, message) => {
   const { path } = message;
   return business.metadata(path);
 } ];
