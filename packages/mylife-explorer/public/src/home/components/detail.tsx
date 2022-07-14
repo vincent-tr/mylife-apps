@@ -26,7 +26,12 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const Detail = React.forwardRef(({ data, ...props }, ref) => {
+interface DetailProps {
+  className?: string;
+  data;
+}
+
+const Detail = React.forwardRef<HTMLUListElement, DetailProps>(({ data, ...props }, ref) => {
   const classes = useStyles();
   return (
     <mui.List ref={ref} {...props}>

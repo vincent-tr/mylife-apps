@@ -11,11 +11,16 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
+interface Sort {
+  key: string;
+  direction: 'asc' | 'desc';
+}
+
 const Directory = ({ data, ...props }) => {
   const classes = useStyles();
   const { navigate } = routing.useRoutingConnect();
   const isSmallScreen = useIsSmallScreen();
-  const [sort, setSort] = useState({ key: 'name', direction: 'asc' });
+  const [sort, setSort] = useState<Sort>({ key: 'name', direction: 'asc' });
   const list = useMemo(() => sortList(data.content, sort), [data.content, sort]);
 
   const changeSort = (key) => {

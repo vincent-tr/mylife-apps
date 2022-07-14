@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, useEffect, useDispatch, useSelector, useMemo, clsx, useScreenSize } from 'mylife-tools-ui';
 import { getData, isShowDetail } from '../selectors';
 import { fetchInfos, showDetail } from '../actions';
@@ -7,8 +5,10 @@ import { useIsSmallScreen } from './behaviors';
 import Viewer from './viewer';
 import Detail from './detail';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       data: getData(state),
@@ -47,7 +47,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const NullDetail = React.forwardRef((props, ref) => (<div ref={ref} />));
+const NullDetail = React.forwardRef<HTMLDivElement>((props, ref) => (<div ref={ref} />));
 
 const Home = ({ path }) => {
   const classes = useStyles();

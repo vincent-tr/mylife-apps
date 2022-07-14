@@ -1,6 +1,4 @@
-'use strict';
-
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { AutoSizer, Column, Table } from 'react-virtualized';
@@ -31,7 +29,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const VirtualizedTable = ({ data, columns, rowClassName, headerHeight, rowHeight, onRowClick, ...props }) => {
+type FIXME_any = any;
+
+interface VirtualizedTableProps {
+  data: FIXME_any[];
+  rowClassName?: string | ((row, index: number) => string);
+
+  columns: {
+    dataKey: string;
+    cellRenderer?: string | React.ReactNode | ((cellData, dataKey) => string) | ((cellData, dataKey) => React.ReactNode);
+    cellClassName?: string | ((cellData, dataKey) => string);
+    headerRenderer: string | React.ReactNode | ((dataKey) => string) | ((dataKey) => React.ReactNode);
+    headerClassName?: string | ((dataKey) => string);
+    cellProps?;
+    headerProps?;
+    width?;
+  }[];
+
+  rowHeight?: number;
+  headerHeight?: number;
+  onRowClick?: (rowData, rowIndex: number) => void;
+}
+
+const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, columns, rowClassName, headerHeight, rowHeight, onRowClick, ...props }) => {
   const classes = useStyles();
   const rowIndexClassName = (({ index }) => clsx(classes.container, classes.row, classes.clickableRow, runPropGetter(rowClassName, data[index], index)));
   const rowGetter = ({ index }) => data[index];
@@ -79,7 +99,7 @@ VirtualizedTable.propTypes = {
   data: PropTypes.array.isRequired,
   rowClassName: classNameType,
   columns: PropTypes.arrayOf(
-    PropTypes.shape({
+    PropTypes.exact({
       dataKey: PropTypes.string.isRequired,
       cellRenderer: rendererType,
       cellClassName: classNameType,
