@@ -140,7 +140,7 @@ class SuggestionView extends StoreContainer {
 
   private refreshWarnSyncing() {
     const now = new Date();
-    const delay = now - this.lastIntegration;
+    const delay = now.valueOf() - this.lastIntegration?.valueOf() || 0;
     const show = delay < SYNCING_MAX_DELAY;
 
     if (show) {
