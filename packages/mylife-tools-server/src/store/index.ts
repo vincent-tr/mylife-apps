@@ -193,3 +193,4 @@ export function getStoreCollection(name: string) {
 
 export { View as StoreView };
 export { Container as StoreContainer };
+export { Collection as StoreCollection };
