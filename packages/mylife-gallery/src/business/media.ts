@@ -2,13 +2,15 @@ import { createLogger, getService } from 'mylife-tools-server';
 
 const logger = createLogger('mylife:gallery:business:media');
 
+type FIXME_any = any;
+
 export async function mediaCreate(inputStream, contentType) {
   const bucket = getBucket();
   const id = newObjectID().toString();
   const bucketStream = bucket.openUploadStreamWithId(newObjectID(id), null, { contentType });
 
   logger.info(`Insert media (id: '${id}')`);
-  const { length } = await pipeAndWait(inputStream, bucketStream);
+  const { length } = await pipeAndWait(inputStream, bucketStream) as FIXME_any;
   return { id, size: length };
 }
 

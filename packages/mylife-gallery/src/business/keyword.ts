@@ -1,4 +1,4 @@
-import { getStoreCollection, notifyView, StoreContainer } from 'mylife-tools-server';
+import { getStoreCollection, notifyView, StoreCollection, StoreContainer, StoreEvent } from 'mylife-tools-server';
 import * as business from '.';
 
 export function keywordsNotify(session) {
@@ -7,19 +7,23 @@ export function keywordsNotify(session) {
 }
 
 class KeywordView extends StoreContainer {
+  private readonly keywordsRefCount = new Map();
+  private subscriptions;
+  private collections: { [name: string]: StoreCollection };
+
   constructor() {
-    super();
-    this._createSubscriptions();
-    this._keywordsRefCount = new Map();
+    super('keyword-view');
+
+    this.createSubscriptions();
   }
 
-  _createSubscriptions() {
+  private createSubscriptions() {
     this.subscriptions = [];
     this.collections = {};
 
     const collections = [...business.getDocumentStoreCollections(), getStoreCollection('albums')];
     for(const collection of collections) {
-      const subscription = new business.CollectionSubscription(this, collection);
+      const subscription = new business.CollectionSubscription(this, collection, (event) => this.onCollectionChange(event));
       this.subscriptions.push(subscription);
       this.collections[collection.entity.id] = collection;
     }
@@ -36,36 +40,36 @@ class KeywordView extends StoreContainer {
   refresh() {
     for(const collection of Object.values(this.collections)) {
       for(const object of collection.list()) {
-        this.onCollectionChange(collection, { type: 'create', after: object });
+        this.onCollectionChange({ type: 'create', after: object });
       }
     }
   }
 
   keywordRef(value) {
-    const refCount = this._keywordsRefCount.get(value);
+    const refCount = this.keywordsRefCount.get(value);
     if(refCount) {
       ++refCount.count;
       return;
     }
 
-    this._keywordsRefCount.set(value, { count: 1 });
+    this.keywordsRefCount.set(value, { count: 1 });
     this._set({ _id: value });
   }
 
   keywordUnref(value) {
-    const refCount = this._keywordsRefCount.get(value);
+    const refCount = this.keywordsRefCount.get(value);
     if(!refCount) {
       return; // ??
     }
 
     --refCount.count;
     if(!refCount.count) {
-      this._keywordsRefCount.delete(value);
+      this.keywordsRefCount.delete(value);
       this._delete(value);
     }
   }
 
-  onCollectionChange(collection, { before, after, type }) {
+  private onCollectionChange({ before, after, type }: StoreEvent) {
     switch(type) {
       case 'create': {
         for(const keyword of after.keywords) {

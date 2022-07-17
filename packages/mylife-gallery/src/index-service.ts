@@ -1,7 +1,5 @@
-'use strict';
-
-const { registerService } = require('mylife-tools-server');
-const business = require('./business');
+import { registerService } from 'mylife-tools-server';
+import * as business from './business';
 
 class IndexService {
   async init() {
@@ -11,9 +9,9 @@ class IndexService {
   async terminate() {
     business.documentIndexesTerminate();
   }
-}
 
-IndexService.serviceName = 'index-service';
-IndexService.dependencies = ['store'];
+  static readonly serviceName = 'index-service';
+  static readonly dependencies = ['store'];
+}
 
 registerService(IndexService);

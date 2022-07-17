@@ -15,18 +15,24 @@ export function personsNotify(session, criteria) {
 }
 
 class PersonView extends StoreContainer {
+  private readonly entity = getMetadataEntity('person');
+  private collection;
+  private subscription;
+  private criteria;
+  private filterPredicate;
+
   constructor() {
-    super();
+    super('person-view');
 
     this.entity = getMetadataEntity('person');
-    this._createSubscriptions();
-    this._criteria = {};
-    this._filter = () => false; // will be set by setCriteria
+    this.createSubscriptions();
+    this.criteria = {};
+    this.filterPredicate = () => false; // will be set by setCriteria
   }
 
-  _createSubscriptions() {
+  private createSubscriptions() {
     this.collection = getStoreCollection('persons');
-    this.subscription = new business.CollectionSubscription(this, this.collection);
+    this.subscription = new business.CollectionSubscription(this, this.collection, (event) => this.onCollectionChange(event));
   }
 
   close() {
@@ -35,28 +41,28 @@ class PersonView extends StoreContainer {
   }
 
   setCriteria(criteria) {
-    this._criteria = criteria;
-    this._filter = buildFilter(this._criteria);
+    this.criteria = criteria;
+    this.filterPredicate = buildFilter(this.criteria);
     this.refresh();
   }
 
   refresh() {
     for(const object of this.collection.list()) {
-      this.onCollectionChange(this.collection, { type: 'update', before: object, after: object });
+      this.onCollectionChange({ type: 'update', before: object, after: object });
     }
   }
 
-  onCollectionChange(collection, { before, after, type }) {
+  private onCollectionChange({ before, after, type }) {
     switch(type) {
       case 'create': {
-        if(this._filter(after)) {
+        if(this.filterPredicate(after)) {
           this._set(after);
         }
         break;
       }
 
       case 'update': {
-        if(this._filter(after)) {
+        if(this.filterPredicate(after)) {
           this._set(after);
         } else {
           this._delete(before._id);
@@ -78,7 +84,7 @@ class PersonView extends StoreContainer {
 function buildFilter(criteria) {
   logger.debug(`creating person filter with criteria '${JSON.stringify(criteria)}'`);
 
-  const parts = [];
+  const parts: ((person) => boolean)[] = [];
 
   if(criteria.firstName) {
     parts.push(person => person.firstName.includes(criteria.firstName));

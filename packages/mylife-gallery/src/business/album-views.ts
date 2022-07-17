@@ -16,23 +16,29 @@ export function albumsNotify(session, criteria) {
 }
 
 class AlbumView extends StoreContainer {
+  private readonly entity;
+  private criteria;
+  private filterPredicate;
+  private subscriptions;
+  private collection;
+  
   constructor() {
-    super();
+    super('album-view');
 
     this.entity = getMetadataEntity('album');
-    this._createSubscriptions();
-    this._criteria = {};
-    this._filter = () => false; // will be set by setCriteria
+    this.createSubscriptions();
+    this.criteria = {};
+    this.filterPredicate = () => false; // will be set by setCriteria
   }
 
-  _createSubscriptions() {
+  private createSubscriptions() {
     this.subscriptions = [];
     this.collection = getStoreCollection('albums');
-    this.subscriptions.push(new business.CollectionSubscription(this, this.collection));
+    this.subscriptions.push(new business.CollectionSubscription(this, this.collection, (event) => this.onCollectionChange(event)));
 
     // add subscription on slideshows to reset filtering on slideshows
     const slideshows = getStoreCollection('slideshows');
-    const subscription = new business.CollectionSubscription(this, slideshows, () => this._rebuildFilter()); // need to rebuild criteria to have proper slideshows buckets
+    const subscription = new business.CollectionSubscription(this, slideshows, () => this.rebuildFilter()); // need to rebuild criteria to have proper slideshows buckets
     this.subscriptions.push(subscription);
   }
 
@@ -45,32 +51,32 @@ class AlbumView extends StoreContainer {
   }
 
   setCriteria(criteria) {
-    this._criteria = criteria;
-    this._rebuildFilter();
+    this.criteria = criteria;
+    this.rebuildFilter();
   }
 
-  _rebuildFilter() {
-    this._filter = buildFilter(this._criteria);
+  private rebuildFilter() {
+    this.filterPredicate = buildFilter(this.criteria);
     this.refresh();
   }
 
   refresh() {
     for(const object of this.collection.list()) {
-      this.onCollectionChange(this.collection, { type: 'update', before: object, after: object });
+      this.onCollectionChange({ type: 'update', before: object, after: object });
     }
   }
 
-  onCollectionChange(collection, { before, after, type }) {
+  private onCollectionChange({ before, after, type }) {
     switch(type) {
       case 'create': {
-        if(this._filter(after)) {
+        if(this.filterPredicate(after)) {
           this._set(after);
         }
         break;
       }
 
       case 'update': {
-        if(this._filter(after)) {
+        if(this.filterPredicate(after)) {
           this._set(after);
         } else {
           this._delete(before._id);
@@ -92,7 +98,7 @@ class AlbumView extends StoreContainer {
 function buildFilter(criteria) {
   logger.debug(`creating album filter with criteria '${JSON.stringify(criteria)}'`);
 
-  const parts = [];
+  const parts: ((album) => boolean)[] = [];
 
   if(criteria.album) {
     parts.push(album => album._id === criteria.album);

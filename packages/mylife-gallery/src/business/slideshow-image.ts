@@ -10,29 +10,32 @@ export function slideshowsImagesNotify(session, criteria) {
 }
 
 class SlideshowImageView extends StoreContainer {
+  private readonly entity = getMetadataEntity('slideshow-image');
+  private filterIds = new Set();
+  private subscriptions;
+  private slideshows;
+  private albums;
+  private readonly slideshowsPerAlbum = new SlideshowPerAlbum();
+  private readonly slideshowsData = new Map();
+
   constructor() {
-    super();
+    super('slideshow-image-view');
 
-    this.entity = getMetadataEntity('slideshow-image');
-    this._createSubscriptions();
-
-    this._filterIds = new Set();
-    this._slideshowsPerAlbum = new SlideshowPerAlbum();
-    this._slideshowsData = new Map();
+    this.createSubscriptions();
   }
 
-  _createSubscriptions() {
+  private createSubscriptions() {
     this.subscriptions = [];
 
     this.slideshows = getStoreCollection('slideshows');
-    this.subscriptions.push(new business.CollectionSubscription(this, this.slideshows));
+    this.subscriptions.push(new business.CollectionSubscription(this, this.slideshows, (event) => this.onSlideshowChange(event)));
 
     this.albums = getStoreCollection('albums');
-    this.subscriptions.push(new business.CollectionSubscription(this, this.albums));
+    this.subscriptions.push(new business.CollectionSubscription(this, this.albums, (event) => this.onAlbumChange(event)));
   }
 
   close() {
-    for(const subscription of this.subscriptions) {
+    for (const subscription of this.subscriptions) {
       subscription.unsubscribe();
     }
 
@@ -41,87 +44,75 @@ class SlideshowImageView extends StoreContainer {
 
   setCriteria(criteria) {
     logger.debug(`creating slideshows-images filter with criteria '${JSON.stringify(criteria)}'`);
-    this._filterIds = new Set(criteria.slideshows || []);
+    this.filterIds = new Set(criteria.slideshows || []);
 
     this.refresh();
   }
 
   refresh() {
-    const idsToRemove = [];
-    for(const id of this._slideshowsData.keys()) {
-      if(!this._filterIds.has(id)) {
+    const idsToRemove: string[] = [];
+    for (const id of this.slideshowsData.keys()) {
+      if (!this.filterIds.has(id)) {
         idsToRemove.push(id);
       }
     }
 
-    for(const slideshowId of idsToRemove) {
-      const data = this._slideshowsData.get(slideshowId);
-      this._slideshowsData.delete(slideshowId);
+    for (const slideshowId of idsToRemove) {
+      const data = this.slideshowsData.get(slideshowId);
+      this.slideshowsData.delete(slideshowId);
 
-      const toDelete = data.delete(this._slideshowsPerAlbum);
-      for(const objectId of toDelete) {
+      const toDelete = data.delete(this.slideshowsPerAlbum);
+      for (const objectId of toDelete) {
         this._delete(objectId);
       }
     }
 
-    for(const slideshowId of this._filterIds) {
-      this._buildSlideshow(slideshowId);
+    for (const slideshowId of this.filterIds) {
+      this.buildSlideshow(slideshowId);
     }
   }
 
-  onCollectionChange(collection, event) {
-    if(collection === this.slideshows) {
-      this._onSlideshowChange(event);
-      return;
-    }
-
-    if(collection === this.albums) {
-      this._onAlbumChange(event);
-      return;
-    }
-  }
-
-  _onSlideshowChange(event) {
+  private onSlideshowChange(event) {
     const slideshow = getEventObject(event);
     const id = slideshow._id;
-    if(!this._filterIds.has(id)) {
+    if (!this.filterIds.has(id)) {
       return;
     }
 
-    this._buildSlideshow(id);
+    this.buildSlideshow(id);
   }
 
-  _onAlbumChange(event) {
-    if(event.type !== 'create' && event.type !== 'update') {
+  private onAlbumChange(event) {
+    if (event.type !== 'create' && event.type !== 'update') {
       return;
     }
 
-    const slideshows = this._slideshowsPerAlbum.getSlideshows(event.after._id);
-    for(const slideshowId of slideshows) {
-      this._buildSlideshow(business.slideshowGet(slideshowId));
+    const slideshows = this.slideshowsPerAlbum.getSlideshows(event.after._id);
+    for (const slideshowId of slideshows) {
+      this.buildSlideshow(business.slideshowGet(slideshowId));
     }
   }
 
-  _buildSlideshow(id) {
-    let data = this._slideshowsData.get(id);
-    if(!data) {
+  private buildSlideshow(id) {
+    let data = this.slideshowsData.get(id);
+    if (!data) {
       data = new SlideshowData(id);
-      this._slideshowsData.set(id, data);
+      this.slideshowsData.set(id, data);
     }
 
-    const [toDelete, toSet] = data.update(this._slideshowsPerAlbum);
-    for(const objectId of toDelete) {
+    const [toDelete, toSet] = data.update(this.slideshowsPerAlbum);
+    for (const objectId of toDelete) {
       this._delete(objectId);
     }
 
-    for(const objectValues of toSet) {
+    for (const objectValues of toSet) {
       this._set(this.entity.newObject(objectValues));
     }
   }
 }
 
 function getEventObject({ before, after, type }) {
-  switch(type) {
+  switch (type) {
     case 'create':
     case 'update':
       return after;
@@ -135,10 +126,8 @@ function getEventObject({ before, after, type }) {
 }
 
 class SlideshowPerAlbum {
-  constructor() {
-    this.map = new Map();
-    this.empty = new Set();
-  }
+  private readonly map = new Map();
+  private readonly empty = new Set();
 
   getSlideshows(albumId) {
     return this.map.get(albumId) || this.empty;
@@ -146,7 +135,7 @@ class SlideshowPerAlbum {
 
   addSlideshowAlbum(slideshowId, albumId) {
     let set = this.map.get(slideshowId);
-    if(!set) {
+    if (!set) {
       set = new Set();
       this.map.set(slideshowId, set);
     }
@@ -157,22 +146,21 @@ class SlideshowPerAlbum {
   removeSlideshowAlbum(slideshowId, albumId) {
     const set = this.map.get(slideshowId);
     set.delete(albumId);
-    if(!set.size) {
+    if (!set.size) {
       this.map.delete(slideshowId);
     }
   }
 }
 
 class SlideshowData {
-  constructor(id) {
-    this._id = id;
-    this._albums = new Set();
-    this._objects = new Set();
-  }
+  private readonly albums = new Set<string>();
+  private readonly objects = new Set<string>();
+
+  constructor(private readonly id) {}
 
   update(slideshowsPerAlbum) {
-    const slideshow = business.slideshowFind(this._id);
-    if(!slideshow) {
+    const slideshow = business.slideshowFind(this.id);
+    if (!slideshow) {
       // slideshow has been deleted but is still in criteria
       const deleted = this.delete(slideshowsPerAlbum);
       return [deleted, []];
@@ -180,21 +168,21 @@ class SlideshowData {
 
     const albumIds = slideshow.albums;
 
-    this._updateAlbumsSet(slideshowsPerAlbum, albumIds);
+    this.updateAlbumsSet(slideshowsPerAlbum, albumIds);
 
-    const imageIds = this._listImageIds(albumIds);
-    const deleted = this._buildDeleted(imageIds);
-    const added = this._buildAdded(imageIds);
+    const imageIds = this.listImageIds(albumIds);
+    const deleted = this.buildDeleted(imageIds);
+    const added = this.buildAdded(imageIds);
 
     return [deleted, added];
   }
 
-  _listImageIds(albumIds) {
-    const imageIds = [];
-    for(const albumId of albumIds) {
+  private listImageIds(albumIds) {
+    const imageIds: string[] = [];
+    for (const albumId of albumIds) {
       const album = business.albumGet(albumId);
-      for(const { type, id: documentId } of album.documents) {
-        if(type !== 'image') {
+      for (const { type, id: documentId } of album.documents) {
+        if (type !== 'image') {
           continue;
         }
 
@@ -204,68 +192,67 @@ class SlideshowData {
     return imageIds;
   }
 
-  _buildAdded(imageIds) {
-    const added = [];
-    for(const [index, imageId] of imageIds.entries()) {
+  private buildAdded(imageIds) {
+    const added: { _id; index; slideshow; thumbnail; image }[] = [];
+    for (const [index, imageId] of imageIds.entries()) {
       const image = business.documentGet('image', imageId);
-      const id = `${this._id}-${image._id}`;
-      const objectValues = { _id: id, index, slideshow: this._id, thumbnail: image.thumbnail, image: image._id };
+      const id = `${this.id}-${image._id}`;
+      const objectValues = { _id: id, index, slideshow: this.id, thumbnail: image.thumbnail, image: image._id };
       added.push(objectValues);
-      this._objects.add(id);
+      this.objects.add(id);
     }
     return added;
   }
 
-  _buildDeleted(newImageIds) {
-    const newSet = new Set(newImageIds.map(id => `${this._id}-${id}`));
-    const deleted = [];
-    for(const oldId of this._objects) {
-      if(!newSet.has(oldId)) {
+  private buildDeleted(newImageIds) {
+    const newSet = new Set(newImageIds.map((id) => `${this.id}-${id}`));
+    const deleted: string[] = [];
+    for (const oldId of this.objects) {
+      if (!newSet.has(oldId)) {
         deleted.push(oldId);
       }
     }
 
-    for(const id of deleted) {
-      this._objects.delete(id);
+    for (const id of deleted) {
+      this.objects.delete(id);
     }
 
     return deleted;
   }
 
-  _updateAlbumsSet(slideshowsPerAlbum, newAlbumIds) {
+  private updateAlbumsSet(slideshowsPerAlbum, newAlbumIds: string[]) {
     const newAlbumSet = new Set(newAlbumIds);
 
     // deleted albums
-    const deletedAlbums = [];
-    for(const id of this._albums) {
-      if(!newAlbumSet.has(id)) {
-        slideshowsPerAlbum.removeSlideshowAlbum(this._id, id);
+    const deletedAlbums: string[] = [];
+    for (const id of this.albums) {
+      if (!newAlbumSet.has(id)) {
+        slideshowsPerAlbum.removeSlideshowAlbum(this.id, id);
         deletedAlbums.push(id);
       }
     }
 
-    for(const id of deletedAlbums) {
-      this._albums.delete(id);
+    for (const id of deletedAlbums) {
+      this.albums.delete(id);
     }
 
     // added albums
-    for(const id of newAlbumSet) {
-      if(!this._albums.has(id)) {
-        this._albums.add(id);
-        slideshowsPerAlbum.addSlideshowAlbum(this._id, id);
+    for (const id of newAlbumSet) {
+      if (!this.albums.has(id)) {
+        this.albums.add(id);
+        slideshowsPerAlbum.addSlideshowAlbum(this.id, id);
       }
     }
   }
 
   delete(slideshowsPerAlbum) {
-    for(const albumId of this._albums) {
-      slideshowsPerAlbum.removeSlideshowAlbum(this._id, albumId);
+    for (const albumId of this.albums) {
+      slideshowsPerAlbum.removeSlideshowAlbum(this.id, albumId);
     }
-    this._albums.clear();
+    this.albums.clear();
 
-    const objectIds = Array.from(this._objects);
-    this._objects.clear();
+    const objectIds = Array.from(this.objects);
+    this.objects.clear();
     return objectIds;
   }
-
 }

@@ -92,7 +92,7 @@ class SuggestionView extends StoreContainer {
     this.collections = {};
 
     for (const collection of business.getDocumentStoreCollections()) {
-      const subscription = new business.CollectionSubscription(this, collection);
+      const subscription = new business.CollectionSubscription(this, collection, (event) => this.onCollectionChange());
       this.subscriptions.push(subscription);
       this.collections[collection.entity.id] = collection;
     }
@@ -117,7 +117,7 @@ class SuggestionView extends StoreContainer {
     this.onAlbumsChange();
   }
 
-  onCollectionChange() {
+  private onCollectionChange() {
     this.lastIntegration = findLastIntegration();
 
     this.refreshWarnSyncing();

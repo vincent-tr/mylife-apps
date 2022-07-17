@@ -32,9 +32,8 @@ export const moveSortedDocumentsList = [ base, (session, message) => {
   return business.suggestionMoveSortedDocumentsList(id);
 } ];
 
-export const deleteLoadingErrorsList = [ base, (session, message) => {
-  const { id } = message;
-  return business.suggestionDeleteLoadingErrorsList(id);
+export const deleteLoadingErrorsList = [ base, (/*session, message*/) => {
+  return business.suggestionDeleteLoadingErrorsList();
 } ];
 
 export const deleteLoadingErrors = [ base, async (session, message) => {

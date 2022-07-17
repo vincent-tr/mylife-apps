@@ -1,5 +1,5 @@
 export class CollectionSubscription {
-  constructor(private readonly view, private readonly collection, private readonly changeCallback = (event) => this.view.onCollectionChange(this.collection, event)) {
+  constructor(private readonly view, private readonly collection, private readonly changeCallback) {
     this.collection.on('change', this.changeCallback);
   }
 
