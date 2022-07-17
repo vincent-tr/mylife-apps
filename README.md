@@ -100,7 +100,6 @@ MyLife Applications
 - log app + tools version at startup
 - move to TS
   - gallery
-  - portal
 
 ## Tools UI
 
