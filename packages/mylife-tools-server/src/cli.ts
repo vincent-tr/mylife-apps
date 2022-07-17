@@ -1,10 +1,8 @@
-'use strict';
-
-const yargs = require('yargs');
+import yargs from 'yargs';
 
 let argv;
 
-function getArgs() {
+export function getArgs() {
   if(!argv) {
     argv = yargs.argv;
   }
@@ -12,9 +10,7 @@ function getArgs() {
 
 }
 
-exports.getArgs = getArgs;
-
-exports.getArg = (name, defaultValue) => {
+export function getArg(name: string, defaultValue?) {
   const value = getArgs()[name];
   return value === undefined ? defaultValue : value;
 }

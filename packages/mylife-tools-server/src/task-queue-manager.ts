@@ -1,14 +1,10 @@
-'use strict';
-
-const { createLogger } = require('./logging');
-const { registerService } = require('./service-manager');
+import { createLogger } from './logging';
+import { registerService } from './service-manager';
 
 const logger = createLogger('mylife:tools:server:task-queue');
 
 class Timer {
-  constructor() {
-    this.begin = process.hrtime();
-  }
+  private readonly begin = process.hrtime();
 
   elapsed() {
     const diff = process.hrtime(this.begin);
@@ -16,16 +12,21 @@ class Timer {
   }
 }
 
-class TaskQueue {
+interface Task {
+  name: string;
+  func: () => void | Promise<void>;
+  next: Task;
+}
 
-  constructor(id) {
-    this.id = id;
-    this.head = this.tail = null;
-    this.closing = false;
-    this.closed = false;
-    this.running = false;
-    this.pendingEmptyCbs = new Set();
-  }
+class TaskQueue {
+  private head: Task = null;
+  private tail: Task = null;
+  private closing = false;
+  private closed = false;
+  private running = false;
+  private readonly pendingEmptyCbs = new Set<() => void>();
+
+  constructor(public readonly id: string) {}
 
   async close() {
     this.closing = true;
@@ -36,63 +37,60 @@ class TaskQueue {
   }
 
   async waitEmpty() {
-    if(!this.running) {
+    if (!this.running) {
       return;
     }
 
-    return new Promise(resolve => { this.pendingEmptyCbs.add(resolve); });
+    return new Promise<void>((resolve) => {
+      this.pendingEmptyCbs.add(resolve);
+    });
   }
 
-  add(name, func) {
-    if(this.closing || this.closed) {
+  add(name: string, func: () => void | Promise<void>) {
+    if (this.closing || this.closed) {
       throw new Error(`Cannot add tasks while closing on queue '${this.id}'`);
     }
 
-    const task = {
-      name,
-      func,
-      next : null
-    };
+    const task: Task = { name, func, next: null };
 
-    if(this.tail) {
+    if (this.tail) {
       this.tail.next = task;
       this.tail = task;
     } else {
       this.head = this.tail = task;
     }
 
-    if(!this.running) {
-      this._startNext();
+    if (!this.running) {
+      this.startNext();
     }
   }
 
-  _startNext() {
+  private startNext() {
     this.running = true;
 
     const task = this.head;
     this.head = task.next;
-    if(!this.head) {
+    if (!this.head) {
       this.tail = null;
     }
     task.next = null;
 
-    // no catch, already done in _runOne
-    this._runOne(task).then(() => {
-
-      if(this.head) {
-        return this._startNext();
+    // no catch, already done in runOne
+    this.runOne(task).then(() => {
+      if (this.head) {
+        this.startNext();
+        return;
       }
 
       this.running = false;
-      for(const emptyCb of this.pendingEmptyCbs) {
+      for (const emptyCb of this.pendingEmptyCbs) {
         emptyCb();
       }
       this.pendingEmptyCbs.clear();
     });
   }
 
-  async _runOne(task) {
-
+  private async runOne(task) {
     try {
       logger.debug(`Queue '${this.id}' : Task begin : ${task.name}`);
 
@@ -101,56 +99,53 @@ class TaskQueue {
       const elapsed = timer.elapsed();
 
       logger.debug(`Queue '${this.id}' : Task end : ${task.name} (elapsed : ${elapsed.toFixed(2)}ms)`);
-    } catch(err) {
+    } catch (err) {
       logger.error(`Queue '${this.id}' : Task error on ${task.name}: ${err.stack}`);
     }
   }
 }
 
 class TaskQueueManager {
-  constructor() {
-    this._queues = new Map();
-  }
+  private readonly queues = new Map<string, TaskQueue>();
 
-  async init() {
-  }
+  async init() {}
 
   async terminate() {
-    for(const id of Array.from(this._queues.keys())) {
+    for (const id of Array.from(this.queues.keys())) {
       await this.closeQueue(id);
     }
   }
 
-  createQueue(id) {
-    if(this._queues.get(id)) {
+  createQueue(id: string) {
+    if (this.queues.get(id)) {
       throw new Error(`Cannot create queue ${id}: already exists`);
     }
 
     const queue = new TaskQueue(id);
-    this._queues.set(id, queue);
+    this.queues.set(id, queue);
     return queue;
   }
 
   async closeQueue(id) {
-    const queue = this._queues.get(id);
-    if(!queue) {
+    const queue = this.queues.get(id);
+    if (!queue) {
       throw new Error(`Cannot close queue ${id}: does not exists`);
     }
 
     await queue.close();
-    this._queues.delete(id);
+    this.queues.delete(id);
   }
 
   getQueue(id) {
-    const queue = this._queues.get(id);
-    if(!queue) {
+    const queue = this.queues.get(id);
+    if (!queue) {
       throw new Error(`Cannot get queue ${id}: does not exists`);
     }
 
     return queue;
   }
-}
 
-TaskQueueManager.serviceName = 'task-queue-manager';
+  static readonly serviceName = 'task-queue-manager';
+}
 
 registerService(TaskQueueManager);

@@ -1,35 +1,34 @@
-'use strict';
+import path from 'path';
+import fs from 'fs';
+import http from 'http';
+import express from 'express';
+import bodyParser from 'body-parser';
+import favicon from 'serve-favicon';
+import enableDestroy from 'server-destroy';
+import { Server as IOServer } from 'socket.io';
 
-const path          = require('path');
-const fs            = require('fs');
-const http          = require('http');
-const express       = require('express');
-const bodyParser    = require('body-parser');
-const favicon       = require('serve-favicon');
-const enableDestroy = require('server-destroy');
-const { Server: IOServer }      = require('socket.io');
-
-const { createLogger } = require('./logging');
-const { getDefine } = require('./defines');
-const { getConfig } = require('./config');
-const { getArg } = require('./cli');
-const { registerService, getService } = require('./service-manager');
+import { createLogger } from './logging';
+import { getDefine } from './defines';
+import { getConfig } from './config';
+import { registerService, getService } from './service-manager';
 
 const logger = createLogger('mylife:tools:server:web-server');
 
 class WebServer {
+  private server;
+
   async init(options) {
-    this._server = await setupServer(options);
+    this.server = await setupServer(options);
   }
 
   async terminate() {
     logger.info('server close');
-    await asyncCall(cb => this._server.destroy(cb));
+    await asyncCall((cb) => this.server.destroy(cb));
   }
-}
 
-WebServer.serviceName = 'web-server';
-WebServer.dependencies = ['io'];
+  static readonly serviceName = 'web-server';
+  static readonly dependencies = ['io'];
+}
 
 registerService(WebServer);
 
@@ -43,7 +42,7 @@ async function setupServer({ config = getConfig('webServer'), webApiFactory }) {
   logger.info(`using public directoy : ${publicDirectory}`);
 
   app.use(favicon(path.resolve(publicDirectory, 'images/favicon.ico')));
-  if(webApiFactory) {
+  if (webApiFactory) {
     await webApiFactory({ app, express, asyncHandler, webApiHandler });
   }
   app.use(express.static(publicDirectory));
@@ -54,9 +53,9 @@ async function setupServer({ config = getConfig('webServer'), webApiFactory }) {
   enableDestroy(server);
 
   const ios = new IOServer(server);
-  ios.on('connection', socket => getService('io').newSocket(socket));
+  ios.on('connection', (socket) => getService('io').newSocket(socket));
 
-  await asyncCall(cb => server.listen(config, cb));
+  await asyncCall((cb) => server.listen(config, cb));
   logger.info(`server created : ${JSON.stringify(config)}`);
 
   return server;
@@ -75,7 +74,7 @@ function asyncHandler(handler) {
   return async (req, res, next) => {
     try {
       await handler(req, res, next);
-    } catch(err) {
+    } catch (err) {
       next(err);
     }
   };
@@ -84,9 +83,9 @@ function asyncHandler(handler) {
 function webApiHandler(handler) {
   return async (req, res) => {
     try {
-      const result = await handler({ ... req.query, ... req.body });
+      const result = await handler({ ...req.query, ...req.body });
       res.json(typeof result === 'undefined' ? {} : result);
-    } catch(err) {
+    } catch (err) {
       logger.error(`Error while running api: ${err.stack}`);
       return res.status(500).json({ message: err.message, stack: err.stack });
     }

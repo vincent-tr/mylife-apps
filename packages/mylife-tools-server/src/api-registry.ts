@@ -1,18 +1,18 @@
-'use strict';
-
-const { createLogger } = require('./logging');
-const { registerService } = require('./service-manager');
+import { createLogger } from './logging';
+import { registerService } from './service-manager';
 
 const logger = createLogger('mylife:tools:server:api-registry');
 
 class Service {
+  public readonly name: string;
+  public readonly methods = new Map();
+
   constructor(meta) {
     Object.assign(this, meta);
-    if(!this.name) {
+
+    if (!this.name) {
       throw new Error('Missing name');
     }
-
-    this.methods = new Map();
   }
 
   findMethod(name) {
@@ -21,15 +21,14 @@ class Service {
 }
 
 class Method {
-  constructor(service, name, impl) {
-    this.service = service;
-    this.name = name;
+  private readonly callee;
 
-    const list = Array.isArray(impl) ? [ ... impl ] : [ impl ];
+  constructor(public readonly service, public readonly name, impl) {
+    const list = Array.isArray(impl) ? [...impl] : [impl];
     this.callee = list.pop();
     const decorators = list.reverse();
 
-    for(const decorator of decorators) {
+    for (const decorator of decorators) {
       decorator(this);
     }
   }
@@ -40,18 +39,16 @@ class Method {
 }
 
 class ApiRegistry {
-  constructor() {
-    this.services = {};
-  }
+  private readonly services: { [name: string]: Service } = {};
 
   async init({ apiServices }) {
-    if(apiServices) {
+    if (apiServices) {
       this.registerServices(apiServices);
     }
   }
 
   async terminate() {
-    for(const key of Object.keys(this.services)) {
+    for (const key of Object.keys(this.services)) {
       logger.debug(`Deleting service '${key}'`);
       delete this.services[key];
     }
@@ -59,12 +56,12 @@ class ApiRegistry {
 
   lookup(serviceName, methodName) {
     const service = this.services[serviceName];
-    if(!service) {
+    if (!service) {
       throw new Error(`Service '${serviceName}' does not exist`);
     }
 
     const method = service.findMethod(methodName);
-    if(!method) {
+    if (!method) {
       throw new Error(`Method '${methodName} does not exist on service '${service.name}'`);
     }
 
@@ -73,12 +70,14 @@ class ApiRegistry {
 
   registerService(simpl) {
     const service = new Service(simpl.meta);
-    if(this.services[service.name]) {
+    if (this.services[service.name]) {
       throw new Error(`Service '${service.name}' already exists`);
     }
 
-    for(const [ key, mimpl ] of Object.entries(simpl)) {
-      if(key === 'meta') { continue; }
+    for (const [key, mimpl] of Object.entries(simpl)) {
+      if (key === 'meta') {
+        continue;
+      }
       const method = new Method(service, key, mimpl);
       service.methods.set(key, method);
     }
@@ -88,23 +87,25 @@ class ApiRegistry {
   }
 
   registerServices(impls) {
-    for(const impl of impls) {
+    for (const impl of impls) {
       this.registerService(impl);
     }
   }
-}
 
-ApiRegistry.serviceName = 'api-registry';
+  static readonly serviceName = 'api-registry';
+}
 
 registerService(ApiRegistry);
 
-exports.createDecoratorGroup = (...decorators) => method => {
-  for(const decorator of decorators) {
-    decorator(method);
-  }
-};
+export function createDecoratorGroup(...decorators) {
+  return (method) => {
+    for (const decorator of decorators) {
+      decorator(method);
+    }
+  };
+}
 
-exports.api = {
+export const api = {
   decorators: require('./api/decorators'),
   services: require('./api/services'),
 };

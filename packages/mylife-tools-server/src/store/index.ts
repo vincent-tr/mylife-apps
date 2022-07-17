@@ -1,19 +1,18 @@
-'use strict';
-
-const { createLogger } = require('../logging');
-const { registerService, getService, fatal } = require('../service-manager');
+import { createLogger } from '../logging';
+import { registerService, getService, fatal } from '../service-manager';
+import { Container } from './container';
+import { Collection } from './collection';
+import { View } from './view';
+import { deserializeObject, serializeObject, serializeObjectId, deserializeObjectId } from './serializer';
 
 const logger = createLogger('mylife:tools:server:store');
 
-const { Container } = require('./container');
-const { Collection } = require('./collection');
-const { View } = require('./view');
-const { deserializeObject, serializeObject, serializeObjectId, deserializeObjectId } = require('./serializer');
-
 async function bindCollection(collection) {
-  logger.info(`loading database collection '${collection.name}' (entity='${collection.entity.id}', databaseCollection='${collection.databaseCollection.collectionName}')`);
+  logger.info(
+    `loading database collection '${collection.name}' (entity='${collection.entity.id}', databaseCollection='${collection.databaseCollection.collectionName}')`
+  );
   const cursor = collection.databaseCollection.find({});
-  await cursor.forEach(record => {
+  await cursor.forEach((record) => {
     const object = deserializeObject(record, collection.entity);
     collection.load(object);
   });
@@ -31,7 +30,7 @@ async function unbindCollection(collection) {
 
 function handleChange(collection, change) {
   const session = getService('database').session();
-  if(change.lsid && areSessionIdsEqual(session.id, change.lsid)) {
+  if (change.lsid && areSessionIdsEqual(session.id, change.lsid)) {
     logger.debug('Got change with same session id than current session, ignored');
     return;
   }
@@ -40,7 +39,7 @@ function handleChange(collection, change) {
     const id = getChangedDocumentId(collection, change);
     logger.debug(`Database collection '${collection.name}' change (id='${id}', type='${change.operationType}')`);
 
-    switch(change.operationType) {
+    switch (change.operationType) {
       case 'insert':
       case 'replace':
       case 'update': {
@@ -67,8 +66,7 @@ function handleChange(collection, change) {
       default:
         throw new Error(`Unhandled database change stream operation type: '${change.operationType}`);
     }
-
-  } catch(err) {
+  } catch (err) {
     // it is a fatal error if we could not handle database notifications properly
     fatal(err);
   }
@@ -84,7 +82,7 @@ function getChangedDocumentId(collection, change) {
 }
 
 function registerDatabaseUpdater(collection) {
-  collection.on('change', event => {
+  collection.on('change', (event) => {
     if (collection.databaseUpdating) {
       return; // do not persist if we are triggered from database update
     }
@@ -93,7 +91,7 @@ function registerDatabaseUpdater(collection) {
     taskQueue.add(`${collection.name}/${event.type}`, async () => {
       try {
         await databaseUpdate(collection, event);
-      } catch(err) {
+      } catch (err) {
         // it is a fatal error if background database update fails
         fatal(err);
       }
@@ -105,8 +103,7 @@ async function databaseUpdate(collection, { before, after, type }) {
   const databaseCollection = collection.databaseCollection;
   const session = getService('database').session();
   await session.withTransaction(async () => {
-
-    switch(type) {
+    switch (type) {
       case 'create': {
         const record = serializeObject(after, collection.entity);
         await databaseCollection.insertOne(record, { session });
@@ -128,33 +125,30 @@ async function databaseUpdate(collection, { before, after, type }) {
       default:
         throw new Error(`Unsupported event type: '${type}'`);
     }
-
   });
 }
 
 class Store {
-  constructor() {
-    this._collections = new Map();
-  }
+  private readonly collections = new Map<string, Collection>();
 
   async init({ storeConfiguration }) {
-    if(!storeConfiguration) {
+    if (!storeConfiguration) {
       throw new Error('no store configuration');
     }
 
     getService('task-queue-manager').createQueue('store');
 
-    for(const collectionConfiguration of storeConfiguration) {
+    for (const collectionConfiguration of storeConfiguration) {
       const { collection: name, entity: entityId = name, database: databaseName = name, indexes } = collectionConfiguration;
 
       const entity = getService('metadata-manager').getEntity(entityId);
       const databaseCollection = getService('database').collection(databaseName);
       const collection = new Collection(name, databaseCollection, entity);
-      this._collections.set(name, collection);
+      this.collections.set(name, collection);
 
       await bindCollection(collection);
 
-      for(const index of indexes) {
+      for (const index of indexes) {
         collection.setupIndex(index);
       }
 
@@ -165,14 +159,14 @@ class Store {
   async terminate() {
     await getService('task-queue-manager').closeQueue('store');
 
-    for(const collection of this._collections.values()) {
+    for (const collection of this.collections.values()) {
       await unbindCollection(collection);
     }
   }
 
-  collection(name) {
-    const result = this._collections.get(name);
-    if(result) {
+  collection(name: string) {
+    const result = this.collections.get(name);
+    if (result) {
       return result;
     }
 
@@ -186,14 +180,16 @@ class Store {
   serializeObject(object, entity) {
     return serializeObject(object, entity);
   }
-}
 
-Store.serviceName = 'store';
-Store.dependencies = ['metadata-manager', 'database', 'task-queue-manager'];
+  static readonly serviceName = 'store';
+  static readonly dependencies = ['metadata-manager', 'database', 'task-queue-manager'];
+}
 
 registerService(Store);
 
-exports.getStoreCollection = (name) => getService('store').collection(name);
+export function getStoreCollection(name: string) {
+  return getService('store').collection(name);
+}
 
-exports.StoreView = View;
-exports.StoreContainer = Container;
+export { View as StoreView };
+export { Container as StoreContainer };

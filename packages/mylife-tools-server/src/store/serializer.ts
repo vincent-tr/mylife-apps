@@ -1,12 +1,7 @@
-'use strict';
+import { utils } from 'mylife-tools-common';
+import { getService } from '../service-manager';
 
-const { utils } = require('mylife-tools-common');
-const { getService } = require('../service-manager');
-
-exports.deserializeObject = deserializeObject;
-exports.serializeObject = serializeObject;
-exports.serializeObjectId = serializeObjectId;
-exports.deserializeObjectId = deserializeObjectId;
+type FIXME_any = any;
 
 const identity = x => x;
 
@@ -42,7 +37,7 @@ const serializers = {
   }
 }
 
-function deserializeObject(record, entity) {
+export function deserializeObject(record, entity) {
   let object = entity.newObject();
   for(const field of entity.fields) {
     const raw = field.getValue(record);
@@ -52,8 +47,8 @@ function deserializeObject(record, entity) {
   return object;
 }
 
-function serializeObject(object, entity) {
-  let record = {};
+export function serializeObject(object, entity) {
+  let record: FIXME_any = {};
   for(const field of entity.fields) {
     const value = field.getValue(object);
     const raw = serializeValue(field.datatype, value);
@@ -70,13 +65,13 @@ function serializeObject(object, entity) {
   return record;
 }
 
-function serializeObjectId(object, entity) {
+export function serializeObjectId(object, entity) {
   const field = entity.getField('_id');
   const value = field.getValue(object);
   return getDatatypeSerializer(field.datatype).serialize(value);
 }
 
-function deserializeObjectId(entity, raw) {
+export function deserializeObjectId(entity, raw) {
   const { datatype } = entity.getField('_id');
   const serializer = getDatatypeSerializer(datatype);
   return serializer.deserialize(raw, datatype);

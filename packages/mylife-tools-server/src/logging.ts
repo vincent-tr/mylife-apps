@@ -1,10 +1,8 @@
-'use strict';
+import winston from 'winston';
+import { getArg } from './cli';
+import { getDefine } from './defines';
 
-const winston = require('winston');
-const { getArg } = require('./cli');
-const { getDefine } = require('./defines');
-
-exports.createLogger = (namespace, options = {}) => {
+export function createLogger(namespace: string, options = {}) {
   const application = getDefine('applicationName');
   const level = getArg('loglevel', 'info');
 
@@ -20,4 +18,4 @@ exports.createLogger = (namespace, options = {}) => {
       }),
     ]
   });
-};
+}

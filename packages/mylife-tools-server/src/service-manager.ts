@@ -1,40 +1,41 @@
-'use strict';
-
-const { createLogger } = require('./logging');
+import { createLogger } from './logging';
 
 const logger = createLogger('mylife:tools:server:service-manager');
 
+type FIXME_any = any;
+
 const serviceClasses = {};
 
-exports.registerService = Service => {
+export function registerService(Service) {
   const { serviceName } = Service;
-  if(!(Service instanceof Function) || !serviceName) {
+  if (!(Service instanceof Function) || !serviceName) {
     throw new Error('Bad service provided');
   }
-  if(serviceClasses[serviceName]) {
+  if (serviceClasses[serviceName]) {
     throw new Error(`Service already exists: '${serviceName}'`);
   }
 
   serviceClasses[serviceName] = Service;
 }
 
-function findServiceClass(name) {
+function findServiceClass(name: string) {
   return serviceClasses[name];
 }
 
 class ServiceManager {
+  private readonly services: FIXME_any[] = [];
+  private readonly servicesByName = new Map();
+  private initOrder = [];
+
   constructor() {
-    this._services = [];
-    this._servicesByName = new Map();
-    this._initOrder = [];
   }
 
-  add(serviceName) {
+  add(serviceName: string) {
     const Service = findServiceClass(serviceName);
-    if(!Service) {
+    if (!Service) {
       throw new Error(`Unknown service name: ${serviceName}`);
     }
-    if(this._servicesByName.get(serviceName)) {
+    if (this.servicesByName.get(serviceName)) {
       throw new Error(`service name duplicate: ${serviceName}`);
     }
 
@@ -42,8 +43,8 @@ class ServiceManager {
     service.serviceName = Service.serviceName;
     service.dependencies = Service.dependencies;
 
-    this._services.push(service);
-    this._servicesByName.set(serviceName, service);
+    this.services.push(service);
+    this.servicesByName.set(serviceName, service);
 
     logger.debug(`Service added: ${serviceName}`);
 
@@ -51,53 +52,53 @@ class ServiceManager {
   }
 
   async init(options) {
-    for(const service of this._services) {
-      this._resolveDependencies(service);
+    for (const service of this.services) {
+      this.resolveDependencies(service);
     }
 
-    this._computeInitOrder();
+    this.computeInitOrder();
 
-    for(const serviceName of this._initOrder) {
-      const service = this._servicesByName.get(serviceName);
+    for (const serviceName of this.initOrder) {
+      const service = this.servicesByName.get(serviceName);
       await service.init(options);
     }
   }
 
-  _resolveDependencies(service) {
-      for(const dependency of service.dependencies || []) {
-      if(this._servicesByName.get(dependency)) {
+  private resolveDependencies(service) {
+    for (const dependency of service.dependencies || []) {
+      if (this.servicesByName.get(dependency)) {
         continue;
       }
 
-      if(!findServiceClass(dependency)) {
+      if (!findServiceClass(dependency)) {
         throw new Error(`Unknown dependency ${dependency} for service ${service.name}`);
       }
 
-      const service = this.add(dependency);
-      this._resolveDependencies(service);
+      const depService = this.add(dependency);
+      this.resolveDependencies(depService);
     }
   }
 
-  _computeInitOrder() {
+  private computeInitOrder() {
     const order = [];
-    const serviceNames = this._services.map(({ serviceName }) => serviceName);
-    computeInitOrder(order, this._servicesByName, serviceNames, new Set(), 0);
-    this._initOrder = order;
+    const serviceNames = this.services.map(({ serviceName }) => serviceName);
+    computeInitOrder(order, this.servicesByName, serviceNames, new Set(), 0);
+    this.initOrder = order;
     logger.debug(`Computed init order: [ ${order.join(', ')} ]`);
   }
 
   async terminate() {
-    const services = [...this._initOrder];
+    const services = [...this.initOrder];
     services.reverse();
-    for(const serviceName of services) {
-      const service = this._servicesByName.get(serviceName);
+    for (const serviceName of services) {
+      const service = this.servicesByName.get(serviceName);
       await service.terminate();
     }
   }
 
-  getService(name) {
-    const service = this._servicesByName.get(name);
-    if(!service) {
+  getService(name: string) {
+    const service = this.servicesByName.get(name);
+    if (!service) {
       throw new Error(`Service not found: ${name}`);
     }
 
@@ -111,17 +112,17 @@ class ServiceManager {
 }
 
 function computeInitOrder(order, serviceMap, serviceNames, existingSet, recursiveCount) {
-  if(recursiveCount > 50) {
+  if (recursiveCount > 50) {
     throw new Error('Cyclic service dependency');
   }
 
-  for(const serviceName of serviceNames) {
-    if(existingSet.has(serviceName)) {
+  for (const serviceName of serviceNames) {
+    if (existingSet.has(serviceName)) {
       continue;
     }
 
     const { dependencies = [] } = serviceMap.get(serviceName);
-    if(dependencies.length) {
+    if (dependencies.length) {
       computeInitOrder(order, serviceMap, dependencies, existingSet, recursiveCount + 1);
     }
 
@@ -132,20 +133,23 @@ function computeInitOrder(order, serviceMap, serviceNames, existingSet, recursiv
 
 let manager;
 
-exports.getService = name => manager.getService(name);
-exports.fatal = err => manager.fatal(err);
+export function getService(name: string) {
+  return manager.getService(name);
+}
 
-exports.runTask = runTask;
+export function fatal(err) {
+  manager.fatal(err);
+}
 
-exports.runServices = async(options) => {
+export async function runServices(options) {
   const task = () => waitForSignals('SIGINT', 'SIGTERM');
   await runTask({ task, ...options });
-};
+}
 
-async function runTask({ services, task, ...options }) {
+export async function runTask({ services, task, ...options }) {
   try {
     manager = new ServiceManager();
-    for(const service of services) {
+    for (const service of services) {
       manager.add(service);
     }
 
@@ -155,15 +159,14 @@ async function runTask({ services, task, ...options }) {
     manager = null;
 
     process.exit();
-
-  } catch(err) {
+  } catch (err) {
     logger.error(err.stack);
     process.exit(1);
   }
 }
 
 async function waitForSignals(...signals) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     for (const sig of signals) {
       process.on(sig, resolve);
     }

@@ -1,15 +1,15 @@
-'use strict';
+import { Collection } from './collection';
+import { Container } from './container';
 
-const { Container } = require('./container');
+export class View extends Container {
+  private changeCallback;
+  private filterCallback;
 
-exports.View = class View extends Container {
-  constructor(collection) {
-    super();
+  constructor(private readonly collection: Collection) {
+    super(`view on ${collection.name}`);
 
-    this.collection = collection;
-
-    this._changeCallback = event => this._onCollectionChange(event);
-    this.collection.on('change', this._changeCallback);
+    this.changeCallback = event => this.onCollectionChange(event);
+    this.collection.on('change', this.changeCallback);
   }
 
   setFilter(filterCallback) {
@@ -19,11 +19,11 @@ exports.View = class View extends Container {
 
   refresh() {
     for(const object of this.collection.list()) {
-      this._onCollectionChange({ type: 'update', before: object, after: object });
+      this.onCollectionChange({ type: 'update', before: object, after: object });
     }
   }
 
-  _onCollectionChange({ before, after, type }) {
+  private onCollectionChange({ before, after, type }) {
     switch(type) {
       case 'create': {
         if(this.filterCallback(after)) {
@@ -53,7 +53,7 @@ exports.View = class View extends Container {
   }
 
   close() {
-    this.collection.off('change', this._changeCallback);
+    this.collection.off('change', this.changeCallback);
     this._reset();
   }
 };

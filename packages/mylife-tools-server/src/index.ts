@@ -1,18 +1,15 @@
-'use strict';
-
-Object.assign(exports,
-  require('./defines'),
-  require('./cli'),
-  require('./logging'),
-  require('./config'),
-  require('./web-server'),
-  require('./database'),
-  require('./io'),
-  require('./session-manager'),
-  require('./task-queue-manager'),
-  require('./api-registry'),
-  require('./service-manager'),
-  require('./metadata-manager'),
-  require('./store'),
-  require('./notification-service'),
-  require('./xlsx'));
+export * from './defines';
+export * from './cli';
+export * from './logging';
+export * from './config';
+export * from './web-server';
+export * from './database';
+export * from './io';
+export * from './session-manager';
+export * from './task-queue-manager';
+export * from './api-registry';
+export * from './service-manager';
+export * from './metadata-manager';
+export * from './store';
+export * from './notification-service';
+export * from './xlsx';

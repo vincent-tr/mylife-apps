@@ -1,12 +1,10 @@
-'use strict';
-
-const { parse: csv }    = require('csv-parse/sync');
-const moment = require('moment');
-const { createLogger, getStoreCollection } = require('mylife-tools-server');
+import { parse as csv } from 'csv-parse/sync';
+import moment from 'moment';
+import { createLogger, getStoreCollection } from 'mylife-tools-server';
 
 const logger = createLogger('mylife:money:importer');
 
-exports.operationsImport = (account, data) => {
+export function operationsImport(account, data) {
 
   let records = parseRecords(account, data);
   records = filterExisting(records);
@@ -14,7 +12,7 @@ exports.operationsImport = (account, data) => {
 
   logger.info(`Import done, ${records.length} operations added`);
   return records.length;
-};
+}
 
 function parseRecords(account, data) {
   const raw = csv(data, {
@@ -88,7 +86,7 @@ function insertRecords(records) {
   }
 }
 
-exports.executeRules = () => {
+export function executeRules() {
   logger.info('Executing rules');
 
   const operations = getStoreCollection('operations');
@@ -111,7 +109,7 @@ exports.executeRules = () => {
   logger.info(`Execution done, moved ${opCount} operations`);
 
   return opCount;
-};
+}
 
 function buildRulesExecutor(groups) {
   const operators = {

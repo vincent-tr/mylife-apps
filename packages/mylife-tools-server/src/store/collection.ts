@@ -1,16 +1,10 @@
-'use strict';
+import { getService } from '../service-manager';
+import { View } from './view';
+import { Container } from './container';
 
-const { getService } = require('../service-manager');
-const { View } = require('./view');
-const { Container } = require('./container');
-
-exports.Collection = class Collection extends Container {
-  constructor(name, databaseCollection, entity) {
-    super();
-
-    this.name = name;
-    this.databaseCollection = databaseCollection;
-    this.entity = entity;
+export class Collection extends Container {
+  constructor(name: string, public readonly databaseCollection, public readonly entity) {
+    super(name);
   }
 
   setupIndex(configuration) {
@@ -21,7 +15,7 @@ exports.Collection = class Collection extends Container {
   }
 
   load(object) {
-    this._set(object);
+    this.set(object);
   }
 
   set(object) {
@@ -35,13 +29,13 @@ exports.Collection = class Collection extends Container {
       object = this.entity.getField('_id').setValue(object, id);
     }
 
-    this._set(object);
+    this.set(object);
 
     return object;
   }
 
   delete(id) {
-    return this._delete(id);
+    return this.delete(id);
   }
 
   createView(filterCallback = () => true) {

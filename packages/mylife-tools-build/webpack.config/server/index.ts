@@ -72,7 +72,7 @@ export default function (baseDirectory: string, dev: boolean) {
 
 export function createWarningFilter(...modules: string[]) {
   return (warning: any) => {
-    const name: string = warning.moduleName;
+    const name = warning.moduleName;
     if (typeof name !== 'string') {
       return false;
     }
