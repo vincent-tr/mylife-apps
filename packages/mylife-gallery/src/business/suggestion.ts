@@ -122,8 +122,8 @@ class SuggestionView extends StoreContainer {
 
     this.refreshWarnSyncing();
     this.refreshCleanOthers();
-    this._refreshCleanDuplicates();
-    this._refreshAlbumCreations();
+    this.refreshCleanDuplicates();
+    this.refreshAlbumCreations();
     this.refreshDeleteLoadingErrors();
     this.refreshDocumentsWithoutAlbum();
     this.refreshSortDocumentRoots();
@@ -131,7 +131,7 @@ class SuggestionView extends StoreContainer {
   }
 
   onAlbumsChange() {
-    this._refreshAlbumCreations();
+    this.refreshAlbumCreations();
     this.refreshCleanEmptyAlbums();
     this.refreshDocumentsWithoutAlbum();
     this.refreshSortDocumentRoots();
@@ -160,7 +160,7 @@ class SuggestionView extends StoreContainer {
     }
   }
 
-  private _refreshCleanDuplicates() {
+  private refreshCleanDuplicates() {
     let count = 0;
     let fileSizeSum = 0;
     for (const collection of Object.values(this.collections)) {
@@ -179,7 +179,7 @@ class SuggestionView extends StoreContainer {
     }
   }
 
-  private _refreshAlbumCreations() {
+  private refreshAlbumCreations() {
     const documents = new Map();
 
     // map documents

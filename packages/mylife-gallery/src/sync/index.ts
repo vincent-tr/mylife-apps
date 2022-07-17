@@ -35,7 +35,7 @@ class SyncServer {
       return;
     }
 
-    const deferred = utils.defer();
+    const deferred = utils.defer<void>();
     this.running = deferred.promise;
 
     logger.debug('Starting sync');

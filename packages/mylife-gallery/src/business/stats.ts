@@ -2,11 +2,16 @@ import { StoreContainer, getMetadataEntity, notifyView } from 'mylife-tools-serv
 import * as business from '.';
 
 class StatsView extends StoreContainer {
-  constructor() {
-    super();
+  private entity;
+  private subscriptions;
+  private collections;
+  private ids;
 
-    this._createSubscriptions();
-    this._createIds(
+  constructor() {
+    super('stats-view');
+
+    this.createSubscriptions();
+    this.createIds(
       'image-count', 'image-file-size', 'image-media-size',
       'video-count', 'video-file-size', 'video-media-size',
       'other-count', 'other-file-size',
@@ -16,25 +21,25 @@ class StatsView extends StoreContainer {
     this.onCollectionChange();
   }
 
-  _createSubscriptions() {
+  private createSubscriptions() {
     this.subscriptions = [];
     this.collections = {};
 
     for(const collection of business.getDocumentStoreCollections()) {
-      const subscription = new business.CollectionSubscription(this, collection);
+      const subscription = new business.CollectionSubscription(this, collection, (event) => this.onCollectionChange());
       this.subscriptions.push(subscription);
       this.collections[collection.entity.id] = collection;
     }
   }
 
-  _createIds(...codes) {
+  private createIds(...codes) {
     this.ids = {};
     for(const code of codes) {
-      this.ids[code] = this._newId();
+      this.ids[code] = this.newId();
     }
   }
 
-  _newId() {
+  private newId() {
     return this.subscriptions[0].collection.newId();
   }
 
@@ -50,23 +55,23 @@ class StatsView extends StoreContainer {
     this.onCollectionChange();
   }
 
-  onCollectionChange() {
-    this._setValue('image-count', this.collections.image.size);
-    this._setValue('image-file-size', this.collections.image.list().reduce((acc, item) => acc + item.fileSize, 0));
-    this._setValue('image-media-size', this.collections.image.list().reduce((acc, item) => acc + item.media.size, 0));
-    this._setValue('video-count', this.collections.video.size);
-    this._setValue('video-file-size', this.collections.video.list().reduce((acc, item) => acc + item.fileSize, 0));
-    this._setValue('video-media-size', this.collections.video.list().reduce((acc, item) => acc + item.media.size, 0));
-    this._setValue('other-count', this.collections.other.size);
-    this._setValue('other-file-size', this.collections.other.list().reduce((acc, item) => acc + item.fileSize, 0));
-    this._setValue('last-integration', findLastIntegration());
+  private onCollectionChange() {
+    this.setValue('image-count', this.collections.image.size);
+    this.setValue('image-file-size', this.collections.image.list().reduce((acc, item) => acc + item.fileSize, 0));
+    this.setValue('image-media-size', this.collections.image.list().reduce((acc, item) => acc + item.media.size, 0));
+    this.setValue('video-count', this.collections.video.size);
+    this.setValue('video-file-size', this.collections.video.list().reduce((acc, item) => acc + item.fileSize, 0));
+    this.setValue('video-media-size', this.collections.video.list().reduce((acc, item) => acc + item.media.size, 0));
+    this.setValue('other-count', this.collections.other.size);
+    this.setValue('other-file-size', this.collections.other.list().reduce((acc, item) => acc + item.fileSize, 0));
+    this.setValue('last-integration', findLastIntegration());
   }
 
-  _setObject(values) {
+  private setObject(values) {
     this._set(this.entity.newObject(values));
   }
 
-  _setValue(code, value) {
+  private setValue(code, value) {
     this._set(this.entity.newObject({ _id: this.ids[code], code, value }));
   }
 }

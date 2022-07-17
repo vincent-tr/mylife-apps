@@ -3,35 +3,41 @@
 const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 
 export class OperationStats extends StoreContainer {
+  private readonly collection;
+  private readonly changeCallback;
+  private readonly countId;
+  private readonly lastDateId;
+  private readonly entity;
+
   constructor() {
     super();
     this.collection = getStoreCollection('operations');
 
-    this._changeCallback = () => this._onCollectionChange();
-    this.collection.on('change', this._changeCallback);
+    this.changeCallback = () => this.onCollectionChange();
+    this.collection.on('change', this.changeCallback);
 
-    this._countId = this.collection.newId();
-    this._lastDateId = this.collection.newId();
+    this.countId = this.collection.newId();
+    this.lastDateId = this.collection.newId();
     this.entity = getMetadataEntity('report-operation-stat');
 
-    this._onCollectionChange();
+    this.onCollectionChange();
   }
 
   refresh() {
-    this._onCollectionChange();
+    this.onCollectionChange();
   }
 
-  _onCollectionChange() {
-    this._setObject({ _id: this._countId, code: 'count', value: this.collection.size });
-    this._setObject({ _id: this._lastDateId, code: 'lastDate', value: findLastDate(this.collection.list()) });
+  private onCollectionChange() {
+    this.setObject({ _id: this.countId, code: 'count', value: this.collection.size });
+    this.setObject({ _id: this.lastDateId, code: 'lastDate', value: findLastDate(this.collection.list()) });
   }
 
-  _setObject(values) {
+  private setObject(values) {
     this._set(this.entity.newObject(values));
   }
 
   close() {
-    this.collection.off('change', this._changeCallback);
+    this.collection.off('change', this.changeCallback);
     this._reset();
   }
 }
