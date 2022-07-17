@@ -1,4 +1,1 @@
-'use strict';
-
-Object.assign(exports,
-  require('./notifications'));
+export * from './notifications';

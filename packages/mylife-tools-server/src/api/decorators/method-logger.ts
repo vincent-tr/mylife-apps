@@ -1,9 +1,8 @@
-'use strict';
+import { createLogger } from '../../logging';
 
-const { createLogger } = require('../../logging');
 const logger = createLogger('mylife:tools:server:api:decorators:method-logger');
 
-exports.methodLogger = method => {
+export function methodLogger(method) {
   const { callee, service, name } = method;
   method.callee = async (session, ...args) => {
     logger.debug(`Calling ${service.name}.${name}`);
@@ -11,4 +10,4 @@ exports.methodLogger = method => {
     logger.debug(`Called ${service.name}.${name} : ${JSON.stringify(result)}`);
     return result;
   };
-};
+}
