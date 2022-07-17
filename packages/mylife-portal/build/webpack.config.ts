@@ -1,5 +1,5 @@
 import path from 'path';
-import { prepare, createServerConfig, CopyPlugin } from 'mylife-tools-build/webpack.config';
+import { prepare, createServerConfig, CopyPlugin, createWarningFilter, DEFAULT_WARNING_FILTERS } from 'mylife-tools-build/webpack.config';
 
 export default (env: Record<string, any>, argv: Record<string, any>) => {
   const { baseDirectory, dev } = prepare(env, argv);
@@ -13,6 +13,10 @@ export default (env: Record<string, any>, argv: Record<string, any>) => {
       { from: path.join(baseDirectory, 'node_modules/bootstrap/dist/fonts'), to: 'static/bootstrap/fonts' }
     ],
   }));
+
+  config.stats = {
+    warningsFilter: createWarningFilter(...DEFAULT_WARNING_FILTERS, 'handlebars')
+  };
 
   return config;
 }
