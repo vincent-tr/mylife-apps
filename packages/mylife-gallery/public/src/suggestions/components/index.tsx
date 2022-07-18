@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, useMemo, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getSuggestions } from '../selectors';
@@ -13,11 +11,13 @@ import DeleteLoadingErrorsCard from './delete-loading-errors-card';
 import CleanEmptyAlbumCard from './clean-empty-album-card';
 import MoveSortedDocumentsCard from './move-sorted-documents-card';
 
+type FIXME_any = any;
+
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
     ...useSelector(state => ({
-      suggestions : getSuggestions(state),
+      suggestions : getSuggestions<FIXME_any>(state),
     })),
     ...useMemo(() => ({
       enter : () => dispatch(enter()),

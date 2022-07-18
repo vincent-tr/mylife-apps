@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
 import { enterMoveSortedDocumentsDialog, leaveDialog } from '../../actions';
 import { getDialogObjects } from '../../selectors';
@@ -9,8 +7,10 @@ import ScriptGenerator from './script-generator';
 import useStyles from './styles';
 import { getPath } from './move-sorted-documents-tools';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       documents : getDialogObjects(state),

@@ -1,11 +1,11 @@
-'use strict';
-
 import { React, PropTypes, mui, addLineBreaks, useDispatch, useMemo, routing } from 'mylife-tools-ui';
 import { browseWithCriteria } from '../actions';
 import CardBase from './card-base';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     browseWithCriteria : (criteria) => dispatch(browseWithCriteria(criteria))
   }), [dispatch]);

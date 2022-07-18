@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, useState, useMemo, useDispatch, useSelector, useLifecycle, dialogs, immutable, StepperControl } from 'mylife-tools-ui';
 import { enterCleanOthersDialog, leaveDialog } from '../../actions';
 import { getDialogObjects } from '../../selectors';
@@ -8,8 +6,10 @@ import CleanOthersList from './clean-others-list';
 import ScriptGenerator from './script-generator';
 import useStyles from './styles';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       documents : getDialogObjects(state),

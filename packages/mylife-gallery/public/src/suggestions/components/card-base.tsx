@@ -15,7 +15,14 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const CardBase = ({ className, title, description, actions, children, ...props }) => {
+interface CardBaseProps {
+  className?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  actions?: React.ReactNode | Iterable<React.ReactNode>;
+}
+
+const CardBase: FunctionComponent<CardBaseProps> = ({ className, title, description, actions, children, ...props }) => {
   const classes = useStyles();
   return (
     <mui.Card className={clsx(className, classes.container)} {...props}>

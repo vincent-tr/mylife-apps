@@ -63,7 +63,12 @@ NotEmpty.propTypes = {
   slideshow: PropTypes.object.isRequired
 };
 
-const Preview = ({ slideshow, className, ...props }) => {
+interface PreviewProps {
+  slideshow;
+  className?: string;
+}
+
+const Preview: FunctionComponent<PreviewProps> = ({ slideshow, className, ...props }) => {
   const classes = { ...useCommonStyles(), ...useStyles() };
   const tileClasses = { item: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const { slideshowImages } = useSlideshowImageView(slideshow._id);

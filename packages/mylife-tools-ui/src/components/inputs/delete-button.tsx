@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {useState } from 'react';
+import React, {FunctionComponent, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography, makeStyles } from '@material-ui/core';
 import { Delete as DeleteIcon } from '@material-ui/icons';
@@ -22,7 +22,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DeleteButton = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed, className, disablePortal, ...props }) => {
+interface DeleteButtonProps {
+  icon?: boolean;
+  text?: React.ReactNode;
+  tooltip?: React.ReactNode;
+  confirmText?: React.ReactNode;
+  onConfirmed?: () => void;
+  className?: string;
+  disablePortal?: boolean;
+}
+
+const DeleteButton: FunctionComponent<DeleteButtonProps> = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed, className, disablePortal = false, ...props }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);

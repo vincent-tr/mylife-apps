@@ -1,11 +1,11 @@
-'use strict';
-
 import { React, PropTypes, useDispatch, useMemo, DeleteButton } from 'mylife-tools-ui';
 import { deleteEmptyAlbum } from '../actions';
 import CardBase from './card-base';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     deleteEmptyAlbum : (id) => dispatch(deleteEmptyAlbum(id))
   }), [dispatch]);
