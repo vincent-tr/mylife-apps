@@ -15,7 +15,7 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const ExpandedSummary = () => {
+const ExpandedSummary: React.FunctionComponent = () => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
@@ -27,7 +27,7 @@ const ExpandedSummary = () => {
 ExpandedSummary.propTypes = {
 };
 
-const CollapsedSummary = ({ criteria }) => {
+const CollapsedSummary: React.FunctionComponent<{ criteria }> = ({ criteria }) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
@@ -44,8 +44,8 @@ const Criteria = ({ className, criteria, onCriteriaChanged, display, onDisplayCh
   return (
     <SummaryAccordion
       className={className}
-      expandedSummary={<ExpandedSummary criteria={criteria} display={display} />}
-      collapsedSummary={<CollapsedSummary criteria={criteria} display={display} />}>
+      expandedSummary={<ExpandedSummary />}
+      collapsedSummary={<CollapsedSummary criteria={criteria} />}>
       <CriteriaGrid criteria={criteria} onCriteriaChanged={onCriteriaChanged} display={display} onDisplayChanged={onDisplayChanged} />
     </SummaryAccordion>
   );
@@ -65,7 +65,7 @@ class CollapsedTitleFormatter {
 
   static generate(criteria) {
     const formatter = new CollapsedTitleFormatter(criteria);
-    
+
     formatter.addDates();
     formatter.addTypes();
     formatter.addAlbums();

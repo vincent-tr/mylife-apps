@@ -10,7 +10,7 @@ const useConnect = () => useSelector(state => ({
 const SlideshowTitle = () => {
   const { slideshow } = useConnect();
   const title = slideshow ? services.renderObject(slideshow) : '<inconnu>';
-  return `Diaporama ${title}`;
+  return <>{`Diaporama ${title}`}</>;
 };
 
 export default SlideshowTitle;

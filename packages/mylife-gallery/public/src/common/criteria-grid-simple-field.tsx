@@ -1,9 +1,16 @@
-'use strict';
-
 import { React, PropTypes, mui, CriteriaField } from 'mylife-tools-ui';
 
-const CriteriaGridSimpleField = ({ object, onObjectChanged, propName, label, editor, width, ...props }) => {
-  let editorNode = null;
+interface CriteriaGridSimpleFieldProps {
+  label: string;
+  width: number;
+  editor?: React.ElementType;
+  object?;
+  onObjectChanged?: (change) => void;
+  propName?: string;
+}
+
+const CriteriaGridSimpleField: React.FunctionComponent<CriteriaGridSimpleFieldProps> = ({ object, onObjectChanged, propName, label, editor, width, ...props }) => {
+  let editorNode: React.ElementType = null;
   if(editor) {
     const EditorComponent = editor;
     const setValue = (value) => onObjectChanged({ [propName]: value });

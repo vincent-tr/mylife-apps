@@ -1,7 +1,7 @@
-'use strict';
-
 import { handleActions, immutable } from 'mylife-tools-ui';
 import actionTypes from './action-types';
+
+ type FIXME_any = any;
 
 // empty set means all
 const initialCriteria = {
@@ -32,12 +32,12 @@ const initialDisplay = {
 
 export default handleActions({
 
-  [actionTypes.SET_DISPLAY] : (state, action) => ({
+  [actionTypes.SET_DISPLAY] : (state, action: FIXME_any) => ({
     ...state,
     display: action.payload || initialDisplay
   }),
 
-  [actionTypes.SET_CRITERIA] : (state, action) => ({
+  [actionTypes.SET_CRITERIA] : (state, action: FIXME_any) => ({
     ...state,
     criteria: action.payload || initialCriteria
   }),

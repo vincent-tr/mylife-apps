@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, useMemo, useSelector, useDispatch, useLifecycle, useSelectionSet, clsx } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getDocuments, isShowDetail } from '../selectors';
@@ -7,8 +5,10 @@ import DocumentList from '../../document-list/components';
 import Detail from './detail';
 import { useIsSmallScreen } from './behaviors';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       documents: getDocuments(state),

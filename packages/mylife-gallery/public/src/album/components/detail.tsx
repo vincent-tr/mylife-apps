@@ -1,13 +1,13 @@
-'use strict';
-
 import { React, PropTypes, mui, routing, useDispatch, useSelector, useMemo, DebouncedTextField, DeleteButton, services } from 'mylife-tools-ui';
 import { useKeywordView } from '../../common/shared-views';
 import { THUMBNAIL_SIZE, ThumbnailAlbum } from '../../common/thumbnail';
 import { updateAlbum, deleteAlbum } from '../actions';
 import { getAlbum } from '../selectors';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       album: getAlbum(state),
@@ -160,7 +160,11 @@ const DeleteAlbum = () => {
   );
 };
 
-const Detail = React.forwardRef(({ selectedDocuments, ...props }, ref) => {
+interface DetailProps {
+  selectedDocuments;
+}
+
+const Detail = React.forwardRef<HTMLUListElement, DetailProps>(({ selectedDocuments, ...props }, ref) => {
   const { album } = useConnect();
 
   return (
@@ -178,8 +182,6 @@ const Detail = React.forwardRef(({ selectedDocuments, ...props }, ref) => {
   );
 });
 
-Detail.displayName = 'Detail';
-
 Detail.propTypes = {
   selectedDocuments: PropTypes.array.isRequired
 };
@@ -187,7 +189,7 @@ Detail.propTypes = {
 export default Detail;
 
 function extractThumbnails(documents) {
-  const thumbnails = [];
+  const thumbnails: string[] = [];
   for(const document of documents) {
     switch(document._entity) {
 

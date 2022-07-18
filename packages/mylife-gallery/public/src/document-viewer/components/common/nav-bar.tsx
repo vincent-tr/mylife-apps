@@ -16,6 +16,7 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 interface NavBarProps {
+  className?: string;
   documentWithInfo;
   showDetail?: boolean;
   onClose: () => void;
