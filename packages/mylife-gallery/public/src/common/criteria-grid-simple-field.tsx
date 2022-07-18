@@ -10,7 +10,7 @@ interface CriteriaGridSimpleFieldProps {
 }
 
 const CriteriaGridSimpleField: React.FunctionComponent<CriteriaGridSimpleFieldProps> = ({ object, onObjectChanged, propName, label, editor, width, ...props }) => {
-  let editorNode: React.ElementType = null;
+  let editorNode: React.ReactNode = null;
   if(editor) {
     const EditorComponent = editor;
     const setValue = (value) => onObjectChanged({ [propName]: value });

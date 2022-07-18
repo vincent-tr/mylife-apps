@@ -1,6 +1,5 @@
-'use strict';
 
-import { useSelector, services } from 'mylife-tools-ui';
+import { React, useSelector, services } from 'mylife-tools-ui';
 import { getSlideshow } from '../selectors';
 
 const useConnect = () => useSelector(state => ({
