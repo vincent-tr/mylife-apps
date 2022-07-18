@@ -98,6 +98,7 @@ MyLife Applications
     - config dir
 - redux toolkit for state updates instead of immutable objects
 - log app + tools version at startup
+- remove PropTypes use
 - move to TS
   - gallery
 
