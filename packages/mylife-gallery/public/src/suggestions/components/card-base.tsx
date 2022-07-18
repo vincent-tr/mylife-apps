@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles({
@@ -22,7 +20,7 @@ interface CardBaseProps {
   actions?: React.ReactNode | Iterable<React.ReactNode>;
 }
 
-const CardBase: FunctionComponent<CardBaseProps> = ({ className, title, description, actions, children, ...props }) => {
+const CardBase: React.FunctionComponent<CardBaseProps> = ({ className, title, description, actions, children, ...props }) => {
   const classes = useStyles();
   return (
     <mui.Card className={clsx(className, classes.container)} {...props}>

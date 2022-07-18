@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, Virtuoso } from 'mylife-tools-ui';
 
 const ListItemContent = ({ document, selection, setSelection }) => {

@@ -68,7 +68,7 @@ interface PreviewProps {
   className?: string;
 }
 
-const Preview: FunctionComponent<PreviewProps> = ({ slideshow, className, ...props }) => {
+const Preview: React.FunctionComponent<PreviewProps> = ({ slideshow, className, ...props }) => {
   const classes = { ...useCommonStyles(), ...useStyles() };
   const tileClasses = { item: classes.tile, imgFullHeight: classes.image, imgFullWidth: classes.image };
   const { slideshowImages } = useSlideshowImageView(slideshow._id);
