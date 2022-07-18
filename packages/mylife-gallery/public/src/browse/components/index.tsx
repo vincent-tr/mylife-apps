@@ -1,13 +1,13 @@
-'use strict';
-
 import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave, changeCriteria, changeDisplay } from '../actions';
 import { getCriteria, getDisplay, getDisplayView } from '../selectors';
 import Criteria from './criteria';
 import DocumentList from '../../document-list/components';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       criteria: getCriteria(state),

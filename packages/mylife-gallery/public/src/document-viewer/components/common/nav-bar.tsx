@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 
@@ -17,7 +15,16 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const NavBar = ({ documentWithInfo, showDetail, onClose, onDetail, onPrev, onNext, ...props }) => {
+interface NavBarProps {
+  documentWithInfo;
+  showDetail?: boolean;
+  onClose: () => void;
+  onDetail?: () => void;
+  onPrev?: () => void;
+  onNext?: () => void;
+}
+
+const NavBar: React.FunctionComponent<NavBarProps> = ({ documentWithInfo, showDetail = false, onClose, onDetail, onPrev, onNext, ...props }) => {
   const classes = useStyles();
   const screenSize = useScreenSize();
   const { info } = documentWithInfo;

@@ -64,23 +64,25 @@ export default Criteria;
 class CollapsedTitleFormatter {
 
   static generate(criteria) {
-    return new CollapsedTitleFormatter(criteria).result();
+    const formatter = new CollapsedTitleFormatter(criteria);
+    
+    formatter.addDates();
+    formatter.addTypes();
+    formatter.addAlbums();
+    formatter.addPersons();
+    formatter.addTexts();
+
+    formatter.addDefault();
+
+    return formatter.result();
   }
 
-  constructor(criteria) {
-    this.criteria = criteria;
-    this.parts = [];
+  private readonly parts: string[] = [];
 
-    this.addDates();
-    this.addTypes();
-    this.addAlbums();
-    this.addPersons();
-    this.addTexts();
-
-    this.addDefault();
+  private constructor(private readonly criteria) {
   }
 
-  addDates() {
+  private addDates() {
     if(this.criteria.noDate) {
       this.parts.push('aucune date');
       return;
@@ -98,7 +100,7 @@ class CollapsedTitleFormatter {
     }
   }
 
-  addTypes() {
+  private addTypes() {
     if(this.criteria.type.size === 0) {
       return;
     }
@@ -107,7 +109,7 @@ class CollapsedTitleFormatter {
     this.parts.push(types);
   }
 
-  addAlbums() {
+  private addAlbums() {
     if(this.criteria.noAlbum) {
       this.parts.push('aucun album');
       return;
@@ -119,7 +121,7 @@ class CollapsedTitleFormatter {
     }
   }
 
-  addPersons() {
+  private addPersons() {
     if(this.criteria.noPerson) {
       this.parts.push('aucune personne');
       return;
@@ -131,7 +133,7 @@ class CollapsedTitleFormatter {
     }
   }
 
-  addTexts() {
+  private addTexts() {
     for(const prop of ['keywords', 'caption', 'path']) {
       const value = this.criteria[prop];
       if(value) {
@@ -140,21 +142,21 @@ class CollapsedTitleFormatter {
     }
   }
 
-  addDefault() {
+  private addDefault() {
     if(this.parts.length === 0) {
       this.parts.push('<Aucun critère>');
     }
   }
 
-  result() {
+  private result() {
     return this.parts.join(', ');
   }
 
-  formatDateRange(min, max) {
+  private formatDateRange(min, max) {
     return `Du ${this.formatNullableDate(min)} au ${this.formatNullableDate(max)}`;
   }
 
-  formatNullableDate(date) {
+  private formatNullableDate(date) {
     if(!date) {
       return '<indéfini>';
     }
