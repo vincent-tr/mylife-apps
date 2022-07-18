@@ -5,8 +5,10 @@ import icons from '../../common/icons';
 import { useAlbumView } from '../../common/shared-views';
 import { addAlbumToSlideshow } from '../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     addAlbumToSlideshow: (slideshow, album) => dispatch(addAlbumToSlideshow(slideshow, album))
   }), [dispatch]);
@@ -22,7 +24,12 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const AlbumAddButton = ({ slideshow, className, ...props }) => {
+interface AlbumAddButton {
+  slideshow;
+  className?: string;
+}
+
+const AlbumAddButton: React.FunctionComponent<AlbumAddButton> = ({ slideshow, className, ...props }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 

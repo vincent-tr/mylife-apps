@@ -10,9 +10,17 @@ const useStyles = mui.makeStyles(theme => ({
   }
 }));
 
-const Maximizable = ({ classes: propClasses = {}, className, children, ...props }) => {
+interface MaximizableProps {
+  className?: string;
+  classes?: { 
+    fullscreen?: string;
+    windowed?: string;
+  };
+}
+
+const Maximizable: React.FunctionComponent<MaximizableProps> = ({ classes: propClasses = {}, className, children, ...props }) => {
   const classes = useStyles();
-  const maximizableElement = React.useRef();
+  const maximizableElement = React.useRef<HTMLDivElement>();
   const [isFullscreen, setFullscreen] = useFullscreenStatus(maximizableElement);
 
   useEffect(() => setFullscreen(true), []);
@@ -32,12 +40,12 @@ const Maximizable = ({ classes: propClasses = {}, className, children, ...props 
 Maximizable.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.object,
-  children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
+  // children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ])
 };
 
 export default Maximizable;
 
-function useFullscreenStatus(elRef) {
+function useFullscreenStatus(elRef: React.MutableRefObject<HTMLDivElement>): [boolean, (value: boolean) => void] {
   const [isFullscreen, setIsFullscreen] = useState(isBrowserFullScreen());
 
   const setFullscreen = (value) => {
@@ -67,14 +75,16 @@ function isBrowserFullScreen() {
 }
 
 function getBrowserFullscreenElement() {
+  const exoticDocument = document as any;
+
   if (typeof document.fullscreenElement !== 'undefined') {
     return document.fullscreenElement;
-  } else if (typeof document.mozFullScreenElement !== 'undefined') {
-    return document.mozFullScreenElement;
-  } else if (typeof document.msFullscreenElement !== 'undefined') {
-    return document.msFullscreenElement;
-  } else if (typeof document.webkitFullscreenElement !== 'undefined') {
-    return document.webkitFullscreenElement;
+  } else if (typeof exoticDocument.mozFullScreenElement !== 'undefined') {
+    return exoticDocument.mozFullScreenElement as Element;
+  } else if (typeof exoticDocument.msFullscreenElement !== 'undefined') {
+    return exoticDocument.msFullscreenElement as Element;
+  } else if (typeof exoticDocument.webkitFullscreenElement !== 'undefined') {
+    return exoticDocument.webkitFullscreenElement as Element;
   } else {
     throw new Error('fullscreenElement is not supported by this browser');
   }

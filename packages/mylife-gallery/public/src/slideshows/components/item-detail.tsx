@@ -36,6 +36,9 @@ const useStyles = mui.makeStyles(theme => ({
     alignItems: 'flex-start',
     justifyContent: 'center'
   },
+
+  editor: {
+  }
 }));
 
 const orders = [

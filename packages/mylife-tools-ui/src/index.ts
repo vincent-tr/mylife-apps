@@ -2,7 +2,7 @@ import 'typeface-roboto';
 import 'material-icons/iconfont/material-icons.css';
 
 export { default as React } from 'react';
-export { useState, useEffect, useMemo, useRef } from 'react';
+export { useState, useEffect, useMemo, useRef, useLayoutEffect } from 'react';
 export { default as PropTypes } from 'prop-types';
 export { default as clsx } from 'clsx';
 export { AutoSizer } from 'react-virtualized';

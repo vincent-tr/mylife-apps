@@ -64,19 +64,18 @@ export default Criteria;
 class CollapsedTitleFormatter {
 
   static generate(criteria) {
-    return new CollapsedTitleFormatter(criteria).result();
+    const formatter = new CollapsedTitleFormatter(criteria);
+    formatter.addTexts();
+    formatter.addDefault();
+    return formatter.result();
   }
 
-  constructor(criteria) {
-    this.criteria = criteria;
-    this.parts = [];
+  private readonly parts: string[] = [];
 
-    this.addTexts();
-
-    this.addDefault();
+  private constructor(private readonly criteria) {
   }
 
-  addTexts() {
+  private addTexts() {
     for(const prop of ['keywords', 'title']) {
       const value = this.criteria[prop];
       if(value) {
@@ -85,13 +84,13 @@ class CollapsedTitleFormatter {
     }
   }
 
-  addDefault() {
+  private addDefault() {
     if(this.parts.length === 0) {
       this.parts.push('<Aucun critère>');
     }
   }
 
-  result() {
+  private result() {
     return this.parts.join(', ');
   }
 }

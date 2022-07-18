@@ -12,7 +12,12 @@ const useStyles = mui.makeStyles({
 
 const TRANSITION_TIMEOUT = 500;
 
-const ImageContent = React.forwardRef(({ url, className, ...props }, ref) => {
+interface ImageContentProps {
+  url: string;
+  className?: string;
+}
+
+const ImageContent = React.forwardRef<HTMLImageElement, ImageContentProps>(({ url, className, ...props }, ref) => {
   const classes = useStyles();
   return (
     <img ref={ref} src={url} className={clsx(classes.image, className)} {...props} />
@@ -26,14 +31,20 @@ ImageContent.propTypes = {
   className: PropTypes.string
 };
 
-const NoTransition = ({ transitionData, ...props }) => {
+interface NoTransitionProps {
+  url: string;
+  transitionData;
+}
+
+const NoTransition: React.FunctionComponent<NoTransitionProps> = ({ transitionData, url, ...props }) => {
   void transitionData;
   return (
-    <ImageContent {...props} />
+    <ImageContent url={url} {...props} />
   );
 };
 
 NoTransition.propTypes = {
+  url: PropTypes.string.isRequired,
   transitionData: PropTypes.object.isRequired
 };
 

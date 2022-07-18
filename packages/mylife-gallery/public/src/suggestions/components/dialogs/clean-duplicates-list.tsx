@@ -36,8 +36,9 @@ ListItemContent.propTypes = {
 const CleanDuplicatesList = ({ documents, selection, setSelection, ...props }) => (
   <Virtuoso
     components={{
-      List: React.forwardRef(({ className, style, children }, ref) => (
+      List: React.forwardRef<HTMLDivElement, { className?: string; style?: React.CSSProperties; }>(({ className, style, children }, ref) => (
         <mui.List
+          component='div'
           ref={ref}
           style={{ margin: 0, padding: 0, ...style }}
           className={className}

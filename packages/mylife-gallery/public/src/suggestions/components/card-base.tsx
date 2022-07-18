@@ -46,7 +46,7 @@ CardBase.propTypes = {
   title: PropTypes.node,
   description: PropTypes.node,
   actions: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
-  children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
+  // children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
 };
 
 export default CardBase;

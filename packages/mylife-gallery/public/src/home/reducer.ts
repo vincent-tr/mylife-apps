@@ -1,7 +1,7 @@
-'use strict';
-
 import { handleActions } from 'mylife-tools-ui';
 import actionTypes from './action-types';
+
+type FIXME_any = any;
 
 const initialCriteria = {
   title: null,
@@ -15,12 +15,12 @@ const initialDisplay = {
 
 export default handleActions({
 
-  [actionTypes.SET_DISPLAY] : (state, action) => ({
+  [actionTypes.SET_DISPLAY] : (state, action: FIXME_any) => ({
     ...state,
     display: action.payload || initialDisplay
   }),
 
-  [actionTypes.SET_CRITERIA] : (state, action) => ({
+  [actionTypes.SET_CRITERIA] : (state, action: FIXME_any) => ({
     ...state,
     criteria: action.payload || initialCriteria
   }),

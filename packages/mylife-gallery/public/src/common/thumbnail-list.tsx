@@ -120,10 +120,14 @@ TileContainer.propTypes = {
   className: PropTypes.string
 };
 
-const ImageList = React.forwardRef(({ className, ...props }, ref) => {
+interface ImageListProps {
+  className?: string;
+}
+
+const ImageList = React.forwardRef<HTMLDivElement, ImageListProps>(({ className, ...props }, ref) => {
   const classes = useStyles();
   return (
-    <mui.ImageList ref={ref} cols={0} rowHeight={THUMBNAIL_SIZE + PADDING} className={clsx(classes.list, className)} {...props}/>
+    <mui.ImageList component='div' ref={ref} cols={0} rowHeight={THUMBNAIL_SIZE + PADDING} className={clsx(classes.list, className)} {...props} />
   );
 });
 
@@ -131,14 +135,20 @@ ImageList.propTypes = {
   className: PropTypes.string
 };
 
-const ThumbnailList = ({ className, data, showTileBar = false, selectable = false, getTileInfo }) => {
+interface ThumbnailListProps {
+  className?: string;
+  data;
+  showTileBar?: boolean;
+  selectable?: boolean;
+  getTileInfo;
+}
+
+const ThumbnailList: React.FunctionComponent<ThumbnailListProps> = ({ className, data, showTileBar = false, selectable = false, getTileInfo }) => {
   const classes = useStyles();
 
   if(!data.length) {
     return (
-      <ImageList className={className}>
-        {[]}
-      </ImageList>
+      <ImageList className={className} />
     );
   }
 

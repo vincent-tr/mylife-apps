@@ -1,13 +1,13 @@
-'use strict';
-
 import { React, PropTypes, immutable, mui, useState, useDispatch, useMemo } from 'mylife-tools-ui';
 import { usePersonView } from '../../common/shared-views';
 import icons from '../../common/icons';
 import { savePersons } from '../actions';
 import HeaderObjects from './header-objects';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     savePersons: (documents, data) => dispatch(savePersons(documents, data))
   }), [dispatch]);

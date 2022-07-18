@@ -1,18 +1,18 @@
 import { React, PropTypes, mui, clsx, useState, useEffect } from 'mylife-tools-ui';
 
-const useStyles = mui.makeStyles(theme => ({
-  container : {
-    backgroundColor : theme.palette.background,
-    position: 'relative'
+const useStyles = mui.makeStyles((theme) => ({
+  container: {
+    backgroundColor: theme.palette.background.default,
+    position: 'relative',
   },
-  image : {
-    position  : 'relative',
-    height    : '100%',
-    width     : '100%',
-    objectFit : 'scale-down',
+  image: {
+    position: 'relative',
+    height: '100%',
+    width: '100%',
+    objectFit: 'scale-down',
   },
   imageLoading: {
-    display: 'none'
+    display: 'none',
   },
   pending: {
     position: 'absolute',
@@ -23,8 +23,8 @@ const useStyles = mui.makeStyles(theme => ({
     margin: 'auto',
     height: '200px',
     width: '200px',
-    color: mui.colors.grey[200]
-  }
+    color: mui.colors.grey[200],
+  },
 }));
 
 const ImageViewer = ({ mediaUrl, className, ...props }) => {
@@ -36,13 +36,8 @@ const ImageViewer = ({ mediaUrl, className, ...props }) => {
 
   return (
     <div className={clsx(classes.container, className)} {...props}>
-      <img
-        src={mediaUrl}
-        onLoad={() => setLoading(false)}
-        className={clsx(classes.image, { [classes.imageLoading]: loading })} />
-      {loading && (
-        <mui.CircularProgress className={classes.pending} />
-      )}
+      <img src={mediaUrl} onLoad={() => setLoading(false)} className={clsx(classes.image, { [classes.imageLoading]: loading })} />
+      {loading && <mui.CircularProgress className={classes.pending} />}
     </div>
   );
 };

@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles({
@@ -8,7 +6,12 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const ListFooter = ({ text, className, ...props }) => {
+interface ListFooterProps {
+  text?: React.ReactNode;
+  className?: string;
+}
+
+const ListFooter: React.FunctionComponent<ListFooterProps> = ({ text, className, ...props }) => {
   const classes = useStyles();
   return (
     <mui.Toolbar className={clsx(classes.toolbar, className)} {...props}>
