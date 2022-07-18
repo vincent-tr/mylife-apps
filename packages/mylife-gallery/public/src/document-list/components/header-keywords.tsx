@@ -1,11 +1,11 @@
-'use strict';
-
 import { React, PropTypes, mui, immutable, useMemo, useDispatch, services } from 'mylife-tools-ui';
 import { useKeywordView } from '../../common/shared-views';
 import { addKeywordToDocuments, removeKeywordFromDocuments } from '../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     addKeywordToDocuments: (documents, keyword) => dispatch(addKeywordToDocuments(documents, keyword)),
     removeKeywordFromDocuments: (documents, keyword) => dispatch(removeKeywordFromDocuments(documents, keyword)),

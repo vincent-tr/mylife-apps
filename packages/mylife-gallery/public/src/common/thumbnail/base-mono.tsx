@@ -24,7 +24,12 @@ NotNull.propTypes = {
   thumbnail: PropTypes.string.isRequired
 };
 
-const BaseMono = ({ thumbnail, className, ...props }) => {
+interface BaseMonoProps {
+  thumbnail?: string;
+  className?: string;
+}
+
+const BaseMono: React.FunctionComponent<BaseMonoProps> = ({ thumbnail, className, ...props }) => {
   const classes = useCommonStyles();
   return (
     <div className={clsx(classes.container, className)} {...props}>

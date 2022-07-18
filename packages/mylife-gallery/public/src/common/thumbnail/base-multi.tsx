@@ -24,7 +24,12 @@ NotNull.propTypes = {
   thumbnails: PropTypes.array.isRequired
 };
 
-const BaseMulti = ({ thumbnails, className, ...props }) => {
+interface BaseMultiProps {
+  thumbnails?: string[];
+  className?: string;
+}
+
+const BaseMulti: React.FunctionComponent<BaseMultiProps> = ({ thumbnails, className, ...props }) => {
   const classes = useCommonStyles();
 
   return (

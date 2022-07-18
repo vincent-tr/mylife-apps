@@ -6,13 +6,15 @@ import { ThumbnailDocument } from '../../common/thumbnail';
 import ThumbnailList from '../../common/thumbnail-list';
 import icons from '../../common/icons';
 
+type FIXME_any = any;
+
 const List = ({ data, selectedItems, onSelectionChange, ...props }) => {
   const selectable = !!selectedItems && !!onSelectionChange;
 
   const getTileInfo = !selectable ?
     getBaseTileInfo :
     (data, index) => {
-      const info = getBaseTileInfo(data, index);
+      const info: FIXME_any = getBaseTileInfo(data, index);
       const id = data[index]._id;
       info.selected = selectedItems.has(id);
       info.onSelect = () => onSelectionChange({ id, selected: !info.selected });

@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, clsx } from 'mylife-tools-ui';
 
 const useStyles = mui.makeStyles(theme => ({

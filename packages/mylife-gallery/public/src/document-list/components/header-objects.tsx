@@ -1,6 +1,6 @@
-'use strict';
-
 import { React, PropTypes, mui, immutable, useState, useEffect, useMemo, services } from 'mylife-tools-ui';
+
+type FIXME_any = any;
 
 const useStyles = mui.makeStyles(theme => ({
   menuButton: {
@@ -115,7 +115,17 @@ const ObjectItems = ({ documents, objects, objectUsage, setObjectUsage }) => {
   });
 };
 
-const PopupObjects = React.forwardRef(({ title, newObject, newObjectRenderer, documents, objects, onSave, initialObjectUsage }, ref) => {
+interface PopupObjectsProps {
+  title: string;
+  newObject: React.ElementType;
+  newObjectRenderer: (object) => React.ReactNode;
+  documents: FIXME_any[];
+  objects: FIXME_any[];
+  onSave: (diff) => void;
+  initialObjectUsage: FIXME_any;
+}
+
+const PopupObjects = React.forwardRef<HTMLDivElement, PopupObjectsProps>(({ title, newObject, newObjectRenderer, documents, objects, onSave, initialObjectUsage }, ref) => {
   const classes = useStyles();
   const [objectUsage, setObjectUsage] = useState(immutable.Map());
   const [newObjects, setNewObjects] = useState(immutable.List());

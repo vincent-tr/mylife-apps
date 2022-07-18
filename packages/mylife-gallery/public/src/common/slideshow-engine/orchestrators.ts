@@ -1,6 +1,4 @@
-'use strict';
-
-exports.createOrchestrator = (slideshow) => {
+export function createOrchestrator(slideshow) {
   const { order } = slideshow;
   const Orchestrator = ORCHESTRATOR_BY_ORDER[order];
   if(!Orchestrator) {
@@ -8,9 +6,12 @@ exports.createOrchestrator = (slideshow) => {
   }
 
   return new Orchestrator();
-};
+}
 
 class OrderedStyleOrchestrator {
+  private slideshowImages;
+  private currentIndex;
+
   init(slideshowImages) {
     this.slideshowImages = slideshowImages;
     this.currentIndex = -1;
@@ -26,6 +27,9 @@ class OrderedStyleOrchestrator {
 }
 
 class RandomStyleOrchestrator {
+  private slideshowImages;
+  private prevIndex;
+
   init(slideshowImages) {
     this.slideshowImages = slideshowImages;
     this.prevIndex = -1;

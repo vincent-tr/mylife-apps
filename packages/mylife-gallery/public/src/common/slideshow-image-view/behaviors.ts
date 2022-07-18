@@ -1,11 +1,11 @@
-'use strict';
-
 import { useMemo, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { refSlideshowImageView, unrefSlideshowImageView } from './actions';
 import { getSlideshowImageView, getSlideshowImages } from './selectors';
 
+type FIXME_any = any;
+
 const useConnect = (slideshowId) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       slideshowImageView: getSlideshowImageView(state),

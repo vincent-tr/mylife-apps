@@ -99,6 +99,7 @@ MyLife Applications
 - redux toolkit for state updates instead of immutable objects
 - log app + tools version at startup
 - remove PropTypes use
+- FIXME_any
 - move to TS
   - gallery
 

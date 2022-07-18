@@ -21,7 +21,7 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Header = ({ documents, selectedItems, onSelectionChange }) => {
   const classes = useStyles();
-  const selectedDocuments = useMemo(() => documents.filter(doc => selectedItems.has(doc._id)));
+  const selectedDocuments = useMemo(() => documents.filter(doc => selectedItems.has(doc._id)), [documents]);
 
   const someSelected = selectedItems.size > 0;
   const allSelected = selectedItems.size === documents.length;
