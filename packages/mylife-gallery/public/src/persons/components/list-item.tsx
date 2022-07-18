@@ -1,9 +1,9 @@
-'use strict';
-
 import { React, PropTypes, mui, useDispatch, useMemo, DebouncedTextField, DeleteButton, services } from 'mylife-tools-ui';
 import { ThumbnailPerson, THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { updatePerson, deletePerson } from '../actions';
 import { thumbnailSelectorDialog } from './thumbnail-selector-dialog';
+
+type FIXME_any = any;
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -54,7 +54,7 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     updatePerson: (person, values) => dispatch(updatePerson(person, values)),
     deletePerson: (id) => dispatch(deletePerson(id)),

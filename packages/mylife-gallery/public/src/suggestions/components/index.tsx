@@ -14,10 +14,10 @@ import MoveSortedDocumentsCard from './move-sorted-documents-card';
 type FIXME_any = any;
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      suggestions : getSuggestions<FIXME_any>(state),
+    ...useSelector((state: FIXME_any) => ({
+      suggestions : getSuggestions(state),
     })),
     ...useMemo(() => ({
       enter : () => dispatch(enter()),

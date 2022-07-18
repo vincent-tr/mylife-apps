@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, useMemo, useSelector, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import FullScreenDialog from '../../common/fullscreen-dialog';
 import DialogContentImage from './image/dialog-content';
@@ -7,6 +5,8 @@ import DialogContentVideo from './video/dialog-content';
 import DialogContentOther from './other/dialog-content';
 import { getDocument } from '../selectors';
 import { enter, leave, update } from '../actions';
+
+type FIXME_any = any;
 
 const DialogSelector = ({ documentWithInfo, ...props }) => {
   switch(documentWithInfo.document._entity) {
@@ -24,7 +24,7 @@ DialogSelector.propTypes = {
 };
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       documentWithInfo: getDocument(state)

@@ -1,10 +1,10 @@
-'use strict';
-
 import { React, PropTypes, useMemo, mui, useDispatch, DebouncedTextField, services } from 'mylife-tools-ui';
 import { updateDocument } from '../../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     updateDocument : (document, values) => dispatch(updateDocument(document, values)),
   }), [dispatch]);

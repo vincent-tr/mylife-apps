@@ -1,10 +1,10 @@
-'use strict';
-
 import { React, PropTypes, mui, useDispatch, useMemo, ListSelector, DebouncedSlider, DeleteButton, services } from 'mylife-tools-ui';
 import { THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { updateSlideshow, deleteSlideshow } from '../actions';
 import AlbumList from './album-list';
 import AlbumAddButton from './album-add-button';
+
+type FIXME_any = any;
 
 const borderWidth = 1;
 
@@ -52,7 +52,7 @@ const transitions = [
 ];
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     updateSlideshow: (slideshow, values) => dispatch(updateSlideshow(slideshow, values)),
     deleteSlideshow: id => dispatch(deleteSlideshow(id)),

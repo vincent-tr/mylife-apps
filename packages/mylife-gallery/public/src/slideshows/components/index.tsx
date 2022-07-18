@@ -1,11 +1,11 @@
-'use strict';
-
 import { React, useMemo, mui, useDispatch, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import List from './list';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     enter: () => dispatch(enter()),
     leave: () => dispatch(leave()),

@@ -1,12 +1,12 @@
-'use strict';
-
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import { React, PropTypes, mui, useDispatch, useMemo, services } from 'mylife-tools-ui';
 import { useAlbumView } from '../../common/shared-views';
 import { removeAlbumFromSlideshow, moveAlbumInSlideshow } from '../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     removeAlbumFromSlideshow: (slideshow, album) => dispatch(removeAlbumFromSlideshow(slideshow, album)),
     moveAlbumInSlideshow: (slideshow, oldIndex, newIndex) => dispatch(moveAlbumInSlideshow(slideshow, oldIndex, newIndex))

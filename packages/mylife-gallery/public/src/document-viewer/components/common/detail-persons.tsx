@@ -1,13 +1,13 @@
-'use strict';
-
 import { React, PropTypes, useMemo, useDispatch } from 'mylife-tools-ui';
 import { usePersonView, personComparer } from '../../../common/shared-views';
 import { personAddDialog } from '../../../common/person-add-dialog';
 import DetailList from './detail-list';
 import { addPersonToDocument, removePersonFromDocument, createPersonWithDocument } from '../../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     createPerson: (document, firstName, lastName) => dispatch(createPersonWithDocument(document, firstName, lastName)),
     addPerson : (document, person) => dispatch(addPersonToDocument(document, person)),

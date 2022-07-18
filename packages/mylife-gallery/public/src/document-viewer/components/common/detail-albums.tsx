@@ -1,12 +1,12 @@
-'use strict';
-
 import { React, PropTypes, useMemo, useDispatch, dialogs } from 'mylife-tools-ui';
 import { useAlbumView } from '../../../common/shared-views';
 import DetailList from './detail-list';
 import { addDocumentToAlbum, removeDocumentFromAlbum, createAlbumWithDocument } from '../../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     createAlbum: (document, title) => dispatch(createAlbumWithDocument(document, title)),
     addAlbum : (document, album) => dispatch(addDocumentToAlbum(document, album)),

@@ -1,9 +1,9 @@
-'use strict';
-
 import { React, mui, dialogs, useDispatch, useSelector, useMemo } from 'mylife-tools-ui';
 import { createSlideshow } from '../actions';
 import { getDisplayView } from '../selectors';
 import ListItem from './list-item';
+
+type FIXME_any = any;
 
 const useStyles = mui.makeStyles(theme => ({
   addButton: {
@@ -14,7 +14,7 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       data: getDisplayView(state),

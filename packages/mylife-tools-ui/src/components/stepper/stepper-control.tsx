@@ -96,7 +96,7 @@ const StepperControl: FunctionComponent<StepperControlProps> = ({ className, ste
 StepperControl.propTypes = {
   className: PropTypes.string,
   steps: PropTypes.arrayOf(
-    PropTypes.shape({
+    PropTypes.exact({
       label       : PropTypes.string.isRequired,
       actions     : PropTypes.object,
       render      : PropTypes.func.isRequired

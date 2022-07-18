@@ -1,13 +1,13 @@
-'use strict';
-
 import { React, PropTypes, useMemo, mui, useSelector, useDispatch, useLifecycle, AutoSizer } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getSlideshow } from '../selectors';
 import Content from './content';
 import Maximizable from './maximizable';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       slideshow: getSlideshow(state)

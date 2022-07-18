@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface DeleteButtonProps {
+  disabled?: boolean;
   icon?: boolean;
   text?: React.ReactNode;
   tooltip?: React.ReactNode;

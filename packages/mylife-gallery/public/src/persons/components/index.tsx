@@ -1,13 +1,13 @@
-'use strict';
-
 import { React, useMemo, mui, useDispatch } from 'mylife-tools-ui';
 import { usePersonView } from '../../common/shared-views';
 import { personAddDialog } from '../../common/person-add-dialog';
 import { createPerson } from '../actions';
 import ListItem from './list-item';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     createPerson: (firstName, lastName) => dispatch(createPerson(firstName, lastName)),
   }), [dispatch]);

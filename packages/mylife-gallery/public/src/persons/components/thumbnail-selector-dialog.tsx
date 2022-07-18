@@ -1,13 +1,13 @@
-'use strict';
-
 import { React, PropTypes, mui, dialogs, useLifecycle, useDispatch, useSelector, useMemo, services } from 'mylife-tools-ui';
 import ThumbnailList from '../../common/thumbnail-list';
 import { ThumbnailMono, THUMBNAIL_SIZE } from '../../common/thumbnail';
 import { getSelectorView } from '../selectors';
 import { enterSelector, leaveSelector } from '../actions';
 
+type FIXME_any = any;
+
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
       documentView: getSelectorView(state)

@@ -1,9 +1,9 @@
-'use strict';
-
 import { React, PropTypes, mui, routing, useDispatch, useMemo, StopPropagationContainer, DebouncedTextField } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { updateSlideshow } from '../actions';
 import Preview from './preview';
+
+type FIXME_any = any;
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -28,7 +28,7 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<FIXME_any>();
   return useMemo(() => ({
     updateSlideshow: (slideshow, values) => dispatch(updateSlideshow(slideshow, values)),
   }), [dispatch]);
