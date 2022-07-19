@@ -1,4 +1,4 @@
-import { useSelector, services } from 'mylife-tools-ui';
+import { React, useSelector, services } from 'mylife-tools-ui';
 import { getAlbum } from '../selectors';
 import { useIsSmallScreen } from './behaviors';
 

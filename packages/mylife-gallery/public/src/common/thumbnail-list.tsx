@@ -109,7 +109,11 @@ Tile.propTypes = {
   getTileInfo: PropTypes.func.isRequired
 };
 
-const TileContainer = ({ className, ...props }) => {
+interface TileContainerProps {
+  className?: string;
+}
+
+const TileContainer: React.FunctionComponent<TileContainerProps> = ({ className, ...props }) => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.tileContainer, className)} {...props} />

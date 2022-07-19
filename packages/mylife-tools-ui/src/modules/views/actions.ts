@@ -158,7 +158,7 @@ export class ViewReference {
 		await this.clearView();
 	}
 
-	async update(selectorProps) {
+	async update(selectorProps?) {
 		this.selectorProps = selectorProps;
 		await this.getView();
 	}

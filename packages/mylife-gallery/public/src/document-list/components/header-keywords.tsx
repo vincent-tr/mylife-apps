@@ -139,7 +139,7 @@ HeaderKeywords.propTypes = {
 export default HeaderKeywords;
 
 function getKeywordUsage(documents) {
-  const keywords = new Map();
+  const keywords = new Map<string, FIXME_any>();
   for(const document of documents) {
     for(const keyword of document.keywords || []) {
       let documents = keywords.get(keyword);
@@ -152,7 +152,7 @@ function getKeywordUsage(documents) {
     }
   }
   const entries = Array.from(keywords.entries());
-  const setEntries: FIXME_any = entries.map(([keyword, documents]) => [keyword, immutable.Set(documents)]);
+  const setEntries = entries.map(([keyword, documents]) => [keyword, immutable.Set(documents)] as [string, immutable.Set<FIXME_any>]);
   return immutable.Map(setEntries);
 }
 

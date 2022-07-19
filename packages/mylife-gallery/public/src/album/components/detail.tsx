@@ -161,6 +161,7 @@ const DeleteAlbum = () => {
 };
 
 interface DetailProps {
+  className?: string;
   selectedDocuments;
 }
 
