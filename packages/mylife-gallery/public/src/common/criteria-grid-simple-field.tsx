@@ -2,7 +2,7 @@ import { React, PropTypes, mui, CriteriaField } from 'mylife-tools-ui';
 
 interface CriteriaGridSimpleFieldProps {
   label: string;
-  width: number;
+  width: mui.GridSize;
   editor?: React.ElementType;
   object?;
   onObjectChanged?: (change) => void;
@@ -40,8 +40,8 @@ const CriteriaGridSimpleField: React.FunctionComponent<CriteriaGridSimpleFieldPr
 
 CriteriaGridSimpleField.propTypes = {
   label: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
-  editor: PropTypes.elementType,
+  width: PropTypes.any.isRequired, // number
+  editor: PropTypes.any, // elementType
   object: PropTypes.object,
   onObjectChanged: PropTypes.func,
   propName: PropTypes.string

@@ -161,15 +161,13 @@ const PopupObjects = React.forwardRef<HTMLDivElement, PopupObjectsProps>(({ titl
 
 PopupObjects.propTypes = {
   title: PropTypes.string.isRequired,
-  newObject: PropTypes.elementType.isRequired,
+  newObject: PropTypes.any.isRequired, // elementType
   newObjectRenderer: PropTypes.func.isRequired,
   documents: PropTypes.array.isRequired,
   objects: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
   initialObjectUsage: PropTypes.object.isRequired,
 };
-
-PopupObjects.displayName = 'PopupObjects';
 
 const ObjectDisplay = ({ objects, initialObjectUsage }) => {
   const classes = useStyles();

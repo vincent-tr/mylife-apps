@@ -15,7 +15,12 @@ const MenuProps = {
   },
 };
 
-const AlbumSelector = ({ value, onChange, ...props }) => {
+interface AlbumSelectorProps {
+  value: immutable.Set<string>;
+  onChange: (newValue: immutable.Set<string>) => void;
+}
+
+const AlbumSelector: React.FunctionComponent<AlbumSelectorProps> = ({ value, onChange, ...props }) => {
   const { albums, view } = useAlbumView();
   const handleChange = event => onChange(immutable.Set(event.target.value));
   const selectorValue = value.toArray();
@@ -42,7 +47,7 @@ const AlbumSelector = ({ value, onChange, ...props }) => {
 };
 
 AlbumSelector.propTypes = {
-  value: PropTypes.instanceOf(immutable.Set).isRequired,
+  value: PropTypes.any.isRequired, // instanceOf(immutable.Set)
   onChange: PropTypes.func.isRequired
 };
 

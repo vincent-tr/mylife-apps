@@ -14,7 +14,12 @@ const MenuProps = {
   },
 };
 
-const PersonSelector = ({ value, onChange, ...props }) => {
+interface PersonSelectorProps {
+  value: immutable.Set<string>;
+  onChange: (newValue: immutable.Set<string>) => void;
+}
+
+const PersonSelector: React.FunctionComponent<PersonSelectorProps> = ({ value, onChange, ...props }) => {
   const { persons, view } = usePersonView();
   const handleChange = event => onChange(immutable.Set(event.target.value));
   const selectorValue = value.toArray();
@@ -41,7 +46,7 @@ const PersonSelector = ({ value, onChange, ...props }) => {
 };
 
 PersonSelector.propTypes = {
-  value: PropTypes.instanceOf(immutable.Set).isRequired,
+  value: PropTypes.any.isRequired, // instanceOf(immutable.Set)
   onChange: PropTypes.func.isRequired
 };
 

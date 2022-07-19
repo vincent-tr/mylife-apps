@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, clsx, useSelectionSet, useScreenSize } from 'mylife-tools-ui';
 import ListFooter from '../../common/list-footer';
 import List from './list';
@@ -15,7 +13,14 @@ const useStyles = mui.makeStyles({
   },
 });
 
-const DocumentList = ({ documents, className, selectedItems: externalSelectedItems, onSelectionChange: externalOnSelectionChange, ...props }) => {
+interface DocumentListProps {
+  documents;
+  className?: string;
+  selectedItems?;
+  onSelectionChange?;
+}
+
+const DocumentList: React.FunctionComponent<DocumentListProps> = ({ documents, className, selectedItems: externalSelectedItems, onSelectionChange: externalOnSelectionChange, ...props }) => {
   const classes = useStyles();
   const listSelectable = useSelectable();
 

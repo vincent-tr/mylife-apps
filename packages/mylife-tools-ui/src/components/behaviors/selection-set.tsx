@@ -6,9 +6,9 @@ export function useSelectionSet(itemsIdsFactory: () => Iterable<string>): [immut
 
   const changeSelection = useCallback(({ id, selected }: { id: string; selected: boolean }) => setSelection(selection => {
     if (id != null) {
-      return setSelection(selected ? selection.add(id) : selection.delete(id));
+      return selected ? selection.add(id) : selection.delete(id);
     } else {
-      return setSelection(selected ? selection.union(itemsIdsFactory()) : selection.clear());
+      return selected ? selection.union(itemsIdsFactory()) : selection.clear();
     }
   }), [setSelection]);
 

@@ -1,5 +1,3 @@
-'use strict';
-
 import { React, PropTypes, mui, immutable } from 'mylife-tools-ui';
 import { DOCUMENT_TYPES, DOCUMENT_TYPE_MAP } from '../../common/document-utils';
 
@@ -7,6 +5,7 @@ const emptySelectorValue = DOCUMENT_TYPES.map(type => type.id);
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
 const MenuProps = {
   PaperProps: {
     style: {
@@ -16,7 +15,12 @@ const MenuProps = {
   },
 };
 
-const TypeSelector = ({ value, onChange, ...props }) => {
+interface TypeSelectorProps {
+  value: immutable.Set<string>;
+  onChange: (newValue: immutable.Set<string>) => void;
+}
+
+const TypeSelector: React.FunctionComponent<TypeSelectorProps> = ({ value, onChange, ...props }) => {
   const handleChange = event => onChange(valueFromSelector(event.target.value));
   const selectorValue = valueToSelector(value);
   return (
@@ -40,7 +44,7 @@ const TypeSelector = ({ value, onChange, ...props }) => {
 };
 
 TypeSelector.propTypes = {
-  value: PropTypes.instanceOf(immutable.Set).isRequired,
+  value: PropTypes.any.isRequired, // instanceOf(immutable.Set)
   onChange: PropTypes.func.isRequired
 };
 
@@ -54,12 +58,12 @@ function valueToSelector(value) {
   return value.toArray();
 }
 
-function valueFromSelector(value) {
-  if(value.length === emptySelectorValue.length) {
-    return immutable.Set();
+function valueFromSelector(value: string[]) {
+  if (value.length === emptySelectorValue.length) {
+    return immutable.Set<string>();
+  } else {
+    return immutable.Set(value);
   }
-
-  return immutable.Set(value);
 }
 
 function renderSelectorValue(selection) {
