@@ -52,7 +52,7 @@ const NavBar: React.FunctionComponent<NavBarProps> = ({ documentWithInfo, showDe
           </mui.IconButton>
         )}
         {downloadInfo && (
-          <mui.IconButton edge='end' color='inherit' component={mui.Link} download={downloadInfo.filename} href={downloadInfo.url}>
+          <mui.IconButton edge='end' color='inherit' component='a' download={downloadInfo.filename} href={downloadInfo.url}>
             <icons.actions.Download />
           </mui.IconButton>
         )}
