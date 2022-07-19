@@ -15,7 +15,7 @@ export class Collection extends Container {
   }
 
   load(object) {
-    this.set(object);
+    this._set(object);
   }
 
   set(object) {
@@ -29,13 +29,13 @@ export class Collection extends Container {
       object = this.entity.getField('_id').setValue(object, id);
     }
 
-    this.set(object);
+    this._set(object);
 
     return object;
   }
 
   delete(id) {
-    return this.delete(id);
+    return this._delete(id);
   }
 
   createView(filterCallback = () => true) {
