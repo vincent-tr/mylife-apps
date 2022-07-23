@@ -1,17 +1,16 @@
-'use strict';
-
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import immutable from 'immutable';
 
-export function useSelectionSet(itemsIdsFactory) {
-  const [selection, setSelection] = useState(immutable.Set());
-  const changeSelection = ({ id, selected }) => {
-    if(id != null) {
-      return setSelection(selected ? selection.add(id) : selection.delete(id));
-    }
+export function useSelectionSet(itemsIdsFactory: () => Iterable<string>): [immutable.Set<string>, (change: { id: string; selected: boolean }) => void] {
+  const [selection, setSelection] = useState(immutable.Set<string>());
 
-    return setSelection(selected ? selection.union(itemsIdsFactory()) : selection.clear());
-  };
+  const changeSelection = useCallback(({ id, selected }: { id: string; selected: boolean }) => setSelection(selection => {
+    if (id != null) {
+      return selected ? selection.add(id) : selection.delete(id);
+    } else {
+      return selected ? selection.union(itemsIdsFactory()) : selection.clear();
+    }
+  }), [setSelection]);
 
   return [selection, changeSelection];
 }

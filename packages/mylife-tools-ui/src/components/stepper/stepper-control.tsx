@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Stepper, Step, StepLabel, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
@@ -22,7 +22,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const StepperControl = ({ className, steps, onStepChanged, onEnd, ...props }) => {
+interface StepperControlProps {
+  className?: string;
+  steps: { label: string, actions?, render: (step) => React.ReactNode; }[];
+  onStepChanged?: (value, step, activeStep, setActiveStep) => boolean;
+  onEnd: (value: 'finish' | 'cancel') => void;
+}
+
+
+const StepperControl: FunctionComponent<StepperControlProps> = ({ className, steps, onStepChanged, onEnd, ...props }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
@@ -31,8 +39,8 @@ const StepperControl = ({ className, steps, onStepChanged, onEnd, ...props }) =>
   const finalActions = buildActions(activeStep, steps.length, actions);
 
   const handleAction = (value) => {
-    if(onStepChanged) {
-      if(onStepChanged(value, step, activeStep, setActiveStep)) {
+    if (onStepChanged) {
+      if (onStepChanged(value, step, activeStep, setActiveStep)) {
         // if true => handled
         return;
       }
@@ -88,7 +96,7 @@ const StepperControl = ({ className, steps, onStepChanged, onEnd, ...props }) =>
 StepperControl.propTypes = {
   className: PropTypes.string,
   steps: PropTypes.arrayOf(
-    PropTypes.shape({
+    PropTypes.exact({
       label       : PropTypes.string.isRequired,
       actions     : PropTypes.object,
       render      : PropTypes.func.isRequired

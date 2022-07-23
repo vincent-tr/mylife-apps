@@ -1,0 +1,13 @@
+// used by vscode
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "jsx": "react"
+    }
+}

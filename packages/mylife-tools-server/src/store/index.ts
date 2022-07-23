@@ -1,6 +1,6 @@
 import { createLogger } from '../logging';
 import { registerService, getService, fatal } from '../service-manager';
-import { Container } from './container';
+import { Container, Event } from './container';
 import { Collection } from './collection';
 import { View } from './view';
 import { deserializeObject, serializeObject, serializeObjectId, deserializeObjectId } from './serializer';
@@ -193,3 +193,5 @@ export function getStoreCollection(name: string) {
 
 export { View as StoreView };
 export { Container as StoreContainer };
+export { Collection as StoreCollection };
+export { Event as StoreEvent };
