@@ -7,7 +7,7 @@ import { createLogger } from 'mylife-tools-server';
 import * as business from '../../business';
 import { Image } from './tools/jimp';
 import { getMetadata } from './tools/exif';
-import { toWebPStream } from './tools/ffmpeg';
+import { toWebPStream, toWebPFile } from './tools/ffmpeg';
 
 const logger = createLogger('mylife:gallery:sync:loaders:image');
 
@@ -36,24 +36,16 @@ export async function processImage(content, relativePath) {
   await fsh.init();
   try {
     const thBuffFile = await fsh.toFile(await image.thumbnailPngBuffer());
-
-    const thStream = new PassThrough();
-    await toWebPStream(thBuffFile, thStream);
-
-    const chunks: Buffer[] = [];
-    for await (let chunk of thStream) {
-      chunks.push(chunk);
-    }
-    const thumbnailContent = Buffer.concat(chunks);
-    //---
-
+    const thOutFile = fsh.createFileName();
+    await toWebPFile(thBuffFile, thOutFile);
+    const thumbnailContent = await fsh.getBufferFromOutputFile(thOutFile);
     const thumbnail = await business.thumbnailCreate(thumbnailContent);
 
     // from image to keep proper rotation
     const buffFile = await fsh.toFile(await image.pngBuffer());
-    const imageStream = new PassThrough();
-    await toWebPStream(buffFile, imageStream);
-    //---
+    const outFile = fsh.createFileName();
+    await toWebPFile(buffFile, outFile);
+    const imageStream = fsh.getStreamFromOutputFile(outFile);
     const media = await business.mediaCreate(imageStream, 'image/webp');
 
     const metadata = image.getMetadata();
@@ -80,9 +72,13 @@ class FsHelper {
   async terminate() {
     await fs.remove(this.baseDirectory);
   }
+  
+  createFileName() {
+    return path.join(this.baseDirectory, `file-${this.counter++}`);
+  }
 
   async toFile(content) {
-    const fullPath = path.join(this.baseDirectory, `content-${++this.counter}`);
+    const fullPath = this.createFileName();
     await fs.writeFile(fullPath, content);
     return fullPath;
   }
@@ -98,5 +94,13 @@ class FsHelper {
 
   async fromFileRelative(relativePath) {
     return fs.readFile(path.join(this.baseDirectory, relativePath));
+  }
+  
+  async getBufferFromOutputFile(fileName) {
+    return await fs.readFile(fileName);
+  }
+
+  getStreamFromOutputFile(fileName) {
+    return fs.createReadStream(fileName);
   }
 }

@@ -45,7 +45,7 @@ class FsHelper {
     return await fs.readFile(fileName);
   }
 
-  async getStreamFromOutputFile(fileName) {
-    return await fs.createReadStream(fileName);
+  getStreamFromOutputFile(fileName) {
+    return fs.createReadStream(fileName);
   }
 }

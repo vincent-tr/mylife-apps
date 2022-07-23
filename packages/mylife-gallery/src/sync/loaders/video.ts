@@ -40,7 +40,6 @@ export async function processVideo(content, relativePath) {
 async function extractMetadata(fullPath) {
   const values: FIXME_any = {
     metadata: {},
-
   };
 
   const meta: FIXME_any = await getMetadata(fullPath);

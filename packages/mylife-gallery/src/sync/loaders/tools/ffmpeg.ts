@@ -92,9 +92,32 @@ async function webmPass1(fullPath) {
   await promise;
 }
 
-export async function toWebPStream(fullPath, outputStream) {
+export function toWebPStream(fullPath: string, outputStream) {
   const command = ffmpeg(fullPath);
+
+  command.addOptions(['-lossless 1']);
+
   command.format('webp');
 
   command.pipe(outputStream, { end: true });
 };
+
+
+export async function toWebPFile(inPath: string, outPath: string) {
+  const command = ffmpeg(inPath);
+
+  command.addOptions(['-lossless 1']);
+
+  command.format('webp');
+  command.output(outPath);
+  
+  const promise = new Promise((resolve, reject) => {
+    command.on('end', resolve);
+    command.on('error', reject);
+  });
+
+  command.run();
+
+  await promise;
+};
+
