@@ -1,6 +1,6 @@
 {
   "name": "mylife-gallery",
-  "version": "2.0.18",
+  "version": "2.1.0",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
@@ -31,8 +31,8 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^10.1.0",
     "jimp": "^0.16.1",
-    "mylife-tools-common": "^1.0.9",
-    "mylife-tools-server": "^1.0.22"
+    "mylife-tools-common": "^1.1.0",
+    "mylife-tools-server": "^1.1.0"
   },
   "devDependencies": {
     "@types/ffmpeg-static": "^3.0.1",
@@ -43,8 +43,8 @@
     "humanize": "0.0.9",
     "humanize-duration": "^3.27.2",
     "leaflet": "^1.8.0",
-    "mylife-tools-build": "^1.2.12",
-    "mylife-tools-ui": "^1.0.18",
+    "mylife-tools-build": "^1.3.0",
+    "mylife-tools-ui": "^1.1.0",
     "react-leaflet": "^4.0.0",
     "react-sortable-hoc": "^2.0.0"
   }
