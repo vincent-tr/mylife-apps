@@ -100,8 +100,6 @@ MyLife Applications
 - log app + tools version at startup
 - remove PropTypes use
 - FIXME_any
-- move to TS
-  - gallery
 
 ## Tools UI
 
