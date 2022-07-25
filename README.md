@@ -112,10 +112,6 @@ MyLife Applications
 - globalization
 - charts : http://recharts.org/
 
-## Explorer
-
-- bug quand les noms de dossier ont un espace
-
 ## Gallery
 
 - les fichiers avec une taille a 0 ne doivent pas être des copies les uns des autres
