@@ -85,7 +85,7 @@ export async function documentRemove(document) {
     case 'image':
     case 'video': {
       const mediaId = document.media.id;
-      await business.mediaRemove(mediaId);
+      await business.mediaRemove(mediaId, type);
       break;
     }
   }
