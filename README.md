@@ -115,7 +115,6 @@ MyLife Applications
 ## Gallery
 
 - les fichiers avec une taille a 0 ne doivent pas être des copies les uns des autres
-- utiliser le fs et nginx au lieu de mongo gridfs (et thumbnails?)
 - suggestion pour supprimer les dossiers/albums vides
 - suggestion pour afficher les différences entre le filesystem et les albums
 - suggestion pour déplacer les documents mal rangé (1 seul chemin, 1 seul album, , et ils ne correspondent pas ou alors plusieurs albums mais le chemin ne correspond à aucun => choix de déplacement)
