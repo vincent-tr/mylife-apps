@@ -1,6 +1,4 @@
-'use strict';
-
-const { default: jimp } = require('jimp');
+import jimp from 'jimp';
 
 fixJimpRotate();
 
@@ -34,11 +32,12 @@ export class Image {
 ///////// fixJimpRotate /////////
 
 function fixJimpRotate() {
+  const jimpAny = jimp as any;
   // https://github.com/oliver-moran/jimp/issues/721
-  jimp.prototype.rotateOrigin = jimp.prototype.rotate;
-  jimp.prototype.simpleRotate = simpleRotate;
+  jimpAny.prototype.rotateOrigin = jimpAny.prototype.rotate;
+  jimpAny.prototype.simpleRotate = simpleRotate;
 
-  jimp.prototype.rotate = function(deg, mode, cb) {
+  jimpAny.prototype.rotate = function(deg, mode, cb) {
     if(deg % 90 !== 0 || mode || cb) {
       return this.rotateOrigin(deg, mode, cb);
     }
