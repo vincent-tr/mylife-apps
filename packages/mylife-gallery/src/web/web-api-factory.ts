@@ -12,7 +12,7 @@ export function webApiFactory({ app, express, asyncHandler }) {
     const document = business.documentGet('image', id);
     logger.debug(`Sending image '${id}'`);
 
-    const stream = business.mediaGet(document.media.id);
+    const stream = business.mediaGet(document.media.id, 'image');
     prepareResponse(res, 'image/webp');
     stream.pipe(res);
     stream.on('error', err => logger.error(`Error sending image '${id}' : ${err.stack}`));
@@ -23,7 +23,7 @@ export function webApiFactory({ app, express, asyncHandler }) {
     const document = business.documentGet('video', id);
     logger.debug(`Sending video '${id}'`);
 
-    const stream = business.mediaGet(document.media.id);
+    const stream = business.mediaGet(document.media.id, 'video');
     prepareResponse(res, 'video/webm');
     stream.pipe(res);
     stream.on('error', err => logger.error(`Error sending video '${id}' : ${err.stack}`));

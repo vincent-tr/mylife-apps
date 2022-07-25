@@ -46,7 +46,7 @@ export async function processImage(content, relativePath) {
     const outFile = fsh.createFileName();
     await toWebPFile(buffFile, outFile);
     const imageStream = fsh.getStreamFromOutputFile(outFile);
-    const media = await business.mediaCreate(imageStream, 'image/webp');
+    const media = await business.mediaCreate(imageStream, 'image');
 
     const metadata = image.getMetadata();
     Object.assign(values, { thumbnail, media, ...metadata });

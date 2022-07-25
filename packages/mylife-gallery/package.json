@@ -1,6 +1,6 @@
 {
   "name": "mylife-gallery",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
