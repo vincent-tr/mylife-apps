@@ -25,7 +25,7 @@ const AdditionalHeader = () => {
   return (
     <>
       {showDownload && (
-        <mui.IconButton color='inherit' component={mui.Link} download={getName(data)} href={makeUrl(data)}>
+        <mui.IconButton color='inherit' download={getName(data)} href={makeUrl(data)}>
           <icons.actions.Download />
         </mui.IconButton>
       )}
