@@ -8,7 +8,7 @@ import actionTypes from './action-types';
 // This action type will be dispatched when your history receives a location change.
 export const onLocationChanged = createAction(
   actionTypes.LOCATION_CHANGE,
-  (location, action) => ({ location, action })
+  (location, action) => ({ location: decodeURI(location.pathname), action })
 );
 
 // This action type will be dispatched by the history actions below.

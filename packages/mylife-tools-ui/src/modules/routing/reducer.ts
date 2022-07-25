@@ -11,7 +11,7 @@ export default handleActions({
 
   [actionTypes.LOCATION_CHANGE] : (state, action) => ({
     ...state,
-    location: action.payload.location.pathname
+    location: action.payload.location
   }),
 
 }, defaultState);
