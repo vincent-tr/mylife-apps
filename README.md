@@ -117,7 +117,8 @@ MyLife Applications
 - les fichiers avec une taille a 0 ne doivent pas être des copies les uns des autres
 - suggestion pour supprimer les dossiers/albums vides
 - suggestion pour afficher les différences entre le filesystem et les albums
-- suggestion pour déplacer les documents mal rangé (1 seul chemin, 1 seul album, , et ils ne correspondent pas ou alors plusieurs albums mais le chemin ne correspond à aucun => choix de déplacement)
+- suggestion pour déplacer les documents mal rangé (1 seul chemin, 1 seul album, et ils ne correspondent pas ou alors plusieurs albums mais le chemin ne correspond à aucun => choix de déplacement)
+- suggestion pour ajouter des photos a un album existant si elles sont dans un dossier qui correspond a un album
 - slideshow: bug d ancienne image qui apparait un bref instant apres transition
 
 ## Money
