@@ -120,6 +120,7 @@ MyLife Applications
 - suggestion pour déplacer les documents mal rangé (1 seul chemin, 1 seul album, et ils ne correspondent pas ou alors plusieurs albums mais le chemin ne correspond à aucun => choix de déplacement)
 - suggestion pour ajouter des photos a un album existant si elles sont dans un dossier qui correspond a un album
 - slideshow: bug d ancienne image qui apparait un bref instant apres transition
+- parcourir: sur selection multiple et clic sur personnes, elles sont toutes selectionnees
 
 ## Money
 
