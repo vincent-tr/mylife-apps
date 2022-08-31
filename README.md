@@ -114,6 +114,7 @@ MyLife Applications
 
 ## Gallery
 
+- integrer les fichiers HEIC
 - les fichiers avec une taille a 0 ne doivent pas être des copies les uns des autres
 - suggestion pour supprimer les dossiers/albums vides
 - suggestion pour afficher les différences entre le filesystem et les albums
@@ -121,6 +122,8 @@ MyLife Applications
 - suggestion pour ajouter des photos a un album existant si elles sont dans un dossier qui correspond a un album
 - slideshow: bug d ancienne image qui apparait un bref instant apres transition
 - parcourir: sur selection multiple et clic sur personnes, elles sont toutes selectionnees
+- reconnaissance des visages
+- meilleure gestion des lieux des photos (eg: pouvoir rechercher les photos a Vourles)
 
 ## Money
 
