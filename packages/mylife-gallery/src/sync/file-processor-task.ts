@@ -32,6 +32,7 @@ const IMAGE_EXTENSIONS = [
   '.mj2', // JPEG 2000
   '.svg',
   '.svgz', // SVG
+  '.heic'
 ];
 
 // https://blog.filestack.com/thoughts-and-knowledge/complete-list-audio-video-file-formats/
