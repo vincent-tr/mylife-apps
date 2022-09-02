@@ -117,7 +117,6 @@ MyLife Applications
 - integrer les fichiers HEIC
 - pouvoir réintegrer les 'autres'
 - ignorer certains fichiers : Thumbs.db, .DS_Store
-- dans suggestion liste fichiers autres : certains n'ont pas de nom/chemin ?
 - les fichiers avec une taille a 0 ne doivent pas être des copies les uns des autres
 - suggestion pour supprimer les dossiers/albums vides
 - suggestion pour afficher les différences entre le filesystem et les albums
