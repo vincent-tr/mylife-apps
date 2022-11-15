@@ -1,0 +1,4 @@
+{
+  "mongo": "%{MONGO_URL}",
+  "bus": { "serverUrl": "%{BUS_SERVER}" }
+}
