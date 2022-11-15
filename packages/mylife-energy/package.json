@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint lib/* public/app/*",
     "watch": "mylife-watch",
-    "start-collector": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_URL=${BUS_URL:-tcp://rpi-dev-home-main} node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json --collector",
+    "start-collector": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_SERVER=${BUS_SERVER:-tcp://rpi-dev-home-main} node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json --collector",
     "build:dev": "mylife-build development",
     "build:prod": "mylife-build production",
     "docker-publish-only": "mylife-publish",
