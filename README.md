@@ -114,6 +114,7 @@ MyLife Applications
 
 ## Gallery
 
+- BUG: affichage liste de document, puis impossible de decocher selection album/personne pour associer un document à un album/une personne
 - integrer les fichiers HEIC
 - pouvoir réintegrer les 'autres'
 - ignorer certains fichiers : Thumbs.db, .DS_Store
