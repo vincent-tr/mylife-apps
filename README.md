@@ -131,6 +131,12 @@ MyLife Applications
 ## Money
 
 - apres import csv, les operations n'apparaissent pas dans "non triés" mais la date de derniere integration est mise a jour
+- avoir le compte (en plus des sum) d'operations dans la liste de gestion
+- quand on supprime un groupe, proposer de deplacer ses regles dans le groupe parent
+- avoir une vue unifiée des regles
+- la gestion des regles est moche
+- avoir un apercu des effets d'une regles ?
+- avoir le nombre d'operations qui ont ete matches par une regle ?
 
 ## Portal
 
