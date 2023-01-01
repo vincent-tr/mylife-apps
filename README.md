@@ -137,6 +137,9 @@ MyLife Applications
 - la gestion des regles est moche
 - avoir un apercu des effets d'une regles ?
 - avoir le nombre d'operations qui ont ete matches par une regle ?
+- scraping CIC
+- scraping PayPal
+- scraping Amazon 
 
 ## Portal
 
