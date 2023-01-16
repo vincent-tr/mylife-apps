@@ -62,7 +62,7 @@ function filterExisting(records) {
 
   // "merge" the day, then use all after
   const lastOperationDate = lastOperation.date;
-  const lastDayOperations = operations.filter(operation => operation.date === lastOperationDate);
+  const lastDayOperations = operations.filter(operation => operation.date.valueOf() === lastOperationDate.valueOf());
   const opHashSet = new Set(lastDayOperations.map(op => `${op.amount}|${op.account}|${op.label}`));
 
   return records.filter(rec => {
