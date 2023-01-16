@@ -131,9 +131,6 @@ MyLife Applications
 ## Money
 
 - apres import csv, les operations n'apparaissent pas dans "non triés" mais la date de derniere integration est mise a jour
-- Suppression de groupe
-  - proposer de deplacer ses regles dans le groupe parent
-  - proposer de deplacer ses operations dans le groupe parent ou en non triés
 - Gestion des regles
   - avoir une vue unifiée des regles
   - la gestion des regles est moche

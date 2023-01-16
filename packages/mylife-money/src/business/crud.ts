@@ -1,6 +1,8 @@
 'use strict';
 
-const { getStoreCollection, notifyView } = require('mylife-tools-server');
+const { getStoreCollection, notifyView, createLogger } = require('mylife-tools-server');
+
+const logger = createLogger('mylife:money:business:crud');
 
 export function notifyAccounts(session) {
   const accounts = getStoreCollection('accounts');
@@ -38,17 +40,55 @@ export function updateGroup(group) {
   return existingGroup;
 }
 
-export function deleteGroup(id) {
+export function deleteGroup(id: string) {
+  logger.debug(`drop group '${id}'`);
+
   const groups = getStoreCollection('groups');
   const operations = getStoreCollection('operations');
 
-  const hasChild = groups.exists(group => group.parent === id);
-  if(hasChild) { throw new Error(`Cannot delete group '${id}' because it has children groups`); }
+  const group = groups.get(id);
 
-  const hasOperation = operations.exists(operation => operation.group === id);
-  if(hasOperation) { throw new Error(`Cannot delete group '${id}' because it contains operations`); }
+  const hierarchyGroupsArray = [group];
+  fillChildrenGroups(hierarchyGroupsArray, id);
+  const hierarchyGroupIds = new Set(hierarchyGroupsArray.map(group => group._id));
 
-  groups.delete(id);
+  // move operations (of the whole hierarchy) to parent, or unsorted (null) if group was at root
+  // move rules (of the whole hierarchy) to parent, or drop if group was at root
+  // drop all children groups
+
+  const childrenOperations = operations.filter(operation => hierarchyGroupIds.has(operation.group));
+
+  logger.debug(`found groups hierarchy: ${JSON.stringify(hierarchyGroupsArray.map(grp => grp._id))}`);
+  logger.debug(`found children operations: ${JSON.stringify(childrenOperations.map(op => op._id))}`);
+
+  for (const operation of childrenOperations) {
+    operations.set(operations.entity.setValues(operation, { group: group.parent }));
+  }
+
+  if (group.parent) {
+    const parentGroup = groups.get(group.parent);
+
+    let newParentRules = [...parentGroup.rules];
+
+    for (const group of hierarchyGroupsArray) {
+      newParentRules = newParentRules.concat(group.rules);
+    }
+
+    groups.set(groups.entity.setValues(parentGroup, { rules: newParentRules }));
+  }
+
+  for (const group of hierarchyGroupsArray) {
+    groups.delete(group._id);
+  }
+}
+
+function fillChildrenGroups(array, groupId: string) {
+  const groups = getStoreCollection('groups');
+
+  for (const group of groups.filter(group => group.parent === groupId)) {
+    array.push(group);
+    fillChildrenGroups(array, group._id);
+  }
 }
 
 export function operationsMove(groupId, operationIds) {
