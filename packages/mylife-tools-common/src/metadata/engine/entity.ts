@@ -27,7 +27,7 @@ class Field {
     this.name = validator.validate(definition.name, 'name', { type: 'string' });
     this.description = validator.validate(definition.description, 'description', { type: 'string' });
     this._datatype = validator.validate(definition.datatype, 'datatype', { type: 'string', mandatory: true });
-    this.initialValue = typeof definition.initial === undefined ? null : definition.initial;
+    this.initialValue = definition.initial === undefined ? null : definition.initial;
 
     this.constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
 
@@ -156,11 +156,14 @@ export default class Entity {
   newObject(values = {}) {
     let object = { _entity: this.id };
     for(const field of this.fields) {
+      console.log('field', field.name);
       const value = field.getValue(values);
       if(value === undefined) {
         object = field.resetValue(object);
+        console.log('reset value', value, field.getValue(object));
       } else {
         object = field.setValue(object, value);
+        console.log('set value', value, field.getValue(object));
       }
     }
     return object;
