@@ -25,6 +25,7 @@ const Footer = (props) => {
   const { operations } = useConnect();
   const { totalDebit, totalCredit, total } = summaries(operations);
   const totalClasses = [classes.total, isPhone ? classes.totalDense : classes.totalNormal];
+  const totalOpsClasses = [classes.total, isPhone ? classes.totalOpsDense : classes.totalOpsNormal];
 
   return (
     <mui.Toolbar {...props}>
@@ -32,6 +33,7 @@ const Footer = (props) => {
       <mui.Typography className={clsx(classes.amountDebit, ...totalClasses)}>{totalDebit}</mui.Typography>
       <mui.Typography className={clsx(classes.amountCredit, ...totalClasses)}>{totalCredit}</mui.Typography>
       <mui.Typography className={clsx(classes.amountTotal, ...totalClasses)}>{total}</mui.Typography>
+      <mui.Typography className={clsx(...totalOpsClasses)}>{operations.length} opérations</mui.Typography>
     </mui.Toolbar>
   );
 };
