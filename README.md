@@ -130,15 +130,14 @@ MyLife Applications
 
 ## Money
 
-- apres import csv, les operations n'apparaissent pas dans "non triés" mais la date de derniere integration est mise a jour
 - Gestion des regles
   - avoir une vue unifiée des regles
   - la gestion des regles est moche
   - avoir un apercu des effets d'une regles ?
   - avoir le nombre d'operations qui ont ete matches par une regle ?
 - scraping CIC
-- scraping PayPal
-- scraping Amazon 
+- scraping PayPal (par scan des mails ou API ?)
+- scraping Amazon (par scan des mails ?)
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
 
