@@ -156,14 +156,11 @@ export default class Entity {
   newObject(values = {}) {
     let object = { _entity: this.id };
     for(const field of this.fields) {
-      console.log('field', field.name);
       const value = field.getValue(values);
       if(value === undefined) {
         object = field.resetValue(object);
-        console.log('reset value', value, field.getValue(object));
       } else {
         object = field.setValue(object, value);
-        console.log('set value', value, field.getValue(object));
       }
     }
     return object;
