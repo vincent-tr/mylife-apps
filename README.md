@@ -133,9 +133,16 @@ MyLife Applications
 - Gestion des regles
   - avoir une vue unifiée des regles
   - la gestion des regles est moche
-  - avoir un apercu des effets d'une regles ?
-  - avoir le nombre d'operations qui ont ete matches par une regle ?
+  - avoir un apercu des effets d'une regle
+    - executer l'apercu sur le group de la regle pour montrer ce qu'elle aurait deplacé
+    - executer l'apercu sur les non tries pour montrer ce qu'elle pourra deplacer
 - scraping CIC
+  - cron pour savoir quand le lancer
+  - parametrage du scrapper (compte CIC, compte cible, etc)
+  - pouvoir l'executer en live (pour double auth)
+  - un scraper doit pouvoir sauvegarder son state (cookies)
+  - empecher plusieurs lancement en //
+  - garder et afficher les (rolling?) logs
 - scraping PayPal (par scan des mails ou API ?)
 - scraping Amazon (par scan des mails ?)
 - UX
