@@ -17,11 +17,13 @@ const Stats = (props) => {
   const { view } = useOperationStats();
   const count = statValue(view, 'count');
   const lastDate = statValue(view, 'lastDate');
+  const unsortedCount = statValue(view, 'unsortedCount');
 
   return (
     <div {...props}>
       <div className={classes.container}>
         <mui.Typography>{`Nombre total d'opérations : ${count}`}</mui.Typography>
+        <mui.Typography>{`Nombre d'opérations non triées cette année : ${unsortedCount}`}</mui.Typography>
         <mui.Typography>{`Date de l'opération la plus récente : ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</mui.Typography>
       </div>
     </div>

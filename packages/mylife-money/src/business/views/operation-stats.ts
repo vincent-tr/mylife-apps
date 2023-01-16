@@ -5,8 +5,9 @@ const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylif
 export class OperationStats extends StoreContainer {
   private readonly collection;
   private readonly changeCallback;
-  private readonly countId;
-  private readonly lastDateId;
+  private readonly countId: string;
+  private readonly lastDateId: string;
+  private readonly unsortedCountId: string;
   private readonly entity;
 
   constructor() {
@@ -18,6 +19,7 @@ export class OperationStats extends StoreContainer {
 
     this.countId = this.collection.newId();
     this.lastDateId = this.collection.newId();
+    this.unsortedCountId = this.collection.newId();
     this.entity = getMetadataEntity('report-operation-stat');
 
     this.onCollectionChange();
@@ -30,6 +32,7 @@ export class OperationStats extends StoreContainer {
   private onCollectionChange() {
     this.setObject({ _id: this.countId, code: 'count', value: this.collection.size });
     this.setObject({ _id: this.lastDateId, code: 'lastDate', value: findLastDate(this.collection.list()) });
+    this.setObject({ _id: this.unsortedCountId, code: 'unsortedCount', value: computeUnsortedCount(this.collection.list()) });
   }
 
   private setObject(values) {
@@ -45,4 +48,9 @@ export class OperationStats extends StoreContainer {
 function findLastDate(operations) {
   const result = operations.reduce((acc, op) => Math.max(acc, op.date), -Infinity);
   return isFinite(result) ? new Date(result) : null;
+}
+
+function computeUnsortedCount(operations) {
+  const currentYear = new Date().getFullYear();
+  return operations.filter(op => op.date.getFullYear() === currentYear && op.group === null).length;
 }
