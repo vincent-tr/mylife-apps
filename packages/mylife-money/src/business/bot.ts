@@ -58,10 +58,10 @@ export function endBotRun(runId: string, result: 'success' | 'warning' | 'error'
   botRuns.set(botRuns.entity.setValues(run, values));
 }
 
-export function logBotRun(runId: string, name: string, severity: 'debug' |'info' |'warning' |'error' |'fatal', message: string) {
+export function logBotRun(runId: string, severity: 'debug' |'info' |'warning' |'error' |'fatal', message: string) {
   const botRuns = getStoreCollection('bot-runs');
   const run = botRuns.get(runId);
-  const log = { date: new Date(), severity, name, message };
+  const log = { date: new Date(), severity, message };
   const values = { logs: [...run.logs, log] };
 
   botRuns.set(botRuns.entity.setValues(run, values));

@@ -6,9 +6,8 @@ module.exports = [
   { id: 'bot-run-result', enum: ['success', 'warning', 'error'] },
   {
     id: 'bot-run-log', structure: [
-      { id: 'date', name: 'Date', datatype: 'datatime' },
+      { id: 'date', name: 'Date', datatype: 'datetime' },
       { id: 'severity', name: 'Gravité', datatype: 'bot-run-log-severity' },
-      { id: 'name', name: 'Nom du logger', datatype: 'name' },
       { id: 'message', name: 'Message', datatype: 'text' },
     ]
   },

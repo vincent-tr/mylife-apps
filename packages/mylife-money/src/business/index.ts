@@ -1,8 +1,5 @@
-'use sitrct';
-
-Object.assign(exports,
-  require('./crud'),
-  require('./bot'),
-  require('./importer'),
-  require('./queries'),
-  require('./exports'));
+export * from './crud';
+export * from './bot';
+export * from './importer';
+export * from './queries';
+export * from './exports';
