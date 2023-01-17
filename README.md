@@ -142,7 +142,9 @@ MyLife Applications
   - pouvoir l'executer en live (pour double auth)
   - un scraper doit pouvoir sauvegarder son state (cookies)
   - empecher plusieurs lancement en //
-  - garder et afficher les (rolling?) logs
+  - garder et afficher les logs
+  - le scraper CIC garde le dernier fichier telechargé
+  - tous les mois un robot presente un summary (nombre d'ops non triées, graphiques, etc) par mail, avec le dernier fichier du scraper CIC
 - scraping PayPal (par scan des mails ou API ?)
 - scraping Amazon (par scan des mails ?)
 - UX
