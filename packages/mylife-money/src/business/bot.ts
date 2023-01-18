@@ -1,18 +1,28 @@
+import cron from 'node-cron';
 import { getStoreCollection, notifyView, createLogger } from 'mylife-tools-server';
 
 const logger = createLogger('mylife:money:business:bot');
 
 export function createBot(values) {
+  validateSchedule(values);
   const bots = getStoreCollection('bots');
   return bots.set(bots.entity.newObject(values));
 }
 
 export function updateBot(values) {
+  validateSchedule(values);
   const bots = getStoreCollection('bots');
   let existingBot = bots.get(values._id);
   existingBot = bots.entity.setValues(existingBot, values);
   existingBot = bots.set(existingBot);
   return existingBot;
+}
+
+function validateSchedule(values) {
+  // note: cannot easily validate isomorophic
+  if (values.schedule && !cron.validate(values.schedule)) {
+    throw new Error(`Invalid schedule '${values.schedule}'`);
+  }
 }
 
 export function deleteBot(id: string) {
