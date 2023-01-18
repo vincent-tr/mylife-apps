@@ -3,9 +3,15 @@ import { createLogger, registerService, getStoreCollection, StoreEvent } from 'm
 import * as business from '../business';
 import { Bot, BotLogSeverity, BotExecutionContext } from './api';
 
-import { test } from './test';
+import cicScraper from './cic-scraper';
+import testBot from './test';
 
-const logger = createLogger('mylife:money:bot-service');
+const bots = {
+  'cic-scraper': cicScraper,
+  'test': testBot,
+}
+
+const logger = createLogger('mylife:money:bots:service');
 
 type BotResult = 'success' | 'warning' | 'error';
 
@@ -67,13 +73,11 @@ registerService(BotService);
 class BotCron {
   private readonly id: string;
   private cron: string;
-  private readonly instance: Bot;
   private currentRun: BotRun;
 
   constructor(bot) {
     this.id = bot._id;
     this.cron = bot.schedule;
-    this.instance = test; // TODO: select with bot.type
     addCron(this.id, this.cron, this.onCron);
   }
 
@@ -108,17 +112,22 @@ class BotCron {
   }
 
   private readonly onCron = () => {
+    const bots = getStoreCollection('bots');
+    const bot = bots.get(this.id);
+
     if (this.currentRun) {
-      const bots = getStoreCollection('bots');
-      const bot = bots.get(this.id);
       logger.warn(`got cron trigger for bot '${bot.name}' (id='${this.id}', type='${bot.type}'), but it is already running. Skipping`);
       return;
     }
 
-    this.currentRun = new BotRun(this.id, this.instance);
-    this.currentRun.wait().then(() => {
-      this.currentRun = null;
-    })
+    try {
+      this.currentRun = new BotRun(this.id, bot.type);
+      this.currentRun.wait().then(() => {
+        this.currentRun = null;
+      });
+    } catch(err) {
+      logger.error(`Error starting bot '${bot.name}' (id='${this.id}', type='${bot.type}'): ${err.stack}`);
+    }
   };
 }
 
@@ -128,7 +137,17 @@ class BotRun {
   private readonly controller = new AbortController();
   private result: BotResult = 'success';
 
-  constructor(private readonly botId: string, instance: Bot) {
+  private static getBotInstance(type: string): Bot {
+    const instance = bots[type];
+    if (!instance) {
+      throw new Error(`Unknown bot type: '${type}' (supported types are ${Object.keys(bots).map(name => `'${name}'`).join(', ')})`);
+    }
+
+    return instance;
+  }
+
+  constructor(private readonly botId: string, botType: string) {
+    const instance = BotRun.getBotInstance(botType);
     this.runId = business.startBotRun(botId);
 
     const bots = getStoreCollection('bots');
