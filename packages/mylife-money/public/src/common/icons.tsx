@@ -41,6 +41,7 @@ export default {
 
   tabs: {
     Management : FormatListBulleted,
+    Bots       : Settings,
     Reporting  : ShowChart
   },
 
