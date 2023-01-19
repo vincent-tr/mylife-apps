@@ -4,10 +4,10 @@ const { createLogger } = require('mylife-tools-server');
 const business = require('../business');
 const { base } = require('./decorators');
 
-const logger = createLogger('mylife:money:api:bot');
+const logger = createLogger('mylife:money:api:bots');
 
 export const meta = {
-  name : 'bot'
+  name : 'bots'
 };
 
 export const createBot = [ base, (session, message) => {

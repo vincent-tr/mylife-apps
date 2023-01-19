@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { getStoreCollection, notifyView, createLogger } from 'mylife-tools-server';
 
-const logger = createLogger('mylife:money:business:bot');
+const logger = createLogger('mylife:money:business:bots');
 
 export function createBot(values) {
   validateSchedule(values);

@@ -4,11 +4,11 @@ import * as business from '../business';
 import { Bot, BotLogSeverity, BotExecutionContext } from './api';
 
 import cicScraper from './cic-scraper';
-import testBot from './test';
+import noop from './noop';
 
 const bots = {
   'cic-scraper': cicScraper,
-  'test': testBot,
+  'noop': noop,
 }
 
 const logger = createLogger('mylife:money:bots:service');

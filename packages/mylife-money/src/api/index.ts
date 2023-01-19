@@ -3,6 +3,6 @@
 exports.apiServices = [
   require('./common'),
   require('./management'),
-  require('./bot'),
+  require('./bots'),
   require('./reporting'),
 ];
