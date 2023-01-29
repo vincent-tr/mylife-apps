@@ -29,6 +29,11 @@ export const deleteBot = [ base, (session, message) => {
   logger.info(`bot deleted: ${id}`);
 } ];
 
+export const startBot = [ base, (session, message) => {
+  const { id } = message;
+  business.startBot(id);
+  logger.info(`bot started: ${id}`);
+} ];
 
 export const notifyBots = [ base, (session/*, message*/) => {
   return business.notifyBots(session);

@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import { getStoreCollection, notifyView, createLogger } from 'mylife-tools-server';
+import { getStoreCollection, notifyView, createLogger, getService } from 'mylife-tools-server';
 
 const logger = createLogger('mylife:money:business:bots');
 
@@ -43,6 +43,11 @@ export function deleteBot(id: string) {
 export function notifyBots(session) {
   const bots = getStoreCollection('bots');
   return notifyView(session, bots.createView());
+}
+
+export function startBot(botId: string) {
+  const service = getService('bot-service');
+  service.startBot(botId);
 }
 
 export function startBotRun(botId: string): string {

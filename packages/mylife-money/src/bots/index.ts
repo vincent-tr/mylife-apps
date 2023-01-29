@@ -39,6 +39,15 @@ class BotService {
     logger.debug('Bot service stopped');
   }
 
+  startBot(botId: string) {
+    const botCron = this.crons.get(botId);
+    if (!botCron) {
+      throw new Error(`Bot '${botId}' does not exist`);
+    }
+
+    botCron.start();
+  }
+
   private readonly onBotsChange = (event: StoreEvent) => {
     switch (event.type) {
       case 'create': {
@@ -78,7 +87,7 @@ class BotCron {
   constructor(bot) {
     this.id = bot._id;
     this.cron = bot.schedule;
-    addCron(this.id, this.cron, this.onCron);
+    addCron(this.id, this.cron, this.onStart);
   }
 
   update(bot) {
@@ -90,7 +99,11 @@ class BotCron {
 
     removeCron(this.id);
     this.cron = bot.schedule;
-    addCron(this.id, this.cron, this.onCron);
+    addCron(this.id, this.cron, this.onStart);
+  }
+
+  start() {
+    this.onStart();
   }
 
   terminateNoWait() {
@@ -111,7 +124,7 @@ class BotCron {
     }
   }
 
-  private readonly onCron = () => {
+  private readonly onStart = () => {
     const bots = getStoreCollection('bots');
     const bot = bots.get(this.id);
 
