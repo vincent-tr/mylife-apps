@@ -22,6 +22,8 @@ interface State {
   }
 }
 
+const AUTH_TIMEOUT = 60000; // 1 min
+
 export default async function (context: BotExecutionContext) {
   const agent = new Agent(context.signal);
 
@@ -119,6 +121,7 @@ async function authenticate(context: BotExecutionContext, agent: Agent, user: st
   // console.log('FORM DATA', formData); 
 
   let exitLoop = false;
+  const startTs = Date.now();
   while (true) {
     const responseState = await agent.exec({ url: getTransactionValidationStateUrl, method: 'POST', formData: { transactionId } });
     // console.log(responseState.data);
@@ -143,6 +146,11 @@ async function authenticate(context: BotExecutionContext, agent: Agent, user: st
 
     if (exitLoop) {
       break;
+    }
+
+    const elapsed = Date.now() - startTs;
+    if (elapsed > AUTH_TIMEOUT) {
+      throw new Error(`Timeout while waiting for authentication`);
     }
   
     await setTimeout(5000, null, { signal: context.signal });

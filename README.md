@@ -145,7 +145,6 @@ MyLife Applications
   - garder et afficher les logs
   - le scraper CIC garde le dernier fichier telechargé
   - tous les mois un robot presente un summary (nombre d'ops non triées, graphiques, etc) par mail, avec le dernier fichier du scraper CIC
-  - limiter les retrizs de validation a 1min (largement assez long)
 - UX gestion de bots
   - Popup pour modif
   - Panneau de droite = runs, logs, lancement a la main
