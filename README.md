@@ -152,6 +152,12 @@ MyLife Applications
 - scraping Amazon (par scan des mails ?)
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
+  - ne pas redimensionner le popup de treeview de groups en fonction du contenu
+- Saisie de note :
+  - le debounce est pourri
+  - permettre plusieurs lignes (voir comment afficher dans la liste, eg : 1iere ligne + ..., et détails en tooltip ?)
+  - permettre de créer des hyperlinks dans les notes
+  - rich text/MD ?
 
 ## Portal
 
