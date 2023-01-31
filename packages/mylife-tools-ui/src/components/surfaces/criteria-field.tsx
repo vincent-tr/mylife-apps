@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Typography } from '@material-ui/core';
@@ -19,7 +17,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CriteriaField = ({ label, children }) => {
+interface CriteriaFieldProps {
+  label: string;
+  children: React.ReactNode;
+}
+
+const CriteriaField: React.FunctionComponent<CriteriaFieldProps> = ({ label, children }) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
