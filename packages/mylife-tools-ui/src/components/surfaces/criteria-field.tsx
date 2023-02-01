@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface CriteriaFieldProps {
-  label: string;
+  label: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -35,7 +35,7 @@ const CriteriaField: React.FunctionComponent<CriteriaFieldProps> = ({ label, chi
 };
 
 CriteriaField.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   children: PropTypes.node
 };
 
