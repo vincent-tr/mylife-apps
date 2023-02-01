@@ -5,22 +5,12 @@ import * as cheerio from 'cheerio/lib/slim'; // Note: parse5 seems to not like w
 import { createLogger } from 'mylife-tools-server';
 import { BotExecutionContext } from './api';
 import * as business from '../business';
+import * as shared from '../../shared/bots';
+
+type Configuration = shared.CicScraper.Configuration;
+type State = shared.CicScraper.State;
 
 const logger = createLogger('mylife:money:bots:cic-scraper');
-
-interface Configuration {
-  user: string;
-  pass: string;
-  account: string; // account in Money
-}
-
-interface State {
-  agent: string[];
-  lastDownload: {
-    date: Date,
-    content: string,
-  }
-}
 
 const AUTH_TIMEOUT = 60000; // 1 min
 
