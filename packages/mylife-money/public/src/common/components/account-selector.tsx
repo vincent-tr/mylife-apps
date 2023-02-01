@@ -18,23 +18,23 @@ function renderList(accounts, allowNull) {
   ));
 }
 
-const AccountSelector = ({ allowNull, value, onChange, ...props }) => {
+const AccountSelector = ({ allowNull = false, value, onChange, ...props }) => {
   const { accounts } = useConnect();
   const handleChange = e => {
     const { value } = e.target;
     onChange(value === '' ? null : value);
   };
   return (
-    <mui.Select displayEmpty value={value || ''} onChange={handleChange} {...props}>
+    <mui.Select displayEmpty value={value || ''} onChange={handleChange} inputProps={{ readOnly: !onChange }} {...props}>
       {renderList(accounts, allowNull)}
     </mui.Select>
   );
 };
 
 AccountSelector.propTypes = {
-  allowNull : PropTypes.bool.isRequired,
+  allowNull : PropTypes.bool,
   value     : PropTypes.string,
-  onChange  : PropTypes.func.isRequired,
+  onChange  : PropTypes.func,
 };
 
 export default AccountSelector;

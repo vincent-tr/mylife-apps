@@ -1,8 +1,11 @@
-import { React, mui, useState, DeleteButton } from 'mylife-tools-ui';
+import { React, mui, useState, DeleteButton, CriteriaField } from 'mylife-tools-ui';
 import { useBots } from '../views';
 import icons from '../../common/icons';
+import { NoopConfig, NoopState } from './config/noop';
+import { CicScraperConfig, CicScraperState } from './config/cic-scraper';
 
 type FIXME_any = any;
+type Bot = FIXME_any;
 
 const useStyles = mui.makeStyles(theme => ({
   container: {
@@ -13,21 +16,23 @@ const useStyles = mui.makeStyles(theme => ({
   listContainer: {
     display: 'flex',
     flexDirection: 'column',
+    borderRightWidth: 1,
+    borderRightColor: mui.colors.grey[300],
+    borderRightStyle: 'solid',
   },
   list: {
     flex: '1 1 auto',
     overflowY: 'auto',
     width: 300,
-    borderRightWidth: 1,
-    borderRightColor: mui.colors.grey[300],
-    borderRightStyle: 'solid',
   },
   addButton: {
     alignSelf: 'center',
     color: theme.palette.success.main
   },
-  detail: {
+  view: {
     flex: '1 1 auto',
+    display: 'flex',
+    flexDirection: 'column'
   },
   title: {
     display: 'flex',
@@ -42,6 +47,11 @@ const useStyles = mui.makeStyles(theme => ({
     marginBottom: 6,
     display: 'flex',
     flexDirection: 'column',
+  },
+  content: {
+    flex: '1 1 auto',
+    overflowY: 'auto',
+    padding: theme.spacing(1),
   }
 }));
 
@@ -51,8 +61,6 @@ const Bots: React.FunctionComponent = () => {
   const { view } = useBots();
   const [selection, setSelection] = useState<string>(null);
   const bot = view.get(selection);
-
-  // https://github.com/node-cron/node-cron#cron-syntax
 
   return (
     <div className={classes.container}>
@@ -73,7 +81,7 @@ const Bots: React.FunctionComponent = () => {
       </div>
 
       {bot && (
-        <BotDetail bot={bot} />
+        <BotView bot={bot} />
       )}
     </div>
   );
@@ -81,7 +89,7 @@ const Bots: React.FunctionComponent = () => {
 
 export default Bots;
 
-const BotDetail: React.FunctionComponent<{ bot: FIXME_any }> = ({ bot }) => {
+const BotView: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
   const classes = useStyles();
   type SelectedTab = 'detail' | 'execution';
   const [value, setValue] = useState('detail' as SelectedTab);
@@ -91,7 +99,7 @@ const BotDetail: React.FunctionComponent<{ bot: FIXME_any }> = ({ bot }) => {
   };
 
   return (
-    <div className={classes.detail}>
+    <div className={classes.view}>
 
       <div className={classes.title}>
         <div className={classes.titleContent}>
@@ -114,15 +122,70 @@ const BotDetail: React.FunctionComponent<{ bot: FIXME_any }> = ({ bot }) => {
         textColor='primary'
         onChange={handleChange}
       >
-        <mui.Tab label='Détails' value='detail'>
-          Config/State view
-        </mui.Tab>
-
-        <mui.Tab label='Exécution' value='execution'>
-          Runs
-          Logs
-        </mui.Tab>
+        <mui.Tab label='Détails' value='detail' />
+        <mui.Tab label='Exécution' value='execution' />
       </mui.Tabs>
+
+      <div className={classes.content}>
+        {value === 'detail' && (
+          <Detail bot={bot} />
+        )}
+
+        {value === 'execution' && (
+          <>
+            Runs
+            Logs
+          </>
+        )}
+      </div>
+
     </div>
   );
 };
+
+const Detail: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
+  const Config = getConfigComponent(bot.type);
+  const State = getStateComponent(bot.type);
+
+  return (
+    <mui.Grid container spacing={2}>
+      <mui.Grid item xs={12}>
+        <CriteriaField label={
+          <>
+            {'Planification '}
+            <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
+              "cron"
+            </mui.Link>
+          </>
+        }>
+          <mui.TextField InputProps={{ readOnly: true }} value={bot.schedule} />
+        </CriteriaField>
+      </mui.Grid>
+
+      <Config bot={bot} />
+      <State bot={bot} />
+    </mui.Grid>
+  );
+};
+
+function getConfigComponent(type: 'noop' | 'cic-scraper') {
+  switch(type) {
+    case 'noop':
+      return NoopConfig;
+    case 'cic-scraper':
+      return CicScraperConfig;
+    default:
+      throw new Error(`Unknown bot type '${type}'`);
+  }
+}
+
+function getStateComponent(type: 'noop' | 'cic-scraper') {
+  switch(type) {
+    case 'noop':
+      return NoopState;
+    case 'cic-scraper':
+      return CicScraperState;
+    default:
+      throw new Error(`Unknown bot type '${type}'`);
+    }
+}
