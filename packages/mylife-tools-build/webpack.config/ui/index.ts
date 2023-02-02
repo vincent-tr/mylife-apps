@@ -68,10 +68,17 @@ export default function (baseDirectory: string, dev: boolean) {
     resolveLoader: {
       modules: resolverPaths,
     },
-    devtool: dev ? 'inline-source-map' : 'nosources-source-map',
+    devtool: dev ? 'eval-cheap-module-source-map' : 'nosources-source-map',
   };
 
-  if (!dev) {
+  if (dev) {
+    config.optimization = {
+      runtimeChunk: true,
+      removeAvailableModules: false,
+      removeEmptyChunks: false,
+      splitChunks: false,
+    };
+  } else {
     config.optimization = {
       minimizer: [
         new TerserPlugin({
