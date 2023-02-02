@@ -1,4 +1,6 @@
-import React from 'react';
+import { ActionCreatorsMapObject, ActionCreator, bindActionCreators } from 'redux';
+import { useDispatch } from 'react-redux';
+import React, { useMemo } from 'react';
 
 export function fireAsync(target) {
   target().catch((err) => console.error('Unhandled promise rejection', err)); // eslint-disable-line no-console
@@ -38,4 +40,20 @@ export function addLineBreaks(values) {
       {index < values.length - 1 && <br />}
     </React.Fragment>
   ));
+}
+
+export function useAction<A, C extends ActionCreator<A>>(action: C): C {
+  const dispatch = useDispatch();
+  return useMemo(
+    () => bindActionCreators(action, dispatch),
+    [dispatch]
+  );
+}
+
+export function useActions<A, M extends ActionCreatorsMapObject<A>>(actions: M): M {
+  const dispatch = useDispatch();
+  return useMemo(
+    () => bindActionCreators(actions, dispatch),
+    [dispatch]
+  );
 }
