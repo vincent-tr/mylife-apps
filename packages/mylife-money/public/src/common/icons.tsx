@@ -15,6 +15,7 @@ const {
   Close,
   SaveAlt,
   ArrowBack,
+  CloudDownload,
 } = mui.icons;
 
 const Money = (props) => (
@@ -28,15 +29,16 @@ export default {
   Money,
 
   actions: {
-    New     : AddCircle,
-    Edit    : Edit,
-    Delete  : Close,
-    Move    : FolderOpen,
-    Import  : OpenInBrowser,
-    Execute : Settings,
-    Comment : ModeComment,
-    Export  : SaveAlt,
-    Back    : ArrowBack,
+    New      : AddCircle,
+    Edit     : Edit,
+    Delete   : Close,
+    Move     : FolderOpen,
+    Import   : OpenInBrowser,
+    Execute  : Settings,
+    Comment  : ModeComment,
+    Export   : SaveAlt,
+    Back     : ArrowBack,
+    Download : CloudDownload,
   },
 
   tabs: {

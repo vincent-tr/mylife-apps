@@ -18,7 +18,7 @@ function renderList(accounts, allowNull) {
   ));
 }
 
-const AccountSelector = ({ allowNull = false, value, onChange, ...props }) => {
+const AccountSelector = ({ allowNull = false, value, onChange = null, ...props }) => {
   const { accounts } = useConnect();
   const handleChange = e => {
     const { value } = e.target;

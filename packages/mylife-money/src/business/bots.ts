@@ -18,6 +18,14 @@ export function updateBot(values) {
   return existingBot;
 }
 
+export function clearBotState(id: string) {
+  logger.debug(`clea bot state '${id}'`);
+  const bots = getStoreCollection('bots');
+  let bot = bots.get(id);
+  bot = bots.entity.getField('state').resetValue(bot);
+  bots.set(bot);
+}
+
 function validateSchedule(values) {
   // note: cannot easily validate isomorophic
   if (values.schedule && !cron.validate(values.schedule)) {

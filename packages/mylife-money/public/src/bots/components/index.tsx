@@ -1,8 +1,8 @@
-import { React, mui, useState, DeleteButton, CriteriaField } from 'mylife-tools-ui';
+import { React, mui, useState, DeleteButton } from 'mylife-tools-ui';
 import { useBots } from '../views';
 import icons from '../../common/icons';
-import { NoopConfig, NoopState } from './config/noop';
-import { CicScraperConfig, CicScraperState } from './config/cic-scraper';
+import Detail from './detail';
+import Runs from './runs';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
@@ -132,60 +132,10 @@ const BotView: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
         )}
 
         {value === 'execution' && (
-          <>
-            Runs
-            Logs
-          </>
+          <Runs id={bot._id} />
         )}
       </div>
 
     </div>
   );
 };
-
-const Detail: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
-  const Config = getConfigComponent(bot.type);
-  const State = getStateComponent(bot.type);
-
-  return (
-    <mui.Grid container spacing={2}>
-      <mui.Grid item xs={12}>
-        <CriteriaField label={
-          <>
-            {'Planification '}
-            <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
-              "cron"
-            </mui.Link>
-          </>
-        }>
-          <mui.TextField InputProps={{ readOnly: true }} value={bot.schedule} />
-        </CriteriaField>
-      </mui.Grid>
-
-      <Config bot={bot} />
-      <State bot={bot} />
-    </mui.Grid>
-  );
-};
-
-function getConfigComponent(type: 'noop' | 'cic-scraper') {
-  switch(type) {
-    case 'noop':
-      return NoopConfig;
-    case 'cic-scraper':
-      return CicScraperConfig;
-    default:
-      throw new Error(`Unknown bot type '${type}'`);
-  }
-}
-
-function getStateComponent(type: 'noop' | 'cic-scraper') {
-  switch(type) {
-    case 'noop':
-      return NoopState;
-    case 'cic-scraper':
-      return CicScraperState;
-    default:
-      throw new Error(`Unknown bot type '${type}'`);
-    }
-}

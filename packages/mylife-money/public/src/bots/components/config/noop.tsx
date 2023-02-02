@@ -4,21 +4,21 @@ type FIXME_any = any;
 type Bot = FIXME_any;
 
 interface NoopConfigProps {
-  bot: Bot;
-  onChange?: (changes: Partial<Bot>) => void;
+  configuration: unknown;
+  onChange?: (configuration: unknown) => void;
 }
 
-export const NoopConfig: React.FunctionComponent<NoopConfigProps> = ({ bot, onChange }) => {
+export const NoopConfig: React.FunctionComponent<NoopConfigProps> = ({ configuration, onChange }) => {
   return (
     <></>
   );
 };
 
 interface NoopStateProps {
-  bot: Bot;
+  state: unknown;
 }
 
-export const NoopState: React.FunctionComponent<NoopStateProps> = ({ bot }) => {
+export const NoopState: React.FunctionComponent<NoopStateProps> = ({ state }) => {
   return (
     <></>
   );

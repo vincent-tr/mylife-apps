@@ -1,6 +1,7 @@
 import { React, mui, CriteriaField } from 'mylife-tools-ui';
 import * as shared from '../../../../../shared/bots';
 import AccountSelector from '../../../common/components/account-selector';
+import icons from '../../../common/icons';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
@@ -11,12 +12,12 @@ type State = shared.CicScraper.State;
 const EMPTY = {};
 
 interface CicScraperConfigProps {
-  bot: Bot;
-  onChange?: (changes: Partial<Bot>) => void;
+  configuration: unknown;
+  onChange?: (configuration: unknown) => void;
 }
 
-export const CicScraperConfig: React.FunctionComponent<CicScraperConfigProps> = ({ bot, onChange }) => {
-  const configuration = bot.configuration || EMPTY as Configuration;
+export const CicScraperConfig: React.FunctionComponent<CicScraperConfigProps> = ({ configuration: untypedConfig, onChange }) => {
+  const configuration = (untypedConfig || EMPTY) as Configuration;
 
   return (
     <>
@@ -42,25 +43,46 @@ export const CicScraperConfig: React.FunctionComponent<CicScraperConfigProps> = 
 };
 
 interface CicScraperStateProps {
-  bot: Bot;
+  state: unknown;
 }
 
-export const CicScraperState: React.FunctionComponent<CicScraperStateProps> = ({ bot }) => {
-  const state = bot.state || EMPTY as State;
+export const CicScraperState: React.FunctionComponent<CicScraperStateProps> = ({ state: untypedState }) => {
+  const state = (untypedState || EMPTY) as State;
 
   return (
     <>
-      <mui.Grid item xs={12}>
-        <CriteriaField label='Dernier fichier téléchargé'>
-          TODO
-        </CriteriaField>
-      </mui.Grid>
-
-      <mui.Grid item xs={12}>
-        <CriteriaField label={`Supprimer l'état`}>
-          TODO
-        </CriteriaField>
-      </mui.Grid>
+      {state.lastDownload && (
+        <mui.Grid item xs={12}>
+          <CriteriaField label={`Dernier fichier téléchargé (${state.lastDownload.date.toLocaleString('fr-FR')})`}>
+            <mui.IconButton onClick={() => download(`cic-${formatFileDate(state.lastDownload.date)}.csv`, state.lastDownload.content)}>
+              <icons.actions.Download />
+            </mui.IconButton>
+          </CriteriaField>
+        </mui.Grid>
+      )}
     </>
   );
 };
+
+function formatFileDate(date: Date) {
+  return date.getFullYear().toString() + pad(date.getMonth() + 1) + pad(date.getDate()) + '-' + pad(date.getHours()) + pad(date.getMinutes()) + pad(date.getSeconds());
+}
+
+function pad(number: number) {
+  return number < 10 ? '0' + number : number.toString();
+}
+
+// Note: should be an action, but this will bring cic scraper specifics to actions
+// https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server
+function download(filename: string, text: string) {
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}

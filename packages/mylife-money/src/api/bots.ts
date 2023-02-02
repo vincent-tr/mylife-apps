@@ -23,6 +23,12 @@ export const updateBot = [ base, (session, message) => {
   logger.info(`bot updated: ${JSON.stringify(res)}`);
 } ];
 
+export const clearBotState = [ base, (session, message) => {
+  const { id } = message;
+  const res = business.clearBotState(id);
+  logger.info(`bot state cleared: ${id}}`);
+} ];
+
 export const deleteBot = [ base, (session, message) => {
   const { id } = message;
   business.deleteBot(id);
