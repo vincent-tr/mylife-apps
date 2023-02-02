@@ -50,7 +50,14 @@ export default function (baseDirectory: string, dev: boolean) {
     }
   };
 
-  if (!dev) {
+  if (dev) {
+    config.optimization = {
+      runtimeChunk: true,
+      removeAvailableModules: false,
+      removeEmptyChunks: false,
+      splitChunks: false,
+    };
+  } else {
     config.optimization = {
       minimizer: [
         new TerserPlugin({
