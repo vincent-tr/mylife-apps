@@ -1,6 +1,6 @@
 {
   "name": "mylife-money",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "Mylife Money",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-money",
@@ -15,21 +15,21 @@
     "docker-publish": "mylife-build production && mylife-publish"
   },
   "dependencies": {
-    "csv-parse": "^5.2.0",
-    "moment": "^2.29.3",
-    "mylife-tools-server": "^1.1.2",
-    "node-cron": "^3.0.2",
     "axios": "^1.2.2",
     "cheerio": "^1.0.0-rc.12",
-    "cookiejar": "^2.1.3"
+    "cookiejar": "^2.1.3",
+    "csv-parse": "^5.2.0",
+    "moment": "^2.29.3",
+    "mylife-tools-server": "^1.1.3",
+    "node-cron": "^3.0.2"
   },
   "devDependencies": {
+    "@types/cookiejar": "^2.1.2",
+    "@types/node-cron": "^3.0.2",
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
-    "mylife-tools-build": "^1.3.2",
-    "mylife-tools-ui": "^1.1.2",
-    "@types/node-cron": "^3.0.2",
-    "@types/cookiejar": "^2.1.2"
+    "mylife-tools-build": "^1.3.3",
+    "mylife-tools-ui": "^1.1.3"
   },
   "license": "GPL-3.0+"
 }
