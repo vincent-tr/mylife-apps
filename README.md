@@ -138,6 +138,8 @@ MyLife Applications
     - executer l'apercu sur les non tries pour montrer ce qu'elle pourra deplacer
 - bots
   - tous les mois un robot presente un summary (nombre d'ops non triées, graphiques, etc) par mail, avec le dernier fichier du scraper CIC
+  - pouvoir intégrer à nagios ou mail des erreurs de bots
+  - cleanup des runs
 - scraping PayPal (par scan des mails ou API ?)
 - scraping Amazon (par scan des mails ?)
 - UX
