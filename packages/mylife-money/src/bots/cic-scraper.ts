@@ -44,8 +44,11 @@ export default async function (context: BotExecutionContext) {
   state.lastDownload = { date: new Date(), content };
   context.setState(state);
 
-  const count = business.operationsImport(account, content);
-  context.log('info', `${count} opérations importées`);
+  const importedCount = business.operationsImport(account, content);
+  context.log('info', `${importedCount} opérations importées`);
+
+  const movedCount = business.executeRules();
+  context.log('info', `Exécution des règles : ${movedCount} opérations classées`);
 }
 
 async function authenticate(context: BotExecutionContext, agent: Agent, user: string, pass: string) {
