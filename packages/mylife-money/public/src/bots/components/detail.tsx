@@ -1,40 +1,41 @@
-import { React, mui, DeleteButton, CriteriaField, useAction, fireAsync, useCallback } from 'mylife-tools-ui';
+import { React, mui, clsx, CriteriaField } from 'mylife-tools-ui';
 import { NoopConfig, NoopState } from './config/noop';
 import { CicScraperConfig, CicScraperState } from './config/cic-scraper';
-import { clearBotState } from '../actions';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
 
-const Detail: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
+const useStyles = mui.makeStyles(theme => ({
+  container: {
+    overflowY: 'auto',
+    padding: theme.spacing(1),
+  }
+}));
+const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bot, className }) => {
+  const classes = useStyles();
   const Config = getConfigComponent(bot.type);
   const State = getStateComponent(bot.type);
-  const clearState = useClearState(bot._id);
 
   return (
-    <mui.Grid container spacing={2}>
-      <mui.Grid item xs={6}>
-        <CriteriaField label={
-          <>
-            {'Planification '}
-            <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
-              "cron"
-            </mui.Link>
-          </>
-        }>
-          <mui.TextField InputProps={{ readOnly: true }} value={bot.schedule} />
-        </CriteriaField>
-      </mui.Grid>
+    <div className={clsx(classes.container, className)}>
+      <mui.Grid container spacing={2}>
+        <mui.Grid item xs={12}>
+          <CriteriaField label={
+            <>
+              {'Planification '}
+              <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
+                "cron"
+              </mui.Link>
+            </>
+          }>
+            <mui.TextField InputProps={{ readOnly: true }} value={bot.schedule} />
+          </CriteriaField>
+        </mui.Grid>
 
-      <mui.Grid item xs={6}>
-        <CriteriaField label={`Supprimer l'état`}>
-          <DeleteButton icon onConfirmed={clearState} disabled={bot.state == null} />
-        </CriteriaField>
+        <Config configuration={bot.configuration} />
+        <State state={bot.state} />
       </mui.Grid>
-
-      <Config configuration={bot.configuration} />
-      <State state={bot.state} />
-    </mui.Grid>
+    </div>
   );
 };
 
@@ -60,9 +61,4 @@ function getStateComponent(type: 'noop' | 'cic-scraper') {
     default:
       throw new Error(`Unknown bot type '${type}'`);
     }
-}
-
-function useClearState(id: string) {
-  const clearState = useAction(clearBotState);
-  return useCallback(() => fireAsync(async () => clearState(id)), [id, clearState, fireAsync]);
 }

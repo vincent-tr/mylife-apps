@@ -1,4 +1,4 @@
-import { React, mui, useState, DeleteButton } from 'mylife-tools-ui';
+import { React, mui, useState, DeleteButton, ListContainer } from 'mylife-tools-ui';
 import { useBots } from '../views';
 import icons from '../../common/icons';
 import Detail from './detail';
@@ -16,13 +16,9 @@ const useStyles = mui.makeStyles(theme => ({
   listContainer: {
     display: 'flex',
     flexDirection: 'column',
-    borderRightWidth: 1,
-    borderRightColor: mui.colors.grey[300],
-    borderRightStyle: 'solid',
   },
   list: {
     flex: '1 1 auto',
-    overflowY: 'auto',
     width: 300,
   },
   addButton: {
@@ -50,8 +46,6 @@ const useStyles = mui.makeStyles(theme => ({
   },
   content: {
     flex: '1 1 auto',
-    overflowY: 'auto',
-    padding: theme.spacing(1),
   }
 }));
 
@@ -65,13 +59,15 @@ const Bots: React.FunctionComponent = () => {
   return (
     <div className={classes.container}>
       <div className={classes.listContainer}>
-        <mui.List className={classes.list}>
-          {view.valueSeq().map(bot => (
-            <mui.ListItem key={bot._id} selected={selection === bot._id} button onClick={() => setSelection(bot._id)}>
-              <mui.ListItemText primary={bot.name} secondary={bot.type} />
-            </mui.ListItem>
-          ))}
-        </mui.List>
+        <ListContainer className={classes.list}>
+          <mui.List>
+            {view.valueSeq().map(bot => (
+              <mui.ListItem key={bot._id} selected={selection === bot._id} button onClick={() => setSelection(bot._id)}>
+                <mui.ListItemText primary={bot.name} secondary={bot.type} />
+              </mui.ListItem>
+            ))}
+          </mui.List>
+        </ListContainer>
 
         <mui.Tooltip title='Créer un robot'>
           <mui.IconButton className={classes.addButton} onClick={() => console.log('create')}>
@@ -79,6 +75,8 @@ const Bots: React.FunctionComponent = () => {
           </mui.IconButton>
         </mui.Tooltip>
       </div>
+
+      <mui.Divider orientation='vertical' />
 
       {bot && (
         <BotView bot={bot} />
@@ -126,15 +124,13 @@ const BotView: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
         <mui.Tab label='Exécution' value='execution' />
       </mui.Tabs>
 
-      <div className={classes.content}>
-        {value === 'detail' && (
-          <Detail bot={bot} />
-        )}
+      {value === 'detail' && (
+        <Detail bot={bot} className={classes.content} />
+      )}
 
-        {value === 'execution' && (
-          <Runs id={bot._id} />
-        )}
-      </div>
+      {value === 'execution' && (
+        <Runs bot={bot} className={classes.content}/>
+      )}
 
     </div>
   );
