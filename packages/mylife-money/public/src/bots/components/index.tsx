@@ -1,8 +1,10 @@
-import { React, mui, useState, DeleteButton, ListContainer } from 'mylife-tools-ui';
+import { React, mui, useState, useCallback, DeleteButton, ListContainer, fireAsync, useAction } from 'mylife-tools-ui';
 import { useBots } from '../views';
+import { createBot, updateBot, deleteBot } from '../actions';
 import icons from '../../common/icons';
 import Detail from './detail';
 import Runs from './runs';
+import updateDialog from './update';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
@@ -51,10 +53,25 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Bots: React.FunctionComponent = () => {
   const classes = useStyles();
-
   const { view } = useBots();
   const [selection, setSelection] = useState<string>(null);
   const bot = view.get(selection);
+  const delBot = useAction(deleteBot);
+  const upBot = useUpdate(setSelection);
+
+  // Note: not the best optim way...
+  const createOnDelete = (bot: Bot) => () => {
+    delBot(bot._id);
+    setSelection(null);
+  };
+
+  const createOnUpdate = (bot: Bot) => () => {
+    upBot(bot);
+  };
+
+  const onCreate = () => {
+    const id = upBot(null);
+  };
 
   return (
     <div className={classes.container}>
@@ -70,7 +87,7 @@ const Bots: React.FunctionComponent = () => {
         </ListContainer>
 
         <mui.Tooltip title='Créer un robot'>
-          <mui.IconButton className={classes.addButton} onClick={() => console.log('create')}>
+          <mui.IconButton className={classes.addButton} onClick={onCreate}>
             <icons.actions.New />
           </mui.IconButton>
         </mui.Tooltip>
@@ -79,7 +96,7 @@ const Bots: React.FunctionComponent = () => {
       <mui.Divider orientation='vertical' />
 
       {bot && (
-        <BotView bot={bot} />
+        <BotView bot={bot} onUpdate={createOnUpdate(bot)} onDelete={createOnDelete(bot)} />
       )}
     </div>
   );
@@ -87,7 +104,7 @@ const Bots: React.FunctionComponent = () => {
 
 export default Bots;
 
-const BotView: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
+const BotView: React.FunctionComponent<{ bot: Bot; onUpdate: () => void; onDelete: () => void; }> = ({ bot, onUpdate, onDelete }) => {
   const classes = useStyles();
   type SelectedTab = 'detail' | 'execution';
   const [value, setValue] = useState('detail' as SelectedTab);
@@ -106,12 +123,12 @@ const BotView: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
         </div>
 
         <mui.Tooltip title='Modifier le robot'>
-          <mui.IconButton onClick={() => console.log('update')}>
+          <mui.IconButton onClick={onUpdate}>
             <icons.actions.Edit />
           </mui.IconButton>
         </mui.Tooltip>
 
-        <DeleteButton icon tooltip="Supprimer le robot" onConfirmed={() => console.log('delete')} />
+        <DeleteButton icon tooltip="Supprimer le robot" onConfirmed={onDelete} />
       </div>
 
       <mui.Tabs
@@ -135,3 +152,23 @@ const BotView: React.FunctionComponent<{ bot: Bot }> = ({ bot }) => {
     </div>
   );
 };
+
+function useUpdate(setSelection: (id: string) => void) {
+  const create = useAction(createBot) as unknown as ((bot: Bot) => Promise<string>); // FIXME: type better async dispatcher
+  const update = useAction(updateBot);
+
+  // if 'bot = null' then create
+  return useCallback((bot: Bot) => fireAsync(async() => {
+    const { result, values } = await updateDialog({ options: { bot } });
+    if(result !== 'ok') {
+      return;
+    }
+
+    if (bot) {
+      await update({ ...values, _id: bot._id });
+    } else {
+      const id = await create(values);
+      setSelection(id);
+    }
+  }), [create, update, setSelection]);
+}

@@ -1,4 +1,4 @@
-import { React, mui, CriteriaField } from 'mylife-tools-ui';
+import { React, mui, CriteriaField, useCallback } from 'mylife-tools-ui';
 import * as shared from '../../../../../shared/bots';
 import AccountSelector from '../../../common/components/account-selector';
 import icons from '../../../common/icons';
@@ -19,23 +19,27 @@ interface CicScraperConfigProps {
 export const CicScraperConfig: React.FunctionComponent<CicScraperConfigProps> = ({ configuration: untypedConfig, onChange }) => {
   const configuration = (untypedConfig || EMPTY) as Configuration;
 
+  const update = onChange && ((values: Partial<Configuration>) => {
+    onChange({ ...configuration, ...values });
+  });
+
   return (
     <>
       <mui.Grid item xs={12}>
         <CriteriaField label='Utilisateur CIC'>
-          <mui.TextField InputProps={{ readOnly: true }} value={configuration.user} />
+          <mui.TextField InputProps={{ readOnly: !update }} value={configuration.user || ''} onChange={e => update({ user: e.target.value })} />
         </CriteriaField>
       </mui.Grid>
 
       <mui.Grid item xs={12}>
         <CriteriaField label='Mot de passe CIC'>
-          <mui.TextField InputProps={{ readOnly: true }} value={configuration.pass} />
+          <mui.TextField InputProps={{ readOnly: !update }} value={configuration.pass || ''} onChange={e => update({ pass: e.target.value })} />
         </CriteriaField>
       </mui.Grid>
 
       <mui.Grid item xs={12}>
         <CriteriaField label='Compte Money'>
-          <AccountSelector value={configuration.account} />
+          <AccountSelector value={configuration.account} onChange={account => update({ account })} />
         </CriteriaField>
       </mui.Grid>
     </>
@@ -85,4 +89,9 @@ function download(filename: string, text: string) {
   element.click();
 
   document.body.removeChild(element);
+}
+
+export function validate(untypedConfig: unknown) {
+  const configuration = (untypedConfig || EMPTY) as Configuration;
+  return !!configuration.user && !!configuration.pass && !!configuration.account;
 }

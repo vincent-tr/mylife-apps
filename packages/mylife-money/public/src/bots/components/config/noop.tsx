@@ -23,3 +23,7 @@ export const NoopState: React.FunctionComponent<NoopStateProps> = ({ state }) =>
     <></>
   );
 };
+
+export function validate(configuration: unknown) {
+  return true;
+}
