@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, useMemo, useSelector, useDispatch, AutoSizer } from 'mylife-tools-ui';
+import { React, useMemo, useSelector, useDispatch, ListContainer } from 'mylife-tools-ui';
 import GroupTree from '../../../common/components/group-tree';
 import { getSelectedGroupId } from '../../selectors';
 import { selectGroup } from '../../actions';
@@ -22,13 +22,9 @@ const useConnect = () => {
 const Tree = (props) => {
   const { selectedGroupId, onSelect } = useConnect();
   return (
-    <div {...props}>
-      <AutoSizer disableWidth>
-        {({ height }) => (
-          <GroupTree height={height} onSelect={onSelect} selectedGroupId={selectedGroupId} />
-        )}
-      </AutoSizer>
-    </div>
+    <ListContainer {...props}>
+      <GroupTree onSelect={onSelect} selectedGroupId={selectedGroupId} />
+    </ListContainer>
   );
 };
 
