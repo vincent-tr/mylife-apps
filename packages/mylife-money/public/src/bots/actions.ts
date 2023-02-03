@@ -2,10 +2,10 @@
 
 import { createAction, io, dialogs, views } from 'mylife-tools-ui';
 import actionTypes from './action-types';
-import { getViewId } from './selectors';
+import { getRunsViewId } from './selectors';
 
 const local = {
-  setView: createAction(actionTypes.SET_VIEW),
+  setRunsView: createAction(actionTypes.SET_RUNS_VIEW),
 };
 
 type FIXME_any = any;
@@ -65,13 +65,13 @@ export const clearBotState = (id: string) => async (dispatch) => {
 
 export const fetchRuns = (botId: string) => views.createOrUpdateView({
   criteriaSelector: () => ({ botId }),
-  viewSelector: getViewId,
-  setViewAction: local.setView,
+  viewSelector: getRunsViewId,
+  setViewAction: local.setRunsView,
   service: 'bots',
   method: 'notifyBotRuns'
 });
 
 export const clearRuns = () => views.deleteView({
-  viewSelector: getViewId,
-  setViewAction: local.setView
+  viewSelector: getRunsViewId,
+  setViewAction: local.setRunsView
 });

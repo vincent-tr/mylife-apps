@@ -2,6 +2,7 @@
 
 import { React, services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
+const metadataDefintions = require('../../shared/metadata');
 
 import { referenceInit } from './reference/actions';
 
@@ -13,6 +14,7 @@ import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
 
 services.initStore(reducers);
+services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },

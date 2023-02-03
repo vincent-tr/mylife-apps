@@ -5,16 +5,16 @@ import actionTypes from './action-types';
 
 export default handleActions({
 
-  [actionTypes.SET_VIEW] : (state, action) => ({
+  [actionTypes.SET_RUNS_VIEW] : (state, action) => ({
     ...state,
-    view: action.payload
+    runsView: action.payload
   }),
 
   [io.actionTypes.SET_ONLINE] : (state) => ({
     ...state,
-    view: null
+    runsView: null
   })
 
 }, {
-  view: null,
+  runsView: null,
 });
