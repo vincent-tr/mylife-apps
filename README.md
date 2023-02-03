@@ -136,18 +136,8 @@ MyLife Applications
   - avoir un apercu des effets d'une regle
     - executer l'apercu sur le group de la regle pour montrer ce qu'elle aurait deplacé
     - executer l'apercu sur les non tries pour montrer ce qu'elle pourra deplacer
-- scraping CIC
-  - cron pour savoir quand le lancer
-  - parametrage du scrapper (compte CIC, compte cible, etc)
-  - pouvoir l'executer en live (pour double auth)
-  - un scraper doit pouvoir sauvegarder son state (cookies)
-  - empecher plusieurs lancement en //
-  - garder et afficher les logs
-  - le scraper CIC garde le dernier fichier telechargé
+- bots
   - tous les mois un robot presente un summary (nombre d'ops non triées, graphiques, etc) par mail, avec le dernier fichier du scraper CIC
-- UX gestion de bots
-  - Popup pour modif
-  - Panneau de droite = runs, logs, lancement a la main
 - scraping PayPal (par scan des mails ou API ?)
 - scraping Amazon (par scan des mails ?)
 - UX
