@@ -144,6 +144,7 @@ MyLife Applications
 - scraping Amazon (par scan des mails ?)
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
+  - sur mobile dans la liste gestion, groupe par date
   - ne pas redimensionner le popup de treeview de groups en fonction du contenu
   - ne pas redimensionner le treeview dans management quand on replie (il devrait avoir une largeur fixe)
 - Saisie de note :
