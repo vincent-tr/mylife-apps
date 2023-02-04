@@ -1,6 +1,7 @@
 import { React, mui, dialogs, useReducer, useMemo, CriteriaField, services } from 'mylife-tools-ui';
 import { NoopConfig, validate as noopValidate } from './config/noop';
 import { CicScraperConfig, validate as cicScraperValidate } from './config/cic-scraper';
+import CronCriteriaField, { validate as cronValidate } from './cron-criteria-field';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
@@ -48,16 +49,7 @@ const DialogContent: React.FunctionComponent<{ bot: Bot; proceed: ProceedCallbac
           </mui.Grid>
 
           <mui.Grid item xs={12}>
-            <CriteriaField label={
-              <>
-                {'Planification '}
-                <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
-                  "cron"
-                </mui.Link>
-              </>
-            }>
-              <mui.TextField value={shownValues.schedule} onChange={e => updateValues({ schedule: e.target.value })} />
-            </CriteriaField>
+            <CronCriteriaField value={shownValues.schedule} onChange={schedule => updateValues({ schedule })} />
           </mui.Grid>
 
           <Config configuration={shownValues.configuration} onChange={configuration => updateValues({ configuration })} />
@@ -115,8 +107,7 @@ function getConfigComponent(type: 'noop' | 'cic-scraper') {
 }
 
 function validate(values: Partial<Bot>) {
-  // TODO: we should better validate schedule
-  if (!values.name || !values.schedule) {
+  if (!values.name || !cronValidate(values.schedule)) {
     return false;
   }
 

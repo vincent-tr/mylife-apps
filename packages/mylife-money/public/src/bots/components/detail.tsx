@@ -1,6 +1,7 @@
 import { React, mui, clsx, CriteriaField } from 'mylife-tools-ui';
 import { NoopConfig, NoopState } from './config/noop';
 import { CicScraperConfig, CicScraperState } from './config/cic-scraper';
+import CronCriteriaField from './cron-criteria-field';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
@@ -20,16 +21,7 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bo
     <div className={clsx(classes.container, className)}>
       <mui.Grid container spacing={2}>
         <mui.Grid item xs={12}>
-          <CriteriaField label={
-            <>
-              {'Planification '}
-              <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
-                "cron"
-              </mui.Link>
-            </>
-          }>
-            <mui.TextField InputProps={{ readOnly: true }} value={bot.schedule} />
-          </CriteriaField>
+          <CronCriteriaField value={bot.schedule} />
         </mui.Grid>
 
         <Config configuration={bot.configuration} />
