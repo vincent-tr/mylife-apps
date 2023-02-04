@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint lib/ public/src/",
     "watch": "mylife-watch",
-    "start": "WEB_PORT=8015 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json",
+    "start": "WEB_PORT=8015 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
     "build:dev": "mylife-build development",
     "build:prod": "mylife-build production",
     "docker-publish-only": "mylife-publish",

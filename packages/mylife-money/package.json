@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint lib/* public/app/*",
     "watch": "mylife-watch",
-    "start": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 node dist/dev/server.js --dev --loglevel=debug --config=./conf/config.json",
+    "start": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
     "build:dev": "mylife-build development",
     "build:prod": "mylife-build production",
     "docker-publish-only": "mylife-publish",
