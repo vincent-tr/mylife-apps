@@ -219,10 +219,12 @@ class BotRun {
 }
 
 function addCron(id: string, cronExpression: string, callback: () => void) {
+  logger.debug(`Adding cron (id='${id}', expression='${cronExpression}')`);
   cron.schedule(cronExpression, callback, { name:  id });
 }
 
 function removeCron(id: string) {
+  logger.debug(`Removing cron (id='${id}')`);
   const tasks = cron.getTasks();
   const task = tasks.get(id);
   task.stop();
