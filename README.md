@@ -142,6 +142,7 @@ MyLife Applications
   - cleanup des runs
 - scraping PayPal (par scan des mails ou API ?)
 - scraping Amazon (par scan des mails ?)
+  - scraping par mail : faire une boite mail dédiée, et faire un routage de tous les mails de "Factures" dans cette boite
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
