@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'report-total-by-month',
   parent: 'base',
   fields: [

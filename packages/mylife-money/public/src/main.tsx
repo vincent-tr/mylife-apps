@@ -2,7 +2,7 @@
 
 import { React, services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
-const metadataDefintions = require('../../shared/metadata');
+import metadataDefintions from '../../shared/metadata';
 
 import { referenceInit } from './reference/actions';
 

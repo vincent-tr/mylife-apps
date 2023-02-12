@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'report-group-by-year',
   parent: 'base',
   fields: [
