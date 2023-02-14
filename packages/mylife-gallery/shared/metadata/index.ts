@@ -1,16 +1,30 @@
-'use strict';
+import datatypes from './datatypes';
 
-exports.datatypes = require('./datatypes');
-exports.entities = [
-  require('./entities/document'),
-  require('./entities/document-with-info'),
-  require('./entities/image'),
-  require('./entities/video'),
-  require('./entities/other'),
-  require('./entities/album'),
-  require('./entities/person'),
-  require('./entities/slideshow'),
-  require('./entities/slideshow-image'),
-  require('./entities/stat'),
-  require('./entities/suggestion'),
-];
+import document from './entities/document';
+import documentWithInfo from './entities/document-with-info';
+import image from './entities/image';
+import video from './entities/video';
+import other from './entities/other';
+import album from './entities/album';
+import person from './entities/person';
+import slideshow from './entities/slideshow';
+import slideshowImage from './entities/slideshow-image';
+import stat from './entities/stat';
+import suggestion from './entities/suggestion';
+
+export default {
+  datatypes,
+  entities: [
+    document,
+    documentWithInfo,
+    image,
+    video,
+    other,
+    album,
+    person,
+    slideshow,
+    slideshowImage,
+    stat,
+    suggestion,
+  ]
+};

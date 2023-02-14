@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'slideshow-image',
   parent: 'base',
   name: 'Image de diaporama',

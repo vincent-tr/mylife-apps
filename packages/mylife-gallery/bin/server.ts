@@ -5,7 +5,7 @@ require('../src/index-service');
 const { runServices, getArg } = require('mylife-tools-server');
 const { webApiFactory } = require('../src/web');
 const { apiServices } = require('../src/api');
-const metadataDefintions = require('../shared/metadata');
+import metadataDefintions from '../shared/metadata';
 const storeConfiguration = require('../src/store-configuration');
 require('../src/sync');
 

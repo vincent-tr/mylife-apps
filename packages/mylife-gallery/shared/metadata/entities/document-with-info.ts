@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'document-with-info',
   parent: 'base',
   name: 'Document avec inf',

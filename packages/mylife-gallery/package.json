@@ -4,14 +4,17 @@
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint lib/ public/src/",
-    "watch": "mylife-watch",
-    "start-web": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --web",
-    "start-sync": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --sync",
-    "build:dev": "mylife-build development",
-    "build:prod": "mylife-build production",
+    "ui-tsc:watch": "mylife-ui-watch-tsc",
+    "ui-vite:watch": "VITE_WEB_PORT=8012 VITE_WSTARGET_PORT=8112 mylife-ui-watch-vite",
+    "server:watch": "mylife-server-watch",
+    "lint": "eslint lib/* public/app/*",
+    "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8112 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --web",
+    "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8112 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --sync",
+    "start-web:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/prod/server.js --loglevel=debug --config=./conf/config.json --web",
+    "start-sync:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/prod/server.js --loglevel=debug --config=./conf/config.json --sync",
+    "build:prod": "mylife-ui-build && mylife-server-build",
     "docker-publish-only": "mylife-publish",
-    "docker-publish": "mylife-build production && mylife-publish"
+    "docker-publish": "mylife-ui-build && mylife-server-build && mylife-publish"
   },
   "repository": {
     "type": "git",
