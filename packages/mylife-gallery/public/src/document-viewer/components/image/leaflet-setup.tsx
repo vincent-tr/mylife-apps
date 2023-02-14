@@ -1,4 +1,4 @@
-'use strict';
+// @ts-nocheck
 
 import 'leaflet/dist/leaflet.css';
 // https://github.com/PaulLeCam/react-leaflet/issues/453
