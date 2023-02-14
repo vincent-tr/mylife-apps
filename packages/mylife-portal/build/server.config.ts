@@ -1,9 +1,9 @@
 import path from 'path';
-import { prepare, createServerConfig, CopyPlugin, createWarningFilter, DEFAULT_WARNING_FILTERS } from 'mylife-tools-build/webpack.config';
+import { prepare, createConfig, CopyPlugin, createWarningFilter, DEFAULT_WARNING_FILTERS } from 'mylife-tools-build/server';
 
 export default (env: Record<string, any>, argv: Record<string, any>) => {
   const { baseDirectory, dev } = prepare(env, argv);
-  const config = createServerConfig(baseDirectory, dev);
+  const config = createConfig(baseDirectory, dev);
 
   config.plugins = config.plugins || [];
   config.plugins.push(new CopyPlugin({
