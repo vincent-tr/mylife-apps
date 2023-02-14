@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'nagios-host-group',
   parent: 'base',
   name: 'Groupe d\'hôtes nagios',

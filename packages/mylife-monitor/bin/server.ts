@@ -4,7 +4,7 @@ require('../src/init');
 require('../src/nagios-service');
 const { runServices } = require('mylife-tools-server');
 const { apiServices } = require('../src/api');
-const metadataDefintions = require('../shared/metadata');
+import metadataDefintions from '../shared/metadata';
 
 const services = ['nagios-service', 'web-server', 'notification-service'];
 const parameters = { apiServices, metadataDefintions };
