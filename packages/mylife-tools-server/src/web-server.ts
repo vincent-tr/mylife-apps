@@ -38,16 +38,26 @@ async function setupServer({ config = getConfig('webServer'), webApiFactory }) {
   app.use(bodyParser.json({ limit: '100mb' }));
 
   const publicDirectory = path.resolve(getDefine('baseDirectory'), 'static');
+  const hasPublicDirectory = fs.existsSync(publicDirectory);
 
-  logger.info(`using public directoy : ${publicDirectory}`);
+  if (hasPublicDirectory) {
+    logger.info(`using public directoy : ${publicDirectory}`);
+  } else {
+    logger.warn(`Public directory '${publicDirectory}' does not exist, static content not served`);
+  }
 
-  app.use(favicon(path.resolve(publicDirectory, 'images/favicon.ico')));
+  if (hasPublicDirectory) {
+    app.use(favicon(path.join(publicDirectory, 'favicon.ico')));
+  }
+
   if (webApiFactory) {
     await webApiFactory({ app, express, asyncHandler, webApiHandler });
   }
-  app.use(express.static(publicDirectory));
 
-  app.use(historyApiFallback(publicDirectory));
+  if (hasPublicDirectory) {
+    app.use(express.static(publicDirectory));
+    app.use(historyApiFallback(publicDirectory));
+  }
 
   const server = http.createServer(app);
   enableDestroy(server);
