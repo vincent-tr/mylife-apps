@@ -5,9 +5,12 @@
   "private": true,
   "main": "lib/index.js",
   "bin": {
-    "mylife-build": "./bin/build.sh",
-    "mylife-publish": "./bin/publish.sh",
-    "mylife-watch": "./bin/watch.sh"
+    "mylife-ui-watch-tsc": "./bin/ui-watch-tsc.sh",
+    "mylife-ui-watch-vite": "./bin/ui-watch-vite.sh",
+    "mylife-ui-build": "./bin/ui-build.sh",
+    "mylife-server-watch": "./bin/server-watch.sh",
+    "mylife-server-build": "./bin/server-build.sh",
+    "mylife-publish": "./bin/publish.sh"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -46,6 +49,7 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-middleware": "^5.3.3",
     "webpack-hot-middleware": "^2.25.1",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "vite": "^4.1.1"
   }
 }
