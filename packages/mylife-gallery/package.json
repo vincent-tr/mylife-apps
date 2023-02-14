@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "ui-tsc:watch": "mylife-ui-watch-tsc",
-    "ui-vite:watch": "VITE_WEB_PORT=8012 VITE_WSTARGET_PORT=8112 mylife-ui-watch-vite",
+    "ui-vite:watch": "VITE_WEB_PORT=8012 VITE_WSTARGET_PORT=8112 VITE_DEDUPE=true mylife-ui-watch-vite",
     "server:watch": "mylife-server-watch",
     "lint": "eslint lib/* public/app/*",
     "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8112 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --web",
     "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8112 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --sync",
     "start-web:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/prod/server.js --loglevel=debug --config=./conf/config.json --web",
     "start-sync:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/prod/server.js --loglevel=debug --config=./conf/config.json --sync",
-    "build:prod": "mylife-ui-build && mylife-server-build",
+    "build:prod": "VITE_DEDUPE=true mylife-ui-build && mylife-server-build",
     "docker-publish-only": "mylife-publish",
     "docker-publish": "mylife-ui-build && mylife-server-build && mylife-publish"
   },

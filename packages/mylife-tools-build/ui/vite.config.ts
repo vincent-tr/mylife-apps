@@ -1,11 +1,11 @@
 import path from 'path';
 import fs from 'fs';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, UserConfigExport } from 'vite';
 
 export default defineConfig(({ command, mode }) => {
-  const { VITE_WEB_PORT, VITE_WSTARGET_PORT } = loadEnv(mode, process.cwd(), '');
+  const { VITE_WEB_PORT, VITE_WSTARGET_PORT, VITE_DEDUPE } = loadEnv(mode, process.cwd(), '');
   
-  return {
+  const config: UserConfigExport = {
     root: 'public',
     publicDir: 'images',
     server: {
@@ -29,10 +29,17 @@ export default defineConfig(({ command, mode }) => {
       }
     },
     plugins: [ fixReactVirtualized() ],
-    resolve: {
-      dedupe: ['react', 'react-dom']
-    }
   };
+
+  // Note: seems it only is needed for gallery (react-leaflet has react as peer dep)
+  // and it is also NOT working for all other ui repos
+  if (VITE_DEDUPE === 'true') {
+    config.resolve = {
+      dedupe: ['react', 'react-dom']
+    };
+  }
+
+  return config;
 });
 
 // https://github.com/uber/baseweb/issues/4129
