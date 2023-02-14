@@ -6,13 +6,15 @@
   "repository": "https://github.com/vincent-tr/mylife-money",
   "author": "Vincent Trumpff",
   "scripts": {
+    "ui-tsc:watch": "mylife-ui-watch-tsc",
+    "ui-vite:watch": "VITE_WEB_PORT=8003 VITE_WSTARGET_PORT=8103 mylife-ui-watch-vite",
+    "server:watch": "mylife-server-watch",
     "lint": "eslint lib/* public/app/*",
-    "watch": "mylife-watch",
-    "start": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
-    "build:dev": "mylife-build development",
-    "build:prod": "mylife-build production",
+    "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8103 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
+    "start:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-money} WEB_PORT=8003 node dist/prod/server.js --loglevel=debug --config=./conf/config.json",
+    "build:prod": "mylife-ui-build && mylife-server-build",
     "docker-publish-only": "mylife-publish",
-    "docker-publish": "mylife-build production && mylife-publish"
+    "docker-publish": "mylife-ui-build && mylife-server-build && mylife-publish"
   },
   "dependencies": {
     "axios": "^1.2.2",
