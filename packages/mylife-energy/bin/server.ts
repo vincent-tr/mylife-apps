@@ -2,7 +2,7 @@ import 'source-map-support/register';
 
 require('../src/init');
 const { runServices, getArg } = require('mylife-tools-server');
-const metadataDefintions = require('../src/metadata');
+import metadataDefintions from '../src/metadata';
 const storeConfiguration = require('../src/store-configuration');
 require('../src/energy-collector');
 

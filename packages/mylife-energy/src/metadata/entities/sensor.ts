@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'sensor',
   parent: 'base',
   name: 'Sensor',
