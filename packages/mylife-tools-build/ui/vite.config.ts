@@ -1,7 +1,6 @@
-import { defineConfig, loadEnv } from 'vite';
 import path from 'path';
 import fs from 'fs';
-
+import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ command, mode }) => {
   const { VITE_WEB_PORT, VITE_WSTARGET_PORT } = loadEnv(mode, process.cwd(), '');
@@ -29,7 +28,10 @@ export default defineConfig(({ command, mode }) => {
         treeshake: false 
       }
     },
-    plugins: [ fixReactVirtualized() ]
+    plugins: [ fixReactVirtualized() ],
+    resolve: {
+      dedupe: ['react', 'react-dom']
+    }
   };
 });
 
@@ -44,24 +46,15 @@ function fixReactVirtualized() {
   }
 
   function fix(relPath) {
-    const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
-
-    const absPath = path.join(process.cwd(), relPath);
+    const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`
+    const absPath = path.join(path.resolve(process.cwd()), relPath, 'dist/es/WindowScroller/utils/onScroll.js');
+    
     if (!fs.existsSync(absPath)) {
       return;
     }
 
-    const file = require
-    .resolve(absPath)
-    .replace(
-      path.join('dist', 'commonjs', 'index.js'),
-      path.join('dist', 'es', 'WindowScroller', 'utils', 'onScroll.js'),
-    );
-
-    const code = fs.readFileSync(file, 'utf-8');
+    const code = fs.readFileSync(absPath, 'utf-8');
     const modified = code.replace(WRONG_CODE, '');
-    fs.writeFileSync(file, modified);
-
-    // console.log(`my:react-virtualized: fixed '${file}'`);
+    fs.writeFileSync(absPath, modified);
   }
 }
