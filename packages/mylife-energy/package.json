@@ -7,12 +7,11 @@
   "author": "Vincent Trumpff",
   "scripts": {
     "lint": "eslint lib/* public/app/*",
-    "watch": "mylife-watch",
-    "start-collector": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_SERVER=${BUS_SERVER:-tcp://rpi-dev-home-main} node dist/dev/server.js --loglevel=debug --config=./conf/config.json --collector",
-    "build:dev": "mylife-build development",
-    "build:prod": "mylife-build production",
+    "server:watch": "mylife-server-watch",
+    "start-collector:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_SERVER=${BUS_SERVER:-tcp://rpi-dev-home-main} node dist/dev/server.js --loglevel=debug --config=./conf/config.json --collector",
+    "build:prod": "mylife-server-build",
     "docker-publish-only": "mylife-publish",
-    "docker-publish": "mylife-build production && mylife-publish"
+    "docker-publish": "mylife-server-build && mylife-publish"
   },
   "dependencies": {
     "async-mqtt": "^2.6.0",
