@@ -29,24 +29,39 @@ export default defineConfig(({ command, mode }) => {
         treeshake: false 
       }
     },
-    plugins: [ reactVirtualized() ]
+    plugins: [ fixReactVirtualized() ]
   };
 });
 
-const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
-function reactVirtualized() {
+// https://github.com/uber/baseweb/issues/4129
+function fixReactVirtualized() {
   return {
     name: 'my:react-virtualized',
     configResolved() {
-      const file = require
-        .resolve('../../mylife-tools-ui/node_modules/react-virtualized')
-        .replace(
-          path.join('dist', 'commonjs', 'index.js'),
-          path.join('dist', 'es', 'WindowScroller', 'utils', 'onScroll.js'),
-        );
-      const code = fs.readFileSync(file, 'utf-8');
-      const modified = code.replace(WRONG_CODE, '');
-      fs.writeFileSync(file, modified);
+      fix('../mylife-tools-ui/node_modules/react-virtualized');
+      fix('node_modules/react-virtualized');
     },
+  }
+
+  function fix(relPath) {
+    const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
+
+    const absPath = path.join(process.cwd(), relPath);
+    if (!fs.existsSync(absPath)) {
+      return;
+    }
+
+    const file = require
+    .resolve(absPath)
+    .replace(
+      path.join('dist', 'commonjs', 'index.js'),
+      path.join('dist', 'es', 'WindowScroller', 'utils', 'onScroll.js'),
+    );
+
+    const code = fs.readFileSync(file, 'utf-8');
+    const modified = code.replace(WRONG_CODE, '');
+    fs.writeFileSync(file, modified);
+
+    // console.log(`my:react-virtualized: fixed '${file}'`);
   }
 }
