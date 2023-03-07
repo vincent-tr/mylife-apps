@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'report-operation-stat',
   parent: 'base',
   fields: [

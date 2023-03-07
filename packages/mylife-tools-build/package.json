@@ -1,13 +1,16 @@
 {
   "name": "mylife-tools-build",
-  "version": "1.3.3",
+  "version": "2.0.0",
   "description": "MyLife Tools Build",
   "private": true,
   "main": "lib/index.js",
   "bin": {
-    "mylife-build": "./bin/build.sh",
-    "mylife-publish": "./bin/publish.sh",
-    "mylife-watch": "./bin/watch.sh"
+    "mylife-ui-watch-tsc": "./bin/ui-watch-tsc.sh",
+    "mylife-ui-watch-vite": "./bin/ui-watch-vite.sh",
+    "mylife-ui-build": "./bin/ui-build.sh",
+    "mylife-server-watch": "./bin/server-watch.sh",
+    "mylife-server-build": "./bin/server-build.sh",
+    "mylife-publish": "./bin/publish.sh"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -41,6 +44,7 @@
     "ts-loader": "^9.3.1",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
+    "vite": "^4.1.1",
     "webpack": "^5.73.0",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.10.0",

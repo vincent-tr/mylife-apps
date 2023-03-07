@@ -1,17 +1,20 @@
 {
   "name": "mylife-gallery",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "MyLife photo gallery",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint lib/ public/src/",
-    "watch": "mylife-watch",
-    "start-web": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --web",
-    "start-sync": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --sync",
-    "build:dev": "mylife-build development",
-    "build:prod": "mylife-build production",
+    "ui-tsc:watch": "mylife-ui-watch-tsc",
+    "ui-vite:watch": "VITE_WEB_PORT=8012 VITE_WSTARGET_PORT=8112 VITE_DEDUPE=true mylife-ui-watch-vite",
+    "server:watch": "mylife-server-watch",
+    "lint": "eslint lib/* public/app/*",
+    "start-web:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8112 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --web",
+    "start-sync:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8112 node dist/dev/server.js --loglevel=debug --config=./conf/config.json --sync",
+    "start-web:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/prod/server.js --loglevel=debug --config=./conf/config.json --web",
+    "start-sync:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-gallery} GALLERY_PATH=${GALLERY_PATH:-/mnt/files-share/Photos} WEB_PORT=8012 node dist/prod/server.js --loglevel=debug --config=./conf/config.json --sync",
+    "build:prod": "VITE_DEDUPE=true mylife-ui-build && mylife-server-build",
     "docker-publish-only": "mylife-publish",
-    "docker-publish": "mylife-build production && mylife-publish"
+    "docker-publish": "mylife-ui-build && mylife-server-build && mylife-publish"
   },
   "repository": {
     "type": "git",
@@ -31,20 +34,21 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^10.1.0",
     "jimp": "^0.16.1",
-    "mylife-tools-common": "^1.1.1",
-    "mylife-tools-server": "^1.1.3"
+    "mylife-tools-common": "^1.1.2",
+    "mylife-tools-server": "^1.1.4"
   },
   "devDependencies": {
     "@types/ffmpeg-static": "^3.0.1",
     "@types/ffprobe-static": "^2.0.1",
     "@types/fluent-ffmpeg": "^2.1.20",
+    "@types/geojson": "^7946.0.10",
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
     "humanize": "0.0.9",
     "humanize-duration": "^3.27.2",
     "leaflet": "^1.8.0",
-    "mylife-tools-build": "^1.3.3",
-    "mylife-tools-ui": "^1.1.3",
+    "mylife-tools-build": "^2.0.0",
+    "mylife-tools-ui": "^1.1.4",
     "react-leaflet": "^4.0.0",
     "react-sortable-hoc": "^2.0.0"
   }

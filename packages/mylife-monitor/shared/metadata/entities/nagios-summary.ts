@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
   id: 'nagios-summary',
   parent: 'base',
   name: 'Résume Nagios',

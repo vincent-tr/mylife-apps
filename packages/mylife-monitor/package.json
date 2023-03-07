@@ -1,16 +1,18 @@
 {
   "name": "mylife-monitor",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "MyLife Monitor",
   "main": "index.js",
   "scripts": {
+    "ui-tsc:watch": "mylife-ui-watch-tsc",
+    "ui-vite:watch": "VITE_WEB_PORT=8015 VITE_WSTARGET_PORT=8115 mylife-ui-watch-vite",
+    "server:watch": "mylife-server-watch",
     "lint": "eslint lib/ public/src/",
-    "watch": "mylife-watch",
-    "start": "WEB_PORT=8015 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
-    "build:dev": "mylife-build development",
-    "build:prod": "mylife-build production",
+    "start:dev": "WEB_PORT=8115 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
+    "start:prod": "WEB_PORT=8015 node dist/prod/server.js --loglevel=debug --config=./conf/config.json",
+    "build:prod": "mylife-ui-build && mylife-server-build",
     "docker-publish-only": "mylife-publish",
-    "docker-publish": "mylife-build production && mylife-publish"
+    "docker-publish": "mylife-ui-build && mylife-server-build && mylife-publish"
   },
   "repository": {
     "type": "git",
@@ -26,11 +28,11 @@
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
     "humanize-duration": "^3.27.2",
-    "mylife-tools-build": "^1.3.3",
-    "mylife-tools-ui": "^1.1.3"
+    "mylife-tools-build": "^2.0.0",
+    "mylife-tools-ui": "^1.1.4"
   },
   "dependencies": {
-    "mylife-tools-server": "^1.1.3",
+    "mylife-tools-server": "^1.1.4",
     "node-fetch": "^3.2.6"
   }
 }

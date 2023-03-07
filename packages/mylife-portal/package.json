@@ -1,16 +1,16 @@
 {
   "name": "mylife-portal",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "MyLife Portal",
   "main": "index.js",
   "scripts": {
+    "server:watch": "mylife-server-watch",
     "lint": "eslint lib/*",
-    "watch": "mylife-watch",
-    "start": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8015 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
-    "build:dev": "mylife-build development",
-    "build:prod": "mylife-build production",
+    "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8016 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
+    "start:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8016 node dist/prod/server.js --loglevel=debug --config=./conf/config.json",
+    "build:prod": "mylife-server-build",
     "docker-publish-only": "mylife-publish",
-    "docker-publish": "mylife-build production && mylife-publish"
+    "docker-publish": "mylife-server-build && mylife-publish"
   },
   "repository": {
     "type": "git",
@@ -26,12 +26,12 @@
     "bootstrap": "^3.3.7",
     "handlebars": "^4.7.7",
     "jquery": "^3.6.0",
-    "mylife-tools-server": "^1.1.3",
+    "mylife-tools-server": "^1.1.4",
     "node-fetch": "^3.2.6"
   },
   "devDependencies": {
     "eslint": "^8.18.0",
-    "mylife-tools-build": "^1.3.3"
+    "mylife-tools-build": "^2.0.0"
   },
   "peerDependencies": {
     "express": "*",

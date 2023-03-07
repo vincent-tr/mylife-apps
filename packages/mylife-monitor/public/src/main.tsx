@@ -2,7 +2,7 @@
 
 import { React, services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
-const metadataDefintions = require('../../shared/metadata');
+import metadataDefintions from '../../shared/metadata';
 
 import icons from './common/icons';
 import Home from './home/components';

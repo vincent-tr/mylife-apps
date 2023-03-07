@@ -1,6 +1,8 @@
-'use strict';
+import sensor from'./entities/sensor';
 
-exports.datatypes = [];
-exports.entities = [
-  require('./entities/sensor'),
-];
+export default {
+  datatypes: [],
+  entities: [
+    sensor,
+  ]
+};

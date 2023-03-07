@@ -1,9 +1,16 @@
-'use strict';
+import datatypes from './datatypes';
 
-exports.datatypes = require('./datatypes');
-exports.entities = [
-  require('./entities/nagios-host-group'),
-  require('./entities/nagios-host'),
-  require('./entities/nagios-service'),
-  require('./entities/nagios-summary'),
-];
+import nagiosHostGroup from './entities/nagios-host-group';
+import nagiosHost from './entities/nagios-host';
+import nagiosService from './entities/nagios-service';
+import nagiosSummary from './entities/nagios-summary';
+
+export default {
+  datatypes,
+  entities: [
+    nagiosHostGroup,
+    nagiosHost,
+    nagiosService,
+    nagiosSummary,
+  ]
+};

@@ -1,8 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import CopyPlugin from 'copy-webpack-plugin';
-import createUiConfig from './ui';
-import createServerConfig, { createWarningFilter, DEFAULT_WARNING_FILTERS } from './server';
+import createConfig, { createWarningFilter, DEFAULT_WARNING_FILTERS } from './config';
 
 type CreateConfig = (env: Record<string, any>, argv: Record<string, any>) => Promise<webpack.Configuration | webpack.Configuration[]>;
 
@@ -13,7 +12,7 @@ export default async (env: Record<string, any>, argv: Record<string, any>) => {
 
 async function loadCreateConfig(): Promise<CreateConfig> {
   try {
-    const { default: customBuild } = await import(path.join(process.cwd(), 'build/webpack.config'));
+    const { default: customBuild } = await import(path.join(process.cwd(), 'build/server.config'));
     console.log('Using custom build');
     return customBuild;
   } catch(err) {
@@ -25,15 +24,12 @@ async function loadCreateConfig(): Promise<CreateConfig> {
 async function defaultBuild(env: Record<string, any>, argv: Record<string, any>) {
   const { baseDirectory, dev } = prepare(env, argv);
 
-  return [
-    createUiConfig(baseDirectory, dev),
-    createServerConfig(baseDirectory, dev),
-  ];
+  return createConfig(baseDirectory, dev);
 }
 
 // export for build customization
 
-export { createUiConfig, createServerConfig };
+export { createConfig };
 
 export function prepare(env: Record<string, any>, argv: Record<string, any>) {
   const baseDirectory = process.cwd();
