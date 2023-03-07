@@ -159,3 +159,7 @@ MyLife Applications
 ## Portal
 
 - bootstrap 3 -> 5
+
+## Explorer
+
+- Bug sur affichage fichier texte ou json
