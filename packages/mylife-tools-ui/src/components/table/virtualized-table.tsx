@@ -31,24 +31,27 @@ const useStyles = makeStyles(theme => ({
 
 type FIXME_any = any;
 
-interface VirtualizedTableProps {
+export interface VirtualizedTableProps {
   data: FIXME_any[];
   rowClassName?: string | ((row, index: number) => string);
 
-  columns: {
-    dataKey: string;
-    cellRenderer?: string | React.ReactNode | ((cellData, dataKey) => string) | ((cellData, dataKey) => React.ReactNode);
-    cellClassName?: string | ((cellData, dataKey) => string);
-    headerRenderer: string | React.ReactNode | ((dataKey) => string) | ((dataKey) => React.ReactNode);
-    headerClassName?: string | ((dataKey) => string);
-    cellProps?;
-    headerProps?;
-    width?;
-  }[];
+  columns: VirtualizedTableColumn[];
 
   rowHeight?: number;
   headerHeight?: number;
   onRowClick?: (rowData, rowIndex: number) => void;
+}
+
+export interface VirtualizedTableColumn {
+  dataKey: string;
+  cellDataGetter?;
+  cellRenderer?: string | React.ReactNode | ((cellData, dataKey) => string) | ((cellData, dataKey) => React.ReactNode);
+  cellClassName?: string | ((cellData, dataKey) => string);
+  headerRenderer: string | React.ReactNode | ((dataKey) => string) | ((dataKey) => React.ReactNode);
+  headerClassName?: string | ((dataKey) => string);
+  cellProps?;
+  headerProps?;
+  width?;
 }
 
 const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, columns, rowClassName, headerHeight, rowHeight, onRowClick, ...props }) => {
