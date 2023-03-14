@@ -1,26 +1,24 @@
-'use strict';
-
 import { useEffect, useState, useRef } from 'react';
 
 const WAIT_INTERVAL = 300;
 
-class Debounce {
+class Debounce<T> {
   private timer: NodeJS.Timeout;
 
-  constructor(private readonly callback, private readonly waitInterval) {
+  constructor(private readonly callback: (args: T) => void, private readonly waitInterval: number) {
     this.timer = null;
   }
 
-  call(args) {
+  call(args: T) {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => this.doCall(args), this.waitInterval);
   }
 
-  forceCall(args) {
+  forceCall(args: T) {
     this.doCall(args);
   }
 
-  private doCall(args) {
+  private doCall(args: T) {
     this.reset();
     this.callback(args);
   }
@@ -31,7 +29,7 @@ class Debounce {
   }
 }
 
-export function useDebounced(value, onChange, waitInterval = WAIT_INTERVAL) {
+export function useDebounced<T>(value: T, onChange, waitInterval = WAIT_INTERVAL) {
 
   const debounceRef = useRef(new Debounce(value => onChange(value), waitInterval));
   useEffect(() => () => debounceRef.current.reset(), []);
@@ -44,7 +42,7 @@ export function useDebounced(value, onChange, waitInterval = WAIT_INTERVAL) {
 
 
 
-  const componentChange = newValue => {
+  const componentChange = (newValue: T) => {
     setStateValue(newValue);
     debounceRef.current.call(newValue);
   };
