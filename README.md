@@ -148,9 +148,9 @@ MyLife Applications
   - sur mobile dans la liste gestion, groupe par date
   - ne pas redimensionner le popup de treeview de groups en fonction du contenu
   - ne pas redimensionner le treeview dans management quand on replie (il devrait avoir une largeur fixe)
+  - pas de notes dans la liste ?
 - Saisie de note :
   - le debounce est pourri
-  - permettre plusieurs lignes (voir comment afficher dans la liste, eg : 1iere ligne + ..., et détails en tooltip ?)
   - permettre de créer des hyperlinks dans les notes
   - rich text/MD ?
 - Permettre d'ajouter des notes sur les groupes (et les voir en tooltips)
