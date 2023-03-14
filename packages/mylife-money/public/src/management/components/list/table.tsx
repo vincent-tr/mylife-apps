@@ -1,6 +1,6 @@
 'use strict';
 
-import { React, mui, VirtualizedTable, useScreenPhone } from 'mylife-tools-ui';
+import { React, mui, VirtualizedTable, useScreenPhone, addLineBreaks, VirtualizedTableColumn } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 
 const Table = (props) => {
@@ -28,7 +28,27 @@ const Table = (props) => {
       onClick={e => e.stopPropagation()}/>
   );
 
-  const columns = [
+  const noteRenderer = (value: any) => {
+    const safeValue = value as string || '';
+    const lines = safeValue.split('\n');
+    if (lines.length > 1) {
+      return (
+        <mui.Tooltip title={addLineBreaks(safeValue)}>
+          <div>
+            {lines[0]} ...
+          </div>
+        </mui.Tooltip>
+      );
+    } else {
+      return (
+        <>
+          {value}
+        </>
+      );
+    }
+  };
+
+  const columns: VirtualizedTableColumn[] = [
     { dataKey: 'checkbox', width: isPhone ? 60 : 80, headerRenderer: headerCheckbox, cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellCheckbox },
     //{ dataKey: 'account', width: 150, headerRenderer: 'Compte', cellDataGetter: ({ rowData }) => rowData.account && rowData.account.display },
     { dataKey: 'amount', width: 80, headerRenderer: 'Montant', cellDataGetter: ({ rowData }) => rowData.operation.amount, cellClassName: value => value < 0 ? classes.amountDebit : classes.amountCredit },
@@ -36,7 +56,7 @@ const Table = (props) => {
     { dataKey: 'label', headerRenderer: 'Libellé', cellDataGetter: ({ rowData }) => rowData.operation.label }
   ];
   if(!isPhone) {
-    columns.push({ dataKey: 'note', headerRenderer: 'Note', cellDataGetter: ({ rowData }) => rowData.operation.note });
+    columns.push({ dataKey: 'note', headerRenderer: 'Note', cellDataGetter: ({ rowData }) => rowData.operation.note, cellRenderer: noteRenderer });
   }
 
   return (

@@ -4,18 +4,20 @@ import { React, mui, PropTypes } from 'mylife-tools-ui';
 
 const { makeStyles } = mui;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
-    height: 64,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'baseline',
   },
   label: {
     width: 100
   },
   content: {
+    flex: '1 1 auto'
   },
-});
+}));
 
 const Row = ({ label, children }) => {
   const classes = useStyles();

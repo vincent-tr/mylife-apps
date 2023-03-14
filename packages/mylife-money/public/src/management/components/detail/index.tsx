@@ -70,7 +70,7 @@ const DetailContainer = ({ className }) => {
         </Row>
 
         <Row label='Notes'>
-          <DebouncedTextField value={operation.note} onChange={onSetNote} fullWidth />
+          <DebouncedTextField value={operation.note} onChange={onSetNote} fullWidth multiline minRows={5} maxRows={5}/>
         </Row>
 
         <Row label='Groupe'>
