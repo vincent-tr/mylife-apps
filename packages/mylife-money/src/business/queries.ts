@@ -1,9 +1,7 @@
 'use strict';
 
-const { notifyView, getNotifiedView } = require('mylife-tools-server');
+const { notifyView, getNotifiedView, getStoreMaterializedView } = require('mylife-tools-server');
 const { OperationView } = require('./views/operation-view');
-const { OperationStats } = require('./views/operation-stats');
-const { TotalByMonth } = require('./views/total-by-month');
 const { GroupByMonth } = require('./views/group-by-month');
 const { GroupByYear } = require('./views/group-by-year');
 
@@ -19,12 +17,12 @@ export function notifyOperations(session, criteria) {
 }
 
 export function notifyOperationStats(session) {
-  const view = new OperationStats();
+  const view = getStoreMaterializedView('operation-stats').createView();
   return notifyView(session, view);
 }
 
 export function notifyTotalByMonth(session) {
-  const view = new TotalByMonth();
+  const view = getStoreMaterializedView('total-by-month').createView();
   return notifyView(session, view);
 }
 

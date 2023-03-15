@@ -1,16 +1,14 @@
-import { Collection } from './collection';
 import { Container } from './container';
 
 export class View extends Container {
-  private changeCallback;
   private filterCallback;
 
-  constructor(private readonly collection: Collection) {
-    super(`view on ${collection.name}`);
+  constructor(private readonly source: Container) {
+    super(`view on ${source.name}`);
 
-    this.changeCallback = event => this.onCollectionChange(event);
-    this.collection.on('change', this.changeCallback);
+    this.source.on('change', this.onSourceChange);
   }
+
 
   setFilter(filterCallback) {
     this.filterCallback = filterCallback;
@@ -18,12 +16,12 @@ export class View extends Container {
   }
 
   refresh() {
-    for(const object of this.collection.list()) {
-      this.onCollectionChange({ type: 'update', before: object, after: object });
+    for(const object of this.source.list()) {
+      this.onSourceChange({ type: 'update', before: object, after: object });
     }
   }
 
-  private onCollectionChange({ before, after, type }) {
+  private readonly onSourceChange = ({ before, after, type }) => {
     switch(type) {
       case 'create': {
         if(this.filterCallback(after)) {
@@ -50,10 +48,10 @@ export class View extends Container {
       default:
         throw new Error(`Unsupported event type: '${type}'`);
     }
-  }
+  };
 
   close() {
-    this.collection.off('change', this.changeCallback);
+    this.source.off('change', this.onSourceChange);
     this._reset();
   }
 };

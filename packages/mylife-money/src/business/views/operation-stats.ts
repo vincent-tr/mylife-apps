@@ -1,46 +1,37 @@
 'use strict';
 
-const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const { StoreMaterializedView, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 
-export class OperationStats extends StoreContainer {
+export class OperationStats extends StoreMaterializedView {
   private readonly collection;
-  private readonly changeCallback;
   private readonly countId: string;
   private readonly lastDateId: string;
   private readonly unsortedCountId: string;
-  private readonly entity;
 
   constructor() {
-    super();
+    super('operation-stats', getMetadataEntity('report-operation-stat'));
     this.collection = getStoreCollection('operations');
-
-    this.changeCallback = () => this.onCollectionChange();
-    this.collection.on('change', this.changeCallback);
+    this.collection.on('change', this.onCollectionChange);
 
     this.countId = this.collection.newId();
     this.lastDateId = this.collection.newId();
     this.unsortedCountId = this.collection.newId();
-    this.entity = getMetadataEntity('report-operation-stat');
 
     this.onCollectionChange();
   }
 
-  refresh() {
-    this.onCollectionChange();
-  }
-
-  private onCollectionChange() {
+  private readonly onCollectionChange = () => {
     this.setObject({ _id: this.countId, code: 'count', value: this.collection.size });
     this.setObject({ _id: this.lastDateId, code: 'lastDate', value: findLastDate(this.collection.list()) });
     this.setObject({ _id: this.unsortedCountId, code: 'unsortedCount', value: computeUnsortedCount(this.collection.list()) });
-  }
+  };
 
   private setObject(values) {
     this._set(this.entity.newObject(values));
   }
 
   close() {
-    this.collection.off('change', this.changeCallback);
+    this.collection.off('change', this.onCollectionChange);
     this._reset();
   }
 }

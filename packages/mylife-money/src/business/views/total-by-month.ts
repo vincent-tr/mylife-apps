@@ -1,30 +1,25 @@
 'use strict';
 
-const { StoreContainer, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
+const { StoreMaterializedView, getStoreCollection, getMetadataEntity } = require('mylife-tools-server');
 const { dateToMonth, roundCurrency, monthRange } = require('./tools');
 
-export class TotalByMonth extends StoreContainer {
+export class TotalByMonth extends StoreMaterializedView {
+  private readonly collection;
+  private readonly skeletons;
+
   constructor() {
-    super();
+    super('total-by-month', getMetadataEntity('report-total-by-month'));
     this.collection = getStoreCollection('operations');
+    this.collection.on('change', this.onCollectionChange);
 
-    this._changeCallback = () => this._onCollectionChange();
-    this.collection.on('change', this._changeCallback);
+    this.skeletons = createSkeletons();
 
-    this._skeletons = createSkeletons();
-    this._lastDateId = this.collection.newId();
-    this.entity = getMetadataEntity('report-total-by-month');
-
-    this._onCollectionChange();
+    this.onCollectionChange();
   }
 
-  refresh() {
-    this._onCollectionChange();
-  }
-
-  _onCollectionChange() {
+  private readonly onCollectionChange = () => {
     const objects = new Map();
-    for(const skeleton of this._skeletons) {
+    for(const skeleton of this.skeletons) {
       const object = { ... skeleton };
       objects.set(object.month, skeleton);
     }
@@ -48,10 +43,10 @@ export class TotalByMonth extends StoreContainer {
 
       this._set(this.entity.newObject(object));
     }
-  }
+  };
 
   close() {
-    this.collection.off('change', this._changeCallback);
+    this.collection.off('change', this.onCollectionChange);
     this._reset();
   }
 }

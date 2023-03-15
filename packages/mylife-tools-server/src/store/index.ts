@@ -3,9 +3,12 @@ import { registerService, getService, fatal } from '../service-manager';
 import { Container, Event } from './container';
 import { Collection } from './collection';
 import { View } from './view';
+import { MaterializedView } from './materialized-view';
 import { deserializeObject, serializeObject, serializeObjectId, deserializeObjectId } from './serializer';
 
 const logger = createLogger('mylife:tools:server:store');
+
+type FIXME_any = any;
 
 async function bindCollection(collection) {
   logger.info(
@@ -130,6 +133,7 @@ async function databaseUpdate(collection, { before, after, type }) {
 
 class Store {
   private readonly collections = new Map<string, Collection>();
+  private readonly materializedViews = new Map<string, FIXME_any>();
 
   async init({ storeConfiguration }) {
     if (!storeConfiguration) {
@@ -138,7 +142,7 @@ class Store {
 
     getService('task-queue-manager').createQueue('store');
 
-    for (const collectionConfiguration of storeConfiguration) {
+    for (const collectionConfiguration of storeConfiguration.filter(item => !!item.collection)) {
       const { collection: name, entity: entityId = name, database: databaseName = name, indexes } = collectionConfiguration;
 
       const entity = getService('metadata-manager').getEntity(entityId);
@@ -154,6 +158,15 @@ class Store {
 
       registerDatabaseUpdater(collection);
     }
+
+    for (const materializedViewConfiguration of storeConfiguration.filter(item => !!item.materializedView)) {
+      const { materializedView: name, factory } = materializedViewConfiguration;
+
+      logger.info(`loading materialized view '${name}'`);
+      const view = factory();
+    
+      this.materializedViews.set(name, view);
+    }
   }
 
   async terminate() {
@@ -162,6 +175,12 @@ class Store {
     for (const collection of this.collections.values()) {
       await unbindCollection(collection);
     }
+
+    for (const view of this.materializedViews.values()) {
+      view.close();
+    }
+
+    this.materializedViews.clear();
   }
 
   collection(name: string) {
@@ -171,6 +190,15 @@ class Store {
     }
 
     throw new Error(`Collection does not exist: '${name}'`);
+  }
+
+  materializedView(name: string) {
+    const result = this.materializedViews.get(name);
+    if (result) {
+      return result;
+    }
+
+    throw new Error(`Materialized view does not exist: '${name}'`);
   }
 
   deserializeObject(record, entity) {
@@ -191,7 +219,12 @@ export function getStoreCollection(name: string) {
   return getService('store').collection(name);
 }
 
+export function getStoreMaterializedView(name: string) {
+  return getService('store').materializedView(name);
+}
+
 export { View as StoreView };
 export { Container as StoreContainer };
 export { Collection as StoreCollection };
+export { MaterializedView as StoreMaterializedView };
 export { Event as StoreEvent };
