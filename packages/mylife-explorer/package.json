@@ -1,6 +1,6 @@
 {
   "name": "mylife-explorer",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "MyLife Explorer",
   "main": "index.js",
   "scripts": {
@@ -26,16 +26,16 @@
   "homepage": "https://github.com/vincent-tr/mylife-explorer#readme",
   "dependencies": {
     "mime-types": "^2.1.35",
-    "mylife-tools-common": "^1.1.2",
-    "mylife-tools-server": "^1.1.4"
+    "mylife-tools-common": "^1.1.3",
+    "mylife-tools-server": "^1.1.5"
   },
   "devDependencies": {
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
     "humanize": "0.0.9",
     "ini": "^3.0.0",
-    "mylife-tools-build": "^2.0.0",
-    "mylife-tools-ui": "^1.1.4",
+    "mylife-tools-build": "^2.0.1",
+    "mylife-tools-ui": "^1.1.5",
     "react-image-pan-zoom-rotate": "^1.5.0",
     "react-lazylog": "^4.5.3"
   }

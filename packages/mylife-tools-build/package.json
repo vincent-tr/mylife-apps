@@ -1,6 +1,6 @@
 {
   "name": "mylife-tools-build",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "MyLife Tools Build",
   "private": true,
   "main": "lib/index.js",
