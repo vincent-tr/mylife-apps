@@ -1,18 +1,15 @@
-'use strict';
-
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FunctionComponent } from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
-import { getTheme } from '../../services/theme-factory';
+import { useTheme } from '../../services/theme-factory';
 
-const ThemeProvider = ({ children }) => (
-  <MuiThemeProvider theme={getTheme()}>
-    {children}
-  </MuiThemeProvider>
-);
+const ThemeProvider: FunctionComponent = ({ children }) => {
+  const theme = useTheme();
 
-ThemeProvider.propTypes = {
-  children : PropTypes.node
+  return (
+    <MuiThemeProvider theme={theme}>
+      {children}
+    </MuiThemeProvider>
+  );
 };
 
 export default ThemeProvider;
