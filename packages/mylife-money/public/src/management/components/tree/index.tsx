@@ -11,6 +11,7 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    minWidth: 500,
   },
   tree: {
     overflowY: 'auto',

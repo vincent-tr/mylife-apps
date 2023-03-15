@@ -3,22 +3,35 @@
 import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
 
-const GroupSelectorDialog = ({ show, proceed, options }) => (
-  <mui.Dialog aria-labelledby='dialog-title' open={show}>
-    <mui.DialogTitle id='dialog-title'>
-      Sélectionnez un groupe
-    </mui.DialogTitle>
+const { makeStyles } = mui;
 
-    <mui.DialogContent dividers>
-      <GroupTree onSelect={group => proceed({ result: 'ok', group })} {...options} />
-    </mui.DialogContent>
+const useStyles = makeStyles({
+  paper: {
+    minHeight: '90%',
+    maxHeight: '90%',
+  }
+});
 
-    <mui.DialogActions>
-      <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
-    </mui.DialogActions>
+const GroupSelectorDialog = ({ show, proceed, options }) => {
+  const classes = useStyles();
 
-  </mui.Dialog>
-);
+  return (
+    <mui.Dialog aria-labelledby='dialog-title' open={show} PaperProps={{ className: classes.paper }} fullWidth={true} maxWidth='sm'>
+      <mui.DialogTitle id='dialog-title'>
+        Sélectionnez un groupe
+      </mui.DialogTitle>
+
+      <mui.DialogContent dividers>
+        <GroupTree onSelect={group => proceed({ result: 'ok', group })} {...options} />
+      </mui.DialogContent>
+
+      <mui.DialogActions>
+        <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
+      </mui.DialogActions>
+
+    </mui.Dialog>
+  );
+};
 
 GroupSelectorDialog.propTypes = {
   show: PropTypes.bool,

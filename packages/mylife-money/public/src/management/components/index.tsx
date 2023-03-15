@@ -19,10 +19,9 @@ const useStyles = makeStyles({
     flexDirection: 'row'
   },
   tree: {
-    flex: 1,
   },
   list: {
-    flex: 5,
+    flex: '1 1 auto',
   },
   detail: {
     flex: 5,
