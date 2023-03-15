@@ -1,6 +1,6 @@
 {
   "name": "mylife-explorer",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "MyLife Explorer",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "humanize": "0.0.9",
     "ini": "^3.0.0",
     "mylife-tools-build": "^2.0.1",
-    "mylife-tools-ui": "^1.1.5",
+    "mylife-tools-ui": "^1.1.6",
     "react-image-pan-zoom-rotate": "^1.5.0",
     "react-lazylog": "^4.5.3"
   }
