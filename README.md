@@ -146,9 +146,7 @@ MyLife Applications
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
-  - ne pas redimensionner le popup de treeview de groups en fonction du contenu
-  - ne pas redimensionner le treeview dans management quand on replie (il devrait avoir une largeur fixe)
-  - pas de notes dans la liste ?
+  - sur mobile pas de notes dans la liste gestion ?
 - Saisie de note :
   - le debounce est pourri
   - permettre de créer des hyperlinks dans les notes
