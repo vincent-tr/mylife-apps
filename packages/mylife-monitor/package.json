@@ -1,6 +1,6 @@
 {
   "name": "mylife-monitor",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "MyLife Monitor",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "mylife-tools-ui": "^1.1.6"
   },
   "dependencies": {
-    "mylife-tools-server": "^1.1.5",
+    "mylife-tools-server": "^1.1.6",
     "node-fetch": "^3.2.6"
   }
 }
