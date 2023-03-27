@@ -17,7 +17,7 @@ class Database {
   private db;
   private _session;
 
-  async init({ url = getConfig<string>('mongo')} = {}) {
+  async init({ url = getConfig<string>('mongo'), dataConfiguration = [] } = {}) {
     const mongoLogger = {
       debug: (message: string, meta?: unknown) => logger.debug(message, meta),
       warn: (message: string, meta?: unknown) => logger.warn(message, meta),
@@ -38,6 +38,19 @@ class Database {
     this._session = this.client.startSession();
 
     logger.info(`Connected to ${url} (database=${dbName})`);
+
+    for (const { collection, options } of dataConfiguration) {
+      logger.info(`Initialize collection '${collection}'`);
+      try {
+        await this.db.createCollection(collection, options);
+      } catch(err) {
+        if (err.codeName === 'NamespaceExists') {
+          logger.debug('Already exists, skipped.');
+        } else {
+          throw err;
+        }
+      }
+    }
   }
 
   async terminate() {
