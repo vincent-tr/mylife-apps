@@ -1,14 +1,14 @@
-export function dateToMonth(date) {
+export function dateToMonth(date: Date) {
   const year = date.getFullYear();
   const month = formatTwoDigits(date.getMonth() + 1);
   return `${year}/${month}`;
 }
 
-export function dateToYear(date) {
+export function dateToYear(date: Date) {
   return `${date.getFullYear()}`;
 }
 
-export function formatTwoDigits(number) {
+export function formatTwoDigits(number: number) {
   return number.toLocaleString(undefined, { minimumIntegerDigits: 2 });
 }
 
@@ -19,8 +19,8 @@ export function roundCurrency(number) {
   return Math.round(number * 100) / 100;
 }
 
-export function monthRange(minDate, maxDate) {
-  const months = [];
+export function monthRange(minDate: Date, maxDate: Date) {
+  const months = [] as string[];
   const minYear = minDate.getFullYear();
   const minMonth = minDate.getMonth();
   const maxYear = maxDate.getFullYear();
@@ -42,7 +42,7 @@ export function monthRange(minDate, maxDate) {
   return months;
 }
 
-export function yearRange(minDate, maxDate) {
+export function yearRange(minDate: Date, maxDate: Date) {
   const years = [];
   const minYear = minDate.getFullYear();
   const maxYear = maxDate.getFullYear();
@@ -54,7 +54,7 @@ export function yearRange(minDate, maxDate) {
   return years;
 }
 
-export function createGroupHierarchy(groupCollection, groupId) {
+export function createGroupHierarchy(groupCollection, groupId: string) {
   // no criteria
   if(groupId === undefined) {
     return null;
