@@ -43,14 +43,23 @@ class EnergyCollector {
 
     try {
       const message = parseMessage(topic, payload);
-      const sensors = getStoreCollection('sensors');
-      const sensor = findOrCreateSensor(sensors, message);
-      const sensorId = getService('database').newObjectID(sensor._id);
 
-      const record = { timestamp: new Date(), sensor: sensorId, value: message.value };
+      const record = {
+        timestamp: new Date(),
+        sensor: {
+          sensorId: message.sensorId,
+          deviceClass: message.deviceClass,
+          stateClass: message.stateClass,
+          unitOfMeasurement: message.unitOfMeasurement,
+          accuracyDecimals: message.accuracyDecimals,
+        },
+        value: message.value
+      };
+
       const collection = getDatabaseCollection('measures');
       logger.debug(`insert record: ${JSON.stringify(record)}`);
       collection.insertOne(record).catch(err => logger.error(`Could not insert record ${JSON.stringify(record)}: ${err.stack}`));
+
 
     } catch(err) {
       logger.error(`Error processing message: topic= '${topic}', payload= '${payload}': ${err.stack}`);
@@ -59,7 +68,7 @@ class EnergyCollector {
 
   
   static readonly serviceName = 'energy-collector';
-  static readonly dependencies = ['database', 'store'];
+  static readonly dependencies = ['database'];
 }
 
 registerService(EnergyCollector);
