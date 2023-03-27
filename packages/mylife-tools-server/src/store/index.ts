@@ -1,7 +1,7 @@
 import { createLogger } from '../logging';
 import { registerService, getService, fatal } from '../service-manager';
 import { Container, Event } from './container';
-import { Collection } from './collection';
+import { Collection, Index, PartitionIndex, SortIndex } from './collection';
 import { View } from './view';
 import { MaterializedView } from './materialized-view';
 import { deserializeObject, serializeObject, serializeObjectId, deserializeObjectId } from './serializer';
@@ -225,6 +225,6 @@ export function getStoreMaterializedView(name: string) {
 
 export { View as StoreView };
 export { Container as StoreContainer };
-export { Collection as StoreCollection };
+export { Collection as StoreCollection, Index as StoreIndex, PartitionIndex as StorePartitionIndex, SortIndex as StoreSortIndex };
 export { MaterializedView as StoreMaterializedView };
 export { Event as StoreEvent };
