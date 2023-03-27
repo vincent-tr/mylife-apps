@@ -1,6 +1,6 @@
 {
   "name": "mylife-money",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "description": "Mylife Money",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-money",
@@ -24,7 +24,7 @@
     "cronstrue": "^2.22.0",
     "csv-parse": "^5.2.0",
     "moment": "^2.29.3",
-    "mylife-tools-server": "^1.1.6",
+    "mylife-tools-server": "^1.1.7",
     "node-cron": "^3.0.2"
   },
   "devDependencies": {
