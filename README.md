@@ -84,6 +84,53 @@ MyLife Applications
 - indexes (auto create on requests ?)
 - dataview with filters and event on change
 
+### Energy timeseries
+
+#### Storage
+
+Mongo standard storage : 
+
+```
+db.runCommand( { collStats: 'measures' })
+  size: 10535276,
+  count: 140935,
+  storageSize: 3792896,
+  totalIndexSize: 2543616,
+  totalSize: 6336512,
+
+db.runCommand( { collStats: 'sensors' })
+  size: 980,
+  count: 6,
+  storageSize: 20480,
+  totalIndexSize: 20480,
+  totalSize: 40960,
+```
+
+Mongo timeseries storage :
+
+```
+db.runCommand( { collStats: 'measures' })
+  size: 870723,
+  storageSize: 716800,
+  totalIndexSize: 0,
+  totalSize: 716800,
+
+db.measures.count()
+  143445
+```
+
+#### Volumetrie
+
+
+Sensors:
+- 50 measures per 10 secs
+- (15 sensors, 3 measures each + TIC 2 measures + voltage = 48 ~50)
+- => 157 680 000 measures / year
+
+Storage actual test:
+- 100 000 measures need 575k storage
+- => 906MB / year
+
 # TODO
 
 - mui v5
