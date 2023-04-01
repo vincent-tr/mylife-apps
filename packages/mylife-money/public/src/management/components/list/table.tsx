@@ -2,6 +2,7 @@
 
 import { React, mui, VirtualizedTable, useScreenPhone, addLineBreaks, VirtualizedTableColumn } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
+import Markdown from '../../../common/components/markdown';
 
 const Table = (props) => {
   const { onSelect, onDetail, operations } = useConnect();
@@ -33,17 +34,15 @@ const Table = (props) => {
     const lines = safeValue.split('\n');
     if (lines.length > 1) {
       return (
-        <mui.Tooltip title={addLineBreaks(safeValue)}>
+        <mui.Tooltip title={<Markdown value={value} />} interactive>
           <div>
-            {lines[0]} ...
+            <Markdown value={`${lines[0]} ...`} />
           </div>
         </mui.Tooltip>
       );
     } else {
       return (
-        <>
-          {value}
-        </>
+        <Markdown value={value} />
       );
     }
   };

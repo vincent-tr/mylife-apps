@@ -194,11 +194,7 @@ Storage actual test:
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
   - sur mobile pas de notes dans la liste gestion ?
-- Saisie de note :
-  - le debounce est pourri
-  - permettre de créer des hyperlinks dans les notes
-  - rich text/MD ?
-- Permettre d'ajouter des notes sur les groupes (et les voir en tooltips)
+- Permettre d'ajouter des notes sur les groupes (et les voir en tooltips) ?
 - Permettre de rechercher des groupes ?
 
 ## Portal

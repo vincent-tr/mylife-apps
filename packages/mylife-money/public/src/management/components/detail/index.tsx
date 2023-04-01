@@ -5,12 +5,13 @@ import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup }
 import { getOperationDetail } from '../../selectors';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
 
-type FIXME_any = any;
-
 import Title from './title';
 import Row from './row';
 import GroupBreadcrumbs from './group-breadcrumbs';
 import AmountValue from './amount-value';
+import Markdown from '../../../common/components/markdown';
+
+type FIXME_any = any;
 
 const { makeStyles } = mui;
 
@@ -27,9 +28,9 @@ const useConnect = () => {
     }),
     ...useMemo(() => ({
       close: () => dispatch(closeDetail()),
-      onOpenGroup: (id) => dispatch(selectGroup(id)),
-      onSetNote: (note) => dispatch(operationSetNoteDetail(note)),
-      onMove: (id) => dispatch(operationMoveDetail(id)),
+      onOpenGroup: (id: string) => dispatch(selectGroup(id)),
+      onSetNote: (note: string) => dispatch(operationSetNoteDetail(note)),
+      onMove: (id: string) => dispatch(operationMoveDetail(id)),
     }), [dispatch])
   };
 };
@@ -70,7 +71,7 @@ const DetailContainer = ({ className }) => {
         </Row>
 
         <Row label='Notes'>
-          <DebouncedTextField value={operation.note} onChange={onSetNote} fullWidth multiline minRows={5} maxRows={5}/>
+          <NoteEditor value={operation.note} onChange={onSetNote} />
         </Row>
 
         <Row label='Groupe'>
@@ -92,3 +93,45 @@ DetailContainer.propTypes = {
 };
 
 export default DetailContainer;
+
+
+const useNoteEditorStyles = makeStyles(theme => ({
+  container: {
+    height: 160, // must match min/maxRows of TextField
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  view: {
+    flex: 1,
+  },
+}));
+
+const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: string) => void; }> = ({ value, onChange}) => {
+  const classes = useNoteEditorStyles();
+  type TabValues = 'view' | 'update';
+
+  const [tabValue, setTabValue] = React.useState<TabValues>('view');
+
+  const handleChange = (event: React.ChangeEvent, newValue: TabValues) => {
+    setTabValue(newValue);
+  };
+
+  return (
+    <mui.Paper square className={classes.container}>
+      <mui.Tabs value={tabValue} indicatorColor="primary" textColor="primary" onChange={handleChange}>
+        <mui.Tab label="Visualiser" value={'view' as TabValues} />
+        <mui.Tab label="Modifier" value={'update' as TabValues} />
+      </mui.Tabs>
+
+      {tabValue === 'view' && (
+        <Markdown className={classes.view} value={value} />
+      )}
+
+      {tabValue === 'update' && (
+        <DebouncedTextField variant='outlined' value={value} onChange={onChange} fullWidth multiline minRows={4} maxRows={4}/>
+      )}
+    </mui.Paper>
+  );
+};
+
+
