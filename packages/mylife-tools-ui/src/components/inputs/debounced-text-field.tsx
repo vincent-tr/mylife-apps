@@ -6,7 +6,7 @@ import { useDebounced } from '../behaviors';
 // https://gist.github.com/krambertech/76afec49d7508e89e028fce14894724c
 const ENTER_KEY = 13;
 
-export type DebouncedTextFieldProps = TextFieldProps & { value: any; onChange: (value: any) => void };
+export type DebouncedTextFieldProps = Omit<TextFieldProps, 'value' | 'onChange'> & { value: any; onChange: (value: any) => void };
 
 const DebouncedTextField: FunctionComponent<DebouncedTextFieldProps> = ({ value, onChange, multiline, ...props }) => {
   const { componentValue, componentChange, flush } = useDebounced(value, onChange);
@@ -22,7 +22,7 @@ const DebouncedTextField: FunctionComponent<DebouncedTextFieldProps> = ({ value,
   });
 
   return (
-    <TextField {...props} multiline={multiline} value={componentValue || ''} onChange={handleChange} onKeyDown={handleKeyDown} />
+    <TextField {...props as TextFieldProps} multiline={multiline} value={componentValue || ''} onChange={handleChange} onKeyDown={handleKeyDown} />
   );
 };
 
