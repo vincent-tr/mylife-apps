@@ -194,6 +194,7 @@ Storage actual test:
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
   - sur mobile pas de notes dans la liste gestion ?
+  - pouvoir faire du DND sur desktop pour trier les operations
 - Permettre d'ajouter des notes sur les groupes (et les voir en tooltips) ?
 - Permettre de rechercher des groupes ?
 
