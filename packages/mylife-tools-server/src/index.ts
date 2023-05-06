@@ -12,4 +12,5 @@ export * from './service-manager';
 export * from './metadata-manager';
 export * from './store';
 export * from './notification-service';
+export * from './secret-service';
 export * from './xlsx';

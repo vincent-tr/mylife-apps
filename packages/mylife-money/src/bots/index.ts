@@ -74,7 +74,7 @@ class BotService {
   };
 
   static readonly serviceName = 'bot-service';
-  static readonly dependencies = ['store'];
+  static readonly dependencies = ['store', 'secret-service'];
 }
 
 registerService(BotService);
