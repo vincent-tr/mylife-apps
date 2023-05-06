@@ -44,6 +44,12 @@ class SecretService {
       switch (eventName) {
         case 'add': {
           const key = path.basename(eventPath);
+          if (key.startsWith('.')) {
+            // k8s volumes adds internal stuff starting with '..'
+            logger.debug(`eventPath '${eventPath}' ignored.`);
+            break;
+          }
+
           const value = fs.readFileSync(eventPath, 'utf8');
 
           this.secrets.set(key, value);
@@ -53,6 +59,12 @@ class SecretService {
 
         case 'change': {
           const key = path.basename(eventPath);
+          if (key.startsWith('.')) {
+            // k8s volumes adds internal stuff starting with '..'
+            logger.debug(`eventPath '${eventPath}' ignored.`);
+            break;
+          }
+
           const value = fs.readFileSync(eventPath, 'utf8');
 
           this.secrets.set(key, value);
@@ -62,6 +74,11 @@ class SecretService {
   
         case 'unlink': {
           const key = path.basename(eventPath);
+          if (key.startsWith('.')) {
+            // k8s volumes adds internal stuff starting with '..'
+            logger.debug(`eventPath '${eventPath}' ignored.`);
+            break;
+          }
 
           this.secrets.delete(key);
           logger.info(`Secret '${key}' deleted. (eventPath='${eventPath}')`);
