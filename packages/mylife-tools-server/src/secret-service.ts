@@ -14,15 +14,16 @@ interface Configuration {
 class SecretService {
   private watcher: chokidar.FSWatcher;
   private readonly secrets = new Map<string, string>();
+  private basePath: string;
 
   async init() {
     const config = getConfig<Configuration>('secrets');
 
-    const absPath = path.resolve(config.path);
+    this.basePath = path.resolve(config.path);
 
-    logger.debug(`Start watching path: '${absPath}'`);
+    logger.debug(`Start watching path: '${this.basePath}'`);
 
-    this.watcher = chokidar.watch(absPath, { persistent: true, ignoreInitial: false });
+    this.watcher = chokidar.watch(this.basePath, { persistent: true, ignoreInitial: false });
     this.watcher.on('error', this.onError);
     this.watcher.on('all', this.onChange);
 
@@ -43,10 +44,8 @@ class SecretService {
     try {
       switch (eventName) {
         case 'add': {
-          const key = path.basename(eventPath);
-          if (key.startsWith('.')) {
-            // k8s volumes adds internal stuff starting with '..'
-            logger.debug(`eventPath '${eventPath}' ignored.`);
+          const key = this.getKeyFromPath(eventPath);
+          if (!key) {
             break;
           }
 
@@ -58,10 +57,8 @@ class SecretService {
         }
 
         case 'change': {
-          const key = path.basename(eventPath);
-          if (key.startsWith('.')) {
-            // k8s volumes adds internal stuff starting with '..'
-            logger.debug(`eventPath '${eventPath}' ignored.`);
+          const key = this.getKeyFromPath(eventPath);
+          if (!key) {
             break;
           }
 
@@ -73,10 +70,8 @@ class SecretService {
         }
   
         case 'unlink': {
-          const key = path.basename(eventPath);
-          if (key.startsWith('.')) {
-            // k8s volumes adds internal stuff starting with '..'
-            logger.debug(`eventPath '${eventPath}' ignored.`);
+          const key = this.getKeyFromPath(eventPath);
+          if (!key) {
             break;
           }
 
@@ -93,6 +88,18 @@ class SecretService {
       logger.error(`Failed to process FS watcher event (eventName='${eventName}', eventPath='${eventPath}'): ${err.stack}`);
     }
   };
+
+  // Return null if invalid key
+  private getKeyFromPath(eventPath: string) {
+    // k8s volumes adds internal stuff starting with '..' and subdirs
+    const relative = path.relative(this.basePath, eventPath);
+    if (relative.startsWith('.') || relative.includes('/')) {
+      logger.debug(`eventPath '${eventPath}' ignored.`);
+      return null;
+    }
+    
+    return relative;
+  }
 
   keys() {
     return this.secrets.keys();
