@@ -4,10 +4,12 @@ import * as business from '../business';
 import { Bot, BotLogSeverity, BotExecutionContext } from './api';
 
 import cicScraper from './cic-scraper';
+import fraisScraper from './frais-scraper';
 import noop from './noop';
 
 const bots = {
   'cic-scraper': cicScraper,
+  'frais-scraper': fraisScraper,
   'noop': noop,
 }
 

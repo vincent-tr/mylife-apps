@@ -13,3 +13,24 @@ export namespace CicScraper {
     }
   }
 }
+
+export namespace FraisScraper {
+  export interface Configuration {
+    imapServer: string;
+    imapUser: string;
+    imapPass: string;
+    mailbox: string;
+    subject: string;
+    from: string;
+    sinceDays: number;
+
+    parser: 'julie' | 'vincent';
+
+    account: string; // account in Money
+    matchDaysDiff: number; // max number of days before/after to find match
+    template: string; // template notes
+  }
+
+  export interface State {
+  }
+}

@@ -2,10 +2,11 @@ import { setTimeout } from 'node:timers/promises';
 import axios, { AxiosHeaders, AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 import { CookieJar, CookieAccessInfo } from 'cookiejar';
 import * as cheerio from 'cheerio/lib/slim'; // Note: parse5 seems to not like webpack packaging
-import { createLogger, findSecret } from 'mylife-tools-server';
+import { createLogger } from 'mylife-tools-server';
 import { BotExecutionContext } from './api';
 import * as business from '../business';
 import * as shared from '../../shared/bots';
+import { processSecret } from './helpers';
 
 type Configuration = shared.CicScraper.Configuration;
 type State = shared.CicScraper.State;
@@ -52,25 +53,6 @@ export default async function (context: BotExecutionContext) {
 
   const movedCount = business.executeRules();
   context.log('info', `Exécution des règles : ${movedCount} opérations classées`);
-}
-
-const SECRET_PREFIX = 'secret:';
-
-function processSecret(context: BotExecutionContext, value: string) {
-  if (!value.startsWith(SECRET_PREFIX)) {
-    return value;
-  }
-
-  const key = value.substring(SECRET_PREFIX.length);
-  const secretValue = findSecret(key);
-
-  if (secretValue === undefined) {
-    context.log('warning', `La clé de secret '${key}' n'existe pas.`);
-    return value;
-  }
-
-  context.log('debug', `Utilisation du secret de la clé '${key}'.`);
-  return secretValue;
 }
 
 async function authenticate(context: BotExecutionContext, agent: Agent, user: string, pass: string) {

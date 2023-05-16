@@ -24,12 +24,15 @@
     "cron-parser": "^4.7.1",
     "cronstrue": "^2.22.0",
     "csv-parse": "^5.2.0",
+    "imapflow": "^1.0.128",
     "moment": "^2.29.3",
     "mylife-tools-server": "^1.1.10",
-    "node-cron": "^3.0.2"
+    "node-cron": "^3.0.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/cookiejar": "^2.1.2",
+    "@types/imapflow": "^1.0.13",
     "@types/node-cron": "^3.0.2",
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
