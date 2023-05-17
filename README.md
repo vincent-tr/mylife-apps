@@ -1,16 +1,21 @@
 # mylife-apps
+
 MyLife Applications
 
 ## Update packages
- - `lerna clean`
- - `lerna exec -- npm update`
- - `lerna exec -- ncu -u` (for major version updates)
- - `lerna bootstrap`
+
+- `lerna clean`
+- `lerna exec -- npm update`
+- `lerna exec -- ncu -u` (for major version updates)
+- `lerna bootstrap`
 
 ## Build
- - `lerna version`
- - `lerna run docker-publish`
- - `cd repo; npm run docker-publish` (or for one repository)
+
+- `lerna version`
+- `lerna run docker-publish`
+- `cd repo; npm run docker-publish` (or for one repository)
+
+_FIXME: apres `lerna bootstrap` il faut enlever `packages/mylife-money/node_modules/@types/react` sinon `npm run docker-publish` ne fonctionne pas._
 
 # Framework (tools)
 
