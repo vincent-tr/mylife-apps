@@ -54,6 +54,16 @@ const DetailContainer = ({ className }) => {
       <Title onClose={close} />
 
       <div className={classes.grid}>
+        <Row label='Compte'>
+          <mui.Typography>
+            {account.display}
+          </mui.Typography>
+        </Row>
+
+        <Row label='Groupe'>
+          <GroupBreadcrumbs groupStack={groupStack} onMove={onMove} onOpenGroup={onOpenGroup} />
+        </Row>
+
         <Row label='Montant'>
           <AmountValue value={operation.amount} />
         </Row>
@@ -73,16 +83,6 @@ const DetailContainer = ({ className }) => {
         <Row label='Notes'>
           <NoteEditor value={operation.note} onChange={onSetNote} />
         </Row>
-
-        <Row label='Groupe'>
-          <GroupBreadcrumbs groupStack={groupStack} onMove={onMove} onOpenGroup={onOpenGroup} />
-        </Row>
-
-        <Row label='Compte'>
-          <mui.Typography>
-            {account.display}
-          </mui.Typography>
-        </Row>
       </div>
     </mui.Paper>
   );
@@ -97,12 +97,13 @@ export default DetailContainer;
 
 const useNoteEditorStyles = makeStyles(theme => ({
   container: {
-    height: 160, // must match min/maxRows of TextField
+    height: 450, // must match min/maxRows of TextField
     display: 'flex',
     flexDirection: 'column',
   },
   view: {
     flex: 1,
+    overflowY: 'auto',
   },
 }));
 
@@ -128,7 +129,7 @@ const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: s
       )}
 
       {tabValue === 'update' && (
-        <DebouncedTextField variant='outlined' value={value} onChange={onChange} fullWidth multiline minRows={4} maxRows={4}/>
+        <DebouncedTextField variant='outlined' value={value} onChange={onChange} fullWidth multiline minRows={19} maxRows={19}/>
       )}
     </mui.Paper>
   );
