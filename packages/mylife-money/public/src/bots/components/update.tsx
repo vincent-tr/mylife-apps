@@ -1,6 +1,7 @@
 import { React, mui, dialogs, useReducer, useMemo, CriteriaField, services } from 'mylife-tools-ui';
 import { NoopConfig, validate as noopValidate } from './config/noop';
 import { CicScraperConfig, validate as cicScraperValidate } from './config/cic-scraper';
+import { FraisScraperConfig, validate as fraisScraperValidate } from './config/frais-scraper';
 import CronCriteriaField, { validate as cronValidate } from './cron-criteria-field';
 
 type FIXME_any = any;
@@ -44,6 +45,7 @@ const DialogContent: React.FunctionComponent<{ bot: Bot; proceed: ProceedCallbac
               <mui.Select value={shownValues.type} onChange={e => updateValues({ type: e.target.value })}>
                 <mui.MenuItem value={'noop'}>noop</mui.MenuItem>
                 <mui.MenuItem value={'cic-scraper'}>cic-scraper</mui.MenuItem>
+                <mui.MenuItem value={'frais-scraper'}>frais-scraper</mui.MenuItem>
               </mui.Select>
             </CriteriaField>
           </mui.Grid>
@@ -95,12 +97,14 @@ function botValuesReducer(state: Partial<Bot>, values: Partial<Bot>) {
   return { ...state, ...values };
 }
 
-function getConfigComponent(type: 'noop' | 'cic-scraper') {
+function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper') {
   switch (type) {
     case 'noop':
       return NoopConfig;
     case 'cic-scraper':
       return CicScraperConfig;
+    case 'frais-scraper':
+      return FraisScraperConfig;
     default:
       throw new Error(`Unknown bot type '${type}'`);
   }
@@ -116,6 +120,8 @@ function validate(values: Partial<Bot>) {
       return noopValidate(values.configuration);
     case 'cic-scraper':
       return cicScraperValidate(values.configuration);
+    case 'frais-scraper':
+      return fraisScraperValidate(values.configuration);
     default:
       return false;
   }
