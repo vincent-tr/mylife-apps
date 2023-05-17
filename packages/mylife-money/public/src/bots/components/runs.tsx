@@ -31,7 +31,8 @@ const useStyles = mui.makeStyles(theme => ({
     flex: '1 1 auto',
   },
   list: {
-    width: 200
+    width: 210,
+    minWidth: 210,
   },
   content: {
     flex: '1 1 auto',
@@ -39,6 +40,7 @@ const useStyles = mui.makeStyles(theme => ({
   logsList: {
     flex: '1 1 auto',
     overflowY: 'auto',
+    height: 1 // else use gigantic height if log of logs, with no scroll ?!?
   },
   logRow: {
     marginLeft: theme.spacing(2),

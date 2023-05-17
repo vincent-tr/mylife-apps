@@ -22,6 +22,7 @@ const useStyles = mui.makeStyles(theme => ({
   list: {
     flex: '1 1 auto',
     width: 300,
+    minWidth: 300,
   },
   addButton: {
     alignSelf: 'center',
