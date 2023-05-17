@@ -23,5 +23,5 @@ export interface Item {
   amount: number;
   date: Date;
   keywords: string[];
-  metadata: FileMetadata & { sheetName: string; [key: string]: any; }
+  metadata: FileMetadata & { sheetName: string; rowIndex: number; [key: string]: any; }
 }

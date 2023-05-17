@@ -91,12 +91,25 @@ function fillChildrenGroups(array, groupId: string) {
   }
 }
 
-export function operationsMove(groupId, operationIds) {
+export function operationsMove(groupId: string, operationIds: string[]) {
   return operationsSetField(operationIds, 'group', groupId);
 }
 
-export function operationsSetNote(note, operationIds) {
+export function operationsSetNote(note: string, operationIds: string[]) {
   return operationsSetField(operationIds, 'note', note);
+}
+
+export function operationAppendNote(note: string, operationId: string) {
+  const operations = getStoreCollection('operations');
+  const field = operations.entity.getField('note');
+
+  let operation = operations.get(operationId);
+
+  const oldNote = field.getValue(operation);
+  const newNote = oldNote ? `${oldNote}\n\n---\n\n${note}` : note;
+  operation = field.setValue(operation, newNote);
+
+  operations.set(operation);
 }
 
 function operationsSetField(operationIds, fieldName, fieldValue) {
@@ -108,4 +121,9 @@ function operationsSetField(operationIds, fieldName, fieldValue) {
     operations.set(field.setValue(operation, fieldValue));
   }
   return list.length;
+}
+
+export function operationsGetUnsorted(min: Date, max: Date) {
+  const operations = getStoreCollection('operations');
+  return operations.filter(operation => (!operation.group && operation.date >= min && operation.date <= max));
 }
