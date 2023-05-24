@@ -20,7 +20,7 @@ async function processAttachments(context: BotExecutionContext, client: ImapFlow
 
   const attachements = flattenNodes(message.bodyStructure).filter(node => node.disposition === 'attachment' && node.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   if (attachements.length === 0) {
-    context.log('warning', `Mail '${message.uid}' (${message.envelope.date.toLocaleString()}, '${message.envelope.subject}' de '${message.envelope.from[0].address}): Pas de pièce jointe excel, ignoré`);
+    context.log('warning', `Mail '${message.uid}' (${message.envelope.date.toLocaleString('fr-fr')}, '${message.envelope.subject}' de '${message.envelope.from[0].address}): Pas de pièce jointe excel, ignoré`);
     return;
   }
 
