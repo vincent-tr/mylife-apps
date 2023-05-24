@@ -93,5 +93,16 @@ function formatNote(configuration: Configuration, order: Order) {
 }
 
 function formatMetadata(order: Order) {
-  return `TODO ${order.id}`;
+  const lines = [
+    `[${order.id}](${order.orderUrl}) le ${order.date.toLocaleDateString('fr-FR')}`,
+    '',
+    '| | Produit | Qté | P.U. (EUR) |',
+    '| - | - | - | - |',
+  ];
+
+  for (const item of order.items) {
+    lines.push(`| [![img](${item.imageUrl})](${item.productUrl}) | [${item.description}](${item.productUrl}) | ${item.quantity} | ${item.unitPrice}`);
+  }
+
+  return lines.join('\n');
 }
