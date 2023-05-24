@@ -48,7 +48,7 @@ export default async function (context: BotExecutionContext) {
   const operations = business.operationsGetUnsorted(new Date(min), new Date(max));
 
   for (const item of items) {
-    context.log('debug', `Traitement de la ligne ${item.metadata.rowIndex} de la sheet '${item.metadata.sheetName}' du fichier '${item.metadata.filename}' du mail intitulé '${item.metadata.mailSubject}' de '${item.metadata.mailFrom}' envoyé le '${item.metadata.mailDate.toLocaleString()}'`);
+    context.log('debug', `Traitement de la ligne ${item.metadata.rowIndex} de la sheet '${item.metadata.sheetName}' du fichier '${item.metadata.filename}' du mail intitulé '${item.metadata.mailSubject}' de '${item.metadata.mailFrom}' envoyé le '${item.metadata.mailDate.toLocaleString('fr-fr')}'`);
     processItemMatch(context, configuration, operations, item);
   }
 }
@@ -97,7 +97,7 @@ function formatMetadata(item: Item) {
     }
 
     if (value instanceof Date) {
-      value = value.toLocaleString();
+      value = value.toLocaleString('fr-fr');
     }
 
     lines.push(`- ${key} : ${value.toString()}\n`);
