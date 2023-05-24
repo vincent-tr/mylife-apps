@@ -1,6 +1,6 @@
 export default [
   { id: 'cron', primitive: 'string' },
-  { id: 'bot-type', enum: ['noop', 'cic-scraper', 'frais-scraper'] },
+  { id: 'bot-type', enum: ['noop', 'cic-scraper', 'frais-scraper', 'amazon-scraper'] },
   { id: 'bot-run-result', enum: ['success', 'warning', 'error'] },
   {
     id: 'bot-run-log', structure: [

@@ -2,6 +2,7 @@ import { React, mui, dialogs, useReducer, useMemo, CriteriaField, services } fro
 import { NoopConfig, validate as noopValidate } from './config/noop';
 import { CicScraperConfig, validate as cicScraperValidate } from './config/cic-scraper';
 import { FraisScraperConfig, validate as fraisScraperValidate } from './config/frais-scraper';
+import { AmazonScraperConfig, validate as amazonScraperValidate } from './config/amazon-scraper';
 import CronCriteriaField, { validate as cronValidate } from './cron-criteria-field';
 
 type FIXME_any = any;
@@ -46,6 +47,7 @@ const DialogContent: React.FunctionComponent<{ bot: Bot; proceed: ProceedCallbac
                 <mui.MenuItem value={'noop'}>noop</mui.MenuItem>
                 <mui.MenuItem value={'cic-scraper'}>cic-scraper</mui.MenuItem>
                 <mui.MenuItem value={'frais-scraper'}>frais-scraper</mui.MenuItem>
+                <mui.MenuItem value={'amazon-scraper'}>amazon-scraper</mui.MenuItem>
               </mui.Select>
             </CriteriaField>
           </mui.Grid>
@@ -97,7 +99,7 @@ function botValuesReducer(state: Partial<Bot>, values: Partial<Bot>) {
   return { ...state, ...values };
 }
 
-function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper') {
+function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper') {
   switch (type) {
     case 'noop':
       return NoopConfig;
@@ -105,6 +107,8 @@ function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper') {
       return CicScraperConfig;
     case 'frais-scraper':
       return FraisScraperConfig;
+    case 'amazon-scraper':
+      return AmazonScraperConfig;
     default:
       throw new Error(`Unknown bot type '${type}'`);
   }
@@ -121,7 +125,9 @@ function validate(values: Partial<Bot>) {
     case 'cic-scraper':
       return cicScraperValidate(values.configuration);
     case 'frais-scraper':
-      return fraisScraperValidate(values.configuration);
+      return amazonScraperValidate(values.configuration);
+    case 'amazon-scraper':
+      return AmazonScraperConfig;
     default:
       return false;
   }

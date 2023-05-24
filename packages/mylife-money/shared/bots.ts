@@ -34,3 +34,23 @@ export namespace FraisScraper {
   export interface State {
   }
 }
+
+export namespace AmazonScraper {
+  export interface Configuration {
+    imapServer: string;
+    imapUser: string;
+    imapPass: string;
+    mailbox: string;
+    from: string;
+    sinceDays: number;
+
+    account: string; // account in Money
+    matchDaysDiff: number; // max number of days before/after to find match
+    matchLabel: string;
+    template: string; // template notes
+  }
+
+  export interface State {
+  }
+
+}
