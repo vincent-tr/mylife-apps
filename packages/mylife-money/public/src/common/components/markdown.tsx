@@ -1,8 +1,9 @@
 import { React } from 'mylife-tools-ui';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const Markdown: React.FunctionComponent<{ className?: string; value: string; }> = ({ className, value }) => (
-  <ReactMarkdown className={className} children={value} linkTarget='_blank' />
+  <ReactMarkdown remarkPlugins={[remarkGfm]} className={className} children={value} linkTarget='_blank' />
 );
 
 export default Markdown;
