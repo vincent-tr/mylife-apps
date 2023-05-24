@@ -1,47 +1,9 @@
 import * as cheerio from 'cheerio/lib/slim'; // Note: parse5 seems to not like webpack packaging
-import { createLogger } from 'mylife-tools-server';
-import { BotExecutionContext } from './api';
-import { ImapFlow, FetchMessageObject, downloadBodyPart, flattenNodes, mailProcess } from './mail-scraper-helper';
-import * as business from '../business';
-import * as shared from '../../shared/bots';
+import { BotExecutionContext } from '../api';
+import { ImapFlow, FetchMessageObject, downloadBodyPart, mailProcess } from '../mail-scraper-helper';
+import { Configuration, Order } from './common';
 
-type Configuration = shared.AmazonScraper.Configuration;
-type State = shared.AmazonScraper.State;
-
-interface Order {
-  id: string;
-  date: Date;
-  amount: number;
-  orderUrl: string;
-  items: {
-    productUrl: string;
-    imageUrl: string;
-    description: string;
-    quantity: number;
-    unitPrice: number;
-  }[]
-}
-
-const logger = createLogger('mylife:money:bots:amazon-scraper');
-
-export default async function (context: BotExecutionContext) {
-  const configuration = context.configuration as Configuration;
-
-  if (!configuration.imapServer || !configuration.imapUser || !configuration.imapPass
-    || !configuration.mailbox || !configuration.from || !configuration.sinceDays
-    || !configuration.account || !configuration.matchDaysDiff || !configuration.matchLabel
-    || !configuration.template) {
-    throw new Error('Missing configuration');
-  }
-
-  const orders = await download(context, configuration);
-
-  // TODO
-
-  console.dir(orders, { depth: null });
-}
-
-async function download(context: BotExecutionContext, configuration: Configuration) {
+export async function fetch(context: BotExecutionContext, configuration: Configuration) {
   return await mailProcess(context, configuration, async(client, messages) => {
     const orders: Order[] = [];
 
@@ -50,7 +12,7 @@ async function download(context: BotExecutionContext, configuration: Configurati
         orders.push(await fetchOrder(client, message));
       }
       catch (err) {
-        context.log('error', `Erreur au traitement du mail '${message.uid}' (${message.envelope.date.toLocaleString()}, '${message.envelope.subject}' de '${message.envelope.from[0].address}): ${err.stack}`);
+        context.log('error', `Erreur au traitement du mail '${message.uid}' (${message.envelope.date.toLocaleString('fr-fr')}, '${message.envelope.subject}' de '${message.envelope.from[0].address}): ${err.stack}`);
       }
     }
 
