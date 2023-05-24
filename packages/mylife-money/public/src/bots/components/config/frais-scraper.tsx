@@ -89,7 +89,6 @@ export const FraisScraperConfig: React.FunctionComponent<FraisScraperConfigProps
 
       <mui.Grid item xs={12}>
         <CriteriaField label='Template de note'>
-          {/* TODO: multi-lines */}
           <mui.TextField InputProps={{ readOnly: !update }} multiline minRows={4} maxRows={4} value={configuration.template || ''} onChange={e => update({ template: e.target.value })} />
         </CriteriaField>
       </mui.Grid>
