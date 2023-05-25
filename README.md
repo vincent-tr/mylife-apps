@@ -193,7 +193,6 @@ Storage actual test:
   - pouvoir intégrer à nagios ou mail des erreurs de bots
   - cleanup des runs
 - scraping PayPal (par scan des mails ou API ?)
-- scraping Amazon (par scan des mails ?)
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
