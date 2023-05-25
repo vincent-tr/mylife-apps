@@ -80,6 +80,7 @@ _FIXME: apres `lerna bootstrap` il faut enlever `packages/mylife-money/node_modu
 - Tout accessible en 3 clics
 
 ### DATABASE
+
 - < 1 million record -> in memory store(cf node-dirty)
 - whole DB in memory
 - with freeze on each object => update = replace whole object
@@ -125,7 +126,6 @@ db.measures.count()
 ```
 
 #### Volumetrie
-
 
 Sensors:
 - 50 measures per 10 secs
