@@ -46,11 +46,19 @@ export default async function (context: BotExecutionContext) {
   }
 
   const operations = business.operationsGetUnsorted(new Date(min), new Date(max));
+  let updatedCount = 0;
 
   for (const item of items) {
     context.log('debug', `Traitement de la ligne ${item.metadata.rowIndex} de la sheet '${item.metadata.sheetName}' du fichier '${item.metadata.filename}' du mail intitulé '${item.metadata.mailSubject}' de '${item.metadata.mailFrom}' envoyé le '${item.metadata.mailDate.toLocaleString('fr-fr')}'`);
-    processItemMatch(context, configuration, operations, item);
+    if (processItemMatch(context, configuration, operations, item)) {
+      ++updatedCount;
+    }
   }
+
+  context.log('info', `${updatedCount} opérations mises à jour`);
+
+  const movedCount = business.executeRules();
+  context.log('info', `Exécution des règles : ${movedCount} opérations classées`);
 }
 
 function processItemMatch(context: BotExecutionContext, configuration: Configuration, operations: Operation[], item: Item) {
@@ -64,19 +72,21 @@ function processItemMatch(context: BotExecutionContext, configuration: Configura
   const operation = matches[0];
   if (!operation) {
     context.log('debug', 'Pas de correspondance trouvée')
-    return;
+    return false;
   }
 
   const newNote = formatNote(configuration, item);
   
   if ((operation.note || '').includes(newNote)) {
     context.log('debug', 'Correspondance trouvée, mais notes déjà présente. Rien à faire.');
-    return;
+    return false;
     
   }
   
   context.log('info', 'Correspondance trouvée, ajout des notes');
   business.operationAppendNote(newNote, operation._id);
+
+  return true;
 }
 
 function diffDays(date1: Date, date2: Date) {

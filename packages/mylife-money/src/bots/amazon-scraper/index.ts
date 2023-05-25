@@ -31,12 +31,19 @@ export default async function (context: BotExecutionContext) {
   }
 
   const operations = business.operationsGetUnsorted(new Date(min), new Date(max));
-
+  let updatedCount = 0;
   
   for (const order of orders) {
     context.log('debug', `Traitement de la commande '${order.id}' du '${order.date.toLocaleString('fr-fr')}'`);
-    processOrderMatch(context, configuration, operations, order);
+    if (processOrderMatch(context, configuration, operations, order)) {
+      ++updatedCount;
+    }
   }
+
+  context.log('info', `${updatedCount} opérations mises à jour`);
+
+  const movedCount = business.executeRules();
+  context.log('info', `Exécution des règles : ${movedCount} opérations classées`);
 }
 
 function processOrderMatch(context: BotExecutionContext, configuration: Configuration, operations: Operation[], order: Order) {
@@ -47,14 +54,14 @@ function processOrderMatch(context: BotExecutionContext, configuration: Configur
   switch (matches.length) {
   case 0:
     context.log('debug', 'Pas de correspondance trouvée.')
-    return;
+    return false;
 
   case 1:
     break;
 
   default:
     context.log('error', 'Plusieurs correspondances trouvées !')
-    return;
+    return false;
   }
 
   const operation = matches[0];
@@ -63,12 +70,13 @@ function processOrderMatch(context: BotExecutionContext, configuration: Configur
   
   if ((operation.note || '').includes(newNote)) {
     context.log('debug', 'Correspondance trouvée, mais notes déjà présente. Rien à faire.');
-    return;
-    
+    return false;
   }
   
   context.log('info', 'Correspondance trouvée, ajout des notes.');
   business.operationAppendNote(newNote, operation._id);
+
+  return true;
 }
 
 function diffDays(date1: Date, date2: Date) {
