@@ -3,6 +3,7 @@ import { NoopConfig, validate as noopValidate } from './config/noop';
 import { CicScraperConfig, validate as cicScraperValidate } from './config/cic-scraper';
 import { FraisScraperConfig, validate as fraisScraperValidate } from './config/frais-scraper';
 import { AmazonScraperConfig, validate as amazonScraperValidate } from './config/amazon-scraper';
+import { PaypalScraperConfig, validate as paypalScraperValidate } from './config/paypal-scraper';
 import CronCriteriaField, { validate as cronValidate } from './cron-criteria-field';
 
 type FIXME_any = any;
@@ -48,6 +49,7 @@ const DialogContent: React.FunctionComponent<{ bot: Bot; proceed: ProceedCallbac
                 <mui.MenuItem value={'cic-scraper'}>cic-scraper</mui.MenuItem>
                 <mui.MenuItem value={'frais-scraper'}>frais-scraper</mui.MenuItem>
                 <mui.MenuItem value={'amazon-scraper'}>amazon-scraper</mui.MenuItem>
+                <mui.MenuItem value={'paypal-scraper'}>paypal-scraper</mui.MenuItem>
               </mui.Select>
             </CriteriaField>
           </mui.Grid>
@@ -99,7 +101,7 @@ function botValuesReducer(state: Partial<Bot>, values: Partial<Bot>) {
   return { ...state, ...values };
 }
 
-function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper') {
+function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper' | 'paypal-scraper') {
   switch (type) {
     case 'noop':
       return NoopConfig;
@@ -109,6 +111,8 @@ function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'am
       return FraisScraperConfig;
     case 'amazon-scraper':
       return AmazonScraperConfig;
+    case 'paypal-scraper':
+      return PaypalScraperConfig;
     default:
       throw new Error(`Unknown bot type '${type}'`);
   }
@@ -125,9 +129,11 @@ function validate(values: Partial<Bot>) {
     case 'cic-scraper':
       return cicScraperValidate(values.configuration);
     case 'frais-scraper':
-      return amazonScraperValidate(values.configuration);
+      return fraisScraperValidate(values.configuration);
     case 'amazon-scraper':
-      return AmazonScraperConfig;
+      return amazonScraperValidate(values.configuration);
+    case 'paypal-scraper':
+      return paypalScraperValidate(values.configuration);
     default:
       return false;
   }

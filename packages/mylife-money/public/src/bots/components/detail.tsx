@@ -3,6 +3,7 @@ import { NoopConfig, NoopState } from './config/noop';
 import { CicScraperConfig, CicScraperState } from './config/cic-scraper';
 import { FraisScraperConfig, FraisScraperState } from './config/frais-scraper';
 import { AmazonScraperConfig, AmazonScraperState } from './config/amazon-scraper';
+import { PaypalScraperConfig, PaypalScraperState } from './config/paypal-scraper';
 import CronCriteriaField from './cron-criteria-field';
 
 type FIXME_any = any;
@@ -35,7 +36,7 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bo
 
 export default Detail;
 
-function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper') {
+function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper' | 'paypal-scraper') {
   switch(type) {
     case 'noop':
       return NoopConfig;
@@ -45,12 +46,14 @@ function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'am
       return FraisScraperConfig;
     case 'amazon-scraper':
       return AmazonScraperConfig;
+    case 'paypal-scraper':
+      return PaypalScraperConfig;
     default:
       throw new Error(`Unknown bot type '${type}'`);
   }
 }
 
-function getStateComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper') {
+function getStateComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper' | 'paypal-scraper') {
   switch(type) {
     case 'noop':
       return NoopState;
@@ -60,6 +63,8 @@ function getStateComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'ama
       return FraisScraperState;
     case 'amazon-scraper':
       return AmazonScraperState;
+    case 'paypal-scraper':
+      return PaypalScraperState;
     default:
       throw new Error(`Unknown bot type '${type}'`);
     }
