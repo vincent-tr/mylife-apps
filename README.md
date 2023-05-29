@@ -192,7 +192,6 @@ Storage actual test:
   - tous les mois un robot presente un summary (nombre d'ops non triées, graphiques, etc) par mail, avec le dernier fichier du scraper CIC
   - pouvoir intégrer à nagios ou mail des erreurs de bots
   - cleanup des runs
-- scraping PayPal (par scan des mails ou API ?)
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
