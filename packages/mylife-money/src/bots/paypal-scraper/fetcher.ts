@@ -41,7 +41,7 @@ async function fetchReceipt(client: ImapFlow, message: FetchMessageObject) {
   const { data } = await downloadBodyPart(client, message, part);
   // quoted-printable decoding + latin1 decoding
   const buffer = Buffer.from(quotedPrintable.decode(data.toString()), 'latin1');
-  const content = cheerio.load(data);
+  const content = cheerio.load(buffer);
 
   // console.log('ROOT', content.root().toString());
   
