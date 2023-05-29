@@ -104,16 +104,16 @@ async function processLookup(client: ImapFlow, configuration: ImapConfiguration)
   return fetchedList;
 }
 
-export function flattenNodes(node: MessageStructureObject) {
-  const childNodes = node.childNodes || [];
-  let results = childNodes;
+export function flattenNodes(node: MessageStructureObject, nodes: MessageStructureObject[] = []) {
+  nodes.push(node);
 
-  for (const node of childNodes) {
-    results = results.concat(flattenNodes(node));
+  for (const child of node.childNodes || []) {
+    flattenNodes(child, nodes);
   }
 
-  return results;
+  return nodes;
 }
+
 
 export async function downloadBodyPart(client: ImapFlow, message: FetchMessageObject, part: MessageStructureObject) {
   const { meta, content } = await client.download(message.uid.toString(), part.part, { uid: true });

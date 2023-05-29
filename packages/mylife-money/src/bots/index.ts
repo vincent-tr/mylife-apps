@@ -6,12 +6,14 @@ import { Bot, BotLogSeverity, BotExecutionContext } from './api';
 import cicScraper from './cic-scraper';
 import fraisScraper from './frais-scraper';
 import amazonScraper from './amazon-scraper';
+import paypalScraper from './paypal-scraper';
 import noop from './noop';
 
 const bots = {
   'cic-scraper': cicScraper,
   'frais-scraper': fraisScraper,
   'amazon-scraper': amazonScraper,
+  'paypal-scraper': paypalScraper,
   'noop': noop,
 }
 
