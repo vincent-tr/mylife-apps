@@ -1,7 +1,7 @@
 import { createLogger } from 'mylife-tools-server';
 import { BotExecutionContext } from '../api';
 import * as business from '../../business';
-import { Configuration, Receipt } from './common';
+import { Amount, Configuration, Receipt } from './common';
 import { fetch } from './fetcher';
 
 type FIXME_any = any;
@@ -54,7 +54,7 @@ function processReceiptMatch(context: BotExecutionContext, configuration: Config
 
   const operation = matches[0];
   if (!operation) {
-    context.log('debug', 'Pas de correspondance trouvée')
+    context.log('debug', 'Pas de correspondance trouvée');
     return false;
   }
   
@@ -82,5 +82,24 @@ function formatNote(configuration: Configuration, receipt: Receipt) {
 }
 
 function formatMetadata(receipt: Receipt) {
-  return `TODO ${receipt.id}`;
+  return [
+    `[${receipt.id}](${receipt.url})`,
+    ...receipt.transaction.map(it => `- ${it.name} : ${it.value}`),
+    '',
+    '| Description | P.U. | Qté | Montant |',
+    '| - | - | - | - |',
+    ...receipt.items.map(it => `| ${it.description} | ${formatAmount(it.unitPrice)} | ${it.quantity} | ${formatAmount(it.amount)}`),
+    '',
+    'Totaux',
+    '',
+    ...receipt.totals.map(it => `- ${it.name} : ${formatAmount(it.amount)}`),
+    '',
+    'Sources',
+    '',
+    ...receipt.sources.map(it => `- ${it.name} : ${formatAmount(it.amount)}`),
+  ].join('\n');
+}
+
+function formatAmount(amount: Amount) {
+  return amount.value.toFixed(2) + ' ' + amount.currency;
 }

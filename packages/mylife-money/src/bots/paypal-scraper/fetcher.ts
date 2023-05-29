@@ -18,7 +18,7 @@ export async function fetch(context: BotExecutionContext, configuration: Configu
         recipts.push(await fetchReceipt(client, message));
       }
       catch (err) {
-        context.log('error', `Erreur au traitement du mail '${message.uid}' (${message.envelope.date.toLocaleString('fr-fr')}, '${message.envelope.subject}' de '${message.envelope.from[0].address}): ${err.stack}`);
+        context.log('warning', `Erreur au traitement du mail '${message.uid}' (${message.envelope.date.toLocaleString('fr-fr')}, '${message.envelope.subject}' de '${message.envelope.from[0].address}): ${err.stack}`);
       }
     }
 
