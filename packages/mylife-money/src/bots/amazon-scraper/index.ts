@@ -3,6 +3,7 @@ import { BotExecutionContext } from '../api';
 import * as business from '../../business';
 import { Configuration, Order } from './common';
 import { fetch } from './fetcher';
+import { selectOperations } from '../mail-scraper-helper';
 
 type FIXME_any = any;
 type Operation = FIXME_any;
@@ -20,17 +21,7 @@ export default async function (context: BotExecutionContext) {
   }
 
   const orders = await fetch(context, configuration);
-
-  // Compute min/max date and select operations to lookup
-  let min = Infinity;
-  let max = -Infinity;
-
-  for (const order of orders) {
-    min = Math.min(min, order.date.valueOf());
-    max = Math.max(max, order.date.valueOf());
-  }
-
-  const operations = business.operationsGetUnsorted(new Date(min), new Date(max));
+  const operations = selectOperations(orders, configuration);
   let updatedCount = 0;
   
   for (const order of orders) {

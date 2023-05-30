@@ -3,6 +3,7 @@ import { Configuration, Item } from './common';
 import { download } from './downloader';
 import { JulieParser, VincentParser } from './parser';
 import * as business from '../../business';
+import { selectOperations } from '../mail-scraper-helper';
 
 const PARSERS = {
   'julie': new JulieParser(),
@@ -36,16 +37,7 @@ export default async function (context: BotExecutionContext) {
 
   context.log('info', `${items.length} lignes trouvées`);
 
-  // Compute min/max date and select operations to lookup
-  let min = Infinity;
-  let max = -Infinity;
-
-  for (const item of items) {
-    min = Math.min(min, item.date.valueOf());
-    max = Math.max(max, item.date.valueOf());
-  }
-
-  const operations = business.operationsGetUnsorted(new Date(min), new Date(max));
+  const operations = selectOperations(items, configuration);
   let updatedCount = 0;
 
   for (const item of items) {

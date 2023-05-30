@@ -4,6 +4,7 @@ import { ImapFlow, FetchMessageObject, MessageStructureObject } from 'imapflow';
 import { createLogger } from 'mylife-tools-server';
 import { BotExecutionContext } from './api';
 import { processSecret } from './helpers';
+import * as business from '../business';
 
 export { ImapFlow, FetchMessageObject, MessageStructureObject };
 
@@ -133,4 +134,30 @@ async function stream2buffer(stream: Stream): Promise<Buffer> {
     stream.on('end', () => resolve(Buffer.concat(buf)));
     stream.on('error', err => reject(new Error(`error converting stream - ${err}`)));
   });
+}
+
+export function selectOperations<TItem extends { date: Date; }, TConfiguration extends { matchDaysDiff: number; }>(items: TItem[], configuration: TConfiguration) {
+  if (items.length === 0) {
+    return [];
+  }
+
+  // Compute min/max date and select operations to lookup
+  let min = Infinity;
+  let max = -Infinity;
+
+  for (const item of items) {
+    min = Math.min(min, item.date.valueOf());
+    max = Math.max(max, item.date.valueOf());
+  }
+
+  const minDate = addDays(new Date(min), -configuration.matchDaysDiff);
+  const maxDate = addDays(new Date(max), configuration.matchDaysDiff);
+
+  return business.operationsGetUnsorted(minDate, maxDate);
+}
+
+function addDays(date: Date, days: number) {
+  const newDate = new Date(date.valueOf());
+  newDate.setDate(newDate.getDate() + days);
+  return newDate;
 }
