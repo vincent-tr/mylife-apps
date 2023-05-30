@@ -1,4 +1,4 @@
-import * as cheerio from 'cheerio/lib/slim'; // Note: parse5 seems to not like webpack packaging
+import * as cheerio from 'cheerio/lib/slim'; // Note: html-parser2 seems to not parse delivery address properly, but parse5 seems to not like webpack packaging
 import * as quotedPrintable from 'quoted-printable';
 import { BotExecutionContext } from '../api';
 import { ImapFlow, FetchMessageObject, downloadBodyPart, mailProcess, flattenNodes } from '../mail-scraper-helper';
