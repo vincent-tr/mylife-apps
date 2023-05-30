@@ -63,7 +63,7 @@ function processItemMatch(context: BotExecutionContext, configuration: Configura
 
   const operation = matches[0];
   if (!operation) {
-    context.log('debug', 'Pas de correspondance trouvée')
+    context.log('debug', 'Pas de correspondance trouvée');
     return false;
   }
 
