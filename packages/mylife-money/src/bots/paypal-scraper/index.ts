@@ -75,11 +75,11 @@ function formatNote(configuration: Configuration, receipt: Receipt) {
 function formatMetadata(receipt: Receipt) {
   return [
     `[${receipt.id}](${receipt.url})`,
-    ...receipt.transaction.map(it => `- ${it.name} : ${it.value}`),
+    ...receipt.transaction.map(it => `- ${it.name} : ${it.value.join(' - ')}`),
     '',
     '| Description | P.U. | Qté | Montant |',
     '| - | - | - | - |',
-    ...receipt.items.map(it => `| ${it.description} | ${formatAmount(it.unitPrice)} | ${it.quantity} | ${formatAmount(it.amount)}`),
+    ...receipt.items.map(it => `| ${it.description.join(' - ')} | ${formatAmount(it.unitPrice)} | ${it.quantity} | ${formatAmount(it.amount)}`),
     '',
     'Totaux',
     '',
