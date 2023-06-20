@@ -1,0 +1,10 @@
+{
+  "extends": "../../mylife-tools-build/ui/tsconfig.json",
+  "include": [
+      "src/main.tsx"
+  ],
+  // make react-image-pan-zoom-rotate work
+  "compilerOptions": {
+    "skipLibCheck": true,
+  }
+}

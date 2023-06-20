@@ -6,6 +6,8 @@
   "repository": "https://github.com/vincent-tr/mylife-energy",
   "author": "Vincent Trumpff",
   "scripts": {
+    "ui-tsc:watch": "mylife-ui-watch-tsc",
+    "ui-vite:watch": "VITE_WEB_PORT=8017 VITE_WSTARGET_PORT=8117 mylife-ui-watch-vite",
     "lint": "eslint lib/* public/app/*",
     "server:watch": "mylife-server-watch",
     "start-collector:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_SERVER=${BUS_SERVER:-tcp://rpi-dev-home-main} node dist/dev/server.js --loglevel=debug --config=./conf/config.json --collector",
@@ -19,7 +21,8 @@
   },
   "devDependencies": {
     "eslint": "^8.18.0",
-    "mylife-tools-build": "^2.0.1"
+    "mylife-tools-build": "^2.0.1",
+    "mylife-tools-ui": "^1.1.7"
   },
   "license": "GPL-3.0+"
 }
