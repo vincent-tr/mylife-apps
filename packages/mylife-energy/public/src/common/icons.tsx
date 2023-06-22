@@ -8,8 +8,8 @@ const {
 } = mui.icons;
 
 const Energy = (props) => (
-  <mui.SvgIcon viewBox="0 0 24 24" {...props}>
-    <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+  <mui.SvgIcon viewBox="0 0 88.408 88.408" {...props}>
+    <polygon points="67.41,0 34.256,0 20.999,47.732 34.283,47.732 22.988,88.408 26.967,88.408 65.418,40.674 45.939,40.674"/>
   </mui.SvgIcon>  
 );
 
