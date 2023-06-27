@@ -4,7 +4,8 @@ import { React, mui } from 'mylife-tools-ui';
 
 const {
   Info,
-  CloudDownload
+  CloudDownload,
+  LiveTv
 } = mui.icons;
 
 const Energy = (props) => (
@@ -21,4 +22,8 @@ export default {
     Detail: Info,
     Download: CloudDownload,
   },
+
+  tabs: {
+    Live: LiveTv
+  }
 };

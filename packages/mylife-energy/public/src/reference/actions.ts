@@ -3,7 +3,7 @@ import { SENSORS } from './view-ids';
 
 const sensorViewRef = new views.ViewReference({
   uid: SENSORS,
-  service: 'common',
+  service: 'live',
   method: 'notifySensors'
 });
 
