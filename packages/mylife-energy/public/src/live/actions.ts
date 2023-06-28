@@ -2,9 +2,9 @@ import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
 
 const sensorViewRef = new views.ViewReference({
-  uid: viewUids.SENSORS,
+  uid: viewUids.DEVICES,
   service: 'live',
-  method: 'notifySensors'
+  method: 'notifyDevices'
 });
 
 const measureViewRef = new views.ViewReference({
