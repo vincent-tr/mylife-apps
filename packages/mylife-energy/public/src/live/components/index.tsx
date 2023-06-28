@@ -1,11 +1,11 @@
 import { React, mui, useMemo, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
-import { getSensorView, getMeasureView } from '../selectors';
+import { getDeviceView, getMeasureView } from '../selectors';
 
 type FIXME_any = any;
 
 const Live = () => {
-  const { enter, leave, sensors, measures } = useConnect();
+  const { enter, leave, devices, measures } = useConnect();
   useLifecycle(enter, leave);
 
   return (
@@ -14,18 +14,20 @@ const Live = () => {
         <mui.TableHead>
           <mui.TableRow>
             <mui.TableCell>{'Id'}</mui.TableCell>
-            <mui.TableCell>{'Timestamp'}</mui.TableCell>
-            <mui.TableCell>{'Value'}</mui.TableCell>
-            <mui.TableCell>{'Unit'}</mui.TableCell>
+            <mui.TableCell>{'Display'}</mui.TableCell>
+            <mui.TableCell>{'Type'}</mui.TableCell>
+            <mui.TableCell>{'Parent'}</mui.TableCell>
+            <mui.TableCell>{'Sensors'}</mui.TableCell>
           </mui.TableRow>
         </mui.TableHead>
         <mui.TableBody>
-          {measures.valueSeq().filter(item => item._id.endsWith('-current')).sortBy(item => item._id).map(item => (
+          {devices.valueSeq().sortBy(item => item._id).map(item => (
             <mui.TableRow key={item._id}>
               <mui.TableCell>{item._id}</mui.TableCell>
-              <mui.TableCell>{item.timestamp.toLocaleString()}</mui.TableCell>
-              <mui.TableCell>{item.value}</mui.TableCell>
-              <mui.TableCell>{'TODO'}</mui.TableCell>
+              <mui.TableCell>{item.display}</mui.TableCell>
+              <mui.TableCell>{item.type}</mui.TableCell>
+              <mui.TableCell>{item.parent}</mui.TableCell>
+              <mui.TableCell>{formatSensors(item, measures)}</mui.TableCell>
             </mui.TableRow>
           ))}
         </mui.TableBody>
@@ -34,13 +36,28 @@ const Live = () => {
   );
 };
 
+function formatSensors(device, measures) {
+  const parts: string[] = [];
+
+  for (const sensor of device.sensors) {
+    const measure = measures.get(`${device._id}-${sensor.key}`);
+    if (!measure) {
+      continue
+    }
+
+    parts.push(`${sensor.display} = ${measure.value.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`);
+  }
+
+  return parts.join(', ')
+}
+
 export default Live;
 
 function useConnect() {
   const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
-      sensors: getSensorView(state),
+      devices: getDeviceView(state),
       measures: getMeasureView(state)
     })),
     ...useMemo(() => ({
