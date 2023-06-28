@@ -16,7 +16,6 @@ const Live = () => {
             <mui.TableCell>{'Id'}</mui.TableCell>
             <mui.TableCell>{'Display'}</mui.TableCell>
             <mui.TableCell>{'Type'}</mui.TableCell>
-            <mui.TableCell>{'Parent'}</mui.TableCell>
             <mui.TableCell>{'Sensors'}</mui.TableCell>
           </mui.TableRow>
         </mui.TableHead>
@@ -26,7 +25,6 @@ const Live = () => {
               <mui.TableCell>{item._id}</mui.TableCell>
               <mui.TableCell>{item.display}</mui.TableCell>
               <mui.TableCell>{item.type}</mui.TableCell>
-              <mui.TableCell>{item.parent}</mui.TableCell>
               <mui.TableCell>{formatSensors(item, measures)}</mui.TableCell>
             </mui.TableRow>
           ))}
