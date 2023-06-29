@@ -16,6 +16,7 @@ const Live = () => {
             <mui.TableCell>{'Id'}</mui.TableCell>
             <mui.TableCell>{'Display'}</mui.TableCell>
             <mui.TableCell>{'Type'}</mui.TableCell>
+            <mui.TableCell>{'Update'}</mui.TableCell>
             <mui.TableCell>{'Sensors'}</mui.TableCell>
           </mui.TableRow>
         </mui.TableHead>
@@ -25,6 +26,7 @@ const Live = () => {
               <mui.TableCell>{item._id}</mui.TableCell>
               <mui.TableCell>{item.display}</mui.TableCell>
               <mui.TableCell>{item.type}</mui.TableCell>
+              <mui.TableCell>{formatUpdate(item, measures)}</mui.TableCell>
               <mui.TableCell>{formatSensors(item, measures)}</mui.TableCell>
             </mui.TableRow>
           ))}
@@ -47,6 +49,22 @@ function formatSensors(device, measures) {
   }
 
   return parts.join(', ')
+}
+
+function formatUpdate(device, measures) {
+  let date = new Date()
+  for (const sensor of device.sensors) {
+    const measure = measures.get(`${device._id}-${sensor.key}`);
+    if (!measure) {
+      continue
+    }
+
+    if (measure.timestamp < date) {
+      date = measure.timestamp
+    }
+  }
+
+  return date.toLocaleString()
 }
 
 export default Live;
