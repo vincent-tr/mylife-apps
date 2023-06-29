@@ -12,6 +12,7 @@
     "server:watch": "mylife-server-watch",
     "start-collector:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_SERVER=${BUS_SERVER:-tcp://rpi-dev-home-main} node dist/dev/server.js --loglevel=debug --config=./conf/config.json --collector",
     "build:prod": "mylife-server-build",
+    "ui-build:prod": "mylife-ui-build",
     "docker-publish-only": "mylife-publish",
     "docker-publish": "mylife-server-build && mylife-publish"
   },
