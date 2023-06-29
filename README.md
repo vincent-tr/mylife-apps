@@ -17,6 +17,10 @@ MyLife Applications
 
 _FIXME: apres `lerna bootstrap` il faut enlever `packages/mylife-money/node_modules/@types/react` sinon `npm run docker-publish` ne fonctionne pas._
 
+## Go build
+
+- `cd go/repo; `
+
 # Framework (tools)
 
 ## Organization
@@ -90,9 +94,9 @@ _FIXME: apres `lerna bootstrap` il faut enlever `packages/mylife-money/node_modu
 - indexes (auto create on requests ?)
 - dataview with filters and event on change
 
-### Energy timeseries
+### Energy
 
-#### Storage
+#### Storage timeseries
 
 Mongo standard storage : 
 
@@ -135,6 +139,27 @@ Sensors:
 Storage actual test:
 - 100 000 measures need 575k storage
 - => 906MB / year
+
+#### Setup notes
+
+##### Mongo
+
+index for live query
+```
+db.measures.createIndex( { "sensor.sensorId": 1,  "timestamp": -1 } );
+```
+
+##### Tesla API
+
+get token : (work only using master branch currently)
+```
+git clone https://github.com/bogosj/tesla.git
+cd tesla
+go get
+cd cmd/login
+go work use ../..
+go run . -o ~/tesla.token
+```
 
 # TODO
 
