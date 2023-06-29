@@ -170,7 +170,7 @@ async function download(context: BotExecutionContext, agent: Agent) {
 
     const content = cheerio.load(responseTelechargement.data);
 
-    const form = content(`form[id='P1:F']`);
+    const form = content(`form[id='P:F']`);
     const action = decodeURIComponent(form.attr('action') || '');
     const cpt = form.find(`input[name='_CPT']`).first().attr('value');
 
