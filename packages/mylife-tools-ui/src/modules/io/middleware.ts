@@ -7,7 +7,7 @@ import NotifyEngine from './engines/notify';
 
 export default (/*store*/) => next => {
 
-  const socket = io();
+  const socket = io({ transports: ['websocket', 'polling'] });
   const emitter = (message) => socket.emit('message', serializer.serialize(message));
 
   const engines = {
