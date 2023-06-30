@@ -6,6 +6,7 @@ import (
 	"mylife-tools-server/services/api"
 	"mylife-tools-server/services/io/serialization"
 	"mylife-tools-server/services/sessions"
+	"mylife-tools-server/services/tasks"
 	"reflect"
 
 	socketio "github.com/vchitai/go-socket.io/v4"
@@ -114,7 +115,7 @@ func (ios *ioSession) dispatch(data map[string]interface{}) {
 		return
 	}
 
-	SubmitIoTask(fmt.Sprintf("call/%s/%s", input.Service, input.Method), func() {
+	tasks.SubmitEventLoop(fmt.Sprintf("call/%s/%s", input.Service, input.Method), func() {
 		methodInput := reflect.New(method.InputType())
 		if err := jsonObj.Unmarshal(methodInput.Interface()); err != nil {
 			logger.WithError(err).WithField("sessionId", ios.session.Id()).Error("Unmarshal error")

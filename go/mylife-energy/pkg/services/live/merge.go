@@ -3,8 +3,8 @@ package live
 import (
 	"fmt"
 	"mylife-energy/pkg/entities"
-	"mylife-tools-server/services/io"
 	"mylife-tools-server/services/store"
+	"mylife-tools-server/services/tasks"
 	"strings"
 	"time"
 
@@ -85,7 +85,7 @@ func (m *merger) deviceOrSensorChanged() {
 
 	m.pendingDeviceUpdate = true
 
-	io.SubmitIoTask("live/compute-devices", m.computeDevices)
+	tasks.SubmitEventLoop("live/compute-devices", m.computeDevices)
 }
 
 func (m *merger) computeDevices() {
@@ -214,7 +214,7 @@ func (m *merger) measuresChanged() {
 
 	m.pendingMeasureUpdate = true
 
-	io.SubmitIoTask("live/compute-measures", m.computeMeasures)
+	tasks.SubmitEventLoop("live/compute-measures", m.computeMeasures)
 }
 
 func (m *merger) computeMeasures() {

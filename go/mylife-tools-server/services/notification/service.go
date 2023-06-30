@@ -29,7 +29,7 @@ func (service *notificationService) ServiceName() string {
 }
 
 func (service *notificationService) Dependencies() []string {
-	return []string{"sessions", "io"}
+	return []string{"sessions", "io", "tasks"}
 }
 
 func (service *notificationService) getNotifications(session *sessions.Session) *notificationSession {

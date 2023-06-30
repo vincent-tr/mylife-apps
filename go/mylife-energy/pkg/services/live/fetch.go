@@ -4,8 +4,8 @@ import (
 	"context"
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/query"
-	"mylife-tools-server/services/io"
 	"mylife-tools-server/services/store"
+	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
 	"sync"
 	"time"
@@ -77,7 +77,7 @@ func (f *fetcher) sync() {
 
 	f.pendingSync.Add(1)
 
-	err = io.SubmitIoTask("live/fetch", func() {
+	err = tasks.SubmitEventLoop("live/fetch", func() {
 		newMeasures := make([]*entities.Measure, 0, len(results))
 		newSensors := make([]*entities.Sensor, 0, len(results))
 

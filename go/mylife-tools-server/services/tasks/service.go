@@ -21,7 +21,9 @@ type taskService struct {
 func (service *taskService) Init(arg interface{}) error {
 	service.queues = make(map[string]*taskQueue)
 
-	return nil
+	// Queue for main processing (like event loop).
+	// It should only process short tasks without wait
+	return CreateQueue("event-loop")
 }
 
 func (service *taskService) Terminate() error {
@@ -97,4 +99,8 @@ func Submit(queueId string, taskName string, taskImpl Task) error {
 	}
 
 	return queue.submit(taskName, taskImpl)
+}
+
+func SubmitEventLoop(taskName string, taskImpl Task) error {
+	return Submit("event-loop", taskName, taskImpl)
 }
