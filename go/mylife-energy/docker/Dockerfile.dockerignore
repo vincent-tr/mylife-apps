@@ -1,0 +1,7 @@
+*
+!/go/mylife-energy
+!/go/mylife-tools-server
+!/go.work
+!/packages/mylife-energy/dist/prod
+!/packages/mylife-energy/*.go
+!/packages/mylife-energy/go.mod
