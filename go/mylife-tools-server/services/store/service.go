@@ -55,8 +55,7 @@ func (service *storeService) ServiceName() string {
 }
 
 func (service *storeService) Dependencies() []string {
-	// io because we use io queue
-	return []string{"database", "io", "tasks"}
+	return []string{"database", "tasks"}
 }
 
 func (service *storeService) getCollection(name string) (genericInternalCollection, error) {

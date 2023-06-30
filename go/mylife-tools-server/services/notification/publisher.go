@@ -5,6 +5,7 @@ import (
 	"mylife-tools-server/services/io"
 	"mylife-tools-server/services/sessions"
 	"mylife-tools-server/services/store"
+	"mylife-tools-server/services/tasks"
 )
 
 type notifySetPayload struct {
@@ -88,7 +89,7 @@ func (publisher *viewPublisher[TEntity]) close() {
 }
 
 func (publisher *viewPublisher[TEntity]) submitPendings() {
-	io.SubmitIoTask(fmt.Sprintf("notify/%d", publisher.id), func() {
+	tasks.SubmitEventLoop(fmt.Sprintf("notify/%d", publisher.id), func() {
 		payload := &notifyPayload{View: publisher.id, List: publisher.pendings}
 		io.NotifySession(*publisher.session, payload)
 

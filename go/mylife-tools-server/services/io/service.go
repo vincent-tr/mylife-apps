@@ -5,7 +5,6 @@ import (
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/tasks"
 	"net/http"
 
 	socketio "github.com/vchitai/go-socket.io/v4"
@@ -22,10 +21,6 @@ type ioService struct {
 }
 
 func (service *ioService) Init(arg interface{}) error {
-	if err := tasks.CreateQueue("io"); err != nil {
-		return err
-	}
-
 	service.server = socketio.NewServer(nil)
 
 	service.server.OnConnect("/", func(socket socketio.Conn, dispatchData map[string]interface{}) error {
@@ -88,11 +83,7 @@ func (service *ioService) Init(arg interface{}) error {
 }
 
 func (service *ioService) Terminate() error {
-	if err := service.server.Close(); err != nil {
-		return err
-	}
-
-	return tasks.CloseQueue("io")
+	return service.server.Close()
 }
 
 func (service *ioService) ServiceName() string {
@@ -129,8 +120,4 @@ func GetHandler() http.Handler {
 func NotifySession(session sessions.Session, notification any) {
 	ios := session.GetStateObject("io").(*ioSession)
 	ios.notify(notification)
-}
-
-func SubmitIoTask(name string, impl tasks.Task) error {
-	return tasks.Submit("io", name, impl)
 }

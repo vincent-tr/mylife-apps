@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services/database"
-	"mylife-tools-server/services/io"
 	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
 
@@ -153,7 +152,7 @@ func (updater *collectionUpdater[TEntity]) dbWatcher(exit chan struct{}) {
 
 	logger.WithField("collectionName", updater.col.Name()).Debugf("Fetched %d records", len(initialObjs))
 
-	io.SubmitIoTask(fmt.Sprintf("store-updater/%s-load", updater.col.Name()), func() {
+	tasks.SubmitEventLoop(fmt.Sprintf("store-updater/%s-load", updater.col.Name()), func() {
 		updater.databaseUpdating = true
 		updater.col.container.ReplaceAll(initialObjs, nil)
 		updater.databaseUpdating = false
@@ -192,7 +191,7 @@ func (updater *collectionUpdater[TEntity]) handleDbChange(change *changeEvent) {
 			return
 		}
 
-		io.SubmitIoTask(fmt.Sprintf("store-updater/%s-set", updater.col.Name()), func() {
+		tasks.SubmitEventLoop(fmt.Sprintf("store-updater/%s-set", updater.col.Name()), func() {
 			updater.databaseUpdating = true
 			updater.col.Set(obj)
 			updater.databaseUpdating = false
@@ -201,7 +200,7 @@ func (updater *collectionUpdater[TEntity]) handleDbChange(change *changeEvent) {
 	case "delete":
 		id := database.DecodeId(change.DocumentKey.Id)
 
-		io.SubmitIoTask(fmt.Sprintf("store-updater/%s-set", updater.col.Name()), func() {
+		tasks.SubmitEventLoop(fmt.Sprintf("store-updater/%s-set", updater.col.Name()), func() {
 			updater.databaseUpdating = true
 			updater.col.Delete(id)
 			updater.databaseUpdating = false

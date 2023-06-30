@@ -45,8 +45,7 @@ func (service *liveService) ServiceName() string {
 }
 
 func (service *liveService) Dependencies() []string {
-	// io because we use io queue
-	return []string{"query", "io", "tasks", "store"}
+	return []string{"query", "tasks", "store"}
 }
 
 func init() {
