@@ -1,35 +1,33 @@
-package main
+package cmd
 
 import (
 	ui "mylife-energy-ui"
 	"mylife-energy/pkg/api"
 	"mylife-energy/pkg/entities"
-	"mylife-energy/pkg/services/tesla"
-	"mylife-energy/pkg/services/tesla_wall_connector"
-	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	_ "mylife-tools-server/services/api"
 	_ "mylife-tools-server/services/web"
+
+	"github.com/spf13/cobra"
 )
 
-/*
-next :
-- go web server (pour prod)
-- go client packaging (pour prod)
-*/
+func init() {
+	rootCmd.AddCommand(&cobra.Command{
+		Use:   "web",
+		Short: "Starts the web server",
+		Run: func(_ *cobra.Command, _ []string) {
+			args := map[string]interface{}{
+				"api":   api.Definitions,
+				"store": entities.StoreDef,
+				"web":   ui.FS,
+			}
 
-var logger = log.CreateLogger("mylife:energy:test")
-
-func main() {
-	args := map[string]interface{}{
-		"api":   api.Definitions,
-		"store": entities.StoreDef,
-		"web":   ui.FS,
-	}
-
-	services.RunServices([]string{ /*"test",*/ "web", "live", "store"}, args)
+			services.RunServices([]string{"web", "live"}, args)
+		},
+	})
 }
 
+/*
 type testService struct {
 }
 
@@ -79,3 +77,4 @@ func (service *testService) Dependencies() []string {
 func init() {
 	services.Register(&testService{})
 }
+*/
