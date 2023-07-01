@@ -232,3 +232,14 @@ go run . -o ~/tesla.token
 ## Explorer
 
 - Bug sur affichage fichier texte ou json
+
+## Energy
+
+- Corriger les données inversées au début :
+  - ct8 (pos4) => clims
+  - ct9 (pos5) => radiateurs
+  - ct10 (pos4) => cumulus => inversé jusqu'au 01/07/2023 9h43
+  - ct11 (pos3) => lave linge
+  - ct12 (pos4) => plaques cuisson
+  - ct13 (pos3) => four
+  - ct14 (pos3) => lave vaisselle
