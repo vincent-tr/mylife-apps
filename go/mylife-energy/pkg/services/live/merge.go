@@ -13,9 +13,10 @@ import (
 )
 
 type merger struct {
-	measures store.IContainer[*entities.Measure]
-	sensors  store.IContainer[*entities.Sensor]
-	devices  store.IContainer[*entities.Device]
+	measures         store.IContainer[*entities.Measure]
+	adjustedMeasures *store.Container[*entities.Measure]
+	sensors          store.IContainer[*entities.Sensor]
+	devices          store.IContainer[*entities.Device]
 
 	measuresChangedCallback func(event *store.Event[*entities.Measure])
 	sensorsChangedCallback  func(event *store.Event[*entities.Sensor])
@@ -221,6 +222,12 @@ func (m *merger) measuresChanged() {
 func (m *merger) computeMeasures() {
 	m.pendingMeasureUpdate = false
 
+	// Note very efficient ...
+	m.adjustedMeasures = store.NewContainer[*entities.Measure]("adjusted-measures")
+	m.adjustedMeasures.ReplaceAll(m.measures.List(), nil)
+
+	m.ajustLinkyData()
+
 	newMeasures := make([]*entities.Measure, 0)
 
 	for _, liveDevice := range m.liveDevices.List() {
@@ -274,7 +281,7 @@ func (m *merger) computeNodeMeasures(newMeasures *[]*entities.Measure, liveDevic
 func (m *merger) findMeasureValue(deviceId string, sensorKey string) *entities.Measure {
 	id := fmt.Sprintf("%s-%s", deviceId, sensorKey)
 
-	measure, exists := m.measures.Find(id)
+	measure, exists := m.adjustedMeasures.Find(id)
 	if !exists {
 		logger.WithField("id", id).Warn("Missing measure")
 		return nil
@@ -373,4 +380,43 @@ func (m *merger) listDeviceByParent(deviceId string) []*entities.Device {
 
 func (m *merger) listDeviceByType(deviceType entities.DeviceType) []*entities.Device {
 	return m.devices.Filter(func(obj *entities.Device) bool { return obj.Type() == deviceType })
+}
+
+func (m *merger) ajustLinkyData() {
+
+	device := m.findFirstDeviceByType(entities.Main)
+	if device == nil {
+		logger.Warn("Main device not found")
+		return
+	}
+
+	apparentPower := m.findMeasureValue(device.DeviceId(), "apparent-power")
+	current := m.findMeasureValue(device.DeviceId(), "current")
+	voltage := m.findMeasureValue("epanel-ct", "voltage")
+
+	if apparentPower == nil || current == nil || voltage == nil {
+		return
+	}
+
+	// Ajust linky measures : if apparent-power = 0 && current > 0 then it is exported, let's make it negative
+
+	if apparentPower.Value() == 0 && current.Value() > 0 {
+		currentValue := -current.Value()
+		apparentPowerValue := currentValue * voltage.Value()
+
+		m.ajustMeasure(apparentPower, apparentPowerValue)
+		m.ajustMeasure(current, currentValue)
+	}
+}
+
+func (m *merger) ajustMeasure(measure *entities.Measure, newValue float64) {
+
+	newMeasure := entities.NewMeasure(&entities.MeasureData{
+		Id:        measure.Id(),
+		Sensor:    measure.Sensor(),
+		Timestamp: measure.Timestamp(),
+		Value:     newValue,
+	})
+
+	m.adjustedMeasures.Set(newMeasure)
 }
