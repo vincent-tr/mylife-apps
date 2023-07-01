@@ -1,5 +1,5 @@
-import sensor from'./entities/sensor';
-import measure from'./entities/measure';
+import sensor from './entities/sensor';
+import measure from './entities/measure';
 
 export default {
   datatypes: [],
@@ -8,3 +8,7 @@ export default {
     measure
   ]
 };
+
+export * from './entities/sensor';
+export * from './entities/measure';
+export * from './entities/live-device';
