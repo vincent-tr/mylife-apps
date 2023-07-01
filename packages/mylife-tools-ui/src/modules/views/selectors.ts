@@ -1,5 +1,3 @@
-'use strict';
-
 import { getInternalState } from '../../selectors/base';
 import * as io from '../io';
 

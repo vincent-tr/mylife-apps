@@ -9,3 +9,10 @@ export default {
   ],
   display: obj => `${obj.date} => ${obj.value}`
 };
+
+export interface Measure {
+  _id: string;
+  timestamp: Date;
+  sensor: string;
+  value: number;
+}

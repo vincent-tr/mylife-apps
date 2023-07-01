@@ -11,3 +11,13 @@ export default {
   ],
   display: obj => `${obj.date} => ${obj.value}`
 };
+
+export interface Sensor {
+  _id: string;
+  sensorId: string;
+  sensor: string;
+  deviceClass: string;
+  stateClass: string;
+  unitOfMeasurement: string;
+  accuracyDecimals: number;
+}
