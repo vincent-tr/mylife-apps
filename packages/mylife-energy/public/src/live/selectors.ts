@@ -5,4 +5,4 @@ import { Measure } from '../../../shared/metadata/entities/measure';
 
 const getLive = state => state.live;
 export const getDeviceView = state => views.getView(state, viewUids.DEVICES) as views.View<LiveDevice>;
-export const getMeasureView = state => views.getView(state, viewUids.MEASURES) as views.View<LiveDMeasureevice>;
+export const getMeasureView = state => views.getView(state, viewUids.MEASURES) as views.View<Measure>;
