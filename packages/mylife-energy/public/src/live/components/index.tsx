@@ -13,9 +13,9 @@ const Live = () => {
       <mui.Table size='small' stickyHeader>
         <mui.TableHead>
           <mui.TableRow>
-            <mui.TableCell>{'Id'}</mui.TableCell>
             <mui.TableCell>{'Display'}</mui.TableCell>
             <mui.TableCell>{'Type'}</mui.TableCell>
+            <mui.TableCell>{'Computed'}</mui.TableCell>
             <mui.TableCell>{'Update'}</mui.TableCell>
             <mui.TableCell>{'Sensors'}</mui.TableCell>
           </mui.TableRow>
@@ -23,9 +23,9 @@ const Live = () => {
         <mui.TableBody>
           {devices.valueSeq().sortBy(item => item._id).map(item => (
             <mui.TableRow key={item._id}>
-              <mui.TableCell>{item._id}</mui.TableCell>
               <mui.TableCell>{item.display}</mui.TableCell>
               <mui.TableCell>{item.type}</mui.TableCell>
+              <mui.TableCell>{item.computed ? 'Yes' : 'No'}</mui.TableCell>
               <mui.TableCell>{formatUpdate(item, measures)}</mui.TableCell>
               <mui.TableCell>{formatSensors(item, measures)}</mui.TableCell>
             </mui.TableRow>

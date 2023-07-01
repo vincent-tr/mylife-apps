@@ -8,10 +8,11 @@ import (
 )
 
 type LiveDevice struct {
-	id      string
-	display string
-	typ     DeviceType
-	sensors []LiveSensor
+	id       string
+	display  string
+	typ      DeviceType
+	computed bool
+	sensors  []LiveSensor
 }
 
 func (device *LiveDevice) Id() string {
@@ -26,6 +27,10 @@ func (device *LiveDevice) Type() DeviceType {
 	return device.typ
 }
 
+func (device *LiveDevice) Computed() bool {
+	return device.computed
+}
+
 func (device *LiveDevice) Sensors() []LiveSensor {
 	return device.sensors
 }
@@ -36,6 +41,7 @@ func (device *LiveDevice) Marshal() (interface{}, error) {
 	helper.Add("_id", device.id)
 	helper.Add("display", device.display)
 	helper.Add("type", device.typ)
+	helper.Add("computed", device.computed)
 	helper.Add("sensors", device.sensors)
 
 	return helper.Build()
@@ -44,7 +50,8 @@ func (device *LiveDevice) Marshal() (interface{}, error) {
 func LiveDevicesEqual(a *LiveDevice, b *LiveDevice) bool {
 	if a.id != b.id ||
 		a.display != b.display ||
-		a.typ != b.typ {
+		a.typ != b.typ ||
+		a.computed != b.computed {
 		return false
 	}
 
@@ -117,10 +124,11 @@ func LiveSensorsEqual(a *LiveSensor, b *LiveSensor) bool {
 }
 
 type LiveDeviceData struct {
-	Id      string
-	Display string
-	Type    DeviceType
-	Sensors []LiveSensorData
+	Id       string
+	Display  string
+	Type     DeviceType
+	Computed bool
+	Sensors  []LiveSensorData
 }
 
 type LiveSensorData struct {
@@ -160,9 +168,10 @@ func NewLiveDevice(data *LiveDeviceData) *LiveDevice {
 	})
 
 	return &LiveDevice{
-		id:      data.Id,
-		display: data.Display,
-		typ:     data.Type,
-		sensors: sensors,
+		id:       data.Id,
+		display:  data.Display,
+		typ:      data.Type,
+		computed: data.Computed,
+		sensors:  sensors,
 	}
 }
