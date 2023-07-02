@@ -235,11 +235,13 @@ go run . -o ~/tesla.token
 
 ## Energy
 
-- Corriger les données inversées au début :
-  - ct8 (pos4) => clims
-  - ct9 (pos5) => radiateurs
-  - ct10 (pos4) => cumulus => inversé jusqu'au 01/07/2023 9h43
-  - ct11 (pos3) => lave linge
-  - ct12 (pos4) => plaques cuisson
-  - ct13 (pos3) => four
-  - ct14 (pos3) => lave vaisselle
+- Corriger :
+  - données inversées au début :
+    - ct8 => clims
+    - ct9 => radiateurs
+    - ct11 => lave linge
+    - ct12 => plaques cuisson
+    - ct13 => four
+    - ct14 => lave vaisselle
+  - ct10 => cumulus => inversé jusqu'au 01/07/2023 9h43
+  - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
