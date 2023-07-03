@@ -32,7 +32,7 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string }> = ({ d
     );
   }
 
-  let flavor: classes.good | classes.bad = null;
+  let flavor: string = null;
   let measureValue = measure.value;
 
   switch(device.type) {
