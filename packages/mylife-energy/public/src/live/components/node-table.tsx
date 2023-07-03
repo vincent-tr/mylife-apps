@@ -3,23 +3,34 @@ import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selec
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
 
+const useTableStyles = mui.makeStyles(theme => ({
+  container: {
+    flex: '1 1 auto',
+    minHeight: 0,
+    overflowY: 'auto',
+  }
+}));
+
 const NoteTable = () => {
+  const classes = useTableStyles();
   const nodes = useSelector(state => getDevicesByType(state, 'node'));
   const measures = useSelector(getMeasureView);
   const isPhone = useScreenPhone();
 
   return (
-    <mui.Table size='small' stickyHeader>
-      <mui.TableBody>
-        {nodes.sortBy(device => findPowerMeasure(device._id, measures)).reverse().map(device => (
-          <mui.TableRow key={device._id}>
-            <mui.TableCell><Ratio deviceId={device._id} /></mui.TableCell>
-            <mui.TableCell><mui.Typography>{device.display}</mui.Typography></mui.TableCell>
-            <mui.TableCell><DeviceMeasure deviceId={device._id} /></mui.TableCell>
-          </mui.TableRow>
-        ))}
-      </mui.TableBody>
-    </mui.Table>
+    <div className={classes.container}>
+      <mui.Table size='small' stickyHeader>
+        <mui.TableBody>
+          {nodes.sortBy(device => findPowerMeasure(device._id, measures)).reverse().map(device => (
+            <mui.TableRow key={device._id}>
+              <mui.TableCell><Ratio deviceId={device._id} /></mui.TableCell>
+              <mui.TableCell><mui.Typography>{device.display}</mui.Typography></mui.TableCell>
+              <mui.TableCell><DeviceMeasure deviceId={device._id} /></mui.TableCell>
+            </mui.TableRow>
+          ))}
+        </mui.TableBody>
+      </mui.Table>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@ import NodeTable from './node-table';
 const useStyles = mui.makeStyles(theme => ({
   container: {
     flex: '1 1 auto',
+    minHeight: 0,
     display: 'flex',
     flexDirection: 'column',
   },
