@@ -1,6 +1,6 @@
 {
   "name": "mylife-tools-server",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "MyLife Tools Server",
   "private": true,
   "main": "src/index.ts",
@@ -34,6 +34,6 @@
     "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "mylife-tools-build": "^2.0.1"
+    "mylife-tools-build": "^2.0.2"
   }
 }

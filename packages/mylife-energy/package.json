@@ -1,6 +1,6 @@
 {
   "name": "mylife-energy",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Mylife Energy",
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-energy",
@@ -18,12 +18,12 @@
   },
   "dependencies": {
     "async-mqtt": "^2.6.0",
-    "mylife-tools-server": "^1.1.10"
+    "mylife-tools-server": "^1.1.11"
   },
   "devDependencies": {
     "eslint": "^8.18.0",
-    "mylife-tools-build": "^2.0.1",
-    "mylife-tools-ui": "^1.1.7"
+    "mylife-tools-build": "^2.0.2",
+    "mylife-tools-ui": "^1.1.8"
   },
   "license": "GPL-3.0+"
 }
