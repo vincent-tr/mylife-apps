@@ -5,15 +5,21 @@ import { LiveDevice } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
 
 const useStyles = mui.makeStyles(theme => ({
-  container: {
+  wrapper: {
     alignSelf: 'center',
+  },
+  wrapperSmall: {
+    height: 200,
+    width: 375,
+  },
+  container: {
     display: 'grid',
     gridTemplateColumns: '250px 250px 250px',
     gridTemplateRows: '200px 200px',
   },
-  scale: {
+  containerSmall: {
     transform: 'scale(0.5)',
-    transformOrigin: 'top center',
+    transformOrigin: 'top left',
     marginBottom: -200
   },
   cell: {
@@ -62,11 +68,13 @@ const MainAnimation = () => {
   const mainToTotal = mainCurrent > 0 && totalCurrent > 0;
 
   return (
-    <div className={clsx(classes.container, isPhone && classes.scale)}>
-      <DeviceView className={clsx(classes.cell, classes.main)} deviceId={main._id} />
-      <DeviceView className={clsx(classes.cell, classes.solar)} deviceId={solar._id} />
-      <DeviceView className={clsx(classes.cell, classes.total)} deviceId={total._id} />
-      <ArrowsArea className={classes.arrows} solarToMain={solarToMain} solarToTotal={solarToTotal} mainToTotal={mainToTotal} />
+    <div className={clsx(classes.wrapper, isPhone && classes.wrapperSmall)}>
+      <div className={clsx(classes.container, isPhone && classes.containerSmall)}>
+        <DeviceView className={clsx(classes.cell, classes.main)} deviceId={main._id} />
+        <DeviceView className={clsx(classes.cell, classes.solar)} deviceId={solar._id} />
+        <DeviceView className={clsx(classes.cell, classes.total)} deviceId={total._id} />
+        <ArrowsArea className={classes.arrows} solarToMain={solarToMain} solarToTotal={solarToTotal} mainToTotal={mainToTotal} />
+      </div>
     </div>
   );
 };
