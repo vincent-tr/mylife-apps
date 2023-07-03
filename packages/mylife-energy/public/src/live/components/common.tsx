@@ -82,6 +82,9 @@ const useMeasuretooltipStyles = mui.makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  computed: {
+    fontStyle: 'italic',
+  }
 }));
 
 const DeviceMeasureTooltip: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
@@ -95,7 +98,9 @@ const DeviceMeasureTooltip: React.FunctionComponent<{ deviceId: string }> = ({ d
         <mui.Typography variant='body2' key={index}>{`${display} : ${value}`}</mui.Typography>
       ))}
       <mui.Typography variant='body2'>{`Mis à jour : ${getLastUpdate(device, measures).toLocaleString()}`}</mui.Typography>
-      <mui.Typography variant='body2'>{`(calculé)`}</mui.Typography>
+      {device.computed && (
+        <mui.Typography variant='body2' className={classes.computed}>{`(calculé)`}</mui.Typography>
+      )}
     </div>
   );
 };
