@@ -56,8 +56,8 @@ const Live = () => {
       <DeviceView device={solar} measures={measures} />
       <DeviceView device={total} measures={measures} />
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {nodes.map(device => (
-          <SubDeviceView key={device._id} device={device} measures={measures} />
+        {nodes.sortBy(device => findPowerMeasure(device, measures)).reverse().map(device => (
+          <SubDeviceView key={device._id} total={total} device={device} measures={measures} />
         ))}
       </div>
     </div>
@@ -89,6 +89,18 @@ const useDeviceStyles = mui.makeStyles(theme => ({
   tooltipContainer: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  ratioContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    width: 100,
+  },
+  ratioBar: {
+    width: '100%',
+    marginRight: theme.spacing(1),
+  },
+  ratioLabel: {
+    minWidth: 35,
   }
 }));
 
@@ -102,13 +114,42 @@ const DeviceView: React.FunctionComponent<{ device: LiveDevice, measures: views.
   const Icon = getIcon(device);
 
   return (
-    <div key={device._id} className={classes.container}>
+    <div className={classes.container}>
       <Icon className={classes.icon} />
-      <mui.Typography variant='caption'>{device.display}</mui.Typography>
+      <mui.Typography>{device.display}</mui.Typography>
       <DeviceMeasure device={device} measures={measures} />
     </div>
   );
 };
+
+const SubDeviceView: React.FunctionComponent<{ total: LiveDevice, device: LiveDevice, measures: views.View<Measure> }> = ({ total, device, measures }) => {
+  if (!device) {
+    return null;
+  }
+
+  return (
+    <div style={{display: 'flex', flexDirection: 'row'}}>
+      <SubDeviceRatio total={total} device={device} measures={measures} />
+      <mui.Typography>{device.display}</mui.Typography>
+      <DeviceMeasure device={device} measures={measures} />
+    </div>
+  );
+};
+
+const SubDeviceRatio: React.FunctionComponent<{ total: LiveDevice, device: LiveDevice, measures: views.View<Measure> }> = ({ total, device, measures }) => {
+  const classes = useDeviceStyles();
+
+  const totalPower = findPowerMeasure(total, measures);
+  const power = findPowerMeasure(device, measures);
+  const ratio = Math.round(power / totalPower * 100);
+
+  return (
+    <div className={classes.ratioContainer}>
+      <mui.LinearProgress className={classes.ratioBar} variant='determinate' value={ratio} />
+      <mui.Typography className={classes.ratioLabel} variant='body2' color='textSecondary'>{`${ratio}%`}</mui.Typography>
+    </div>
+  );
+}
 
 const DeviceMeasure: React.FunctionComponent<{ device: LiveDevice, measures: views.View<Measure> }> = ({ device, measures }) => {
   const classes = useDeviceStyles();
@@ -116,7 +157,7 @@ const DeviceMeasure: React.FunctionComponent<{ device: LiveDevice, measures: vie
 
   if (!measure || !sensor) {
     return (
-      <mui.Typography variant='body2'>{`??`}</mui.Typography>
+      <mui.Typography>{`??`}</mui.Typography>
     );
   }
 
@@ -145,7 +186,7 @@ const DeviceMeasure: React.FunctionComponent<{ device: LiveDevice, measures: vie
   }
 
   const value = (
-    <mui.Typography variant='body2' className={flavor}>
+    <mui.Typography className={flavor}>
       {`${measureValue.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`}
     </mui.Typography>
   );
@@ -175,23 +216,6 @@ const DeviceMeasureTooltip: React.FunctionComponent<{ device: LiveDevice, measur
       ))}
       <mui.Typography variant='body2'>{`Mis à jour : ${getLastUpdate(device, measures).toLocaleString()}`}</mui.Typography>
       <mui.Typography variant='body2'>{`(calculé)`}</mui.Typography>
-    </div>
-  );
-};
-
-const SubDeviceView: React.FunctionComponent<{ device: LiveDevice, measures: views.View<Measure> }> = ({ device, measures }) => {
-  if (!device) {
-    return null;
-  }
-
-  const { measure, sensor } = findBestSensorMeasure(device, measures);
-
-  return (
-    <div key={device._id} style={{display: 'flex', flexDirection: 'column', width: 200, height: 200}}>
-      <mui.Typography variant='caption'>{device.display}</mui.Typography>
-      {measure && sensor && (
-          <mui.Typography variant='body2'>{`${measure.value.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`}</mui.Typography>
-      )}
     </div>
   );
 };
@@ -261,6 +285,11 @@ function findBestSensorMeasure(device: LiveDevice, measures: views.View<Measure>
   }
 
   return { sensor: null, measure: null };
+}
+
+function findPowerMeasure(device: LiveDevice, measures: views.View<Measure>) {
+  const measure = measures.get(`${device._id}-real-power`);
+  return measure ? measure.value : NaN;
 }
 
 export default Live;
