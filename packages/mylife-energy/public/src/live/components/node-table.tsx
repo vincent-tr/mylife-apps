@@ -1,4 +1,4 @@
-import { React, mui, useSelector, views } from 'mylife-tools-ui';
+import { React, mui, useScreenPhone, useSelector, views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selectors';
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
@@ -6,9 +6,10 @@ import { DeviceMeasure } from './common';
 const NoteTable = () => {
   const nodes = useSelector(state => getDevicesByType(state, 'node'));
   const measures = useSelector(getMeasureView);
+  const isPhone = useScreenPhone();
 
   return (
-    <mui.Table size='small'>
+    <mui.Table size='small' stickyHeader>
       <mui.TableBody>
         {nodes.sortBy(device => findPowerMeasure(device._id, measures)).reverse().map(device => (
           <mui.TableRow key={device._id}>

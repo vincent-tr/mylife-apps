@@ -14,6 +14,9 @@ const useMeasureStyles = mui.makeStyles(theme => ({
   bad: {
     color: theme.palette.error.main,
   },
+  value: {
+    minWidth: 60,
+  },
 }));
 
 export const DeviceMeasure: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
@@ -54,7 +57,7 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string }> = ({ d
   }
 
   const value = (
-    <mui.Typography className={flavor}>
+    <mui.Typography className={clsx(flavor, classes.value)}>
       {`${measureValue.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`}
     </mui.Typography>
   );
