@@ -19,7 +19,7 @@ _FIXME: apres `lerna bootstrap` il faut enlever `packages/mylife-money/node_modu
 
 ## Go build
 
-- `cd go/repo; `
+- `cd go/repo; make docker-publish`
 
 # Framework (tools)
 
