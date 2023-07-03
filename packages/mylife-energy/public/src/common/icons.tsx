@@ -5,7 +5,8 @@ import { React, mui } from 'mylife-tools-ui';
 const {
   Info,
   CloudDownload,
-  LiveTv
+  LiveTv,
+  Functions,
 } = mui.icons;
 
 const Energy = (props) => (
@@ -53,9 +54,10 @@ export default {
     Live: LiveTv,
   },
 
-  deviceTypes: {
+  devices: {
     Main: DeviceTypeMain,
     Total: DeviceTypeTotal,
     Solar: DeviceTypeSolar,
+    Computed: Functions,
   }
 };
