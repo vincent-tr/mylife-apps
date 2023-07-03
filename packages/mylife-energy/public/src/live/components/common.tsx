@@ -71,7 +71,7 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string }> = ({ d
   );
 
   return (
-    <mui.Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} measures={measures} />}>
+    <mui.Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} />}>
       {wrapped}
     </mui.Tooltip>
   );
