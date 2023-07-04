@@ -23,7 +23,10 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     width: 0,
-    height: '100vh',
+    height: '100dvh',
+    '@supports not (height: 100dvh)': {
+      height: '100vh',
+    },
     display: 'flex',
     flexDirection: 'column'
   },
