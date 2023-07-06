@@ -1,18 +1,6 @@
-package tesla_wall_connector
+package wall_connector
 
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"mylife-tools-server/config"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"net/http"
-)
-
-var logger = log.CreateLogger("mylife:energy:tesla-wall-connector")
-
-type Vitals struct {
+type vitals struct {
 	ContactorClosed   bool     `json:"contactor_closed"`    // Is the contector closed
 	VehicleConnected  bool     `json:"vehicle_connected"`   // Is the vehicle connected
 	SessionS          uint64   `json:"session_s"`           // Current session time in seconds
@@ -41,7 +29,7 @@ type Vitals struct {
 	CurrentAlerts     []string `json:"current_alerts"`      // Current alerts
 }
 
-type Lifetime struct {
+type lifetime struct {
 	ContactorCycles       uint64  `json:"contactor_cycles"`        /// Contactor cycles
 	ContactorCyclesLoaded uint64  `json:"contactor_cycles_loaded"` /// Contactor cycles Loaded
 	AlertCount            uint64  `json:"alert_count"`             /// Alert Count
@@ -54,93 +42,8 @@ type Lifetime struct {
 	ChargingTimeS         uint64  `json:"charging_time_s"`         /// Total Charging time in seconds
 }
 
-type Version struct {
+type version struct {
 	FirmwareVersion string `json:"firmware_version"` /// Firmware version
 	PartNumber      string `json:"part_number"`      /// Part number
 	SerialNumber    string `json:"serial_number"`    /// Serial Number
-}
-
-type twcConfig struct {
-	Address string `mapstructure:"address"`
-}
-
-type twcService struct {
-	address string
-}
-
-func (service *twcService) Init(arg interface{}) error {
-	conf := twcConfig{}
-	config.BindStructure("teslaWallConnector", &conf)
-
-	service.address = conf.Address
-
-	return nil
-}
-
-func (service *twcService) Terminate() error {
-
-	return nil
-}
-
-func (service *twcService) ServiceName() string {
-	return "tesla-wall-connector"
-}
-
-func (service *twcService) Dependencies() []string {
-	return []string{}
-}
-
-func init() {
-	services.Register(&twcService{})
-}
-
-func (service *twcService) fetchItem(ep string, v any) error {
-	resp, err := http.Get(fmt.Sprintf("http://%s/api/1/%s", service.address, ep))
-	if err != nil {
-		return err
-	}
-
-	defer resp.Body.Close()
-
-	body, _ := ioutil.ReadAll(resp.Body)
-	return json.Unmarshal(body, v)
-}
-
-func getService() *twcService {
-	return services.GetService[*twcService]("tesla-wall-connector")
-}
-
-// Public access
-
-func FetchVitals() (*Vitals, error) {
-
-	vitals := &Vitals{}
-
-	if err := getService().fetchItem("vitals", vitals); err != nil {
-		return nil, err
-	}
-
-	return vitals, nil
-}
-
-func FetchLifetime() (*Lifetime, error) {
-
-	lifetime := &Lifetime{}
-
-	if err := getService().fetchItem("lifetime", lifetime); err != nil {
-		return nil, err
-	}
-
-	return lifetime, nil
-}
-
-func FetchVersion() (*Version, error) {
-
-	version := &Version{}
-
-	if err := getService().fetchItem("version", version); err != nil {
-		return nil, err
-	}
-
-	return version, nil
 }

@@ -3,85 +3,63 @@ package tesla
 import (
 	"context"
 	"fmt"
-	"math"
+	"mylife-energy/pkg/services/tesla/api"
+	"mylife-energy/pkg/services/tesla/wall_connector"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
-
-	"github.com/bogosj/tesla"
+	"mylife-tools-server/utils"
+	"time"
 )
 
 var logger = log.CreateLogger("mylife:energy:tesla")
 
-// https://pkg.go.dev/github.com/bogosj/tesla#WithBaseURL
-// https://github.com/bogosj/tesla/blob/v1.1.0/examples/manage_car.go
-// https://tesla-api.timdorr.com/api-basics/vehicles
-
-// TODO:
-// - Status trouver quand debranché
-// - Tester vehicle.Wakeup()
-
 type teslaConfig struct {
-	TokenPath    string `mapstructure:"tokenPath"`
-	VIN          string `mapstructure:"vin"`
-	HomeLocation string `mapstructure:"homeLocation"` // 'latitude longitude'
+	TokenPath            string `mapstructure:"tokenPath"`
+	VIN                  string `mapstructure:"vin"`
+	HomeLocation         string `mapstructure:"homeLocation"` // 'latitude longitude'
+	WallConnectorAddress string `mapstructure:"wallConnectorAddress"`
 }
 
 type teslaService struct {
-	homePos position
-	vehicle *tesla.Vehicle
+	api              *api.Client
+	wallConnector    *wall_connector.Client
+	context          context.Context
+	contextTerminate func()
+	worker           *utils.Worker
 }
 
 func (service *teslaService) Init(arg interface{}) error {
 	conf := teslaConfig{}
 	config.BindStructure("tesla", &conf)
 
-	homePos, err := parsePosition(conf.HomeLocation)
+	homeLocation, err := api.ParsePosition(conf.HomeLocation)
 	if err != nil {
 		return fmt.Errorf("Parse home location: %w", err)
 	}
 
-	service.homePos = homePos
+	logger.Debugf("Home position: %+v", homeLocation)
 
-	logger.Debugf("Home position: %+v", service.homePos)
+	service.context, service.contextTerminate = context.WithCancel(context.Background())
 
-	client, err := tesla.NewClient(context.TODO(), tesla.WithTokenFile(conf.TokenPath))
+	service.api, err = api.MakeClient(service.context, conf.TokenPath, conf.VIN, homeLocation)
 	if err != nil {
-		return fmt.Errorf("Cannot make new client: %w", err)
+		return err
 	}
 
-	vehicles, err := client.Vehicles()
-	if err != nil {
-		return fmt.Errorf("Cannot get vehicles: %w", err)
-	}
+	service.wallConnector = wall_connector.MakeClient(service.context, conf.WallConnectorAddress)
 
-	for _, veh := range vehicles {
-		logger.Debugf("VIN: %s, Name: %s, ID: %d, API version: %d\n", veh.Vin, veh.DisplayName, veh.ID, veh.APIVersion)
-
-		if veh.Vin == conf.VIN {
-			service.vehicle = veh
-		}
-	}
-
-	if service.vehicle == nil {
-		return fmt.Errorf("Vehicle with VIN '%s' not found", conf.VIN)
-	}
-
-	status, err := service.vehicle.MobileEnabled()
-	if err != nil {
-		return fmt.Errorf("Cannot access MobileEnabled: %w", err)
-	}
-
-	if !status {
-		return fmt.Errorf("Mobile access disabled")
-	}
+	service.worker = utils.NewWorker(service.workerEntry)
 
 	return nil
 }
 
 func (service *teslaService) Terminate() error {
-	service.homePos = position{}
-	service.vehicle = nil
+	service.contextTerminate()
+	service.worker.Terminate()
+
+	service.api = nil
+	service.wallConnector = nil
 
 	return nil
 }
@@ -98,63 +76,31 @@ func init() {
 	services.Register(&teslaService{})
 }
 
-func (service *teslaService) fetchChargeData() (*ChargeData, error) {
+func (service *teslaService) workerEntry(exit chan struct{}) {
 
-	data, err := service.vehicle.Data()
+	for {
+		select {
+		case <-exit:
+			return
+		case <-time.After(10 * time.Second):
+			service.fetch()
+		}
+	}
+}
+
+func (service *teslaService) fetch() {
+	chargeData, err := service.api.FetchChargeData()
 	if err != nil {
-		return nil, err
+		logger.WithError(err).Error("Could not api.FetchChargeData")
+		return
 	}
 
-	if data.Error != "" {
-		return nil, fmt.Errorf("Got data.error: %s %s", data.Error, data.ErrorDescription)
+	wcData, err := service.wallConnector.FetchData()
+	if err != nil {
+		logger.WithError(err).Error("Could not wallConnector.FetchData")
+		return
 	}
 
-	return newChargeData(&data.Response.ChargeState, service.isAtHome(&data.Response.DriveState)), nil
-}
-
-func (service *teslaService) isAtHome(state *tesla.DriveState) bool {
-	const maxDistance = 50 // meters
-
-	if state.Speed > 0 {
-		return false
-	}
-
-	curPos := position{
-		lat:  state.Latitude,
-		long: state.Longitude,
-	}
-
-	dist := distance(service.homePos, curPos)
-
-	return dist <= maxDistance
-}
-
-// https://gist.github.com/hotdang-ca/6c1ee75c48e515aec5bc6db6e3265e49
-func distance(pos1 position, pos2 position) float64 {
-	radlat1 := float64(math.Pi * pos1.lat / 180)
-	radlat2 := float64(math.Pi * pos2.lat / 180)
-
-	theta := float64(pos1.long - pos2.long)
-	radtheta := float64(math.Pi * theta / 180)
-
-	dist := math.Sin(radlat1)*math.Sin(radlat2) + math.Cos(radlat1)*math.Cos(radlat2)*math.Cos(radtheta)
-	if dist > 1 {
-		dist = 1
-	}
-
-	dist = math.Acos(dist)
-	dist = dist * 180 / math.Pi
-	dist = dist * 60 * 1.1515 * 1.609344 * 1000 // M->KM then KM->M
-
-	return dist
-}
-
-func getService() *teslaService {
-	return services.GetService[*teslaService]("tesla")
-}
-
-// Public access
-
-func FetchChargeData() (*ChargeData, error) {
-	return getService().fetchChargeData()
+	logger.Debugf("%+v\n", chargeData)
+	logger.Debugf("%+v\n", wcData)
 }

@@ -4,6 +4,8 @@ import (
 	ui "mylife-energy-ui"
 	"mylife-energy/pkg/api"
 	"mylife-energy/pkg/entities"
+	_ "mylife-energy/pkg/services/live"
+	_ "mylife-energy/pkg/services/tesla"
 	"mylife-tools-server/services"
 	_ "mylife-tools-server/services/api"
 	_ "mylife-tools-server/services/web"
@@ -22,7 +24,7 @@ func init() {
 				"web":   ui.FS,
 			}
 
-			services.RunServices([]string{"web", "live"}, args)
+			services.RunServices([]string{"web", "live", "tesla"}, args)
 		},
 	})
 }

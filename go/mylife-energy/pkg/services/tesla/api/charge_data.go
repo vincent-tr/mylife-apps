@@ -1,4 +1,4 @@
-package tesla
+package api
 
 import (
 	"time"
@@ -8,7 +8,7 @@ import (
 
 type ChargeData struct {
 	Timestamp time.Time
-	Status    string // Charging, Stopped TODO others
+	Status    string // Charging, Stopped, Complete, Disconnected
 	AtHome    bool
 	Charger   Charger
 	Battery   Battery

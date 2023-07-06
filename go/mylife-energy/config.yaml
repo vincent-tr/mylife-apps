@@ -7,5 +7,4 @@ tesla:
   vin: ${TESLA_VIN}
   tokenPath: ${TESLA_TOKEN|/tesla.token}
   homeLocation: ${TESLA_HOME}
-teslaWallConnector:
-  address: ${TWC_ADDRESS}
+  wallConnectorAddress: ${TWC_ADDRESS}
