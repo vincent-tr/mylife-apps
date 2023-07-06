@@ -12,7 +12,7 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const Live = () => {
+const Live: React.FunctionComponent = () => {
   useViewLifecycle();
   const classes = useStyles();
 

@@ -1,12 +1,12 @@
 import { React, mui } from 'mylife-tools-ui';
 
-const Home: React.FunctionComponent = () => {
+const Tesla: React.FunctionComponent = () => {
 
   return (
     <div>
-      Energy
+      Tesla
     </div>
   );
 };
 
-export default Home;
+export default Tesla;
