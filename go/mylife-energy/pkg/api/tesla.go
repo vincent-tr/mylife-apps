@@ -8,7 +8,7 @@ import (
 	"mylife-tools-server/services/sessions"
 )
 
-var teslaDef = api.MakeDefinition("tesla", notifyState)
+var teslaDef = api.MakeDefinition("tesla", notifyState, setMode)
 
 func notifyState(session *sessions.Session, arg struct{}) (uint64, error) {
 	stateView := tesla.GetStateView()
