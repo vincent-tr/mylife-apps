@@ -29,7 +29,7 @@ func makeFetcher() *fetcher {
 
 	f.dbContext, f.dbTerminate = context.WithCancel(context.Background())
 
-	f.worker = utils.NewWorker(f.workerEntry)
+	f.worker = utils.NewInterval(10*time.Second, f.sync)
 
 	return f
 }
@@ -41,18 +41,6 @@ func (f *fetcher) terminate() {
 
 	f.measures = nil
 	f.sensors = nil
-}
-
-func (f *fetcher) workerEntry(exit chan struct{}) {
-
-	for {
-		select {
-		case <-exit:
-			return
-		case <-time.After(10 * time.Second):
-			f.sync()
-		}
-	}
 }
 
 func (f *fetcher) sync() {
