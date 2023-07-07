@@ -3,10 +3,11 @@
 import { React, mui } from 'mylife-tools-ui';
 
 const {
-  Info,
-  CloudDownload,
   LiveTv,
   Functions,
+  NotInterested,
+  Timer,
+  NetworkCheck,
 } = mui.icons;
 
 const Energy = (props) => (
@@ -53,8 +54,9 @@ export default {
   Energy,
 
   actions: {
-    Detail: Info,
-    Download: CloudDownload,
+    Off: NotInterested,
+    Fast: Timer,
+    Smart: NetworkCheck,
   },
 
   tabs: {
@@ -67,5 +69,5 @@ export default {
     Total: DeviceTypeTotal,
     Solar: DeviceTypeSolar,
     Computed: Functions,
-  }
+  },
 };

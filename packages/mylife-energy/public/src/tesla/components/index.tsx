@@ -2,6 +2,7 @@ import { React, mui, useLifecycle, useActions, useSelector } from 'mylife-tools-
 import { enter, leave, setMode } from '../actions';
 import { getState } from '../selectors';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../shared/metadata';
+import icons from '../../common/icons';
 
 const Tesla: React.FunctionComponent = () => {
   useViewLifecycle();
@@ -30,17 +31,25 @@ const Tesla: React.FunctionComponent = () => {
         </mui.TableBody>
       </mui.Table>
 
-      <div>
-        <mui.Button onClick={() => actions.setMode(TeslaMode.Off)}>
-          Off
-        </mui.Button>
-        <mui.Button onClick={() => actions.setMode(TeslaMode.Fast)}>
-          Fast
-        </mui.Button>
-        <mui.Button onClick={() => actions.setMode(TeslaMode.Smart)}>
-          Smart
-        </mui.Button>
-      </div>
+      <mui.ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)}>
+        <mui.ToggleButton value={TeslaMode.Off}>
+          <mui.Tooltip title='Eteint'>
+            <icons.actions.Off fontSize='large'/>
+          </mui.Tooltip>
+        </mui.ToggleButton>
+
+        <mui.ToggleButton value={TeslaMode.Fast}>
+          <mui.Tooltip title='Rapide'>
+            <icons.actions.Fast fontSize='large'/>
+          </mui.Tooltip>
+        </mui.ToggleButton>
+
+        <mui.ToggleButton value={TeslaMode.Smart}>
+          <mui.Tooltip title='Intelligent'>
+            <icons.actions.Smart fontSize='large'/>
+          </mui.Tooltip>
+        </mui.ToggleButton>
+      </mui.ToggleButtonGroup>
     </div>
   );
 };
