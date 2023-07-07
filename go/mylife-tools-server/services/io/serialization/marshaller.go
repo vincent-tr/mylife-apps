@@ -256,29 +256,29 @@ func unmarshalValue(raw interface{}, value reflect.Value) error {
 	case reflect.Bool:
 		return unmarshalTypedValue[bool](raw, value)
 	case reflect.Float32:
-		return unmarshalNumericValue[float32](raw, value)
+		return unmarshalNumericValue[float32](raw, value, func(val float32) { value.SetFloat(float64(val)) })
 	case reflect.Float64:
-		return unmarshalNumericValue[float64](raw, value)
+		return unmarshalNumericValue[float64](raw, value, func(val float64) { value.SetFloat(float64(val)) })
 	case reflect.Int:
-		return unmarshalNumericValue[int](raw, value)
+		return unmarshalNumericValue[int](raw, value, func(val int) { value.SetInt(int64(val)) })
 	case reflect.Int8:
-		return unmarshalNumericValue[int8](raw, value)
+		return unmarshalNumericValue[int8](raw, value, func(val int8) { value.SetInt(int64(val)) })
 	case reflect.Int16:
-		return unmarshalNumericValue[int16](raw, value)
+		return unmarshalNumericValue[int16](raw, value, func(val int16) { value.SetInt(int64(val)) })
 	case reflect.Int32:
-		return unmarshalNumericValue[int32](raw, value)
+		return unmarshalNumericValue[int32](raw, value, func(val int32) { value.SetInt(int64(val)) })
 	case reflect.Int64:
-		return unmarshalNumericValue[int64](raw, value)
+		return unmarshalNumericValue[int64](raw, value, func(val int64) { value.SetInt(int64(val)) })
 	case reflect.Uint:
-		return unmarshalNumericValue[uint](raw, value)
+		return unmarshalNumericValue[uint](raw, value, func(val uint) { value.SetUint(uint64(val)) })
 	case reflect.Uint8:
-		return unmarshalNumericValue[uint8](raw, value)
+		return unmarshalNumericValue[uint8](raw, value, func(val uint8) { value.SetUint(uint64(val)) })
 	case reflect.Uint16:
-		return unmarshalNumericValue[uint16](raw, value)
+		return unmarshalNumericValue[uint16](raw, value, func(val uint16) { value.SetUint(uint64(val)) })
 	case reflect.Uint32:
-		return unmarshalNumericValue[uint32](raw, value)
+		return unmarshalNumericValue[uint32](raw, value, func(val uint32) { value.SetUint(uint64(val)) })
 	case reflect.Uint64:
-		return unmarshalNumericValue[uint64](raw, value)
+		return unmarshalNumericValue[uint64](raw, value, func(val uint64) { value.SetUint(uint64(val)) })
 
 	case reflect.Pointer, reflect.Interface:
 		if raw == nil {
@@ -347,12 +347,14 @@ func unmarshalTypedValue[T any](raw interface{}, value reflect.Value) error {
 	return nil
 }
 
-func unmarshalNumericValue[T constraints.Integer | constraints.Float](raw interface{}, value reflect.Value) error {
+func unmarshalNumericValue[T constraints.Integer | constraints.Float](raw interface{}, value reflect.Value, setter func(value T)) error {
 	floatValue, ok := raw.(float64)
 	if !ok {
 		return fmt.Errorf("Cannot unmarshal value of type '%s' from '%s'", reflect.TypeOf(value.Interface()).String(), reflect.TypeOf(raw).String())
 	}
 
-	value.Set(reflect.ValueOf(T(floatValue)))
+	// Permit unmarshal of 'type Toto int'
+	setter(T(floatValue))
+	// value.Set(reflect.ValueOf(T(floatValue)))
 	return nil
 }
