@@ -1,4 +1,4 @@
-import { React, mui, useScreenPhone, useSelector, views } from 'mylife-tools-ui';
+import { React, mui, useSelector, views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selectors';
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
@@ -15,7 +15,6 @@ const NoteTable = () => {
   const classes = useTableStyles();
   const nodes = useSelector(state => getDevicesByType(state, 'node'));
   const measures = useSelector(getMeasureView);
-  const isPhone = useScreenPhone();
 
   return (
     <div className={classes.container}>
