@@ -126,3 +126,21 @@ func distance(pos1 Position, pos2 Position) float64 {
 
 	return dist
 }
+
+func (client *Client) Wakeup() error {
+	_, err := client.vehicle.Wakeup()
+	return err
+}
+
+func (client *Client) SetChargingCurrent(value uint) error {
+	if value == 0 {
+		return client.vehicle.StopCharging()
+	}
+
+	err := client.vehicle.StartCharging()
+	if err != nil {
+		return err
+	}
+
+	return client.vehicle.SetChargingAmps(int(value))
+}

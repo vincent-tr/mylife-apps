@@ -6,9 +6,18 @@ import (
 	"github.com/bogosj/tesla"
 )
 
+type ChargeStatus string
+
+const (
+	Charging     ChargeStatus = "Charging"
+	Stopped      ChargeStatus = "Stopped"
+	Complete     ChargeStatus = "Complete"
+	Disconnected ChargeStatus = "Disconnected"
+)
+
 type ChargeData struct {
 	Timestamp time.Time
-	Status    string // Charging, Stopped, Complete, Disconnected
+	Status    ChargeStatus
 	AtHome    bool
 	Charger   Charger
 	Battery   Battery
@@ -18,7 +27,7 @@ type ChargeData struct {
 type Charger struct {
 	MaxCurrent int // Max charger current (A)
 	Current    int // Actual charger current (A)
-	Power      int // Actual charger power (kWh)
+	Power      int // Actual charger power (kW)
 	Voltage    int // Actual charger voltage (V)
 }
 
@@ -39,7 +48,7 @@ func newChargeData(chargeState *tesla.ChargeState, atHome bool) *ChargeData {
 
 	return &ChargeData{
 		Timestamp: chargeState.Timestamp.Time,
-		Status:    chargeState.ChargingState,
+		Status:    ChargeStatus(chargeState.ChargingState),
 		AtHome:    atHome,
 		Charger: Charger{
 			MaxCurrent: chargeState.ChargerPilotCurrent,

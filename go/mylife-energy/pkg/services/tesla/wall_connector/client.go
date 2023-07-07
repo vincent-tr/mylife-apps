@@ -13,6 +13,7 @@ import (
 var logger = log.CreateLogger("mylife:energy:tesla:wall-connector")
 
 type Data struct {
+	Timestamp        time.Time
 	ContactorClosed  bool          // Is the contector closed
 	VehicleConnected bool          // Is the vehicle connected
 	Session          time.Duration // Current session time
@@ -49,12 +50,13 @@ func (client *Client) FetchData() (*Data, error) {
 	}
 
 	return &Data{
+		Timestamp:        time.Now(),
 		ContactorClosed:  vitals.ContactorClosed,
 		VehicleConnected: vitals.VehicleConnected,
 		Session:          makeDurationFromSeconds(vitals.SessionS),
 		SessionEnergyWh:  vitals.SessionEnergyWh,
 		Uptime:           makeDurationFromSeconds(vitals.UptimeS),
-		Voltage:          vitals.VoltageAV,
+		Voltage:          vitals.GridV,
 		Current:          vitals.CurrentAA,
 		Temperature:      vitals.HandleTempC,
 		CurrentAlerts:    vitals.CurrentAlerts,

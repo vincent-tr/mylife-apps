@@ -1,16 +1,27 @@
 package tesla
 
 import (
-	"context"
 	"fmt"
+	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/api"
-	"mylife-energy/pkg/services/tesla/wall_connector"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
-	"mylife-tools-server/utils"
+	"mylife-tools-server/services/store"
+	"mylife-tools-server/services/tasks"
 	"time"
+
+	"github.com/gookit/goutil/errorx/panics"
 )
+
+/*
+
+3 modes de pilotage
+- off => pas de pilotage de la charge
+- fast => charge au max possible du chargeur des que branchement
+- smart => charge avec le surplus des panneaux solaires pendant la journee uniquement
+
+*/
 
 var logger = log.CreateLogger("mylife:energy:tesla")
 
@@ -22,12 +33,12 @@ type teslaConfig struct {
 }
 
 type teslaService struct {
-	api              *api.Client
-	wallConnector    *wall_connector.Client
-	context          context.Context
-	contextTerminate func()
-	worker           *utils.Worker
+	state     *stateManager
+	stateView *store.Container[*entities.TeslaState]
+	mode      entities.TeslaMode
 }
+
+const viewStateId = "unique"
 
 func (service *teslaService) Init(arg interface{}) error {
 	conf := teslaConfig{}
@@ -40,26 +51,23 @@ func (service *teslaService) Init(arg interface{}) error {
 
 	logger.Debugf("Home position: %+v", homeLocation)
 
-	service.context, service.contextTerminate = context.WithCancel(context.Background())
+	service.stateView = store.NewContainer[*entities.TeslaState]("tesla-state")
+	service.stateView.Set(entities.NewTeslaState(&entities.TeslaStateData{
+		Id:   viewStateId,
+		Mode: service.mode,
+	}))
 
-	service.api, err = api.MakeClient(service.context, conf.TokenPath, conf.VIN, homeLocation)
+	service.state, err = makeStateManager(conf.TokenPath, conf.VIN, homeLocation, conf.WallConnectorAddress, service.stateUpdate)
 	if err != nil {
 		return err
 	}
-
-	service.wallConnector = wall_connector.MakeClient(service.context, conf.WallConnectorAddress)
-
-	service.worker = utils.NewWorker(service.workerEntry)
 
 	return nil
 }
 
 func (service *teslaService) Terminate() error {
-	service.contextTerminate()
-	service.worker.Terminate()
-
-	service.api = nil
-	service.wallConnector = nil
+	service.state.terminate()
+	service.state = nil
 
 	return nil
 }
@@ -69,38 +77,68 @@ func (service *teslaService) ServiceName() string {
 }
 
 func (service *teslaService) Dependencies() []string {
-	return []string{}
+	return []string{"tasks"}
 }
 
 func init() {
 	services.Register(&teslaService{})
 }
 
-func (service *teslaService) workerEntry(exit chan struct{}) {
-
-	for {
-		select {
-		case <-exit:
-			return
-		case <-time.After(10 * time.Second):
-			service.fetch()
-		}
-	}
+func (service *teslaService) stateUpdate() {
+	tasks.SubmitEventLoop("tesla/state-update", func() {
+		service.updateStateView()
+	})
 }
 
-func (service *teslaService) fetch() {
-	chargeData, err := service.api.FetchChargeData()
-	if err != nil {
-		logger.WithError(err).Error("Could not api.FetchChargeData")
-		return
-	}
+func (service *teslaService) updateStateView() {
+	oldState, err := service.stateView.Get(viewStateId)
+	panics.IsNil(err)
 
-	wcData, err := service.wallConnector.FetchData()
-	if err != nil {
-		logger.WithError(err).Error("Could not wallConnector.FetchData")
-		return
-	}
+	newState := entities.UpdateTeslaState(oldState, func(data *entities.TeslaStateData) {
+		data.Mode = service.mode
 
-	logger.Debugf("%+v\n", chargeData)
-	logger.Debugf("%+v\n", wcData)
+		stateData := &service.state.data
+
+		data.LastUpdate = stateData.Car.Timestamp
+		data.WallConnectorStatus = stateData.WallConnector.Status
+		data.CarStatus = stateData.Car.Status
+		data.ChargingStatus = entities.TeslaChargingStatusDisabled // TODO
+
+		carLastState := stateData.Car.LastState
+
+		if carLastState == nil {
+			data.ChargingCurrent = 0
+			data.ChargingPower = 0
+			data.BatteryLastTimestamp = time.Time{}
+			data.BatteryLevel = 0
+			data.BatteryTargetLevel = 0
+		} else {
+			data.ChargingCurrent = carLastState.Charger.Current
+			data.ChargingPower = carLastState.Charger.Power
+			data.BatteryLastTimestamp = carLastState.Timestamp
+			data.BatteryLevel = carLastState.Battery.Level
+			data.BatteryTargetLevel = carLastState.Battery.TargetLevel
+		}
+	})
+
+	service.stateView.Set(newState)
+}
+
+func (service *teslaService) setMode(mode entities.TeslaMode) {
+	service.mode = mode
+	service.updateStateView()
+}
+
+func getService() *teslaService {
+	return services.GetService[*teslaService]("tesla")
+}
+
+// Public access
+
+func GetStateView() store.IContainer[*entities.TeslaState] {
+	return getService().stateView
+}
+
+func SetMode(mode entities.TeslaMode) {
+	getService().setMode(mode)
 }
