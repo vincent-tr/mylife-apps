@@ -8,7 +8,6 @@ import (
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	"mylife-tools-server/services/store"
-	"mylife-tools-server/services/tasks"
 	"time"
 
 	"github.com/gookit/goutil/errorx/panics"
@@ -85,9 +84,7 @@ func init() {
 }
 
 func (service *teslaService) stateUpdate() {
-	tasks.SubmitEventLoop("tesla/state-update", func() {
-		service.updateStateView()
-	})
+	service.updateStateView()
 }
 
 func (service *teslaService) updateStateView() {

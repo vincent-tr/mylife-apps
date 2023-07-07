@@ -5,6 +5,7 @@ import (
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/api"
 	"mylife-energy/pkg/services/tesla/wall_connector"
+	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
 	"strings"
 	"time"
@@ -27,8 +28,8 @@ type stateManager struct {
 	context          context.Context
 	contextTerminate func()
 	refreshWorker    *utils.Worker
-	data             stateData
-	updateCallback   func()
+	data             stateData // Only managed on event-loop
+	updateCallback   func()    // Called on event-loop
 }
 
 func makeStateManager(tokenPath string, vin string, homeLocation api.Position, wcAddress string, updateCallback func()) (*stateManager, error) {
@@ -61,15 +62,17 @@ func (sm *stateManager) terminate() {
 }
 
 func (sm *stateManager) refresh() {
-	sm.refreshCar()
-	sm.refreshWC()
+	carData, carErr := sm.api.FetchChargeData()
+	wcData, wcErr := sm.wallConnector.FetchData()
 
-	sm.updateCallback()
+	tasks.SubmitEventLoop("tesla/state-update", func() {
+		sm.refreshCar(carData, carErr)
+		sm.refreshWC(wcData, wcErr)
+		sm.updateCallback()
+	})
 }
 
-func (sm *stateManager) refreshCar() {
-	fetchedData, err := sm.api.FetchChargeData()
-
+func (sm *stateManager) refreshCar(fetchedData *api.ChargeData, err error) {
 	data := &sm.data.Car
 
 	data.Timestamp = time.Now()
@@ -90,9 +93,7 @@ func (sm *stateManager) refreshCar() {
 	data.Status = entities.TeslaDeviceStatusFailure
 }
 
-func (sm *stateManager) refreshWC() {
-	fetchedData, err := sm.wallConnector.FetchData()
-
+func (sm *stateManager) refreshWC(fetchedData *wall_connector.Data, err error) {
 	data := &sm.data.WallConnector
 
 	data.Timestamp = time.Now()
