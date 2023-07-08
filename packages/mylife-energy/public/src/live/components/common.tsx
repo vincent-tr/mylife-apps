@@ -19,21 +19,22 @@ const useMeasureStyles = mui.makeStyles(theme => ({
   },
 }));
 
-export const DeviceMeasure: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
+export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKeys: string[] }> = ({ deviceId, sensorKeys }) => {
   const classes = useMeasureStyles();
   const device = useSelector(state => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
-  const { measure, sensor } = findBestSensorMeasure(device, measures);
+  const sensorData = getSensorData(device, measures, sensorKeys);
 
-  if (!measure || !sensor) {
+  if (sensorData.length === 0) {
     return (
       <mui.Typography>{`??`}</mui.Typography>
     );
+
   }
 
   let flavor: string = null;
-  let measureValue = measure.value;
+  let measureValue = sensorData[0].measureValue;
 
   switch(device.type) {
     case 'main': {
@@ -58,7 +59,7 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string }> = ({ d
 
   const value = (
     <mui.Typography className={clsx(flavor, classes.value)}>
-      {`${measureValue.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`}
+      {sensorData.map(({ value }) => value).join(' / ')}
     </mui.Typography>
   );
 
@@ -105,16 +106,20 @@ const DeviceMeasureTooltip: React.FunctionComponent<{ deviceId: string }> = ({ d
   );
 };
 
-function getSensorData(device, measures) {
-  const items: { display: string; value: string }[] = [];
+function getSensorData(device, measures, sensorKeys: string[] = null) {
+  const items: { display: string; measureValue: number; value: string }[] = [];
 
   for (const sensor of device.sensors) {
+    if (sensorKeys && !sensorKeys.includes(sensor.key)) {
+      continue;
+    }
+
     const measure = measures.get(`${device._id}-${sensor.key}`);
     if (!measure) {
       continue;
     }
 
-    items.push({ display: sensor.display, value: `${measure.value.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`});
+    items.push({ display: sensor.display, measureValue: measure.value, value: `${measure.value.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`});
   }
 
   return items;

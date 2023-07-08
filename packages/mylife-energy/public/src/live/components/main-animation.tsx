@@ -70,9 +70,9 @@ const MainAnimation = () => {
   return (
     <div className={clsx(classes.wrapper, isPhone && classes.wrapperSmall)}>
       <div className={clsx(classes.container, isPhone && classes.containerSmall)}>
-        <DeviceView className={clsx(classes.cell, classes.main)} deviceId={main._id} />
-        <DeviceView className={clsx(classes.cell, classes.solar)} deviceId={solar._id} />
-        <DeviceView className={clsx(classes.cell, classes.total)} deviceId={total._id} />
+        <DeviceView className={clsx(classes.cell, classes.main)} deviceId={main._id} sensorKeys={['apparent-power']} />
+        <DeviceView className={clsx(classes.cell, classes.solar)} deviceId={solar._id} sensorKeys={['apparent-power']} />
+        <DeviceView className={clsx(classes.cell, classes.total)} deviceId={total._id} sensorKeys={['apparent-power', 'real-power']} />
         <ArrowsArea className={classes.arrows} solarToMain={solarToMain} solarToTotal={solarToTotal} mainToTotal={mainToTotal} />
       </div>
     </div>
@@ -96,7 +96,7 @@ const useDeviceStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const DeviceView: React.FunctionComponent<{ deviceId: string; className?: string; }> = ({ deviceId, className }) => {
+const DeviceView: React.FunctionComponent<{ deviceId: string; className?: string; sensorKeys: string[]; }> = ({ deviceId, className, sensorKeys }) => {
   const classes = useDeviceStyles();
   const device = useSelector(state => getDevice(state, deviceId));
 
@@ -110,7 +110,7 @@ const DeviceView: React.FunctionComponent<{ deviceId: string; className?: string
     <mui.Paper variant="outlined" className={clsx(classes.container, className)}>
       <Icon className={classes.icon} />
       <mui.Typography>{device.display}</mui.Typography>
-      <DeviceMeasure deviceId={device._id} />
+      <DeviceMeasure deviceId={device._id} sensorKeys={sensorKeys} />
     </mui.Paper>
   );
 };

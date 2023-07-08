@@ -24,7 +24,7 @@ const NoteTable = () => {
             <mui.TableRow key={device._id}>
               <mui.TableCell><Ratio deviceId={device._id} /></mui.TableCell>
               <mui.TableCell><mui.Typography>{device.display}</mui.Typography></mui.TableCell>
-              <mui.TableCell><DeviceMeasure deviceId={device._id} /></mui.TableCell>
+              <mui.TableCell><DeviceMeasure deviceId={device._id} sensorKeys={['real-power']} /></mui.TableCell>
             </mui.TableRow>
           ))}
         </mui.TableBody>
