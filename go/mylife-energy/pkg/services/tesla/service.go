@@ -32,9 +32,11 @@ type teslaConfig struct {
 }
 
 type teslaService struct {
-	state     *stateManager
-	stateView *store.Container[*entities.TeslaState]
-	mode      entities.TeslaMode
+	state          *stateManager
+	stateView      *store.Container[*entities.TeslaState]
+	engine         *chargeEngine
+	mode           entities.TeslaMode
+	chargingStatus entities.TeslaChargingStatus
 }
 
 const viewStateId = "unique"
@@ -61,10 +63,15 @@ func (service *teslaService) Init(arg interface{}) error {
 		return err
 	}
 
+	service.engine = makeChargeEngine()
+
 	return nil
 }
 
 func (service *teslaService) Terminate() error {
+	service.engine.terminate()
+	service.engine = nil
+
 	service.state.terminate()
 	service.state = nil
 
@@ -76,7 +83,7 @@ func (service *teslaService) ServiceName() string {
 }
 
 func (service *teslaService) Dependencies() []string {
-	return []string{"tasks"}
+	return []string{"tasks", "query"}
 }
 
 func init() {
@@ -93,6 +100,7 @@ func (service *teslaService) updateStateView() {
 
 	newState := entities.UpdateTeslaState(oldState, func(data *entities.TeslaStateData) {
 		data.Mode = service.mode
+		data.ChargingStatus = service.chargingStatus
 
 		stateData := &service.state.data
 
@@ -121,7 +129,54 @@ func (service *teslaService) updateStateView() {
 	service.stateView.Set(newState)
 }
 
+func (service *teslaService) canCharge() bool {
+	stateData := &service.state.data
+	carState := stateData.Car.LastState
+
+	if !stateData.WallConnector.LastState.VehicleConnected {
+		service.setChargingStatus(entities.TeslaChargingStatusNotPlugged)
+		return false
+	} else if carState == nil {
+		service.setChargingStatus(entities.TeslaChargingStatusUnknown)
+		return false
+	} else if !carState.AtHome {
+		service.setChargingStatus(entities.TeslaChargingStatusNotAtHome)
+		return false
+	} else if carState.Status == api.Disconnected {
+		service.setChargingStatus(entities.TeslaChargingStatusNotPlugged)
+		return false
+	} else if carState.Battery.Level >= carState.Battery.TargetLevel {
+		service.setChargingStatus(entities.TeslaChargingStatusComplete)
+		return false
+	}
+
+	return true
+}
+
+/*
+	func (service *teslaService) canCharge() entities.TeslaChargingStatus {
+		switch service.mode {
+		case entities.TeslaModeOff:
+			return entities.TeslaChargingStatusDisabled
+		case entities.TeslaModeFast:
+			case entities.
+		}
+	}
+*/
+func (service *teslaService) setChargingStatus(chargingStatus entities.TeslaChargingStatus) {
+	if service.chargingStatus == chargingStatus {
+		return
+	}
+
+	service.chargingStatus = chargingStatus
+	service.updateStateView()
+}
+
 func (service *teslaService) setMode(mode entities.TeslaMode) {
+	if service.mode == mode {
+		return
+	}
+
 	service.mode = mode
 	service.updateStateView()
 }
