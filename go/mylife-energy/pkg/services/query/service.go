@@ -32,7 +32,6 @@ func (service *queryService) ServiceName() string {
 }
 
 func (service *queryService) Dependencies() []string {
-	// io because we use io queue
 	return []string{"database"}
 }
 
