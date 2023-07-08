@@ -23,11 +23,11 @@ const Tesla: React.FunctionComponent = () => {
           <Item title='Wall connector status' value={getDeviceStatusString(state.wallConnectorStatus)} />
           <Item title='Car status' value={getDeviceStatusString(state.carStatus)} />
           <Item title='Charging status' value={getChargingStatusString(state.chargingStatus)} />
-          <Item title='Charging current' value={state.chargingCurrent} />
-          <Item title='Charging power' value={state.chargingPower} />
+          <Item title='Charging current' value={`${state.chargingCurrent} A`} />
+          <Item title='Charging power' value={`${state.chargingPower} kW`} />
           <Item title='Battery last update' value={state.batteryLastTimestamp.toLocaleString()} />
-          <Item title='Battery level' value={state.batteryLevel} />
-          <Item title='Battery target level' value={state.batteryTargetLevel} />
+          <Item title='Battery level' value={`${state.batteryLevel} %`} />
+          <Item title='Battery target level' value={`${state.batteryTargetLevel} %`} />
         </mui.TableBody>
       </mui.Table>
 
