@@ -7,12 +7,12 @@
   "author": "Vincent Trumpff",
   "scripts": {
     "ui-tsc:watch": "mylife-ui-watch-tsc",
-    "ui-vite:watch": "VITE_WEB_PORT=8017 VITE_WSTARGET_PORT=8117 mylife-ui-watch-vite",
+    "ui-vite:watch": "VITE_WEB_PORT=8017 VITE_WSTARGET_PORT=8117 VITE_DEDUPE=true mylife-ui-watch-vite",
     "lint": "eslint lib/* public/app/*",
     "server:watch": "mylife-server-watch",
     "start-collector:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_SERVER=${BUS_SERVER:-tcp://rpi-dev-home-main} node dist/dev/server.js --loglevel=debug --config=./conf/config.json --collector",
     "build:prod": "mylife-server-build",
-    "ui-build:prod": "mylife-ui-build",
+    "ui-build:prod": "VITE_DEDUPE=true mylife-ui-build",
     "docker-publish-only": "mylife-publish",
     "docker-publish": "mylife-server-build && mylife-publish"
   },
@@ -23,7 +23,10 @@
   "devDependencies": {
     "eslint": "^8.18.0",
     "mylife-tools-build": "^2.0.2",
-    "mylife-tools-ui": "^1.1.9"
+    "mylife-tools-ui": "^1.1.9",
+    "react-battery-gauge": "^1.0.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "license": "GPL-3.0+"
 }

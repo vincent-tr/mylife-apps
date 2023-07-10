@@ -31,8 +31,8 @@ export default defineConfig(({ command, mode }) => {
     plugins: [ fixReactVirtualized() ],
   };
 
-  // Note: seems it only is needed for gallery (react-leaflet has react as peer dep)
-  // and it is also NOT working for all other ui repos
+  // Note: activate only when react is a peer dep of a component (eg: gallery react-leaflet has react as peer dep)
+  // It is NOT working for all other ui repos
   if (VITE_DEDUPE === 'true') {
     config.resolve = {
       dedupe: ['react', 'react-dom']
