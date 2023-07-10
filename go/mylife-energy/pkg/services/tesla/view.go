@@ -50,7 +50,7 @@ func (v *view) updateStateView() {
 		data.LastUpdate = v.state.Car.Timestamp
 		data.WallConnectorStatus = v.state.WallConnector.Status
 		data.CarStatus = v.state.Car.Status
-		data.ChargingStatus = entities.TeslaChargingStatusDisabled // TODO
+		data.ChargingStatus = v.chargingStatus
 
 		carLastState := v.state.Car.LastState
 
