@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
+	"sync"
 )
 
 var logger = log.CreateLogger("mylife:server:tasks")
+
+const eventLoopId = "event-loop"
 
 type Task func()
 
@@ -23,7 +26,7 @@ func (service *taskService) Init(arg interface{}) error {
 
 	// Queue for main processing (like event loop).
 	// It should only process short tasks without wait
-	return CreateQueue("event-loop")
+	return CreateQueue(eventLoopId)
 }
 
 func (service *taskService) Terminate() error {
@@ -101,6 +104,30 @@ func Submit(queueId string, taskName string, taskImpl Task) error {
 	return queue.submit(taskName, taskImpl)
 }
 
+// Note: deadlock if called from the same queue
+func Run(queueId string, taskName string, taskImpl Task) error {
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	err := Submit(queueId, taskName, func() {
+		taskImpl()
+		wg.Done()
+	})
+
+	if err != nil {
+		return err
+	}
+
+	wg.Wait()
+
+	return nil
+}
+
 func SubmitEventLoop(taskName string, taskImpl Task) error {
-	return Submit("event-loop", taskName, taskImpl)
+	return Submit(eventLoopId, taskName, taskImpl)
+}
+
+// Note: deadlock if called from the same queue
+func RunEventLoop(taskName string, taskImpl Task) error {
+	return Run(eventLoopId, taskName, taskImpl)
 }
