@@ -260,12 +260,6 @@ const BatteryStatus: React.FunctionComponent<{ level: number; }> = ({ level }) =
   );
 };
 
-const LastUpdateTooltip: React.FunctionComponent<{ lastUpdate: Date }> = ({ lastUpdate, children }) => (
-  <mui.Tooltip title={`Mise à jour : ${lastUpdate.toLocaleString()}`}>
-    {children}
-  </mui.Tooltip>
-);
-
 function getChargingStatusString(status: TeslaChargingStatus) {
   switch (status) {
   case TeslaChargingStatus.Unknown:
