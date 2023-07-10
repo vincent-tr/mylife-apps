@@ -1,8 +1,10 @@
+import BatteryGauge from 'react-battery-gauge';
 import { React, mui, useLifecycle, useActions, useSelector } from 'mylife-tools-ui';
 import { enter, leave, setMode } from '../actions';
 import { getState } from '../selectors';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../shared/metadata';
 import icons from '../../common/icons';
+import ChargingGauge from './charging-gauge';
 
 const useStyles = mui.makeStyles(theme => ({
   buttonGroup: {
@@ -17,6 +19,26 @@ const useStyles = mui.makeStyles(theme => ({
   error: {
     color: theme.palette.error.main,
   },
+  section: {
+    padding: theme.spacing(2),
+  },
+  sectionTitle: {
+    margin: theme.spacing(2),
+  },
+  part: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    margin: theme.spacing(1),
+  },
+  footer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  spacer: {
+    height: 1,
+    width: theme.spacing(3),
+  }
 }));
 
 const Tesla: React.FunctionComponent = () => {
@@ -33,35 +55,73 @@ const Tesla: React.FunctionComponent = () => {
   
   return (
     <div>
+      <Section title={'Batterie'}>
 
-      <mui.ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)} className={classes.buttonGroup}>
-        <mui.ToggleButton value={TeslaMode.Off}>
-          <mui.Tooltip title='Eteint'>
-            <icons.actions.Off fontSize='large'/>
-          </mui.Tooltip>
-        </mui.ToggleButton>
+        <Part>
+          <BatteryStatus level={state.batteryLevel} />
+        </Part>
 
-        <mui.ToggleButton value={TeslaMode.Fast}>
-          <mui.Tooltip title='Rapide'>
-            <icons.actions.Fast fontSize='large'/>
-          </mui.Tooltip>
-        </mui.ToggleButton>
+        <Part>
+          <mui.Typography variant='body2' color='textSecondary'>
+            {`Cible de chargement : ${state.batteryTargetLevel}%`}
+            <br />
+            {`Dernière mise à jour : ${state.batteryLastTimestamp.toLocaleString()}`}
+          </mui.Typography>
+        </Part>
 
-        <mui.ToggleButton value={TeslaMode.Smart}>
-          <mui.Tooltip title='Intelligent'>
-            <icons.actions.Smart fontSize='large'/>
-          </mui.Tooltip>
-        </mui.ToggleButton>
-      </mui.ToggleButtonGroup>
+      </Section>
 
-      <mui.Table size='small' stickyHeader>
-        <mui.TableBody>
-          <Item title='Batterie' value={<BatteryStatus level={state.batteryLevel} targetLevel={state.batteryTargetLevel} lastUpdate={state.batteryLastTimestamp} />} />
-          <Item title='Chargement' value={<ChargeStatus current={state.chargingCurrent} power={state.chargingPower} lastUpdate={state.lastUpdate} />} />
-          <Item title='Décision de charge' value={getChargingStatusString(state.chargingStatus)} />
-          <Item title='Equipements' value={<DevicesStatus wallConnector={state.wallConnectorStatus} car={state.carStatus} lastUpdate={state.lastUpdate} />} />
-        </mui.TableBody>
-      </mui.Table>
+      <mui.Divider />
+
+      <Section title={'Charge'}>
+
+        <Part>
+          <mui.ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)} className={classes.buttonGroup}>
+            <mui.ToggleButton value={TeslaMode.Off}>
+              <mui.Tooltip title='Eteint'>
+                <icons.actions.Off fontSize='large'/>
+              </mui.Tooltip>
+            </mui.ToggleButton>
+
+            <mui.ToggleButton value={TeslaMode.Fast}>
+              <mui.Tooltip title='Rapide'>
+                <icons.actions.Fast fontSize='large'/>
+              </mui.Tooltip>
+            </mui.ToggleButton>
+
+            <mui.ToggleButton value={TeslaMode.Smart}>
+              <mui.Tooltip title='Intelligent'>
+                <icons.actions.Smart fontSize='large'/>
+              </mui.Tooltip>
+            </mui.ToggleButton>
+          </mui.ToggleButtonGroup>
+
+          <ChargeStatus current={state.chargingCurrent} power={state.chargingPower} />
+        </Part>
+
+        <Part footer>
+            <mui.Typography variant='body2' color='textSecondary'>
+              {`Décision de charge : ${getChargingStatusString(state.chargingStatus)}`}
+              <br />
+              {`Dernière mise à jour : ${state.lastUpdate.toLocaleString()}`}
+            </mui.Typography>
+
+            <Spacer/>
+
+            <mui.Tooltip title={`Wall connector`}>
+              <icons.tesla.WallConnector />
+            </mui.Tooltip>
+            <DeviceStatus value={state.wallConnectorStatus} />
+
+            <Spacer/>
+
+            <mui.Tooltip title={`Voiture`}>
+              <icons.tesla.Car />
+            </mui.Tooltip>
+            <DeviceStatus value={state.carStatus} />
+        </Part>
+
+      </Section>
 
     </div>
   );
@@ -69,35 +129,48 @@ const Tesla: React.FunctionComponent = () => {
 
 export default Tesla;
 
-const Item: React.FunctionComponent<{title: any, value: any}> = ({ title, value }) => (
-  <mui.TableRow>
-    <mui.TableCell>{title}</mui.TableCell>
-    <mui.TableCell>{value}</mui.TableCell>
-  </mui.TableRow>
-);
-
 function useViewLifecycle() {
   const actions = useActions({ enter, leave });
   useLifecycle(actions.enter, actions.leave);
 }
 
-const DevicesStatus: React.FunctionComponent<{ wallConnector: TeslaDeviceStatus; car: TeslaDeviceStatus; lastUpdate: Date; }> = ({ wallConnector, car, lastUpdate }) => {
-  return (
-    <LastUpdateTooltip lastUpdate={lastUpdate}>
-      <div>
-        <mui.Tooltip title={`Wall connector`}>
-          <icons.tesla.WallConnector />
-        </mui.Tooltip>
-        <DeviceStatus value={wallConnector} />
+const Section: React.FunctionComponent<{ title: string; }> = ({ title, children}) => {
+  const classes = useStyles();
 
-        <mui.Tooltip title={`Voiture`}>
-          <icons.tesla.Car />
-        </mui.Tooltip>
-        <DeviceStatus value={car} />
-      </div>
-    </LastUpdateTooltip>
+  return (
+    <div className={classes.section}>
+      <mui.Typography variant='h1' className={classes.sectionTitle}>
+        {title}
+      </mui.Typography>
+
+      {children}
+    </div>
   );
 };
+
+const Part: React.FunctionComponent<{ footer?: boolean; }> = ({ footer = false, children }) => {
+  const classes = useStyles();
+
+  const content = footer ? (
+    <div className={classes.footer}>
+      {children}
+    </div>
+  ) : children;
+
+  return (
+    <div className={classes.part}>
+      {content}
+    </div>
+  );
+};
+
+const Spacer: React.FunctionComponent = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.spacer} />
+  )
+}
 
 const DeviceStatus: React.FunctionComponent<{ value: TeslaDeviceStatus; }> = ({ value }) => {
   const classes = useStyles();
@@ -142,52 +215,48 @@ const DeviceStatus: React.FunctionComponent<{ value: TeslaDeviceStatus; }> = ({ 
   );
 };
 
-const useProgressStyles = mui.makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  bar: {
-    width: '100%',
-    marginRight: theme.spacing(1),
-  },
-  label: {
-    minWidth: 80,
-  },
-}));
-
-const ChargeStatus: React.FunctionComponent<{ current: number; power: number; lastUpdate: Date; }> = ({ current, power, lastUpdate }) => {
-  const classes = useProgressStyles();
+const ChargeStatus: React.FunctionComponent<{ current: number; power: number; }> = ({ current, power }) => {
   const MAX_CURRENT = 32; // Note: should be fetched from server
-  const ratio = current / MAX_CURRENT * 100;
 
   if (current <= 0) {
     return (
-      <LastUpdateTooltip lastUpdate={lastUpdate}>
-        <mui.Typography variant='body2'>{`(Stoppé)`}</mui.Typography>
-      </LastUpdateTooltip>
+      <mui.Typography variant='body2'>{`(Stoppé)`}</mui.Typography>
     );
   }
 
   return (
-    <LastUpdateTooltip lastUpdate={lastUpdate}>
-      <div className={classes.container}>
-        <mui.LinearProgress className={classes.bar} variant='determinate' value={ratio} />
-        <mui.Typography className={classes.label} variant='body2' color='textSecondary'>{`${current}A / ${power}kW`}</mui.Typography>
-      </div>
-    </LastUpdateTooltip>
+    <ChargingGauge height={100} width={100} min={0} max={MAX_CURRENT} value={current} minText='0A' maxText={`${MAX_CURRENT}A`} valueText={`${current}A / ${power}kW`} />
   );
 };
 
-const BatteryStatus: React.FunctionComponent<{ level: number; targetLevel: number; lastUpdate: Date; }> = ({ level, targetLevel, lastUpdate }) => {
-  const classes = useProgressStyles();
+const BatteryStatus: React.FunctionComponent<{ level: number; }> = ({ level }) => {
+  // TODO: pick from theme
+  const COLOR_PRIMARY = '#2196f3';
+
   return (
-    <LastUpdateTooltip lastUpdate={lastUpdate}>
-      <div className={classes.container}>
-        <mui.LinearProgress className={classes.bar} variant='buffer' value={level} valueBuffer={targetLevel} />
-        <mui.Typography className={classes.label} variant='body2' color='textSecondary'>{`${level}% -> ${targetLevel}%`}</mui.Typography>
-      </div>
-    </LastUpdateTooltip>
+    <BatteryGauge
+      orientation='vertical'
+      size={100}
+      value={level}
+      customization={{
+        batteryBody: {
+          strokeWidth: 2,
+        },
+        batteryCap: {
+          strokeWidth: 2,
+        },
+        batteryMeter: {
+          fill: COLOR_PRIMARY,
+          outerGap: 2,
+          lowBatteryValue: -1,
+        },
+        readingText: {
+          // From .MuiTypography-body1
+          fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          fontSize: '1rem',
+        },
+      }}
+    />
   );
 };
 
