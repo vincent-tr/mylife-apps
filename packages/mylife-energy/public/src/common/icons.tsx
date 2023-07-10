@@ -8,6 +8,12 @@ const {
   NotInterested,
   Timer,
   NetworkCheck,
+  EvStation,
+  DirectionsCar,
+  Help,
+  Check,
+  CloudOff,
+  Error,
 } = mui.icons;
 
 const Energy = (props) => (
@@ -70,4 +76,16 @@ export default {
     Solar: DeviceTypeSolar,
     Computed: Functions,
   },
+
+  tesla: {
+    WallConnector: EvStation,
+    Car: DirectionsCar,
+  },
+
+  deviceStatus: {
+    Unknown: Help,
+    Online: Check,
+    Offline: CloudOff,
+    Failure: Error,
+  }
 };
