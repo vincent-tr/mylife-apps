@@ -132,15 +132,20 @@ func (client *Client) Wakeup() error {
 	return err
 }
 
-func (client *Client) SetChargingCurrent(value uint) error {
+func (client *Client) SetChargingCurrent(value int) error {
 	if value == 0 {
-		return client.vehicle.StopCharging()
+		err := client.vehicle.StopCharging()
+		if err != nil && err.Error() != "not_charging" {
+			return err
+		}
+
+		return nil
 	}
 
 	err := client.vehicle.StartCharging()
-	if err != nil {
+	if err != nil && err.Error() != "is_charging" {
 		return err
 	}
 
-	return client.vehicle.SetChargingAmps(int(value))
+	return client.vehicle.SetChargingAmps(value)
 }
