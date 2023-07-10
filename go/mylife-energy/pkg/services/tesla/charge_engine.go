@@ -73,6 +73,9 @@ func (e *chargeEngine) intervalEntry() {
 	case entities.TeslaModeFast:
 		// Mode fast : always max current
 		current := state.Car.LastState.Charger.MaxCurrent
+
+		e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusCharging)
+
 		err := e.setupCharge(state, current)
 		if err != nil {
 			logger.WithError(err).Error("Error at charge setup")
@@ -84,6 +87,12 @@ func (e *chargeEngine) intervalEntry() {
 		if err != nil {
 			logger.WithError(err).Error("Error computing smart current")
 			return
+		}
+
+		if current == 0 {
+			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusNoPower)
+		} else {
+			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusCharging)
 		}
 
 		err = e.setupCharge(state, current)
