@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.4">
+    <title>MyLife Apps</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+{{#sections}}
+  	<div class="page-header">
+  		<h1 class="text-center">{{display}}</h1>
+  	</div>
+
+  	<div class="container">
+      <div class="row">
+{{#items}}
+
+  			<div class="col-sm-4 col-md-3 col-lg-2">
+  				<a target="_blank" href="{{target}}" class="btn thumbnail">
+  					<img style="width:155px;height:155px;" src="images/{{code}}" alt="...">
+  					<div class="caption">
+  						<h3>{{display}}</h3>
+  					</div>
+  				</a>
+  			</div>
+{{/items}}
+      </div>
+    </div>
+{{/sections}}
+  </body>
+</html>

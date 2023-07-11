@@ -1,0 +1,41 @@
+{
+  "name": "mylife-portal",
+  "version": "1.1.13",
+  "description": "MyLife Portal",
+  "main": "index.js",
+  "scripts": {
+    "server:watch": "mylife-server-watch",
+    "lint": "eslint lib/*",
+    "start:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8016 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
+    "start:prod": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-portal} WEB_PORT=8016 node dist/prod/server.js --loglevel=debug --config=./conf/config.json",
+    "build:prod": "mylife-server-build",
+    "docker-publish-only": "mylife-publish",
+    "docker-publish": "mylife-server-build && mylife-publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vincent-tr/mylife-portal.git"
+  },
+  "author": "Vincent Trumpff",
+  "license": "GPL-3.0+",
+  "bugs": {
+    "url": "https://github.com/vincent-tr/mylife-portal/issues"
+  },
+  "homepage": "https://github.com/vincent-tr/mylife-portal#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "handlebars": "^4.7.7",
+    "jquery": "^3.6.0",
+    "mylife-tools-server": "^1.1.12",
+    "node-fetch": "^3.2.6"
+  },
+  "devDependencies": {
+    "eslint": "^8.18.0",
+    "mylife-tools-build": "^2.0.3"
+  },
+  "peerDependencies": {
+    "express": "*",
+    "serve-favicon": "*",
+    "server-destroy": "*"
+  }
+}
