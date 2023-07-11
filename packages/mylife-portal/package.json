@@ -4,6 +4,7 @@
   "description": "MyLife Portal",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint lib/*",
     "ui-build:prod": "build/ui-build.sh"
   },
   "repository": {
