@@ -1,0 +1,7 @@
+*
+!/go/mylife-portal
+!/go/mylife-tools-server
+!/go.work
+!/packages/mylife-portal/dist/prod
+!/packages/mylife-portal/*.go
+!/packages/mylife-portal/go.mod

@@ -1,4 +1,0 @@
-{
-  "mongo": "%{MONGO_URL}",
-  "webServer": { "port": "%{WEB_PORT|80}" }
-}
