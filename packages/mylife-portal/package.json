@@ -19,5 +19,8 @@
   "homepage": "https://github.com/vincent-tr/mylife-portal#readme",
   "dependencies": {
     "bootstrap": "^3.3.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.18.0"
   }
 }
