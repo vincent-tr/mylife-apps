@@ -55,7 +55,7 @@ func (v *view[TEntity]) Close() {
 	v.container.Reset()
 }
 
-func NewView[TEntity Entity](source *Container[TEntity], predicate func(obj TEntity) bool) IContainer[TEntity] {
+func NewView[TEntity Entity](source IContainer[TEntity], predicate func(obj TEntity) bool) IContainer[TEntity] {
 	v := &view[TEntity]{
 		source:    source,
 		container: NewContainer[TEntity](fmt.Sprintf("view(%s)", source.Name())),
