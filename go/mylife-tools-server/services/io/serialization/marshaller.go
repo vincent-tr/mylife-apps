@@ -195,17 +195,19 @@ func marshalValue(value reflect.Value) (interface{}, error) {
 		return marshalValue(value.Elem())
 
 	case reflect.Struct:
+		realValue := reflect.ValueOf(value.Interface()).Convert(valueType)
 		dest := make(map[string]interface{})
-		err := marshalMerge(value, dest)
+		err := marshalMerge(realValue, dest)
 		if err != nil {
 			return nil, err
 		}
 		return dest, nil
 
 	case reflect.Slice:
-		dest := make([]interface{}, value.Len())
-		for index := 0; index < value.Len(); index++ {
-			marshaledValue, err := marshalValue(value.Index(index))
+		realValue := reflect.ValueOf(value.Interface()).Convert(valueType)
+		dest := make([]interface{}, realValue.Len())
+		for index := 0; index < realValue.Len(); index++ {
+			marshaledValue, err := marshalValue(realValue.Index(index))
 			if err != nil {
 				return nil, err
 			}
