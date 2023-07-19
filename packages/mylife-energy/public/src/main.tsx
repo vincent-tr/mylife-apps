@@ -32,4 +32,3 @@ services.render({
 });
 
 const store = services.getStore();
-store.dispatch(referenceInit());
