@@ -85,7 +85,10 @@ func newViewPublisher[TEntity store.Entity](session *sessions.Session, id uint64
 func (publisher *viewPublisher[TEntity]) close() {
 	publisher.view.RemoveListener(&publisher.callback)
 
-	// publisher.view.Close()
+	closable, ok := publisher.view.(store.Closable)
+	if ok {
+		closable.Close()
+	}
 }
 
 func (publisher *viewPublisher[TEntity]) submitPendings() {
