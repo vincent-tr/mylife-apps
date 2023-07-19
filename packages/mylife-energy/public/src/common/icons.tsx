@@ -14,6 +14,7 @@ const {
   Check,
   CloudOff,
   Error,
+  Equalizer,
 } = mui.icons;
 
 const Energy = (props) => (
@@ -68,6 +69,7 @@ export default {
   tabs: {
     Live: LiveTv,
     Tesla,
+    Stats: Equalizer,
   },
 
   devices: {

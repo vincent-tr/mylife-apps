@@ -1,3 +1,1 @@
-// TODO
-
-export default (action, state) => (state)
+export { default as stats } from './stats/reducer';
