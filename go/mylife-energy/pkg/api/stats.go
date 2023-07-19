@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"mylife-energy/pkg/business/stats"
 	"mylife-tools-server/services/api"
 	"mylife-tools-server/services/sessions"
@@ -23,7 +22,5 @@ type statsInput struct {
 type statsOutput = stats.StatValues
 
 func getValues(session *sessions.Session, arg statsInput) ([]statsOutput, error) {
-	a, b := stats.GetValues(arg.Type, arg.Timestamp, arg.Sensors)
-	fmt.Printf("+%v +%v\n", a, b)
-	return a, b
+	return stats.GetValues(arg.Type, arg.Timestamp, arg.Sensors)
 }
