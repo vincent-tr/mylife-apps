@@ -40,7 +40,7 @@ func init() {
 }
 
 func (service *queryService) exec(ctx context.Context, cursorBuilder func(ctx context.Context, col *mongo.Collection) (*mongo.Cursor, error)) ([]Result, error) {
-	mongoResults, err := dbFetch(ctx, cursorBuilder)
+	mongoResults, err := dbFetch[mongoMeasure](ctx, cursorBuilder)
 	if err != nil {
 		return nil, err
 	}
@@ -65,6 +65,12 @@ func getService() *queryService {
 
 func Aggregate(ctx context.Context, pipeline interface{}) ([]Result, error) {
 	return getService().exec(ctx, func(ctx context.Context, col *mongo.Collection) (*mongo.Cursor, error) {
+		return col.Aggregate(ctx, pipeline)
+	})
+}
+
+func AggregateRaw[T any](ctx context.Context, pipeline interface{}) ([]T, error) {
+	return dbFetch[T](ctx, func(ctx context.Context, col *mongo.Collection) (*mongo.Cursor, error) {
 		return col.Aggregate(ctx, pipeline)
 	})
 }

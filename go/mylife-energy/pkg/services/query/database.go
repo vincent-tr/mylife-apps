@@ -25,7 +25,7 @@ type mongoSensor struct {
 	AccuracyDecimals  uint   `bson:"accuracyDecimals"`
 }
 
-func dbFetch(ctx context.Context, cursorBuilder func(ctx context.Context, col *mongo.Collection) (*mongo.Cursor, error)) ([]mongoMeasure, error) {
+func dbFetch[T any](ctx context.Context, cursorBuilder func(ctx context.Context, col *mongo.Collection) (*mongo.Cursor, error)) ([]T, error) {
 	col := database.GetCollection("measures")
 
 	logger.Debug("Query begin")
@@ -42,7 +42,7 @@ func dbFetch(ctx context.Context, cursorBuilder func(ctx context.Context, col *m
 
 	defer cursor.Close(ctx)
 
-	var results []mongoMeasure
+	var results []T
 
 	if err = cursor.All(ctx, &results); err != nil {
 		return nil, err

@@ -48,10 +48,10 @@ func (builder *PipelineBuilder) Sort(fields ...SortField) *PipelineBuilder {
 type GroupField struct {
 	Name        string
 	Accumulator string
-	Expression  string
+	Expression  any
 }
 
-func (builder *PipelineBuilder) Group(groupKeyExpression string, fields ...GroupField) *PipelineBuilder {
+func (builder *PipelineBuilder) Group(groupKeyExpression any, fields ...GroupField) *PipelineBuilder {
 	value := bson.D{
 		{Key: "_id", Value: groupKeyExpression},
 	}
@@ -61,4 +61,8 @@ func (builder *PipelineBuilder) Group(groupKeyExpression string, fields ...Group
 	}
 
 	return builder.addStage("$group", value)
+}
+
+func (builder *PipelineBuilder) Match(filter FilterExpression) *PipelineBuilder {
+	return builder.addStage("$match", filter.Build().(bson.D))
 }
