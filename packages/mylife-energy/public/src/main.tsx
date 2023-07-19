@@ -2,8 +2,6 @@ import { React, services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
 import metadataDefintions from '../../shared/metadata';
 
-import { referenceInit } from './reference/actions';
-
 import icons from './common/icons';
 import Home from './home/components';
 import Live from './live/components';
