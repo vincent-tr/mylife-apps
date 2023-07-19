@@ -21,7 +21,7 @@ const (
 )
 
 type StatValues struct {
-	Sensor   entities.Sensor
+	Sensor   *entities.Sensor
 	Measures []entities.Measure
 }
 
@@ -108,8 +108,8 @@ func getStatValues(beginDate time.Time, endDate time.Time, groupId any, sensor s
 	}
 
 	stat := &StatValues{
-		Sensor: *entities.NewSensor(&entities.SensorData{
-			Id:                "epanel-baie-brassage",
+		Sensor: entities.NewSensor(&entities.SensorData{
+			Id:                sensor,
 			DeviceClass:       "energy", // "power"?
 			StateClass:        "none",
 			UnitOfMeasurement: "Wh",
