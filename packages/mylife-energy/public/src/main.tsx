@@ -30,5 +30,3 @@ services.render({
   routes,
   menu
 });
-
-const store = services.getStore();
