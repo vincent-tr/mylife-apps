@@ -1,4 +1,4 @@
-package api
+package tesla
 
 import (
 	"mylife-energy/pkg/entities"
@@ -8,7 +8,7 @@ import (
 	"mylife-tools-server/services/sessions"
 )
 
-var teslaDef = api.MakeDefinition("tesla", notifyState, setMode)
+var Definition = api.MakeDefinition("tesla", notifyState, setMode)
 
 func notifyState(session *sessions.Session, arg struct{}) (uint64, error) {
 	stateView := tesla.GetStateView()

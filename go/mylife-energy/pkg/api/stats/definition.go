@@ -1,4 +1,4 @@
-package api
+package stats
 
 import (
 	"mylife-energy/pkg/business/stats"
@@ -7,11 +7,7 @@ import (
 	"time"
 )
 
-// jour -> toutes les 15 mins
-// mois -> tous les jours
-// annee -> tous les mois
-
-var statsDef = api.MakeDefinition("stats", getValues)
+var Definition = api.MakeDefinition("stats", getValues)
 
 type statsInput struct {
 	Type      stats.StatsType

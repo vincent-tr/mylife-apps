@@ -1,4 +1,4 @@
-package api
+package common
 
 import (
 	"mylife-tools-server/services/api"
@@ -6,7 +6,7 @@ import (
 	"mylife-tools-server/services/sessions"
 )
 
-var commonDef = api.MakeDefinition("common", unnotify)
+var Definition = api.MakeDefinition("common", unnotify)
 
 func unnotify(session *sessions.Session, arg struct{ ViewId uint64 }) (api.NoReturn, error) {
 	notification.UnnotifyView(session, arg.ViewId)

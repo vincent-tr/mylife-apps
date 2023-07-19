@@ -1,4 +1,4 @@
-package api
+package live
 
 import (
 	"mylife-energy/pkg/entities"
@@ -8,7 +8,7 @@ import (
 	"mylife-tools-server/services/sessions"
 )
 
-var liveDef = api.MakeDefinition("live", notifyMeasures, notifyDevices)
+var Definition = api.MakeDefinition("live", notifyMeasures, notifyDevices)
 
 func notifyMeasures(session *sessions.Session, arg struct{}) (uint64, error) {
 	measures := live.GetMeasures()
