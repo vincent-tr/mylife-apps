@@ -16,7 +16,7 @@ type view struct {
 	chargingStatus entities.TeslaChargingStatus
 }
 
-const viewStateId = "unique"
+const ViewStateId = "unique"
 
 func makeView(state *stateData) *view {
 	v := &view{
@@ -27,7 +27,7 @@ func makeView(state *stateData) *view {
 	}
 
 	v.view.Set(entities.NewTeslaState(&entities.TeslaStateData{
-		Id:   viewStateId,
+		Id:   ViewStateId,
 		Mode: v.mode,
 	}))
 
@@ -40,7 +40,7 @@ func (v *view) stateUpdate(state *stateData) {
 }
 
 func (v *view) updateStateView() {
-	oldState, err := v.view.Get(viewStateId)
+	oldState, err := v.view.Get(ViewStateId)
 	panics.IsNil(err)
 
 	newState := entities.UpdateTeslaState(oldState, func(data *entities.TeslaStateData) {
