@@ -1,34 +1,34 @@
-import { React, mui, chart, useActions, useCallback, AutoSizer, useSelector, useLifecycle, immutable, views, useState, useMemo } from 'mylife-tools-ui';
+import { React, mui, chart, useActions, AutoSizer, useSelector, useLifecycle, immutable, useState, useChartColors } from 'mylife-tools-ui';
 import { StatsType, fetchValues, enter, leave } from '../actions';
-import { getMeasures, getDevicesView } from '../selectors';
+import { getChartData, getSensors } from '../selectors';
 import DeviceList from './device-list';
 
 const Stats: React.FunctionComponent = () => {
   useViewLifecycle();
   const actions = useActions({ fetchValues });
-  const measures = useSelector(getMeasures);
+  const data = useSelector(getChartData);
+  const sensors = useSelector(getSensors);
   const [value, onChange] = useState(immutable.Set<string>());
+  const colors = useChartColors();
 
   return (
     <div>
       STATS
       <DeviceList value={value} onChange={onChange} />
 
-      <mui.Button onClick={() => actions.fetchValues(StatsType.Day, new Date(2023, 6, 17), ['epanel-baie-brassage'])}>Compute</mui.Button>
+      <mui.Button onClick={() => actions.fetchValues(StatsType.Day, new Date(2023, 6, 17), value.toArray())}>Compute</mui.Button>
 
       <div style={{height: 400, width: 800}}>
         <AutoSizer>
           {({ height, width }) => (
-            <chart.BarChart data={measures} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-              {/* 
-              <chart.XAxis dataKey={periodKey} name='Date' />
-              <chart.YAxis name='Montant' />
-              <chart.CartesianGrid strokeDasharray='3 3'/>
-              <chart.Tooltip/>
-              <chart.Legend />
-              {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
-              */}
-            <chart.Bar dataKey='value' fill='#82ca9d' />
+            <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
+              <chart.XAxis dataKey={item => item.timestamp.toLocaleTimeString()} />
+              <chart.YAxis unit='Wh' />
+              <chart.Tooltip formatter={(value, name, props) => `${value} Wh`}/>
+              <chart.Legend/>
+              {sensors.map((sensor, index) => (
+                <chart.Bar key={sensor._id} stackId={sensor._id} dataKey={item => Math.round(item.measures[sensor._id])} name={sensor.display} fill={colors[index % colors.length]} />
+              ))}
 
             </chart.BarChart>
           )}
