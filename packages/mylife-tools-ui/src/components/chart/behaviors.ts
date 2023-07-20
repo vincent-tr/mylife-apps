@@ -1,5 +1,3 @@
-'use strict';
-
 import { colors } from '@material-ui/core';
 
 const chartColors = createChartColors();
@@ -31,5 +29,5 @@ function createChartColors() {
     'yellow',
     'deepOrange',
   ];
-  return hues.map(hue => colors[hue][shade]);
+  return hues.map(hue => colors[hue][shade] as string);
 }
