@@ -47,7 +47,7 @@ const useStyles = mui.makeStyles(theme => ({
   },
 }));
 
-const MainAnimation = () => {
+const MainAnimation: React.FunctionComponent = () => {
   const classes = useStyles();
   const isPhone = useScreenPhone();
 
