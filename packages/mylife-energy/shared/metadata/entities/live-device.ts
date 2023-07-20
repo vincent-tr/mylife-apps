@@ -1,3 +1,5 @@
+import { DeviceType } from './device';
+
 export interface LiveDevice {
 	_id: string
 	display: string
@@ -5,8 +7,6 @@ export interface LiveDevice {
 	computed: boolean
 	sensors: LiveSensor[]
 }
-
-export type DeviceType = 'node' | 'group' | 'main' | 'solar' | 'total'
 
 export interface LiveSensor {
 	key: string
