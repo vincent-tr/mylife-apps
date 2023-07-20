@@ -7,7 +7,7 @@ const getStats = state => state.stats as StatsState;
 
 export const getDevicesView = state => views.getView(state, viewUids.DEVICES) as views.View<Device>;
 
-interface TimestampData {
+export interface TimestampData {
   timestamp: Date;
   measures: { [sensorId: string]: number };
 }
@@ -36,7 +36,7 @@ export const getChartData = createSelector(
   }
 );
 
-type UiSensor = Sensor & { display: string };
+export type UiSensor = Sensor & { display: string };
 
 export const getSensors = createSelector(
   [ 
