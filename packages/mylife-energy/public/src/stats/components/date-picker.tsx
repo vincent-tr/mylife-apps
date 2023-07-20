@@ -1,24 +1,36 @@
-import { React, mui } from 'mylife-tools-ui';
+import { React, mui, clsx } from 'mylife-tools-ui';
 import { StatsType } from '../actions';
 import icons from '../../common/icons';
 
 export interface DatePickerProps {
+  className?: string;
   type: StatsType;
   value: Date;
   onChange: (newValue: Date) => void;
 }
 
-const DatePicker: React.Component<DatePickerProps> = ({ type, value, onChange }) => {
+const useStyles = mui.makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  picker: {
+    flex: '1 1 auto',
+  }
+}));
+
+const DatePicker: React.FunctionComponent<DatePickerProps> = ({ className, type, value, onChange }) => {
   switch (type) {
 
   case StatsType.Day:
-    return (<DayPicker value={value} onChange={onChange} />);
+    return (<DayPicker className={className} value={value} onChange={onChange} />);
 
   case StatsType.Month:
-    return (<MonthPicker value={value} onChange={onChange} />);
+    return (<MonthPicker className={className} value={value} onChange={onChange} />);
 
   case StatsType.Year:
-    return (<YearPicker value={value} onChange={onChange} />);
+    return (<YearPicker className={className} value={value} onChange={onChange} />);
 
   default:
     throw new Error(`Unknown type: ${type}`);
@@ -27,14 +39,15 @@ const DatePicker: React.Component<DatePickerProps> = ({ type, value, onChange })
 
 export default DatePicker;
 
-const DayPicker: React.Component<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => {
+const DayPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ className, value, onChange }) => {
+  const classes = useStyles();
   return (
-    <div>
+    <div className={clsx(classes.container, className)}>
       <mui.IconButton onClick={() => onChange(addDay(value, -1))}>
         <icons.actions.Prev />
       </mui.IconButton>
 
-      <mui.DatePicker views={["year", "month", "date"]} value={value} onChange={onChange} />
+      <mui.DatePicker className={classes.picker} views={["year", "month", "date"]} value={value} onChange={onChange} />
       
       <mui.IconButton onClick={() => onChange(addDay(value, 1))}>
         <icons.actions.Next />
@@ -43,14 +56,15 @@ const DayPicker: React.Component<Omit<DatePickerProps, 'type'>> = ({ value, onCh
   );
 };
 
-const MonthPicker: React.Component<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => {
+const MonthPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ className, value, onChange }) => {
+  const classes = useStyles();
   return (
-    <div>
+    <div className={clsx(classes.container, className)}>
       <mui.IconButton onClick={() => onChange(addMonth(value, -1))}>
         <icons.actions.Prev />
       </mui.IconButton>
 
-      <mui.DatePicker views={["year", "month"]} value={value} onChange={onChange} />
+      <mui.DatePicker className={classes.picker} views={["year", "month"]} value={value} onChange={onChange} />
 
       <mui.IconButton onClick={() => onChange(addMonth(value, 1))}>
         <icons.actions.Next />
@@ -59,14 +73,15 @@ const MonthPicker: React.Component<Omit<DatePickerProps, 'type'>> = ({ value, on
   );
 };
 
-const YearPicker: React.Component<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => {
+const YearPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ className, value, onChange }) => {
+  const classes = useStyles();
   return (
-    <div>
+    <div className={clsx(classes.container, className)}>
       <mui.IconButton onClick={() => onChange(addYear(value, -1))}>
         <icons.actions.Prev />
       </mui.IconButton>
 
-      <mui.DatePicker views={["year"]} value={value} onChange={onChange} />
+      <mui.DatePicker className={classes.picker} views={["year"]} value={value} onChange={onChange} />
 
       <mui.IconButton onClick={() => onChange(addYear(value, 1))}>
         <icons.actions.Next />
