@@ -70,7 +70,7 @@ func configureOptions(typ StatsType, timestamp time.Time) (beginDate time.Time, 
 		groupId = query.DateFromParts(
 			query.DatePart{Name: "year", Expression: query.Year("$timestamp")},
 			query.DatePart{Name: "month", Expression: query.Month("$timestamp")},
-			query.DatePart{Name: "day", Expression: query.Day("$timestamp")},
+			query.DatePart{Name: "day", Expression: query.DayOfMonth("$timestamp")},
 		)
 
 	case Year:
