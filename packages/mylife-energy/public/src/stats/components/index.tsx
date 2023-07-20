@@ -1,6 +1,5 @@
-import { React, mui, useActions, useSelector, useLifecycle, immutable, useReducer, useEffect } from 'mylife-tools-ui';
+import { React, mui, useActions, useLifecycle, immutable, useReducer, useEffect } from 'mylife-tools-ui';
 import { StatsType, fetchValues, enter, leave } from '../actions';
-import { getChartData, getSensors } from '../selectors';
 import CriteriaSelector, { Criteria } from './criteria-selector';
 import Chart from './chart';
 
@@ -22,8 +21,6 @@ const Stats: React.FunctionComponent = () => {
   useViewLifecycle();
   const classes = useStyles();
   const actions = useActions({ fetchValues });
-  const data = useSelector(getChartData);
-  const sensors = useSelector(getSensors);
 
   const [criteria, onCriteriaChange] = useReducer(
     (criteria: Criteria, props: Partial<Criteria>) => ({ ... criteria, ...props }), 
