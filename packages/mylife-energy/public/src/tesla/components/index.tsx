@@ -229,7 +229,7 @@ const ChargeStatus: React.FunctionComponent<{ current: number; power: number; }>
   );
 };
 
-const BatteryStatus: React.FunctionComponent<{ level: number; }> = ({ level }) => {
+export const BatteryStatus: React.FunctionComponent<{ level: number; }> = ({ level }) => {
   // TODO: pick from theme
   const COLOR_PRIMARY = '#2196f3';
 
