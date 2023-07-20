@@ -1,49 +1,43 @@
-import { React, mui, chart, useActions, AutoSizer, useSelector, useLifecycle, immutable, useState, useChartColors, useMemo, formatDate } from 'mylife-tools-ui';
-import { fr } from 'date-fns/locale';
+import { React, mui, useActions, useSelector, useLifecycle, immutable, useReducer, useEffect } from 'mylife-tools-ui';
 import { StatsType, fetchValues, enter, leave } from '../actions';
-import { getChartData, getSensors, TimestampData } from '../selectors';
-import DeviceList from './device-list';
-import TypeList from './type-list';
-import DatePicker from './date-picker';
+import { getChartData, getSensors } from '../selectors';
+import CriteriaSelector, { Criteria } from './criteria-selector';
+import Chart from './chart';
+
+const useStyles = mui.makeStyles(theme => ({
+  container: {
+    flex: '1 1 auto',
+    minHeight: 0,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  criteria: {
+  },
+  chart: {
+    flex: '1 1 auto',
+  }
+}));
 
 const Stats: React.FunctionComponent = () => {
   useViewLifecycle();
+  const classes = useStyles();
   const actions = useActions({ fetchValues });
   const data = useSelector(getChartData);
   const sensors = useSelector(getSensors);
-  const [devices, onDevicesChange] = useState(immutable.Set<string>());
-  const [type, onTypeChange] = useState(StatsType.Day);
-  const [date, onDateChange] = useState(new Date());
-  const dateFormatter = useAxisDateFormatter(type);
-  const colors = useChartColors();
+
+  const [criteria, onCriteriaChange] = useReducer(
+    (criteria: Criteria, props: Partial<Criteria>) => ({ ... criteria, ...props }), 
+    { type: StatsType.Day, date: new Date(), devices: immutable.Set<string>() } as Criteria
+  );
+
+  useEffect(() => {
+    actions.fetchValues(criteria.type, criteria.date, criteria.devices.toArray());
+  }, [criteria]);
 
   return (
-    <div>
-      STATS
-      <DeviceList value={devices} onChange={onDevicesChange} />
-      <TypeList value={type} onChange={onTypeChange} />
-
-      <DatePicker type={type} value={date} onChange={onDateChange} />
-
-      <mui.Button onClick={() => actions.fetchValues(type, date, devices.toArray())}>Compute</mui.Button>
-
-      <div style={{height: 400, width: 800}}>
-        <AutoSizer>
-          {({ height, width }) => (
-            <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-              <chart.XAxis dataKey={dateFormatter} />
-              <chart.YAxis unit='Wh' />
-              <chart.Tooltip formatter={(value, name, props) => `${value} Wh`}/>
-              <chart.Legend/>
-              {sensors.map((sensor, index) => (
-                <chart.Bar key={sensor._id} stackId={sensor._id} dataKey={item => Math.round(item.measures[sensor._id])} name={sensor.display} fill={colors[index % colors.length]} />
-              ))}
-
-            </chart.BarChart>
-          )}
-        </AutoSizer>
-      </div>
-
+    <div className={classes.container}>
+      <CriteriaSelector className={classes.criteria} criteria={criteria} onChange={onCriteriaChange} />
+      <Chart className={classes.chart} type={criteria.type} />
     </div>
   );
 };
@@ -54,31 +48,3 @@ function useViewLifecycle() {
   const actions = useActions({ enter, leave });
   useLifecycle(actions.enter, actions.leave);
 }
-
-function useAxisDateFormatter(type: StatsType) {
-  return useMemo(() => {
-
-    switch (type) {
-      case StatsType.Day:
-        return (item: TimestampData) => formatDate(item.timestamp, 'HH:mm', {locale: fr});
-
-      case StatsType.Month:
-        return (item: TimestampData) => formatDate(item.timestamp, 'EEE d', {locale: fr});
-
-      case StatsType.Year:
-        return (item: TimestampData) => formatDate(item.timestamp, 'MMMM', {locale: fr});
-
-      default:
-        throw new Error(`Unknown type: ${type}`);
-    }
-
-  }, [type]);
-}
-
-/*
-
-TODO:
-- layout
-- autre types de calcul
-
-*/
