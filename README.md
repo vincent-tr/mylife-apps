@@ -245,3 +245,4 @@ go run . -o ~/tesla.token
     - ct14 => lave vaisselle
   - ct10 => cumulus => inversé jusqu'au 01/07/2023 9h43
   - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
+- Sauvegarder le mode de charge tesla
