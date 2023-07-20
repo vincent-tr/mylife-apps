@@ -15,6 +15,8 @@ const {
   CloudOff,
   Error,
   Equalizer,
+  ArrowLeft,
+  ArrowRight,
 } = mui.icons;
 
 const Energy = (props) => (
@@ -64,6 +66,8 @@ export default {
     Off: NotInterested,
     Fast: Timer,
     Smart: NetworkCheck,
+    Prev: ArrowLeft,
+    Next: ArrowRight,
   },
 
   tabs: {

@@ -1,9 +1,10 @@
 import { React, mui, chart, useActions, AutoSizer, useSelector, useLifecycle, immutable, useState, useChartColors, useMemo, formatDate } from 'mylife-tools-ui';
-import { fr } from 'date-fns/locale'
+import { fr } from 'date-fns/locale';
 import { StatsType, fetchValues, enter, leave } from '../actions';
 import { getChartData, getSensors, TimestampData } from '../selectors';
 import DeviceList from './device-list';
 import TypeList from './type-list';
+import DatePicker from './date-picker';
 
 const Stats: React.FunctionComponent = () => {
   useViewLifecycle();
@@ -12,6 +13,7 @@ const Stats: React.FunctionComponent = () => {
   const sensors = useSelector(getSensors);
   const [devices, onDevicesChange] = useState(immutable.Set<string>());
   const [type, onTypeChange] = useState(StatsType.Day);
+  const [date, onDateChange] = useState(new Date());
   const dateFormatter = useAxisDateFormatter(type);
   const colors = useChartColors();
 
@@ -21,8 +23,9 @@ const Stats: React.FunctionComponent = () => {
       <DeviceList value={devices} onChange={onDevicesChange} />
       <TypeList value={type} onChange={onTypeChange} />
 
+      <DatePicker type={type} value={date} onChange={onDateChange} />
 
-      <mui.Button onClick={() => actions.fetchValues(type, new Date(2023, 6, 17), devices.toArray())}>Compute</mui.Button>
+      <mui.Button onClick={() => actions.fetchValues(type, date, devices.toArray())}>Compute</mui.Button>
 
       <div style={{height: 400, width: 800}}>
         <AutoSizer>
