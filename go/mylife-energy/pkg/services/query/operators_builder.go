@@ -26,8 +26,8 @@ func Month(operand any) bson.D {
 	return unaryOperator("month", operand)
 }
 
-func Day(operand any) bson.D {
-	return unaryOperator("day", operand)
+func DayOfMonth(operand any) bson.D {
+	return unaryOperator("dayOfMonth", operand)
 }
 
 type DatePart struct {
