@@ -20,7 +20,6 @@ const useStyles = mui.makeStyles(theme => ({
 
 const Home: React.FunctionComponent = () => {
   useViewLifecycle();
-  const classes = useStyles();
   const totalPower = useValue('live', 'total-power');
   const batteryLevel = useValue('tesla', 'battery-level');
 
