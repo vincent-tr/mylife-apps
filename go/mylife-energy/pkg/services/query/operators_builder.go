@@ -1,6 +1,11 @@
 package query
 
-import "go.mongodb.org/mongo-driver/bson"
+import (
+	"fmt"
+
+	"github.com/thlib/go-timezone-local/tzlocal"
+	"go.mongodb.org/mongo-driver/bson"
+)
 
 func unaryOperator(operator string, operand any) bson.D {
 	return bson.D{{Key: "$" + operator, Value: operand}}
@@ -41,6 +46,52 @@ func DateFromParts(parts ...DatePart) bson.D {
 	for _, part := range parts {
 		value = append(value, bson.E{Key: part.Name, Value: part.Expression})
 	}
+
+	return unaryOperator("dateFromParts", value)
+}
+
+var localTZ string
+
+func init() {
+	tz, err := tzlocal.RuntimeTZ()
+	if err != nil {
+		panic(err)
+	}
+
+	localTZ = tz
+}
+
+func YearLocal(operand any) bson.D {
+	return unaryOperator("year", bson.D{
+		bson.E{Key: "date", Value: operand},
+		bson.E{Key: "timezone", Value: localTZ},
+	})
+}
+
+func MonthLocal(operand any) bson.D {
+	return unaryOperator("month", bson.D{
+		bson.E{Key: "date", Value: operand},
+		bson.E{Key: "timezone", Value: localTZ},
+	})
+}
+
+func DayOfMonthLocal(operand any) bson.D {
+	return unaryOperator("dayOfMonth", bson.D{
+		bson.E{Key: "date", Value: operand},
+		bson.E{Key: "timezone", Value: localTZ},
+	})
+}
+
+func DateFromPartsLocal(parts ...DatePart) bson.D {
+	value := bson.D{}
+
+	for _, part := range parts {
+		value = append(value, bson.E{Key: part.Name, Value: part.Expression})
+	}
+
+	value = append(value, bson.E{Key: "timezone", Value: "+06"})
+
+	fmt.Printf("%+v\n", value)
 
 	return unaryOperator("dateFromParts", value)
 }

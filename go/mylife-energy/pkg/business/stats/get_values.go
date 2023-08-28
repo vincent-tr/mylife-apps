@@ -68,9 +68,9 @@ func configureOptions(typ StatsType, timestamp time.Time) (beginDate time.Time, 
 		endDate = beginDate.AddDate(0, 1, 0)
 
 		groupId = query.DateFromParts(
-			query.DatePart{Name: "year", Expression: query.Year("$timestamp")},
-			query.DatePart{Name: "month", Expression: query.Month("$timestamp")},
-			query.DatePart{Name: "day", Expression: query.DayOfMonth("$timestamp")},
+			query.DatePart{Name: "year", Expression: query.YearLocal("$timestamp")},
+			query.DatePart{Name: "month", Expression: query.MonthLocal("$timestamp")},
+			query.DatePart{Name: "day", Expression: query.DayOfMonthLocal("$timestamp")},
 		)
 
 	case Year:
@@ -78,8 +78,8 @@ func configureOptions(typ StatsType, timestamp time.Time) (beginDate time.Time, 
 		endDate = beginDate.AddDate(1, 0, 0)
 
 		groupId = query.DateFromParts(
-			query.DatePart{Name: "year", Expression: query.Year("$timestamp")},
-			query.DatePart{Name: "month", Expression: query.Month("$timestamp")},
+			query.DatePart{Name: "year", Expression: query.YearLocal("$timestamp")},
+			query.DatePart{Name: "month", Expression: query.MonthLocal("$timestamp")},
 		)
 	}
 
