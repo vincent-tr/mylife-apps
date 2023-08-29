@@ -4,4 +4,4 @@ nagios:
   url: ${NAGIOS_URL}
   user: ${NAGIOS_USER}
   pass: ${NAGIOS_PASS}
-  interval: 30
+  interval: 5
