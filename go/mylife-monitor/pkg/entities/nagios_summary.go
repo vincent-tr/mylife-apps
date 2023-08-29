@@ -7,8 +7,8 @@ import (
 type NagiosObjectType string
 
 const (
-	Host    NagiosObjectType = "Host"
-	Service NagiosObjectType = "Service"
+	Host    NagiosObjectType = "host"
+	Service NagiosObjectType = "service"
 )
 
 // Résumé Nagios
