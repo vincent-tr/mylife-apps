@@ -7,8 +7,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "mylife-energy",
-	Short: "mylife-energy - Mylife Energy",
+	Use:   "mylife-portal",
+	Short: "mylife-portal - Mylife Portal",
 }
 
 func Execute() {
