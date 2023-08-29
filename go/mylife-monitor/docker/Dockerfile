@@ -11,10 +11,7 @@ RUN go mod download
 RUN CGO_ENABLED=0 go build -o /src/mylife-monitor main.go
 
 FROM gcr.io/distroless/static-debian11
-ARG flavor
-# mandatory for cmd
-ENV flavor=${flavor}
 
 COPY --from=build /src/mylife-monitor /
 COPY --from=build /src/go/mylife-monitor/config.yaml /
-ENTRYPOINT ["/mylife-monitor"]
+ENTRYPOINT ["/mylife-monitor", "web"]

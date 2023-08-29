@@ -11,9 +11,6 @@ RUN go mod download
 RUN CGO_ENABLED=0 go build -o /src/mylife-portal main.go
 
 FROM gcr.io/distroless/static-debian11
-ARG flavor
-# mandatory for cmd
-ENV flavor=${flavor}
 
 COPY --from=build /src/mylife-portal /
 COPY --from=build /src/go/mylife-portal/config.yaml /

@@ -11,9 +11,6 @@ RUN go mod download
 RUN CGO_ENABLED=0 go build -o /src/mylife-energy main.go
 
 FROM gcr.io/distroless/static-debian11
-ARG flavor
-# mandatory for cmd
-ENV flavor=${flavor}
 
 COPY --from=build /src/mylife-energy /
 COPY --from=build /src/go/mylife-energy/config.yaml /
