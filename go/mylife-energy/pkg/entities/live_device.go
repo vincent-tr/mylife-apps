@@ -38,6 +38,7 @@ func (device *LiveDevice) Sensors() []LiveSensor {
 func (device *LiveDevice) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "live-device")
 	helper.Add("_id", device.id)
 	helper.Add("display", device.display)
 	helper.Add("type", device.typ)

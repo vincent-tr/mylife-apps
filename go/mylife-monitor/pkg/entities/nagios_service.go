@@ -93,6 +93,7 @@ func (host *NagiosService) IsFlapping() bool {
 func (host *NagiosService) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "nagios-service")
 	helper.Add("_id", host.id)
 	helper.Add("code", host.code)
 	helper.Add("display", host.display)

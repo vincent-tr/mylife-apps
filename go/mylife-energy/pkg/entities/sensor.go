@@ -33,6 +33,7 @@ func (sensor *Sensor) AccuracyDecimals() uint {
 func (sensor *Sensor) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "sensor")
 	helper.Add("_id", sensor.id)
 	helper.Add("deviceClass", sensor.deviceClass)
 	helper.Add("stateClass", sensor.stateClass)

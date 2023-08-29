@@ -47,6 +47,7 @@ func (summary *NagiosSummary) Errors() int {
 func (summary *NagiosSummary) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "nagios-summary")
 	helper.Add("_id", summary.id)
 	helper.Add("type", summary.typ)
 	helper.Add("ok", summary.ok)

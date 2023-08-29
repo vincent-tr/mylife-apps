@@ -31,6 +31,7 @@ func (measure *Measure) Value() float64 {
 func (measure *Measure) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "measure")
 	helper.Add("_id", measure.id)
 	helper.Add("sensor", measure.sensor)
 	helper.Add("timestamp", measure.timestamp)

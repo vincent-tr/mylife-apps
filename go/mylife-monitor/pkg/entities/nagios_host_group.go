@@ -26,6 +26,7 @@ func (summary *NagiosHostGroup) Display() string {
 func (summary *NagiosHostGroup) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "nagios-host-group")
 	helper.Add("_id", summary.id)
 	helper.Add("code", summary.code)
 	helper.Add("display", summary.display)

@@ -30,6 +30,7 @@ func (data *HomeData) Value() any {
 func (data *HomeData) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "home-data")
 	helper.Add("_id", data.id)
 	helper.Add("section", data.section)
 	helper.Add("key", data.key)

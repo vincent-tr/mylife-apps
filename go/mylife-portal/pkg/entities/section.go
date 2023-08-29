@@ -38,6 +38,7 @@ func (section *Section) Items() []string {
 func (section *Section) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "section")
 	helper.Add("_id", section.id)
 	helper.Add("code", section.code)
 	helper.Add("display", section.display)

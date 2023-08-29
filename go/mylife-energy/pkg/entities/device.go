@@ -53,6 +53,7 @@ func (device *Device) Parent() string {
 func (device *Device) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "device")
 	helper.Add("_id", device.id)
 	helper.Add("deviceId", device.deviceId)
 	helper.Add("display", device.display)

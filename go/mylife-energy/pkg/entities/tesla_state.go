@@ -100,6 +100,7 @@ func (state *TeslaState) BatteryTargetLevel() int {
 func (state *TeslaState) Marshal() (interface{}, error) {
 	helper := serialization.NewStructMarshallerHelper()
 
+	helper.Add("_entity", "tesla-state")
 	helper.Add("_id", state.id)
 	helper.Add("mode", state.mode)
 	helper.Add("lastUpdate", state.lastUpdate)
