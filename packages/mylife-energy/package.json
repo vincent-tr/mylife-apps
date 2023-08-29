@@ -9,16 +9,7 @@
     "ui-tsc:watch": "mylife-ui-watch-tsc",
     "ui-vite:watch": "VITE_WEB_PORT=8017 VITE_WSTARGET_PORT=8117 VITE_DEDUPE=true mylife-ui-watch-vite",
     "lint": "eslint lib/* public/app/*",
-    "server:watch": "mylife-server-watch",
-    "start-collector:dev": "MONGO_URL=${MONGO_URL:-mongodb://localhost/mylife-energy} BUS_SERVER=${BUS_SERVER:-tcp://rpi-dev-home-main} node dist/dev/server.js --loglevel=debug --config=./conf/config.json --collector",
-    "build:prod": "mylife-server-build",
-    "ui-build:prod": "VITE_DEDUPE=true mylife-ui-build",
-    "docker-publish-only": "mylife-publish",
-    "docker-publish": "mylife-server-build && mylife-publish"
-  },
-  "dependencies": {
-    "async-mqtt": "^2.6.0",
-    "mylife-tools-server": "^1.1.14"
+    "ui-build:prod": "VITE_DEDUPE=true mylife-ui-build"
   },
   "devDependencies": {
     "date-fns": "^2.28.0",
