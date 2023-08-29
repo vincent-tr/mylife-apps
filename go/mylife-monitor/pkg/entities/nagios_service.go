@@ -140,3 +140,18 @@ func NewNagiosService(values *NagiosServiceValues) *NagiosService {
 		isFlapping:      values.IsFlapping,
 	}
 }
+
+func NagiosServicesEqual(a *NagiosService, b *NagiosService) bool {
+	return a.id == b.id &&
+		a.code == b.code &&
+		a.display == b.display &&
+		a.host == b.host &&
+		a.status == b.status &&
+		a.statusText == b.statusText &&
+		a.currentAttempt == b.currentAttempt &&
+		a.maxAttempts == b.maxAttempts &&
+		a.lastCheck == b.lastCheck &&
+		a.nextCheck == b.nextCheck &&
+		a.lastStateChange == b.lastStateChange &&
+		a.isFlapping == b.isFlapping
+}

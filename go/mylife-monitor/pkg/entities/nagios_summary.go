@@ -73,3 +73,11 @@ func NewNagiosSummary(values *NagiosSummaryValues) *NagiosSummary {
 		errors:   values.Errors,
 	}
 }
+
+func NagiosSummariesEqual(a *NagiosSummary, b *NagiosSummary) bool {
+	return a.id == b.id &&
+		a.typ == b.typ &&
+		a.ok == b.ok &&
+		a.warnings == b.warnings &&
+		a.errors == b.errors
+}

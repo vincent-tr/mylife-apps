@@ -139,3 +139,18 @@ func NewNagiosHost(values *NagiosHostValues) *NagiosHost {
 		isFlapping:      values.IsFlapping,
 	}
 }
+
+func NagiosHostsEqual(a *NagiosHost, b *NagiosHost) bool {
+	return a.id == b.id &&
+		a.code == b.code &&
+		a.display == b.display &&
+		a.group == b.group &&
+		a.status == b.status &&
+		a.statusText == b.statusText &&
+		a.currentAttempt == b.currentAttempt &&
+		a.maxAttempts == b.maxAttempts &&
+		a.lastCheck == b.lastCheck &&
+		a.nextCheck == b.nextCheck &&
+		a.lastStateChange == b.lastStateChange &&
+		a.isFlapping == b.isFlapping
+}

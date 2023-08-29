@@ -46,3 +46,9 @@ func NewNagiosHostGroup(values *NagiosHostGroupValues) *NagiosHostGroup {
 		display: values.Display,
 	}
 }
+
+func NagiosHostGroupsEqual(a *NagiosHostGroup, b *NagiosHostGroup) bool {
+	return a.id == b.id &&
+		a.code == b.code &&
+		a.display == b.display
+}
