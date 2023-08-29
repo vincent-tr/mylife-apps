@@ -6,7 +6,13 @@
   "scripts": {
     "ui-tsc:watch": "mylife-ui-watch-tsc",
     "ui-vite:watch": "VITE_WEB_PORT=8015 VITE_WSTARGET_PORT=8115 mylife-ui-watch-vite",
-    "ui-build:prod": "mylife-ui-build"
+    "server:watch": "mylife-server-watch",
+    "lint": "eslint lib/ public/src/",
+    "start:dev": "WEB_PORT=8115 node dist/dev/server.js --loglevel=debug --config=./conf/config.json",
+    "start:prod": "WEB_PORT=8015 node dist/prod/server.js --loglevel=debug --config=./conf/config.json",
+    "build:prod": "mylife-ui-build && mylife-server-build",
+    "docker-publish-only": "mylife-publish",
+    "docker-publish": "mylife-ui-build && mylife-server-build && mylife-publish"
   },
   "repository": {
     "type": "git",
@@ -24,5 +30,9 @@
     "humanize-duration": "^3.27.2",
     "mylife-tools-build": "^2.0.5",
     "mylife-tools-ui": "^1.1.10"
+  },
+  "dependencies": {
+    "mylife-tools-server": "^1.1.14",
+    "node-fetch": "^3.2.6"
   }
 }
