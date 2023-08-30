@@ -23,6 +23,7 @@
     "eslint-plugin-react": "^7.30.1",
     "humanize-duration": "^3.27.2",
     "mylife-tools-build": "^2.0.5",
-    "mylife-tools-ui": "^1.1.10"
+    "mylife-tools-ui": "^1.1.10",
+    "mylife-tools-common": "^1.1.4"
   }
 }

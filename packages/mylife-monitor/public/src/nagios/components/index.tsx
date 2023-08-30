@@ -1,8 +1,9 @@
 'use strict';
 
 import humanizeDuration from 'humanize-duration';
-import { React, useMemo, useState, useEffect, mui, useDispatch, useSelector, useLifecycle, formatDate, useInterval } from 'mylife-tools-ui';
+import { React, useMemo, mui, useDispatch, useSelector, useLifecycle, formatDate } from 'mylife-tools-ui';
 import { useStatusColorStyles } from '../../common/status-colors';
+import { useSince } from '../../common/behaviors';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
 import { HOST_STATUS_PROBLEM } from '../problems';
@@ -34,7 +35,8 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 
 const CommonState = ({ item }) => {
-  const duration = useSince(item.lastStateChange);
+  const rawDuration = useSince(item.lastStateChange);
+  const duration = rawDuration && humanizeDuration(rawDuration, { language: 'fr', largest: 1, round: true });
   return (
     <>
       <mui.TableCell>{formatTimestamp(item.lastCheck)}</mui.TableCell>
@@ -164,26 +166,6 @@ function formatTimestamp(date) {
     date.getFullYear() === today.getFullYear();
 
   return formatDate(date, isToday ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss');
-}
-
-function useSince(timestamp) {
-  const [duration, setDuration] = useState<string>();
-
-  useEffect(computeDuration, [timestamp]);
-  useInterval(computeDuration, 500);
-
-  return duration;
-
-  function computeDuration() {
-    if(!timestamp) {
-      setDuration(null);
-      return;
-    }
-  
-    const rawDuration = Date.now() - timestamp;
-    const formatted = humanizeDuration(rawDuration, { language: 'fr', largest: 1, round: true });
-    setDuration(formatted);
-  }
 }
 
 const HOST_STATUS_CLASSES = {

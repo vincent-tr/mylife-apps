@@ -1,0 +1,1 @@
+export const UPSMON_DATA = 'upsmon-data';

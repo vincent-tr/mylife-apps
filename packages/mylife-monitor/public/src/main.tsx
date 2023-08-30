@@ -7,6 +7,7 @@ import metadataDefintions from '../../shared/metadata';
 import icons from './common/icons';
 import Home from './home/components';
 import Nagios from './nagios/components';
+import Upsmon from './upsmon/components';
 
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);
@@ -15,11 +16,13 @@ services.initMetadata(metadataDefintions);
 const routes = [
   { location: '/', renderer: () => <Home /> },
   { location: '/nagios', name: 'Nagios', icon: icons.menu.Nagios, renderer: () => <Nagios /> },
+  { location: '/upsmon', name: 'UPS monitor', icon: icons.menu.Upsmon, renderer: () => <Upsmon /> },
 ];
 /* eslint-enable */
 
 const menu = [
   { id: 'nagios', text: 'Nagios', icon: icons.menu.Nagios, location: '/nagios' },
+  { id: 'upsmon', text: 'UPS monitor', icon: icons.menu.Upsmon, location: '/upsmon' },
 ];
 
 services.render({
