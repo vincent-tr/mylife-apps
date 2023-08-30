@@ -4,6 +4,7 @@ import (
 	ui "mylife-monitor-ui"
 	"mylife-monitor/pkg/api"
 	_ "mylife-monitor/pkg/services/nagios"
+	_ "mylife-monitor/pkg/services/upsmon"
 	"mylife-tools-server/services"
 	_ "mylife-tools-server/services/api"
 	_ "mylife-tools-server/services/web"
@@ -21,7 +22,7 @@ func init() {
 				"web": ui.FS,
 			}
 
-			services.RunServices([]string{"web", "nagios"}, args)
+			services.RunServices([]string{"web", "nagios", "upsmon"}, args)
 		},
 	})
 }

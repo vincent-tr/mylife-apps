@@ -5,3 +5,9 @@ nagios:
   user: ${NAGIOS_USER}
   pass: ${NAGIOS_PASS}
   interval: 5
+upsmon:
+  addresses:
+  - ${UPSMON_ADDR}:3551
+  - ${UPSMON_ADDR}:3552
+  - ${UPSMON_ADDR}:3553
+  interval: 5
