@@ -23,7 +23,7 @@
     "log4js": "^6.5.2",
     "material-ui": "^0.20.0",
     "moment": "^2.29.3",
-    "mongodb": "4.7.0",
+    "mongodb": "4.17.0",
     "monk": "7.3.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
