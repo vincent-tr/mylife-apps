@@ -247,3 +247,4 @@ go run . -o ~/tesla.token
   - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
 - Sauvegarder le mode de charge tesla
 - Quand mode fast, afficher le temps restant de charge
+- Avoir une materialized view des stats par type pour accélérer l'affichage
