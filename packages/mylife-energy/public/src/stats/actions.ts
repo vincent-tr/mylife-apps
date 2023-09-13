@@ -20,6 +20,7 @@ export const fetchValues = (type: StatsType, timestamp: Date, sensors: string[])
     type,
     timestamp,
     sensors,
+    timeout: 60000 // can be slower for now as we request long db queries
   }));
 
   dispatch(local.setValues(values));
