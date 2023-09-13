@@ -94,7 +94,7 @@ class CallEngine {
     const transaction = ++this.transactionCounter;
     const { timeout = CALL_TIMEOUT, ...props } = message;
     const request = { ...props, transaction, engine: 'call' };
-    console.log(timeout);
+
     this.emitter(request);
 
     const deferred = utils.defer();
