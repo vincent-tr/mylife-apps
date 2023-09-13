@@ -11,8 +11,8 @@ class Pending {
   private readonly begin: number;
   private end: number;
 
-  constructor(private readonly engine, private readonly request, private readonly deferred) {
-    this.timeout = setTimeout(() => this.onTimeout(), CALL_TIMEOUT);
+  constructor(private readonly engine, private readonly request, private readonly deferred, timeout: number) {
+    this.timeout = setTimeout(() => this.onTimeout(), timeout);
     this.begin = timer.now();
   }
 
@@ -92,11 +92,13 @@ class CallEngine {
 
   async executeCall(message) {
     const transaction = ++this.transactionCounter;
-    const request = { ...message, transaction, engine: 'call' };
+    const { timeout = CALL_TIMEOUT, ...props } = message;
+    const request = { ...props, transaction, engine: 'call' };
+    console.log(timeout);
     this.emitter(request);
 
     const deferred = utils.defer();
-    this.addPending(new Pending(this, request, deferred));
+    this.addPending(new Pending(this, request, deferred, timeout));
 
     return await deferred.promise;
   }
