@@ -22,7 +22,7 @@ func init() {
 				"web": ui.FS,
 			}
 
-			services.RunServices([]string{"web", "nagios", "upsmon"}, args)
+			services.RunServices([]string{"nagios", "upsmon", "web"}, args)
 		},
 	})
 }
