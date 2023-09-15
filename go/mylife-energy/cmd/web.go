@@ -24,7 +24,7 @@ func init() {
 				"web":   ui.FS,
 			}
 
-			services.RunServices([]string{"web", "live", "tesla"}, args)
+			services.RunServices([]string{"live", "tesla", "web"}, args)
 		},
 	})
 }
