@@ -40,7 +40,7 @@ func (service *teslaService) Init(arg interface{}) error {
 
 	homeLocation, err := api.ParsePosition(conf.HomeLocation)
 	if err != nil {
-		return fmt.Errorf("Parse home location: %w", err)
+		return fmt.Errorf("parse home location: %w", err)
 	}
 
 	logger.Debugf("Home position: %+v", homeLocation)
