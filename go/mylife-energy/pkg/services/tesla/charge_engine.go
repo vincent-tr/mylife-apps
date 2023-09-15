@@ -2,6 +2,7 @@ package tesla
 
 import (
 	"context"
+	"fmt"
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/api"
 	"mylife-tools-server/log"
@@ -108,6 +109,10 @@ func (e *chargeEngine) computeSmartCurrent(state *stateData) (int, error) {
 	measures, err := queryPower(e.ctx)
 	if err != nil {
 		return 0, err
+	}
+
+	if len(measures) == 0 {
+		return 0, fmt.Errorf("no main current measure found")
 	}
 
 	mainCurrent := averageCurrent(measures)
