@@ -90,7 +90,7 @@ func measureTimestampComparer(a, b *entities.Measure) bool {
 
 func findClosestComparer(measure *entities.Measure, timestamp time.Time) int {
 	diff := measure.Timestamp().Sub(timestamp)
-	if diff.Abs() < time.Second*3 {
+	if diff.Abs() < time.Second*5 {
 		return 0
 	} else if diff.Seconds() < 0 {
 		return -1
