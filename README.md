@@ -248,3 +248,4 @@ go run . -o ~/tesla.token
 - Sauvegarder le mode de charge tesla
 - Quand mode fast, afficher le temps restant de charge
 - Avoir une materialized view des stats par type pour accélérer l'affichage
+- Quand demarrage alors que Tesla en veille : time="2023-10-23 09:47:35" level=fatal msg="Service init failed" error="Cannot access MobileEnabled: 408 Request Timeout" logger-name="mylife:server:services" name=tesla
