@@ -21,12 +21,6 @@ var logger = log.CreateLogger("mylife:energy:tesla:api")
 // - Tester vehicle.Wakeup()
 // - Tester set charge current
 
-type teslaConfig struct {
-	TokenPath    string `mapstructure:"tokenPath"`
-	VIN          string `mapstructure:"vin"`
-	HomeLocation string `mapstructure:"homeLocation"` // 'latitude longitude'
-}
-
 type Client struct {
 	homeLocation Position
 	vehicle      *tesla.Vehicle
@@ -35,7 +29,7 @@ type Client struct {
 func MakeClient(ctx context.Context, tokenPath string, vin string, homeLocation Position) (*Client, error) {
 	client, err := tesla.NewClient(context.TODO(), tesla.WithTokenFile(tokenPath))
 	if err != nil {
-		return nil, fmt.Errorf("Cannot make new client: %w", err)
+		return nil, fmt.Errorf("cannot make new client: %w", err)
 	}
 
 	vehicle, err := lookupVehicule(client, vin)
@@ -46,11 +40,11 @@ func MakeClient(ctx context.Context, tokenPath string, vin string, homeLocation 
 
 	status, err := vehicle.MobileEnabled()
 	if err != nil {
-		return nil, fmt.Errorf("Cannot access MobileEnabled: %w", err)
+		return nil, fmt.Errorf("cannot access MobileEnabled: %w", err)
 	}
 
 	if !status {
-		return nil, fmt.Errorf("Mobile access disabled")
+		return nil, fmt.Errorf("mobile access disabled")
 	}
 
 	return &Client{
@@ -62,7 +56,7 @@ func MakeClient(ctx context.Context, tokenPath string, vin string, homeLocation 
 func lookupVehicule(client *tesla.Client, vin string) (*tesla.Vehicle, error) {
 	vehicles, err := client.Vehicles()
 	if err != nil {
-		return nil, fmt.Errorf("Cannot get vehicles: %w", err)
+		return nil, fmt.Errorf("cannot get vehicles: %w", err)
 	}
 
 	for _, vehicle := range vehicles {
@@ -73,7 +67,7 @@ func lookupVehicule(client *tesla.Client, vin string) (*tesla.Vehicle, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("Vehicle with VIN '%s' not found", vin)
+	return nil, fmt.Errorf("vehicle with VIN '%s' not found", vin)
 }
 
 func (client *Client) FetchChargeData() (*ChargeData, error) {
@@ -84,7 +78,7 @@ func (client *Client) FetchChargeData() (*ChargeData, error) {
 	}
 
 	if data.Error != "" {
-		return nil, fmt.Errorf("Got data.error: %s %s", data.Error, data.ErrorDescription)
+		return nil, fmt.Errorf("got data.error: %s %s", data.Error, data.ErrorDescription)
 	}
 
 	return newChargeData(&data.Response.ChargeState, client.isAtHome(&data.Response.DriveState)), nil
