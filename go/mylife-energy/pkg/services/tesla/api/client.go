@@ -38,14 +38,15 @@ func MakeClient(ctx context.Context, tokenPath string, vin string, homeLocation 
 		return nil, err
 	}
 
-	status, err := vehicle.MobileEnabled()
-	if err != nil {
-		return nil, fmt.Errorf("cannot access MobileEnabled: %w", err)
-	}
-
-	if !status {
-		return nil, fmt.Errorf("mobile access disabled")
-	}
+	// Note: will fail to start if car is sleeping. Disable for now.
+	// status, err := vehicle.MobileEnabled()
+	// if err != nil {
+	// 	return nil, fmt.Errorf("cannot access MobileEnabled: %w", err)
+	// }
+	//
+	// if !status {
+	// 	return nil, fmt.Errorf("mobile access disabled")
+	// }
 
 	return &Client{
 		homeLocation: homeLocation,
@@ -92,8 +93,8 @@ func (client *Client) isAtHome(state *tesla.DriveState) bool {
 	}
 
 	curPos := Position{
-		lat:  state.Latitude,
-		long: state.Longitude,
+		lat:  state.ActiveRouteLatitude,
+		long: state.ActiveRouteLongitude,
 	}
 
 	dist := distance(client.homeLocation, curPos)
