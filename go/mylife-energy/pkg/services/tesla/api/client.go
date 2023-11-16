@@ -98,6 +98,8 @@ func (client *Client) isAtHome(state *tesla.DriveState) bool {
 
 	dist := distance(client.homeLocation, curPos)
 
+	logger.WithFields(log.Fields{"carPosition": curPos, "distance": dist}).Debug("Computed distance to home")
+
 	return dist <= maxDistance
 }
 
