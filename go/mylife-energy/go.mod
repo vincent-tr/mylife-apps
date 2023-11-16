@@ -4,6 +4,8 @@ go 1.20
 
 replace mylife-tools-server => ../mylife-tools-server
 
+replace github.com/bogosj/tesla => github.com/vincent-tr/tesla 413357a5ee4e657841b4ba5ff63040d1a39a909c
+
 require (
 	github.com/bogosj/tesla v1.1.1-0.20230613185811-1cb0587beee9
 	go.mongodb.org/mongo-driver v1.11.4
