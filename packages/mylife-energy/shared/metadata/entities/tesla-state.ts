@@ -15,7 +15,6 @@ export enum TeslaChargingStatus {
 	Unknown,
 	Charging,
 	Complete,
-	NotAtHome,
 	NotPlugged,
 	NoPower,  // mode smart only
 	Disabled, // mode off

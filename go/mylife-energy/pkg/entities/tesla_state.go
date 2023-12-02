@@ -28,7 +28,6 @@ const (
 	TeslaChargingStatusUnknown TeslaChargingStatus = iota
 	TeslaChargingStatusCharging
 	TeslaChargingStatusComplete
-	TeslaChargingStatusNotAtHome
 	TeslaChargingStatusNotPlugged
 	TeslaChargingStatusNoPower  // mode smart only
 	TeslaChargingStatusDisabled // mode off

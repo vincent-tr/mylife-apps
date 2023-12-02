@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"fmt"
-	"math"
 	"mylife-tools-server/log"
 
 	"github.com/bogosj/tesla"
@@ -22,11 +21,10 @@ var logger = log.CreateLogger("mylife:energy:tesla:api")
 // - Tester set charge current
 
 type Client struct {
-	homeLocation Position
-	vehicle      *tesla.Vehicle
+	vehicle *tesla.Vehicle
 }
 
-func MakeClient(ctx context.Context, tokenPath string, vin string, homeLocation Position) (*Client, error) {
+func MakeClient(ctx context.Context, tokenPath string, vin string) (*Client, error) {
 	client, err := tesla.NewClient(context.TODO(), tesla.WithTokenFile(tokenPath))
 	if err != nil {
 		return nil, fmt.Errorf("cannot make new client: %w", err)
@@ -49,8 +47,7 @@ func MakeClient(ctx context.Context, tokenPath string, vin string, homeLocation 
 	// }
 
 	return &Client{
-		homeLocation: homeLocation,
-		vehicle:      vehicle,
+		vehicle: vehicle,
 	}, nil
 }
 
@@ -82,46 +79,7 @@ func (client *Client) FetchChargeData() (*ChargeData, error) {
 		return nil, fmt.Errorf("got data.error: %s %s", data.Error, data.ErrorDescription)
 	}
 
-	return newChargeData(&data.Response.ChargeState, client.isAtHome(&data.Response.DriveState)), nil
-}
-
-func (client *Client) isAtHome(state *tesla.DriveState) bool {
-	const maxDistance = 50 // meters
-
-	if state.Speed > 0 {
-		return false
-	}
-
-	curPos := Position{
-		lat:  state.ActiveRouteLatitude,
-		long: state.ActiveRouteLongitude,
-	}
-
-	dist := distance(client.homeLocation, curPos)
-
-	logger.WithFields(log.Fields{"carPosition": curPos, "distance": dist}).Debug("Computed distance to home")
-
-	return dist <= maxDistance
-}
-
-// https://gist.github.com/hotdang-ca/6c1ee75c48e515aec5bc6db6e3265e49
-func distance(pos1 Position, pos2 Position) float64 {
-	radlat1 := float64(math.Pi * pos1.lat / 180)
-	radlat2 := float64(math.Pi * pos2.lat / 180)
-
-	theta := float64(pos1.long - pos2.long)
-	radtheta := float64(math.Pi * theta / 180)
-
-	dist := math.Sin(radlat1)*math.Sin(radlat2) + math.Cos(radlat1)*math.Cos(radlat2)*math.Cos(radtheta)
-	if dist > 1 {
-		dist = 1
-	}
-
-	dist = math.Acos(dist)
-	dist = dist * 180 / math.Pi
-	dist = dist * 60 * 1.1515 * 1.609344 * 1000 // M->KM then KM->M
-
-	return dist
+	return newChargeData(&data.Response.ChargeState), nil
 }
 
 func (client *Client) Wakeup() error {

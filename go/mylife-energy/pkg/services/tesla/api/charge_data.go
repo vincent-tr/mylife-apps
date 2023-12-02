@@ -18,7 +18,6 @@ const (
 type ChargeData struct {
 	Timestamp time.Time
 	Status    ChargeStatus
-	AtHome    bool
 	Charger   Charger
 	Battery   Battery
 	Charge    Charge
@@ -43,13 +42,12 @@ type Charge struct {
 	Current        int // Actual current (A)
 }
 
-func newChargeData(chargeState *tesla.ChargeState, atHome bool) *ChargeData {
+func newChargeData(chargeState *tesla.ChargeState) *ChargeData {
 	const chargeMinCurrent = 5
 
 	return &ChargeData{
 		Timestamp: chargeState.Timestamp.Time,
 		Status:    ChargeStatus(chargeState.ChargingState),
-		AtHome:    atHome,
 		Charger: Charger{
 			MaxCurrent: chargeState.ChargerPilotCurrent,
 			Current:    chargeState.ChargerActualCurrent,

@@ -268,8 +268,6 @@ function getChargingStatusString(status: TeslaChargingStatus) {
     return 'En charge';
   case TeslaChargingStatus.Complete:
     return 'Charge terminée';
-  case TeslaChargingStatus.NotAtHome:
-    return 'Voiture pas à la maison';
   case TeslaChargingStatus.NotPlugged:
     return 'Voiture pas branchée';
   case TeslaChargingStatus.NoPower:

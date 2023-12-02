@@ -58,9 +58,6 @@ func (e *chargeEngine) intervalEntry() {
 		} else if carState == nil {
 			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusUnknown)
 			return
-		} else if !carState.AtHome {
-			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusNotAtHome)
-			return
 		} else if carState.Status == api.Disconnected {
 			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusNotPlugged)
 			return

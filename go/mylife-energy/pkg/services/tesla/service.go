@@ -1,9 +1,7 @@
 package tesla
 
 import (
-	"fmt"
 	"mylife-energy/pkg/entities"
-	"mylife-energy/pkg/services/tesla/api"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
@@ -24,7 +22,6 @@ var logger = log.CreateLogger("mylife:energy:tesla")
 type teslaConfig struct {
 	TokenPath            string `mapstructure:"tokenPath"`
 	VIN                  string `mapstructure:"vin"`
-	HomeLocation         string `mapstructure:"homeLocation"` // 'latitude longitude'
 	WallConnectorAddress string `mapstructure:"wallConnectorAddress"`
 }
 
@@ -38,14 +35,8 @@ func (service *teslaService) Init(arg interface{}) error {
 	conf := teslaConfig{}
 	config.BindStructure("tesla", &conf)
 
-	homeLocation, err := api.ParsePosition(conf.HomeLocation)
-	if err != nil {
-		return fmt.Errorf("parse home location: %w", err)
-	}
-
-	logger.Debugf("Home position: %+v", homeLocation)
-
-	service.state, err = makeStateManager(conf.TokenPath, conf.VIN, homeLocation, conf.WallConnectorAddress, func() {
+	var err error
+	service.state, err = makeStateManager(conf.TokenPath, conf.VIN, conf.WallConnectorAddress, func() {
 		service.view.stateUpdate(&service.state.data)
 	})
 
