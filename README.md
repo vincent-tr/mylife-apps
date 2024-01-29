@@ -235,17 +235,24 @@ go run . -o ~/tesla.token
 
 ## Energy
 
-- Corriger :
-  - données inversées au début :
-    - ct8 => clims
-    - ct9 => radiateurs
-    - ct11 => lave linge
-    - ct12 => plaques cuisson
-    - ct13 => four
-    - ct14 => lave vaisselle
-  - ct10 => cumulus => inversé jusqu'au 01/07/2023 9h43
-  - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
-- Sauvegarder le mode de charge tesla
-- Quand mode fast, afficher le temps restant de charge
-- Avoir une materialized view des stats par type pour accélérer l'affichage
-- Quand demarrage alors que Tesla en veille : time="2023-10-23 09:47:35" level=fatal msg="Service init failed" error="Cannot access MobileEnabled: 408 Request Timeout" logger-name="mylife:server:services" name=tesla
+- Energy data
+  - Corriger :
+    - données inversées au début :
+      - ct8 => clims
+      - ct9 => radiateurs
+      - ct11 => lave linge
+      - ct12 => plaques cuisson
+      - ct13 => four
+      - ct14 => lave vaisselle
+    - ct10 => cumulus => inversé jusqu'au 01/07/2023 9h43
+    - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
+  - Avoir une materialized view des stats par type pour accélérer l'affichage
+- Tesla
+  - Quand demarrage alors que Tesla en veille : time="2023-10-23 09:47:35" level=fatal msg="Service init failed" error="Cannot access MobileEnabled: 408 Request Timeout" logger-name="mylife:server:services" name=tesla
+  - Sauvegarder le mode de charge tesla
+  - Quand mode fast, afficher le temps restant de charge
+  - Modes:
+    - off
+    - voyage : un shot jusqu'à 95% puis on revient au mode précédent
+    - été : smart tout le temps jusqu'à 80%
+    - hiver : fast jusqu'à 60% et smart jusqu'à 80%
