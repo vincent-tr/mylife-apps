@@ -4,6 +4,6 @@ bus:
 webServer:
   address: :${WEB_PORT|80}
 tesla:
-  vin: ${TESLA_VIN}
+  id: ${TESLA_ID}
   tokenPath: ${TESLA_TOKEN|/tesla.token}
   wallConnectorAddress: ${TWC_ADDRESS}

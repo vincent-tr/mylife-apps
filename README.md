@@ -21,6 +21,15 @@ _FIXME: apres `lerna bootstrap` il faut enlever `packages/mylife-money/node_modu
 
 - `cd go/repo; make docker-publish`
 
+## Go dev
+
+- cd packages/mylife-xxx
+  - npm run ui-tsc:watch
+  - npm run ui-vite:watch
+- cd go/mylife-xxx
+  - make run-web
+- http://arch-desktop:<ui-vite-port>
+
 # Framework (tools)
 
 ## Organization

@@ -32,7 +32,7 @@ type stateManager struct {
 	updateCallback   func()    // Called on event-loop
 }
 
-func makeStateManager(tokenPath string, vin string, wcAddress string, updateCallback func()) (*stateManager, error) {
+func makeStateManager(tokenPath string, id int64, wcAddress string, updateCallback func()) (*stateManager, error) {
 	sm := &stateManager{
 		updateCallback: updateCallback,
 	}
@@ -41,7 +41,7 @@ func makeStateManager(tokenPath string, vin string, wcAddress string, updateCall
 
 	var err error
 
-	sm.api, err = api.MakeClient(sm.context, tokenPath, vin)
+	sm.api, err = api.MakeClient(sm.context, tokenPath, id)
 	if err != nil {
 		return nil, err
 	}

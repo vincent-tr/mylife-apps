@@ -24,13 +24,13 @@ type Client struct {
 	vehicle *tesla.Vehicle
 }
 
-func MakeClient(ctx context.Context, tokenPath string, vin string) (*Client, error) {
+func MakeClient(ctx context.Context, tokenPath string, id int64) (*Client, error) {
 	client, err := tesla.NewClient(context.TODO(), tesla.WithTokenFile(tokenPath))
 	if err != nil {
 		return nil, fmt.Errorf("cannot make new client: %w", err)
 	}
 
-	vehicle, err := lookupVehicule(client, vin)
+	vehicle, err := lookupVehicule(client, id)
 
 	if err != nil {
 		return nil, err
@@ -51,21 +51,15 @@ func MakeClient(ctx context.Context, tokenPath string, vin string) (*Client, err
 	}, nil
 }
 
-func lookupVehicule(client *tesla.Client, vin string) (*tesla.Vehicle, error) {
-	vehicles, err := client.Vehicles()
+func lookupVehicule(client *tesla.Client, id int64) (*tesla.Vehicle, error) {
+	vehicle, err := client.Vehicle(id)
 	if err != nil {
-		return nil, fmt.Errorf("cannot get vehicles: %w", err)
+		return nil, fmt.Errorf("cannot get vehicle: %w", err)
 	}
 
-	for _, vehicle := range vehicles {
-		logger.Debugf("VIN: %s, Name: '%s', ID: %d, API version: %d\n", vehicle.Vin, vehicle.DisplayName, vehicle.ID, vehicle.APIVersion)
+	logger.Debugf("VIN: %s, Name: '%s', ID: %d, API version: %d\n", vehicle.Vin, vehicle.DisplayName, vehicle.ID, vehicle.APIVersion)
 
-		if vehicle.Vin == vin {
-			return vehicle, nil
-		}
-	}
-
-	return nil, fmt.Errorf("vehicle with VIN '%s' not found", vin)
+	return vehicle, nil
 }
 
 func (client *Client) FetchChargeData() (*ChargeData, error) {

@@ -21,7 +21,7 @@ var logger = log.CreateLogger("mylife:energy:tesla")
 
 type teslaConfig struct {
 	TokenPath            string `mapstructure:"tokenPath"`
-	VIN                  string `mapstructure:"vin"`
+	Id                   int64  `mapstructure:"id"`
 	WallConnectorAddress string `mapstructure:"wallConnectorAddress"`
 }
 
@@ -36,7 +36,7 @@ func (service *teslaService) Init(arg interface{}) error {
 	config.BindStructure("tesla", &conf)
 
 	var err error
-	service.state, err = makeStateManager(conf.TokenPath, conf.VIN, conf.WallConnectorAddress, func() {
+	service.state, err = makeStateManager(conf.TokenPath, conf.Id, conf.WallConnectorAddress, func() {
 		service.view.stateUpdate(&service.state.data)
 	})
 
