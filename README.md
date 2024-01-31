@@ -263,5 +263,5 @@ go run . -o ~/tesla.token
     - off
     - voyage : un shot jusqu'à 95% puis on revient au mode précédent
     - smart : 
-      - limite en dessous de laquelle on recharge a fond (eg: 70% en hiver, 40% en été)
+      - limite en dessous de laquelle on recharge a un A predefini (eg: 20A) (eg: 70% en hiver, 40% en été)
       - limite max ou on arrete la charge : 80%
