@@ -63,10 +63,10 @@ func (col *collection[TEntity]) Set(obj TEntity) (TEntity, error) {
 
 	if err != nil {
 		var zero TEntity
-		return zero, fmt.Errorf("Invalid entity id in collection '%s': %w", col.Name(), err)
+		return zero, fmt.Errorf("invalid entity id in collection '%s': %w", col.Name(), err)
 	} else if oid.IsZero() {
 		var zero TEntity
-		return zero, fmt.Errorf("Invalid entity id in collection '%s': empty id", col.Name())
+		return zero, fmt.Errorf("invalid entity id in collection '%s': empty id", col.Name())
 	}
 
 	return col.container.Set(obj), nil

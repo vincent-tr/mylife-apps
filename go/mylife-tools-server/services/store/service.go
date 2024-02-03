@@ -61,7 +61,7 @@ func (service *storeService) Dependencies() []string {
 func (service *storeService) getCollection(name string) (genericInternalCollection, error) {
 	value, exists := service.collections[name]
 	if !exists {
-		return nil, fmt.Errorf("Collection '%s' not found.", name)
+		return nil, fmt.Errorf("collection '%s' not found", name)
 	}
 
 	return value, nil
@@ -72,7 +72,7 @@ func (service *storeService) setupCollection(builder icollectionBuilder) error {
 	_, exists := service.collections[name]
 
 	if exists {
-		return fmt.Errorf("Collection '%s' already exists.", name)
+		return fmt.Errorf("collection '%s' already exists", name)
 	}
 
 	service.collections[name] = builder.build()
@@ -98,7 +98,7 @@ func GetCollection[TEntity Entity](name string) (ICollection[TEntity], error) {
 
 	col, ok := value.(ICollection[TEntity])
 	if !ok {
-		return nil, fmt.Errorf("Collection '%s' requested with bad entity type.", name)
+		return nil, fmt.Errorf("collection '%s' requested with bad entity type", name)
 	}
 
 	return col, nil
