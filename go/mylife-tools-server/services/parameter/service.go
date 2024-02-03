@@ -71,7 +71,7 @@ func (service *parameterService) onCollectionChanged(event *store.Event[*entitie
 		case float64:
 		case string:
 		default:
-			panic(fmt.Errorf("parameter '%s' has unsupported type '%s'.", entity.Name(), reflect.TypeOf(value)))
+			panic(fmt.Errorf("parameter '%s' has unsupported type '%s'", entity.Name(), reflect.TypeOf(value)))
 			return
 		}
 
@@ -83,7 +83,7 @@ func (service *parameterService) onCollectionChanged(event *store.Event[*entitie
 		}
 
 	case store.Remove:
-		panic(fmt.Errorf("parameter '%s' removed remotely. Unsupported.", event.Before().Name()))
+		panic(fmt.Errorf("parameter '%s' removed remotely, unsupported", event.Before().Name()))
 	}
 }
 
@@ -106,6 +106,8 @@ func (service *parameterService) init(param untypedParameter) (string, error) {
 	if len(existings) == 1 {
 		return existings[0].Id(), nil
 	}
+
+	logger.Infof("New parameter '%s' with default value %+v", param.Name(), param.defaultValue())
 
 	obj := entities.NewParameter(database.MakeId(), param.Name(), param.defaultValue())
 	obj, err := service.collection.Set(obj)
@@ -130,6 +132,12 @@ func (service *parameterService) update(id string, value any) error {
 	if err != nil {
 		return err
 	}
+
+	if obj.Value() == value {
+		return nil
+	}
+
+	logger.Infof("Update parameter '%s' to value %+v", obj.Name, value)
 
 	_, err = service.collection.Set(obj.Update(value))
 	if err != nil {
