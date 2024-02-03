@@ -96,9 +96,12 @@ func (updater *collectionUpdater[TEntity]) colChanged(event *Event[TEntity]) {
 				}
 
 				_, err = updater.dataCol.DeleteOne(context.TODO(), filter)
+				if err != nil {
+					return nil, err
+				}
 
 			default:
-				return nil, fmt.Errorf("Unsupported event type: '%d'", event.Type())
+				return nil, fmt.Errorf("unsupported event type: '%d'", event.Type())
 			}
 
 			return nil, nil
@@ -156,6 +159,7 @@ func (updater *collectionUpdater[TEntity]) dbWatcher(exit chan struct{}) {
 		updater.databaseUpdating = true
 		updater.col.container.ReplaceAll(initialObjs, nil)
 		updater.databaseUpdating = false
+		updater.col.isLoaded = true
 	})
 
 	// Then watch (not that load is not atomic so we may miss first events?)
