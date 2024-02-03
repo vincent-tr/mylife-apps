@@ -9,6 +9,8 @@ import (
 type ICollection[TEntity Entity] interface {
 	IContainer[TEntity]
 
+	IsLoaded() bool
+
 	Set(obj TEntity) (TEntity, error)
 	Delete(id string) bool
 }
@@ -20,6 +22,7 @@ type genericInternalCollection interface {
 type collection[TEntity Entity] struct {
 	container *Container[TEntity]
 	updater   *collectionUpdater[TEntity]
+	isLoaded  bool
 }
 
 func (col *collection[TEntity]) AddListener(callback *func(event *Event[TEntity])) {
@@ -56,6 +59,10 @@ func (col *collection[TEntity]) Filter(predicate func(obj TEntity) bool) []TEnti
 
 func (col *collection[TEntity]) Exists(predicate func(obj TEntity) bool) bool {
 	return col.container.Exists(predicate)
+}
+
+func (col *collection[TEntity]) IsLoaded() bool {
+	return col.isLoaded
 }
 
 func (col *collection[TEntity]) Set(obj TEntity) (TEntity, error) {
