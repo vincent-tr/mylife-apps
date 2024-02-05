@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/api"
+	"mylife-energy/pkg/services/tesla/live_query"
+	"mylife-energy/pkg/services/tesla/parameters"
 	"mylife-tools-server/log"
+	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
 	"time"
 )
@@ -37,73 +40,149 @@ func (e *chargeEngine) terminate() {
 }
 
 func (e *chargeEngine) intervalEntry() {
-	state, mode, _, err := e.view.getDataFromBackground()
+	state, params, _, err := e.getData()
 
 	if err != nil {
 		logger.WithError(err).Error("Error fetching state from background")
 		return
 	}
 
-	switch mode {
-	case entities.TeslaModeOff:
-		e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusDisabled)
+	if !e.checkCharge(state, params) {
 		return
+	}
+
+	switch params.currentMode {
+	case entities.TeslaModeFast:
+		e.setupFastCharge(state, params)
+
+	case entities.TeslaModeSmart:
+		e.setupSmartCharge(state, params)
+	}
+}
+
+func (e *chargeEngine) checkCharge(state *stateData, params *parametersValues) bool {
+
+	switch params.currentMode {
+	case entities.TeslaModeOff:
+		e.setChargingStatus(entities.TeslaChargingStatusDisabled)
+		return false
 
 	case entities.TeslaModeFast, entities.TeslaModeSmart:
 		carState := state.Car.LastState
 
 		if !state.WallConnector.LastState.VehicleConnected {
-			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusNotPlugged)
-			return
+			e.setChargingStatus(entities.TeslaChargingStatusNotPlugged)
+			return false
 		} else if carState == nil {
-			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusUnknown)
-			return
+			e.setChargingStatus(entities.TeslaChargingStatusUnknown)
+			return false
 		} else if carState.Status == api.Disconnected {
-			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusNotPlugged)
-			return
+			e.setChargingStatus(entities.TeslaChargingStatusNotPlugged)
+			return false
 		} else if carState.Battery.Level >= carState.Battery.TargetLevel {
-			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusComplete)
-			return
+			e.setChargingStatus(entities.TeslaChargingStatusComplete)
+
+			if params.currentMode == entities.TeslaModeFast {
+				// Go back to prev mode
+				e.setMode(params.fastPrevMode)
+			}
+
+			return false
 		}
 	}
 
-	switch mode {
-	case entities.TeslaModeFast:
-		// Mode fast : always max current
-		current := state.Car.LastState.Charger.MaxCurrent
+	return true
+}
 
-		e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusCharging)
+func (e *chargeEngine) setupFastCharge(state *stateData, params *parametersValues) {
+	// Mode fast : always max current
+	current := state.Car.LastState.Charger.MaxCurrent
 
-		err := e.setupCharge(state, current)
+	e.setChargingStatus(entities.TeslaChargingStatusCharging)
+
+	err := e.setupCharge(state, current, params.fastLimit)
+	if err != nil {
+		logger.WithError(err).Error("Error at charge setup")
+		return
+	}
+}
+
+func (e *chargeEngine) setupSmartCharge(state *stateData, params *parametersValues) {
+	carState := state.Car.LastState
+
+	if carState.Battery.Level < params.smartLimitLow {
+		// Below low limit : predefined current
+		current := params.smartFastCurrent
+
+		e.setChargingStatus(entities.TeslaChargingStatusCharging)
+
+		err := e.setupCharge(state, current, params.smartLimitHigh)
 		if err != nil {
 			logger.WithError(err).Error("Error at charge setup")
 			return
 		}
 
-	case entities.TeslaModeSmart:
-		current, err := e.computeSmartCurrent(state)
-		if err != nil {
-			logger.WithError(err).Error("Error computing smart current")
-			return
-		}
-
-		if current == 0 {
-			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusNoPower)
-		} else {
-			e.view.setChargingStatusFromBackground(entities.TeslaChargingStatusCharging)
-		}
-
-		err = e.setupCharge(state, current)
-		if err != nil {
-			logger.WithError(err).Error("Error at charge setup")
-			return
-		}
+		return
 	}
+
+	current, err := e.computeSmartCurrent(state)
+	if err != nil {
+		logger.WithError(err).Error("Error computing smart current")
+		return
+	}
+
+	if current == 0 {
+		e.setChargingStatus(entities.TeslaChargingStatusNoPower)
+	} else {
+		e.setChargingStatus(entities.TeslaChargingStatusCharging)
+	}
+
+	err = e.setupCharge(state, current, params.smartLimitHigh)
+	if err != nil {
+		logger.WithError(err).Error("Error at charge setup")
+		return
+	}
+}
+
+// Set charging status from this background thread
+func (e *chargeEngine) setChargingStatus(chargingStatus entities.TeslaChargingStatus) error {
+	return tasks.RunEventLoop("tesla/charge-engine-set-charging-status", func() {
+		e.view.setChargingStatus(chargingStatus)
+	})
+}
+
+// Get view data from this background thread
+func (e *chargeEngine) getData() (*stateData, *parametersValues, entities.TeslaChargingStatus, error) {
+	var state *stateData
+	var params parametersValues
+	var chargingStatus entities.TeslaChargingStatus
+
+	err := tasks.RunEventLoop("tesla/charge-engine-fetch-data", func() {
+		state = e.view.dupState()
+
+		params.currentMode = parameters.CurrentMode.Get()
+		params.fastPrevMode = parameters.FastPrevMode.Get()
+		params.fastLimit = int(parameters.FastLimit.Get())
+		params.smartLimitLow = int(parameters.SmartLimitLow.Get())
+		params.smartLimitHigh = int(parameters.SmartLimitHigh.Get())
+		params.smartFastCurrent = int(parameters.SmartFastCurrent.Get())
+
+		chargingStatus = e.view.chargingStatus
+	})
+
+	return state, &params, chargingStatus, err
+}
+
+// Set current mode from this background thread
+func (e *chargeEngine) setMode(mode entities.TeslaMode) error {
+	return tasks.RunEventLoop("tesla/charge-engine-set-mode", func() {
+		SetMode(mode)
+	})
 }
 
 func (e *chargeEngine) computeSmartCurrent(state *stateData) (int, error) {
 
-	measures, err := queryPower(e.ctx)
+	measures, err := live_query.QueryMainPower(e.ctx)
 	if err != nil {
 		return 0, err
 	}
@@ -140,7 +219,7 @@ func (e *chargeEngine) computeSmartCurrent(state *stateData) (int, error) {
 	return targetCurrent, nil
 }
 
-func (e *chargeEngine) setupCharge(state *stateData, current int) error {
+func (e *chargeEngine) setupCharge(state *stateData, current int, limit int) error {
 	if current > 0 && state.Car.Status == entities.TeslaDeviceStatusOffline {
 		logger.Debug("Setup charge: wake up")
 		err := e.api.Wakeup()
@@ -150,14 +229,23 @@ func (e *chargeEngine) setupCharge(state *stateData, current int) error {
 	}
 
 	logger.WithField("current", current).Debug("Setup charge: setting charging current")
-	return e.api.SetChargingCurrent(current)
+
+	if err := e.api.SetChargingCurrent(current); err != nil {
+		return err
+	}
+
+	if err := e.api.SetChargeLimit(limit); err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func averageCurrent(measures []*mainMeasure) int {
+func averageCurrent(measures []*live_query.Measure) int {
 	var currentSum float64 = 0
 
 	for _, m := range measures {
-		currentSum = currentSum + m.current
+		currentSum = currentSum + m.Current
 	}
 
 	return int(currentSum / float64(len(measures)))

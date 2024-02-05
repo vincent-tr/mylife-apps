@@ -2,6 +2,7 @@ package tesla
 
 import (
 	"mylife-energy/pkg/entities"
+	"mylife-energy/pkg/services/tesla/parameters"
 	"mylife-tools-server/services/store"
 	"mylife-tools-server/services/tasks"
 	"time"
@@ -10,10 +11,11 @@ import (
 )
 
 type view struct {
-	view           *store.Container[*entities.TeslaState]
-	state          *stateData
-	mode           entities.TeslaMode
-	chargingStatus entities.TeslaChargingStatus
+	view                 *store.Container[*entities.TeslaState]
+	state                *stateData
+	chargingStatus       entities.TeslaChargingStatus
+	parameterModeChanged func(event *entities.TeslaMode)
+	parameterIntChanged  func(event *int64)
 }
 
 const ViewStateId = "unique"
@@ -22,16 +24,42 @@ func makeView(state *stateData) *view {
 	v := &view{
 		view:           store.NewContainer[*entities.TeslaState]("tesla-state"),
 		state:          state,
-		mode:           entities.TeslaModeOff,
 		chargingStatus: entities.TeslaChargingStatusUnknown,
 	}
 
 	v.view.Set(entities.NewTeslaState(&entities.TeslaStateData{
-		Id:   ViewStateId,
-		Mode: v.mode,
+		Id:               ViewStateId,
+		Mode:             parameters.CurrentMode.Get(),
+		FastLimit:        parameters.FastLimit.Get(),
+		SmartLimitLow:    parameters.SmartLimitLow.Get(),
+		SmartLimitHigh:   parameters.SmartLimitHigh.Get(),
+		SmartFastCurrent: parameters.SmartFastCurrent.Get(),
+		ChargingStatus:   v.chargingStatus,
 	}))
 
+	v.parameterModeChanged = func(_ *entities.TeslaMode) {
+		v.updateStateView()
+	}
+
+	v.parameterIntChanged = func(_ *int64) {
+		v.updateStateView()
+	}
+
+	parameters.CurrentMode.AddListener(&v.parameterModeChanged)
+	parameters.FastLimit.AddListener(&v.parameterIntChanged)
+	parameters.SmartLimitLow.AddListener(&v.parameterIntChanged)
+	parameters.SmartLimitHigh.AddListener(&v.parameterIntChanged)
+	parameters.SmartFastCurrent.AddListener(&v.parameterIntChanged)
+
 	return v
+}
+
+func (v *view) terminate() {
+	parameters.CurrentMode.RemoveListener(&v.parameterModeChanged)
+	parameters.FastLimit.RemoveListener(&v.parameterIntChanged)
+	parameters.SmartLimitLow.RemoveListener(&v.parameterIntChanged)
+	parameters.SmartLimitHigh.RemoveListener(&v.parameterIntChanged)
+	parameters.SmartFastCurrent.RemoveListener(&v.parameterIntChanged)
 }
 
 func (v *view) stateUpdate(state *stateData) {
@@ -44,7 +72,12 @@ func (v *view) updateStateView() {
 	panics.IsNil(err)
 
 	newState := entities.UpdateTeslaState(oldState, func(data *entities.TeslaStateData) {
-		data.Mode = v.mode
+		data.Mode = parameters.CurrentMode.Get()
+		data.FastLimit = parameters.FastLimit.Get()
+		data.SmartLimitLow = parameters.SmartLimitLow.Get()
+		data.SmartLimitHigh = parameters.SmartLimitHigh.Get()
+		data.SmartFastCurrent = parameters.SmartFastCurrent.Get()
+
 		data.ChargingStatus = v.chargingStatus
 
 		data.LastUpdate = v.state.Car.Timestamp
@@ -81,28 +114,35 @@ func (v *view) setChargingStatus(chargingStatus entities.TeslaChargingStatus) {
 	v.updateStateView()
 }
 
-func (v *view) setMode(mode entities.TeslaMode) {
-	if v.mode == mode {
-		return
-	}
-
-	v.mode = mode
-	v.updateStateView()
+type parametersValues struct {
+	currentMode      entities.TeslaMode
+	fastPrevMode     entities.TeslaMode
+	fastLimit        int
+	smartLimitLow    int
+	smartLimitHigh   int
+	smartFastCurrent int
 }
 
 // Get view data from other queue than event loop
-func (v *view) getDataFromBackground() (*stateData, entities.TeslaMode, entities.TeslaChargingStatus, error) {
+func (v *view) getDataFromBackground() (*stateData, parametersValues, entities.TeslaChargingStatus, error) {
 	var state *stateData
-	var mode entities.TeslaMode
+	var params parametersValues
 	var chargingStatus entities.TeslaChargingStatus
 
 	err := tasks.RunEventLoop("tesla/view-fetch-data", func() {
 		state = v.dupState()
-		mode = v.mode
+
+		params.currentMode = parameters.CurrentMode.Get()
+		params.fastPrevMode = parameters.FastPrevMode.Get()
+		params.fastLimit = int(parameters.FastLimit.Get())
+		params.smartLimitLow = int(parameters.SmartLimitLow.Get())
+		params.smartLimitHigh = int(parameters.SmartLimitHigh.Get())
+		params.smartFastCurrent = int(parameters.SmartFastCurrent.Get())
+
 		chargingStatus = v.chargingStatus
 	})
 
-	return state, mode, chargingStatus, err
+	return state, params, chargingStatus, err
 }
 
 func (v *view) dupState() *stateData {
@@ -119,11 +159,4 @@ func (v *view) dupState() *stateData {
 	}
 
 	return target
-}
-
-// Set charging status from other queue than event loop
-func (v *view) setChargingStatusFromBackground(chargingStatus entities.TeslaChargingStatus) error {
-	return tasks.RunEventLoop("tesla/view-set-charging-status", func() {
-		v.setChargingStatus(chargingStatus)
-	})
 }

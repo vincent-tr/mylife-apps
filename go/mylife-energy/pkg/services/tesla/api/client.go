@@ -98,3 +98,7 @@ func (client *Client) SetChargingCurrent(value int) error {
 
 	return client.vehicle.SetChargingAmps(value)
 }
+
+func (client *Client) SetChargeLimit(percent int) error {
+	return client.vehicle.SetChargeLimit(percent)
+}

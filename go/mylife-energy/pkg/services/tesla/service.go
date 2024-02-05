@@ -2,6 +2,7 @@ package tesla
 
 import (
 	"mylife-energy/pkg/entities"
+	"mylife-energy/pkg/services/tesla/parameters"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
@@ -12,8 +13,8 @@ import (
 
 3 modes de pilotage
 - off => pas de pilotage de la charge
-- fast => charge au max possible du chargeur des que branchement
-- smart => charge avec le surplus des panneaux solaires pendant la journee uniquement
+- fast => charge au max possible du chargeur des que branchement, jusqu'à charge complete puis retour au mode précédent
+- smart => charge avec le surplus des panneaux solaires pendant la journee uniquement (avec une limite basse ou on est en fast)
 
 */
 
@@ -57,6 +58,7 @@ func (service *teslaService) Terminate() error {
 	service.state.terminate()
 	service.state = nil
 
+	service.view.terminate()
 	service.view = nil
 
 	return nil
@@ -67,7 +69,7 @@ func (service *teslaService) ServiceName() string {
 }
 
 func (service *teslaService) Dependencies() []string {
-	return []string{"tasks", "query"}
+	return []string{"tasks", "query", "parameter"}
 }
 
 func init() {
@@ -85,5 +87,29 @@ func GetStateView() store.IContainer[*entities.TeslaState] {
 }
 
 func SetMode(mode entities.TeslaMode) {
-	getService().view.setMode(mode)
+	prevMode := parameters.CurrentMode.Get()
+
+	if prevMode == mode {
+		return
+	}
+
+	parameters.CurrentMode.Set(mode)
+
+	if mode == entities.TeslaModeFast {
+		parameters.FastPrevMode.Set(prevMode)
+	} else {
+		parameters.FastPrevMode.Set(entities.TeslaModeOff)
+	}
+}
+
+func SetParameters(values struct {
+	FastLimit        int64
+	SmartLimitLow    int64
+	SmartLimitHigh   int64
+	SmartFastCurrent int64
+}) {
+	parameters.FastLimit.Set(values.FastLimit)
+	parameters.SmartLimitLow.Set(values.SmartLimitLow)
+	parameters.SmartLimitHigh.Set(values.SmartLimitHigh)
+	parameters.SmartFastCurrent.Set(values.SmartFastCurrent)
 }

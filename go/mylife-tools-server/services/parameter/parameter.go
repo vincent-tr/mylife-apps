@@ -44,7 +44,7 @@ type parameterImpl[DataType ParameterType, PublicType any] struct {
 	name      string
 	id        string // quicker access wen initialized
 	converter Converter[DataType, PublicType]
-	defValue  any
+	defValue  PublicType
 	emitter   store.EventEmitter[PublicType]
 }
 
@@ -63,7 +63,7 @@ func (param *parameterImpl[DataType, PublicType]) Name() string {
 }
 
 func (param *parameterImpl[DataType, PublicType]) defaultValue() any {
-	return param.defValue
+	return param.convertFromPublic(param.defValue)
 }
 
 func (param *parameterImpl[DataType, PublicType]) IsLoaded() bool {

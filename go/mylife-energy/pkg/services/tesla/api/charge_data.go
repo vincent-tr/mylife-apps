@@ -40,6 +40,7 @@ type Charge struct {
 	MaxCurrent     int // Max possible current request (A)
 	RequestCurrent int // Requested current (A)
 	Current        int // Actual current (A)
+	TimeLeft       int // Time until full charge (Minutes)
 }
 
 func newChargeData(chargeState *tesla.ChargeState) *ChargeData {
@@ -63,6 +64,7 @@ func newChargeData(chargeState *tesla.ChargeState) *ChargeData {
 			MaxCurrent:     chargeState.ChargeCurrentRequestMax,
 			RequestCurrent: chargeState.ChargeCurrentRequest,
 			Current:        chargeState.ChargeAmps,
+			TimeLeft:       chargeState.MinutesToFullCharge,
 		},
 	}
 }

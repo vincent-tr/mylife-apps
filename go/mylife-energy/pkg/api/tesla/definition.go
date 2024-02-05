@@ -8,7 +8,7 @@ import (
 	"mylife-tools-server/services/sessions"
 )
 
-var Definition = api.MakeDefinition("tesla", notifyState, setMode)
+var Definition = api.MakeDefinition("tesla", notifyState, setMode, setParameters)
 
 func notifyState(session *sessions.Session, arg struct{}) (uint64, error) {
 	stateView := tesla.GetStateView()
@@ -18,5 +18,15 @@ func notifyState(session *sessions.Session, arg struct{}) (uint64, error) {
 
 func setMode(session *sessions.Session, arg struct{ Mode entities.TeslaMode }) (api.NoReturn, error) {
 	tesla.SetMode(arg.Mode)
+	return nil, nil
+}
+
+func setParameters(session *sessions.Session, arg struct {
+	FastLimit        int64
+	SmartLimitLow    int64
+	SmartLimitHigh   int64
+	SmartFastCurrent int64
+}) (api.NoReturn, error) {
+	tesla.SetParameters(arg)
 	return nil, nil
 }

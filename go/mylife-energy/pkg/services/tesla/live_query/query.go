@@ -1,4 +1,4 @@
-package tesla
+package live_query
 
 import (
 	"context"
@@ -9,13 +9,13 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-type mainMeasure struct {
-	timestamp     time.Time
-	apparentPower float64
-	current       float64
+type Measure struct {
+	Timestamp     time.Time
+	ApparentPower float64
+	Current       float64
 }
 
-func queryPower(ctx context.Context) ([]*mainMeasure, error) {
+func QueryMainPower(ctx context.Context) ([]*Measure, error) {
 	// Query last minute of Linky, current + apparent power so that we can trigger negative values
 	filter := query.And(
 		query.Gte("timestamp", time.Now().Add(-time.Minute)),
@@ -48,7 +48,7 @@ func queryPower(ctx context.Context) ([]*mainMeasure, error) {
 	slices.SortFunc(currentMeasures, measureTimestampComparer)
 	slices.SortFunc(voltageMeasures, measureTimestampComparer)
 
-	measures := make([]*mainMeasure, 0)
+	measures := make([]*Measure, 0)
 
 	// take one list and binary search item (time diff 3sec) from the others
 	for _, powerMeasure := range powerMeasures {
@@ -65,17 +65,17 @@ func queryPower(ctx context.Context) ([]*mainMeasure, error) {
 		currentMeasure := currentMeasures[currentMeasureIndex]
 		voltageMeasure := voltageMeasures[voltageMeasureIndex]
 
-		measure := &mainMeasure{
-			timestamp:     timestampMiddle(powerMeasure.Timestamp(), currentMeasure.Timestamp()),
-			apparentPower: powerMeasure.Value(),
-			current:       currentMeasure.Value(),
+		measure := &Measure{
+			Timestamp:     timestampMiddle(powerMeasure.Timestamp(), currentMeasure.Timestamp()),
+			ApparentPower: powerMeasure.Value(),
+			Current:       currentMeasure.Value(),
 		}
 
 		// Ajust linky measures : if apparent-power = 0 && current > 0 then it is exported, let's make it negative
 
-		if measure.apparentPower == 0 && measure.current > 0 {
-			measure.current = -measure.current
-			measure.apparentPower = measure.current * voltageMeasure.Value()
+		if measure.ApparentPower == 0 && measure.Current > 0 {
+			measure.Current = -measure.Current
+			measure.ApparentPower = measure.Current * voltageMeasure.Value()
 		}
 
 		measures = append(measures, measure)

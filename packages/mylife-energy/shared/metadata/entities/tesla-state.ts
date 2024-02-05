@@ -22,7 +22,11 @@ export enum TeslaChargingStatus {
 
 export interface TeslaState {
 	_id: string;
-	mode: TeslaMode;
+	mode: TeslaMode; // Current charging mode
+	fastLimit: number; // Fast mode charge limit (%)
+	smartLimitLow: number; // Smart mode charge low limit (%)
+	smartLimitHigh: number; // Smart mode charge high limit (%)
+	smartFastCurrent: number; // Smart mode fast charge current (A)
 	lastUpdate: Date;
 	wallConnectorStatus: TeslaDeviceStatus;
 	carStatus: TeslaDeviceStatus;
