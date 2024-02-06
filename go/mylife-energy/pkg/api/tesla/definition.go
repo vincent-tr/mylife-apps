@@ -27,6 +27,5 @@ func setParameters(session *sessions.Session, arg struct {
 	SmartLimitHigh   int64
 	SmartFastCurrent int64
 }) (api.NoReturn, error) {
-	tesla.SetParameters(arg)
-	return nil, nil
+	return nil, tesla.SetParameters(arg)
 }

@@ -1,6 +1,7 @@
 package tesla
 
 import (
+	"fmt"
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/parameters"
 	"mylife-tools-server/config"
@@ -107,9 +108,31 @@ func SetParameters(values struct {
 	SmartLimitLow    int64
 	SmartLimitHigh   int64
 	SmartFastCurrent int64
-}) {
+}) error {
+	if values.FastLimit < 0 || values.FastLimit > 100 {
+		return fmt.Errorf("invalid fast limit value %d (value must be between 0 and 100)", values.FastLimit)
+	}
+
+	if values.SmartLimitLow < 0 || values.SmartLimitLow > 100 {
+		return fmt.Errorf("invalid smart limit low value %d (value must be between 0 and 100)", values.SmartLimitLow)
+	}
+
+	if values.SmartLimitHigh < 0 || values.SmartLimitHigh > 100 {
+		return fmt.Errorf("invalid smart limit high value %d (value must be between 0 and 100)", values.SmartLimitHigh)
+	}
+
+	if values.SmartFastCurrent < 1 || values.SmartFastCurrent > 32 {
+		return fmt.Errorf("invalid smart fast current value %d (value must be between 1 and 32)", values.SmartFastCurrent)
+	}
+
+	if values.SmartLimitLow >= values.SmartLimitHigh {
+		return fmt.Errorf("invalid smart limit values (low value '%d' must be less than high value '%d')", values.SmartLimitLow, values.SmartLimitHigh)
+	}
+
 	parameters.FastLimit.Set(values.FastLimit)
 	parameters.SmartLimitLow.Set(values.SmartLimitLow)
 	parameters.SmartLimitHigh.Set(values.SmartLimitHigh)
 	parameters.SmartFastCurrent.Set(values.SmartFastCurrent)
+
+	return nil
 }
