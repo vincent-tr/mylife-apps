@@ -1,4 +1,5 @@
 import BatteryGauge from 'react-battery-gauge';
+import humanizeDuration from 'humanize-duration';
 import { React, mui, useLifecycle, useActions, useSelector } from 'mylife-tools-ui';
 import { enter, leave, setMode } from '../actions';
 import { getState } from '../selectors';
@@ -103,6 +104,12 @@ const Tesla: React.FunctionComponent = () => {
             <mui.Typography variant='body2' color='textSecondary'>
               {`Décision de charge : ${getChargingStatusString(state.chargingStatus)}`}
               <br />
+              {state.mode == TeslaMode.Fast && state.chargingStatus == TeslaChargingStatus.Charging && (
+                <>
+                  {`Temps restant : ${humanizeDuration(state.chargingTimeLeft * 60 * 1000, { language: 'fr' })}`}
+                  <br />
+                </>
+              )}
               {`Dernière mise à jour : ${state.lastUpdate.toLocaleString()}`}
             </mui.Typography>
 

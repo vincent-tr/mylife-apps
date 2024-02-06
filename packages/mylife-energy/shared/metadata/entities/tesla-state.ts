@@ -33,6 +33,7 @@ export interface TeslaState {
 	chargingStatus: TeslaChargingStatus;
 	chargingCurrent: number; // Actual current (A)
 	chargingPower: number; // Actual charger power (kW)
+	chargingTimeLeft: number; // Time left for full charge (Minutes)
 	batteryLastTimestamp: Date; // Last time we could check battery level
 	batteryLevel: number; // Actual battery level (%)
 	batteryTargetLevel: number; // Target battery level (%)
