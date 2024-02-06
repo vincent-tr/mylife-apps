@@ -90,12 +90,14 @@ func (v *view) updateStateView() {
 		if carLastState == nil {
 			data.ChargingCurrent = 0
 			data.ChargingPower = 0
+			data.ChargingTimeLeft = 0
 			data.BatteryLastTimestamp = time.Time{}
 			data.BatteryLevel = 0
 			data.BatteryTargetLevel = 0
 		} else {
 			data.ChargingCurrent = carLastState.Charger.Current
 			data.ChargingPower = carLastState.Charger.Power
+			data.ChargingTimeLeft = carLastState.Charge.TimeLeft
 			data.BatteryLastTimestamp = carLastState.Timestamp
 			data.BatteryLevel = carLastState.Battery.Level
 			data.BatteryTargetLevel = carLastState.Battery.TargetLevel
