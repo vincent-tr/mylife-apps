@@ -17,6 +17,7 @@ const {
   Equalizer,
   ArrowLeft,
   ArrowRight,
+  Settings,
 } = mui.icons;
 
 const Energy = (props) => (
@@ -66,6 +67,7 @@ export default {
     Off: NotInterested,
     Fast: Timer,
     Smart: NetworkCheck,
+    Settings,
     Prev: ArrowLeft,
     Next: ArrowRight,
   },

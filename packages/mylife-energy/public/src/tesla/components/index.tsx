@@ -6,8 +6,13 @@ import { getState } from '../selectors';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../shared/metadata';
 import icons from '../../common/icons';
 import ChargingGauge from './charging-gauge';
+import { useParameters } from './parameters';
 
 const useStyles = mui.makeStyles(theme => ({
+  buttons: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   buttonGroup: {
     margin: theme.spacing(2),
   },
@@ -47,6 +52,7 @@ const Tesla: React.FunctionComponent = () => {
 
   const state = useSelector(state => getState(state));
   const actions = useActions({ setMode });
+  const showParameters = useParameters();
 
   const classes = useStyles();
 
@@ -77,25 +83,34 @@ const Tesla: React.FunctionComponent = () => {
       <Section title={'Charge'}>
 
         <Part>
-          <mui.ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)} className={classes.buttonGroup}>
-            <mui.ToggleButton value={TeslaMode.Off}>
-              <mui.Tooltip title='Eteint'>
-                <icons.actions.Off fontSize='large'/>
-              </mui.Tooltip>
-            </mui.ToggleButton>
+          <div className={classes.buttons}>
+            <mui.ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)} className={classes.buttonGroup}>
+              <mui.ToggleButton value={TeslaMode.Off}>
+                <mui.Tooltip title='Eteint'>
+                  <icons.actions.Off fontSize='large'/>
+                </mui.Tooltip>
+              </mui.ToggleButton>
 
-            <mui.ToggleButton value={TeslaMode.Fast}>
-              <mui.Tooltip title='Rapide'>
-                <icons.actions.Fast fontSize='large'/>
-              </mui.Tooltip>
-            </mui.ToggleButton>
+              <mui.ToggleButton value={TeslaMode.Fast}>
+                <mui.Tooltip title='Rapide'>
+                  <icons.actions.Fast fontSize='large'/>
+                </mui.Tooltip>
+              </mui.ToggleButton>
 
-            <mui.ToggleButton value={TeslaMode.Smart}>
-              <mui.Tooltip title='Intelligent'>
-                <icons.actions.Smart fontSize='large'/>
+              <mui.ToggleButton value={TeslaMode.Smart}>
+                <mui.Tooltip title='Intelligent'>
+                  <icons.actions.Smart fontSize='large'/>
+                </mui.Tooltip>
+              </mui.ToggleButton>
+
+            </mui.ToggleButtonGroup>
+
+            <mui.IconButton onClick={showParameters}>
+              <mui.Tooltip title='Paramètres'>
+                <icons.actions.Settings fontSize='large'/>
               </mui.Tooltip>
-            </mui.ToggleButton>
-          </mui.ToggleButtonGroup>
+            </mui.IconButton>
+          </div>
 
           <ChargeStatus current={state.chargingCurrent} power={state.chargingPower} />
         </Part>

@@ -25,3 +25,16 @@ export const setMode = (mode: TeslaMode) => {
     }));
   };
 };
+
+export const setParameters = ({ fastLimit, smartLimitLow, smartLimitHigh, smartFastCurrent}: { fastLimit: number, smartLimitLow: number, smartLimitHigh: number, smartFastCurrent: number}) => {
+  return async (dispatch) => {
+    await dispatch(io.call({
+      service: 'tesla',
+      method: 'setParameters',
+      fastLimit,
+      smartLimitLow,
+      smartLimitHigh,
+      smartFastCurrent,
+    }));
+  };
+};
