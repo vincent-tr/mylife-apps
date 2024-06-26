@@ -158,7 +158,7 @@ index for live query
 db.measures.createIndex( { "sensor.sensorId": 1,  "timestamp": -1 } );
 ```
 
-##### Tesla API
+##### Tesla API (old)
 
 get token : (work only using master branch currently)
 ```
@@ -169,6 +169,12 @@ cd cmd/login
 go work use ../..
 go run . -o ~/tesla.token
 ```
+
+##### Tesla API (new)
+
+https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creation-registration-and-third-party-da24aba1bddd
+
+
 
 # TODO
 

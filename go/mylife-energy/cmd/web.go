@@ -6,9 +6,12 @@ import (
 	"mylife-energy/pkg/entities"
 	_ "mylife-energy/pkg/services/live"
 	_ "mylife-energy/pkg/services/tesla"
+	teslaCert "mylife-energy/tesla-cert"
 	"mylife-tools-server/services"
 	_ "mylife-tools-server/services/api"
 	_ "mylife-tools-server/services/web"
+
+	"github.com/yalue/merged_fs"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +24,7 @@ func init() {
 			args := map[string]interface{}{
 				"api":   api.Definitions,
 				"store": entities.StoreDef,
-				"web":   ui.FS,
+				"web":   merged_fs.NewMergedFS(ui.FS, teslaCert.FS),
 			}
 
 			services.RunServices([]string{"live", "tesla", "web"}, args)

@@ -84,6 +84,7 @@ func (client *Client) Wakeup() error {
 func (client *Client) SetChargingCurrent(value int) error {
 	if value == 0 {
 		err := client.vehicle.StopCharging()
+		fmt.Printf("StopCharging => %v\n", err)
 		if err != nil && err.Error() != "not_charging" {
 			return err
 		}
@@ -92,11 +93,14 @@ func (client *Client) SetChargingCurrent(value int) error {
 	}
 
 	err := client.vehicle.StartCharging()
+	fmt.Printf("StartCharging => %v\n", err)
 	if err != nil && err.Error() != "is_charging" {
 		return err
 	}
 
-	return client.vehicle.SetChargingAmps(value)
+	err = client.vehicle.SetChargingAmps(value)
+	fmt.Printf("SetChargingAmps %d => %v\n", value, err)
+	return err
 }
 
 func (client *Client) SetChargeLimit(percent int) error {
