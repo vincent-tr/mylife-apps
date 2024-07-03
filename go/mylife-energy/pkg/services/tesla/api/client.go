@@ -15,9 +15,10 @@ var logger = log.CreateLogger("mylife:energy:tesla:api")
 
 type Config struct {
 	// Must contain fleet-api.token, owner-api.token, vehicle-private-key.pem
-	AuthPath string
-	Id       int64
-	VIN      string
+	AuthPath      string
+	FleetClientId string
+	Id            int64
+	VIN           string
 }
 
 type Client struct {
@@ -34,7 +35,7 @@ func MakeClient(ctx context.Context, config *Config) (*Client, error) {
 		return nil, err
 	}
 
-	client.fleet, err = makeFleetClient(ctx, config)
+	client.fleet, err = makeFleetClient(config)
 	if err != nil {
 		return nil, err
 	}
@@ -50,10 +51,6 @@ func (client *Client) Wakeup() error {
 	return client.fleet.Wakeup()
 }
 
-func (client *Client) SetChargingCurrent(value int) error {
-	return client.fleet.SetChargingCurrent(value)
-}
-
-func (client *Client) SetChargeLimit(percent int) error {
-	return client.fleet.SetChargeLimit(percent)
+func (client *Client) SetupCharge(current int, limit int) error {
+	return client.fleet.SetupCharge(current, limit)
 }

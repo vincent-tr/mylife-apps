@@ -230,11 +230,7 @@ func (e *chargeEngine) setupCharge(state *stateData, current int, limit int) err
 
 	logger.WithField("current", current).Debug("Setup charge: setting charging current")
 
-	if err := e.api.SetChargingCurrent(current); err != nil {
-		return err
-	}
-
-	if err := e.api.SetChargeLimit(limit); err != nil {
+	if err := e.api.SetupCharge(current, limit); err != nil {
 		return err
 	}
 
