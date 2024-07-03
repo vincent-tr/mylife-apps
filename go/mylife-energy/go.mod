@@ -12,6 +12,7 @@ require (
 	go.mongodb.org/mongo-driver v1.11.4
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 	mylife-tools-server v0.0.0-00010101000000-000000000000
+	github.com/teslamotors/vehicle-command v0.0.2
 )
 
 require (

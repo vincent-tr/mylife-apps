@@ -137,7 +137,7 @@ func (service *parameterService) update(id string, value any) error {
 		return nil
 	}
 
-	logger.Infof("Update parameter '%s' to value %+v", obj.Name, value)
+	logger.Infof("Update parameter '%s' to value %+v", obj.Name(), value)
 
 	_, err = service.collection.Set(obj.Update(value))
 	if err != nil {

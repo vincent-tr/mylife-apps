@@ -3,6 +3,7 @@ package tesla
 import (
 	"fmt"
 	"mylife-energy/pkg/entities"
+	"mylife-energy/pkg/services/tesla/api"
 	"mylife-energy/pkg/services/tesla/parameters"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
@@ -22,8 +23,10 @@ import (
 var logger = log.CreateLogger("mylife:energy:tesla")
 
 type teslaConfig struct {
-	TokenPath            string `mapstructure:"tokenPath"`
+	// Must contain fleet-api.token, owner-api.token, vehicle-private-key.pem
+	AuthPath             string `mapstructure:"authPath"`
 	Id                   int64  `mapstructure:"id"`
+	VIN                  string `mapstructure:"vin"`
 	WallConnectorAddress string `mapstructure:"wallConnectorAddress"`
 }
 
@@ -37,8 +40,14 @@ func (service *teslaService) Init(arg interface{}) error {
 	conf := teslaConfig{}
 	config.BindStructure("tesla", &conf)
 
+	apiConf := &api.Config{
+		AuthPath: conf.AuthPath,
+		Id:       conf.Id,
+		VIN:      conf.VIN,
+	}
+
 	var err error
-	service.state, err = makeStateManager(conf.TokenPath, conf.Id, conf.WallConnectorAddress, func() {
+	service.state, err = makeStateManager(apiConf, conf.WallConnectorAddress, func() {
 		service.view.stateUpdate(&service.state.data)
 	})
 
