@@ -15,8 +15,8 @@ import (
 	"golang.org/x/oauth2"
 )
 
-const wakeupTimeout = time.Second * 30
-const commandTimeout = time.Second * 10
+const wakeupTimeout = time.Minute
+const commandTimeout = time.Minute
 const tokenUrl = "https://auth.tesla.com/oauth2/v3/token"
 
 // TODO: cache connections?
@@ -93,6 +93,8 @@ func (client *fleetClient) Wakeup() error {
 		return err
 	}
 
+	logger.Debug("Got vehicle")
+
 	return veh.Wakeup(ctx)
 }
 
@@ -105,11 +107,15 @@ func (client *fleetClient) SetupCharge(current int, limit int) error {
 		return err
 	}
 
+	logger.Debug("Got vehicle")
+
 	if err := veh.Connect(ctx); err != nil {
 		return err
 	}
 
 	defer veh.Disconnect()
+
+	logger.Debug("Connected to vehicle")
 
 	if err := veh.StartSession(ctx, nil); err != nil {
 		return err
@@ -120,17 +126,29 @@ func (client *fleetClient) SetupCharge(current int, limit int) error {
 		if err != nil && !strings.Contains(err.Error(), "not_charging") {
 			return err
 		}
+
+		logger.Debug("Charge stopped")
 	} else {
 		err := veh.ChargeStart(ctx)
 		if err != nil && !strings.Contains(err.Error(), "is_charging") {
 			return err
 		}
 
+		logger.Debug("Charge started")
+
 		err = veh.SetChargingAmps(ctx, int32(current))
 		if err != nil {
 			return err
 		}
+
+		logger.Debug("Charge current set")
 	}
 
-	return veh.ChangeChargeLimit(ctx, int32(limit))
+	if err := veh.ChangeChargeLimit(ctx, int32(limit)); err != nil {
+		return err
+	}
+
+	logger.Debug("Charge limit set")
+
+	return nil
 }
