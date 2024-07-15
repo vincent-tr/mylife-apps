@@ -6,7 +6,8 @@ webServer:
 tesla:
   id: ${TESLA_ID}
   vin: ${TESLA_VIN}
-  # Must contain fleet-api.token, owner-api.token, vehicle-private-key.pem
-  fleetClientId: ${TESLA_FLEET_CLIENT_ID}
+  # Must contain (fleet-api.token), owner-api.token, vehicle-private-key.pem
   authPath: ${TESLA_AUTH_PATH|~/}
+  # fleetClientId: ${TESLA_FLEET_CLIENT_ID}
+  bleProxy: ${TESLA_BLE_PROXY}
   wallConnectorAddress: ${TWC_ADDRESS}

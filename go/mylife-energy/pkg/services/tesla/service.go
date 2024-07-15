@@ -25,9 +25,9 @@ var logger = log.CreateLogger("mylife:energy:tesla")
 type teslaConfig struct {
 	// Must contain fleet-api.token, owner-api.token, vehicle-private-key.pem
 	AuthPath             string `mapstructure:"authPath"`
-	FleetClientId        string `mapstructure:"fleetClientId"`
 	Id                   int64  `mapstructure:"id"`
 	VIN                  string `mapstructure:"vin"`
+	BleProxy             string `mapstructure:"bleProxy"`
 	WallConnectorAddress string `mapstructure:"wallConnectorAddress"`
 }
 
@@ -42,10 +42,10 @@ func (service *teslaService) Init(arg interface{}) error {
 	config.BindStructure("tesla", &conf)
 
 	apiConf := &api.Config{
-		AuthPath:      conf.AuthPath,
-		FleetClientId: conf.FleetClientId,
-		Id:            conf.Id,
-		VIN:           conf.VIN,
+		AuthPath: conf.AuthPath,
+		Id:       conf.Id,
+		VIN:      conf.VIN,
+		BleProxy: conf.BleProxy,
 	}
 
 	var err error

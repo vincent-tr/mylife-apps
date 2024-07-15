@@ -14,16 +14,17 @@ var logger = log.CreateLogger("mylife:energy:tesla:api")
 // - Tester set charge current
 
 type Config struct {
-	// Must contain fleet-api.token, owner-api.token, vehicle-private-key.pem
-	AuthPath      string
-	FleetClientId string
-	Id            int64
-	VIN           string
+	// Must contain (fleet-api.token), owner-api.token, vehicle-private-key.pem
+	AuthPath string
+	// FleetClientId string
+	Id       int64
+	VIN      string
+	BleProxy string
 }
 
 type Client struct {
-	owner *ownerClient
-	fleet *fleetClient
+	owner    *ownerClient
+	bleProxy *bleProxyClient
 }
 
 func MakeClient(ctx context.Context, config *Config) (*Client, error) {
@@ -35,7 +36,7 @@ func MakeClient(ctx context.Context, config *Config) (*Client, error) {
 		return nil, err
 	}
 
-	client.fleet, err = makeFleetClient(config)
+	client.bleProxy, err = makeBleProxyClient(config)
 	if err != nil {
 		return nil, err
 	}
@@ -48,9 +49,9 @@ func (client *Client) FetchChargeData() (*ChargeData, error) {
 }
 
 func (client *Client) Wakeup() error {
-	return client.fleet.Wakeup()
+	return client.bleProxy.Wakeup()
 }
 
 func (client *Client) SetupCharge(current int, limit int) error {
-	return client.fleet.SetupCharge(current, limit)
+	return client.bleProxy.SetupCharge(current, limit)
 }
