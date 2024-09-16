@@ -10,6 +10,7 @@ import (
 	"mylife-tools-server/services/store"
 	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
+	"strings"
 	"time"
 )
 
@@ -97,6 +98,7 @@ func buildEntities(versions []*entities.UpdatesVersionValues) ([]*entities.Updat
 	}
 
 	for _, version := range versions {
+		version.Id = strings.Join(version.Path, "/")
 		version := entities.NewUpdatesVersion(version)
 		data = append(data, version)
 
