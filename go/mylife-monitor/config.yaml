@@ -11,3 +11,7 @@ upsmon:
   - ${UPSMON_ADDR}:3552
   - ${UPSMON_ADDR}:3553
   interval: 5
+updates:
+  githubScriptsRepository: ${GITHUB_SCRIPTS_REPOSITORY}
+  githubToken: ${GITHUB_TOKEN}
+  interval: 600
