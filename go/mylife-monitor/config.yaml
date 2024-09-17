@@ -14,4 +14,4 @@ upsmon:
 updates:
   githubScriptsRepository: ${GITHUB_SCRIPTS_REPOSITORY}
   githubToken: ${GITHUB_TOKEN}
-  interval: 600
+  interval: 3600 # avoid docker hub rate limits

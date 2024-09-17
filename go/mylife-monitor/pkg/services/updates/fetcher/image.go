@@ -19,7 +19,7 @@ type imageData struct {
 }
 
 func fetchImagesData(versions []*entities.UpdatesVersionValues) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
 
 	pool := MakeParallelTaskPool(ctx)
