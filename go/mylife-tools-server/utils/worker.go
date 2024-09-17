@@ -33,11 +33,12 @@ func NewInterval(interval time.Duration, callback func()) *Worker {
 	return NewWorker(func(exit chan struct{}) {
 
 		for {
+			callback()
+
 			select {
 			case <-exit:
 				return
 			case <-time.After(interval):
-				callback()
 			}
 		}
 
