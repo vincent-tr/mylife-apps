@@ -5,6 +5,7 @@ import { React, mui } from 'mylife-tools-ui';
 
 const {
   Power,
+  Update,
 } = mui.icons;
 
 const Monitor = (props) => (
@@ -27,5 +28,6 @@ export default {
   menu: {
     Nagios,
     Upsmon: Power,
+    Updates: Update,
   },
 };

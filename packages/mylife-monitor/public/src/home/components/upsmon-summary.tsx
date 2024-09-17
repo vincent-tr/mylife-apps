@@ -29,7 +29,7 @@ const formatDuration = humanizeDuration.humanizer({
 
   languages: {
     shortFr: {
-      y: () => "années",
+      y: () => "ans",
       mo: () => "mois",
       w: () => "semaines",
       d: () => "jours",
@@ -39,8 +39,7 @@ const formatDuration = humanizeDuration.humanizer({
       ms: () => "ms",
     },
   },
-  
-})
+});
 
 const UpsmonSummary = ({ view }) => {
   const classes = useStyles();

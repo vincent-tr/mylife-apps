@@ -6,6 +6,8 @@ import nagiosService from './entities/nagios-service';
 import nagiosSummary from './entities/nagios-summary';
 import upsmonStatus from './entities/upsmon-status';
 import upsmonSummary from './entities/upsmon-summary';
+import updatesSummary from './entities/updates-summary';
+import updatesVersion from './entities/updates-version';
 
 export default {
   datatypes,
@@ -16,5 +18,7 @@ export default {
     nagiosSummary,
     upsmonStatus,
     upsmonSummary,
+    updatesSummary,
+    updatesVersion,
   ]
 };

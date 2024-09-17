@@ -7,4 +7,6 @@ export default [
   { id: 'nagios-service-status', enum: ['pending', 'ok', 'warning', 'unknown', 'critical'] },
   { id: 'nagios-object-type', enum: ['host', 'service'] },
   { id: 'upsmon-status-flag', primitive: 'number' },
+  { id: 'version', primitive: 'string' },
+  { id: 'updates-status', enum: ['uptodate', 'outdated', 'unknown'] },
 ];

@@ -13,12 +13,20 @@ const upsmonViewRef = new views.ViewReference({
   method: 'notifySummary'
 });
 
+const updatesViewRef = new views.ViewReference({
+  uid: viewUids.UPDATES_SUMMARY,
+  service: 'updates',
+  method: 'notifySummary'
+});
+
 export const enter = () => async (dispatch) => {
   await nagiosViewRef.attach();
   await upsmonViewRef.attach();
+  await updatesViewRef.attach();
 };
 
 export const leave = () => async (dispatch) => {
   await nagiosViewRef.detach();
   await upsmonViewRef.detach();
+  await updatesViewRef.detach();
 };

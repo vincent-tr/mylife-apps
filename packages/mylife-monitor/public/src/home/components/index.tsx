@@ -2,9 +2,10 @@
 
 import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
-import { getNagiosView, getUpsmonView } from '../selectors';
+import { getNagiosView, getUpsmonView, getUpdatesView } from '../selectors';
 import NagiosSummary from './nagios-summary';
 import UpsmonSummary from './upsmon-summary';
+import UpdatesSummary from './updates-summary';
 
 type FIXME_any = any;
 
@@ -14,6 +15,7 @@ const useConnect = () => {
     ...useSelector(state => ({
       nagios: getNagiosView(state),
       upsmon: getUpsmonView(state),
+      updates: getUpdatesView(state),
     })),
     ...useMemo(() => ({
       enter: () => dispatch(enter()),
@@ -35,7 +37,7 @@ const useStyles = mui.makeStyles({
 
 const Home = () => {
   const classes = useStyles();
-  const { enter, leave, nagios, upsmon } = useConnect();
+  const { enter, leave, nagios, upsmon, updates } = useConnect();
   useLifecycle(enter, leave);
 
   return (
@@ -48,6 +50,10 @@ const Home = () => {
       
       <div className={classes.section}>
         <UpsmonSummary view={upsmon} />
+      </div>
+
+      <div className={classes.section}>
+        <UpdatesSummary view={updates} />
       </div>
     </div>
   );
