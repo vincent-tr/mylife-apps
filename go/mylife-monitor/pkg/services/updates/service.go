@@ -90,11 +90,15 @@ func init() {
 
 func buildEntities(versions []*entities.UpdatesVersionValues) ([]*entities.UpdatesVersion, []*entities.UpdatesSummary, error) {
 	data := make([]*entities.UpdatesVersion, 0)
-	summary := make([]*entities.UpdatesSummary, 0)
 
 	dockerCompose := &entities.UpdatesSummaryValues{
 		Id:       "docker-compose",
-		Category: "docker compose",
+		Category: "docker-compose",
+	}
+
+	k8s := &entities.UpdatesSummaryValues{
+		Id:       "k8s",
+		Category: "k8s",
 	}
 
 	for _, version := range versions {
@@ -102,21 +106,33 @@ func buildEntities(versions []*entities.UpdatesVersionValues) ([]*entities.Updat
 		version := entities.NewUpdatesVersion(version)
 		data = append(data, version)
 
-		switch version.Status() {
-		case entities.UpdatesVersionUptodate:
-			dockerCompose.Ok += 1
-
-		case entities.UpdatesVersionOutdated:
-			dockerCompose.Outdated += 1
-
-		case entities.UpdatesVersionUnknown:
-			dockerCompose.Unknown += 1
+		switch version.Path()[0] {
+		case "docker-compose":
+			versionSummary(dockerCompose, version)
+		case "k8s":
+			versionSummary(k8s, version)
 		}
 	}
 
-	summary = append(summary, entities.NewUpdatesSummary(dockerCompose))
+	summary := []*entities.UpdatesSummary{
+		entities.NewUpdatesSummary(dockerCompose),
+		entities.NewUpdatesSummary(k8s),
+	}
 
 	return data, summary, nil
+}
+
+func versionSummary(summary *entities.UpdatesSummaryValues, version *entities.UpdatesVersion) {
+	switch version.Status() {
+	case entities.UpdatesVersionUptodate:
+		summary.Ok += 1
+
+	case entities.UpdatesVersionOutdated:
+		summary.Outdated += 1
+
+	case entities.UpdatesVersionUnknown:
+		summary.Unknown += 1
+	}
 }
 
 func getService() *updatesService {

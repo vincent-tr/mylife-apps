@@ -1,19 +1,14 @@
 package fetcher
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
-	"log"
 	"mylife-monitor/pkg/entities"
 	"os"
 	"path"
+	"slices"
 
 	"github.com/go-git/go-billy/v5"
-
-	"github.com/compose-spec/compose-go/v2/cli"
-	"github.com/compose-spec/compose-go/v2/loader"
-	"github.com/compose-spec/compose-go/v2/types"
 )
 
 func readFiles(root string, fs billy.Filesystem) ([]*entities.UpdatesVersionValues, error) {
@@ -21,25 +16,45 @@ func readFiles(root string, fs billy.Filesystem) ([]*entities.UpdatesVersionValu
 		root:     root,
 		fs:       fs,
 		versions: make([]*entities.UpdatesVersionValues, 0),
+		backends: []readerBackend{
+			// order is important
+			dockerCompose(),
+			k8s(),
+		},
 	}
 
-	if err := reader.processRoot(); err != nil {
+	if err := reader.processDir(reader.root, []string{}); err != nil {
 		return nil, err
 	}
 
 	return reader.versions, nil
 }
 
+type readerBackend interface {
+	IsProjectDir(r *reader, directory string) (bool, error)
+	ProcessDir(r *reader, directory string, nodes []string) error
+}
 type reader struct {
 	root     string
 	fs       billy.Filesystem
 	versions []*entities.UpdatesVersionValues
+	backends []readerBackend
 }
 
-func (r *reader) processRoot() error {
-	entries, err := r.fs.ReadDir(r.root)
+func (r *reader) processDir(directory string, nodes []string) error {
+	for _, backend := range r.backends {
+		isBackend, err := backend.IsProjectDir(r, directory)
+		if err != nil {
+			return err
+		}
+		if isBackend {
+			return backend.ProcessDir(r, directory, nodes)
+		}
+	}
+
+	entries, err := r.fs.ReadDir(directory)
 	if err != nil {
-		return err
+		return fmt.Errorf("error reading directory '%s': %w", directory, err)
 	}
 
 	for _, entry := range entries {
@@ -47,108 +62,12 @@ func (r *reader) processRoot() error {
 			continue
 		}
 
-		serverName := entry.Name()
+		newDirectory := path.Join(directory, entry.Name())
+		newNodes := append(slices.Clone(nodes), entry.Name())
 
-		err = r.processServer(serverName)
-		if err != nil {
+		if err := r.processDir(newDirectory, newNodes); err != nil {
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (r *reader) processServer(serverName string) error {
-
-	entries, err := r.fs.ReadDir(path.Join(r.root, serverName))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, entry := range entries {
-		if !entry.IsDir() {
-			continue
-		}
-
-		serviceName := entry.Name()
-
-		if err := r.processService(serverName, serviceName); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (r *reader) processService(serverName string, serviceName string) error {
-	projectName := ""
-
-	for _, candidate := range cli.DefaultFileNames {
-		projectFile := path.Join(r.root, serverName, serviceName, candidate)
-		exists, err := r.fileExists(projectFile)
-		if err != nil {
-			return err
-		}
-
-		if exists {
-			projectName = candidate
-			break
-		}
-	}
-
-	if projectName != "" {
-		if err := r.processComposeDir(serverName, serviceName, projectName); err != nil {
-			return fmt.Errorf("error processing dir '%s': %w", path.Join(r.root, serverName, serviceName), err)
-		}
-	}
-
-	return nil
-}
-
-func (r *reader) processComposeDir(serverName string, serviceName string, projectName string) error {
-
-	projectPath := path.Join(r.root, serverName, serviceName, projectName)
-
-	file, err := r.fs.Open(projectPath)
-	if err != nil {
-		return err
-	}
-
-	buffer := &bytes.Buffer{}
-	_, err = buffer.ReadFrom(file)
-	if err != nil {
-		return err
-	}
-
-	logger.WithField("projectPath", projectPath).Debug("Read compose project")
-
-	details := types.ConfigDetails{
-		ConfigFiles: []types.ConfigFile{
-			{
-				Filename: projectPath,
-				Content:  buffer.Bytes(),
-			},
-		},
-	}
-
-	nameOption := func(opt *loader.Options) {
-		opt.SetProjectName(projectName, false)
-		opt.SkipResolveEnvironment = true
-	}
-
-	project, err := loader.Load(details, nameOption)
-	if err != nil {
-		return err
-	}
-
-	for name, containerInfo := range project.Services {
-		version := &entities.UpdatesVersionValues{
-			Path:           []string{serverName, serviceName, name},
-			CurrentVersion: containerInfo.Image,
-			Status:         entities.UpdatesVersionUnknown,
-		}
-
-		r.versions = append(r.versions, version)
 	}
 
 	return nil
@@ -165,4 +84,14 @@ func (r *reader) fileExists(path string) (bool, error) {
 
 	var def bool
 	return def, err
+}
+
+func (r *reader) addVersion(category string, nodes []string, version string) {
+	newVersion := &entities.UpdatesVersionValues{
+		Path:           slices.Concat([]string{category}, nodes),
+		CurrentVersion: version,
+		Status:         entities.UpdatesVersionUnknown,
+	}
+
+	r.versions = append(r.versions, newVersion)
 }
