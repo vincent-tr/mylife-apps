@@ -3,7 +3,6 @@ package updates
 import (
 	"context"
 	"mylife-monitor/pkg/entities"
-	"mylife-monitor/pkg/services/updates/fetcher"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"

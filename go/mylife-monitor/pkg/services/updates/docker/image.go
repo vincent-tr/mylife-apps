@@ -1,4 +1,4 @@
-package fetcher
+package docker
 
 import (
 	"context"

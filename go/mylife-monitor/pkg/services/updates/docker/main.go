@@ -1,4 +1,4 @@
-package fetcher
+package docker
 
 import (
 	"mylife-monitor/pkg/entities"
