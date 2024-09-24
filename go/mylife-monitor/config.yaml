@@ -14,4 +14,6 @@ upsmon:
 updates:
   githubScriptsRepository: ${GITHUB_SCRIPTS_REPOSITORY}
   githubToken: ${GITHUB_TOKEN}
+  kubeConfig: ${KUBE_CONFIG}
+  kubeServer: ${KUBE_SERVER}
   interval: 21600 # 6h - avoid docker hub rate limits

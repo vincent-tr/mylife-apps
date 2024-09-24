@@ -3,13 +3,14 @@ package updates
 import (
 	"context"
 	"mylife-monitor/pkg/entities"
-	"mylife-monitor/pkg/services/updates/docker"
+	"mylife-monitor/pkg/services/updates/k3s"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	"mylife-tools-server/services/store"
 	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
+	"slices"
 	"strings"
 	"time"
 )
@@ -19,6 +20,8 @@ var logger = log.CreateLogger("mylife:monitor:updates")
 type updatesConfig struct {
 	GithubScriptsRepository string `mapstructure:"githubScriptsRepository"`
 	GithubToken             string `mapstructure:"githubToken"`
+	KubeConfig              string `mapstructure:"kubeConfig"`
+	KubeServer              string `mapstructure:"kubeServer"`
 	Interval                int    `mapstructure:"interval"`
 }
 
@@ -28,6 +31,8 @@ type updatesService struct {
 	refreshWorker    *utils.Worker
 	repository       string
 	ghToken          string
+	kubeConfig       string
+	kubeServer       string
 	dataView         *store.Container[*entities.UpdatesVersion]
 	summaryView      *store.Container[*entities.UpdatesSummary]
 }
@@ -39,6 +44,8 @@ func (service *updatesService) Init(arg interface{}) error {
 	service.context, service.contextTerminate = context.WithCancel(context.Background())
 	service.repository = conf.GithubScriptsRepository
 	service.ghToken = conf.GithubToken
+	service.kubeConfig = conf.KubeConfig
+	service.kubeServer = conf.KubeServer
 
 	logger.WithFields(log.Fields{"repository": conf.GithubScriptsRepository, "refreshInterval": conf.Interval}).Info("updates watcher configured")
 
@@ -66,11 +73,20 @@ func (service *updatesService) Dependencies() []string {
 }
 
 func (service *updatesService) refresh() {
-	versions, err := docker.Fetch(service.repository, service.ghToken)
+	// dockerVersions, err := docker.Fetch(service.repository, service.ghToken)
+	// if err != nil {
+	// 	logger.WithError(err).Error("Error reading docker versions data")
+	// 	return
+	// }
+	dockerVersions := make([]*entities.UpdatesVersionValues, 0)
+
+	k3sVersions, err := k3s.Fetch(service.kubeConfig, service.kubeServer)
 	if err != nil {
-		logger.WithError(err).Error("Error reading versions data")
+		logger.WithError(err).Error("Error reading k3s versions data")
 		return
 	}
+
+	versions := slices.Concat(dockerVersions, k3sVersions)
 
 	data, summary, err := buildEntities(versions)
 	if err != nil {
@@ -101,6 +117,11 @@ func buildEntities(versions []*entities.UpdatesVersionValues) ([]*entities.Updat
 		Category: "k8s",
 	}
 
+	k3sServer := &entities.UpdatesSummaryValues{
+		Id:       "k3s-server",
+		Category: "k3s-server",
+	}
+
 	for _, version := range versions {
 		version.Id = strings.Join(version.Path, "/")
 		version := entities.NewUpdatesVersion(version)
@@ -111,12 +132,15 @@ func buildEntities(versions []*entities.UpdatesVersionValues) ([]*entities.Updat
 			versionSummary(dockerCompose, version)
 		case "k8s":
 			versionSummary(k8s, version)
+		case "k3s-server":
+			versionSummary(k3sServer, version)
 		}
 	}
 
 	summary := []*entities.UpdatesSummary{
 		entities.NewUpdatesSummary(dockerCompose),
 		entities.NewUpdatesSummary(k8s),
+		entities.NewUpdatesSummary(k3sServer),
 	}
 
 	return data, summary, nil
