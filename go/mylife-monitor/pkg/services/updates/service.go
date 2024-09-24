@@ -3,6 +3,7 @@ package updates
 import (
 	"context"
 	"mylife-monitor/pkg/entities"
+	"mylife-monitor/pkg/services/updates/docker"
 	"mylife-monitor/pkg/services/updates/k3s"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
@@ -73,12 +74,11 @@ func (service *updatesService) Dependencies() []string {
 }
 
 func (service *updatesService) refresh() {
-	// dockerVersions, err := docker.Fetch(service.repository, service.ghToken)
-	// if err != nil {
-	// 	logger.WithError(err).Error("Error reading docker versions data")
-	// 	return
-	// }
-	dockerVersions := make([]*entities.UpdatesVersionValues, 0)
+	dockerVersions, err := docker.Fetch(service.repository, service.ghToken)
+	if err != nil {
+		logger.WithError(err).Error("Error reading docker versions data")
+		return
+	}
 
 	k3sVersions, err := k3s.Fetch(service.kubeConfig, service.kubeServer)
 	if err != nil {
