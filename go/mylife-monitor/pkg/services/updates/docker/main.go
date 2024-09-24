@@ -13,7 +13,7 @@ import (
 
 // github.com/containers/image => pacman -S btrfs-progs
 
-var logger = log.CreateLogger("mylife:monitor:updates:fetcher")
+var logger = log.CreateLogger("mylife:monitor:updates:docker")
 
 func Fetch(repository string, token string) ([]*entities.UpdatesVersionValues, error) {
 	repo, err := git.Clone(memory.NewStorage(), memfs.New(), &git.CloneOptions{

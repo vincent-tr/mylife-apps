@@ -3,6 +3,7 @@ package updates
 import (
 	"context"
 	"mylife-monitor/pkg/entities"
+	"mylife-monitor/pkg/services/updates/docker"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
@@ -65,7 +66,7 @@ func (service *updatesService) Dependencies() []string {
 }
 
 func (service *updatesService) refresh() {
-	versions, err := fetcher.Fetch(service.repository, service.ghToken)
+	versions, err := docker.Fetch(service.repository, service.ghToken)
 	if err != nil {
 		logger.WithError(err).Error("Error reading versions data")
 		return
