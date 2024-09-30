@@ -1,10 +1,9 @@
 import { React, mui, useDispatch, useSelector, useMemo, useLifecycle, formatDate, useCallback } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
-import { metadata } from 'mylife-tools-common';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
-import { enter, leave } from '../actions';
-import { getView } from '../selectors';
+import { enter, leave, changeCriteria } from '../actions';
+import { getCriteria, getDisplayView } from '../selectors';
 
 type FIXME_any = any;
 
@@ -38,7 +37,7 @@ const formatDuration = humanizeDuration.humanizer({
 
 const Updates = () => {
   const classes = useStyles();
-  const { enter, leave, data } = useConnect();
+  const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
   const dataSorted = useMemo(
@@ -53,7 +52,16 @@ const Updates = () => {
           <mui.TableHead>
             <mui.TableRow>
               <mui.TableCell>{'Nom'}</mui.TableCell>
-              <mui.TableCell>{'Etat'}</mui.TableCell>
+              <mui.TableCell>
+                {'Etat'}
+                <mui.Tooltip title={'N\'afficher que les dépassés/problèmes'}>
+                  <mui.Checkbox
+                    color='primary' 
+                    checked={criteria.onlyProblems}
+                    onChange={e => changeCriteria({ onlyProblems: e.target.checked })}
+                  />
+                </mui.Tooltip>
+              </mui.TableCell>
               <mui.TableCell>{'Version courante'}</mui.TableCell>
               <mui.TableCell>{'Dernière version'}</mui.TableCell>
             </mui.TableRow>
@@ -143,11 +151,13 @@ function useConnect() {
   const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
-      data: getView(state)
+      criteria: getCriteria(state),
+      data: getDisplayView(state)
     })),
     ...useMemo(() => ({
       enter: () => dispatch(enter()),
       leave: () => dispatch(leave()),
+      changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
     }), [dispatch])
   };
 };
