@@ -107,46 +107,37 @@ func init() {
 func buildEntities(versions []*entities.UpdatesVersionValues) ([]*entities.UpdatesVersion, []*entities.UpdatesSummary, error) {
 	data := make([]*entities.UpdatesVersion, 0)
 
-	dockerCompose := &entities.UpdatesSummaryValues{
-		Id:       "docker-compose",
-		Category: "docker-compose",
-	}
-
-	k8s := &entities.UpdatesSummaryValues{
-		Id:       "k8s",
-		Category: "k8s",
-	}
-
-	k3sServer := &entities.UpdatesSummaryValues{
-		Id:       "k3s-server",
-		Category: "k3s-server",
-	}
+	summaryValues := make(map[string]*entities.UpdatesSummaryValues)
 
 	for _, version := range versions {
 		version.Id = strings.Join(version.Path, "/")
 		version := entities.NewUpdatesVersion(version)
 		data = append(data, version)
 
-		switch version.Path()[0] {
-		case "docker-compose":
-			versionSummary(dockerCompose, version)
-		case "k8s":
-			versionSummary(k8s, version)
-		case "k3s-server":
-			versionSummary(k3sServer, version)
-		}
+		versionSummary(summaryValues, version)
 	}
 
-	summary := []*entities.UpdatesSummary{
-		entities.NewUpdatesSummary(dockerCompose),
-		entities.NewUpdatesSummary(k8s),
-		entities.NewUpdatesSummary(k3sServer),
+	summary := make([]*entities.UpdatesSummary, 0)
+
+	for _, values := range summaryValues {
+		summary = append(summary, entities.NewUpdatesSummary(values))
 	}
 
 	return data, summary, nil
 }
 
-func versionSummary(summary *entities.UpdatesSummaryValues, version *entities.UpdatesVersion) {
+func versionSummary(summaryValues map[string]*entities.UpdatesSummaryValues, version *entities.UpdatesVersion) {
+	category := version.Path()[0]
+	summary, found := summaryValues[category]
+	if !found {
+		summary = &entities.UpdatesSummaryValues{
+			Id:       category,
+			Category: category,
+		}
+
+		summaryValues[category] = summary
+	}
+
 	switch version.Status() {
 	case entities.UpdatesVersionUptodate:
 		summary.Ok += 1
