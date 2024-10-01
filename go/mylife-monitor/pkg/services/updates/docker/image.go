@@ -18,11 +18,61 @@ type imageData struct {
 	Created  time.Time
 }
 
+type versionUpdater struct {
+	version *entities.UpdatesVersionValues
+	current *imageData
+	latest  *imageData
+}
+
+func makeVersionUpdater(version *entities.UpdatesVersionValues) *versionUpdater {
+	return &versionUpdater{version: version}
+}
+
+func (vu *versionUpdater) GetFullNames() []string {
+	return []string{
+		vu.version.CurrentVersion,
+		vu.version.LatestVersion,
+	}
+}
+
+func (vu *versionUpdater) SetImageData(data *imageData) {
+	if vu.version.CurrentVersion == data.FullName {
+		vu.current = data
+	}
+
+	if vu.version.LatestVersion == data.FullName {
+		vu.latest = data
+	}
+}
+
+func (vu *versionUpdater) Update() {
+	if vu.current != nil {
+		vu.version.CurrentCreated = vu.current.Created
+	}
+
+	if vu.latest != nil {
+		vu.version.LatestCreated = vu.latest.Created
+	}
+
+	if vu.current != nil && vu.latest != nil {
+		if vu.current.Digest == vu.latest.Digest {
+			vu.version.Status = entities.UpdatesVersionUptodate
+		} else {
+			vu.version.Status = entities.UpdatesVersionOutdated
+		}
+	}
+}
+
+// avoid dict lock
+type imgDataWrapper struct {
+	data *imageData
+}
+
 func fetchImagesData(versions []*entities.UpdatesVersionValues) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
 
-	pool := MakeParallelTaskPool(ctx)
+	updaters := make([]*versionUpdater, 0)
 
 	for _, version := range versions {
 		fullName := version.CurrentVersion
@@ -38,55 +88,50 @@ func fetchImagesData(versions []*entities.UpdatesVersionValues) error {
 		// Not very meaningfull
 		version.LatestVersion = baseName + ":latest"
 
-		pool.Add(func(ctx context.Context) error {
-			return fetchContainerData(ctx, version)
-		})
+		updaters = append(updaters, makeVersionUpdater(version))
 	}
 
-	return pool.Wait()
-}
+	// Note: we avoid to fetch multiple time same image
+	imgData := make(map[string]*imgDataWrapper)
 
-func fetchContainerData(ctx context.Context, version *entities.UpdatesVersionValues) error {
+	for _, updater := range updaters {
+		for _, name := range updater.GetFullNames() {
+			imgData[name] = &imgDataWrapper{}
+		}
+	}
+
 	pool := MakeParallelTaskPool(ctx)
 
-	current := &imageData{
-		FullName: version.CurrentVersion,
-	}
-
-	latest := &imageData{
-		FullName: version.LatestVersion,
-	}
-
-	for _, image := range []*imageData{current, latest} {
+	for name, wrapper := range imgData {
 		pool.Add(func(ctx context.Context) error {
-			return fetchImageData(ctx, image)
+			if err := fetchImageData(ctx, name, wrapper); err != nil {
+				logger.WithError(err).WithField("image", name).Error("Error getting image data")
+			}
+			return nil
 		})
 	}
 
-	err := pool.Wait()
-
-	if err != nil {
-		logger.WithError(err).WithField("image", version.CurrentVersion).Error("Error getting image")
-		// Don't propagate errors
-		return nil
+	if err := pool.Wait(); err != nil {
+		return err
 	}
 
-	version.CurrentCreated = current.Created
-	version.LatestCreated = latest.Created
+	for _, wrapper := range imgData {
+		for _, updater := range updaters {
+			updater.SetImageData(wrapper.data)
+		}
+	}
 
-	if current.Digest == latest.Digest {
-		version.Status = entities.UpdatesVersionUptodate
-	} else {
-		version.Status = entities.UpdatesVersionOutdated
+	for _, updater := range updaters {
+		updater.Update()
 	}
 
 	return nil
 }
 
-func fetchImageData(ctx context.Context, imgData *imageData) error {
+func fetchImageData(ctx context.Context, name string, wrapper *imgDataWrapper) error {
 	sys := &types.SystemContext{}
 
-	imageRef, err := docker.ParseReference("//" + imgData.FullName)
+	imageRef, err := docker.ParseReference("//" + name)
 	if err != nil {
 		return err
 	}
@@ -95,8 +140,6 @@ func fetchImageData(ctx context.Context, imgData *imageData) error {
 	if err != nil {
 		return err
 	}
-
-	imgData.Digest = string(rawDigest)
 
 	imageSrc, err := imageRef.NewImageSource(ctx, sys)
 	if err != nil {
@@ -113,7 +156,11 @@ func fetchImageData(ctx context.Context, imgData *imageData) error {
 		return err
 	}
 
-	imgData.Created = *info.Created
+	wrapper.data = &imageData{
+		FullName: name,
+		Digest:   string(rawDigest),
+		Created:  *info.Created,
+	}
 
 	return nil
 }
