@@ -116,6 +116,10 @@ func fetchImagesData(versions []*entities.UpdatesVersionValues) error {
 	}
 
 	for _, wrapper := range imgData {
+		if wrapper.data == nil {
+			continue
+		}
+
 		for _, updater := range updaters {
 			updater.SetImageData(wrapper.data)
 		}
