@@ -16,4 +16,7 @@ updates:
   githubToken: ${GITHUB_TOKEN}
   kubeConfig: ${KUBE_CONFIG}
   kubeServer: ${KUBE_SERVER}
+  unifiController: ${UNIFI_CONTROLLER}
+  unifiUser: ${UNIFI_USER}
+  unifiPass: ${UNIFI_PASS}
   interval: 21600 # 6h - avoid docker hub rate limits

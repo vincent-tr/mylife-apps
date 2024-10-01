@@ -5,6 +5,7 @@ import (
 	"mylife-monitor/pkg/entities"
 	"mylife-monitor/pkg/services/updates/docker"
 	"mylife-monitor/pkg/services/updates/k3s"
+	"mylife-monitor/pkg/services/updates/unifi"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
@@ -23,6 +24,9 @@ type updatesConfig struct {
 	GithubToken             string `mapstructure:"githubToken"`
 	KubeConfig              string `mapstructure:"kubeConfig"`
 	KubeServer              string `mapstructure:"kubeServer"`
+	UnifiController         string `mapstructure:"unificontroller"`
+	UnifiUser               string `mapstructure:"unifiUser"`
+	UnifiPass               string `mapstructure:"unifiPass"`
 	Interval                int    `mapstructure:"interval"`
 }
 
@@ -34,6 +38,9 @@ type updatesService struct {
 	ghToken          string
 	kubeConfig       string
 	kubeServer       string
+	unifiController  string
+	unifiUser        string
+	unifiPass        string
 	dataView         *store.Container[*entities.UpdatesVersion]
 	summaryView      *store.Container[*entities.UpdatesSummary]
 }
@@ -47,6 +54,9 @@ func (service *updatesService) Init(arg interface{}) error {
 	service.ghToken = conf.GithubToken
 	service.kubeConfig = conf.KubeConfig
 	service.kubeServer = conf.KubeServer
+	service.unifiController = conf.UnifiController
+	service.unifiUser = conf.UnifiUser
+	service.unifiPass = conf.UnifiPass
 
 	logger.WithFields(log.Fields{"repository": conf.GithubScriptsRepository, "refreshInterval": conf.Interval}).Info("updates watcher configured")
 
@@ -86,7 +96,13 @@ func (service *updatesService) refresh() {
 		return
 	}
 
-	versions := slices.Concat(dockerVersions, k3sVersions)
+	unifiVersions, err := unifi.Fetch(service.unifiController, service.unifiUser, service.unifiPass)
+	if err != nil {
+		logger.WithError(err).Error("Error reading unifi versions data")
+		return
+	}
+
+	versions := slices.Concat(dockerVersions, k3sVersions, unifiVersions)
 
 	data, summary, err := buildEntities(versions)
 	if err != nil {
