@@ -1,6 +1,6 @@
 {
   "name": "mylife-monitor",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "MyLife Monitor",
   "main": "index.js",
   "scripts": {
