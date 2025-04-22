@@ -1,3 +1,3 @@
 module mylife-monitor-ui
 
-go 1.20
+go 1.24.2

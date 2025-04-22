@@ -1,6 +1,6 @@
 module mylife-portal
 
-go 1.20
+go 1.24.2
 
 replace mylife-tools-server => ../mylife-tools-server
 

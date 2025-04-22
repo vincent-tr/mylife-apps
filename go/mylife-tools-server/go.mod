@@ -1,6 +1,6 @@
 module mylife-tools-server
 
-go 1.20
+go 1.24.2
 
 require (
 	github.com/iancoleman/strcase v0.2.0
