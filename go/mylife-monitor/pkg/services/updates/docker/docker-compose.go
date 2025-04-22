@@ -2,6 +2,7 @@ package docker
 
 import (
 	"bytes"
+	"context"
 	"path"
 	"slices"
 
@@ -57,7 +58,7 @@ func (backend *dockerComposeReaderBackend) ProcessDir(r *reader, directory strin
 		opt.SkipResolveEnvironment = true
 	}
 
-	project, err := loader.Load(details, nameOption)
+	project, err := loader.LoadWithContext(context.Background(), details, nameOption)
 	if err != nil {
 		return err
 	}

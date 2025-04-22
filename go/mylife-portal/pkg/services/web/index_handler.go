@@ -1,6 +1,7 @@
 package web
 
 import (
+	"cmp"
 	"fmt"
 	"io/fs"
 	"mylife-portal/pkg/entities"
@@ -146,8 +147,8 @@ func (ih *indexHandler) buildContext() (interface{}, error) {
 
 	sectionList := sections.List()
 
-	slices.SortFunc(sectionList, func(a, b *entities.Section) bool {
-		return a.Order() < b.Order()
+	slices.SortFunc(sectionList, func(a, b *entities.Section) int {
+		return cmp.Compare(a.Order(), b.Order())
 	})
 
 	itemMap := make(map[string]*entities.Item)

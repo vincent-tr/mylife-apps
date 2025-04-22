@@ -84,8 +84,8 @@ func QueryMainPower(ctx context.Context) ([]*Measure, error) {
 	return measures, nil
 }
 
-func measureTimestampComparer(a, b *entities.Measure) bool {
-	return a.Timestamp().Before(b.Timestamp())
+func measureTimestampComparer(a, b *entities.Measure) int {
+	return a.Timestamp().Compare(b.Timestamp())
 }
 
 func findClosestComparer(measure *entities.Measure, timestamp time.Time) int {
