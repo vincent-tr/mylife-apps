@@ -1,5 +1,0 @@
-{
-  "mongo": "%{MONGO_URL}",
-  "webServer": { "port": "%{WEB_PORT|80}" },
-  "secrets": { "path": "%{SECRETS_PATH}" }
-}
