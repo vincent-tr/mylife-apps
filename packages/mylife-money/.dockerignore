@@ -1,3 +1,4 @@
 *
 !/dist/prod
-!/conf
+!/*.go
+!/go.mod
