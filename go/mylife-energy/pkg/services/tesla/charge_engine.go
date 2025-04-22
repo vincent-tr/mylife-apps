@@ -68,9 +68,15 @@ func (e *chargeEngine) checkCharge(state *stateData, params *parametersValues) b
 		return false
 
 	case entities.TeslaModeFast, entities.TeslaModeSmart:
+		wallState := state.WallConnector.LastState
 		carState := state.Car.LastState
 
-		if !state.WallConnector.LastState.VehicleConnected {
+		if wallState == nil {
+			e.setChargingStatus(entities.TeslaChargingStatusUnknown)
+			return false
+		}
+
+		if !wallState.VehicleConnected {
 			e.setChargingStatus(entities.TeslaChargingStatusNotPlugged)
 			return false
 		} else if carState == nil {
