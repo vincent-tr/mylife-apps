@@ -1,6 +1,6 @@
 package query
 
-import "go.mongodb.org/mongo-driver/bson"
+import "go.mongodb.org/mongo-driver/v2/bson"
 
 type FilterExpression struct {
 	value bson.D

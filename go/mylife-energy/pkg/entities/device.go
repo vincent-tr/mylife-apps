@@ -3,8 +3,7 @@ package entities
 import (
 	"mylife-tools-server/services/io/serialization"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type DeviceType string
@@ -65,16 +64,16 @@ func (device *Device) Marshal() (interface{}, error) {
 }
 
 type deviceData struct {
-	Id       primitive.ObjectID `bson:"_id"`
-	DeviceId string             `bson:"deviceId"`
-	Display  string             `bson:"display"`
-	Type     string             `bson:"type"`
-	Computed bool               `bson:"computed"`
-	Parent   string             `bson:"parent"`
+	Id       bson.ObjectID `bson:"_id"`
+	DeviceId string        `bson:"deviceId"`
+	Display  string        `bson:"display"`
+	Type     string        `bson:"type"`
+	Computed bool          `bson:"computed"`
+	Parent   string        `bson:"parent"`
 }
 
 func deviceEncode(device *Device) ([]byte, error) {
-	id, err := primitive.ObjectIDFromHex(device.id)
+	id, err := bson.ObjectIDFromHex(device.id)
 	if err != nil {
 		return nil, err
 	}

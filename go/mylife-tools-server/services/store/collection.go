@@ -3,7 +3,7 @@ package store
 import (
 	"fmt"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type ICollection[TEntity Entity] interface {
@@ -66,7 +66,7 @@ func (col *collection[TEntity]) IsLoaded() bool {
 }
 
 func (col *collection[TEntity]) Set(obj TEntity) (TEntity, error) {
-	oid, err := primitive.ObjectIDFromHex(obj.Id())
+	oid, err := bson.ObjectIDFromHex(obj.Id())
 
 	if err != nil {
 		var zero TEntity

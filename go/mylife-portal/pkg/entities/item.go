@@ -3,8 +3,7 @@ package entities
 import (
 	"mylife-tools-server/services/io/serialization"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type Item struct {
@@ -55,16 +54,16 @@ func (item *Item) Marshal() (interface{}, error) {
 }
 
 type itemData struct {
-	Id       primitive.ObjectID `bson:"_id"`
-	Code     string             `bson:"code"`
-	Display  string             `bson:"display"`
-	Icon     []byte             `bson:"icon"`
-	IconMime string             `bson:"iconMime"`
-	Target   string             `bson:"target"`
+	Id       bson.ObjectID `bson:"_id"`
+	Code     string        `bson:"code"`
+	Display  string        `bson:"display"`
+	Icon     []byte        `bson:"icon"`
+	IconMime string        `bson:"iconMime"`
+	Target   string        `bson:"target"`
 }
 
 func itemEncode(item *Item) ([]byte, error) {
-	id, err := primitive.ObjectIDFromHex(item.id)
+	id, err := bson.ObjectIDFromHex(item.id)
 	if err != nil {
 		return nil, err
 	}

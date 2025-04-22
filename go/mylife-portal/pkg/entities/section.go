@@ -3,8 +3,7 @@ package entities
 import (
 	"mylife-tools-server/services/io/serialization"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type Section struct {
@@ -49,15 +48,15 @@ func (section *Section) Marshal() (interface{}, error) {
 }
 
 type sectionData struct {
-	Id      primitive.ObjectID `bson:"_id"`
-	Code    string             `bson:"code"`
-	Display string             `bson:"display"`
-	Order   int                `bson:"order"`
-	Items   []string           `bson:"items"`
+	Id      bson.ObjectID `bson:"_id"`
+	Code    string        `bson:"code"`
+	Display string        `bson:"display"`
+	Order   int           `bson:"order"`
+	Items   []string      `bson:"items"`
 }
 
 func sectionEncode(section *Section) ([]byte, error) {
-	id, err := primitive.ObjectIDFromHex(section.id)
+	id, err := bson.ObjectIDFromHex(section.id)
 	if err != nil {
 		return nil, err
 	}

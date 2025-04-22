@@ -9,10 +9,9 @@ import (
 	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type collectionUpdater[TEntity Entity] struct {
@@ -123,7 +122,7 @@ func buildIdFilter[TEntity Entity](obj TEntity) (interface{}, error) {
 }
 
 type documentKey struct {
-	Id primitive.ObjectID `bson:"_id"`
+	Id bson.ObjectID `bson:"_id"`
 }
 
 type changeEvent struct {

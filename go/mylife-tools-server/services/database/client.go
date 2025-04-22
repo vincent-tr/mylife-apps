@@ -8,10 +8,9 @@ import (
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	mongo "go.mongodb.org/mongo-driver/mongo"
-	options "go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/bson"
+	mongo "go.mongodb.org/mongo-driver/v2/mongo"
+	options "go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 var logger = log.CreateLogger("mylife:server:database")
@@ -25,7 +24,7 @@ type Collection = mongo.Collection
 type databaseService struct {
 	client   *mongo.Client
 	database *mongo.Database
-	session  mongo.Session
+	session  *mongo.Session
 }
 
 func (service *databaseService) Init(arg interface{}) error {
@@ -40,7 +39,7 @@ func (service *databaseService) Init(arg interface{}) error {
 	logger.WithFields(log.Fields{"mongoUrl": mongoUrl, "dbName": dbName}).Info("Config")
 
 	opts := options.Client().ApplyURI(mongoUrl).SetDirect(true)
-	client, err := mongo.Connect(context.TODO(), opts)
+	client, err := mongo.Connect(opts)
 	if err != nil {
 		return err
 	}
@@ -79,7 +78,7 @@ func (service *databaseService) sessionId() bson.Raw {
 }
 
 func (service *databaseService) withTransaction(callback func() (interface{}, error)) (interface{}, error) {
-	return service.session.WithTransaction(context.TODO(), func(ctx mongo.SessionContext) (interface{}, error) {
+	return service.session.WithTransaction(context.TODO(), func(ctx context.Context) (interface{}, error) {
 		return callback()
 	})
 }
@@ -95,14 +94,14 @@ func GetCollection(name string) *Collection {
 }
 
 func MakeId() string {
-	return primitive.NewObjectID().Hex()
+	return bson.NewObjectID().Hex()
 }
 
-func EncodeId(value string) (primitive.ObjectID, error) {
-	return primitive.ObjectIDFromHex(value)
+func EncodeId(value string) (bson.ObjectID, error) {
+	return bson.ObjectIDFromHex(value)
 }
 
-func DecodeId(value primitive.ObjectID) string {
+func DecodeId(value bson.ObjectID) string {
 	return value.Hex()
 }
 

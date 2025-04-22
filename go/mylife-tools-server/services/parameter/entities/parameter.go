@@ -4,8 +4,7 @@ import (
 	"mylife-tools-server/services/io/serialization"
 	"mylife-tools-server/services/store"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type Parameter struct {
@@ -54,13 +53,13 @@ func NewParameter(id string, name string, value any) *Parameter {
 }
 
 type parameterData struct {
-	Id    primitive.ObjectID `bson:"_id"`
-	Name  string             `bson:"name"`
-	Value any                `bson:"value"`
+	Id    bson.ObjectID `bson:"_id"`
+	Name  string        `bson:"name"`
+	Value any           `bson:"value"`
 }
 
 func parameterEncode(parameter *Parameter) ([]byte, error) {
-	id, err := primitive.ObjectIDFromHex(parameter.id)
+	id, err := bson.ObjectIDFromHex(parameter.id)
 	if err != nil {
 		return nil, err
 	}

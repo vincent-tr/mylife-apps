@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/thlib/go-timezone-local/tzlocal"
-	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 func unaryOperator(operator string, operand any) bson.D {

@@ -6,7 +6,7 @@ import (
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 
-	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 var logger = log.CreateLogger("mylife:energy:query")
