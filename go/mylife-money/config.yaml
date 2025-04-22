@@ -1,0 +1,5 @@
+mongo: ${MONGO_URL|mongodb://localhost/mylife-money}
+webServer:
+  address: :${WEB_PORT|80}
+secrets:
+  path: ${SECRETS_PATH}
