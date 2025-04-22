@@ -232,6 +232,7 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
   - tous les mois un robot presente un summary (nombre d'ops non triées, graphiques, etc) par mail, avec le dernier fichier du scraper CIC
   - pouvoir intégrer à nagios ou mail des erreurs de bots
   - cleanup des runs
+  - Scraper CIC: voir si en restant connecté (ping du site toutes les X minutes) on peut eviter de se re-authentifier
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
@@ -239,6 +240,7 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
   - pouvoir faire du DND sur desktop pour trier les operations
 - Permettre d'ajouter des notes sur les groupes (et les voir en tooltips) ?
 - Permettre de rechercher des groupes ?
+- Arbre de groupes : plus d'indentation
 
 ## Portal
 
