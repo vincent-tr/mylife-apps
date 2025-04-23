@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"fmt"
 	"mylife-tools-server/services/io/serialization"
 	"time"
 
@@ -65,6 +66,10 @@ func (operation *Operation) Marshal() (interface{}, error) {
 	helper.Add("note", operation.note)
 
 	return helper.Build()
+}
+
+func (operation *Operation) String() string {
+	return fmt.Sprintf("%s - %f (%s)", operation.date.Format("2006-01-02"), operation.amount, operation.label)
 }
 
 type OperationValues struct {

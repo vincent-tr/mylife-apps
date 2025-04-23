@@ -69,6 +69,10 @@ func (bot *Bot) Marshal() (interface{}, error) {
 	return helper.Build()
 }
 
+func (bot *Bot) String() string {
+	return bot.Name()
+}
+
 type BotValues struct {
 	Id            string
 	Type          BotType
