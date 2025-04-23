@@ -68,6 +68,10 @@ func (group *Group) Marshal() (interface{}, error) {
 	return helper.Build()
 }
 
+func (group *Group) String() string {
+	return group.Display()
+}
+
 type GroupValues struct {
 	Id      string
 	Parent  *string

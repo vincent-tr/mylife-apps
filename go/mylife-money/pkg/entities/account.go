@@ -38,6 +38,10 @@ func (account *Account) Marshal() (interface{}, error) {
 	return helper.Build()
 }
 
+func (account *Account) String() string {
+	return account.Display()
+}
+
 type AccountValues struct {
 	Id      string
 	Code    string
