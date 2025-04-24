@@ -219,6 +219,21 @@ func marshalValue(value reflect.Value) (interface{}, error) {
 			dest[index] = marshaledValue
 		}
 		return dest, nil
+
+	case reflect.Map:
+		realValue := reflect.ValueOf(value.Interface()).Convert(valueType)
+		dest := make(map[string]interface{})
+		for _, key := range realValue.MapKeys() {
+			if key.Kind() != reflect.String {
+				return nil, fmt.Errorf("Cannot marshal map with key of type '%s'", key.Kind().String())
+			}
+			marshaledValue, err := marshalValue(realValue.MapIndex(key))
+			if err != nil {
+				return nil, err
+			}
+			dest[key.String()] = marshaledValue
+		}
+		return dest, nil
 	}
 
 	return nil, fmt.Errorf("Cannot marshal type '%s'", valueType.String())
@@ -255,6 +270,11 @@ func unmarshalValue(raw interface{}, value reflect.Value) error {
 		}
 
 		return unmarshaller.Unmarshal(raw)
+	}
+
+	if valueType.AssignableTo(reflect.TypeOf(raw)) {
+		value.Set(reflect.ValueOf(raw))
+		return nil
 	}
 
 	switch valueType.Kind() {
@@ -337,6 +357,37 @@ func unmarshalValue(raw interface{}, value reflect.Value) error {
 		}
 
 		value.Set(sliceValue)
+
+		return nil
+
+	case reflect.Map:
+		rawMap, ok := raw.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Cannot unmarshal value of type '%s' from '%s'", valueType.String(), reflect.TypeOf(raw).String())
+		}
+
+		if valueType.Key().Kind() != reflect.String {
+			return fmt.Errorf("Cannot unmarshal map with key of type '%s'", valueType.Key().Kind().String())
+		}
+
+		mapValue := reflect.MakeMap(valueType)
+
+		for key, rawValue := range rawMap {
+			value := reflect.New(valueType.Elem())
+
+			if rawValue == nil {
+				// Leave it to nil
+				value.Elem().SetZero()
+			} else {
+				err := unmarshalValue(rawValue, value.Elem())
+				if err != nil {
+					return err
+				}
+			}
+
+			mapValue.SetMapIndex(reflect.ValueOf(key), value.Elem())
+		}
+		value.Set(mapValue)
 
 		return nil
 	}
