@@ -46,6 +46,14 @@ func (group *Group) Parent() *string {
 	return group.parent
 }
 
+func (group *Group) ParentEq(parent *string) bool {
+	if group.parent == nil {
+		return parent == nil
+	} else {
+		return group.parent != nil && *group.parent == *parent
+	}
+}
+
 // Affichage
 func (group *Group) Display() string {
 	return group.display
@@ -70,6 +78,15 @@ func (group *Group) Marshal() (interface{}, error) {
 
 func (group *Group) String() string {
 	return group.Display()
+}
+
+func (group *Group) ToValues() *GroupValues {
+	return &GroupValues{
+		Id:      group.id,
+		Parent:  group.parent,
+		Display: group.display,
+		Rules:   group.rules,
+	}
 }
 
 type GroupValues struct {

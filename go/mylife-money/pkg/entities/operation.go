@@ -72,6 +72,18 @@ func (operation *Operation) String() string {
 	return fmt.Sprintf("%s - %f (%s)", operation.date.Format("2006-01-02"), operation.amount, operation.label)
 }
 
+func (operation *Operation) ToValues() *OperationValues {
+	return &OperationValues{
+		Id:      operation.id,
+		Date:    operation.date,
+		Amount:  operation.amount,
+		Label:   operation.label,
+		Account: operation.account,
+		Group:   operation.group,
+		Note:    operation.note,
+	}
+}
+
 type OperationValues struct {
 	Id      string
 	Date    time.Time
