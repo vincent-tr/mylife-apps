@@ -109,7 +109,12 @@ func unmarshalUnmerge(raw map[string]interface{}, value reflect.Value) error {
 
 		rawValue, ok := raw[fieldName]
 		if !ok {
-			return fmt.Errorf("Cannot unmarshal-unmerge value of type '%s': value not found for field '%s'", valueType.String(), fieldName)
+			if fieldValue.Type().Kind() == reflect.Pointer {
+				// Pointer are allowed to be missing, it is nil value
+				rawValue = nil
+			} else {
+				return fmt.Errorf("Cannot unmarshal-unmerge value of type '%s': value not found for field '%s'", valueType.String(), fieldName)
+			}
 		}
 
 		err := unmarshalValue(rawValue, fieldValue)
