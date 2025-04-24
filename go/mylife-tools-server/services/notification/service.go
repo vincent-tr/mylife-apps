@@ -1,6 +1,7 @@
 package notification
 
 import (
+	"fmt"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	"mylife-tools-server/services/sessions"
@@ -50,10 +51,28 @@ func getService() *notificationService {
 
 func NotifyView[TEntity store.Entity](session *sessions.Session, view store.IContainer[TEntity]) uint64 {
 	notificationSession := getService().getNotifications(session)
-	return registerView[TEntity](notificationSession, view)
+	return registerView(notificationSession, view)
 }
 
 func UnnotifyView(session *sessions.Session, viewId uint64) {
 	notificationSession := getService().getNotifications(session)
 	notificationSession.closeView(viewId)
+}
+
+func GetUntypedView(session *sessions.Session, viewId uint64) (any, error) {
+	notificationSession := getService().getNotifications(session)
+	return notificationSession.getView(viewId)
+}
+
+func GetView[TEntity store.Entity](session *sessions.Session, viewId uint64) (store.IContainer[store.Entity], error) {
+	view, err := GetUntypedView(session, viewId)
+	if err != nil {
+		return nil, err
+	}
+
+	if typedView, ok := view.(store.IContainer[store.Entity]); ok {
+		return typedView, nil
+	}
+
+	return nil, fmt.Errorf("Invalid view type")
 }

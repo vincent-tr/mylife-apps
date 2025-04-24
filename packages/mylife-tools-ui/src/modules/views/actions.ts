@@ -32,7 +32,7 @@ export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelect
 					service: 'common',
 					method: 'renotifyWithCriteria',
 					viewId,
-					...criteria,
+					criteria,
 				})
 			);
 
@@ -43,7 +43,7 @@ export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelect
 			io.call({
 				service,
 				method,
-				...criteria,
+				criteria,
 			})
 		);
 
