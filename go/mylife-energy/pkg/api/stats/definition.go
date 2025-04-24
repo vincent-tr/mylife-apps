@@ -30,10 +30,10 @@ func notifyDevices(session *sessions.Session, arg struct{}) (uint64, error) {
 		return 0, err
 	}
 
-	statableDevices := store.NewView[*entities.Device](devices, func(obj *entities.Device) bool {
+	statableDevices := store.NewView(devices, func(obj *entities.Device) bool {
 		return !obj.Computed() && obj.Type() == entities.Node
 	})
 
-	viewId := notification.NotifyView[*entities.Device](session, statableDevices)
+	viewId := notification.NotifyView(session, statableDevices)
 	return viewId, nil
 }
