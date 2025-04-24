@@ -1,6 +1,7 @@
 package notification
 
 import (
+	"fmt"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services/sessions"
 	"mylife-tools-server/services/store"
@@ -51,4 +52,14 @@ func (session *notificationSession) closeView(viewId uint64) {
 	delete(session.publishers, viewId)
 
 	logger.WithFields(log.Fields{"viewId": viewId, "sessionId": session.session.Id()}).Debug("View unregistered")
+}
+
+func (session *notificationSession) getView(viewId uint64) (any, error) {
+	publisher, exists := session.publishers[viewId]
+
+	if !exists {
+		return nil, fmt.Errorf("Cannot get unknown view: %d", viewId)
+	}
+
+	return publisher.getView(), nil
 }

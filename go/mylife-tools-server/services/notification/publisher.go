@@ -24,6 +24,7 @@ type notifyPayload struct {
 }
 
 type iviewPublisher interface {
+	getView() any
 	close()
 }
 
@@ -89,6 +90,10 @@ func (publisher *viewPublisher[TEntity]) close() {
 	if ok {
 		closable.Close()
 	}
+}
+
+func (publisher *viewPublisher[TEntity]) getView() any {
+	return publisher.view
 }
 
 func (publisher *viewPublisher[TEntity]) submitPendings() {

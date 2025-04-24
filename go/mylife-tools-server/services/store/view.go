@@ -8,6 +8,16 @@ type Closable interface {
 	Close()
 }
 
+type Refreshable interface {
+	Refresh()
+}
+
+type IView[TEntity Entity] interface {
+	Closable
+	Refreshable
+	IContainer[TEntity]
+}
+
 type view[TEntity Entity] struct {
 	source    IContainer[TEntity]
 	container *Container[TEntity]
@@ -50,12 +60,19 @@ func (v *view[TEntity]) Exists(predicate func(obj TEntity) bool) bool {
 	return v.container.Exists(predicate)
 }
 
+func (v *view[TEntity]) Refresh() {
+	for _, obj := range v.source.List() {
+		event := &Event[TEntity]{typ: Update, before: obj, after: obj}
+		v.listener(event)
+	}
+}
+
 func (v *view[TEntity]) Close() {
 	v.source.RemoveListener(&v.listener)
 	v.container.Reset()
 }
 
-func NewView[TEntity Entity](source IContainer[TEntity], predicate func(obj TEntity) bool) IContainer[TEntity] {
+func NewView[TEntity Entity](source IContainer[TEntity], predicate func(obj TEntity) bool) IView[TEntity] {
 	v := &view[TEntity]{
 		source:    source,
 		container: NewContainer[TEntity](fmt.Sprintf("view(%s)", source.Name())),
