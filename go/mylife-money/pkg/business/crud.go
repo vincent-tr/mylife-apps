@@ -170,8 +170,8 @@ func DeleteGroup(id string) error {
 	if err != nil {
 		return err
 	}
-
-	hierarchyGroupsArray := fillChildrenGroups(groups, []*entities.Group{group}, id)
+	hierarchyGroupsArray := []*entities.Group{group}
+	hierarchyGroupsArray = append(hierarchyGroupsArray, fillChildrenGroups(groups, id)...)
 
 	hierarchyGroupIds := make(map[string]struct{})
 	for _, group := range hierarchyGroupsArray {
@@ -239,13 +239,14 @@ func DeleteGroup(id string) error {
 	return nil
 }
 
-func fillChildrenGroups(groups store.ICollection[*entities.Group], array []*entities.Group, groupId string) []*entities.Group {
+func fillChildrenGroups(groups store.ICollection[*entities.Group], groupId string) []*entities.Group {
+	array := make([]*entities.Group, 0)
+
 	for _, group := range groups.Filter(func(group *entities.Group) bool {
 		return group.Parent() != nil && *group.Parent() == groupId
 	}) {
-
 		array = append(array, group)
-		array = append(array, fillChildrenGroups(groups, array, group.Id())...)
+		array = append(array, fillChildrenGroups(groups, group.Id())...)
 	}
 
 	return array
