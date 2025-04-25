@@ -3,6 +3,8 @@ package store
 import (
 	"fmt"
 
+	"mylife-tools-server/services/database"
+
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -13,6 +15,7 @@ type ICollection[TEntity Entity] interface {
 
 	Set(obj TEntity) (TEntity, error)
 	Delete(id string) bool
+	NewId() string
 }
 
 type genericInternalCollection interface {
@@ -81,6 +84,10 @@ func (col *collection[TEntity]) Set(obj TEntity) (TEntity, error) {
 
 func (col *collection[TEntity]) Delete(id string) bool {
 	return col.container.Delete(id)
+}
+
+func (col *collection[TEntity]) NewId() string {
+	return database.MakeId()
 }
 
 func (col *collection[TEntity]) terminate() {
