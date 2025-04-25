@@ -1,7 +1,6 @@
 package management
 
 import (
-	"fmt"
 	"mylife-money/pkg/business"
 	"mylife-money/pkg/business/views"
 	"mylife-tools-server/log"
@@ -34,16 +33,14 @@ func updateGroup(session *sessions.Session, arg struct{ Object business.ObjectVa
 }
 
 func deleteGroup(session *sessions.Session, arg struct{ Id string }) (api.NoReturn, error) {
-	return nil, fmt.Errorf("TODO: DeleteGroup not implemented")
-	/*
-		err := business.DeleteGroup(arg.Id)
-		if err != nil {
-			return nil, err
-		}
 
-		logger.Infof("group deleted: %s", arg.Id)
-		return nil, nil
-	*/
+	err := business.DeleteGroup(arg.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	logger.Infof("group deleted: %s", arg.Id)
+	return nil, nil
 }
 
 func notifyOperations(session *sessions.Session, arg struct{ Criteria views.CriteriaValues }) (uint64, error) {
@@ -77,15 +74,23 @@ func operationsSetNote(session *sessions.Session, arg struct {
 	return nil, nil
 }
 
-func operationsImport(session *sessions.Session, arg struct{}) (int, error) {
-	return 0, fmt.Errorf("TODO: operationsImport not implemented")
-	// const { account, content } = message
-	// const count = business.operationsImport(account, content)
-	// business.executeRules()
-	// return count
+func operationsImport(session *sessions.Session, arg struct {
+	Account string
+	Content []byte
+}) (int, error) {
+	count, err := business.OperationsImport(arg.Account, arg.Content)
+	if err != nil {
+		return 0, err
+	}
+
+	_, err = business.ExecuteRules()
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
 }
 
-func operationsExecuteRules(session *sessions.Session, arg struct{}) (api.NoReturn, error) {
-	return nil, fmt.Errorf("TODO: operationsExecuteRules not implemented")
-	// return business.ExecuteRules()
+func operationsExecuteRules(session *sessions.Session, arg struct{}) (int, error) {
+	return business.ExecuteRules()
 }

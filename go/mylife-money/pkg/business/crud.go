@@ -35,6 +35,7 @@ func CreateAccount(code string, display string) error {
 	}
 
 	account := entities.NewAccount(&entities.AccountValues{
+		Id:      accounts.NewId(),
 		Code:    code,
 		Display: display,
 	})
@@ -61,7 +62,7 @@ func NotifyGroups(session *sessions.Session, arg struct{}) (uint64, error) {
 func fillGroupValues(group *entities.GroupValues, values ObjectValues) error {
 	for key, value := range values {
 		switch key {
-		case "_id":
+		case "_id", "_entity":
 			// ignore it
 			continue
 
@@ -120,6 +121,8 @@ func CreateGroup(group ObjectValues) (*entities.Group, error) {
 		return nil, err
 	}
 
+	groupValues.Id = groups.NewId()
+
 	groupObj := entities.NewGroup(groupValues)
 	return groups.Set(groupObj)
 }
@@ -150,58 +153,103 @@ func UpdateGroup(group ObjectValues) (*entities.Group, error) {
 	return groups.Set(groupObj)
 }
 
-/*
-func DeleteGroup(id: string) {
-  logger.debug(`drop group '${id}'`);
+func DeleteGroup(id string) error {
+	logger.Debugf("drop group '%s'", id)
 
-  const groups = getStoreCollection('groups');
-  const operations = getStoreCollection('operations');
+	groups, err := getGroups()
+	if err != nil {
+		return err
+	}
 
-  const group = groups.get(id);
+	operations, err := getOperations()
+	if err != nil {
+		return err
+	}
 
-  const hierarchyGroupsArray = [group];
-  fillChildrenGroups(hierarchyGroupsArray, id);
-  const hierarchyGroupIds = new Set(hierarchyGroupsArray.map(group => group._id));
+	group, err := groups.Get(id)
+	if err != nil {
+		return err
+	}
 
-  // move operations (of the whole hierarchy) to parent, or unsorted (null) if group was at root
-  // move rules (of the whole hierarchy) to parent, or drop if group was at root
-  // drop all children groups
+	hierarchyGroupsArray := fillChildrenGroups(groups, []*entities.Group{group}, id)
 
-  const childrenOperations = operations.filter(operation => hierarchyGroupIds.has(operation.group));
+	hierarchyGroupIds := make(map[string]struct{})
+	for _, group := range hierarchyGroupsArray {
+		hierarchyGroupIds[group.Id()] = struct{}{}
+	}
 
-  logger.debug(`found groups hierarchy: ${JSON.stringify(hierarchyGroupsArray.map(grp => grp._id))}`);
-  logger.debug(`found children operations: ${JSON.stringify(childrenOperations.map(op => op._id))}`);
+	// move operations (of the whole hierarchy) to parent, or unsorted (null) if group was at root
+	// move rules (of the whole hierarchy) to parent, or drop if group was at root
+	// drop all children groups
 
-  for (const operation of childrenOperations) {
-    operations.set(operations.entity.setValues(operation, { group: group.parent }));
-  }
+	childrenOperations := operations.Filter(func(operation *entities.Operation) bool {
+		group := operation.Group()
 
-  if (group.parent) {
-    const parentGroup = groups.get(group.parent);
+		if group == nil {
+			return false
+		}
 
-    let newParentRules = [...parentGroup.rules];
+		_, ok := hierarchyGroupIds[*group]
+		return ok
+	})
 
-    for (const group of hierarchyGroupsArray) {
-      newParentRules = newParentRules.concat(group.rules);
-    }
+	ids := make([]string, 0, len(hierarchyGroupsArray))
+	for _, group := range hierarchyGroupsArray {
+		ids = append(ids, group.Id())
+	}
 
-    groups.set(groups.entity.setValues(parentGroup, { rules: newParentRules }));
-  }
+	logger.Debugf("found groups hierarchy: %#v", ids)
 
-  for (const group of hierarchyGroupsArray) {
-    groups.delete(group._id);
-  }
+	ids = make([]string, 0, len(childrenOperations))
+	for _, operation := range childrenOperations {
+		ids = append(ids, operation.Id())
+	}
+
+	logger.Debugf("found children operations: %#v", ids)
+
+	for _, operation := range childrenOperations {
+		values := operation.ToValues()
+		values.Group = group.Parent()
+		operation = entities.NewOperation(values)
+		operations.Set(operation)
+	}
+
+	if group.Parent() != nil {
+		parentGroup, err := groups.Get(*group.Parent())
+		if err != nil {
+			return err
+		}
+
+		newParentRules := append([]entities.Rule{}, parentGroup.Rules()...)
+
+		for _, group := range hierarchyGroupsArray {
+			newParentRules = append(newParentRules, group.Rules()...)
+		}
+
+		values := parentGroup.ToValues()
+		values.Rules = newParentRules
+		parentGroup = entities.NewGroup(values)
+		groups.Set(parentGroup)
+	}
+
+	for _, group := range hierarchyGroupsArray {
+		groups.Delete(group.Id())
+	}
+
+	return nil
 }
 
-function fillChildrenGroups(array, groupId: string) {
-  const groups = getStoreCollection('groups');
+func fillChildrenGroups(groups store.ICollection[*entities.Group], array []*entities.Group, groupId string) []*entities.Group {
+	for _, group := range groups.Filter(func(group *entities.Group) bool {
+		return group.Parent() != nil && *group.Parent() == groupId
+	}) {
 
-  for (const group of groups.filter(group => group.parent === groupId)) {
-    array.push(group);
-    fillChildrenGroups(array, group._id);
-  }
+		array = append(array, group)
+		array = append(array, fillChildrenGroups(groups, array, group.Id())...)
+	}
+
+	return array
 }
-*/
 
 func getGroups() (store.ICollection[*entities.Group], error) {
 	return store.GetCollection[*entities.Group]("groups")
@@ -219,20 +267,28 @@ func OperationsSetNote(note string, operationIds []string) (int, error) {
 	})
 }
 
-/*
-	func OperationAppendNote(note string, operationId string) {
-	  const operations = getStoreCollection('operations');
-	  const field = operations.entity.getField('note');
-
-	  let operation = operations.get(operationId);
-
-	  const oldNote = field.getValue(operation);
-	  const newNote = oldNote ? `${oldNote}\n\n---\n\n${note}` : note;
-	  operation = field.setValue(operation, newNote);
-
-	  operations.set(operation);
+func OperationAppendNote(note string, operationId string) error {
+	operations, err := getOperations()
+	if err != nil {
+		return err
 	}
-*/
+
+	operation, err := operations.Get(operationId)
+	if err != nil {
+		return err
+	}
+
+	oldNote := operation.Note()
+	newNote := fmt.Sprintf("%s\n\n---\n\n%s", oldNote, note)
+
+	values := operation.ToValues()
+	values.Note = newNote
+	operation = entities.NewOperation(values)
+	operations.Set(operation)
+
+	return nil
+}
+
 func operationsUpdate(operationIds []string, updater func(values *entities.OperationValues)) (int, error) {
 	operations, err := getOperations()
 	if err != nil {
