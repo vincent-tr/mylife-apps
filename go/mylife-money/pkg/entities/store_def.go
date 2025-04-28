@@ -1,8 +1,10 @@
 package entities
 
-import "mylife-tools-server/services/store"
+import (
+	"mylife-tools-server/services/store"
+)
 
-var StoreDef = []interface{}{
+var CollectionsDef = []interface{}{
 	store.MakeCollectionBuilder("accounts", "accounts", accountDecode, accountEncode),
 	store.MakeCollectionBuilder("groups", "groups", groupDecode, groupEncode),
 	store.MakeCollectionBuilder("operations", "operations", operationDecode, operationEncode),
