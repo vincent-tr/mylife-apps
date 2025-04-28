@@ -32,20 +32,32 @@ func (service *storeService) Init(arg interface{}) error {
 	if arg != nil {
 		builders := arg.([]interface{})
 
+		collectionBuilders := make([]icollectionBuilder, 0)
+		materializedViewBuilders := make([]imaterializedViewBuilder, 0)
+
 		for _, builder := range builders {
 			switch builder := builder.(type) {
 			case icollectionBuilder:
-				if err := service.setupCollection(builder); err != nil {
-					return err
-				}
+				collectionBuilders = append(collectionBuilders, builder)
 
 			case imaterializedViewBuilder:
-				if err := service.setupMaterializedView(builder); err != nil {
-					return err
-				}
+				materializedViewBuilders = append(materializedViewBuilders, builder)
 
 			default:
 				return fmt.Errorf("unknown builder type: %T", builder)
+			}
+		}
+
+		// Setup collections then materialized views
+		for _, builder := range collectionBuilders {
+			if err := service.setupCollection(builder); err != nil {
+				return err
+			}
+		}
+
+		for _, builder := range materializedViewBuilders {
+			if err := service.setupMaterializedView(builder); err != nil {
+				return err
 			}
 		}
 	}
