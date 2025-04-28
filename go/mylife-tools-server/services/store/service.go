@@ -115,7 +115,12 @@ func (service *storeService) setupMaterializedView(builder imaterializedViewBuil
 		return fmt.Errorf("materialized view '%s' already exists", name)
 	}
 
-	service.materializedViews[name] = builder.build()
+	view, err := builder.build()
+	if err != nil {
+		return fmt.Errorf("error building materialized view '%s': %w", name, err)
+	}
+
+	service.materializedViews[name] = view
 
 	return nil
 }
