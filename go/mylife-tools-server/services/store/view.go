@@ -13,9 +13,15 @@ type Refreshable interface {
 }
 
 type IView[TEntity Entity] interface {
+	genericInternalView
 	Closable
 	Refreshable
 	IContainer[TEntity]
+}
+
+type genericInternalView interface {
+	Closable
+	Refreshable
 }
 
 type view[TEntity Entity] struct {

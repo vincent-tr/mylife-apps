@@ -16,7 +16,8 @@ func init() {
 }
 
 type storeService struct {
-	collections map[string]genericInternalCollection
+	collections       map[string]genericInternalCollection
+	materializedViews map[string]genericInternalView
 }
 
 func (service *storeService) Init(arg interface{}) error {
@@ -26,13 +27,25 @@ func (service *storeService) Init(arg interface{}) error {
 	}
 
 	service.collections = make(map[string]genericInternalCollection)
+	service.materializedViews = make(map[string]genericInternalView)
 
 	if arg != nil {
 		builders := arg.([]interface{})
 
 		for _, builder := range builders {
-			if err := service.setupCollection(builder.(icollectionBuilder)); err != nil {
-				return err
+			switch builder := builder.(type) {
+			case icollectionBuilder:
+				if err := service.setupCollection(builder); err != nil {
+					return err
+				}
+
+			case imaterializedViewBuilder:
+				if err := service.setupMaterializedView(builder); err != nil {
+					return err
+				}
+
+			default:
+				return fmt.Errorf("unknown builder type: %T", builder)
 			}
 		}
 	}
@@ -45,7 +58,12 @@ func (service *storeService) Terminate() error {
 		col.terminate()
 	}
 
+	for _, view := range service.materializedViews {
+		view.Close()
+	}
+
 	service.collections = nil
+	service.materializedViews = nil
 
 	return tasks.CloseQueue(storeUpdateQueueId)
 }
@@ -80,6 +98,28 @@ func (service *storeService) setupCollection(builder icollectionBuilder) error {
 	return nil
 }
 
+func (service *storeService) getMaterializedView(name string) (genericInternalView, error) {
+	value, exists := service.materializedViews[name]
+	if !exists {
+		return nil, fmt.Errorf("materialized view '%s' not found", name)
+	}
+
+	return value, nil
+}
+
+func (service *storeService) setupMaterializedView(builder imaterializedViewBuilder) error {
+	name := builder.name()
+	_, exists := service.materializedViews[name]
+
+	if exists {
+		return fmt.Errorf("materialized view '%s' already exists", name)
+	}
+
+	service.materializedViews[name] = builder.build()
+
+	return nil
+}
+
 func getService() *storeService {
 	return services.GetService[*storeService]("store")
 }
@@ -102,4 +142,18 @@ func GetCollection[TEntity Entity](name string) (ICollection[TEntity], error) {
 	}
 
 	return col, nil
+}
+
+func GetMaterializedView[TEntity Entity](name string) (IView[TEntity], error) {
+	value, err := getService().getMaterializedView(name)
+	if err != nil {
+		return nil, err
+	}
+
+	view, ok := value.(IView[TEntity])
+	if !ok {
+		return nil, fmt.Errorf("materialized view '%s' requested with bad entity type", name)
+	}
+
+	return view, nil
 }
