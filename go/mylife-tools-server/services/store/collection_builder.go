@@ -38,6 +38,7 @@ func (builder *CollectionBuilder[TEntity]) name() string {
 func (builder *CollectionBuilder[TEntity]) build() genericInternalCollection {
 	col := &collection[TEntity]{
 		container: NewContainer[TEntity](builder.colName),
+		indexes:   make(map[string]ICollectionIndex[TEntity]),
 	}
 
 	for _, index := range builder.indexes {

@@ -62,7 +62,7 @@ type accountData struct {
 	Display string        `bson:"display"`
 }
 
-func accountEncode(account *Account) ([]byte, error) {
+func AccountEncode(account *Account) ([]byte, error) {
 	id, err := bson.ObjectIDFromHex(account.id)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func accountEncode(account *Account) ([]byte, error) {
 	})
 }
 
-func accountDecode(raw []byte) (*Account, error) {
+func AccountDecode(raw []byte) (*Account, error) {
 	data := accountData{}
 	if err := bson.Unmarshal(raw, &data); err != nil {
 		return nil, err

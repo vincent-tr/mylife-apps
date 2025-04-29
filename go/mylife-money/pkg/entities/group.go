@@ -112,7 +112,7 @@ type groupData struct {
 	Rules   []Rule         `bson:"rules"`
 }
 
-func groupEncode(group *Group) ([]byte, error) {
+func GroupEncode(group *Group) ([]byte, error) {
 	id, err := bson.ObjectIDFromHex(group.id)
 	if err != nil {
 		return nil, err
@@ -131,7 +131,7 @@ func groupEncode(group *Group) ([]byte, error) {
 	})
 }
 
-func groupDecode(raw []byte) (*Group, error) {
+func GroupDecode(raw []byte) (*Group, error) {
 	data := groupData{}
 	if err := bson.Unmarshal(raw, &data); err != nil {
 		return nil, err

@@ -116,7 +116,7 @@ type operationData struct {
 	Note    string         `bson:"note"`
 }
 
-func operationEncode(operation *Operation) ([]byte, error) {
+func OperationEncode(operation *Operation) ([]byte, error) {
 	id, err := bson.ObjectIDFromHex(operation.id)
 	if err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func operationEncode(operation *Operation) ([]byte, error) {
 	})
 }
 
-func operationDecode(raw []byte) (*Operation, error) {
+func OperationDecode(raw []byte) (*Operation, error) {
 	data := operationData{}
 	if err := bson.Unmarshal(raw, &data); err != nil {
 		return nil, err

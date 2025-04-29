@@ -6,7 +6,9 @@ type ICollectionIndex[TEntity Entity] interface {
 type IPartitionIndex[TEntity Entity, TPartitionKey comparable] interface {
 	ICollectionIndex[TEntity]
 
-	FindPartition(key TPartitionKey) []TEntity
+	// Caller must not modify the returned map
+	// Return nil if no such key exists
+	FindPartition(key TPartitionKey) map[string]TEntity
 }
 
 type partitionIndex[TEntity Entity, TPartitionKey comparable] struct {
@@ -19,6 +21,7 @@ func makePartitionIndex[TEntity Entity, TPartitionKey comparable](collection ICo
 	index := &partitionIndex[TEntity, TPartitionKey]{
 		collection: collection,
 		buildKey:   keyBuilder,
+		partitions: make(map[TPartitionKey]map[string]TEntity),
 	}
 
 	changeCallback := index.onCollectionChange
@@ -69,16 +72,6 @@ func (index *partitionIndex[TEntity, TPartitionKey]) removeFromPartition(object 
 	}
 }
 
-func (index *partitionIndex[TEntity, TPartitionKey]) FindPartition(key TPartitionKey) []TEntity {
-	partition, ok := index.partitions[key]
-	if !ok {
-		return make([]TEntity, 0)
-	}
-
-	objects := make([]TEntity, 0, len(partition))
-	for _, obj := range partition {
-		objects = append(objects, obj)
-	}
-
-	return objects
+func (index *partitionIndex[TEntity, TPartitionKey]) FindPartition(key TPartitionKey) map[string]TEntity {
+	return index.partitions[key]
 }
