@@ -35,7 +35,7 @@ const useStyles = mui.makeStyles({
   }
 });
 
-const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory, periodKey }) => {
+const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }) => {
   const [criteria, setCriteria] = useState(initialCriteria);
   const [display, setDisplay] = useState(initialDisplay);
 
@@ -65,7 +65,7 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
   return (
     <div className={classes.container}>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} onExport={doExport} additionalComponents={additionalCriteria} />
-      <Chart periodKey={periodKey} data={data} groups={groups} display={chartDisplay} className={classes.chart} amountSelector={amountSelectorFactory({ display, criteria })}/>
+      <Chart data={data} groups={groups} display={chartDisplay} className={classes.chart} amountSelector={amountSelectorFactory({ display, criteria })}/>
     </div>
   );
 };
@@ -77,7 +77,6 @@ GroupByPeriod.propTypes = {
   initialDisplay: PropTypes.object.isRequired,
   additionalCriteriaFactory: PropTypes.func.isRequired,
   amountSelectorFactory: PropTypes.func.isRequired,
-  periodKey: PropTypes.string.isRequired,
 };
 
 export default GroupByPeriod;

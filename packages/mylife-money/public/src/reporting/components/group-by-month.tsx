@@ -25,8 +25,7 @@ const GroupByMonth = () => (
     initialCriteria={initialCriteria}
     initialDisplay={initialDisplay}
     additionalCriteriaFactory={additionalCriteriaFactory}
-    amountSelectorFactory={amountSelectorFactory}
-    periodKey='month' />
+    amountSelectorFactory={amountSelectorFactory} />
 );
 
 export default GroupByMonth;

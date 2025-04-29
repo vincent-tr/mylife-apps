@@ -7,8 +7,7 @@ import bot from'./entities/bot';
 import botRun from'./entities/bot-run';
 import reportOperationStat from'./entities/report-operation-stat';
 import reportTotalByMonth from'./entities/report-total-by-month';
-import reportGroupByMonth from'./entities/report-group-by-month';
-import reportGroupByYear from'./entities/report-group-by-year';
+import reportGroupByPeriod from'./entities/report-group-by-period';
 
 export default {
   datatypes,
@@ -20,7 +19,6 @@ export default {
     botRun,
     reportOperationStat,
     reportTotalByMonth,
-    reportGroupByMonth,
-    reportGroupByYear,
+    reportGroupByPeriod,
   ]
 };
