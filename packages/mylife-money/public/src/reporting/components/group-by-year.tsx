@@ -47,8 +47,7 @@ const GroupByYear = () => (
     initialCriteria={initialCriteria}
     initialDisplay={initialDisplay}
     additionalCriteriaFactory={AdditionalCriteria}
-    amountSelectorFactory={amountSelectorFactory}
-    periodKey='year' />
+    amountSelectorFactory={amountSelectorFactory} />
 );
 
 export default GroupByYear;

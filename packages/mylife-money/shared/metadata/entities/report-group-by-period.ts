@@ -1,8 +1,8 @@
 export default {
-  id: 'report-group-by-year',
+  id: 'report-group-by-period',
   parent: 'base',
   fields: [
-    { id: 'year', datatype: 'name' },
+    { id: 'period', datatype: 'name' },
     { id: 'groups', datatype: 'any' },
   ]
 };
