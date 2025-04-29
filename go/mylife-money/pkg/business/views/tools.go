@@ -69,12 +69,14 @@ func createGroupHierarchy(groupCollection store.IContainer[*entities.Group], gro
 		return nil
 	}
 
+	hierarchy := make(map[string]struct{})
+
 	// unsorted group
 	if *groupId == "" {
-		return map[string]struct{}{"": {}}
+		hierarchy[""] = struct{}{}
+		return hierarchy
 	}
 
-	hierarchy := make(map[string]struct{})
 	groupIdsToProcess := make(map[string]struct{})
 	groupIdsToProcess[*groupId] = struct{}{}
 

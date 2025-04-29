@@ -184,8 +184,16 @@ func (view *OperationView) buildCriteria(values CriteriaValues) (*operationViewC
 
 		case "group":
 			if group, ok := castNullable[string](value); ok {
-				criteria.group = group
-				criteria.groupHierarchy = createGroupHierarchy(view.groups, criteria.group)
+				// Special case:
+				// if group does not exists, no criteria (group=nil) => default value
+				// if group exists but is nil, "Non triés" (group="")
+				// if group exists and is not nil, group id
+				if group == nil {
+					unsortedGroup := ""
+					criteria.group = &unsortedGroup
+				} else {
+					criteria.group = group
+				}
 			} else {
 				return nil, fmt.Errorf("Invalid value for group: %v", value)
 			}
@@ -204,6 +212,8 @@ func (view *OperationView) buildCriteria(values CriteriaValues) (*operationViewC
 			return nil, fmt.Errorf("Unknown field: %s", key)
 		}
 	}
+
+	criteria.groupHierarchy = createGroupHierarchy(view.groups, criteria.group)
 
 	return criteria, nil
 }
