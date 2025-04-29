@@ -102,7 +102,7 @@ type botData struct {
 	State         any           `bson:"state"`
 }
 
-func botEncode(bot *Bot) ([]byte, error) {
+func BotEncode(bot *Bot) ([]byte, error) {
 	id, err := bson.ObjectIDFromHex(bot.id)
 	if err != nil {
 		return nil, err
@@ -118,7 +118,7 @@ func botEncode(bot *Bot) ([]byte, error) {
 	})
 }
 
-func botDecode(raw []byte) (*Bot, error) {
+func BotDecode(raw []byte) (*Bot, error) {
 	data := botData{}
 	if err := bson.Unmarshal(raw, &data); err != nil {
 		return nil, err

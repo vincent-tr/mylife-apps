@@ -113,7 +113,7 @@ type botRunData struct {
 	Logs   []BotRunLog   `bson:"logs"`
 }
 
-func botRunEncode(botRun *BotRun) ([]byte, error) {
+func BotRunEncode(botRun *BotRun) ([]byte, error) {
 	id, err := bson.ObjectIDFromHex(botRun.id)
 	if err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ func botRunEncode(botRun *BotRun) ([]byte, error) {
 	})
 }
 
-func botRunDecode(raw []byte) (*BotRun, error) {
+func BotRunDecode(raw []byte) (*BotRun, error) {
 	data := botRunData{}
 	if err := bson.Unmarshal(raw, &data); err != nil {
 		return nil, err
