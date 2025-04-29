@@ -1,67 +1,68 @@
 package views
 
 import (
+	"fmt"
+	"math"
 	"mylife-money/pkg/entities"
 	"mylife-tools-server/services/store"
+	"time"
 )
 
-/*
-	export function dateToMonth(date: Date) {
-	  const year = date.getFullYear();
-	  const month = formatTwoDigits(date.getMonth() + 1);
-	  return `${year}/${month}`;
+func DateToMonth(date time.Time) string {
+	return fmt.Sprintf("%04d/%02d", date.Year(), int(date.Month()))
+}
+
+func dateToYear(date time.Time) string {
+	return fmt.Sprintf("%04d", date.Year())
+}
+
+func roundCurrency(number float64) float64 {
+	if !isFinite(number) {
+		return number
 	}
 
-	export function dateToYear(date: Date) {
-	  return `${date.getFullYear()}`;
+	return float64(int(number*100)) / 100
+}
+
+func isFinite(number float64) bool {
+	return !math.IsNaN(number) && !math.IsInf(number, 0)
+}
+
+func monthRange(minDate time.Time, maxDate time.Time) []string {
+	months := make([]string, 0)
+	minYear := minDate.Year()
+	minMonth := int(minDate.Month())
+	maxYear := maxDate.Year()
+	maxMonth := int(maxDate.Month())
+
+	for year := minYear; year <= maxYear; year++ {
+		for month := 1; month <= 12; month++ {
+			if year == minYear && month < minMonth {
+				continue
+			}
+			if year == maxYear && month > maxMonth {
+				continue
+			}
+
+			months = append(months, fmt.Sprintf("%04d/%02d", year, month))
+		}
 	}
 
-	export function formatTwoDigits(number: number) {
-	  return number.toLocaleString(undefined, { minimumIntegerDigits: 2 });
+	return months
+}
+
+func yearRange(minDate time.Time, maxDate time.Time) []string {
+	years := make([]string, 0)
+	minYear := minDate.Year()
+	maxYear := maxDate.Year()
+
+	for year := minYear; year <= maxYear; year++ {
+		years = append(years, fmt.Sprintf("%04d", year))
 	}
 
-	export function roundCurrency(number) {
-	  if(!isFinite(number)) {
-	    return number;
-	  }
-	  return Math.round(number * 100) / 100;
-	}
+	return years
+}
 
-	export function monthRange(minDate: Date, maxDate: Date) {
-	  const months = [] as string[];
-	  const minYear = minDate.getFullYear();
-	  const minMonth = minDate.getMonth();
-	  const maxYear = maxDate.getFullYear();
-	  const maxMonth = maxDate.getMonth();
-
-	  for(let year = minYear; year <= maxYear; ++year) {
-	    for(let month = 0; month < 12; ++ month) {
-	      if(year === minYear && month < minMonth) {
-	        continue;
-	      }
-	      if(year === maxYear && month > maxMonth) {
-	        continue;
-	      }
-
-	      months.push(`${year}/${formatTwoDigits(month + 1)}`);
-	    }
-	  }
-
-	  return months;
-	}
-
-	export function yearRange(minDate: Date, maxDate: Date) {
-	  const years = [];
-	  const minYear = minDate.getFullYear();
-	  const maxYear = maxDate.getFullYear();
-
-	  for(let year = minYear; year <= maxYear; ++year) {
-	    years.push(`${year}`);
-	  }
-
-	  return years;
-	}
-*/
 func createGroupHierarchy(groupCollection store.IContainer[*entities.Group], groupId *string) map[string]struct{} {
 	// no criteria
 	if groupId == nil {
