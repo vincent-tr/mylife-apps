@@ -136,7 +136,7 @@ func (view *OperationView) onGroupChange(event *store.Event[*entities.Group]) {
 }
 
 func (view *OperationView) SetCriteriaValues(criteriaValues CriteriaValues) error {
-	criteria, err := buildCriteria(criteriaValues, view.groups)
+	criteria, err := view.buildCriteria(criteriaValues)
 	if err != nil {
 		return err
 	}
@@ -156,7 +156,7 @@ type operationViewCriteria struct {
 	lookupText     *string
 }
 
-func buildCriteria(values CriteriaValues, groupCollection store.IContainer[*entities.Group]) (*operationViewCriteria, error) {
+func (view *OperationView) buildCriteria(values CriteriaValues) (*operationViewCriteria, error) {
 	criteria := &operationViewCriteria{}
 
 	for key, value := range values {
@@ -185,7 +185,7 @@ func buildCriteria(values CriteriaValues, groupCollection store.IContainer[*enti
 		case "group":
 			if group, ok := castNullable[string](value); ok {
 				criteria.group = group
-				criteria.groupHierarchy = createGroupHierarchy(groupCollection, criteria.group)
+				criteria.groupHierarchy = createGroupHierarchy(view.groups, criteria.group)
 			} else {
 				return nil, fmt.Errorf("Invalid value for group: %v", value)
 			}
@@ -210,16 +210,4 @@ func buildCriteria(values CriteriaValues, groupCollection store.IContainer[*enti
 
 func matchText(value, text string) bool {
 	return strings.Contains(strings.ToLower(value), text)
-}
-
-func castNullable[T any](value any) (*T, bool) {
-	if value == nil {
-		return nil, true
-	}
-
-	if val, ok := value.(T); ok {
-		return &val, true
-	}
-
-	return nil, false
 }

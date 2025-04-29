@@ -20,8 +20,8 @@ const (
 
 type Condition struct {
 	Field    string       `json:"field" bson:"field"`
-	Operator RuleOperator `json:"operator" json:"operator"`
-	Value    any          `json:"value" json:"value"` // string or float64
+	Operator RuleOperator `json:"operator" bson:"operator"`
+	Value    any          `json:"value" bson:"value"` // string or float64
 }
 
 type Rule struct {

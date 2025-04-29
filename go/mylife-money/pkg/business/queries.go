@@ -56,15 +56,23 @@ func NotifyTotalByMonth(session *sessions.Session) (uint64, error) {
 }
 
 func NotifyGroupByMonth(session *sessions.Session, criteria views.CriteriaValues) (uint64, error) {
-	return 0, fmt.Errorf("NotifyGroupByMonth is not implemented")
-	// const view = new GroupByMonth();
-	// view.setCriteria(criteria);
-	// return notifyView(session, view);
+	view, err := views.MakeGroupByMonth()
+	if err != nil {
+		return 0, err
+	}
+
+	view.(views.ViewWithCriteria).SetCriteriaValues(criteria)
+	viewId := notification.NotifyView(session, view)
+	return viewId, nil
 }
 
 func NotifyGroupByYear(session *sessions.Session, criteria views.CriteriaValues) (uint64, error) {
-	return 0, fmt.Errorf("NotifyGroupByYear is not implemented")
-	// const view = new GroupByYear();
-	// view.setCriteria(criteria);
-	// return notifyView(session, view);
+	view, err := views.MakeGroupByYear()
+	if err != nil {
+		return 0, err
+	}
+
+	view.(views.ViewWithCriteria).SetCriteriaValues(criteria)
+	viewId := notification.NotifyView(session, view)
+	return viewId, nil
 }

@@ -99,19 +99,38 @@ func createGroupHierarchy(groupCollection store.IContainer[*entities.Group], gro
 	return hierarchy
 }
 
-/*
-export function computeDateRange(criteria, operations) {
-  let { minDate, maxDate } = criteria;
-  if((!minDate || !maxDate) && operations.size) {
-    let computedMinDate = Infinity;
-    let computedMaxDate = -Infinity;
-    for(const operation of operations.list()) {
-      computedMinDate = Math.min(computedMinDate, operation.date);
-      computedMaxDate = Math.max(computedMaxDate, operation.date);
-    }
-    minDate = minDate || new Date(computedMinDate);
-    maxDate = maxDate || new Date(computedMaxDate);
-  }
-  return { minDate, maxDate };
+func castNullable[T any](value any) (*T, bool) {
+	if value == nil {
+		return nil, true
+	}
+
+	if val, ok := value.(T); ok {
+		return &val, true
+	}
+
+	return nil, false
 }
-*/
+
+func castNullableBool(value any, defaultValue bool) (bool, bool) {
+	if value == nil {
+		return defaultValue, true
+	}
+
+	if val, ok := value.(bool); ok {
+		return val, true
+	}
+
+	return false, false
+}
+
+func castNullableArray(value any) ([]any, bool) {
+	if value == nil {
+		return make([]any, 0), true
+	}
+
+	if val, ok := value.([]any); ok {
+		return val, true
+	}
+
+	return nil, false
+}
