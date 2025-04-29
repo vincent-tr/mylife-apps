@@ -141,7 +141,7 @@ func (view *groupByPeriod) buildCriteria(values CriteriaValues) (*groupByPeriodC
 
 				for _, group := range groups {
 					if group == nil {
-						// Consider nil group is "Non triés"
+						// Consider nil group is unsorted group
 						stringGroups = append(stringGroups, "")
 					} else if str, ok := group.(string); ok {
 						stringGroups = append(stringGroups, str)
@@ -253,9 +253,21 @@ func (view *groupByPeriod) compute() {
 			item := periodItem.Groups[info.group]
 			item.Amount = roundCurrency(item.Amount)
 
+			if info.group == "" {
+				// UI expect "null" for unsorted group
+				delete(periodItem.Groups, "")
+				periodItem.Groups["null"] = item
+			}
+
 			for _, childInfo := range info.children {
 				child := item.Children[childInfo.group]
 				child.Amount = roundCurrency(child.Amount)
+
+				if childInfo.group == "" {
+					// UI expect "null" for unsorted group
+					delete(item.Children, "")
+					item.Children["null"] = child
+				}
 			}
 		}
 	}
@@ -339,6 +351,7 @@ func (view *groupByPeriod) getGroupChildren(groupId string) []groupChildInfo {
 		if group.Parent() != nil && *group.Parent() == groupId {
 			id := group.Id()
 			hierarchy := createGroupHierarchy(view.groups, &id)
+
 			children = append(children, groupChildInfo{
 				group:     group.Id(),
 				hierarchy: hierarchy,
