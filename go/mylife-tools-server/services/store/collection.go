@@ -16,6 +16,7 @@ type ICollection[TEntity Entity] interface {
 	Set(obj TEntity) (TEntity, error)
 	Delete(id string) bool
 	NewId() string
+	GetIndex(id string) (ICollectionIndex[TEntity], error)
 }
 
 type genericInternalCollection interface {
@@ -26,6 +27,7 @@ type collection[TEntity Entity] struct {
 	container *Container[TEntity]
 	updater   *collectionUpdater[TEntity]
 	isLoaded  bool
+	indexes   map[string]ICollectionIndex[TEntity]
 }
 
 func (col *collection[TEntity]) AddListener(callback *func(event *Event[TEntity])) {
@@ -88,6 +90,15 @@ func (col *collection[TEntity]) Delete(id string) bool {
 
 func (col *collection[TEntity]) NewId() string {
 	return database.MakeId()
+}
+
+func (col *collection[TEntity]) GetIndex(id string) (ICollectionIndex[TEntity], error) {
+	index, exists := col.indexes[id]
+	if !exists {
+		return nil, fmt.Errorf("index '%s' not found in collection '%s'", id, col.Name())
+	}
+
+	return index, nil
 }
 
 func (col *collection[TEntity]) terminate() {
