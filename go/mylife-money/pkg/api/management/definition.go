@@ -76,7 +76,7 @@ func operationsSetNote(session *sessions.Session, arg struct {
 
 func operationsImport(session *sessions.Session, arg struct {
 	Account string
-	Content []byte
+	Content string
 }) (int, error) {
 	count, err := business.OperationsImport(arg.Account, arg.Content)
 	if err != nil {
