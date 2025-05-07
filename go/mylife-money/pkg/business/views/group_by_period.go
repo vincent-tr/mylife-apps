@@ -248,7 +248,7 @@ func (view *groupByPeriod) compute() {
 	for _, periodItem := range data {
 		for _, info := range groupInfo {
 			item := periodItem.Groups[info.group]
-			item.Amount = roundCurrency(item.Amount)
+			item.Amount = RoundCurrency(item.Amount)
 
 			if info.group == "" {
 				// UI expect "null" for unsorted group
@@ -258,7 +258,7 @@ func (view *groupByPeriod) compute() {
 
 			for _, childInfo := range info.children {
 				child := item.Children[childInfo.group]
-				child.Amount = roundCurrency(child.Amount)
+				child.Amount = RoundCurrency(child.Amount)
 
 				if childInfo.group == "" {
 					// UI expect "null" for unsorted group

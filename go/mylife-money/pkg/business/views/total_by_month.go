@@ -162,9 +162,9 @@ func (view *totalByMonth) computeBucket(month string) {
 		object.Balance += operation.Amount()
 	}
 
-	object.SumDebit = roundCurrency(object.SumDebit)
-	object.SumCredit = roundCurrency(object.SumCredit)
-	object.Balance = roundCurrency(object.Balance)
+	object.SumDebit = RoundCurrency(object.SumDebit)
+	object.SumCredit = RoundCurrency(object.SumCredit)
+	object.Balance = RoundCurrency(object.Balance)
 
 	view.container.Set(entities.NewReportTotalByMonth(object))
 }
