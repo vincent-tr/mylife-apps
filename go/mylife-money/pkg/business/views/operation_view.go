@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"mylife-money/pkg/entities"
 	"mylife-tools-server/services/store"
 	"strings"
@@ -158,59 +157,60 @@ type operationViewCriteria struct {
 
 func (view *OperationView) buildCriteria(values CriteriaValues) (*operationViewCriteria, error) {
 	criteria := &operationViewCriteria{}
+	reader := NewCriteriaReader(values)
 
-	for key, value := range values {
-		switch key {
-		case "minDate":
-			if date, ok := castNullable[time.Time](value); ok {
-				criteria.minDate = date
-			} else {
-				return nil, fmt.Errorf("Invalid value for minDate: %v", value)
-			}
-
-		case "maxDate":
-			if date, ok := castNullable[time.Time](value); ok {
-				criteria.maxDate = date
-			} else {
-				return nil, fmt.Errorf("Invalid value for maxDate: %v", value)
-			}
-
-		case "account":
-			if account, ok := castNullable[string](value); ok {
-				criteria.account = account
-			} else {
-				return nil, fmt.Errorf("Invalid value for account: %v", value)
-			}
-
-		case "group":
-			if group, ok := castNullable[string](value); ok {
-				// Special case:
-				// if group does not exists, no criteria (group=nil) => default value
-				// if group exists but is nil, "Non triés" (group="")
-				// if group exists and is not nil, group id
-				if group == nil {
-					unsortedGroup := ""
-					criteria.group = &unsortedGroup
-				} else {
-					criteria.group = group
-				}
-			} else {
-				return nil, fmt.Errorf("Invalid value for group: %v", value)
-			}
-
-		case "lookupText":
-			if text, ok := castNullable[string](value); ok {
-				if text != nil {
-					*text = strings.ToLower(*text)
-				}
-				criteria.lookupText = text
-			} else {
-				return nil, fmt.Errorf("Invalid value for lookupText: %v", value)
-			}
-
-		default:
-			return nil, fmt.Errorf("Unknown field: %s", key)
+	if reader.Has("minDate") {
+		minDate, err := reader.GetDate("minDate")
+		if err != nil {
+			return nil, err
 		}
+		criteria.minDate = minDate
+	}
+
+	if reader.Has("maxDate") {
+		maxDate, err := reader.GetDate("maxDate")
+		if err != nil {
+			return nil, err
+		}
+		criteria.maxDate = maxDate
+	}
+
+	if reader.Has("account") {
+		account, err := reader.GetString("account")
+		if err != nil {
+			return nil, err
+		}
+		criteria.account = account
+	}
+
+	if reader.Has("group") {
+		group, err := reader.GetString("group")
+		if err != nil {
+			return nil, err
+		}
+
+		// Special case:
+		// if group does not exists, no criteria (group=nil) => default value
+		// if group exists but is nil, "Non triés" (group="")
+		// if group exists and is not nil, group id
+		if group == nil {
+			unsortedGroup := ""
+			criteria.group = &unsortedGroup
+		} else {
+			criteria.group = group
+		}
+	}
+
+	if reader.Has("lookupText") {
+		text, err := reader.GetString("lookupText")
+		if err != nil {
+			return nil, err
+		}
+
+		if text != nil {
+			*text = strings.ToLower(*text)
+		}
+		criteria.lookupText = text
 	}
 
 	criteria.groupHierarchy = createGroupHierarchy(view.groups, criteria.group)
