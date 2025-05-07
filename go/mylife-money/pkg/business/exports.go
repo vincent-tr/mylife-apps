@@ -119,6 +119,10 @@ func exportGroupByPeriod(view store.IView[*entities.ReportGroupByPeriod], displa
 		return writeXlsx([][]any{{}})
 	}
 
+	slices.SortFunc(periodItems, func(a, b *entities.ReportGroupByPeriod) int {
+		return strings.Compare(a.Period(), b.Period())
+	})
+
 	groups := make([]group, 0)
 	for root, item := range periodItems[0].Groups() {
 		displayValue, err := groupDisplay(root, false, display)
@@ -145,7 +149,6 @@ func exportGroupByPeriod(view store.IView[*entities.ReportGroupByPeriod], displa
 
 	for _, group := range groups {
 		row := []any{group.display}
-		data = append(data, row)
 
 		for _, periodItem := range periodItems {
 			item := periodItem.Groups()[group.root]
@@ -159,6 +162,8 @@ func exportGroupByPeriod(view store.IView[*entities.ReportGroupByPeriod], displa
 			value = amountTransform(value)
 			row = append(row, value)
 		}
+
+		data = append(data, row)
 	}
 	return writeXlsx(data)
 }
