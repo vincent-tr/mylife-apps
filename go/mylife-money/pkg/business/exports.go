@@ -1,108 +1,232 @@
 package business
 
 import (
-	"fmt"
+	"bytes"
 	"mylife-money/pkg/business/views"
+	"mylife-money/pkg/entities"
 	"mylife-tools-server/services/sessions"
+	"mylife-tools-server/services/store"
+	"slices"
+	"strings"
+
+	"github.com/tealeg/xlsx/v3"
 )
 
 type DisplayValues map[string]interface{}
 
-func ExportGroupByMonth(session *sessions.Session, criteria views.CriteriaValues, display DisplayValues) ([]byte, error) {
-	return nil, fmt.Errorf("ExportGroupByMonth not implemented")
+type display struct {
+	fullnames    bool
+	invert       bool
+	monthAverage bool
+	withParent   bool
 }
 
-func ExportGroupByYear(session *sessions.Session, criteria views.CriteriaValues, display DisplayValues) ([]byte, error) {
-	return nil, fmt.Errorf("ExportGroupByYear not implemented")
+func parseDisplay(displayValues DisplayValues) (*display, error) {
+	d := &display{}
+	displayReader := views.NewCriteriaReader(views.CriteriaValues(displayValues))
+
+	fullnames, err := displayReader.GetBool("fullnames", false)
+	if err != nil {
+		return nil, err
+	}
+	d.fullnames = fullnames
+
+	invert, err := displayReader.GetBool("invert", false)
+	if err != nil {
+		return nil, err
+	}
+	d.invert = invert
+
+	monthAverage, err := displayReader.GetBool("monthAverage", false)
+	if err != nil {
+		return nil, err
+	}
+	d.monthAverage = monthAverage
+
+	withParent, err := displayReader.GetBool("withParent", false)
+	if err != nil {
+		return nil, err
+	}
+	d.withParent = withParent
+
+	return d, nil
 }
 
-/*
-'use strict';
+func ExportGroupByMonth(session *sessions.Session, criteria views.CriteriaValues, displayValues DisplayValues) ([]byte, error) {
+	view, err := views.MakeGroupByMonth()
+	if err != nil {
+		return nil, err
+	}
 
-const { xlsx, getStoreCollection } = require('mylife-tools-server');
-const { GroupByMonth } = require('./views/group-by-month');
-const { GroupByYear } = require('./views/group-by-year');
-const { roundCurrency } = require('./views/tools');
+	viewWithCriteria := view.(views.ViewWithCriteria)
+	criteria["noChildSub"] = true
+	if err := viewWithCriteria.SetCriteriaValues(criteria); err != nil {
+		return nil, err
+	}
 
-export function exportGroupByMonth(session, criteria, display) {
-  const view = new GroupByMonth();
-  view.setCriteria({ ...criteria, noChildSub: true });
-  return exportGroupByPeriodView(view, display, 'month');
+	display, err := parseDisplay(displayValues)
+	if err != nil {
+		return nil, err
+	}
+
+	amountTransformer := func(value float64) float64 {
+		return value
+	}
+
+	return exportGroupByPeriod(view, display, amountTransformer)
 }
 
-export function exportGroupByYear(session, criteria, display) {
-  const view = new GroupByYear();
-  view.setCriteria({ ...criteria, noChildSub: true });
-  const amountTransform = display.monthAverage ? (x => roundCurrency(x / 12)) : (x => x);
-  return exportGroupByPeriodView(view, display, 'year', amountTransform);
+func ExportGroupByYear(session *sessions.Session, criteria views.CriteriaValues, displayValues DisplayValues) ([]byte, error) {
+	view, err := views.MakeGroupByYear()
+	if err != nil {
+		return nil, err
+	}
+
+	viewWithCriteria := view.(views.ViewWithCriteria)
+	criteria["noChildSub"] = true
+	if err := viewWithCriteria.SetCriteriaValues(criteria); err != nil {
+		return nil, err
+	}
+
+	display, err := parseDisplay(displayValues)
+	if err != nil {
+		return nil, err
+	}
+
+	var amountTransformer func(float64) float64
+	if display.monthAverage {
+		amountTransformer = func(value float64) float64 {
+			return views.RoundCurrency(value / 12)
+		}
+	} else {
+		amountTransformer = func(value float64) float64 {
+			return value
+		}
+	}
+
+	return exportGroupByPeriod(view, display, amountTransformer)
 }
 
-function exportGroupByPeriodView(view, displayOptions, periodKey, amountTransform = x => x) {
-  const periodItems = view.list();
-  if(!periodItems.length) {
-    return xlsx.createSimpleWorkbookAOA([[]]);
-  }
-
-  const groups = [];
-  for(const [root, item] of Object.entries<any>(periodItems[0].groups)) {
-    const display = groupDisplay(root, false, displayOptions);
-    groups.push({ root, display });
-
-    for(const child of Object.keys(item.children)) {
-      const display = groupDisplay(child, true, displayOptions);
-      groups.push({ root, child, display });
-    }
-  }
-
-  const header = ['', ...periodItems.map(periodItem => periodItem[periodKey])];
-  const data = [header];
-  for(const group of groups) {
-    const row = [group.display];
-    data.push(row);
-
-    for(const periodItem of periodItems) {
-      let item = periodItem.groups[group.root];
-      if(group.child) {
-        item = item.children[group.child];
-      }
-      let value = item.amount;
-      if(displayOptions.invert) {
-        value = - value;
-      }
-      value = amountTransform(value);
-      row.push(value);
-    }
-  }
-
-  return xlsx.createSimpleWorkbookAOA(data);
+type group struct {
+	root    string
+	child   string
+	display string
 }
 
-function groupDisplay(id, withParent, { fullnames }) {
-  if(!id) {
-    return 'Non triés';
-  }
+func exportGroupByPeriod(view store.IView[*entities.ReportGroupByPeriod], display *display, amountTransform func(float64) float64) ([]byte, error) {
+	periodItems := view.List()
+	if len(periodItems) == 0 {
+		return writeXlsx([][]any{{}})
+	}
 
-  const groupCollection = getStoreCollection('groups');
+	groups := make([]group, 0)
+	for root, item := range periodItems[0].Groups() {
+		displayValue, err := groupDisplay(root, false, display)
+		if err != nil {
+			return nil, err
+		}
+		groups = append(groups, group{root: root, display: displayValue})
 
-  if(fullnames) {
-    let currentId = id;
-    const names = [];
-    while(currentId) {
-      const group = groupCollection.get(currentId);
-      names.push(group.display);
-      currentId = group.parent;
-    }
+		for child, _ := range item.Children {
+			displayValue, err := groupDisplay(child, true, display)
+			if err != nil {
+				return nil, err
+			}
+			groups = append(groups, group{root: root, child: child, display: displayValue})
+		}
+	}
 
-    names.reverse();
-    return names.join('/');
-  }
+	header := []any{""}
+	for _, periodItem := range periodItems {
+		header = append(header, periodItem.Period())
+	}
 
-  const group = groupCollection.get(id);
-  if(!withParent) {
-    return group.display;
-  }
+	data := [][]any{header}
 
-  const parent = groupCollection.get(group.parent);
-  return parent.display + '/' + group.display;
+	for _, group := range groups {
+		row := []any{group.display}
+		data = append(data, row)
+
+		for _, periodItem := range periodItems {
+			item := periodItem.Groups()[group.root]
+			if group.child != "" {
+				item = item.Children[group.child]
+			}
+			value := item.Amount
+			if display.invert {
+				value = -value
+			}
+			value = amountTransform(value)
+			row = append(row, value)
+		}
+	}
+	return writeXlsx(data)
 }
-*/
+
+func groupDisplay(id string, withParent bool, display *display) (string, error) {
+	if id == "null" {
+		return "Non triés", nil
+	}
+
+	groups, err := store.GetCollection[*entities.Group]("groups")
+	if err != nil {
+		return "", err
+	}
+
+	if display.fullnames {
+		currentId := &id
+		names := make([]string, 0)
+
+		for currentId != nil {
+			group, err := groups.Get(*currentId)
+			if err != nil {
+				return "", err
+			}
+
+			names = append(names, group.Display())
+			currentId = group.Parent()
+		}
+
+		slices.Reverse(names)
+		return strings.Join(names, "/"), nil
+	}
+
+	group, err := groups.Get(id)
+	if err != nil {
+		return "", err
+	}
+
+	if !display.withParent || group.Parent() == nil {
+		return group.Display(), nil
+	}
+
+	parent, err := groups.Get(*group.Parent())
+	if err != nil {
+		return "", err
+	}
+
+	return parent.Display() + "/" + group.Display(), nil
+}
+
+func writeXlsx(data [][]any) ([]byte, error) {
+	wb := xlsx.NewFile()
+	sheet, err := wb.AddSheet("Sheet1")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, row := range data {
+		xlsxRow := sheet.AddRow()
+		for _, cell := range row {
+			xlsxCell := xlsxRow.AddCell()
+			xlsxCell.SetValue(cell)
+		}
+	}
+
+	var buffer bytes.Buffer
+	if err := wb.Write(&buffer); err != nil {
+		return nil, err
+	}
+
+	return buffer.Bytes(), nil
+}

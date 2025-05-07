@@ -16,7 +16,7 @@ func dateToYear(date time.Time) string {
 	return fmt.Sprintf("%04d", date.Year())
 }
 
-func roundCurrency(number float64) float64 {
+func RoundCurrency(number float64) float64 {
 	if !isFinite(number) {
 		return number
 	}

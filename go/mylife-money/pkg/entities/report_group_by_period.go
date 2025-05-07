@@ -24,7 +24,7 @@ func (report *ReportGroupByPeriod) Period() string {
 }
 
 // Groups
-func (report *ReportGroupByPeriod) Groups() any {
+func (report *ReportGroupByPeriod) Groups() map[string]*GroupData {
 	return report.groups
 }
 
