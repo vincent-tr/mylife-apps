@@ -5,18 +5,11 @@ import (
 	"fmt"
 	"mylife-money/pkg/entities"
 	"mylife-tools-server/services/store"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
 )
-
-/*
-import { parse as csv } from 'csv-parse/sync';
-import moment from 'moment';
-import { createLogger, getStoreCollection } from 'mylife-tools-server';
-
-const logger = createLogger('mylife:money:importer');
-*/
 
 type record struct {
 	date    time.Time
@@ -144,7 +137,7 @@ func parseDate(input string) (time.Time, error) {
 
 func findLastOperation() (*entities.Operation, error) {
 	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if operations == nil {
+	if err != nil {
 		return nil, err
 	}
 
@@ -161,7 +154,7 @@ func findLastOperation() (*entities.Operation, error) {
 
 func filterExisting(records []record) ([]record, error) {
 	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if operations == nil {
+	if err != nil {
 		return nil, err
 	}
 
@@ -207,7 +200,7 @@ func filterExisting(records []record) ([]record, error) {
 
 func insertRecords(records []record) error {
 	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if operations == nil {
+	if err != nil {
 		return err
 	}
 
@@ -228,74 +221,225 @@ func insertRecords(records []record) error {
 
 func ExecuteRules() (int, error) {
 	logger.Info("Executing rules")
-	/*
-	   const operations = getStoreCollection('operations');
-	   const groups = getStoreCollection('groups');
 
-	   const unsortedOperations = operations.filter(operation => !operation.group);
-	   const ruleExecutor = buildRulesExecutor(groups.list());
+	operations, err := store.GetCollection[*entities.Operation]("operations")
+	if err != nil {
+		return 0, err
+	}
 
-	   const groupField = operations.entity.getField('group');
-	   let opCount = 0;
-	   for(const operation of unsortedOperations) {
-	     const group = ruleExecutor(operation);
-	     if(!group) { continue; }
+	groups, err := store.GetCollection[*entities.Group]("groups")
+	if err != nil {
+		return 0, err
+	}
 
-	     logger.info(`Moving operation ${operation._id} to group ${group._id} (${group.display})`);
-	     operations.set(groupField.setValue(operation, group._id));
-	     ++opCount;
-	   }
-	*/
+	unsortedOperations := operations.Filter(func(op *entities.Operation) bool {
+		return op.Group() == nil
+	})
+
+	rulesExecutor, err := buildRulesExecutor(groups.List())
+	if err != nil {
+		return 0, err
+	}
+
 	opCount := 0
-	return 0, fmt.Errorf("TODO: ExecuteRules not implemented")
+
+	for _, operation := range unsortedOperations {
+		group, err := rulesExecutor.Execute(operation)
+		if err != nil {
+			logger.Errorf("Error executing rules for operation %s: %v", operation.Id(), err)
+			continue
+		}
+
+		if group == nil {
+			continue
+		}
+
+		logger.Infof("Moving operation %s to group %s (%s)", operation.Id(), group.Id(), group.Display())
+
+		values := operation.ToValues()
+		id := group.Id()
+		values.Group = &id
+		operations.Set(entities.NewOperation(values))
+
+		opCount++
+	}
 
 	logger.Infof("Execution done, moved %d operations", opCount)
 
 	return opCount, nil
 }
 
-/*
-function buildRulesExecutor(groups) {
-  const operators = {
-    $eq       : (field, value) => field === value,
-    $gt       : (field, value) => field < value,
-    $gte      : (field, value) => field <= value,
-    $lt       : (field, value) => field > value,
-    $lte      : (field, value) => field >= value,
-    $regex    : (field, value) => (new RegExp(value).test(field)),
-    $contains : (field, value) => (field && field.toString().includes(value))
-  };
-
-  const conditionExecutorFactory = (condition) => (operation) => operators[condition.operator](operation[condition.field], condition.value);
-
-  const ruleExecutorFactory = (rule) => {
-    const conditionExecutors = rule.conditions.map(conditionExecutorFactory);
-    if(!conditionExecutors) { return () => false; }
-    return (operation) => {
-      for(const executor of conditionExecutors) {
-        if(!executor(operation)) { return false; }
-      }
-      return true;
-    };
-  };
-
-  const rules = [];
-  for(const group of groups) {
-    if(!group.rules) { continue; }
-    for(const rule of group.rules) {
-      rules.push({
-        executor: ruleExecutorFactory(rule),
-        group
-      });
-    }
-  }
-
-  return (operation) => {
-    for(const rule of rules) {
-      if(rule.executor(operation)) {
-        return rule.group;
-      }
-    }
-  };
+type rulesExecutor struct {
+	rules []*rule
 }
-*/
+
+func buildRulesExecutor(groups []*entities.Group) (*rulesExecutor, error) {
+	rules := make([]*rule, 0)
+
+	for _, group := range groups {
+		if group.Rules() == nil {
+			continue
+		}
+
+		for _, rule := range group.Rules() {
+			for _, condition := range rule.Conditions {
+				rule, err := makeRule(group, &condition)
+				if err != nil {
+					return nil, fmt.Errorf("error creating rule: %w", err)
+				}
+				rules = append(rules, rule)
+			}
+		}
+	}
+
+	return &rulesExecutor{rules: rules}, nil
+}
+
+func (re *rulesExecutor) Execute(operation *entities.Operation) (*entities.Group, error) {
+	for _, rule := range re.rules {
+		group, err := rule.Execute(operation)
+		if err != nil {
+			return nil, fmt.Errorf("error executing rule: %w", err)
+		}
+
+		if group != nil {
+			return group, nil
+		}
+	}
+
+	return nil, nil
+}
+
+type rule struct {
+	getter fieldGetter
+	value  any
+	op     operator
+	group  *entities.Group
+}
+
+func makeRule(group *entities.Group, condition *entities.Condition) (*rule, error) {
+	getter, ok := fieldGetters[condition.Field]
+	if !ok {
+		return nil, fmt.Errorf("unknown field: %s", condition.Field)
+	}
+
+	op, ok := operators[condition.Operator]
+	if !ok {
+		return nil, fmt.Errorf("unknown operator: %s", condition.Operator)
+	}
+
+	return &rule{
+		getter: getter,
+		value:  condition.Value,
+		op:     op,
+		group:  group,
+	}, nil
+}
+
+func (r *rule) Execute(operation *entities.Operation) (*entities.Group, error) {
+	field := r.getter(operation)
+
+	result, err := r.op(field, r.value)
+	if err != nil {
+		return nil, fmt.Errorf("error executing operator: %w", err)
+	}
+
+	if result {
+		return r.group, nil
+	} else {
+		return nil, nil
+	}
+}
+
+type fieldGetter = func(operation *entities.Operation) any
+
+var fieldGetters = map[string]fieldGetter{
+	"amount": func(operation *entities.Operation) any {
+		return operation.Amount()
+	},
+	"label": func(operation *entities.Operation) any {
+		return operation.Label()
+	},
+	"note": func(operation *entities.Operation) any {
+		return operation.Note()
+	},
+}
+
+type operator = func(field any, value any) (bool, error)
+
+var operators = map[entities.RuleOperator]operator{
+	"$eq": func(field any, value any) (bool, error) {
+		switch typedField := field.(type) {
+		case float64:
+			typedValue, ok := value.(float64)
+			if !ok {
+				return false, fmt.Errorf("value is not a float64")
+			}
+			return typedField == typedValue, nil
+
+		case string:
+			typedValue, ok := value.(string)
+			if !ok {
+				return false, fmt.Errorf("value is not a string")
+			}
+			return typedField == typedValue, nil
+
+		default:
+			return false, fmt.Errorf("field is not a string or float64")
+		}
+	},
+	"$lt": makeNumberOperator(func(field float64, value float64) (bool, error) {
+		return field < value, nil
+	}),
+	"$lte": makeNumberOperator(func(field float64, value float64) (bool, error) {
+		return field <= value, nil
+	}),
+	"$gt": makeNumberOperator(func(field float64, value float64) (bool, error) {
+		return field > value, nil
+	}),
+	"$gte": makeNumberOperator(func(field float64, value float64) (bool, error) {
+		return field >= value, nil
+	}),
+	"$regex": makeStringOperator(func(field string, value string) (bool, error) {
+		regexp, err := regexp.Compile(value)
+		if err != nil {
+			return false, fmt.Errorf("error compiling regex: %w", err)
+		}
+		return regexp.MatchString(field), nil
+	}),
+	"$contains": makeStringOperator(func(field string, value string) (bool, error) {
+		return strings.Contains(field, value), nil
+	}),
+}
+
+func makeNumberOperator(impl func(field float64, value float64) (bool, error)) operator {
+	return func(field any, value any) (bool, error) {
+		typedField, ok := field.(float64)
+		if !ok {
+			return false, fmt.Errorf("field is not a float64")
+		}
+
+		typedValue, ok := value.(float64)
+		if !ok {
+			return false, fmt.Errorf("value is not a float64")
+		}
+
+		return impl(typedField, typedValue)
+	}
+}
+
+func makeStringOperator(impl func(field string, value string) (bool, error)) operator {
+	return func(field any, value any) (bool, error) {
+		typedField, ok := field.(string)
+		if !ok {
+			return false, fmt.Errorf("field is not a string")
+		}
+
+		typedValue, ok := value.(string)
+		if !ok {
+			return false, fmt.Errorf("value is not a string")
+		}
+
+		return impl(typedField, typedValue)
+	}
+}
