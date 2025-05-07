@@ -100,39 +100,3 @@ func createGroupHierarchy(groupCollection store.IContainer[*entities.Group], gro
 
 	return hierarchy
 }
-
-func castNullable[T any](value any) (*T, bool) {
-	if value == nil {
-		return nil, true
-	}
-
-	if val, ok := value.(T); ok {
-		return &val, true
-	}
-
-	return nil, false
-}
-
-func castNullableBool(value any, defaultValue bool) (bool, bool) {
-	if value == nil {
-		return defaultValue, true
-	}
-
-	if val, ok := value.(bool); ok {
-		return val, true
-	}
-
-	return false, false
-}
-
-func castNullableArray(value any) ([]any, bool) {
-	if value == nil {
-		return make([]any, 0), true
-	}
-
-	if val, ok := value.([]any); ok {
-		return val, true
-	}
-
-	return nil, false
-}

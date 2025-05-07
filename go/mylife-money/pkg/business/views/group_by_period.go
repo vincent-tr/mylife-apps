@@ -125,67 +125,64 @@ func (view *groupByPeriod) SetCriteriaValues(values CriteriaValues) error {
 
 func (view *groupByPeriod) buildCriteria(values CriteriaValues) (*groupByPeriodCriteria, error) {
 	criteria := &groupByPeriodCriteria{}
+	reader := NewCriteriaReader(values)
 
-	for key, value := range values {
-		switch key {
-		case "account":
-			if account, ok := castNullable[string](value); ok {
-				criteria.account = account
-			} else {
-				return nil, fmt.Errorf("Invalid value for account: %v", value)
-			}
-
-		case "groups":
-			if groups, ok := castNullableArray(value); ok {
-				stringGroups := make([]string, 0, len(groups))
-
-				for _, group := range groups {
-					if group == nil {
-						// Consider nil group is unsorted group
-						stringGroups = append(stringGroups, "")
-					} else if str, ok := group.(string); ok {
-						stringGroups = append(stringGroups, str)
-					} else {
-						return nil, fmt.Errorf("Invalid value for groups: %v", group)
-					}
-				}
-
-				criteria.groups = stringGroups
-			} else {
-				return nil, fmt.Errorf("Invalid value for groups: %v", value)
-			}
-
-		case "minDate":
-			if date, ok := castNullable[time.Time](value); ok {
-				criteria.minDate = date
-			} else {
-				return nil, fmt.Errorf("Invalid value for minDate: %v", value)
-			}
-
-		case "maxDate":
-			if date, ok := castNullable[time.Time](value); ok {
-				criteria.maxDate = date
-			} else {
-				return nil, fmt.Errorf("Invalid value for maxDate: %v", value)
-			}
-
-		case "children":
-			if children, ok := castNullableBool(value, false); ok {
-				criteria.children = children
-			} else {
-				return nil, fmt.Errorf("Invalid value for children: %v", value)
-			}
-
-		case "noChildSub":
-			if noChildSub, ok := castNullableBool(value, false); ok {
-				criteria.noChildSub = noChildSub
-			} else {
-				return nil, fmt.Errorf("Invalid value for noChildSub: %v", value)
-			}
-		default:
-			return nil, fmt.Errorf("Unknown criteria key: %s", key)
+	if reader.Has("account") {
+		account, err := reader.GetString("account")
+		if err != nil {
+			return nil, err
 		}
+		criteria.account = account
 	}
+
+	if reader.Has("groups") {
+		groups, err := reader.GetArray("groups")
+		if err != nil {
+			return nil, err
+		}
+		stringGroups := make([]string, 0, len(groups))
+
+		for _, group := range groups {
+			if group == nil {
+				// Consider nil group is unsorted group
+				stringGroups = append(stringGroups, "")
+			} else if str, ok := group.(string); ok {
+				stringGroups = append(stringGroups, str)
+			} else {
+				return nil, fmt.Errorf("Invalid value for groups: %v", group)
+			}
+		}
+
+		criteria.groups = stringGroups
+	}
+
+	if reader.Has("minDate") {
+		minDate, err := reader.GetDate("minDate")
+		if err != nil {
+			return nil, err
+		}
+		criteria.minDate = minDate
+	}
+
+	if reader.Has("maxDate") {
+		maxDate, err := reader.GetDate("maxDate")
+		if err != nil {
+			return nil, err
+		}
+		criteria.maxDate = maxDate
+	}
+
+	children, err := reader.GetBool("children", false)
+	if err != nil {
+		return nil, err
+	}
+	criteria.children = children
+
+	noChildSub, err := reader.GetBool("noChildSub", false)
+	if err != nil {
+		return nil, err
+	}
+	criteria.noChildSub = noChildSub
 
 	return criteria, nil
 }
