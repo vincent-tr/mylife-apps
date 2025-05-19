@@ -2,28 +2,56 @@ package entities
 
 import (
 	"mylife-tools-server/services/io/serialization"
-
-	"go.mongodb.org/mongo-driver/v2/bson"
+	"time"
 )
 
 type BotType string
 
 const (
-	BotTypeNoop          BotType = "noop"
 	BotTypeCicScraper    BotType = "cic-scraper"
 	BotTypeFraisScraper  BotType = "frais-scraper"
 	BotTypeAmazonScraper BotType = "amazon-scraper"
 	BotTypePaypalScraper BotType = "paypal-scraper"
 )
 
+type BotRunResult string
+
+const (
+	BotRunResultSuccess BotRunResult = "success"
+	BotRunResultWarning BotRunResult = "warning"
+	BotRunResultError   BotRunResult = "error"
+)
+
+type BotRunLogSeverity string
+
+const (
+	BotRunLogSeverityDebug   BotRunLogSeverity = "debug"
+	BotRunLogSeverityInfo    BotRunLogSeverity = "info"
+	BotRunLogSeverityWarning BotRunLogSeverity = "warning"
+	BotRunLogSeverityError   BotRunLogSeverity = "error"
+	BotRunLogSeverityFatal   BotRunLogSeverity = "fatal"
+)
+
+type BotRunLog struct {
+	Date     time.Time         `json:"date"`
+	Severity BotRunLogSeverity `json:"severity"`
+	Message  string            `json:"message"`
+}
+
+// Execution de robot
+type BotRun struct {
+	Start  time.Time     `json:"start"`
+	End    *time.Time    `json:"end"`
+	Result *BotRunResult `json:"result"`
+	Logs   []BotRunLog   `json:"logs"`
+}
+
 // Robot
 type Bot struct {
-	id            string
-	typ           BotType
-	name          string
-	schedule      string
-	configuration any
-	state         any
+	id       string
+	typ      BotType
+	schedule *string
+	lastRun  *BotRun
 }
 
 func (bot *Bot) Id() string {
@@ -35,24 +63,14 @@ func (bot *Bot) Type() BotType {
 	return bot.typ
 }
 
-// Nom
-func (bot *Bot) Name() string {
-	return bot.name
-}
-
 // Planification
-func (bot *Bot) Schedule() string {
+func (bot *Bot) Schedule() *string {
 	return bot.schedule
 }
 
-// Configuration
-func (bot *Bot) Configuration() any {
-	return bot.configuration
-}
-
-// Etat
-func (bot *Bot) State() any {
-	return bot.state
+// Dernière exécution
+func (bot *Bot) LastRun() *BotRun {
+	return bot.lastRun
 }
 
 func (bot *Bot) Marshal() (interface{}, error) {
@@ -61,77 +79,28 @@ func (bot *Bot) Marshal() (interface{}, error) {
 	helper.Add("_entity", "bot")
 	helper.Add("_id", bot.id)
 	helper.Add("type", bot.typ)
-	helper.Add("name", bot.name)
 	helper.Add("schedule", bot.schedule)
-	helper.Add("configuration", bot.configuration)
-	helper.Add("state", bot.state)
+	helper.Add("lastRun", bot.lastRun)
 
 	return helper.Build()
 }
 
 func (bot *Bot) String() string {
-	return bot.Name()
+	return string(bot.typ)
 }
 
 type BotValues struct {
-	Id            string
-	Type          BotType
-	Name          string
-	Schedule      string
-	Configuration any
-	State         any
+	Id       string
+	Type     BotType
+	Schedule *string
+	LastRun  *BotRun
 }
 
 func NewBot(values *BotValues) *Bot {
 	return &Bot{
-		id:            values.Id,
-		typ:           values.Type,
-		name:          values.Name,
-		schedule:      values.Schedule,
-		configuration: values.Configuration,
-		state:         values.State,
+		id:       values.Id,
+		typ:      values.Type,
+		schedule: values.Schedule,
+		lastRun:  values.LastRun,
 	}
-}
-
-type botData struct {
-	Id            bson.ObjectID `bson:"_id"`
-	Type          BotType       `bson:"type"`
-	Name          string        `bson:"name"`
-	Schedule      string        `bson:"schedule"`
-	Configuration any           `bson:"configuration"`
-	State         any           `bson:"state"`
-}
-
-func BotEncode(bot *Bot) ([]byte, error) {
-	id, err := bson.ObjectIDFromHex(bot.id)
-	if err != nil {
-		return nil, err
-	}
-
-	return bson.Marshal(botData{
-		Id:            id,
-		Type:          bot.typ,
-		Name:          bot.name,
-		Schedule:      bot.schedule,
-		Configuration: bot.configuration,
-		State:         bot.state,
-	})
-}
-
-func BotDecode(raw []byte) (*Bot, error) {
-	data := botData{}
-	if err := bson.Unmarshal(raw, &data); err != nil {
-		return nil, err
-	}
-
-	bot := &Bot{
-		id:            data.Id.Hex(),
-		typ:           data.Type,
-		name:          data.Name,
-		schedule:      data.Schedule,
-		configuration: data.Configuration,
-		state:         data.State,
-	}
-
-	return bot, nil
 }
