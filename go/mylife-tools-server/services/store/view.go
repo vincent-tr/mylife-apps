@@ -116,3 +116,59 @@ func NewView[TEntity Entity](source IContainer[TEntity], predicate func(obj TEnt
 
 	return v
 }
+
+type unclosableView[TEntity Entity] struct {
+	target IView[TEntity]
+}
+
+func (v *unclosableView[TEntity]) AddListener(callback *func(event *Event[TEntity])) {
+	v.target.AddListener(callback)
+}
+
+func (v *unclosableView[TEntity]) RemoveListener(callback *func(event *Event[TEntity])) {
+	v.target.RemoveListener(callback)
+}
+
+func (v *unclosableView[TEntity]) Name() string {
+	return v.target.Name()
+}
+
+func (v *unclosableView[TEntity]) Find(id string) (TEntity, bool) {
+	return v.target.Find(id)
+}
+
+func (v *unclosableView[TEntity]) Get(id string) (TEntity, error) {
+	return v.target.Get(id)
+}
+
+func (v *unclosableView[TEntity]) List() []TEntity {
+	return v.target.List()
+}
+
+func (v *unclosableView[TEntity]) Size() int {
+	return v.target.Size()
+}
+
+func (v *unclosableView[TEntity]) Filter(predicate func(obj TEntity) bool) []TEntity {
+	return v.target.Filter(predicate)
+}
+
+func (v *unclosableView[TEntity]) Exists(predicate func(obj TEntity) bool) bool {
+	return v.target.Exists(predicate)
+}
+
+func (v *unclosableView[TEntity]) Refresh() {
+	v.target.Refresh()
+}
+
+func (v *unclosableView[TEntity]) Close() {
+	// Do not close the original view
+}
+
+// Wrap the view to prevent closing: when the returned view is closed, it will not close the original view
+//
+// This is useful for materialized views that have a long lifetime, and are shared by multiple client sessions.
+// When a session unnotifies the view, it should not close the original view.
+func WrapUnclosableView[TEntity Entity](target IView[TEntity]) IView[TEntity] {
+	return &unclosableView[TEntity]{target: target}
+}

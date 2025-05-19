@@ -172,5 +172,7 @@ func GetMaterializedView[TEntity Entity](name string) (IView[TEntity], error) {
 		return nil, fmt.Errorf("materialized view '%s' requested with bad entity type", name)
 	}
 
+	view = WrapUnclosableView(view)
+
 	return view, nil
 }
