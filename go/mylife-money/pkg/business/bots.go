@@ -1,7 +1,7 @@
 package business
 
 import (
-	"fmt"
+	"mylife-money/pkg/bots"
 	"mylife-money/pkg/entities"
 	"mylife-tools-server/services/notification"
 	"mylife-tools-server/services/sessions"
@@ -19,5 +19,8 @@ func NotifyBots(session *sessions.Session) (uint64, error) {
 }
 
 func StartBot(id string) error {
-	return fmt.Errorf("Not implemented")
+	// Note: entities.BotType(typ) == string(id) for bots, cf bots view
+	typ := entities.BotType(id)
+
+	return bots.StartBotRun(typ)
 }

@@ -11,7 +11,8 @@ type botsView struct {
 	container         *store.Container[*entities.Bot]
 	registrationToken bots.EventsRegistrationToken
 
-	cicScraper *entities.Bot
+	cicScraper   *entities.Bot
+	fraisScraper *entities.Bot
 }
 
 func (view *botsView) AddListener(callback *func(event *store.Event[*entities.Bot])) {
@@ -81,12 +82,38 @@ func NewBots() (store.IView[*entities.Bot], error) {
 			Start:  time.Date(2023, 10, 1, 20, 0, 0, 0, time.UTC),
 			End:    &end,
 			Result: &result,
+			Logs: []entities.BotRunLog{
+				entities.BotRunLog{
+					Severity: entities.BotRunLogSeverityInfo,
+					Message:  "CIC Scraper started",
+				},
+				entities.BotRunLog{
+					Severity: entities.BotRunLogSeverityDebug,
+					Message:  "debug",
+				},
+				entities.BotRunLog{
+					Severity: entities.BotRunLogSeverityWarning,
+					Message:  "warn",
+				},
+				entities.BotRunLog{
+					Severity: entities.BotRunLogSeverityError,
+					Message:  "error",
+				},
+			},
 		},
+	})
+
+	view.fraisScraper = entities.NewBot(&entities.BotValues{
+		Id:       string(entities.BotTypeFraisScraper),
+		Type:     entities.BotTypeFraisScraper,
+		Schedule: nil,
+		LastRun:  nil,
 	})
 
 	///////
 
 	view.container.Set(view.cicScraper)
+	view.container.Set(view.fraisScraper)
 
 	return view, nil
 }
