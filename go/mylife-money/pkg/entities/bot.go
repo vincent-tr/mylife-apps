@@ -89,6 +89,15 @@ func (bot *Bot) String() string {
 	return string(bot.typ)
 }
 
+func (bot *Bot) ToValues() *BotValues {
+	return &BotValues{
+		Id:       bot.id,
+		Type:     bot.typ,
+		Schedule: bot.schedule,
+		LastRun:  bot.lastRun,
+	}
+}
+
 type BotValues struct {
 	Id       string
 	Type     BotType

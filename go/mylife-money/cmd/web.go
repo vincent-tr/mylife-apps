@@ -4,6 +4,8 @@ import (
 	ui "mylife-money-ui"
 	"mylife-money/pkg/api"
 	"mylife-money/pkg/business"
+	_ "mylife-money/pkg/services/bots"
+	_ "mylife-money/pkg/services/secrets"
 	"mylife-tools-server/services"
 	_ "mylife-tools-server/services/api"
 	_ "mylife-tools-server/services/web"
@@ -22,7 +24,7 @@ func init() {
 				"web":   ui.FS,
 			}
 
-			services.RunServices([]string{"web", "store"}, args)
+			services.RunServices([]string{"bots", "web", "store"}, args)
 		},
 	})
 }
