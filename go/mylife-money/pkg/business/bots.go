@@ -1,8 +1,8 @@
 package business
 
 import (
-	"mylife-money/pkg/bots"
 	"mylife-money/pkg/entities"
+	"mylife-money/pkg/services/bots"
 	"mylife-tools-server/services/notification"
 	"mylife-tools-server/services/sessions"
 	"mylife-tools-server/services/store"

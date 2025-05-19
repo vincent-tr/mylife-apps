@@ -1,18 +1,16 @@
 package views
 
 import (
-	"mylife-money/pkg/bots"
 	"mylife-money/pkg/entities"
+	"mylife-money/pkg/services/bots"
 	"mylife-tools-server/services/store"
+	"mylife-tools-server/services/tasks"
 	"time"
 )
 
 type botsView struct {
 	container         *store.Container[*entities.Bot]
 	registrationToken bots.EventsRegistrationToken
-
-	cicScraper   *entities.Bot
-	fraisScraper *entities.Bot
 }
 
 func (view *botsView) AddListener(callback *func(event *store.Event[*entities.Bot])) {
@@ -66,66 +64,83 @@ func NewBots() (store.IView[*entities.Bot], error) {
 
 	view := &botsView{}
 	view.container = store.NewContainer[*entities.Bot]("bots")
+
 	view.registrationToken = bots.RegisterBotRunEvents(view.botStart, view.botEnd, view.botLog)
 
-	///////
+	bots := bots.GetBots()
 
-	schedule := "0 20 * * *"
-	end := time.Date(2023, 10, 1, 20, 0, 0, 0, time.UTC)
-	result := entities.BotRunResultSuccess
-
-	view.cicScraper = entities.NewBot(&entities.BotValues{
-		Id:       string(entities.BotTypeCicScraper),
-		Type:     entities.BotTypeCicScraper,
-		Schedule: &schedule,
-		LastRun: &entities.BotRun{
-			Start:  time.Date(2023, 10, 1, 20, 0, 0, 0, time.UTC),
-			End:    &end,
-			Result: &result,
-			Logs: []entities.BotRunLog{
-				entities.BotRunLog{
-					Severity: entities.BotRunLogSeverityInfo,
-					Message:  "CIC Scraper started",
-				},
-				entities.BotRunLog{
-					Severity: entities.BotRunLogSeverityDebug,
-					Message:  "debug",
-				},
-				entities.BotRunLog{
-					Severity: entities.BotRunLogSeverityWarning,
-					Message:  "warn",
-				},
-				entities.BotRunLog{
-					Severity: entities.BotRunLogSeverityError,
-					Message:  "error",
-				},
-			},
-		},
-	})
-
-	view.fraisScraper = entities.NewBot(&entities.BotValues{
-		Id:       string(entities.BotTypeFraisScraper),
-		Type:     entities.BotTypeFraisScraper,
-		Schedule: nil,
-		LastRun:  nil,
-	})
-
-	///////
-
-	view.container.Set(view.cicScraper)
-	view.container.Set(view.fraisScraper)
+	for _, bot := range bots {
+		view.container.Set(entities.NewBot(&entities.BotValues{
+			Id:       string(bot.Type()),
+			Type:     bot.Type(),
+			Schedule: bot.Schedule(),
+			LastRun:  nil,
+		}))
+	}
 
 	return view, nil
 }
 
 func (view *botsView) botStart(typ entities.BotType) {
-	// TODO
+	view.updateBot(typ, func(values *entities.BotValues) {
+		values.LastRun = &entities.BotRun{
+			Start:  time.Now(),
+			End:    nil,
+			Result: nil,
+			Logs:   make([]entities.BotRunLog, 0),
+		}
+	})
 }
 
 func (view *botsView) botEnd(typ entities.BotType, result entities.BotRunResult) {
-	// TODO
+	view.updateLastRun(typ, func(run *entities.BotRun) {
+		endTime := time.Now()
+		run.End = &endTime
+		run.Result = &result
+	})
 }
 
 func (view *botsView) botLog(typ entities.BotType, severity entities.BotRunLogSeverity, message string) {
-	// TODO
+	view.updateLastRun(typ, func(run *entities.BotRun) {
+		run.Logs = append(run.Logs, entities.BotRunLog{
+			Date:     time.Now(),
+			Severity: severity,
+			Message:  message,
+		})
+	})
+}
+
+func (view *botsView) updateBot(typ entities.BotType, updater func(*entities.BotValues)) {
+	id := string(typ)
+
+	err := tasks.SubmitEventLoop("energy/bot-update", func() {
+		bot, ok := view.container.Find(id)
+		if !ok {
+			logger.Errorf("bot '%s' not found", id)
+			return
+		}
+
+		values := bot.ToValues()
+
+		updater(values)
+
+		view.container.Set(entities.NewBot(values))
+
+	})
+
+	if err != nil {
+		logger.WithError(err).Errorf("Failed to update bot '%s'", id)
+		return
+	}
+}
+
+func (view *botsView) updateLastRun(typ entities.BotType, updater func(*entities.BotRun)) {
+	view.updateBot(typ, func(values *entities.BotValues) {
+		if values.LastRun == nil {
+			logger.Errorf("bot '%s' has no last run", typ)
+			return
+		}
+
+		updater(values.LastRun)
+	})
 }
