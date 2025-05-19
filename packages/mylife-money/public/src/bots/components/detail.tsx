@@ -1,10 +1,7 @@
 import { React, mui, clsx, CriteriaField } from 'mylife-tools-ui';
-import { NoopConfig, NoopState } from './config/noop';
-import { CicScraperConfig, CicScraperState } from './config/cic-scraper';
-import { FraisScraperConfig, FraisScraperState } from './config/frais-scraper';
-import { AmazonScraperConfig, AmazonScraperState } from './config/amazon-scraper';
-import { PaypalScraperConfig, PaypalScraperState } from './config/paypal-scraper';
-import CronCriteriaField from './cron-criteria-field';
+import cronstrue from 'cronstrue';
+import 'cronstrue/locales/fr';
+import cronParser from 'cron-parser';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
@@ -17,8 +14,6 @@ const useStyles = mui.makeStyles(theme => ({
 }));
 const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bot, className }) => {
   const classes = useStyles();
-  const Config = getConfigComponent(bot.type);
-  const State = getStateComponent(bot.type);
 
   return (
     <div className={clsx(classes.container, className)}>
@@ -26,9 +21,6 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bo
         <mui.Grid item xs={12}>
           <CronCriteriaField value={bot.schedule} />
         </mui.Grid>
-
-        <Config configuration={bot.configuration} />
-        <State state={bot.state} />
       </mui.Grid>
     </div>
   );
@@ -36,36 +28,44 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bo
 
 export default Detail;
 
-function getConfigComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper' | 'paypal-scraper') {
-  switch(type) {
-    case 'noop':
-      return NoopConfig;
-    case 'cic-scraper':
-      return CicScraperConfig;
-    case 'frais-scraper':
-      return FraisScraperConfig;
-    case 'amazon-scraper':
-      return AmazonScraperConfig;
-    case 'paypal-scraper':
-      return PaypalScraperConfig;
-    default:
-      throw new Error(`Unknown bot type '${type}'`);
+const CronCriteriaField: React.FunctionComponent<{ value: string; }> = ({ value }) => {
+
+  return (
+    <CriteriaField label={
+      <>
+        {'Planification '}
+        <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
+          "cron"
+        </mui.Link>
+      </>
+    }>
+      { value ? (
+        <mui.TextField InputProps={{ readOnly: true }} value={value} helperText={format(value)} />
+      ) : (
+        <mui.TextField InputProps={{ readOnly: true }} value={'-'} helperText={' '} />
+      )}
+    </CriteriaField>
+  );
+};
+
+export function validate(value: string) {
+  if (!value) {
+    return false;
+  }
+  
+  try { 
+    cronParser.parseExpression(value);
+    cronstrue.toString(value);
+    return true;
+  } catch(e) {
+    return false;
   }
 }
 
-function getStateComponent(type: 'noop' | 'cic-scraper' | 'frais-scraper' | 'amazon-scraper' | 'paypal-scraper') {
-  switch(type) {
-    case 'noop':
-      return NoopState;
-    case 'cic-scraper':
-      return CicScraperState;
-    case 'frais-scraper':
-      return FraisScraperState;
-    case 'amazon-scraper':
-      return AmazonScraperState;
-    case 'paypal-scraper':
-      return PaypalScraperState;
-    default:
-      throw new Error(`Unknown bot type '${type}'`);
-    }
+export function format(value: string) {
+  if (!validate(value)) {
+    return '<invalide>';
+  }
+
+  return cronstrue.toString(value, { locale: 'fr' });
 }
