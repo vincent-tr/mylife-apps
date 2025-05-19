@@ -4,10 +4,7 @@ export default {
   name: 'Robot',
   fields: [
     { id: 'type', name: 'Type', datatype: 'bot-type' },
-    { id: 'name', name: 'Nom', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'schedule', name: 'Planification', datatype: 'cron', constraints: ['not-null', 'not-empty'] },
-    { id: 'configuration', name: 'Configuration', datatype: 'any' },
-    { id: 'state', name: 'Etat', datatype: 'any' },
-  ],
+    { id: 'lastRun', name: 'Dernière exécution', datatype: 'bot-run' },],
   display: obj => obj.name
 };
