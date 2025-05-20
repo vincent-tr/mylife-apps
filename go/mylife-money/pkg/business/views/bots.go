@@ -2,15 +2,13 @@ package views
 
 import (
 	"mylife-money/pkg/entities"
-	"mylife-money/pkg/services/bots"
 	"mylife-tools-server/services/store"
 	"mylife-tools-server/services/tasks"
 	"time"
 )
 
 type botsView struct {
-	container         *store.Container[*entities.Bot]
-	registrationToken bots.EventsRegistrationToken
+	container *store.Container[*entities.Bot]
 }
 
 func (view *botsView) AddListener(callback *func(event *store.Event[*entities.Bot])) {
@@ -50,9 +48,12 @@ func (view *botsView) Exists(predicate func(obj *entities.Bot) bool) bool {
 }
 
 func (view *botsView) Close() {
-	bots.UnregisterBotRunEvents(view.registrationToken)
+	botsViewInstance = nil
 	view.container.Reset()
 }
+
+// avoid updates after closing
+var botsViewInstance *botsView
 
 func (view *botsView) Refresh() {
 	// nothing to do
@@ -65,20 +66,18 @@ func NewBots() (store.IView[*entities.Bot], error) {
 	view := &botsView{}
 	view.container = store.NewContainer[*entities.Bot]("bots")
 
-	view.registrationToken = bots.RegisterBotRunEvents(view.botStart, view.botEnd, view.botLog)
-
-	bots := bots.GetBots()
-
-	for _, bot := range bots {
-		view.container.Set(entities.NewBot(&entities.BotValues{
-			Id:       string(bot.Type()),
-			Type:     bot.Type(),
-			Schedule: bot.Schedule(),
-			LastRun:  nil,
-		}))
-	}
+	botsViewInstance = view
 
 	return view, nil
+}
+
+func (view *botsView) addBot(typ entities.BotType, schedule *string) {
+	view.container.Set(entities.NewBot(&entities.BotValues{
+		Id:       string(typ),
+		Type:     typ,
+		Schedule: schedule,
+		LastRun:  nil,
+	}))
 }
 
 func (view *botsView) botStart(typ entities.BotType) {
@@ -143,4 +142,30 @@ func (view *botsView) updateLastRun(typ entities.BotType, updater func(*entities
 
 		updater(values.LastRun)
 	})
+}
+
+func BotAdd(typ entities.BotType, schedule *string) {
+	if botsViewInstance == nil {
+		panic("Bots view is not initialized")
+	}
+
+	botsViewInstance.addBot(typ, schedule)
+}
+
+func BotRunStarted(typ entities.BotType) {
+	if botsViewInstance != nil {
+		botsViewInstance.botStart(typ)
+	}
+}
+
+func BotRunEnded(typ entities.BotType, result entities.BotRunResult) {
+	if botsViewInstance != nil {
+		botsViewInstance.botEnd(typ, result)
+	}
+}
+
+func BotRunLog(typ entities.BotType, severity entities.BotRunLogSeverity, message string) {
+	if botsViewInstance != nil {
+		botsViewInstance.botLog(typ, severity, message)
+	}
 }

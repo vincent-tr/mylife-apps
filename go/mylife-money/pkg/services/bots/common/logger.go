@@ -2,22 +2,22 @@ package common
 
 import (
 	"fmt"
+	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
 	"mylife-tools-server/log"
+	"mylife-tools-server/services/tasks"
 )
 
 var logger = log.CreateLogger("mylife:money:bots")
 
 type ExecutionLogger struct {
 	typ         entities.BotType
-	disp        *NotificationsDispatcher
 	maxSeverity entities.BotRunLogSeverity
 }
 
-func NewExecutionLogger(typ entities.BotType, disp *NotificationsDispatcher) *ExecutionLogger {
+func NewExecutionLogger(typ entities.BotType) *ExecutionLogger {
 	return &ExecutionLogger{
 		typ:         typ,
-		disp:        disp,
 		maxSeverity: entities.BotRunLogSeverityDebug,
 	}
 }
@@ -35,7 +35,9 @@ func (el *ExecutionLogger) Log(message string, severity entities.BotRunLogSeveri
 		logger.WithField("bot", el.typ).Error(message)
 	}
 
-	el.disp.EmitLog(el.typ, severity, message)
+	tasks.SubmitEventLoop("bots/log", func() {
+		views.BotRunLog(el.typ, severity, message)
+	})
 
 	if severityOrder[severity] > severityOrder[el.maxSeverity] {
 		el.maxSeverity = severity

@@ -3,8 +3,11 @@ package cicscraper
 import (
 	"context"
 	"fmt"
+	"mylife-money/pkg/business"
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
+	"mylife-tools-server/services/store"
+	"mylife-tools-server/services/tasks"
 	"net/http"
 	"net/http/cookiejar"
 )
@@ -64,8 +67,38 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 		return fmt.Errorf("failed to download: %w", err)
 	}
 
-	_ = data
-	return fmt.Errorf("not implemented")
+	// TODO: send mail with attached file
+
+	wrapper := newErrorWrapper(func() error {
+		account, err := b.getAccountId()
+		if err != nil {
+			return err
+		}
+
+		importedCount, err := business.OperationsImport(account, string(data))
+		if err != nil {
+			return fmt.Errorf("failed to import operations: %w", err)
+		}
+
+		b.logger.Infof("%d opérations importées", importedCount)
+
+		movedCount, err := business.ExecuteRules()
+		if err != nil {
+			return fmt.Errorf("failed to execute rules: %w", err)
+		}
+
+		b.logger.Infof("Exécution des règles : %d opérations classées", movedCount)
+
+		return nil
+	})
+
+	err = tasks.RunEventLoop("cic-scraper/import-operations", wrapper.Run)
+
+	if err != nil {
+		return err
+	}
+
+	return wrapper.Error()
 }
 
 var _ common.Bot = (*bot)(nil)
@@ -74,4 +107,44 @@ func NewBot(config *Config) common.Bot {
 	return &bot{
 		config: config,
 	}
+}
+
+func (b *bot) getAccountId() (string, error) {
+	accounts, err := store.GetCollection[*entities.Account]("accounts")
+	if err != nil {
+		return "", err
+	}
+
+	list := accounts.Filter(func(a *entities.Account) bool {
+		return a.Code() == b.config.Account
+	})
+
+	if len(list) == 0 {
+		return "", fmt.Errorf("account %s not found", b.config.Account)
+	}
+
+	if len(list) > 1 {
+		return "", fmt.Errorf("multiple accounts found for code %s", b.config.Account)
+	}
+
+	return list[0].Id(), nil
+}
+
+type errorWrapper struct {
+	err    error
+	target func() error
+}
+
+func newErrorWrapper(target func() error) *errorWrapper {
+	return &errorWrapper{
+		target: target,
+	}
+}
+
+func (ew *errorWrapper) Error() error {
+	return ew.err
+}
+
+func (ew *errorWrapper) Run() {
+	ew.err = ew.target()
 }

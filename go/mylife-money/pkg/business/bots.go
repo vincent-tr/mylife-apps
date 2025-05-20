@@ -1,8 +1,8 @@
 package business
 
 import (
+	"fmt"
 	"mylife-money/pkg/entities"
-	"mylife-money/pkg/services/bots"
 	"mylife-tools-server/services/notification"
 	"mylife-tools-server/services/sessions"
 	"mylife-tools-server/services/store"
@@ -18,9 +18,24 @@ func NotifyBots(session *sessions.Session) (uint64, error) {
 	return viewId, nil
 }
 
+var botStartHandler func(entities.BotType) error
+
+func SetBotStartHandler(handler func(entities.BotType) error) {
+	botStartHandler = handler
+}
+
+func ResetBotStartHandler() {
+	botStartHandler = nil
+}
+
 func StartBot(id string) error {
 	// Note: entities.BotType(typ) == string(id) for bots, cf bots view
 	typ := entities.BotType(id)
 
-	return bots.StartBotRun(typ)
+	handler := botStartHandler
+	if handler == nil {
+		return fmt.Errorf("Bot start handler not set")
+	}
+
+	return handler(typ)
 }
