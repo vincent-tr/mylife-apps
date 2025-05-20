@@ -1,6 +1,7 @@
 package cicscraper
 
 import (
+	"context"
 	"fmt"
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
@@ -15,22 +16,29 @@ type Config struct {
 
 type bot struct {
 	config *Config
+
+	// only set when the bot is running
+	ctx    context.Context
+	logger *common.ExecutionLogger
 }
 
-func (b *bot) IsRunning() bool {
-	panic("unimplemented")
+func (b *bot) Type() entities.BotType {
+	return entities.BotTypeCicScraper
 }
 
 func (b *bot) Schedule() *string {
 	return b.config.Schedule
 }
 
-func (b *bot) Start() error {
-	return fmt.Errorf("unimplemented")
-}
+func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
+	b.ctx = ctx
+	b.logger = logger
+	defer func() {
+		b.ctx = nil
+		b.logger = nil
+	}()
 
-func (b *bot) Type() entities.BotType {
-	return entities.BotTypeCicScraper
+	return fmt.Errorf("not implemented")
 }
 
 var _ common.Bot = (*bot)(nil)
