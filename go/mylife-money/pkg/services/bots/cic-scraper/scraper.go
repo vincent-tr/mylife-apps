@@ -355,7 +355,7 @@ func (resp *response) FindMatch(pattern string) (string, error) {
 	rx := regexp.MustCompile(pattern)
 	matches := rx.FindStringSubmatch(resp.bodyString)
 	if len(matches) < 2 {
-		fmt.Errorf("unexpected response: %s", resp.bodyString)
+		return "", fmt.Errorf("unexpected response: %s", resp.bodyString)
 	}
 	return matches[1], nil
 }
