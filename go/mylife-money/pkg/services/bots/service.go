@@ -9,6 +9,8 @@ import (
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	"sync"
+
+	"github.com/go-co-op/gocron/v2"
 )
 
 var logger = log.CreateLogger("mylife:money:bots")
@@ -22,31 +24,47 @@ type botsConfig struct {
 
 type botsService struct {
 	notifications *common.NotificationsDispatcher
-
-	bots     map[entities.BotType]*botHandler
-	pendings *sync.WaitGroup
+	bots          map[entities.BotType]*botHandler
+	pendings      *sync.WaitGroup
+	scheduler     gocron.Scheduler
 }
 
 func (service *botsService) Init(arg interface{}) error {
 	conf := botsConfig{}
 	config.BindStructure("bots", &conf)
 
-	service.pendings = &sync.WaitGroup{}
+	scheduler, err := gocron.NewScheduler()
+	if err != nil {
+		return nil
+	}
+
+	scheduler.Start()
 
 	service.notifications = common.NewNotificationsDispatcher()
-
 	service.bots = make(map[entities.BotType]*botHandler)
+	service.pendings = &sync.WaitGroup{}
+	service.scheduler = scheduler
 
 	if conf.CicScraper != nil {
 		bot := cicscraper.NewBot(conf.CicScraper)
 		handler := newBotHandler(bot, service.pendings)
 		service.bots[bot.Type()] = handler
+
+		pschedule := bot.Schedule()
+		if pschedule != nil {
+			schedule := *pschedule
+			service.scheduler.NewJob(gocron.CronJob(schedule, true), gocron.NewTask(handler.Start))
+		}
 	}
 
 	return nil
 }
 
 func (service *botsService) Terminate() error {
+	if err := service.scheduler.Shutdown(); err != nil {
+		return err
+	}
+
 	for _, bot := range service.bots {
 		bot.Cancel()
 	}
