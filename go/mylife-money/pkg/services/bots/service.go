@@ -1,7 +1,6 @@
 package bots
 
 import (
-	"context"
 	"fmt"
 	"mylife-money/pkg/entities"
 	cicscraper "mylife-money/pkg/services/bots/cic-scraper"
@@ -21,102 +20,10 @@ type botsConfig struct {
 	CicScraper *cicscraper.Config `mapstructure:"cic-scraper"`
 }
 
-type botHandler struct {
-	bot common.Bot
-	wg  *sync.WaitGroup
-
-	ctx    context.Context
-	cancel func()
-	mux    sync.Mutex
-}
-
-func newBotHandler(bot common.Bot, wg *sync.WaitGroup) *botHandler {
-	return &botHandler{
-		bot: bot,
-		wg:  wg,
-	}
-}
-
-func (h *botHandler) Type() entities.BotType {
-	return h.bot.Type()
-}
-
-func (h *botHandler) Schedule() *string {
-	return h.bot.Schedule()
-}
-
-func (h *botHandler) IsRunning() bool {
-	h.mux.Lock()
-	defer h.mux.Unlock()
-
-	return h.ctx != nil
-}
-
-func (h *botHandler) Cancel() {
-	cancel := h.cancel
-	if cancel != nil {
-		cancel()
-	}
-}
-
-func (h *botHandler) Start() error {
-	h.mux.Lock()
-	defer h.mux.Unlock()
-
-	if h.ctx != nil {
-		return fmt.Errorf("bot %s is already running", h.bot.Type())
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	h.ctx = ctx
-	h.cancel = cancel
-
-	h.wg.Add(1)
-
-	go h.Execute()
-
-	return nil
-}
-
-func (h *botHandler) Execute() {
-	defer h.wg.Done()
-
-	disp := getService().notifications
-	execLogger := common.NewExecutionLogger(h.bot.Type(), disp)
-
-	disp.EmitStart(h.bot.Type())
-
-	err := h.bot.Run(h.ctx, execLogger)
-
-	if err != nil {
-		// This will raise the max severity in the logger
-		execLogger.Fatalf("bot execution error: %s", err)
-	}
-
-	var result entities.BotRunResult
-
-	switch execLogger.GetMaxSeverity() {
-	case entities.BotRunLogSeverityDebug, entities.BotRunLogSeverityInfo:
-		result = entities.BotRunResultSuccess
-	case entities.BotRunLogSeverityWarning:
-		result = entities.BotRunResultWarning
-	case entities.BotRunLogSeverityError, entities.BotRunLogSeverityFatal:
-		result = entities.BotRunResultError
-	}
-
-	disp.EmitEnd(h.bot.Type(), result)
-
-	// End of run
-	h.mux.Lock()
-	h.ctx = nil
-	h.cancel = nil
-	h.mux.Unlock()
-}
-
 type botsService struct {
 	notifications *common.NotificationsDispatcher
 
-	bots     []*botHandler
+	bots     map[entities.BotType]*botHandler
 	pendings *sync.WaitGroup
 }
 
@@ -124,16 +31,17 @@ func (service *botsService) Init(arg interface{}) error {
 	conf := botsConfig{}
 	config.BindStructure("bots", &conf)
 
+	service.pendings = &sync.WaitGroup{}
+
 	service.notifications = common.NewNotificationsDispatcher()
 
-	service.bots = make([]*botHandler, 0)
+	service.bots = make(map[entities.BotType]*botHandler)
 
 	if conf.CicScraper != nil {
 		bot := cicscraper.NewBot(conf.CicScraper)
-		service.bots = append(service.bots, newBotHandler(bot, service.pendings))
+		handler := newBotHandler(bot, service.pendings)
+		service.bots[bot.Type()] = handler
 	}
-
-	service.pendings = &sync.WaitGroup{}
 
 	return nil
 }
@@ -157,14 +65,20 @@ func (service *botsService) Dependencies() []string {
 }
 
 func (service *botsService) startBotRun(typ entities.BotType) error {
-	return fmt.Errorf("not implemented")
+	bot, ok := service.bots[typ]
+	if !ok {
+		return fmt.Errorf("bot %s not found", typ)
+	}
+
+	return bot.Start()
+
 }
 
 func (service *botsService) getBots() []common.Bot {
-	bots := make([]common.Bot, len(service.bots))
+	bots := make([]common.Bot, 0, len(service.bots))
 
-	for i, bot := range service.bots {
-		bots[i] = bot.bot
+	for _, bot := range service.bots {
+		bots = append(bots, bot.bot)
 	}
 
 	return bots
