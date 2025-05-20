@@ -104,8 +104,4 @@ func init() {
 	services.Register(&botsService{})
 }
 
-func getService() *botsService {
-	return services.GetService[*botsService]("bots")
-}
-
 // Public access
