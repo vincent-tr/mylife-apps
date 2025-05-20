@@ -30,10 +30,9 @@ func (el *ExecutionLogger) Log(message string, severity entities.BotRunLogSeveri
 		logger.WithField("bot", el.typ).Info(message)
 	case entities.BotRunLogSeverityWarning:
 		logger.WithField("bot", el.typ).Warning(message)
-	case entities.BotRunLogSeverityError:
+	case entities.BotRunLogSeverityError, entities.BotRunLogSeverityFatal:
+		// logging fatal events stop the program.
 		logger.WithField("bot", el.typ).Error(message)
-	case entities.BotRunLogSeverityFatal:
-		logger.WithField("bot", el.typ).Fatal(message)
 	}
 
 	el.disp.EmitLog(el.typ, severity, message)
