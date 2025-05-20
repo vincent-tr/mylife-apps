@@ -79,6 +79,8 @@ func (service *botsService) ServiceName() string {
 }
 
 func (service *botsService) Dependencies() []string {
+	// store to find account in bots
+	// but cannot add it as dependency because the store need the notifications dispatcher in materialized views
 	return []string{"secrets"}
 }
 
