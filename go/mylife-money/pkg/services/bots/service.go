@@ -2,12 +2,15 @@ package bots
 
 import (
 	"fmt"
+	"mylife-money/pkg/business"
+	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
 	cicscraper "mylife-money/pkg/services/bots/cic-scraper"
 	"mylife-money/pkg/services/bots/common"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
+	"mylife-tools-server/services/tasks"
 	"sync"
 
 	"github.com/go-co-op/gocron/v2"
@@ -15,7 +18,6 @@ import (
 
 var logger = log.CreateLogger("mylife:money:bots")
 
-type EventsRegistrationToken = common.EventsRegistrationToken
 type Bot = common.Bot
 
 type botsConfig struct {
@@ -23,10 +25,9 @@ type botsConfig struct {
 }
 
 type botsService struct {
-	notifications *common.NotificationsDispatcher
-	bots          map[entities.BotType]*botHandler
-	pendings      *sync.WaitGroup
-	scheduler     gocron.Scheduler
+	bots      map[entities.BotType]*botHandler
+	pendings  *sync.WaitGroup
+	scheduler gocron.Scheduler
 }
 
 func (service *botsService) Init(arg interface{}) error {
@@ -40,7 +41,6 @@ func (service *botsService) Init(arg interface{}) error {
 
 	scheduler.Start()
 
-	service.notifications = common.NewNotificationsDispatcher()
 	service.bots = make(map[entities.BotType]*botHandler)
 	service.pendings = &sync.WaitGroup{}
 	service.scheduler = scheduler
@@ -50,6 +50,10 @@ func (service *botsService) Init(arg interface{}) error {
 		handler := newBotHandler(bot, service.pendings)
 		service.bots[bot.Type()] = handler
 
+		tasks.SubmitEventLoop("bots/add", func() {
+			views.BotAdd(bot.Type(), bot.Schedule())
+		})
+
 		pschedule := bot.Schedule()
 		if pschedule != nil {
 			schedule := *pschedule
@@ -57,10 +61,14 @@ func (service *botsService) Init(arg interface{}) error {
 		}
 	}
 
+	business.SetBotStartHandler(service.startBotRun)
+
 	return nil
 }
 
 func (service *botsService) Terminate() error {
+	business.ResetBotStartHandler()
+
 	if err := service.scheduler.Shutdown(); err != nil {
 		return err
 	}
@@ -79,9 +87,7 @@ func (service *botsService) ServiceName() string {
 }
 
 func (service *botsService) Dependencies() []string {
-	// store to find account in bots
-	// but cannot add it as dependency because the store need the notifications dispatcher in materialized views
-	return []string{"secrets"}
+	return []string{"secrets", "store", "tasks"}
 }
 
 func (service *botsService) startBotRun(typ entities.BotType) error {
@@ -94,16 +100,6 @@ func (service *botsService) startBotRun(typ entities.BotType) error {
 
 }
 
-func (service *botsService) getBots() []common.Bot {
-	bots := make([]common.Bot, 0, len(service.bots))
-
-	for _, bot := range service.bots {
-		bots = append(bots, bot.bot)
-	}
-
-	return bots
-}
-
 func init() {
 	services.Register(&botsService{})
 }
@@ -113,23 +109,3 @@ func getService() *botsService {
 }
 
 // Public access
-
-func GetNotificationsDispatcher() *common.NotificationsDispatcher {
-	return getService().notifications
-}
-
-func RegisterBotRunEvents(start func(typ entities.BotType), end func(typ entities.BotType, result entities.BotRunResult), log func(typ entities.BotType, severity entities.BotRunLogSeverity, message string)) EventsRegistrationToken {
-	return getService().notifications.RegisterBotRunEvents(start, end, log)
-}
-
-func UnregisterBotRunEvents(token EventsRegistrationToken) {
-	getService().notifications.UnregisterBotRunEvents(token)
-}
-
-func StartBotRun(typ entities.BotType) error {
-	return getService().startBotRun(typ)
-}
-
-func GetBots() []Bot {
-	return getService().getBots()
-}

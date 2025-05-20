@@ -3,8 +3,10 @@ package bots
 import (
 	"context"
 	"fmt"
+	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
+	"mylife-tools-server/services/tasks"
 	"sync"
 )
 
@@ -68,10 +70,11 @@ func (h *botHandler) Start() error {
 func (h *botHandler) Execute() {
 	defer h.wg.Done()
 
-	disp := getService().notifications
-	execLogger := common.NewExecutionLogger(h.bot.Type(), disp)
+	execLogger := common.NewExecutionLogger(h.bot.Type())
 
-	disp.EmitStart(h.bot.Type())
+	tasks.SubmitEventLoop("bots/run-start", func() {
+		views.BotRunStarted(h.bot.Type())
+	})
 
 	err := h.bot.Run(h.ctx, execLogger)
 
@@ -91,7 +94,9 @@ func (h *botHandler) Execute() {
 		result = entities.BotRunResultError
 	}
 
-	disp.EmitEnd(h.bot.Type(), result)
+	tasks.SubmitEventLoop("bots/run-end", func() {
+		views.BotRunEnded(h.bot.Type(), result)
+	})
 
 	// End of run
 	h.mux.Lock()
