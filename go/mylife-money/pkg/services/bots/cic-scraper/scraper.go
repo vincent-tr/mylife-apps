@@ -1,6 +1,7 @@
 package cicscraper
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"mylife-money/pkg/services/bots/common"
@@ -21,6 +22,9 @@ const downloadUrl = "https://www.cic.fr/fr/banque/compte/telechargement.cgi"
 
 const authCheckInterval = 5 * time.Second
 const authTimeout = 1 * time.Minute
+
+const downloadRetryInterval = 5 * time.Second
+const downloadMaxRetries = 10
 
 func (b *bot) authenticate() error {
 
@@ -72,10 +76,11 @@ func (b *bot) authenticate() error {
 	}
 
 	validator := doc.Find("div[id='C:O:B:I1:inMobileAppMessage']").ChildrenFiltered(".otpFontSizeIncreased").ChildrenFiltered("span").Text()
-	b.logger.Infof("Authentification forte requise : %s\n", validator)
+	validator = strings.TrimSpace(validator)
+	b.logger.Infof("Authentification forte requise : %s", validator)
 
-	b.logger.Debugf("Transaction ID: '%s'", transactionId)
-	b.logger.Debugf("Validation URL: '%s'", getTransactionValidationStateUrl)
+	// 	b.logger.Debugf("Transaction ID: '%s'", transactionId)
+	//	b.logger.Debugf("Validation URL: '%s'", getTransactionValidationStateUrl)
 
 	form := doc.Find("form[id='C:P:F']")
 
@@ -169,6 +174,105 @@ func (b *bot) waitAuth(transactionId string, getTransactionValidationStateUrl st
 	return nil
 }
 
+func (b *bot) download() ([]byte, error) {
+
+	for retry := 0; ; retry++ {
+
+		resp, err := b.httpProcess(downloadUrl, nil, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		doc, err := resp.ToDoc()
+		if err != nil {
+			return nil, err
+		}
+
+		form := doc.Find("form[id='P:F']")
+
+		action, exists := form.Attr("action")
+		if !exists {
+			return nil, fmt.Errorf("Form action not found")
+		}
+
+		cpt, exists := form.Find("input[name='_CPT'").First().Attr("value")
+		if !exists {
+			cpt = ""
+		}
+
+		formData := map[string]string{
+			// picked from Chrome session dev tools
+			"data_formats_selected":                         "csv",
+			"data_formats_options_cmi_download":             "0",
+			"data_formats_options_ofx_format":               "7",
+			"Bool:data_formats_options_ofx_zonetiers":       "false",
+			"CB:data_formats_options_ofx_zonetiers":         "on",
+			"data_formats_options_qif_fileformat":           "6",
+			"data_formats_options_qif_dateformat":           "0",
+			"data_formats_options_qif_amountformat":         "0",
+			"data_formats_options_qif_headerformat":         "0",
+			"Bool:data_formats_options_qif_zonetiers":       "false",
+			"CB:data_formats_options_qif_zonetiers":         "on",
+			"data_formats_options_csv_fileformat":           "2",
+			"data_formats_options_csv_dateformat":           "0",
+			"data_formats_options_csv_fieldseparator":       "0",
+			"data_formats_options_csv_amountcolnumber":      "1",
+			"data_formats_options_csv_decimalseparator":     "0",
+			"Bool:data_accounts_account_ischecked":          "true",
+			"CB:data_accounts_account_ischecked":            "on",
+			"Bool:data_accounts_account_2__ischecked":       "false",
+			"Bool:data_accounts_account_3__ischecked":       "false",
+			"Bool:data_accounts_account_4__ischecked":       "false",
+			"Bool:data_accounts_account_5__ischecked":       "false",
+			"Bool:data_accounts_account_6__ischecked":       "false",
+			"data_daterange_value":                          "all",
+			"_FID_DoDownload.x":                             "65",
+			"_FID_DoDownload.y":                             "17",
+			"data_accounts_selection":                       "100000000000",
+			"data_formats_options_cmi_show":                 "True",
+			"data_formats_options_qif_show":                 "True",
+			"data_formats_options_excel_show":               "True",
+			"data_formats_options_csv_show":                 "True",
+			"[t:dbt%3adate;]data_daterange_startdate_value": "",
+			"[t:dbt%3adate;]data_daterange_enddate_value":   "",
+
+			// The only custom
+			"_CPT": cpt,
+		}
+
+		headers := map[string]string{
+			"Referer": downloadUrl,
+			"Accept":  "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+		}
+
+		resp, err = b.httpProcess(fmt.Sprintf("https://www.cic.fr%s", action), formData, headers)
+		if err != nil {
+			return nil, err
+		}
+
+		contentDisposition := resp.headers.Get("content-disposition")
+		isResponseOk := strings.HasPrefix(contentDisposition, "attachment")
+
+		if isResponseOk {
+			data := resp.bodyBytes
+
+			b.logger.Infof("Téléchargé un fichier de %d octets", len(data))
+
+			return data, nil
+		}
+
+		if retry < downloadMaxRetries {
+			b.logger.Warningf("Unexpected response, expected attachment (try %d)", retry)
+			time.Sleep(downloadRetryInterval)
+			continue
+		}
+
+		break
+	}
+
+	return nil, fmt.Errorf("Unexpected response, expected attachment after %d retries", downloadMaxRetries)
+}
+
 func (b *bot) findAttribute(node *html.Node, attr string) (string, error) {
 	for _, n := range node.Attr {
 		if n.Key == attr {
@@ -217,29 +321,29 @@ func (b *bot) httpProcess(targetUrl string, postData map[string]string, headers 
 		return nil, fmt.Errorf("failed to get page '%s': %w", targetUrl, err)
 	}
 
-	bodyBytes, err := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	return &response{
-		body:       string(bodyBytes),
+		bodyBytes:  body,
+		bodyString: string(body),
 		requestUrl: resp.Request.URL.String(),
+		headers:    resp.Header,
 	}, nil
 }
 
 type response struct {
-	body       string
+	bodyBytes  []byte
+	bodyString string
 	requestUrl string
-}
-
-func (resp *response) Body() string {
-	return resp.body
+	headers    http.Header
 }
 
 func (resp *response) FindJsValue(key string) (string, error) {
 	rx := regexp.MustCompile(fmt.Sprintf("%s: '([^']*)'", key))
-	matches := rx.FindStringSubmatch(resp.body)
+	matches := rx.FindStringSubmatch(resp.bodyString)
 
 	if len(matches) < 2 {
 		return "", fmt.Errorf("Value not found for key '%s'", key)
@@ -249,13 +353,13 @@ func (resp *response) FindJsValue(key string) (string, error) {
 
 func (resp *response) FindMatch(pattern string) (string, error) {
 	rx := regexp.MustCompile(pattern)
-	matches := rx.FindStringSubmatch(resp.body)
+	matches := rx.FindStringSubmatch(resp.bodyString)
 	if len(matches) < 2 {
-		fmt.Errorf("unexpected response: %s", resp.body)
+		fmt.Errorf("unexpected response: %s", resp.bodyString)
 	}
 	return matches[1], nil
 }
 
 func (resp *response) ToDoc() (*goquery.Document, error) {
-	return goquery.NewDocumentFromReader(strings.NewReader(resp.body))
+	return goquery.NewDocumentFromReader(bytes.NewReader(resp.bodyBytes))
 }

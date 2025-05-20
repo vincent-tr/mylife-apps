@@ -59,6 +59,12 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 		return fmt.Errorf("failed to authenticate: %w", err)
 	}
 
+	data, err := b.download()
+	if err != nil {
+		return fmt.Errorf("failed to download: %w", err)
+	}
+
+	_ = data
 	return fmt.Errorf("not implemented")
 }
 
