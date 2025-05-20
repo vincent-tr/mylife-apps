@@ -3,3 +3,8 @@ webServer:
   address: :${WEB_PORT|80}
 secrets:
   path: ${SECRETS_PATH}
+bots:
+  cic-scraper:
+    user: secret:cic-user
+    pass: secret:cic-pass
+    account: common
