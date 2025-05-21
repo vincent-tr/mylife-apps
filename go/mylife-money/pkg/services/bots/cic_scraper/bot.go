@@ -6,10 +6,12 @@ import (
 	"mylife-money/pkg/business"
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
+	mailsender "mylife-money/pkg/services/mail_sender"
 	"mylife-tools-server/services/store"
 	"mylife-tools-server/services/tasks"
 	"net/http"
 	"net/http/cookiejar"
+	"time"
 )
 
 type Config struct {
@@ -67,7 +69,9 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 		return fmt.Errorf("failed to download: %w", err)
 	}
 
-	// TODO: send mail with attached file
+	if err := b.sendMail(data); err != nil {
+		return fmt.Errorf("failed to send mail: %w", err)
+	}
 
 	wrapper := newErrorWrapper(func() error {
 		account, err := b.getAccountId()
@@ -128,6 +132,22 @@ func (b *bot) getAccountId() (string, error) {
 	}
 
 	return list[0].Id(), nil
+}
+
+func (b *bot) sendMail(data []byte) error {
+	mail := &mailsender.Mail{
+		Subject:  "CIC - Importation des opérations",
+		Body:     "Bonjour,\n\nVeuillez trouver ci-joint le fichier d'importation des opérations.\n\nCordialement,\nL'équipe MyLife",
+		BodyType: mailsender.BodyTypeText,
+		Attachments: []mailsender.MailAttachment{
+			{
+				FileName: fmt.Sprintf("operations-cic-%s.csv", time.Now().Format("20060102-150405")),
+				Data:     data,
+			},
+		},
+	}
+
+	return mailsender.SendMail(mail)
 }
 
 type errorWrapper struct {
