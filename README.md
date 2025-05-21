@@ -245,6 +245,8 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 - Permettre d'ajouter des notes sur les groupes (et les voir en tooltips) ?
 - Permettre de rechercher des groupes ?
 - Arbre de groupes : plus d'indentation
+- Dans graphique, sur sélection de plusieurs mois/années, afficher la moyenne/min/max des barres sélectionnées
+- Reprendre scrapers mail puis supprimer mongo collections bots et bot-runs
 
 ## Portal
 
