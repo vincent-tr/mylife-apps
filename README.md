@@ -204,7 +204,11 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 - globalization
 - charts : http://recharts.org/
 
-## Gallery
+## Tools server
+
+- store.GetCollection/store.GetMaterializedView: panic if not found, and no error returned
+
+## (old) Gallery
 
 - BUG: affichage liste de document, puis impossible de decocher selection album/personne pour associer un document à un album/une personne
 - integrer les fichiers HEIC
