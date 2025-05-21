@@ -5,7 +5,7 @@ import (
 	"mylife-money/pkg/business"
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
-	cicscraper "mylife-money/pkg/services/bots/cic-scraper"
+	cicscraper "mylife-money/pkg/services/bots/cic_scraper"
 	"mylife-money/pkg/services/bots/common"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
