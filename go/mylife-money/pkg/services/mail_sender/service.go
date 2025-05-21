@@ -1,6 +1,7 @@
 package mailsender
 
 import (
+	"fmt"
 	"mylife-money/pkg/services/secrets"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
@@ -21,7 +22,7 @@ const BodyTypeText BodyType = "text/plain"
 const BodyTypeHtml BodyType = "text/html"
 
 type Mail struct {
-	Title       string
+	Subject     string
 	Body        string
 	BodyType    BodyType
 	Attachments []MailAttachment
@@ -42,6 +43,10 @@ type mailSenderService struct {
 
 func (service *mailSenderService) Init(arg interface{}) error {
 	config.BindStructure("mail-sender", &service.config)
+
+	if service.config.SmtpServer == "" || service.config.SmtpPort == 0 {
+		return fmt.Errorf("SMTP server and port must be set")
+	}
 
 	return nil
 }

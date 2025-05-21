@@ -87,7 +87,7 @@ func (service *botsService) ServiceName() string {
 }
 
 func (service *botsService) Dependencies() []string {
-	return []string{"secrets", "store", "tasks"}
+	return []string{"secrets", "mail-sender", "store", "tasks"}
 }
 
 func (service *botsService) startBotRun(typ entities.BotType) error {

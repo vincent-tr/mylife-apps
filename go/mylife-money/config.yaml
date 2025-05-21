@@ -9,8 +9,8 @@ bots:
     pass: secret:cic-pass
     account: common
 mail-sender:
-  smtpHost: smtp.gmail.com
-  smtpPort: 587
+  smtp-server: smtp.gmail.com
+  smtp-port: 587
   user: secret:mail-sender-user
   pass: secret:mail-sender-pass
   from: secret:mail-sender-from
