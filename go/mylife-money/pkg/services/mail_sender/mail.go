@@ -20,7 +20,7 @@ func (service *mailSenderService) buildMessage(config *mailSenderConfig, mail *M
 
 	msg.SetHeader("From", config.From)
 	msg.SetHeader("To", config.To...)
-	msg.SetHeader("Subject", mail.Title)
+	msg.SetHeader("Subject", mail.Subject)
 	msg.SetBody(string(mail.BodyType), mail.Body)
 
 	for _, attachment := range mail.Attachments {
