@@ -6,6 +6,7 @@ import (
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	"os"
+	"strings"
 )
 
 var logger = log.CreateLogger("mylife:money:secrets")
@@ -74,6 +75,24 @@ func (service *secretService) GetSecret(key string) (string, error) {
 	return "", fmt.Errorf("secret %s not found", key)
 }
 
+const secretPrefix = "secret:"
+
+func (service *secretService) ProcessField(value string) string {
+	if !strings.HasPrefix(value, secretPrefix) {
+		return value
+	}
+
+	key := value[len(secretPrefix):]
+	secretValue, ok := service.FindSecret(key)
+	if !ok {
+		logger.Warningf("Secret key '%s' does not exist.", key)
+		return value
+	}
+
+	logger.Debugf("Using secret key '%s'.", key)
+	return secretValue
+}
+
 func init() {
 	services.Register(&secretService{})
 }
@@ -90,4 +109,8 @@ func FindSecret(key string) (string, bool) {
 
 func GetSecret(key string) (string, error) {
 	return getService().GetSecret(key)
+}
+
+func ProcessField(value string) string {
+	return getService().ProcessField(value)
 }
