@@ -208,22 +208,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 - store.GetCollection/store.GetMaterializedView: panic if not found, and no error returned
 
-## (old) Gallery
-
-- BUG: affichage liste de document, puis impossible de decocher selection album/personne pour associer un document à un album/une personne
-- integrer les fichiers HEIC
-- pouvoir réintegrer les 'autres'
-- ignorer certains fichiers : Thumbs.db, .DS_Store
-- les fichiers avec une taille a 0 ne doivent pas être des copies les uns des autres
-- suggestion pour supprimer les dossiers/albums vides
-- suggestion pour afficher les différences entre le filesystem et les albums
-- suggestion pour déplacer les documents mal rangé (1 seul chemin, 1 seul album, et ils ne correspondent pas ou alors plusieurs albums mais le chemin ne correspond à aucun => choix de déplacement)
-- suggestion pour ajouter des photos a un album existant si elles sont dans un dossier qui correspond a un album
-- slideshow: bug d ancienne image qui apparait un bref instant apres transition
-- parcourir: sur selection multiple et clic sur personnes, elles sont toutes selectionnees
-- reconnaissance des visages
-- meilleure gestion des lieux des photos (eg: pouvoir rechercher les photos a Vourles)
-
 ## Money
 
 - Gestion des regles
@@ -252,10 +236,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 - bootstrap 3 -> 5
 
-## Explorer
-
-- Bug sur affichage fichier texte ou json
-
 ## Energy
 
 - Energy data
@@ -270,3 +250,23 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
     - ct10 => cumulus => inversé jusqu'au 01/07/2023 9h43
     - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
   - Avoir une materialized view des stats par type pour accélérer l'affichage
+
+## (old) Gallery
+
+- BUG: affichage liste de document, puis impossible de decocher selection album/personne pour associer un document à un album/une personne
+- integrer les fichiers HEIC
+- pouvoir réintegrer les 'autres'
+- ignorer certains fichiers : Thumbs.db, .DS_Store
+- les fichiers avec une taille a 0 ne doivent pas être des copies les uns des autres
+- suggestion pour supprimer les dossiers/albums vides
+- suggestion pour afficher les différences entre le filesystem et les albums
+- suggestion pour déplacer les documents mal rangé (1 seul chemin, 1 seul album, et ils ne correspondent pas ou alors plusieurs albums mais le chemin ne correspond à aucun => choix de déplacement)
+- suggestion pour ajouter des photos a un album existant si elles sont dans un dossier qui correspond a un album
+- slideshow: bug d ancienne image qui apparait un bref instant apres transition
+- parcourir: sur selection multiple et clic sur personnes, elles sont toutes selectionnees
+- reconnaissance des visages
+- meilleure gestion des lieux des photos (eg: pouvoir rechercher les photos a Vourles)
+
+## (old) Explorer
+
+- Bug sur affichage fichier texte ou json
