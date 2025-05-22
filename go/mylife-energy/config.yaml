@@ -3,6 +3,8 @@ bus:
   serverUrl: ${BUS_SERVER|tcp://rpi-dev-home-main}
 webServer:
   address: :${WEB_PORT|80}
+monitor:
+  address: :${MONITOR_PORT|81}
 tesla:
   id: ${TESLA_ID}
   vin: ${TESLA_VIN}

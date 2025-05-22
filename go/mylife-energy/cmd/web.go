@@ -9,6 +9,7 @@ import (
 	teslaCert "mylife-energy/tesla-cert"
 	"mylife-tools-server/services"
 	_ "mylife-tools-server/services/api"
+	_ "mylife-tools-server/services/monitor"
 	_ "mylife-tools-server/services/web"
 
 	"github.com/yalue/merged_fs"
@@ -27,7 +28,7 @@ func init() {
 				"web":   merged_fs.NewMergedFS(ui.FS, teslaCert.FS),
 			}
 
-			services.RunServices([]string{"live", "tesla", "web"}, args)
+			services.RunServices([]string{"monitor", "live", "tesla", "web"}, args)
 		},
 	})
 }

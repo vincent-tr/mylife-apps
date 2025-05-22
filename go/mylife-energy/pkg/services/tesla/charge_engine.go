@@ -8,6 +8,7 @@ import (
 	"mylife-energy/pkg/services/tesla/live_query"
 	"mylife-energy/pkg/services/tesla/parameters"
 	"mylife-tools-server/log"
+	"mylife-tools-server/services/monitor"
 	"mylife-tools-server/services/tasks"
 	"mylife-tools-server/utils"
 	"time"
@@ -226,10 +227,13 @@ func (e *chargeEngine) computeSmartCurrent(state *stateData) (int, error) {
 }
 
 func (e *chargeEngine) setupCharge(state *stateData, current int, limit int) error {
+	monitor.SetProbeStatus("tesla-ble-proxy", monitor.ProbeStatusOK, "")
+
 	if current > 0 && state.Car.Status == entities.TeslaDeviceStatusOffline {
 		logger.Debug("Setup charge: wake up")
 		err := e.api.Wakeup()
 		if err != nil {
+			monitor.SetProbeStatus("tesla-ble-proxy", monitor.ProbeStatusCritical, "wakeup error - "+err.Error())
 			return err
 		}
 	}
@@ -237,6 +241,7 @@ func (e *chargeEngine) setupCharge(state *stateData, current int, limit int) err
 	logger.WithFields(log.Fields{"current": current, "limit": limit}).Debug("Setup charge: setting charging current")
 
 	if err := e.api.SetupCharge(current, limit); err != nil {
+		monitor.SetProbeStatus("tesla-ble-proxy", monitor.ProbeStatusCritical, "setup charge error - "+err.Error())
 		return err
 	}
 

@@ -81,7 +81,7 @@ func (service *teslaService) ServiceName() string {
 }
 
 func (service *teslaService) Dependencies() []string {
-	return []string{"tasks", "query", "parameter"}
+	return []string{"monitor", "tasks", "query", "parameter"}
 }
 
 func init() {
