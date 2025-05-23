@@ -50,15 +50,11 @@ func (service *storeService) Init(arg interface{}) error {
 
 		// Setup collections then materialized views
 		for _, builder := range collectionBuilders {
-			if err := service.setupCollection(builder); err != nil {
-				return err
-			}
+			service.setupCollection(builder)
 		}
 
 		for _, builder := range materializedViewBuilders {
-			if err := service.setupMaterializedView(builder); err != nil {
-				return err
-			}
+			service.setupMaterializedView(builder)
 		}
 	}
 
@@ -97,17 +93,15 @@ func (service *storeService) getCollection(name string) genericInternalCollectio
 	return value
 }
 
-func (service *storeService) setupCollection(builder icollectionBuilder) error {
+func (service *storeService) setupCollection(builder icollectionBuilder) {
 	name := builder.name()
 	_, exists := service.collections[name]
 
 	if exists {
-		return fmt.Errorf("collection '%s' already exists", name)
+		panic(fmt.Errorf("collection '%s' already exists", name))
 	}
 
 	service.collections[name] = builder.build()
-
-	return nil
 }
 
 func (service *storeService) getMaterializedView(name string) genericInternalView {
@@ -119,22 +113,17 @@ func (service *storeService) getMaterializedView(name string) genericInternalVie
 	return value
 }
 
-func (service *storeService) setupMaterializedView(builder imaterializedViewBuilder) error {
+func (service *storeService) setupMaterializedView(builder imaterializedViewBuilder) {
 	name := builder.name()
 	_, exists := service.materializedViews[name]
 
 	if exists {
-		return fmt.Errorf("materialized view '%s' already exists", name)
+		panic(fmt.Errorf("materialized view '%s' already exists", name))
 	}
 
-	view, err := builder.build()
-	if err != nil {
-		return fmt.Errorf("error building materialized view '%s': %w", name, err)
-	}
+	view := builder.build()
 
 	service.materializedViews[name] = view
-
-	return nil
 }
 
 func getService() *storeService {
