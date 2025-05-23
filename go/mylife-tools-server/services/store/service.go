@@ -88,13 +88,13 @@ func (service *storeService) Dependencies() []string {
 	return []string{"database", "tasks"}
 }
 
-func (service *storeService) getCollection(name string) (genericInternalCollection, error) {
+func (service *storeService) getCollection(name string) genericInternalCollection {
 	value, exists := service.collections[name]
 	if !exists {
-		return nil, fmt.Errorf("collection '%s' not found", name)
+		panic(fmt.Errorf("collection '%s' not found", name))
 	}
 
-	return value, nil
+	return value
 }
 
 func (service *storeService) setupCollection(builder icollectionBuilder) error {
@@ -110,13 +110,13 @@ func (service *storeService) setupCollection(builder icollectionBuilder) error {
 	return nil
 }
 
-func (service *storeService) getMaterializedView(name string) (genericInternalView, error) {
+func (service *storeService) getMaterializedView(name string) genericInternalView {
 	value, exists := service.materializedViews[name]
 	if !exists {
-		return nil, fmt.Errorf("materialized view '%s' not found", name)
+		panic(fmt.Errorf("materialized view '%s' not found", name))
 	}
 
-	return value, nil
+	return value
 }
 
 func (service *storeService) setupMaterializedView(builder imaterializedViewBuilder) error {
@@ -143,36 +143,26 @@ func getService() *storeService {
 
 // Public access
 
-func SetupCollection[TEntity Entity](builder *CollectionBuilder[TEntity]) error {
-	return getService().setupCollection(builder)
-}
-
-func GetCollection[TEntity Entity](name string) (ICollection[TEntity], error) {
-	value, err := getService().getCollection(name)
-	if err != nil {
-		return nil, err
-	}
+func GetCollection[TEntity Entity](name string) ICollection[TEntity] {
+	value := getService().getCollection(name)
 
 	col, ok := value.(ICollection[TEntity])
 	if !ok {
-		return nil, fmt.Errorf("collection '%s' requested with bad entity type", name)
+		panic(fmt.Errorf("collection '%s' requested with bad entity type", name))
 	}
 
-	return col, nil
+	return col
 }
 
-func GetMaterializedView[TEntity Entity](name string) (IView[TEntity], error) {
-	value, err := getService().getMaterializedView(name)
-	if err != nil {
-		return nil, err
-	}
+func GetMaterializedView[TEntity Entity](name string) IView[TEntity] {
+	value := getService().getMaterializedView(name)
 
 	view, ok := value.(IView[TEntity])
 	if !ok {
-		return nil, fmt.Errorf("materialized view '%s' requested with bad entity type", name)
+		panic(fmt.Errorf("materialized view '%s' requested with bad entity type", name))
 	}
 
 	view = WrapUnclosableView(view)
 
-	return view, nil
+	return view
 }
