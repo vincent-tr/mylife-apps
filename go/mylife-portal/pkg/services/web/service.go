@@ -67,10 +67,7 @@ func (service *webService) Init(arg interface{}) error {
 		return err
 	}
 
-	service.image, err = makeImageHandler()
-	if err != nil {
-		return err
-	}
+	service.image = makeImageHandler()
 
 	service.mux.Handle("/", service.index)
 	service.mux.Handle("/images/{code}", service.image)

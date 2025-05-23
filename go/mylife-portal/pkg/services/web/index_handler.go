@@ -38,15 +38,8 @@ func makeIndexHandler(fsys fs.FS) (*indexHandler, error) {
 		return nil, err
 	}
 
-	ih.sections, err = store.GetCollection[*entities.Section]("sections")
-	if err != nil {
-		return nil, err
-	}
-
-	ih.items, err = store.GetCollection[*entities.Item]("items")
-	if err != nil {
-		return nil, err
-	}
+	ih.sections = store.GetCollection[*entities.Section]("sections")
+	ih.items = store.GetCollection[*entities.Item]("items")
 
 	ih.sectionsCallback = func(event *store.Event[*entities.Section]) {
 		ih.onCollectionChanged()
@@ -100,12 +93,9 @@ func (ih *indexHandler) update() error {
 	ih.pageMutex.Lock()
 	defer ih.pageMutex.Unlock()
 
-	ctx, err := ih.buildContext()
-	if err != nil {
-		logger.WithError(err).Error("Error building context image")
-		ih.page = "Render error"
-		return err
-	}
+	ctx := ih.buildContext()
+
+	var err error
 
 	ih.page, err = ih.template.Exec(ctx)
 	if err != nil {
@@ -119,7 +109,7 @@ func (ih *indexHandler) update() error {
 	return nil
 }
 
-func (ih *indexHandler) buildContext() (interface{}, error) {
+func (ih *indexHandler) buildContext() interface{} {
 	type contextItem struct {
 		Code    string
 		Display string
@@ -135,15 +125,8 @@ func (ih *indexHandler) buildContext() (interface{}, error) {
 		Sections []contextSection
 	}
 
-	sections, err := store.GetCollection[*entities.Section]("sections")
-	if err != nil {
-		return nil, err
-	}
-
-	items, err := store.GetCollection[*entities.Item]("items")
-	if err != nil {
-		return nil, err
-	}
+	sections := store.GetCollection[*entities.Section]("sections")
+	items := store.GetCollection[*entities.Item]("items")
 
 	sectionList := sections.List()
 
@@ -186,5 +169,5 @@ func (ih *indexHandler) buildContext() (interface{}, error) {
 		ctx.Sections = append(ctx.Sections, ctxSec)
 	}
 
-	return ctx, nil
+	return ctx
 }

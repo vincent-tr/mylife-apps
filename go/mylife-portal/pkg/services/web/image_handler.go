@@ -24,28 +24,20 @@ type imageHandler struct {
 	imagesMutex   sync.RWMutex
 }
 
-func makeImageHandler() (*imageHandler, error) {
+func makeImageHandler() *imageHandler {
 	ih := &imageHandler{}
 
-	var err error
-
-	ih.items, err = store.GetCollection[*entities.Item]("items")
-	if err != nil {
-		return nil, err
-	}
+	ih.items = store.GetCollection[*entities.Item]("items")
 
 	ih.itemsCallback = func(event *store.Event[*entities.Item]) {
 		ih.onCollectionChanged()
 	}
 
-	err = ih.update()
-	if err != nil {
-		return nil, err
-	}
+	ih.update()
 
 	ih.items.AddListener(&ih.itemsCallback)
 
-	return ih, nil
+	return ih
 }
 
 func (ih *imageHandler) terminate() {
@@ -92,17 +84,13 @@ func (ih *imageHandler) onCollectionChanged() {
 }
 
 // Returns error for initial render
-func (ih *imageHandler) update() error {
+func (ih *imageHandler) update() {
 	ih.imagesMutex.Lock()
 	defer ih.imagesMutex.Unlock()
 
 	ih.images = make(map[string]imageData)
 
-	collection, err := store.GetCollection[*entities.Item]("items")
-	if err != nil {
-		logger.WithError(err).Error("Error building image cache")
-		return err
-	}
+	collection := store.GetCollection[*entities.Item]("items")
 
 	for _, image := range collection.List() {
 		ih.images[image.Code()] = imageData{
@@ -112,15 +100,10 @@ func (ih *imageHandler) update() error {
 	}
 
 	logger.WithField("count", len(ih.images)).Info("Images cached")
-
-	return nil
 }
 
 func findItemByCode(code string) (*entities.Item, error) {
-	collection, err := store.GetCollection[*entities.Item]("items")
-	if err != nil {
-		return nil, err
-	}
+	collection := store.GetCollection[*entities.Item]("items")
 
 	for _, item := range collection.List() {
 		if item.Code() == code {
