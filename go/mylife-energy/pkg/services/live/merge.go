@@ -29,11 +29,8 @@ type merger struct {
 	pendingMeasureUpdate bool
 }
 
-func makeMerger(measures store.IContainer[*entities.Measure], sensors store.IContainer[*entities.Sensor]) (*merger, error) {
-	devices, err := store.GetCollection[*entities.Device]("devices")
-	if err != nil {
-		return nil, err
-	}
+func makeMerger(measures store.IContainer[*entities.Measure], sensors store.IContainer[*entities.Sensor]) *merger {
+	devices := store.GetCollection[*entities.Device]("devices")
 
 	m := &merger{
 		measures:             measures,
@@ -64,7 +61,7 @@ func makeMerger(measures store.IContainer[*entities.Measure], sensors store.ICon
 	m.computeDevices()
 	m.computeMeasures()
 
-	return m, nil
+	return m
 }
 
 func (m *merger) terminate() {

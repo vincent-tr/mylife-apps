@@ -15,17 +15,8 @@ type liveService struct {
 }
 
 func (service *liveService) Init(arg interface{}) error {
-	var err error
-
 	service.fetcher = makeFetcher()
-	service.merger, err = makeMerger(service.fetcher.measures, service.fetcher.sensors)
-
-	if err != nil {
-		service.fetcher.terminate()
-		service.fetcher = nil
-
-		return err
-	}
+	service.merger = makeMerger(service.fetcher.measures, service.fetcher.sensors)
 
 	return nil
 }

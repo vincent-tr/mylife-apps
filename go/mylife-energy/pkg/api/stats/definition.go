@@ -25,10 +25,7 @@ func getValues(session *sessions.Session, arg statsInput) ([]statsOutput, error)
 }
 
 func notifyDevices(session *sessions.Session, arg struct{}) (uint64, error) {
-	devices, err := store.GetCollection[*entities.Device]("devices")
-	if err != nil {
-		return 0, err
-	}
+	devices := store.GetCollection[*entities.Device]("devices")
 
 	statableDevices := store.NewView(devices, func(obj *entities.Device) bool {
 		return !obj.Computed() && obj.Type() == entities.Node

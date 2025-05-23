@@ -132,6 +132,10 @@ func getService() *storeService {
 
 // Public access
 
+func SetupCollection(builder icollectionBuilder) {
+	getService().setupCollection(builder)
+}
+
 func GetCollection[TEntity Entity](name string) ICollection[TEntity] {
 	value := getService().getCollection(name)
 

@@ -23,19 +23,12 @@ type parameterService struct {
 }
 
 func (service *parameterService) Init(arg interface{}) error {
-	var err error
 
 	service.parameters = make(map[string]untypedParameter)
 
-	err = store.SetupCollection(entities.CollectionDef)
-	if err != nil {
-		return err
-	}
+	store.SetupCollection(entities.CollectionDef)
 
-	service.collection, err = store.GetCollection[*entities.Parameter]("parameters")
-	if err != nil {
-		return err
-	}
+	service.collection = store.GetCollection[*entities.Parameter]("parameters")
 
 	service.collectionCallback = func(event *store.Event[*entities.Parameter]) {
 		service.onCollectionChanged(event)
