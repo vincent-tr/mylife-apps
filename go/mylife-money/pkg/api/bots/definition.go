@@ -12,7 +12,8 @@ var logger = log.CreateLogger("mylife:money:api:bots")
 var Definition = api.MakeDefinition("bots", notifyBots, startBot)
 
 func notifyBots(session *sessions.Session, arg struct{}) (uint64, error) {
-	return business.NotifyBots(session)
+	viewId := business.NotifyBots(session)
+	return viewId, nil
 }
 
 func startBot(session *sessions.Session, arg struct{ Id string }) (api.NoReturn, error) {

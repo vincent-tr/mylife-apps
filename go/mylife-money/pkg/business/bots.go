@@ -8,14 +8,10 @@ import (
 	"mylife-tools-server/services/store"
 )
 
-func NotifyBots(session *sessions.Session) (uint64, error) {
-	view, err := store.GetMaterializedView[*entities.Bot]("bots")
-	if err != nil {
-		return 0, err
-	}
-
+func NotifyBots(session *sessions.Session) uint64 {
+	view := store.GetMaterializedView[*entities.Bot]("bots")
 	viewId := notification.NotifyView(session, view)
-	return viewId, nil
+	return viewId
 }
 
 var botStartHandler func(entities.BotType) error

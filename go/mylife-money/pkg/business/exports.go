@@ -53,10 +53,7 @@ func parseDisplay(displayValues DisplayValues) (*display, error) {
 }
 
 func ExportGroupByMonth(session *sessions.Session, criteria views.CriteriaValues, displayValues DisplayValues) ([]byte, error) {
-	view, err := views.MakeGroupByMonth()
-	if err != nil {
-		return nil, err
-	}
+	view := views.MakeGroupByMonth()
 
 	viewWithCriteria := view.(views.ViewWithCriteria)
 	criteria["noChildSub"] = true
@@ -77,10 +74,7 @@ func ExportGroupByMonth(session *sessions.Session, criteria views.CriteriaValues
 }
 
 func ExportGroupByYear(session *sessions.Session, criteria views.CriteriaValues, displayValues DisplayValues) ([]byte, error) {
-	view, err := views.MakeGroupByYear()
-	if err != nil {
-		return nil, err
-	}
+	view := views.MakeGroupByYear()
 
 	viewWithCriteria := view.(views.ViewWithCriteria)
 	criteria["noChildSub"] = true
@@ -173,10 +167,7 @@ func groupDisplay(id string, withParent bool, display *display) (string, error) 
 		return "Non triés", nil
 	}
 
-	groups, err := store.GetCollection[*entities.Group]("groups")
-	if err != nil {
-		return "", err
-	}
+	groups := store.GetCollection[*entities.Group]("groups")
 
 	if display.fullnames {
 		currentId := &id

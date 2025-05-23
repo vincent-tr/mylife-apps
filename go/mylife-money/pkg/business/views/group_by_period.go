@@ -68,16 +68,9 @@ func (view *groupByPeriod) Refresh() {
 	view.compute()
 }
 
-func makeGroupByPeriod(name string, periodRange func(minDate, maxDate time.Time) []string, dateToPeriod func(date time.Time) string) (store.IView[*entities.ReportGroupByPeriod], error) {
-	groups, err := store.GetCollection[*entities.Group]("groups")
-	if err != nil {
-		return nil, err
-	}
-
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return nil, err
-	}
+func makeGroupByPeriod(name string, periodRange func(minDate, maxDate time.Time) []string, dateToPeriod func(date time.Time) string) store.IView[*entities.ReportGroupByPeriod] {
+	groups := store.GetCollection[*entities.Group]("groups")
+	operations := store.GetCollection[*entities.Operation]("operations")
 
 	view := &groupByPeriod{
 		groups:       groups,
@@ -99,7 +92,7 @@ func makeGroupByPeriod(name string, periodRange func(minDate, maxDate time.Time)
 
 	view.operations.AddListener(&view.operationsChangeCallback)
 
-	return view, nil
+	return view
 }
 
 type groupByPeriodCriteria struct {

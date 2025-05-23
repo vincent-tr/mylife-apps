@@ -114,10 +114,7 @@ func NewBot(config *Config) common.Bot {
 }
 
 func (b *bot) getAccountId() (string, error) {
-	accounts, err := store.GetCollection[*entities.Account]("accounts")
-	if err != nil {
-		return "", err
-	}
+	accounts := store.GetCollection[*entities.Account]("accounts")
 
 	list := accounts.Filter(func(a *entities.Account) bool {
 		return a.Code() == b.config.Account

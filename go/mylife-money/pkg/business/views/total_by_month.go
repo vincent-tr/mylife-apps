@@ -60,11 +60,8 @@ func (view *totalByMonth) Refresh() {
 	view.init()
 }
 
-func NewTotalByMonth() (store.IView[*entities.ReportTotalByMonth], error) {
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return nil, err
-	}
+func NewTotalByMonth() store.IView[*entities.ReportTotalByMonth] {
+	operations := store.GetCollection[*entities.Operation]("operations")
 
 	container := store.NewContainer[*entities.ReportTotalByMonth]("total-by-month")
 
@@ -78,7 +75,7 @@ func NewTotalByMonth() (store.IView[*entities.ReportTotalByMonth], error) {
 
 	view.init()
 
-	return view, nil
+	return view
 }
 
 func (view *totalByMonth) init() {

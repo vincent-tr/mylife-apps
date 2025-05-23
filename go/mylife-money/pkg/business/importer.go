@@ -25,15 +25,8 @@ func OperationsImport(account string, data string) (int, error) {
 		return 0, err
 	}
 
-	records, err = filterExisting(records)
-	if err != nil {
-		return 0, err
-	}
-
-	err = insertRecords(records)
-	if err != nil {
-		return 0, err
-	}
+	records = filterExisting(records)
+	insertRecords(records)
 
 	logger.Infof("Import done, %d operations added", len(records))
 	return len(records), nil
@@ -135,11 +128,8 @@ func parseDate(input string) (time.Time, error) {
 	return time.Parse("02/01/2006", input)
 }
 
-func findLastOperation() (*entities.Operation, error) {
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return nil, err
-	}
+func findLastOperation() *entities.Operation {
+	operations := store.GetCollection[*entities.Operation]("operations")
 
 	var lastOperation *entities.Operation
 
@@ -149,22 +139,15 @@ func findLastOperation() (*entities.Operation, error) {
 		}
 	}
 
-	return lastOperation, nil
+	return lastOperation
 }
 
-func filterExisting(records []record) ([]record, error) {
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return nil, err
-	}
-
-	lastOperation, err := findLastOperation()
-	if err != nil {
-		return nil, err
-	}
+func filterExisting(records []record) []record {
+	operations := store.GetCollection[*entities.Operation]("operations")
+	lastOperation := findLastOperation()
 
 	if lastOperation == nil {
-		return records, nil
+		return records
 	}
 
 	lastOperationDate := lastOperation.Date()
@@ -195,14 +178,11 @@ func filterExisting(records []record) ([]record, error) {
 		}
 	}
 
-	return filteredRecords, nil
+	return filteredRecords
 }
 
-func insertRecords(records []record) error {
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return err
-	}
+func insertRecords(records []record) {
+	operations := store.GetCollection[*entities.Operation]("operations")
 
 	for _, record := range records {
 		values := &entities.OperationValues{
@@ -215,22 +195,13 @@ func insertRecords(records []record) error {
 
 		operations.Set(entities.NewOperation(values))
 	}
-
-	return nil
 }
 
 func ExecuteRules() (int, error) {
 	logger.Info("Executing rules")
 
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return 0, err
-	}
-
-	groups, err := store.GetCollection[*entities.Group]("groups")
-	if err != nil {
-		return 0, err
-	}
+	operations := store.GetCollection[*entities.Operation]("operations")
+	groups := store.GetCollection[*entities.Group]("groups")
 
 	unsortedOperations := operations.Filter(func(op *entities.Operation) bool {
 		return op.Group() == nil

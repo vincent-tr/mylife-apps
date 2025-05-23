@@ -27,9 +27,11 @@ func renotifyWithCriteria(session *sessions.Session, arg struct {
 }
 
 func notifyAccounts(session *sessions.Session, arg struct{}) (uint64, error) {
-	return business.NotifyAccounts(session, arg)
+	viewId := business.NotifyAccounts(session, arg)
+	return viewId, nil
 }
 
 func notifyGroups(session *sessions.Session, arg struct{}) (uint64, error) {
-	return business.NotifyGroups(session, arg)
+	viewId := business.NotifyGroups(session, arg)
+	return viewId, nil
 }

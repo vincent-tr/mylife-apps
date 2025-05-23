@@ -12,21 +12,14 @@ import (
 
 type ObjectValues map[string]interface{}
 
-func NotifyAccounts(session *sessions.Session, arg struct{}) (uint64, error) {
-	accounts, err := getAccounts()
-	if err != nil {
-		return 0, err
-	}
-
+func NotifyAccounts(session *sessions.Session, arg struct{}) uint64 {
+	accounts := getAccounts()
 	viewId := notification.NotifyView(session, accounts)
-	return viewId, nil
+	return viewId
 }
 
 func CreateAccount(code string, display string) error {
-	accounts, err := getAccounts()
-	if err != nil {
-		return err
-	}
+	accounts := getAccounts()
 
 	if accounts.Exists(func(account *entities.Account) bool {
 		return account.Code() == code
@@ -45,18 +38,14 @@ func CreateAccount(code string, display string) error {
 	return nil
 }
 
-func getAccounts() (store.ICollection[*entities.Account], error) {
+func getAccounts() store.ICollection[*entities.Account] {
 	return store.GetCollection[*entities.Account]("accounts")
 }
 
-func NotifyGroups(session *sessions.Session, arg struct{}) (uint64, error) {
-	groups, err := getGroups()
-	if err != nil {
-		return 0, err
-	}
-
+func NotifyGroups(session *sessions.Session, arg struct{}) uint64 {
+	groups := getGroups()
 	viewId := notification.NotifyView(session, groups)
-	return viewId, nil
+	return viewId
 }
 
 func fillGroupValues(group *entities.GroupValues, values ObjectValues) error {
@@ -110,14 +99,10 @@ func (values *ObjectValues) GetId() (string, error) {
 }
 
 func CreateGroup(group ObjectValues) (*entities.Group, error) {
-	groups, err := getGroups()
-	if err != nil {
-		return nil, err
-	}
+	groups := getGroups()
 
 	groupValues := &entities.GroupValues{}
-	err = fillGroupValues(groupValues, group)
-	if err != nil {
+	if err := fillGroupValues(groupValues, group); err != nil {
 		return nil, err
 	}
 
@@ -128,10 +113,7 @@ func CreateGroup(group ObjectValues) (*entities.Group, error) {
 }
 
 func UpdateGroup(group ObjectValues) (*entities.Group, error) {
-	groups, err := getGroups()
-	if err != nil {
-		return nil, err
-	}
+	groups := getGroups()
 
 	id, err := group.GetId()
 	if err != nil {
@@ -156,15 +138,8 @@ func UpdateGroup(group ObjectValues) (*entities.Group, error) {
 func DeleteGroup(id string) error {
 	logger.Debugf("drop group '%s'", id)
 
-	groups, err := getGroups()
-	if err != nil {
-		return err
-	}
-
-	operations, err := getOperations()
-	if err != nil {
-		return err
-	}
+	groups := getGroups()
+	operations := getOperations()
 
 	group, err := groups.Get(id)
 	if err != nil {
@@ -252,59 +227,42 @@ func fillChildrenGroups(groups store.ICollection[*entities.Group], groupId strin
 	return array
 }
 
-func getGroups() (store.ICollection[*entities.Group], error) {
+func getGroups() store.ICollection[*entities.Group] {
 	return store.GetCollection[*entities.Group]("groups")
 }
 
-func OperationsMove(groupId *string, operationIds []string) (int, error) {
+func OperationsMove(groupId *string, operationIds []string) error {
 	return operationsUpdate(operationIds, func(values *entities.OperationValues) {
 		values.Group = groupId
 	})
 }
 
-func OperationsSetNote(note string, operationIds []string) (int, error) {
+func OperationsSetNote(note string, operationIds []string) error {
 	return operationsUpdate(operationIds, func(values *entities.OperationValues) {
 		values.Note = note
 	})
 }
 
 func OperationAppendNote(note string, operationId string) error {
-	operations, err := getOperations()
-	if err != nil {
-		return err
-	}
-
-	operation, err := operations.Get(operationId)
-	if err != nil {
-		return err
-	}
-
-	oldNote := operation.Note()
-	newNote := fmt.Sprintf("%s\n\n---\n\n%s", oldNote, note)
-
-	values := operation.ToValues()
-	values.Note = newNote
-	operation = entities.NewOperation(values)
-	operations.Set(operation)
-
-	return nil
+	return operationsUpdate([]string{operationId}, func(values *entities.OperationValues) {
+		values.Note = fmt.Sprintf("%s\n\n---\n\n%s", values.Note, note)
+	})
 }
 
-func operationsUpdate(operationIds []string, updater func(values *entities.OperationValues)) (int, error) {
-	operations, err := getOperations()
-	if err != nil {
-		return 0, err
-	}
+func operationsUpdate(operationIds []string, updater func(values *entities.OperationValues)) error {
+	operations := getOperations()
 
-	ids := make(map[string]struct{})
-	for _, id := range operationIds {
-		ids[id] = struct{}{}
-	}
+	// first find all operations (to ensure they exists and have an atomic update)
+	list := make([]*entities.Operation, 0, len(operationIds))
 
-	list := operations.Filter(func(operation *entities.Operation) bool {
-		_, ok := ids[operation.Id()]
-		return ok
-	})
+	for _, operationId := range operationIds {
+		operation, err := operations.Get(operationId)
+		if err != nil {
+			return err
+		}
+
+		list = append(list, operation)
+	}
 
 	for _, operation := range list {
 		values := operation.ToValues()
@@ -313,22 +271,19 @@ func operationsUpdate(operationIds []string, updater func(values *entities.Opera
 		operations.Set(operation)
 	}
 
-	return len(list), nil
+	return nil
 }
 
-func OperationsGetUnsorted(min time.Time, max time.Time) ([]*entities.Operation, error) {
-	operations, err := getOperations()
-	if err != nil {
-		return nil, err
-	}
+func OperationsGetUnsorted(min time.Time, max time.Time) []*entities.Operation {
+	operations := getOperations()
 
 	list := operations.Filter(func(operation *entities.Operation) bool {
 		return operation.Group() == nil && !operation.Date().Before(min) && !operation.Date().After(max)
 	})
 
-	return list, nil
+	return list
 }
 
-func getOperations() (store.ICollection[*entities.Operation], error) {
+func getOperations() store.ICollection[*entities.Operation] {
 	return store.GetCollection[*entities.Operation]("operations")
 }

@@ -64,11 +64,8 @@ func (view *operationStats) Refresh() {
 	view.setObject(view.unsortedCountId, "unsortedCount", view.computeUnsortedCount())
 }
 
-func NewOperationStats() (store.IView[*entities.ReportOperationStat], error) {
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return nil, err
-	}
+func NewOperationStats() store.IView[*entities.ReportOperationStat] {
+	operations := store.GetCollection[*entities.Operation]("operations")
 
 	view := &operationStats{
 		operations:      operations,
@@ -86,7 +83,7 @@ func NewOperationStats() (store.IView[*entities.ReportOperationStat], error) {
 
 	view.Refresh()
 
-	return view, nil
+	return view
 }
 
 func (view *operationStats) findLastDate() any {

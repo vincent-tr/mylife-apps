@@ -10,11 +10,13 @@ import (
 var Definition = api.MakeDefinition("reporting", notifyOperationStats, notifyTotalByMonth, notifyGroupByMonth, notifyGroupByYear, exportGroupByMonth, exportGroupByYear)
 
 func notifyOperationStats(session *sessions.Session, arg struct{}) (uint64, error) {
-	return business.NotifyOperationStats(session)
+	viewId := business.NotifyOperationStats(session)
+	return viewId, nil
 }
 
 func notifyTotalByMonth(session *sessions.Session, arg struct{}) (uint64, error) {
-	return business.NotifyTotalByMonth(session)
+	viewId := business.NotifyTotalByMonth(session)
+	return viewId, nil
 }
 
 func notifyGroupByMonth(session *sessions.Session, arg struct{ Criteria views.CriteriaValues }) (uint64, error) {

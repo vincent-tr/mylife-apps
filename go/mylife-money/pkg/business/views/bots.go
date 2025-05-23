@@ -61,14 +61,14 @@ func (view *botsView) Refresh() {
 
 var _ store.IView[*entities.Bot] = (*botsView)(nil)
 
-func NewBots() (store.IView[*entities.Bot], error) {
+func NewBots() store.IView[*entities.Bot] {
 
 	view := &botsView{}
 	view.container = store.NewContainer[*entities.Bot]("bots")
 
 	botsViewInstance = view
 
-	return view, nil
+	return view
 }
 
 func (view *botsView) addBot(typ entities.BotType, schedule *string) {

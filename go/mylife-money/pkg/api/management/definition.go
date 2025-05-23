@@ -50,27 +50,26 @@ func notifyOperations(session *sessions.Session, arg struct{ Criteria views.Crit
 func moveOperations(session *sessions.Session, arg struct {
 	Group      *string
 	Operations []string
-}) (int, error) {
-	count, err := business.OperationsMove(arg.Group, arg.Operations)
+}) (api.NoReturn, error) {
+	err := business.OperationsMove(arg.Group, arg.Operations)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	logger.Infof("Operations moved: %#v %#v -> %d", arg.Group, arg.Operations, count)
-	return count, nil
+	logger.Infof("Operations moved: %#v %#v", arg.Group, arg.Operations)
+	return nil, nil
 }
 
 func operationsSetNote(session *sessions.Session, arg struct {
 	Note       string
 	Operations []string
 }) (api.NoReturn, error) {
-	count, err := business.OperationsSetNote(arg.Note, arg.Operations)
+	err := business.OperationsSetNote(arg.Note, arg.Operations)
 	if err != nil {
 		return nil, err
 	}
 
-	logger.Infof("Operations note set: '%s' %#v -> %d", arg.Note, arg.Operations, count)
-
+	logger.Infof("Operations note set: '%s' %#v", arg.Note, arg.Operations)
 	return nil, nil
 }
 

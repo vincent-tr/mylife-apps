@@ -61,16 +61,9 @@ func (view *OperationView) Close() {
 	view.groups.RemoveListener(&view.onGroupChangeCallback)
 }
 
-func MakeOperationView() (*OperationView, error) {
-	operations, err := store.GetCollection[*entities.Operation]("operations")
-	if err != nil {
-		return nil, err
-	}
-
-	groups, err := store.GetCollection[*entities.Group]("groups")
-	if err != nil {
-		return nil, err
-	}
+func MakeOperationView() *OperationView {
+	operations := store.GetCollection[*entities.Operation]("operations")
+	groups := store.GetCollection[*entities.Group]("groups")
 
 	view := &OperationView{
 		groups: groups,
@@ -81,7 +74,7 @@ func MakeOperationView() (*OperationView, error) {
 
 	view.groups.AddListener(&view.onGroupChangeCallback)
 
-	return view, nil
+	return view
 }
 
 func (v *OperationView) filterCallack(operation *entities.Operation) bool {

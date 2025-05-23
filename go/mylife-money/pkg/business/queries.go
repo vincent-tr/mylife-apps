@@ -24,20 +24,9 @@ func RenotifyWithCriteria(session *sessions.Session, viewId uint64, criteria vie
 }
 
 func NotifyOperations(session *sessions.Session, criteria views.CriteriaValues) (uint64, error) {
-	view, err := views.MakeOperationView()
-	if err != nil {
-		return 0, err
-	}
+	view := views.MakeOperationView()
 
-	view.SetCriteriaValues(criteria)
-
-	viewId := notification.NotifyView(session, view)
-	return viewId, nil
-}
-
-func NotifyOperationStats(session *sessions.Session) (uint64, error) {
-	view, err := store.GetMaterializedView[*entities.ReportOperationStat]("operation-stats")
-	if err != nil {
+	if err := view.SetCriteriaValues(criteria); err != nil {
 		return 0, err
 	}
 
@@ -45,34 +34,36 @@ func NotifyOperationStats(session *sessions.Session) (uint64, error) {
 	return viewId, nil
 }
 
-func NotifyTotalByMonth(session *sessions.Session) (uint64, error) {
-	view, err := store.GetMaterializedView[*entities.ReportTotalByMonth]("total-by-month")
-	if err != nil {
-		return 0, err
-	}
-
+func NotifyOperationStats(session *sessions.Session) uint64 {
+	view := store.GetMaterializedView[*entities.ReportOperationStat]("operation-stats")
 	viewId := notification.NotifyView(session, view)
-	return viewId, nil
+	return viewId
+}
+
+func NotifyTotalByMonth(session *sessions.Session) uint64 {
+	view := store.GetMaterializedView[*entities.ReportTotalByMonth]("total-by-month")
+	viewId := notification.NotifyView(session, view)
+	return viewId
 }
 
 func NotifyGroupByMonth(session *sessions.Session, criteria views.CriteriaValues) (uint64, error) {
-	view, err := views.MakeGroupByMonth()
-	if err != nil {
+	view := views.MakeGroupByMonth()
+
+	if err := view.(views.ViewWithCriteria).SetCriteriaValues(criteria); err != nil {
 		return 0, err
 	}
 
-	view.(views.ViewWithCriteria).SetCriteriaValues(criteria)
 	viewId := notification.NotifyView(session, view)
 	return viewId, nil
 }
 
 func NotifyGroupByYear(session *sessions.Session, criteria views.CriteriaValues) (uint64, error) {
-	view, err := views.MakeGroupByYear()
-	if err != nil {
+	view := views.MakeGroupByYear()
+
+	if err := view.(views.ViewWithCriteria).SetCriteriaValues(criteria); err != nil {
 		return 0, err
 	}
 
-	view.(views.ViewWithCriteria).SetCriteriaValues(criteria)
 	viewId := notification.NotifyView(session, view)
 	return viewId, nil
 }
