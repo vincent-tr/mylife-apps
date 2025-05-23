@@ -204,10 +204,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 - globalization
 - charts : http://recharts.org/
 
-## Tools server
-
-- store.GetCollection/store.GetMaterializedView: panic if not found, and no error returned
-
 ## Money
 
 - Gestion des regles
