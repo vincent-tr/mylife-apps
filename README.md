@@ -246,6 +246,8 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
     - ct10 => cumulus => inversé jusqu'au 01/07/2023 9h43
     - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
   - Avoir une materialized view des stats par type pour accélérer l'affichage
+- Bug recharge Tesla :
+  - Si mode intelligent et recharge terminée (80%) et si on passe en mode rapide (cible 95%) alors la charge reste terminée et le mode repasse a intelligent 
 
 ## (old) Gallery
 
