@@ -11,7 +11,10 @@ require (
 	mylife-tools-server v0.0.0-00010101000000-000000000000
 )
 
-require gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+require (
+	github.com/fsnotify/fsnotify v1.9.0 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+)
 
 require (
 	dario.cat/mergo v1.0.1 // indirect
