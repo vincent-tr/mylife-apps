@@ -37,10 +37,7 @@ func (service *secretService) Init(arg interface{}) error {
 	config.BindStructure("secrets", &conf)
 
 	service.path = conf.Path
-
-	if err := service.reload(); err != nil {
-		return fmt.Errorf("failed to load secrets: %w", err)
-	}
+	logger.WithField("path", service.path).Info("Initializing secrets service")
 
 	// Setup watcher
 	watcher, err := fsnotify.NewWatcher()
@@ -54,6 +51,10 @@ func (service *secretService) Init(arg interface{}) error {
 
 	service.watcher = watcher
 	service.watcherWorker = utils.NewWorker(service.watcherWorkerCallback)
+
+	if err := service.reload(); err != nil {
+		return fmt.Errorf("failed to load secrets: %w", err)
+	}
 
 	return nil
 }
