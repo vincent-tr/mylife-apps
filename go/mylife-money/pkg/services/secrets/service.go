@@ -32,10 +32,7 @@ func (service *secretService) Init(arg interface{}) error {
 	}
 
 	for _, entry := range entries {
-		if !entry.Type().IsRegular() {
-			continue
-		}
-
+		// Note: kube secrets files are symlinks
 		filePath := fmt.Sprintf("%s/%s", conf.Path, entry.Name())
 		data, err := os.ReadFile(filePath)
 		if err != nil {
