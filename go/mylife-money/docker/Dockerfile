@@ -10,7 +10,7 @@ RUN go mod download
 
 RUN CGO_ENABLED=0 go build -o /src/mylife-money main.go
 
-FROM gcr.io/distroless/static-debian11:debug
+FROM gcr.io/distroless/static-debian11
 
 COPY --from=build /src/mylife-money /
 COPY --from=build /src/go/mylife-money/config.yaml /
