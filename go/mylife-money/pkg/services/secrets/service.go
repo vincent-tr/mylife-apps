@@ -39,6 +39,9 @@ func (service *secretService) Init(arg interface{}) error {
 	service.path = conf.Path
 	logger.WithField("path", service.path).Info("Initializing secrets service")
 
+	// testalacon
+	time.Sleep(10 * time.Second) // wait for secrets to be mounted
+
 	// Setup watcher
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
