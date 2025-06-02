@@ -39,21 +39,21 @@ func (service *secretService) Init(arg interface{}) error {
 	service.path = conf.Path
 	logger.WithField("path", service.path).Info("Initializing secrets service")
 
-	// testalacon
-	time.Sleep(10 * time.Second) // wait for secrets to be mounted
+	// // testalacon
+	// time.Sleep(10 * time.Second) // wait for secrets to be mounted
 
-	// Setup watcher
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		return fmt.Errorf("failed to create fsnotify watcher: %w", err)
-	}
+	// // Setup watcher
+	// watcher, err := fsnotify.NewWatcher()
+	// if err != nil {
+	// 	return fmt.Errorf("failed to create fsnotify watcher: %w", err)
+	// }
 
-	if err := watcher.Add(service.path); err != nil {
-		return fmt.Errorf("failed to add secrets directory to watcher: %w", err)
-	}
+	// if err := watcher.Add(service.path); err != nil {
+	// 	return fmt.Errorf("failed to add secrets directory to watcher: %w", err)
+	// }
 
-	service.watcher = watcher
-	service.watcherWorker = utils.NewWorker(service.watcherWorkerCallback)
+	// service.watcher = watcher
+	service.watcherWorker = utils.NewInterval(10*time.Second, service.workerReload)
 
 	if err := service.reload(); err != nil {
 		return fmt.Errorf("failed to load secrets: %w", err)
@@ -63,7 +63,7 @@ func (service *secretService) Init(arg interface{}) error {
 }
 
 func (service *secretService) Terminate() error {
-	service.watcher.Close()
+	//	service.watcher.Close()
 	service.watcherWorker.Terminate()
 
 	return nil
@@ -108,6 +108,12 @@ func (service *secretService) watcherWorkerCallback(exit chan struct{}) {
 		case <-exit:
 			return
 		}
+	}
+}
+
+func (service *secretService) workerReload() {
+	if err := service.reload(); err != nil {
+		logger.WithError(err).Error("Failed to reload secrets")
 	}
 }
 
