@@ -7,7 +7,6 @@ import (
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
 	mailsender "mylife-money/pkg/services/mail_sender"
-	"mylife-tools-server/services/tasks"
 	"net/http"
 	"net/http/cookiejar"
 	"time"
@@ -72,7 +71,7 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 		return fmt.Errorf("failed to send mail: %w", err)
 	}
 
-	wrapper := newErrorWrapper(func() error {
+	return common.RunEventLoopWithError("cic-scraper/import-operations", func() error {
 		account, err := business.GetAccountId(b.config.Account)
 		if err != nil {
 			return err
@@ -94,14 +93,6 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 
 		return nil
 	})
-
-	err = tasks.RunEventLoop("cic-scraper/import-operations", wrapper.Run)
-
-	if err != nil {
-		return err
-	}
-
-	return wrapper.Error()
 }
 
 var _ common.Bot = (*bot)(nil)
@@ -126,23 +117,4 @@ func (b *bot) sendMail(data []byte) error {
 	}
 
 	return mailsender.SendMail(mail)
-}
-
-type errorWrapper struct {
-	err    error
-	target func() error
-}
-
-func newErrorWrapper(target func() error) *errorWrapper {
-	return &errorWrapper{
-		target: target,
-	}
-}
-
-func (ew *errorWrapper) Error() error {
-	return ew.err
-}
-
-func (ew *errorWrapper) Run() {
-	ew.err = ew.target()
 }
