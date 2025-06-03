@@ -35,3 +35,21 @@ func StartBot(id string) error {
 
 	return handler(typ)
 }
+
+func GetAccountId(code string) (string, error) {
+	accounts := store.GetCollection[*entities.Account]("accounts")
+
+	list := accounts.Filter(func(a *entities.Account) bool {
+		return a.Code() == code
+	})
+
+	if len(list) == 0 {
+		return "", fmt.Errorf("account %s not found", code)
+	}
+
+	if len(list) > 1 {
+		return "", fmt.Errorf("multiple accounts found for code %s", code)
+	}
+
+	return list[0].Id(), nil
+}

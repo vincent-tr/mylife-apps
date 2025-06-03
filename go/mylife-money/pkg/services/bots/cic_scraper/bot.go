@@ -7,7 +7,6 @@ import (
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
 	mailsender "mylife-money/pkg/services/mail_sender"
-	"mylife-tools-server/services/store"
 	"mylife-tools-server/services/tasks"
 	"net/http"
 	"net/http/cookiejar"
@@ -74,7 +73,7 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 	}
 
 	wrapper := newErrorWrapper(func() error {
-		account, err := b.getAccountId()
+		account, err := business.GetAccountId(b.config.Account)
 		if err != nil {
 			return err
 		}
@@ -111,24 +110,6 @@ func NewBot(config *Config) common.Bot {
 	return &bot{
 		config: config,
 	}
-}
-
-func (b *bot) getAccountId() (string, error) {
-	accounts := store.GetCollection[*entities.Account]("accounts")
-
-	list := accounts.Filter(func(a *entities.Account) bool {
-		return a.Code() == b.config.Account
-	})
-
-	if len(list) == 0 {
-		return "", fmt.Errorf("account %s not found", b.config.Account)
-	}
-
-	if len(list) > 1 {
-		return "", fmt.Errorf("multiple accounts found for code %s", b.config.Account)
-	}
-
-	return list[0].Id(), nil
 }
 
 func (b *bot) sendMail(data []byte) error {
