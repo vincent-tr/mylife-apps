@@ -162,6 +162,10 @@ func (mm *MailMessage) UID() imap.UID {
 	return mm.msg.UID
 }
 
+func (mm *MailMessage) Date() time.Time {
+	return mm.msg.Envelope.Date
+}
+
 type MailPart struct {
 	owner            *MailFetcher
 	uid              imap.UID

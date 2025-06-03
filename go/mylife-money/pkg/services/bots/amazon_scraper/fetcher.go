@@ -6,6 +6,7 @@ import (
 	"mylife-money/pkg/services/bots/common"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"
@@ -14,6 +15,7 @@ import (
 type order struct {
 	id     string
 	amount float64
+	date   time.Time
 	items  []orderItem
 }
 
@@ -60,9 +62,15 @@ func (b *bot) fetchOrders() ([]*order, error) {
 			return nil, fmt.Errorf("failed to download text part for message %d: %w", msg.UID(), err)
 		}
 
-		order, err := b.processMessage(htmlContent, textContent)
-		if err != nil {
-			return nil, fmt.Errorf("failed to process message content for message %d: %w", msg.UID(), err)
+		order := &order{}
+		order.date = msg.Date()
+
+		if err := b.processTextMessage(order, textContent); err != nil {
+			return nil, fmt.Errorf("failed to process text message content for message %d: %w", msg.UID(), err)
+		}
+
+		if err := b.processHtmlMessage(order, htmlContent); err != nil {
+			return nil, fmt.Errorf("failed to process HTML message content for message %d: %w", msg.UID(), err)
 		}
 
 		orders = append(orders, order)
@@ -71,8 +79,7 @@ func (b *bot) fetchOrders() ([]*order, error) {
 	return orders, nil
 }
 
-func (b *bot) processMessage(htmlContent []byte, textContent []byte) (*order, error) {
-	order := &order{}
+func (b *bot) processTextMessage(order *order, textContent []byte) error {
 
 	// Create blocks
 	blocks := createBlocks(textContent)
@@ -87,18 +94,18 @@ func (b *bot) processMessage(htmlContent []byte, textContent []byte) (*order, er
 	for _, block := range blocks {
 		if block[0] == "N° de commande" {
 			if len(block) != 2 {
-				return nil, fmt.Errorf("unexpected format for order ID block: %v", block)
+				return fmt.Errorf("unexpected format for order ID block: %v", block)
 			}
 
 			order.id = block[1]
 		} else if block[0] == "Total" {
 			if len(block) != 2 {
-				return nil, fmt.Errorf("unexpected format for total amount block: %v", block)
+				return fmt.Errorf("unexpected format for total amount block: %v", block)
 			}
 
 			amount, err := parseAmount(block[1])
 			if err != nil {
-				return nil, fmt.Errorf("failed to parse amount %q: %w", block[1], err)
+				return fmt.Errorf("failed to parse amount %q: %w", block[1], err)
 			}
 			order.amount = amount
 		} else if strings.HasPrefix(block[0], "* ") {
@@ -107,22 +114,22 @@ func (b *bot) processMessage(htmlContent []byte, textContent []byte) (*order, er
 			// line 2: "Quantité: 1"
 			// line 3: "32.99 EUR"
 			if len(block) != 3 {
-				return nil, fmt.Errorf("unexpected format for order item block: %v", block)
+				return fmt.Errorf("unexpected format for order item block: %v", block)
 			}
 
 			name := strings.TrimPrefix(block[0], "* ")
 			if !strings.HasPrefix(block[1], "Quantité: ") {
-				return nil, fmt.Errorf("unexpected format for quantity in block: %v", block)
+				return fmt.Errorf("unexpected format for quantity in block: %v", block)
 			}
 			quantityStr := strings.TrimPrefix(block[1], "Quantité: ")
 			quantity, err := strconv.Atoi(quantityStr)
 			if err != nil {
-				return nil, fmt.Errorf("failed to parse quantity %q: %w", quantityStr, err)
+				return fmt.Errorf("failed to parse quantity %q: %w", quantityStr, err)
 			}
 
 			unitPrice, err := parseAmount(block[2])
 			if err != nil {
-				return nil, fmt.Errorf("failed to parse amount %q: %w", block[2], err)
+				return fmt.Errorf("failed to parse amount %q: %w", block[2], err)
 			}
 
 			order.items = append(order.items, orderItem{
@@ -134,47 +141,50 @@ func (b *bot) processMessage(htmlContent []byte, textContent []byte) (*order, er
 		}
 	}
 
+	return nil
+}
+
+func (b *bot) processHtmlMessage(order *order, htmlContent []byte) error {
+
 	// Fetch imageUrl/productUrl from HTML content
 
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(htmlContent))
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse HTML content: %w", err)
+		return fmt.Errorf("failed to parse HTML content: %w", err)
 	}
 
 	nodes := doc.Find("div[class='rootContent'] td[class='productImageTd'] > a").Nodes
 
 	if len(nodes) != len(order.items) {
-		return nil, fmt.Errorf("expected %d 'a' nodes, got %d", len(order.items), len(nodes))
+		return fmt.Errorf("expected %d 'a' nodes, got %d", len(order.items), len(nodes))
 	}
 
 	for i, aNode := range nodes {
 		if aNode.Data != "a" {
-			return nil, fmt.Errorf("expected 'a' node, got %s at index %d", aNode.Data, i)
+			return fmt.Errorf("expected 'a' node, got %s at index %d", aNode.Data, i)
 		}
 
 		href, err := findAttribute(aNode, "href")
 		if err != nil {
-			return nil, fmt.Errorf("failed to find 'href' attribute in node %d: %w", i, err)
+			return fmt.Errorf("failed to find 'href' attribute in node %d: %w", i, err)
 		}
 		// fmt.Printf("Node %d: %s\n", i+1, href)
 
 		imgNode := aNode.FirstChild
 		if imgNode == nil || imgNode.Data != "img" {
-			return nil, fmt.Errorf("expected 'img' child node in 'a' node %d, got nil or wrong type", i)
+			return fmt.Errorf("expected 'img' child node in 'a' node %d, got nil or wrong type", i)
 		}
 
 		imgSrc, err := findAttribute(imgNode, "src")
 		if err != nil {
-			return nil, fmt.Errorf("failed to find 'src' attribute in img node %d: %w", i, err)
+			return fmt.Errorf("failed to find 'src' attribute in img node %d: %w", i, err)
 		}
 
 		order.items[i].productUrl = href
 		order.items[i].imageUrl = imgSrc
 	}
 
-	// fmt.Printf("Order: %#v\n", order)
-
-	return order, nil
+	return nil
 }
 
 func findAttribute(node *html.Node, attr string) (string, error) {
