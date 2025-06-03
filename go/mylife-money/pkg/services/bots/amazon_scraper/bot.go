@@ -12,10 +12,10 @@ type Config struct {
 	From          string  `mapstructure:"from"`    // optional
 	Subject       string  `mapstructure:"subject"` // optional
 	SinceDays     int     `mapstructure:"since-days"`
-	account       string  `mapstructure:"account"`
-	matchDaysDiff int     `mapstructure:"match-days-diff"`
-	matchLabel    string  `mapstructure:"match-label"`
-	template      string  `mapstructure:"template"`
+	Account       string  `mapstructure:"account"`
+	MatchDaysDiff int     `mapstructure:"match-days-diff"`
+	MatchLabel    string  `mapstructure:"match-label"`
+	Template      string  `mapstructure:"template"`
 }
 
 type bot struct {
