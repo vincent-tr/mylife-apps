@@ -22,3 +22,9 @@ func ProcessSecret(logger *ExecutionLogger, value string) string {
 	logger.Debugf("Utilisation du secret de la clé '%s'.", key)
 	return secretValue
 }
+
+type MailFetcherConfig struct {
+	Server string `mapstructure:"server"`
+	User   string `mapstructure:"user"`
+	Pass   string `mapstructure:"pass"`
+}

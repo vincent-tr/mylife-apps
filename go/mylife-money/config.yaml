@@ -8,6 +8,19 @@ bots:
     user: secret:cic-user
     pass: secret:cic-pass
     account: common
+  amazon-scraper:
+    schedule: 0 20 * * *
+    mailbox: Factures
+    from: confirmation-commande@amazon.fr
+    since-days: 10
+    account: common
+    match-days-diff: 10
+    match-label: "PAIEMENT CB {date} PAYLI\\d{7}/ AMAZON (PAYMENTS|EU\\ SARL) CARTE 5672"
+    template: "Commande Amazon {metadata}"
+  mail-fetcher:
+    user: secret:gmail-user
+    pass: secret:gmail-pass
+    server: imap.gmail.com:993
 mail-sender:
   smtp-server: smtp.gmail.com
   smtp-port: 587

@@ -5,6 +5,7 @@ import (
 	"mylife-money/pkg/business"
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
+	amazonscraper "mylife-money/pkg/services/bots/amazon_scraper"
 	cicscraper "mylife-money/pkg/services/bots/cic_scraper"
 	"mylife-money/pkg/services/bots/common"
 	"mylife-tools-server/config"
@@ -21,7 +22,9 @@ var logger = log.CreateLogger("mylife:money:bots")
 type Bot = common.Bot
 
 type botsConfig struct {
-	CicScraper *cicscraper.Config `mapstructure:"cic-scraper"`
+	CicScraper    *cicscraper.Config        `mapstructure:"cic-scraper"`
+	AmazonScraper *amazonscraper.Config     `mapstructure:"amazon-scraper"`
+	MailFetcher   *common.MailFetcherConfig `mapstructure:"mail-fetcher"`
 }
 
 type botsService struct {
@@ -47,18 +50,12 @@ func (service *botsService) Init(arg interface{}) error {
 
 	if conf.CicScraper != nil {
 		bot := cicscraper.NewBot(conf.CicScraper)
-		handler := newBotHandler(bot, service.pendings)
-		service.bots[bot.Type()] = handler
+		service.initBot(bot)
+	}
 
-		tasks.SubmitEventLoop("bots/add", func() {
-			views.BotAdd(bot.Type(), bot.Schedule())
-		})
-
-		pschedule := bot.Schedule()
-		if pschedule != nil {
-			schedule := *pschedule
-			service.scheduler.NewJob(gocron.CronJob(schedule, true), gocron.NewTask(handler.Start))
-		}
+	if conf.AmazonScraper != nil {
+		bot := amazonscraper.NewBot(conf.MailFetcher, conf.AmazonScraper)
+		service.initBot(bot)
 	}
 
 	business.SetBotStartHandler(service.startBotRun)
@@ -80,6 +77,21 @@ func (service *botsService) Terminate() error {
 	service.pendings.Wait()
 
 	return nil
+}
+
+func (service *botsService) initBot(bot common.Bot) {
+	handler := newBotHandler(bot, service.pendings)
+	service.bots[bot.Type()] = handler
+
+	tasks.SubmitEventLoop("bots/add", func() {
+		views.BotAdd(bot.Type(), bot.Schedule())
+	})
+
+	pschedule := bot.Schedule()
+	if pschedule != nil {
+		schedule := *pschedule
+		service.scheduler.NewJob(gocron.CronJob(schedule, true), gocron.NewTask(handler.Start))
+	}
 }
 
 func (service *botsService) ServiceName() string {
