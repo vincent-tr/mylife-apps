@@ -12,7 +12,7 @@ bots:
     schedule: 0 20 * * *
     mailbox: Factures
     from: confirmation-commande@amazon.fr
-    since-days: 150
+    since-days: 50 # to lower when cic-scraper is run every day
     account: common
     match-days-diff: 10
     match-label: "PAIEMENT CB {date} PAYLI\\d{7}/ AMAZON (PAYMENTS|EU\\ SARL) CARTE \\d{4}"
