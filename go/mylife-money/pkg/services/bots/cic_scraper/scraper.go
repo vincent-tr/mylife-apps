@@ -77,7 +77,7 @@ func (b *bot) authenticate() error {
 
 	validator := doc.Find("div[id='C:O:B:I1:inMobileAppMessage']").ChildrenFiltered(".otpFontSizeIncreased").ChildrenFiltered("span").Text()
 	validator = strings.TrimSpace(validator)
-	b.logger.Infof("Authentification forte requise : %s", validator)
+	b.logger.Infof("Strong authentication required : %s", validator)
 
 	// 	b.logger.Debugf("Transaction ID: '%s'", transactionId)
 	//	b.logger.Debugf("Validation URL: '%s'", getTransactionValidationStateUrl)
@@ -149,10 +149,10 @@ func (b *bot) waitAuth(transactionId string, getTransactionValidationStateUrl st
 
 		switch status {
 		case "PENDING":
-			b.logger.Info("En attente d'authentification")
+			b.logger.Info("Waiting for authentication...")
 
 		case "VALIDATED":
-			b.logger.Info("Authentification validée")
+			b.logger.Info("Authentication validated")
 			exitLoop = true
 
 		default:
@@ -256,7 +256,7 @@ func (b *bot) download() ([]byte, error) {
 		if isResponseOk {
 			data := resp.bodyBytes
 
-			b.logger.Infof("Téléchargé un fichier de %d octets", len(data))
+			b.logger.Infof("Downloaded file (%d bytes)", len(data))
 
 			return data, nil
 		}

@@ -82,14 +82,14 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 			return fmt.Errorf("failed to import operations: %w", err)
 		}
 
-		b.logger.Infof("%d opérations importées", importedCount)
+		b.logger.Infof("%d operations imported", importedCount)
 
 		movedCount, err := business.ExecuteRules()
 		if err != nil {
 			return fmt.Errorf("failed to execute rules: %w", err)
 		}
 
-		b.logger.Infof("Exécution des règles : %d opérations classées", movedCount)
+		b.logger.Infof("Rules execution: %d operations sorted", movedCount)
 
 		return nil
 	})
