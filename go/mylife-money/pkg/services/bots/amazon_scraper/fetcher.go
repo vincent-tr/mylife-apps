@@ -13,18 +13,18 @@ import (
 )
 
 type order struct {
-	id     string
-	amount float64
-	date   time.Time
-	items  []orderItem
+	Id     string
+	Amount float64
+	Date   time.Time
+	Items  []orderItem
 }
 
 type orderItem struct {
-	name       string
-	quantity   int
-	unitPrice  float64
-	productUrl string
-	imageUrl   string
+	Name       string
+	Quantity   int
+	UnitPrice  float64
+	ProductUrl string
+	ImageUrl   string
 }
 
 func (b *bot) fetchOrders() ([]*order, error) {
@@ -63,7 +63,7 @@ func (b *bot) fetchOrders() ([]*order, error) {
 		}
 
 		order := &order{}
-		order.date = msg.Date()
+		order.Date = msg.Date()
 
 		if err := b.processTextMessage(order, textContent); err != nil {
 			return nil, fmt.Errorf("failed to process text message content for message %d: %w", msg.UID(), err)
@@ -97,7 +97,7 @@ func (b *bot) processTextMessage(order *order, textContent []byte) error {
 				return fmt.Errorf("unexpected format for order ID block: %v", block)
 			}
 
-			order.id = block[1]
+			order.Id = block[1]
 		} else if block[0] == "Total" {
 			if len(block) != 2 {
 				return fmt.Errorf("unexpected format for total amount block: %v", block)
@@ -107,7 +107,7 @@ func (b *bot) processTextMessage(order *order, textContent []byte) error {
 			if err != nil {
 				return fmt.Errorf("failed to parse amount %q: %w", block[1], err)
 			}
-			order.amount = amount
+			order.Amount = amount
 		} else if strings.HasPrefix(block[0], "* ") {
 			// Example:
 			// line 1: "* <nom produit>"
@@ -132,10 +132,10 @@ func (b *bot) processTextMessage(order *order, textContent []byte) error {
 				return fmt.Errorf("failed to parse amount %q: %w", block[2], err)
 			}
 
-			order.items = append(order.items, orderItem{
-				name:      name,
-				quantity:  quantity,
-				unitPrice: unitPrice,
+			order.Items = append(order.Items, orderItem{
+				Name:      name,
+				Quantity:  quantity,
+				UnitPrice: unitPrice,
 				// productUrl and imageUrl will be filled later
 			})
 		}
@@ -155,8 +155,8 @@ func (b *bot) processHtmlMessage(order *order, htmlContent []byte) error {
 
 	nodes := doc.Find("div[class='rootContent'] td[class='productImageTd'] > a").Nodes
 
-	if len(nodes) != len(order.items) {
-		return fmt.Errorf("expected %d 'a' nodes, got %d", len(order.items), len(nodes))
+	if len(nodes) != len(order.Items) {
+		return fmt.Errorf("expected %d 'a' nodes, got %d", len(order.Items), len(nodes))
 	}
 
 	for i, aNode := range nodes {
@@ -180,8 +180,8 @@ func (b *bot) processHtmlMessage(order *order, htmlContent []byte) error {
 			return fmt.Errorf("failed to find 'src' attribute in img node %d: %w", i, err)
 		}
 
-		order.items[i].productUrl = href
-		order.items[i].imageUrl = imgSrc
+		order.Items[i].ProductUrl = href
+		order.Items[i].ImageUrl = imgSrc
 	}
 
 	return nil

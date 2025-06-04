@@ -274,14 +274,12 @@ func operationsUpdate(operationIds []string, updater func(values *entities.Opera
 	return nil
 }
 
-func OperationsGetUnsorted(min time.Time, max time.Time) []*entities.Operation {
+func OperationsListInterval(account string, min time.Time, max time.Time) []*entities.Operation {
 	operations := getOperations()
 
-	list := operations.Filter(func(operation *entities.Operation) bool {
-		return operation.Group() == nil && !operation.Date().Before(min) && !operation.Date().After(max)
+	return operations.Filter(func(operation *entities.Operation) bool {
+		return operation.Account() == account && !operation.Date().Before(min) && !operation.Date().After(max)
 	})
-
-	return list
 }
 
 func getOperations() store.ICollection[*entities.Operation] {

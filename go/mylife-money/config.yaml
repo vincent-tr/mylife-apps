@@ -12,7 +12,7 @@ bots:
     schedule: 0 20 * * *
     mailbox: Factures
     from: confirmation-commande@amazon.fr
-    since-days: 10
+    since-days: 60
     account: common
     match-days-diff: 10
     match-label: "PAIEMENT CB {date} PAYLI\\d{7}/ AMAZON (PAYMENTS|EU\\ SARL) CARTE \\d{4}"
