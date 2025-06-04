@@ -15,8 +15,7 @@ bots:
     since-days: 10
     account: common
     match-days-diff: 10
-    match-label: "PAIEMENT CB {date} PAYLI\\d{7}/ AMAZON (PAYMENTS|EU\\ SARL) CARTE 5672"
-    template: "Commande Amazon {metadata}"
+    match-label: "PAIEMENT CB {date} PAYLI\\d{7}/ AMAZON (PAYMENTS|EU\\ SARL) CARTE \\d{4}"
   mail-fetcher:
     user: secret:gmail-user
     pass: secret:gmail-pass

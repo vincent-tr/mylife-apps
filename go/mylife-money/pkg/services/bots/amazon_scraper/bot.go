@@ -15,7 +15,6 @@ type Config struct {
 	Account       string  `mapstructure:"account"`
 	MatchDaysDiff int     `mapstructure:"match-days-diff"`
 	MatchLabel    string  `mapstructure:"match-label"`
-	Template      string  `mapstructure:"template"`
 }
 
 type bot struct {
