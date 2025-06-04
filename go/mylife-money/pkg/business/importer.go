@@ -157,7 +157,7 @@ func filterExisting(records []record) []record {
 
 	opHashSet := make(map[string]bool)
 	for _, op := range lastDayOperations {
-		opHashSet[fmt.Sprintf("%f|%s|%s", op.Amount(), op.Account(), op.Label())] = true
+		opHashSet[fmt.Sprintf("%.2f|%s|%s", op.Amount(), op.Account(), op.Label())] = true
 	}
 
 	filteredRecords := make([]record, 0)
@@ -172,7 +172,7 @@ func filterExisting(records []record) []record {
 			continue
 		}
 
-		recHash := fmt.Sprintf("%f|%s|%s", rec.amount, rec.account, rec.label)
+		recHash := fmt.Sprintf("%.2f|%s|%s", rec.amount, rec.account, rec.label)
 		if !opHashSet[recHash] {
 			filteredRecords = append(filteredRecords, rec)
 		}
