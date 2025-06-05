@@ -11,20 +11,9 @@ import (
 	"time"
 )
 
-type Config struct {
-	Schedule      *string `mapstructure:"schedule"`
-	Mailbox       string  `mapstructure:"mailbox"`
-	From          string  `mapstructure:"from"`    // optional
-	Subject       string  `mapstructure:"subject"` // optional
-	SinceDays     int     `mapstructure:"since-days"`
-	Account       string  `mapstructure:"account"`
-	MatchDaysDiff int     `mapstructure:"match-days-diff"`
-	MatchLabel    string  `mapstructure:"match-label"`
-}
-
 type bot struct {
 	mailFetcherConfig *common.MailFetcherConfig
-	config            *Config
+	config            *common.MailScraperConfig
 
 	// only set when the bot is running
 	ctx    context.Context
@@ -53,7 +42,7 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 	}
 
 	if len(orders) == 0 {
-		b.logger.Info("No new orders found")
+		b.logger.Info("No new order found")
 		return nil
 	}
 
@@ -88,7 +77,7 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 
 var _ common.Bot = (*bot)(nil)
 
-func NewBot(mailFetcherConfig *common.MailFetcherConfig, config *Config) common.Bot {
+func NewBot(mailFetcherConfig *common.MailFetcherConfig, config *common.MailScraperConfig) common.Bot {
 	return &bot{
 		mailFetcherConfig: mailFetcherConfig,
 		config:            config,

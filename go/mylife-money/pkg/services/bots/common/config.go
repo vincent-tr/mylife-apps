@@ -28,3 +28,14 @@ type MailFetcherConfig struct {
 	User   string `mapstructure:"user"`
 	Pass   string `mapstructure:"pass"`
 }
+
+type MailScraperConfig struct {
+	Schedule      *string `mapstructure:"schedule"`
+	Mailbox       string  `mapstructure:"mailbox"`
+	From          string  `mapstructure:"from"`    // optional
+	Subject       string  `mapstructure:"subject"` // optional
+	SinceDays     int     `mapstructure:"since-days"`
+	Account       string  `mapstructure:"account"`
+	MatchDaysDiff int     `mapstructure:"match-days-diff"`
+	MatchLabel    string  `mapstructure:"match-label"`
+}

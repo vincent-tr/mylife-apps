@@ -23,7 +23,7 @@ type Bot = common.Bot
 
 type botsConfig struct {
 	CicScraper    *cicscraper.Config        `mapstructure:"cic-scraper"`
-	AmazonScraper *amazonscraper.Config     `mapstructure:"amazon-scraper"`
+	AmazonScraper *common.MailScraperConfig `mapstructure:"amazon-scraper"`
 	MailFetcher   *common.MailFetcherConfig `mapstructure:"mail-fetcher"`
 }
 
