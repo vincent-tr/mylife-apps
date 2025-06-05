@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/net/html"
 )
 
 const authUrl = "https://www.cic.fr/fr/authentification.html"
@@ -92,12 +91,12 @@ func (b *bot) authenticate() error {
 	formData := make(map[string]string)
 
 	for _, node := range form.Find("input[type=hidden]").Nodes {
-		name, err := b.findAttribute(node, "name")
+		name, err := common.FindAttribute(node, "name")
 		if err != nil {
 			return err
 		}
 
-		value, err := b.findAttribute(node, "value")
+		value, err := common.FindAttribute(node, "value")
 		if err != nil {
 			return err
 		}
@@ -271,15 +270,6 @@ func (b *bot) download() ([]byte, error) {
 	}
 
 	return nil, fmt.Errorf("Unexpected response, expected attachment after %d retries", downloadMaxRetries)
-}
-
-func (b *bot) findAttribute(node *html.Node, attr string) (string, error) {
-	for _, n := range node.Attr {
-		if n.Key == attr {
-			return n.Val, nil
-		}
-	}
-	return "", fmt.Errorf("attribute '%s' not found", attr)
 }
 
 func (b *bot) httpProcess(targetUrl string, postData map[string]string, headers map[string]string) (*response, error) {

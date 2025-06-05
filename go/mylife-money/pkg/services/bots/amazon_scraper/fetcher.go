@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/net/html"
 )
 
 type order struct {
@@ -160,7 +159,7 @@ func (b *bot) processHtmlMessage(order *order, htmlContent []byte) error {
 			return fmt.Errorf("expected 'a' node, got %s at index %d", aNode.Data, i)
 		}
 
-		href, err := findAttribute(aNode, "href")
+		href, err := common.FindAttribute(aNode, "href")
 		if err != nil {
 			return fmt.Errorf("failed to find 'href' attribute in node %d: %w", i, err)
 		}
@@ -171,7 +170,7 @@ func (b *bot) processHtmlMessage(order *order, htmlContent []byte) error {
 			return fmt.Errorf("expected 'img' child node in 'a' node %d, got nil or wrong type", i)
 		}
 
-		imgSrc, err := findAttribute(imgNode, "src")
+		imgSrc, err := common.FindAttribute(imgNode, "src")
 		if err != nil {
 			return fmt.Errorf("failed to find 'src' attribute in img node %d: %w", i, err)
 		}
@@ -181,15 +180,6 @@ func (b *bot) processHtmlMessage(order *order, htmlContent []byte) error {
 	}
 
 	return nil
-}
-
-func findAttribute(node *html.Node, attr string) (string, error) {
-	for _, n := range node.Attr {
-		if n.Key == attr {
-			return n.Val, nil
-		}
-	}
-	return "", fmt.Errorf("attribute '%s' not found", attr)
 }
 
 func parseAmount(line string) (float64, error) {
