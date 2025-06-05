@@ -73,6 +73,9 @@ func (b *bot) fetchOrders() ([]*order, error) {
 			return nil, fmt.Errorf("failed to process HTML message content for message %d: %w", msg.UID(), err)
 		}
 
+		// fmt.Println(textContent)
+		// fmt.Println(htmlContent)
+
 		orders = append(orders, order)
 	}
 
@@ -83,14 +86,7 @@ func (b *bot) processTextMessage(order *order, textContent []byte) error {
 
 	// Create blocks
 	blocks := createBlocks(textContent)
-	/*
-		for i, block := range blocks {
-			fmt.Printf("Block %d:\n", i+1)
-			for _, line := range block {
-				fmt.Printf("  %s\n", line)
-			}
-		}
-	*/
+
 	for _, block := range blocks {
 		if block[0] == "N° de commande" {
 			if len(block) != 2 {
