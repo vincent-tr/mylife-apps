@@ -99,6 +99,10 @@ func (mf *MailFetcher) FetchMails(from string, subject string, sinceDays int) ([
 		return nil, err
 	}
 
+	if len(searchData.AllUIDs()) == 0 {
+		return nil, nil // no emails found
+	}
+
 	msgs, err := mf.client.Fetch(imap.UIDSetNum(searchData.AllUIDs()...), &imap.FetchOptions{
 		UID:           true,
 		Envelope:      true,
