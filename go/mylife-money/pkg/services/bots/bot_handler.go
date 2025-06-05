@@ -6,6 +6,7 @@ import (
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
+	"mylife-tools-server/services/monitor"
 	"mylife-tools-server/services/tasks"
 	"sync"
 )
@@ -84,19 +85,25 @@ func (h *botHandler) Execute() {
 	}
 
 	var result entities.BotRunResult
+	var probeStatus monitor.ProbeStatus
 
 	switch execLogger.GetMaxSeverity() {
 	case entities.BotRunLogSeverityDebug, entities.BotRunLogSeverityInfo:
 		result = entities.BotRunResultSuccess
+		probeStatus = monitor.ProbeStatusOK
 	case entities.BotRunLogSeverityWarning:
 		result = entities.BotRunResultWarning
+		probeStatus = monitor.ProbeStatusWarning
 	case entities.BotRunLogSeverityError, entities.BotRunLogSeverityFatal:
 		result = entities.BotRunResultError
+		probeStatus = monitor.ProbeStatusCritical
 	}
 
 	tasks.SubmitEventLoop("bots/run-end", func() {
 		views.BotRunEnded(h.bot.Type(), result)
 	})
+
+	monitor.SetProbeStatus(string(h.bot.Type()), probeStatus, "")
 
 	// End of run
 	h.mux.Lock()
