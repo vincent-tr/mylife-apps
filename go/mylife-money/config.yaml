@@ -18,6 +18,15 @@ bots:
     account: common
     match-days-diff: 10
     match-label: "PAIEMENT CB {date} PAYLI\\d{7}/ AMAZON (PAYMENTS|EU\\ SARL) CARTE \\d{4}"
+  paypal-scraper:
+    schedule: 05 20 * * *
+    mailbox: Factures
+    from: service@paypal.fr
+    subject: "Reçu pour votre paiement à Société" # Reçu pour votre paiement
+    since-days: 150 # to lower when cic-scraper is run every day
+    account: common
+    match-days-diff: 5
+    match-label: "PAYPAL"
   mail-fetcher:
     user: secret:gmail-user
     pass: secret:gmail-pass

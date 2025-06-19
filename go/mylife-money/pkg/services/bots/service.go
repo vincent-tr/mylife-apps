@@ -8,6 +8,7 @@ import (
 	amazonscraper "mylife-money/pkg/services/bots/amazon_scraper"
 	cicscraper "mylife-money/pkg/services/bots/cic_scraper"
 	"mylife-money/pkg/services/bots/common"
+	paypalscraper "mylife-money/pkg/services/bots/paypal_scrapper"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
@@ -24,6 +25,7 @@ type Bot = common.Bot
 type botsConfig struct {
 	CicScraper    *cicscraper.Config        `mapstructure:"cic-scraper"`
 	AmazonScraper *common.MailScraperConfig `mapstructure:"amazon-scraper"`
+	PaypalScraper *common.MailScraperConfig `mapstructure:"paypal-scraper"`
 	MailFetcher   *common.MailFetcherConfig `mapstructure:"mail-fetcher"`
 }
 
@@ -55,6 +57,11 @@ func (service *botsService) Init(arg interface{}) error {
 
 	if conf.AmazonScraper != nil {
 		bot := amazonscraper.NewBot(conf.MailFetcher, conf.AmazonScraper)
+		service.initBot(bot)
+	}
+
+	if conf.PaypalScraper != nil {
+		bot := paypalscraper.NewBot(conf.MailFetcher, conf.PaypalScraper)
 		service.initBot(bot)
 	}
 

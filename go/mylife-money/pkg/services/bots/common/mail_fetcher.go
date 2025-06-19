@@ -170,6 +170,10 @@ func (mm *MailMessage) Date() time.Time {
 	return mm.msg.Envelope.Date
 }
 
+func (mm *MailMessage) Subject() string {
+	return mm.msg.Envelope.Subject
+}
+
 type MailPart struct {
 	owner            *MailFetcher
 	uid              imap.UID
