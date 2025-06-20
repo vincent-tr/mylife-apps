@@ -117,6 +117,21 @@ func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
 
 	receipt.Amount = totalItem.Amount.Value
 
+	// Find "Numéro de transaction" in transaction details
+	var transItem *transactionItem
+	for _, item := range receipt.Transaction {
+		if item.Name == "Numéro de transaction" {
+			transItem = &item
+			break
+		}
+	}
+
+	if transItem == nil {
+		return nil, fmt.Errorf("no transaction number found in receipt transaction details")
+	}
+
+	receipt.Id = strings.TrimSpace(transItem.Value[0])
+
 	return receipt, nil
 }
 
