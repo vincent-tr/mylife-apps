@@ -22,8 +22,8 @@ bots:
     schedule: 05 20 * * *
     mailbox: Factures
     from: service@paypal.fr
-    subject: "Reçu pour votre paiement à Société" # Reçu pour votre paiement
-    since-days: 150 # to lower when cic-scraper is run every day
+    subject: "Reçu pour votre paiement"
+    since-days: 50 # to lower when cic-scraper is run every day
     account: common
     match-days-diff: 5
     match-label: "PAYPAL"
