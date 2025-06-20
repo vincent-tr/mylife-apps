@@ -3,12 +3,10 @@ package amazonscraper
 import (
 	"context"
 	"fmt"
-	"mylife-money/pkg/business"
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
 	"regexp"
 	"strings"
-	"time"
 )
 
 type bot struct {
@@ -41,38 +39,20 @@ func (b *bot) Run(ctx context.Context, logger *common.ExecutionLogger) error {
 		return err
 	}
 
-	if len(orders) == 0 {
-		b.logger.Info("No new order found")
-		return nil
+	payments := make([]*common.Payment, 0, len(orders))
+
+	for _, order := range orders {
+		payments = append(payments, &common.Payment{
+			Id:            order.Id,
+			Date:          order.Date,
+			Amount:        order.Amount,
+			FormattedNote: b.formatNote(order),
+		})
 	}
 
-	b.logger.Info(fmt.Sprintf("Fetched %d orders", len(orders)))
+	matcher := common.NewMailMatcher(b.logger, b.config, newOpMatcherFactory(b.config))
 
-	return common.RunEventLoopWithError("amazon-scraper/match-operations", func() error {
-		operations, err := b.selectOperations(orders)
-		if err != nil {
-			return fmt.Errorf("failed to select operations: %w", err)
-		}
-
-		b.logger.Info(fmt.Sprintf("Found %d operations to match with orders", len(operations)))
-
-		for _, order := range orders {
-			// Only select operations that match the order date
-			orderOperations := make([]*entities.Operation, 0)
-
-			for _, op := range operations {
-				if op.Date().After(order.Date.AddDate(0, 0, -b.config.MatchDaysDiff)) && op.Date().Before(order.Date.AddDate(0, 0, b.config.MatchDaysDiff)) {
-					orderOperations = append(orderOperations, op)
-				}
-			}
-
-			if err := b.processOrder(order, orderOperations); err != nil {
-				b.logger.Error(fmt.Sprintf("Failed to process order %s: %s", order.Id, err))
-			}
-		}
-
-		return nil
-	})
+	return matcher.ProcessPayments(payments, entities.BotTypeAmazonScraper)
 }
 
 var _ common.Bot = (*bot)(nil)
@@ -84,84 +64,28 @@ func NewBot(mailFetcherConfig *common.MailFetcherConfig, config *common.MailScra
 	}
 }
 
-func (b *bot) processOrder(order *order, operations []*entities.Operation) error {
-	note := b.formatNote(order)
-
-	for _, operation := range operations {
-		if strings.Contains(operation.Note(), note) {
-			b.logger.Debug(fmt.Sprintf("Order %s already processed in operation %s", order.Id, operation.Label()))
-			return nil
-		}
-	}
-
-	// Find operations that match the order
-
-	// eg: March 6th = '0603'
-	orderDate := fmt.Sprintf("%02d%02d", order.Date.Day(), order.Date.Month())
-	pattern := strings.ReplaceAll(b.config.MatchLabel, "{date}", orderDate)
-	matcher, err := regexp.Compile(pattern)
-	if err != nil {
-		return fmt.Errorf("failed to compile match label regex: %w", err)
-	}
-
-	results := make([]*entities.Operation, 0)
-
-	for _, operation := range operations {
-		if operation.Group() == nil && common.AmountsEqual(-operation.Amount(), order.Amount) && matcher.MatchString(operation.Label()) {
-			results = append(results, operation)
-		}
-	}
-
-	var operation *entities.Operation
-
-	switch len(results) {
-	case 0:
-		b.logger.Info(fmt.Sprintf("No matching operation found for order %s (Date=%s, Amount=%.2f)", order.Id, order.Date.Format("02/01/2006"), order.Amount))
-
-	case 1:
-		b.logger.Info(fmt.Sprintf("Found matching operation %s for order %s", results[0].Id(), order.Id))
-		operation = results[0]
-
-	default:
-		b.logger.Info(fmt.Sprintf("Found %d matching operations for order %s (Date=%s, Amount=%.2f)", len(results), order.Id, order.Date.Format("02/01/2006"), order.Amount))
-
-	}
-
-	if operation == nil {
-		return nil
-	}
-
-	if err := business.OperationAppendNote(note, operation.Id()); err != nil {
-		return fmt.Errorf("failed to append note to operation %s: %w", operation.Id(), err)
-	}
-
-	return nil
+type opMatcher struct {
+	matcher *regexp.Regexp
 }
 
-func (b *bot) selectOperations(orders []*order) ([]*entities.Operation, error) {
-	account, err := business.GetAccountId(b.config.Account)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get account %s: %w", b.config.Account, err)
-	}
+var _ common.OpMatcher = (*opMatcher)(nil)
 
-	minDate := time.Date(2100, 1, 1, 0, 0, 0, 0, time.UTC)
-	maxDate := time.Date(1900, 1, 1, 0, 0, 0, 0, time.UTC)
-
-	for _, order := range orders {
-		if order.Date.Before(minDate) {
-			minDate = order.Date
+func newOpMatcherFactory(config *common.MailScraperConfig) func(payment *common.Payment) (common.OpMatcher, error) {
+	return func(payment *common.Payment) (common.OpMatcher, error) {
+		// eg: March 6th = '0603'
+		orderDate := fmt.Sprintf("%02d%02d", payment.Date.Day(), payment.Date.Month())
+		pattern := strings.ReplaceAll(config.MatchLabel, "{date}", orderDate)
+		matcher, err := regexp.Compile(pattern)
+		if err != nil {
+			return nil, fmt.Errorf("failed to compile match label regex: %w", err)
 		}
-		if order.Date.After(maxDate) {
-			maxDate = order.Date
-		}
+
+		return &opMatcher{matcher}, nil
 	}
+}
 
-	minDate = minDate.AddDate(0, 0, -b.config.MatchDaysDiff)
-	maxDate = maxDate.AddDate(0, 0, b.config.MatchDaysDiff)
-
-	operations := business.OperationsListInterval(account, minDate, maxDate)
-
-	return operations, nil
+func (m *opMatcher) MatchOperation(op *entities.Operation) bool {
+	return m.matcher.MatchString(op.Label())
 }
 
 func (b *bot) formatNote(order *order) string {
