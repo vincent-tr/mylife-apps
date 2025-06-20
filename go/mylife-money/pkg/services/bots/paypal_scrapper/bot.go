@@ -89,8 +89,8 @@ func (b *bot) formatNote(receipt *receipt) string {
 			lines = append(lines, fmt.Sprintf("| %s | %d | %s | %s |",
 				item.Description,
 				item.Quantity,
-				item.UnitPrice,
-				item.Amount,
+				item.UnitPrice.String(),
+				item.Amount.String(),
 			))
 		}
 
@@ -105,7 +105,7 @@ func (b *bot) formatNote(receipt *receipt) string {
 	)
 
 	for _, total := range receipt.Totals {
-		lines = append(lines, fmt.Sprintf("- %s : %s", total.Name, total.Amount))
+		lines = append(lines, fmt.Sprintf("- %s : %s", total.Name, total.Amount.String()))
 	}
 
 	return strings.Join(lines, "\n")
