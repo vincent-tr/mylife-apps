@@ -19,20 +19,24 @@ type transactionItem struct {
 }
 
 type item struct {
-	description string
-	unitPrice   amount
-	quantity    int
-	amount      amount
+	Description string
+	UnitPrice   amount
+	Quantity    int
+	Amount      amount
 }
 
 type summaryItem struct {
-	name   string
-	amount amount
+	Name   string
+	Amount amount
 }
 
 type amount struct {
 	Value    float64
 	Currency string
+}
+
+func (a *amount) String() string {
+	return fmt.Sprintf("%.2f %s", a.Value, a.Currency)
 }
 
 type receipt struct {
@@ -243,10 +247,10 @@ func (b *bot) parseTableItemsTable(table *html.Node) ([]item, error) {
 		}
 
 		items = append(items, item{
-			description,
-			unitPrice,
-			quantity,
-			amount,
+			Description: description,
+			UnitPrice:   unitPrice,
+			Quantity:    quantity,
+			Amount:      amount,
 		})
 	}
 
@@ -322,8 +326,8 @@ func (b *bot) parseTableTotalsTable(table *html.Node) ([]summaryItem, error) {
 		}
 
 		items = append(items, summaryItem{
-			name,
-			amount,
+			Name:   name,
+			Amount: amount,
 		})
 	}
 
