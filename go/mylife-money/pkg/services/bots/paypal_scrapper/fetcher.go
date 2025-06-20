@@ -62,32 +62,38 @@ func (b *bot) fetchReceipts() ([]*receipt, error) {
 	receipts := make([]*receipt, 0, len(msgs))
 
 	for _, msg := range msgs {
-		part := msg.FindPartByType("text/html")
-		if part == nil {
-			return nil, fmt.Errorf("no HTML part found in message %d", msg.UID())
-		}
-
-		htmlContent, err := part.Download()
+		receipt, err := b.readReceipt(msg)
 		if err != nil {
-			return nil, fmt.Errorf("failed to download HTML part for message %d: %w", msg.UID(), err)
+			b.logger.Errorf("failed to read receipt from message %s: %s", msg, err)
+			continue
 		}
-
-		receipt := &receipt{}
-		receipt.Date = msg.Date()
-		receipt.MailSubject = msg.Subject()
-
-		if err := b.processHtmlMessage(receipt, htmlContent); err != nil {
-			return nil, fmt.Errorf("failed to process HTML message content for message %d: %w", msg.UID(), err)
-		}
-
-		fmt.Printf("Receipt: %#v", receipt)
 
 		receipts = append(receipts, receipt)
-
-		break
 	}
 
 	return receipts, nil
+}
+
+func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
+	part := msg.FindPartByType("text/html")
+	if part == nil {
+		return nil, fmt.Errorf("no HTML part found in message %d", msg.UID())
+	}
+
+	htmlContent, err := part.Download()
+	if err != nil {
+		return nil, fmt.Errorf("failed to download HTML part for message %d: %s", msg.UID(), err)
+	}
+
+	receipt := &receipt{}
+	receipt.Date = msg.Date()
+	receipt.MailSubject = msg.Subject()
+
+	if err := b.processHtmlMessage(receipt, htmlContent); err != nil {
+		return nil, fmt.Errorf("failed to process HTML message content for message %d: %s", msg.UID(), err)
+	}
+
+	return receipt, nil
 }
 
 func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
