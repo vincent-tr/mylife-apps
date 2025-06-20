@@ -41,44 +41,55 @@ func (b *bot) fetchOrders() ([]*order, error) {
 	orders := make([]*order, 0, len(msgs))
 
 	for _, msg := range msgs {
-		part := msg.FindPartByType("text/html")
-		if part == nil {
-			return nil, fmt.Errorf("no HTML part found in message %d", msg.UID())
-		}
-
-		htmlContent, err := part.Download()
+		order, err := b.readOrder(msg)
 		if err != nil {
-			return nil, fmt.Errorf("failed to download HTML part for message %d: %w", msg.UID(), err)
+			b.logger.Errorf("failed to read order from message %d - '%s' - %s: %s", msg.UID(), msg.Subject(), msg.Date().Format(time.DateTime), err)
+			continue
 		}
-
-		part = msg.FindPartByType("text/plain")
-		if part == nil {
-			return nil, fmt.Errorf("no text part found in message %d", msg.UID())
-		}
-
-		textContent, err := part.Download()
-		if err != nil {
-			return nil, fmt.Errorf("failed to download text part for message %d: %w", msg.UID(), err)
-		}
-
-		order := &order{}
-		order.Date = msg.Date()
-
-		if err := b.processTextMessage(order, textContent); err != nil {
-			return nil, fmt.Errorf("failed to process text message content for message %d: %w", msg.UID(), err)
-		}
-
-		if err := b.processHtmlMessage(order, htmlContent); err != nil {
-			return nil, fmt.Errorf("failed to process HTML message content for message %d: %w", msg.UID(), err)
-		}
-
-		// fmt.Println(textContent)
-		// fmt.Println(htmlContent)
 
 		orders = append(orders, order)
 	}
 
 	return orders, nil
+}
+
+func (b *bot) readOrder(msg *common.MailMessage) (*order, error) {
+
+	part := msg.FindPartByType("text/plain")
+	if part == nil {
+		return nil, fmt.Errorf("no text part found")
+	}
+
+	textContent, err := part.Download()
+	if err != nil {
+		return nil, fmt.Errorf("failed to download text part: %w", err)
+	}
+
+	part = msg.FindPartByType("text/html")
+	if part == nil {
+		return nil, fmt.Errorf("no HTML part found")
+	}
+
+	htmlContent, err := part.Download()
+	if err != nil {
+		return nil, fmt.Errorf("failed to download HTML part: %w", err)
+	}
+
+	// fmt.Println(textContent)
+	// fmt.Println(htmlContent)
+
+	order := &order{}
+	order.Date = msg.Date()
+
+	if err := b.processTextMessage(order, textContent); err != nil {
+		return nil, fmt.Errorf("failed to process text message content: %w", err)
+	}
+
+	if err := b.processHtmlMessage(order, htmlContent); err != nil {
+		return nil, fmt.Errorf("failed to process HTML message content: %w", err)
+	}
+
+	return order, nil
 }
 
 func (b *bot) processTextMessage(order *order, textContent []byte) error {
