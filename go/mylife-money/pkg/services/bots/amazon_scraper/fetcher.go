@@ -43,7 +43,7 @@ func (b *bot) fetchOrders() ([]*order, error) {
 	for _, msg := range msgs {
 		order, err := b.readOrder(msg)
 		if err != nil {
-			b.logger.Errorf("failed to read order from message %d - '%s' - %s: %s", msg.UID(), msg.Subject(), msg.Date().Format(time.DateTime), err)
+			b.logger.Errorf("failed to read order from message %s: %s", msg, err)
 			continue
 		}
 

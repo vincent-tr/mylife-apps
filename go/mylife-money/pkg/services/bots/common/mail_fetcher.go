@@ -174,6 +174,10 @@ func (mm *MailMessage) Subject() string {
 	return mm.msg.Envelope.Subject
 }
 
+func (mm *MailMessage) String() string {
+	return fmt.Sprintf("{%d - '%s' - %s}", mm.UID(), mm.Subject(), mm.Date().Format(time.DateTime))
+}
+
 type MailPart struct {
 	owner            *MailFetcher
 	uid              imap.UID
