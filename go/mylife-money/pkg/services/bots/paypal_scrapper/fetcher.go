@@ -97,6 +97,26 @@ func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
 		return nil, fmt.Errorf("failed to process HTML message content for message %d: %s", msg.UID(), err)
 	}
 
+	// Find total in EUR
+	var totalItem *summaryItem
+	for _, total := range receipt.Totals {
+		if total.Name == "Total" {
+			totalItem = &total
+			break
+		}
+	}
+
+	if totalItem == nil {
+		return nil, fmt.Errorf("no total found in receipt totals")
+	}
+
+	// Check if total amount is in EUR
+	if !strings.Contains(totalItem.Amount.Currency, "EUR") && !strings.Contains(totalItem.Amount.Currency, "€") {
+		return nil, fmt.Errorf("total amount is not in EUR: '%s'", totalItem.Amount.Currency)
+	}
+
+	receipt.Amount = totalItem.Amount.Value
+
 	return receipt, nil
 }
 
