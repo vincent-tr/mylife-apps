@@ -64,6 +64,24 @@ func NewBot(mailFetcherConfig *common.MailFetcherConfig, config *common.MailScra
 	}
 }
 
+func (b *bot) formatNote(order *order) string {
+	lines := []string{
+		"**Commande Amazon**",
+		"",
+		fmt.Sprintf("[%s](https://www.amazon.fr/gp/your-account/order-details/ref?orderID=%s) le %s", order.Id, order.Id, order.Date.Format("02/01/2006")),
+		"",
+		"| | Produit | Qté | P.U. (EUR) |",
+		"| - | - | - | - |",
+	}
+
+	for _, item := range order.Items {
+		lines = append(lines, fmt.Sprintf("| [![img](%s)](%s) | [%s](%s) | %d | %.2f |",
+			item.ImageUrl, item.ProductUrl, item.Name, item.ProductUrl, item.Quantity, item.UnitPrice))
+	}
+
+	return strings.Join(lines, "\n")
+}
+
 type opMatcher struct {
 	matcher *regexp.Regexp
 }
@@ -85,23 +103,6 @@ func newOpMatcherFactory(config *common.MailScraperConfig) func(payment *common.
 }
 
 func (m *opMatcher) MatchOperation(op *entities.Operation) bool {
+	// DaysDiff and Amount are already checked by the matcher, only check the label
 	return m.matcher.MatchString(op.Label())
-}
-
-func (b *bot) formatNote(order *order) string {
-	lines := []string{
-		"**Commande Amazon**",
-		"",
-		fmt.Sprintf("[%s](https://www.amazon.fr/gp/your-account/order-details/ref?orderID=%s) le %s", order.Id, order.Id, order.Date.Format("02/01/2006")),
-		"",
-		"| | Produit | Qté | P.U. (EUR) |",
-		"| - | - | - | - |",
-	}
-
-	for _, item := range order.Items {
-		lines = append(lines, fmt.Sprintf("| [![img](%s)](%s) | [%s](%s) | %d | %.2f |",
-			item.ImageUrl, item.ProductUrl, item.Name, item.ProductUrl, item.Quantity, item.UnitPrice))
-	}
-
-	return strings.Join(lines, "\n")
 }
