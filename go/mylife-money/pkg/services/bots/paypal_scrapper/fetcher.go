@@ -122,7 +122,6 @@ func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
 
 func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
 
-	// Fetch imageUrl/productUrl from HTML content
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(htmlContent))
 	if err != nil {
 		return fmt.Errorf("failed to parse HTML content: %w", err)
@@ -212,10 +211,7 @@ func (b *bot) parseTransactionCell(node *html.Node) (transactionItem, error) {
 		return transactionItem{}, fmt.Errorf("expected 2 nodes in item, got %d", len(nodes))
 	}
 
-	name, err := b.readName(nodes[0])
-	if err != nil {
-		return transactionItem{}, fmt.Errorf("failed to read name from node: %w", err)
-	}
+	name := goquery.NewDocumentFromNode(nodes[0]).Text()
 
 	// Value is always in a span, but the span can be in a table, p, another span, etc.
 	// So we look for the node which is a span at the deepest level
