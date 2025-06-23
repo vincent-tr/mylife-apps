@@ -247,7 +247,8 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
     - ct14 => lave vaisselle => pos1 physique au lieu de pos3 jusqu'au 02/07/2023 11h54
   - Avoir une materialized view des stats par type pour accélérer l'affichage
 - Bug recharge Tesla :
-  - Si mode intelligent et recharge terminée (80%) et si on passe en mode rapide (cible 95%) alors la charge reste terminée et le mode repasse a intelligent 
+  - Si mode intelligent et recharge terminée (80%) et si on passe en mode rapide (cible 95%) alors la charge reste terminée et le mode repasse a intelligent
+- Collector: fonctionner par counter plutot que par instantanee, ca permet de regler la frequence des updates sans perte de donnees
 
 ## (old) Gallery
 
