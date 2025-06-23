@@ -73,7 +73,15 @@ func (f *fetcher) sync() {
 		newSensors := make([]*entities.Sensor, 0, len(results))
 
 		for _, result := range results {
-			newMeasures = append(newMeasures, result.Measure)
+			// For now for simplicity in the "live" service we use sensor id as measure id (since we are last, we only have one measure per sensor	)
+			measure := entities.NewMeasure(&entities.MeasureData{
+				Id:        result.Sensor.Id(),
+				Sensor:    result.Measure.Sensor(),
+				Timestamp: result.Measure.Timestamp(),
+				Value:     result.Measure.Value(),
+			})
+
+			newMeasures = append(newMeasures, measure)
 			newSensors = append(newSensors, result.Sensor)
 		}
 
