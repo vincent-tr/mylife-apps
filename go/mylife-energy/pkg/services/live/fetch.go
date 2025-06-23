@@ -51,10 +51,13 @@ func (f *fetcher) sync() {
 		).
 		Group(
 			"$sensor.sensorId",
+			query.GroupField{Name: "measureId", Accumulator: "$first", Expression: "$_id"},
 			query.GroupField{Name: "timestamp", Accumulator: "$first", Expression: "$timestamp"},
 			query.GroupField{Name: "value", Accumulator: "$first", Expression: "$value"},
 			query.GroupField{Name: "sensor", Accumulator: "$first", Expression: "$sensor"},
-		)
+		).
+		Set(query.SetField{Name: "_id", Expression: "$measureId"}).
+		Unset("measureId")
 
 	results, err := query.Aggregate(f.dbContext, builder.Build())
 

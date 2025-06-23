@@ -7,14 +7,15 @@ import (
 	"mylife-tools-server/utils"
 	"time"
 
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 type mongoMeasure struct {
-	Id        string      `bson:"_id"`
-	Timestamp time.Time   `bson:"timestamp"`
-	Value     float64     `bson:"value"`
-	Sensor    mongoSensor `bson:"sensor"`
+	Id        bson.ObjectID `bson:"_id"`
+	Timestamp time.Time     `bson:"timestamp"`
+	Value     float64       `bson:"value"`
+	Sensor    mongoSensor   `bson:"sensor"`
 }
 
 type mongoSensor struct {
@@ -53,7 +54,7 @@ func dbFetch[T any](ctx context.Context, cursorBuilder func(ctx context.Context,
 
 func makeMeasureFromData(data *mongoMeasure) *entities.Measure {
 	return entities.NewMeasure(&entities.MeasureData{
-		Id:        data.Id,
+		Id:        data.Id.Hex(),
 		Sensor:    data.Sensor.SensorId,
 		Timestamp: data.Timestamp,
 		Value:     data.Value,

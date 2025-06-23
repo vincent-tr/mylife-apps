@@ -16,7 +16,7 @@ func (builder *PipelineBuilder) Build() interface{} {
 	return builder.stages
 }
 
-func (builder *PipelineBuilder) addStage(name string, value bson.D) *PipelineBuilder {
+func (builder *PipelineBuilder) addStage(name string, value interface{}) *PipelineBuilder {
 	stage := bson.D{{Key: name, Value: value}}
 	builder.stages = append(builder.stages, stage)
 
@@ -65,4 +65,29 @@ func (builder *PipelineBuilder) Group(groupKeyExpression any, fields ...GroupFie
 
 func (builder *PipelineBuilder) Match(filter FilterExpression) *PipelineBuilder {
 	return builder.addStage("$match", filter.Build().(bson.D))
+}
+
+type SetField struct {
+	Name       string
+	Expression any
+}
+
+func (builder *PipelineBuilder) Set(fields ...SetField) *PipelineBuilder {
+	value := bson.D{}
+
+	for _, item := range fields {
+		value = append(value, bson.E{Key: item.Name, Value: item.Expression})
+	}
+
+	return builder.addStage("$set", value)
+}
+
+func (builder *PipelineBuilder) Unset(fields ...string) *PipelineBuilder {
+	value := bson.A{}
+
+	for _, item := range fields {
+		value = append(value, item)
+	}
+
+	return builder.addStage("$unset", value)
 }
