@@ -214,9 +214,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
     - executer l'apercu sur les non tries pour montrer ce qu'elle pourra deplacer
 - bots
   - tous les mois un robot presente un summary (nombre d'ops non triées, graphiques, etc) par mail, avec le dernier fichier du scraper CIC
-  - pouvoir intégrer à nagios ou mail des erreurs de bots
-  - cleanup des runs
-  - Scraper CIC: voir si en restant connecté (ping du site toutes les X minutes) on peut eviter de se re-authentifier
 - UX
   - sur mobile dans la liste gestion, le footer de liste n'apparait pas?
   - sur mobile dans la liste gestion, groupe par date
@@ -227,6 +224,7 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 - Arbre de groupes : plus d'indentation
 - Dans graphique, sur sélection de plusieurs mois/années, afficher la moyenne/min/max des barres sélectionnées
 - Reprendre scrapers mail puis supprimer mongo collections bots et bot-runs
+- BUG: apres CIC scrapper, plusieurs clicks sur "importer les operations", et le 2ieme fait des choses et pas le 1ier
 
 ## Portal
 
