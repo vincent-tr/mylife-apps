@@ -2,6 +2,7 @@ package docker
 
 import (
 	"mylife-monitor/pkg/entities"
+	"mylife-monitor/pkg/services/updates/docker/image"
 
 	"github.com/go-git/go-billy/v5/memfs"
 	"github.com/go-git/go-git/v5"
@@ -45,7 +46,7 @@ func Fetch(repository string, token string) ([]*entities.UpdatesVersionValues, e
 		return nil, err
 	}
 
-	err = fetchImagesData(versions)
+	err = image.FetchImagesData(versions)
 	if err != nil {
 		return nil, err
 	}
