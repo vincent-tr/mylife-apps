@@ -10,9 +10,27 @@ import (
 )
 
 func fetchOnline(ctx context.Context, filters ...filter) ([]version, error) {
+	// Merge results from
+	//   https://fw-update.ubnt.com/api/firmware
+	// and
+	//   https://fw-update.ubnt.com/api/firmware-latest
+	// Note: may contain duplicates
 
-	// "https://fw-update.ubnt.com/api/firmware-latest"
-	req, err := http.NewRequestWithContext(ctx, "GET", "https://fw-update.ubnt.com/api/firmware", nil)
+	firmwares, err := doReq(ctx, "https://fw-update.ubnt.com/api/firmware", filters)
+	if err != nil {
+		return nil, err
+	}
+
+	latest, err := doReq(ctx, "https://fw-update.ubnt.com/api/firmware-latest", filters)
+	if err != nil {
+		return nil, err
+	}
+
+	return append(firmwares, latest...), nil
+}
+
+func doReq(ctx context.Context, url string, filters []filter) ([]version, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
