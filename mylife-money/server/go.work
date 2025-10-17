@@ -2,6 +2,6 @@ go 1.24.2
 
 use (
 	.
-	../../packages/mylife-money
-	../mylife-tools-server
+	../ui
+	../../common/mylife-tools-server
 )

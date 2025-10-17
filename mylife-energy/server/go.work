@@ -2,6 +2,6 @@ go 1.24.2
 
 use (
 	.
-	../mylife-tools-server
-	../../packages/mylife-energy
+	../ui
+	../../common/mylife-tools-server
 )
