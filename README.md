@@ -2,20 +2,57 @@
 
 MyLife Applications
 
-## Update packages
+## Javascript Package Management
 
-- `lerna clean`
-- `lerna exec -- npm update`
-- `lerna exec -- ncu -u` (for major version updates)
-- `lerna bootstrap`
+### Install dependencies
+```bash
+npm install
+```
+
+### Update packages
+```bash
+# Update all packages in all workspaces
+npm update --workspaces
+
+# Check for outdated packages
+npm run ws:outdated
+
+# Update specific workspace
+npm update --workspace=mylife-energy
+```
+
+### List workspaces
+```bash
+npm run ws:list
+```
 
 ## Build
 
-- `lerna version`
-- `lerna run docker-publish`
-- `cd repo; npm run docker-publish` (or for one repository)
+### Specific workspace
+```bash
+npm run ui-build:prod --workspace=mylife-energy
+```
 
-_FIXME: apres `lerna bootstrap` il faut enlever `packages/mylife-money/node_modules/@types/react` sinon `npm run docker-publish` ne fonctionne pas._
+### Development
+```bash
+# Watch mode for TypeScript
+npm run ui-tsc:watch --workspace=mylife-energy
+
+# Watch mode for Vite
+npm run ui-vite:watch --workspace=mylife-energy
+```
+
+## Working with specific packages
+
+### Run scripts in specific workspace
+```bash
+npm run <script> --workspace=<package-name>
+```
+
+### Install dependency in specific workspace
+```bash
+npm install <package> --workspace=<package-name>
+```
 
 ## Go build
 
