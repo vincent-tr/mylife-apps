@@ -8,5 +8,8 @@
     "ws:list": "npm ls --workspaces --depth=0",
     "ws:info": "npm query '.workspace'",
     "ws:outdated": "npm outdated --workspaces"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0"
   }
 }

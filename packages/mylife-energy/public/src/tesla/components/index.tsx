@@ -275,7 +275,7 @@ export const BatteryStatus: React.FunctionComponent<{ level: number; }> = ({ lev
         readingText: {
           // From .MuiTypography-body1
           fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-          fontSize: '1rem',
+          fontSize: '1rem' as any,
         },
       }}
     />
