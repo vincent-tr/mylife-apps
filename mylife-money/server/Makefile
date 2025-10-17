@@ -1,5 +1,5 @@
 DIR_ROOT = $(shell realpath ../..)
-DIR_UI = $(DIR_ROOT)/packages/mylife-money
+DIR_UI = $(shell realpath ../ui)
 
 DOCKER_REPOSITORY ?= vincenttr
 DOCKER_PACKAGE_NAME ?= mylife-money
