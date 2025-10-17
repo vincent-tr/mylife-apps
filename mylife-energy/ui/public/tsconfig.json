@@ -1,5 +1,5 @@
 {
-  "extends": "../../mylife-tools-build/ui/tsconfig.json",
+  "extends": "../../../common/mylife-tools-build/ui/tsconfig.json",
   "include": [
       "src/main.tsx"
   ],

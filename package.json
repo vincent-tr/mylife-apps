@@ -2,7 +2,8 @@
   "name": "mylife-apps",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "common/*",
+    "*/ui"
   ],
   "scripts": {
     "ws:list": "npm ls --workspaces --depth=0",
