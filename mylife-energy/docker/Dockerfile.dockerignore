@@ -1,6 +1,6 @@
 *
 !/mylife-energy/server
-!/common/mylife-tools-server
+!/common/server
 !/mylife-energy/ui/dist/prod
 !/mylife-energy/ui/*.go
 !/mylife-energy/ui/go.mod

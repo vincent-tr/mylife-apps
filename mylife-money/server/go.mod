@@ -2,7 +2,7 @@ module mylife-money
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/mylife-tools-server
+replace mylife-tools-server => ../../common/server
 
 require (
 	github.com/emersion/go-imap/v2 v2.0.0-beta.5

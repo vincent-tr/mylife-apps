@@ -1,6 +1,6 @@
 *
 !/mylife-money/server
-!/common/mylife-tools-server
+!/common/server
 !/mylife-money/ui/dist/prod
 !/mylife-money/ui/*.go
 !/mylife-money/ui/go.mod

@@ -2,7 +2,7 @@ module mylife-energy
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/mylife-tools-server
+replace mylife-tools-server => ../../common/server
 
 require (
 	github.com/bogosj/tesla v1.3.1
