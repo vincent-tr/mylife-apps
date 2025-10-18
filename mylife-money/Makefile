@@ -20,13 +20,13 @@ docker-build: ui-build
 ui-build:
 	cd $(DIR_UI) && \
 	npm exec -- tsc --project public/tsconfig.json && \
-	npm exec -- vite --config ../../common/ui-build/vite.config.ts build
+	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts build
 
 ui-watch:
 	export VITE_WEB_PORT=8003; \
 	export VITE_WSTARGET_PORT=8103; \
 	cd $(DIR_UI) && \
-	npm exec -- vite --config ../../common/ui-build/vite.config.ts
+	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts
 
 ui-watch-tsc:
 	cd $(DIR_UI) && \

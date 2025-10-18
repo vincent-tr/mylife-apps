@@ -2,7 +2,7 @@ module mylife-monitor
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/mylife-tools-server
+replace mylife-tools-server => ../../common/server
 
 require (
 	github.com/compose-spec/compose-go/v2 v2.6.0

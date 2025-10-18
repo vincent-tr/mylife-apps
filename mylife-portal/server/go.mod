@@ -2,7 +2,7 @@ module mylife-portal
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/mylife-tools-server
+replace mylife-tools-server => ../../common/server
 
 require (
 	github.com/aymerick/raymond v2.0.2+incompatible

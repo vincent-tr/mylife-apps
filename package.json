@@ -2,7 +2,7 @@
   "name": "mylife-apps",
   "private": true,
   "workspaces": [
-    "common/*",
+    "common/ui/*",
     "*/ui"
   ],
   "scripts": {

@@ -1,6 +1,6 @@
 *
 !/mylife-portal/server
-!/common/mylife-tools-server
+!/common/server
 !/mylife-portal/ui/dist/prod
 !/mylife-portal/ui/*.go
 !/mylife-portal/ui/go.mod
