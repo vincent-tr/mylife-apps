@@ -1,7 +1,6 @@
 *
-!/go/mylife-monitor
-!/go/mylife-tools-server
-!/go.work
-!/packages/mylife-monitor/dist/prod
-!/packages/mylife-monitor/*.go
-!/packages/mylife-monitor/go.mod
+!/mylife-monitor/server
+!/common/mylife-tools-server
+!/mylife-monitor/ui/dist/prod
+!/mylife-monitor/ui/*.go
+!/mylife-monitor/ui/go.mod

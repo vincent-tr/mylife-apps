@@ -1,7 +1,6 @@
 *
-!/go/mylife-money
-!/go/mylife-tools-server
-!/go.work
-!/packages/mylife-money/dist/prod
-!/packages/mylife-money/*.go
-!/packages/mylife-money/go.mod
+!/mylife-money/server
+!/common/mylife-tools-server
+!/mylife-money/ui/dist/prod
+!/mylife-money/ui/*.go
+!/mylife-money/ui/go.mod

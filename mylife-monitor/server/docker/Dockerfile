@@ -3,7 +3,7 @@ FROM golang:1.24 AS build
 WORKDIR /src
 COPY . .
 
-WORKDIR /src/go/mylife-monitor
+WORKDIR /src/mylife-monitor/server
 RUN go mod download
 # RUN go vet -v
 # RUN go test -v
@@ -13,5 +13,5 @@ RUN CGO_ENABLED=0 go build -o /src/mylife-monitor main.go
 FROM gcr.io/distroless/static-debian11
 
 COPY --from=build /src/mylife-monitor /
-COPY --from=build /src/go/mylife-monitor/config.yaml /
+COPY --from=build /src/mylife-monitor/server/config.yaml /
 ENTRYPOINT ["/mylife-monitor", "web"]
