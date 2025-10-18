@@ -1,7 +1,6 @@
 *
-!/go/mylife-energy
-!/go/mylife-tools-server
-!/go.work
-!/packages/mylife-energy/dist/prod
-!/packages/mylife-energy/*.go
-!/packages/mylife-energy/go.mod
+!/mylife-energy/server
+!/common/mylife-tools-server
+!/mylife-energy/ui/dist/prod
+!/mylife-energy/ui/*.go
+!/mylife-energy/ui/go.mod

@@ -1,7 +1,6 @@
 *
-!/go/mylife-portal
-!/go/mylife-tools-server
-!/go.work
-!/packages/mylife-portal/dist/prod
-!/packages/mylife-portal/*.go
-!/packages/mylife-portal/go.mod
+!/mylife-portal/server
+!/common/mylife-tools-server
+!/mylife-portal/ui/dist/prod
+!/mylife-portal/ui/*.go
+!/mylife-portal/ui/go.mod
