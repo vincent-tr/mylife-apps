@@ -5,11 +5,6 @@
   "main": "index.js",
   "repository": "https://github.com/vincent-tr/mylife-energy",
   "author": "Vincent Trumpff",
-  "scripts": {
-    "tsc:watch": "mylife-ui-watch-tsc",
-    "vite:watch": "VITE_WEB_PORT=8017 VITE_WSTARGET_PORT=8117 VITE_DEDUPE=true mylife-ui-watch-vite",
-    "build:prod": "VITE_DEDUPE=true mylife-ui-build"
-  },
   "devDependencies": {
     "date-fns": "^2.28.0",
     "humanize-duration": "^3.27.2",
