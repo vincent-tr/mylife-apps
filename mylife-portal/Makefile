@@ -18,7 +18,12 @@ docker-build: ui-build
 	docker build --pull -t "$(DOCKER_IMAGE_TAG)" -t "$(DOCKER_IMAGE_LATEST_TAG)" -f docker/Dockerfile $(DIR_ROOT)
 
 ui-build:
-	cd $(DIR_UI) && npm run build:prod
+	cd $(DIR_UI) && \
+	install -d dist/prod/static/bootstrap/css && \
+	install -d dist/prod/static/bootstrap/fonts && \
+	install public/* dist/prod/static && \
+	install ../../node_modules/bootstrap/dist/css/bootstrap.min.css dist/prod/static/bootstrap/css && \
+	install ../../node_modules/bootstrap/dist/fonts/* dist/prod/static/bootstrap/fonts
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web

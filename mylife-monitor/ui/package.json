@@ -3,11 +3,6 @@
   "version": "1.2.16",
   "description": "MyLife Monitor",
   "main": "index.js",
-  "scripts": {
-    "tsc:watch": "mylife-ui-watch-tsc",
-    "vite:watch": "VITE_WEB_PORT=8015 VITE_WSTARGET_PORT=8115 mylife-ui-watch-vite",
-    "build:prod": "mylife-ui-build"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vincent-tr/mylife-monitor.git"

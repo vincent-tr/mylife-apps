@@ -18,13 +18,19 @@ docker-build: ui-build
 	docker build --pull -t "$(DOCKER_IMAGE_TAG)" -t "$(DOCKER_IMAGE_LATEST_TAG)" -f docker/Dockerfile $(DIR_ROOT)
 
 ui-build:
-	cd $(DIR_UI) && npm run build:prod
+	cd $(DIR_UI) && \
+	npm exec -- tsc --project public/tsconfig.json && \
+	npm exec -- vite --config ../../common/mylife-tools-build/ui/vite.config.ts build
 
 ui-watch:
-	cd $(DIR_UI) && npm run vite:watch
+	export VITE_WEB_PORT=8015; \
+	export VITE_WSTARGET_PORT=8115; \
+	cd $(DIR_UI) && \
+	npm exec -- vite --config ../../common/mylife-tools-build/ui/vite.config.ts
 
 ui-watch-tsc:
-	cd $(DIR_UI) && npm run tsc:watch
+	cd $(DIR_UI) && \
+	npm exec -- tsc --project public/tsconfig.json --watch
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web
