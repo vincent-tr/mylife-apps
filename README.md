@@ -1,16 +1,12 @@
-# mylife-apps
+# Management
 
-MyLife Applications
-
-## Management
-
-### Build Prod
+## Build Prod
 
 In app directory:
 - Bump `ui/package.json`
 - `make docker-publish`
 
-### Run Dev
+## Run Dev
 
 In app directory:
 - Shell 1: `make ui-watch` _-> Run and watch UI build_
@@ -18,18 +14,10 @@ In app directory:
 - Shell 3: `make run-web` _-> Run backend_
 - http://arch-desktop:<ui-vite-port>
 
----
+## Update UI packages
 
-TODO
+see root package.json
 
-## Javascript Package Management
-
-### Install dependencies
-```bash
-npm install
-```
-
-### Update packages
 ```bash
 # Update all packages in all workspaces
 npm update --workspaces
@@ -39,16 +27,10 @@ npm run ws:outdated
 
 # Update specific workspace
 npm update --workspace=mylife-energy
-```
 
-### List workspaces
-```bash
+# List workspaces
 npm run ws:list
 ```
-
-END TODO
-
----
 
 # Framework (tools)
 
