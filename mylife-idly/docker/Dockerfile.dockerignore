@@ -1,0 +1,6 @@
+*
+!/mylife-idly/server
+!/common/server
+!/mylife-idly/ui/dist/prod
+!/mylife-idly/ui/*.go
+!/mylife-idly/ui/go.mod

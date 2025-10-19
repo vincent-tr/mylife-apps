@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Idly — Slideshow</title>
+  <style>
+    html,body {
+      margin:0; padding:0; height:100%; width:100%; background:black;
+      -webkit-touch-callout: none; -webkit-user-select: none;
+    }
+    #slideshow {
+      position:relative;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      background:black;
+    }
+    #slideshow img {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      -webkit-object-fit: cover;
+      object-fit: cover;
+      opacity:0;
+      -webkit-transition: opacity 1s ease-in-out;
+      transition: opacity 1s ease-in-out;
+    }
+    #slideshow img.visible {
+      opacity:1;
+    }
+    /* Simple loading indicator if desired */
+    #loader {
+      position:absolute;
+      right:12px;
+      bottom:12px;
+      color:#fff;
+      font-family:sans-serif;
+      font-size:12px;
+      background:rgba(0,0,0,0.4);
+      padding:6px 8px;
+      border-radius:6px;
+      pointer-events:none;
+    }
+  </style>
+</head>
+<body>
+  <div id="slideshow">
+    <img id="imgA" class="visible" src="" alt="" />
+    <img id="imgB" src="" alt="" />
+    <div id="loader">Idly</div>
+  </div>
+
+  <script>
+    (function() {
+      var INTERVAL = 5000; // how long each image shows (ms)
+      var FADE_DURATION = 1000; // should match CSS transition
+      var imgA = document.getElementById('imgA');
+      var imgB = document.getElementById('imgB');
+      var showingA = true;
+      var timer = null;
+
+      // Provide the server endpoint returning an image URL.
+      // For simplicity, we'll directly request an image URL that returns an image.
+      // Use a cache-buster query param to avoid cached repeats.
+      function nextImageUrl() {
+        return '/api/random-image?ts=' + (new Date()).getTime();
+      }
+
+      // Initialize first image immediately
+      function init() {
+        // Load first image into imgA
+        var first = new Image();
+        first.onload = function() {
+          imgA.src = first.src;
+          imgA.className = 'visible';
+          scheduleNext();
+        };
+        first.onerror = function() {
+          // fallback: retry after interval
+          scheduleNext();
+        };
+        first.src = nextImageUrl();
+      }
+
+      // Preload next and swap by toggling classes
+      function preloadAndSwap() {
+        var next = new Image();
+        var hiddenImg = showingA ? imgB : imgA;
+        var visibleImg = showingA ? imgA : imgB;
+
+        // When image loaded, set src of hidden image, then crossfade
+        next.onload = function() {
+          // Set the hidden element's src to the preloaded one
+          hiddenImg.src = next.src;
+
+          // Force reflow fallback (probably unnecessary here)
+          // hiddenImg.offsetHeight;
+
+          // crossfade: add visible to hidden, remove from visible
+          hiddenImg.className = 'visible';
+          visibleImg.className = '';
+
+          // flip state
+          showingA = !showingA;
+
+          // schedule next cycle
+          scheduleNext();
+        };
+
+        next.onerror = function() {
+          // if error, try again after interval
+          scheduleNext();
+        };
+
+        // start loading
+        next.src = nextImageUrl();
+      }
+
+      function scheduleNext() {
+        if (timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(preloadAndSwap, INTERVAL);
+      }
+
+      // Prevent gestures like double-tap zoom causing weird behavior
+      document.addEventListener('touchstart', function() {}, false);
+
+      // Start
+      init();
+    })();
+  </script>
+</body>
+</html>

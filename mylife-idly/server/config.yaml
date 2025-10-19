@@ -1,0 +1,2 @@
+webServer:
+  address: :${WEB_PORT|80}
