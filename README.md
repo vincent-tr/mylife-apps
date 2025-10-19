@@ -2,6 +2,26 @@
 
 MyLife Applications
 
+## Management
+
+### Build Prod
+
+In app directory:
+- Bump `ui/package.json`
+- `make docker-publish`
+
+### Run Dev
+
+In app directory:
+- Shell 1: `make ui-watch` _-> Run and watch UI build_
+- Shell 2: `make ui-watch-tsc` _-> Run and watch TSC to validate UI_
+- Shell 3: `make run-web` _-> Run backend_
+- http://arch-desktop:<ui-vite-port>
+
+---
+
+TODO
+
 ## Javascript Package Management
 
 ### Install dependencies
@@ -26,46 +46,9 @@ npm update --workspace=mylife-energy
 npm run ws:list
 ```
 
-## Build
+END TODO
 
-### Specific workspace
-```bash
-npm run ui-build:prod --workspace=mylife-energy
-```
-
-### Development
-```bash
-# Watch mode for TypeScript
-npm run ui-tsc:watch --workspace=mylife-energy
-
-# Watch mode for Vite
-npm run ui-vite:watch --workspace=mylife-energy
-```
-
-## Working with specific packages
-
-### Run scripts in specific workspace
-```bash
-npm run <script> --workspace=<package-name>
-```
-
-### Install dependency in specific workspace
-```bash
-npm install <package> --workspace=<package-name>
-```
-
-## Go build
-
-- `cd go/repo; make docker-publish`
-
-## Go dev
-
-- cd packages/mylife-xxx
-  - npm run ui-tsc:watch
-  - npm run ui-vite:watch
-- cd go/mylife-xxx
-  - make run-web
-- http://arch-desktop:<ui-vite-port>
+---
 
 # Framework (tools)
 
