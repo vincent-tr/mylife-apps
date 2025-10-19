@@ -12,7 +12,7 @@ In app directory:
 - Shell 1: `make ui-watch` _-> Run and watch UI build_
 - Shell 2: `make ui-watch-tsc` _-> Run and watch TSC to validate UI_
 - Shell 3: `make run-web` _-> Run backend_
-- http://arch-desktop:<ui-vite-port>
+- `http://arch-desktop:<ui-vite-port>`
 
 ## Update UI packages
 
@@ -31,6 +31,10 @@ npm update --workspace=mylife-energy
 # List workspaces
 npm run ws:list
 ```
+
+## Update server packages
+
+**TODO**
 
 # Framework (tools)
 
