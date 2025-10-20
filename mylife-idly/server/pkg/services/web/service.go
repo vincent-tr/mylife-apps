@@ -73,8 +73,14 @@ func (service *webService) Init(arg interface{}) error {
 		return err
 	}
 
+	faviconHandler, err := makeFaviconHandler(fs)
+	if err != nil {
+		return err
+	}
+
 	service.mux.Handle("/", indexHandler)
 	service.mux.Handle("/api/random-image", imageHandler)
+	service.mux.Handle("/favicon.ico", faviconHandler)
 	service.mux.PathPrefix("/").Handler(pagesHandler)
 
 	go func() {
