@@ -19,11 +19,8 @@ docker-build: ui-build
 
 ui-build:
 	cd $(DIR_UI) && \
-	install -d dist/prod/static/bootstrap/css && \
-	install -d dist/prod/static/bootstrap/fonts && \
-	install public/* dist/prod/static && \
-	install ../../node_modules/bootstrap/dist/css/bootstrap.min.css dist/prod/static/bootstrap/css && \
-	install ../../node_modules/bootstrap/dist/fonts/* dist/prod/static/bootstrap/fonts
+	install -d dist/prod/static && \
+	install public/* dist/prod/static
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web

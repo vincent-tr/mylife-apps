@@ -9,3 +9,5 @@ require (
 	github.com/spf13/cobra v1.9.1
 	mylife-tools-server v0.0.0-00010101000000-000000000000
 )
+
+require github.com/aymerick/raymond v2.0.2+incompatible // indirect

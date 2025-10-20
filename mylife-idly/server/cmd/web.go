@@ -2,7 +2,6 @@ package cmd
 
 import (
 	ui "mylife-idly-ui"
-	"mylife-idly/pkg/entities"
 	_ "mylife-idly/pkg/services/web"
 	"mylife-tools-server/services"
 
@@ -15,8 +14,7 @@ func init() {
 		Short: "Starts the web server",
 		Run: func(_ *cobra.Command, _ []string) {
 			args := map[string]interface{}{
-				"store": entities.StoreDef,
-				"web":   ui.FS,
+				"web": ui.FS,
 			}
 
 			services.RunServices([]string{"web"}, args)

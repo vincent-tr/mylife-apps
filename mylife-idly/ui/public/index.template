@@ -46,7 +46,7 @@
       function showHome() {
         if (current !== 'home') {
           // Load the control UI in the iframe
-          frame.src = 'http://mylife-home-ui.apps.mti-team2.dyndns.org/';
+          frame.src = '{{target}}';
           current = 'home';
         }
       }
