@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Idly — Controller</title>
+  <title>MyLife Idly</title>
   <style>
     html,body {
       margin:0; padding:0; height:100%; width:100%; background:black;
@@ -29,6 +29,10 @@
       z-index:9999;
       pointer-events:none;
       opacity:0.6;
+      transition: opacity 0.3s ease;
+    }
+    #hint.hidden {
+      opacity:0;
     }
   </style>
 </head>
@@ -40,6 +44,7 @@
     (function() {
       var IDLE_TIMEOUT = 15000; // 15 seconds
       var frame = document.getElementById('frame');
+      var hint = document.getElementById('hint');
       var idleTimer = null;
       var current = 'slideshow'; // 'slideshow' or 'home'
 
@@ -49,6 +54,8 @@
           frame.src = '{{target}}';
           current = 'home';
         }
+        // Hide hint when active (home mode)
+        hint.classList.add('hidden');
       }
 
       function showSlideshow() {
@@ -56,6 +63,8 @@
           frame.src = '/slideshow';
           current = 'slideshow';
         }
+        // Show hint when idle (slideshow mode)
+        hint.classList.remove('hidden');
       }
 
       function resetIdleTimer() {
