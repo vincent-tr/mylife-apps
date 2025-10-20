@@ -19,6 +19,7 @@ docker-build: ui-build
 
 ui-build:
 	cd $(DIR_UI) && \
+	rm -rf dist/prod/static && \
 	install -d dist/prod/static/bootstrap/css && \
 	install -d dist/prod/static/bootstrap/fonts && \
 	install public/* dist/prod/static && \
@@ -26,4 +27,6 @@ ui-build:
 	install ../../node_modules/bootstrap/dist/fonts/* dist/prod/static/bootstrap/fonts
 
 run-web:
-	cd $(DIR_SERVER) && go run main.go web
+	export WEB_PORT=8080; \
+	cd $(DIR_SERVER) && \
+	go run main.go web

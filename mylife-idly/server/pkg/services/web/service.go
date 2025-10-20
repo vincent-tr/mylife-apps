@@ -49,7 +49,7 @@ func (service *webService) Init(arg interface{}) error {
 	}
 
 	if arg == nil {
-		return fmt.Errorf("Missing argument")
+		return fmt.Errorf("missing argument")
 	}
 
 	fs := arg.(fs.FS)
@@ -96,9 +96,6 @@ func (service *webService) Terminate() error {
 
 	service.exitDone.Wait()
 
-	service.index.terminate()
-	service.image.terminate()
-
 	logger.Info("Stopped")
 
 	return nil
@@ -109,11 +106,7 @@ func (service *webService) ServiceName() string {
 }
 
 func (service *webService) Dependencies() []string {
-	return []string{"tasks"}
-}
-
-func getService() *webService {
-	return services.GetService[*webService]("web")
+	return []string{}
 }
 
 func getAllFilenames(efs fs.FS) (files []string, err error) {

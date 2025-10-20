@@ -19,8 +19,11 @@ docker-build: ui-build
 
 ui-build:
 	cd $(DIR_UI) && \
+	rm -rf dist/prod/static && \
 	install -d dist/prod/static && \
 	install public/* dist/prod/static
 
 run-web:
-	cd $(DIR_SERVER) && go run main.go web
+	export WEB_PORT=8080; \
+	cd $(DIR_SERVER) && \
+	go run main.go web
