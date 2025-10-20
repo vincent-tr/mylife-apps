@@ -25,5 +25,6 @@ ui-build:
 
 run-web:
 	export WEB_PORT=8080; \
+	export WEB_TARGET=www.google.com; \
 	cd $(DIR_SERVER) && \
 	go run main.go web

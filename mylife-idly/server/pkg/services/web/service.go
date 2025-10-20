@@ -28,8 +28,6 @@ type webService struct {
 	server   *http.Server
 	exitDone *sync.WaitGroup
 	mux      *mux.Router
-	index    *indexHandler
-	image    *imageHandler
 }
 
 // https://stackoverflow.com/questions/39320025/how-to-stop-http-listenandserve
@@ -63,17 +61,21 @@ func (service *webService) Init(arg interface{}) error {
 		logger.Tracef("Serving embedded file '%s'", name)
 	}
 
-	service.index, err = makeIndexHandler(fs, webServerConfig.Target)
+	indexHandler, err := makeIndexHandler(fs, webServerConfig.Target)
 	if err != nil {
 		return err
 	}
 
-	service.image = makeImageHandler()
+	imageHandler := makeImageHandler()
 
-	service.mux.Handle("/", service.index)
-	service.mux.Handle("/api/random-image", service.image)
+	pagesHandler, err := makePagesHandler(fs)
+	if err != nil {
+		return err
+	}
 
-	service.mux.PathPrefix("/").Handler(http.FileServer(http.FS(fs)))
+	service.mux.Handle("/", indexHandler)
+	service.mux.Handle("/api/random-image", imageHandler)
+	service.mux.PathPrefix("/").Handler(pagesHandler)
 
 	go func() {
 		defer service.exitDone.Done()
