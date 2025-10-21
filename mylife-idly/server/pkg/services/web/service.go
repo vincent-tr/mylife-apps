@@ -78,9 +78,15 @@ func (service *webService) Init(arg interface{}) error {
 		return err
 	}
 
+	proxyHandler, err := makeProxyHandler(webServerConfig.Target)
+	if err != nil {
+		return err
+	}
+
 	service.mux.Handle("/", indexHandler)
 	service.mux.Handle("/api/random-image", imageHandler)
 	service.mux.Handle("/favicon.ico", faviconHandler)
+	service.mux.PathPrefix("/home").Handler(http.StripPrefix("/home", proxyHandler))
 	service.mux.PathPrefix("/").Handler(pagesHandler)
 
 	go func() {
