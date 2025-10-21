@@ -52,42 +52,21 @@ func (service *webService) Init(arg interface{}) error {
 
 	fs := arg.(fs.FS)
 
-	list, err := getAllFilenames(fs)
+	proxyHandler, err := makeProxyHandler(webServerConfig.Target)
 	if err != nil {
 		return err
 	}
 
-	for _, name := range list {
-		logger.Tracef("Serving embedded file '%s'", name)
-	}
-
-	indexHandler, err := makeIndexHandler(fs, webServerConfig.Target)
+	fileServerHandler, err := makeFileServerHandler(fs)
 	if err != nil {
 		return err
 	}
 
 	imageHandler := makeImageHandler()
 
-	pagesHandler, err := makePagesHandler(fs)
-	if err != nil {
-		return err
-	}
-
-	faviconHandler, err := makeFaviconHandler(fs)
-	if err != nil {
-		return err
-	}
-
-	proxyHandler, err := makeProxyHandler(webServerConfig.Target)
-	if err != nil {
-		return err
-	}
-
-	service.mux.Handle("/", indexHandler)
 	service.mux.Handle("/api/random-image", imageHandler)
-	service.mux.Handle("/favicon.ico", faviconHandler)
 	service.mux.PathPrefix("/home").Handler(http.StripPrefix("/home", proxyHandler))
-	service.mux.PathPrefix("/").Handler(pagesHandler)
+	service.mux.PathPrefix("/").Handler(fileServerHandler)
 
 	go func() {
 		defer service.exitDone.Done()
@@ -121,20 +100,4 @@ func (service *webService) ServiceName() string {
 
 func (service *webService) Dependencies() []string {
 	return []string{}
-}
-
-func getAllFilenames(efs fs.FS) (files []string, err error) {
-	if err := fs.WalkDir(efs, ".", func(path string, d fs.DirEntry, err error) error {
-		if d.IsDir() {
-			return nil
-		}
-
-		files = append(files, path)
-
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return files, nil
 }
