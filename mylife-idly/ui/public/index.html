@@ -55,15 +55,16 @@
       var frame = document.getElementById('frame');
       var hint = document.getElementById('hint');
       var idleTimer = null;
-      var current = 'slideshow'; // 'slideshow' or 'home'
+      var current = 'slideshow'; // 'slideshow' or 'target'
 
       function showHome() {
-        if (current !== 'home') {
+        if (current !== 'target') {
           // Load the control UI in the iframe
-          frame.src = '{{target}}';
-          current = 'home';
+          // Note: / at the end is important to be able to use relative resources inside
+          frame.src = '/target/';
+          current = 'target';
         }
-        // Hide hint when active (home mode)
+        // Hide hint when active (target mode)
         hint.classList.add('hidden');
       }
 
@@ -86,23 +87,35 @@
         }, IDLE_TIMEOUT);
       }
 
-      // When user touches or clicks anywhere: show home and reset idle
+      // When user interacts: show target if needed and reset idle timer
       function onUserActivity(e) {
-        // avoid focusing elements inside iframe repeatedly
-        showHome();
+        console.log('user activity detected:', e.type, e.target);
+        // If we're in slideshow mode, switch to target
+        if (current === 'slideshow') {
+          showHome();
+        }
+        // Always reset the idle timer (whether in target or slideshow)
         resetIdleTimer();
       }
 
-      // Listen for basic user activity events
-      window.addEventListener('keydown', onUserActivity, false);
-      window.addEventListener('mousedown', onUserActivity, false);
-      window.addEventListener('touchstart', onUserActivity, false);
+      // Listen for activity globally using capturing phase to spy on events
+      // These will fire but won't prevent the events from reaching the iframe
+      document.addEventListener('click', onUserActivity, true);
+      document.addEventListener('touchstart', onUserActivity, true);
+      document.addEventListener('mousedown', onUserActivity, true);
+      document.addEventListener('keydown', onUserActivity, true);
+      
+      // Also listen on window for events that might not bubble to document
+      window.addEventListener('click', onUserActivity, true);
+      window.addEventListener('touchstart', onUserActivity, true);
+      window.addEventListener('mousedown', onUserActivity, true);
+      window.addEventListener('keydown', onUserActivity, true);
 
       // Also if the iframe navigates to something else on its own (like clicking inside),
       // we still want to start the idle timer if user is active:
       frame.addEventListener('load', function() {
-        // If the iframe is the home app, start the idle timer so it returns later
-        if (current === 'home') {
+        // If the iframe is the target app, start the idle timer so it returns later
+        if (current === 'target') {
           resetIdleTimer();
         }
       });
@@ -110,7 +123,7 @@
       // initialize idle countdown immediately
       resetIdleTimer();
 
-      // If the home app sends a message to return to the slideshow,
+      // If the target app sends a message to return to the slideshow,
       // this postMessage handler will respond accordingly.
       window.addEventListener('message', function(evt) {
         if (evt && evt.data === 'idly:show-slideshow') {
