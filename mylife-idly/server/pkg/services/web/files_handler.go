@@ -39,7 +39,7 @@ func makeFileServerHandler(efs fs.FS) (*fileServerHandler, error) {
 			contentType: fileInfo.contentType,
 		}
 
-		logger.Infof("Loaded file '%s' for route '%s' (%d bytes)", fileInfo.filePath, route, len(content))
+		logger.Debugf("Loaded file '%s' for route '%s' (%d bytes)", fileInfo.filePath, route, len(content))
 	}
 
 	return &fileServerHandler{
