@@ -99,5 +99,5 @@ func (service *webService) ServiceName() string {
 }
 
 func (service *webService) Dependencies() []string {
-	return []string{}
+	return []string{"images"}
 }

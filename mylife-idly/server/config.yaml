@@ -1,3 +1,7 @@
 webServer:
   address: :${WEB_PORT|80}
   target: ${WEB_TARGET}
+images:
+  rootPath: ${IMAGES_ROOT_PATH}
+  minCount: ${IMAGES_MIN_COUNT}
+  periodDuration: ${IMAGES_PERIOD_DURATION}
