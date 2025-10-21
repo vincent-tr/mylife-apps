@@ -9,7 +9,6 @@ import (
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
-	"time"
 )
 
 var logger = log.CreateLogger("mylife:server:images")
@@ -60,9 +59,8 @@ func getService() *imagesService {
 // Public access
 
 func GetNextImage() ([]byte, string) {
+	// TODO
 	width, height := 200, 200
-	// Seed random number generator with current time for different results each call
-	rand.Seed(time.Now().UnixNano())
 
 	// Create a new RGBA image
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
