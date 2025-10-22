@@ -1,11 +1,11 @@
 package images
 
 import (
+	"fmt"
 	"io/fs"
 	"math/rand"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 type chooser struct {
@@ -51,20 +51,15 @@ func (c *chooser) AddSource(source string) error {
 	return nil
 }
 
+func (c *chooser) GetSources() []string {
+	return c.sources
+}
+
 func (c *chooser) Prepare() {
-	// Shuffle the images slice for random order using Fisher-Yates algorithm
-	if len(c.images) <= 1 {
-		return // Nothing to shuffle
-	}
-
-	// Create a new random source with current time as seed
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-
-	// Fisher-Yates shuffle
-	for i := len(c.images) - 1; i > 0; i-- {
-		j := r.Intn(i + 1)
+	// Shuffle the images slice for random order
+	rand.Shuffle(len(c.images), func(i, j int) {
 		c.images[i], c.images[j] = c.images[j], c.images[i]
-	}
+	})
 
 	// Reset index after shuffle
 	c.lastIndex = -1
@@ -77,6 +72,10 @@ func (c *chooser) ImageCount() int {
 }
 
 func (c *chooser) GetNextImage() ([]byte, string, error) {
+	if len(c.images) == 0 {
+		return nil, "", fmt.Errorf("no images available")
+	}
+
 	c.lastIndex = (c.lastIndex + 1) % len(c.images)
 	path := c.images[c.lastIndex]
 
