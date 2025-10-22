@@ -3,5 +3,5 @@ webServer:
   target: ${WEB_TARGET}
 images:
   rootPath: ${IMAGES_ROOT_PATH}
-  minCount: ${IMAGES_MIN_COUNT}
-  periodDuration: ${IMAGES_PERIOD_DURATION}
+  minCount: ${IMAGES_MIN_COUNT|100}
+  periodDuration: ${IMAGES_PERIOD_DURATION|1w}

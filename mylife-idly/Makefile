@@ -25,9 +25,6 @@ ui-build:
 
 run-web:
 	export WEB_PORT=8080; \
-	export WEB_TARGET=https://example.com/; \
-	export IMAGES_ROOT_PATH=./images; \
-	export IMAGES_MIN_COUNT=10; \
-	export IMAGES_PERIOD_DURATION=60s; \
+	export WEB_TARGET="$${WEB_TARGET:-https://example.com/}"; \
 	cd $(DIR_SERVER) && \
 	go run main.go web
