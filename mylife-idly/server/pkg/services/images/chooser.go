@@ -1,50 +1,101 @@
 package images
 
 import (
-	"os"
-	"path"
+	"io/fs"
+	"math/rand"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type chooser struct {
-	rootPath  string
+	fs        fs.FS
 	sources   []string
 	images    []string
 	lastIndex int
 }
 
-func makeChooser(rootPath string, sources []string, images []string) *chooser {
+func makeChooser(fs fs.FS) *chooser {
 	return &chooser{
-		rootPath: rootPath,
-		sources:  sources,
-		images:   images,
+		fs:      fs,
+		sources: make([]string, 0),
+		images:  make([]string, 0),
 	}
 }
 
-func (c *chooser) getNextImagePath() ([]byte, string) {
-	c.lastIndex = (c.lastIndex + 1) % len(c.images)
+func (c *chooser) AddSource(source string) error {
+	// Scan the source directory recursively for image files
+	images := make([]string, 0)
 
-	fullPath := path.Join(c.rootPath, c.images[c.lastIndex])
+	err := fs.WalkDir(c.fs, source, func(path string, info fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() && isImage(path) {
+			images = append(images, path)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	c.sources = append(c.sources, source)
+	c.images = append(c.images, images...)
+
+	logger.Debugf("Added source '%s' with %d images (total images: %d)", source, len(images), len(c.images))
+
+	return nil
+}
+
+func (c *chooser) Prepare() {
+	// Shuffle the images slice for random order using Fisher-Yates algorithm
+	if len(c.images) <= 1 {
+		return // Nothing to shuffle
+	}
+
+	// Create a new random source with current time as seed
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	// Fisher-Yates shuffle
+	for i := len(c.images) - 1; i > 0; i-- {
+		j := r.Intn(i + 1)
+		c.images[i], c.images[j] = c.images[j], c.images[i]
+	}
+
+	// Reset index after shuffle
+	c.lastIndex = -1
+
+	logger.Debugf("Shuffled %d images for random playback", len(c.images))
+}
+
+func (c *chooser) ImageCount() int {
+	return len(c.images)
+}
+
+func (c *chooser) GetNextImage() ([]byte, string) {
+	c.lastIndex = (c.lastIndex + 1) % len(c.images)
+	path := c.images[c.lastIndex]
 
 	// Load the image file
-	content, err := os.ReadFile(fullPath)
+	content, err := fs.ReadFile(c.fs, path)
 	if err != nil {
-		logger.WithError(err).Errorf("Failed to read image file: %s", fullPath)
+		logger.WithError(err).Errorf("Failed to read image file: %s", path)
 		// Return empty content with error - caller should handle this
 		return nil, ""
 	}
 
-	// Get MIME type based on file extension
-	contentType := c.getMimeTypeFromExtension(fullPath)
+	contentType := getMimeType(path)
 
-	logger.Debugf("Loaded image: %s (%d bytes, %s)", fullPath, len(content), contentType)
+	logger.Debugf("Loaded image: %s (%d bytes, '%s')", path, len(content), contentType)
 
 	return content, contentType
 }
 
-// getMimeTypeFromExtension returns the MIME type based on file extension
-func (c *chooser) getMimeTypeFromExtension(filename string) string {
+func getMimeType(filename string) string {
 	ext := strings.ToLower(filepath.Ext(filename))
 
 	switch ext {
@@ -62,10 +113,13 @@ func (c *chooser) getMimeTypeFromExtension(filename string) string {
 		return "image/svg+xml"
 	case ".tiff", ".tif":
 		return "image/tiff"
-	case ".ico":
-		return "image/x-icon"
 	default:
-		// Default to JPEG for unknown image extensions
-		return "image/jpeg"
+		// Return nothing, useful to test if supported
+		return ""
 	}
+}
+
+func isImage(filename string) bool {
+	mime := getMimeType(filename)
+	return mime != ""
 }
