@@ -1,14 +1,12 @@
 package images
 
 import (
-	"bytes"
-	"image"
-	"image/color"
-	"image/png"
+	"io/fs"
 	"math/rand"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
+	"time"
 )
 
 var logger = log.CreateLogger("mylife:server:images")
@@ -30,11 +28,31 @@ type imagesConfig struct {
 }
 
 type imagesService struct {
+	fs              fs.FS
+	currentChooser  *chooser
+	imagesMinCount  int
+	chooserDuration time.Duration
+	lastChooserTime time.Time
 }
 
 func (service *imagesService) Init(arg interface{}) error {
+	var err error
+
 	imagesConfig := imagesConfig{}
 	config.BindStructure("images", &imagesConfig)
+
+	service.imagesMinCount = imagesConfig.MinCount
+	service.chooserDuration, err = parseDuration(imagesConfig.PeriodDuration)
+	if err != nil {
+		return err
+	}
+
+	service.fs, err = NewFilteredFS(imagesConfig.RootPath)
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("Images service initialized with rootPath='%s', minCount=%d, periodDuration='%s'", imagesConfig.RootPath, service.imagesMinCount, formatDuration(service.chooserDuration))
 
 	return nil
 }
