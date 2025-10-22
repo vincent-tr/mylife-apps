@@ -5,6 +5,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strings"
+	"sync"
 
 	"github.com/gorilla/websocket"
 )
@@ -103,10 +104,18 @@ func (ph *proxyHandler) handleWebSocket(w http.ResponseWriter, r *http.Request) 
 
 	// Start proxying messages bidirectionally
 	done := make(chan struct{})
+	var once sync.Once
+
+	// Function to safely close the done channel only once
+	closeDone := func() {
+		once.Do(func() {
+			close(done)
+		})
+	}
 
 	// Proxy from client to target
 	go func() {
-		defer close(done)
+		defer closeDone()
 		for {
 			messageType, data, err := clientConn.ReadMessage()
 			if err != nil {
@@ -122,7 +131,7 @@ func (ph *proxyHandler) handleWebSocket(w http.ResponseWriter, r *http.Request) 
 
 	// Proxy from target to client
 	go func() {
-		defer close(done)
+		defer closeDone()
 		for {
 			messageType, data, err := targetConn.ReadMessage()
 			if err != nil {
