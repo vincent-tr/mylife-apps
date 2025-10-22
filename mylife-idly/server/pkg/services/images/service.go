@@ -54,6 +54,17 @@ func (service *imagesService) Init(arg interface{}) error {
 
 	logger.Infof("Images service initialized with rootPath='%s', minCount=%d, periodDuration='%s'", imagesConfig.RootPath, service.imagesMinCount, formatDuration(service.chooserDuration))
 
+	entries, err := fs.ReadDir(service.fs, ".")
+	if err != nil {
+		logger.WithError(err).Error("Failed to read root directory")
+	} else {
+		for _, entry := range entries {
+			if entry.IsDir() {
+				logger.Infof("Image folder: %s", entry.Name())
+			}
+		}
+	}
+
 	return nil
 }
 
