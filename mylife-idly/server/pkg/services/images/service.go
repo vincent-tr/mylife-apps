@@ -135,8 +135,6 @@ func (service *imagesService) selectFolders() ([]string, error) {
 		}
 	}
 
-	return folders, nil
-
 	// Avoid folders of current chooser
 	if service.currentChooser != nil {
 		usedFolders := make(map[string]bool)

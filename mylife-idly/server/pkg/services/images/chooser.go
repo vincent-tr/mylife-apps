@@ -46,7 +46,7 @@ func (c *chooser) AddSource(source string) error {
 	c.sources = append(c.sources, source)
 	c.images = append(c.images, images...)
 
-	logger.Debugf("Added source '%s' with %d images (total images: %d)", source, len(images), len(c.images))
+	logger.Infof("Added source '%s' with %d images (total images: %d)", source, len(images), len(c.images))
 
 	return nil
 }
