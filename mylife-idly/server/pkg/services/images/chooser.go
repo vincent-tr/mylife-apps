@@ -76,23 +76,21 @@ func (c *chooser) ImageCount() int {
 	return len(c.images)
 }
 
-func (c *chooser) GetNextImage() ([]byte, string) {
+func (c *chooser) GetNextImage() ([]byte, string, error) {
 	c.lastIndex = (c.lastIndex + 1) % len(c.images)
 	path := c.images[c.lastIndex]
 
 	// Load the image file
 	content, err := fs.ReadFile(c.fs, path)
 	if err != nil {
-		logger.WithError(err).Errorf("Failed to read image file: %s", path)
-		// Return empty content with error - caller should handle this
-		return nil, ""
+		return nil, "", err
 	}
 
 	contentType := getMimeType(path)
 
 	logger.Debugf("Loaded image: %s (%d bytes, '%s')", path, len(content), contentType)
 
-	return content, contentType
+	return content, contentType, nil
 }
 
 func getMimeType(filename string) string {
