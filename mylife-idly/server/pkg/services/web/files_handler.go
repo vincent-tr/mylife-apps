@@ -22,9 +22,10 @@ func makeFileServerHandler(efs fs.FS) (*fileServerHandler, error) {
 		filePath    string
 		contentType string
 	}{
-		"/":            {"index.html", "text/html; charset=utf-8"},
-		"/slideshow":   {"slideshow.html", "text/html; charset=utf-8"},
-		"/favicon.ico": {"favicon.ico", "image/x-icon"},
+		"/":                {"index.html", "text/html; charset=utf-8"},
+		"/slideshow":       {"slideshow.html", "text/html; charset=utf-8"},
+		"/favicon.ico":     {"favicon.ico", "image/x-icon"},
+		"/mylife-idly.svg": {"mylife-idly.svg", "image/svg+xml"},
 	}
 
 	for route, fileInfo := range routes {
