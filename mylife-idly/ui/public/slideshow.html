@@ -7,7 +7,7 @@
   <style>
     html,body {
       margin:0; padding:0; height:100%; width:100%; background:black;
-      -webkit-touch-callout: none; -webkit-user-select: none;
+      -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
     }
     #slideshow {
       position:relative;
@@ -84,9 +84,6 @@
           // Set the hidden element's src to the preloaded one
           hiddenImg.src = next.src;
 
-          // Force reflow fallback (probably unnecessary here)
-          // hiddenImg.offsetHeight;
-
           // crossfade: add visible to hidden, remove from visible
           hiddenImg.className = 'visible';
           visibleImg.className = '';
@@ -117,7 +114,7 @@
       // Prevent gestures like double-tap zoom causing weird behavior
       document.addEventListener('touchstart', function() {}, false);
 
-      // Start
+      // Initialize everything
       init();
     })();
   </script>
