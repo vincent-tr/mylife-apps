@@ -1,143 +1,167 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-  <title>MyLife Idly</title>
-  <style>
-    html {
-      height:100%;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      height:100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      position: relative;
-    }
-    iframe {
-      border: 0;
-      width: 100vw;
-      height: 100vh;
-      display: block;
-      position: fixed;
-      top:0; left:0;
-    }
-    #hint {
-      position:fixed;
-      left:12px;
-      bottom:12px;
-      padding:6px 10px;
-      background:rgba(0,0,0,0.5);
-      color:#fff;
-      font-family: sans-serif;
-      font-size:14px;
-      border-radius:6px;
-      z-index:9999;
-      pointer-events:none;
-      opacity:0.6;
-      transition: opacity 0.3s ease;
-    }
-    #hint.hidden {
-      opacity:0;
-    }
-  </style>
-</head>
-<body>
-  <iframe id="frame" src="/slideshow" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
-  <div id="hint">Tap to open controls</div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLife Idly</title>
 
-  <script>
-    (function() {
-      var IDLE_TIMEOUT = 15000; // 15 seconds
-      var frame = document.getElementById('frame');
-      var hint = document.getElementById('hint');
-      var idleTimer = null;
-      var current = 'slideshow'; // 'slideshow' or 'target'
+    <!-- iOS specifics -->
+    <link rel="apple-touch-icon" href="mylife.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-      function showTarget() {
-        if (current === 'target') {
-          return;
-        }
+    <!-- This helps to track errors on mobile (which have no easily accessible dev tools) -->
+    <script>
+      window.onerror = function (msg, url, lineNo, columnNo, error) {
+        var string = msg.toLowerCase();
+        var substring = "script error";
+        var message = [
+          'Message: ' + msg,
+          'URL: ' + url,
+          'Line: ' + lineNo,
+          'Column: ' + columnNo,
+          'Error object: ' + JSON.stringify(error)
+        ].join(' - ');
 
-        // Load the control UI in the iframe
-        // Note: / at the end is important to be able to use relative resources inside
-        frame.src = '/target/';
-        current = 'target';
+        alert(message);
 
-        // Hide hint when active (target mode)
-        hint.classList.add('hidden');
+        return false;
+      };
+    </script>
+
+    <style>
+      html {
+        height:100%;
+        margin: 0;
+        padding: 0;
       }
-
-      function showSlideshow() {
-        if (current === 'slideshow') {
-          return;
-        }
-
-        frame.src = '/slideshow';
-        current = 'slideshow';
-
-        // Show hint when idle (slideshow mode)
-        hint.classList.remove('hidden');
+      body {
+        height:100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
       }
-
-      function resetIdleTimer() {
-        if (idleTimer) {
-          clearTimeout(idleTimer);
-        }
-        
-        // If user interacted, wait IDLE_TIMEOUT and go back to slideshow
-        idleTimer = setTimeout(function() {
-          showSlideshow();
-        }, IDLE_TIMEOUT);
+      iframe {
+        border: 0;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: fixed;
+        top:0; left:0;
       }
-
-      // When user interacts: show target if needed and reset idle timer
-      function onUserActivity(e) {
-        console.log('user activity detected:', e.type, e.target);
-        showTarget();
-        resetIdleTimer();
+      #hint {
+        position:fixed;
+        left:12px;
+        bottom:12px;
+        padding:6px 10px;
+        background:rgba(0,0,0,0.5);
+        color:#fff;
+        font-family: sans-serif;
+        font-size:14px;
+        border-radius:6px;
+        z-index:9999;
+        pointer-events:none;
+        opacity:0.6;
+        transition: opacity 0.3s ease;
       }
+      #hint.hidden {
+        opacity:0;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe id="frame" src="/slideshow" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+    <div id="hint">Tap to open controls</div>
 
-      // Function to add event listeners to iframe content
-      function addIframeEventListeners() {
-        try {
-          var iframeDoc = frame.contentDocument || frame.contentWindow.document;
-          if (iframeDoc) {
-            // Add event listeners to iframe document
-            iframeDoc.addEventListener('click', onUserActivity, true);
-            iframeDoc.addEventListener('touchstart', onUserActivity, true);
-            iframeDoc.addEventListener('mousedown', onUserActivity, true);
-            iframeDoc.addEventListener('keydown', onUserActivity, true);
-            
-            // Also listen on iframe window
-            var iframeWin = frame.contentWindow;
-            if (iframeWin) {
-              iframeWin.addEventListener('click', onUserActivity, true);
-              iframeWin.addEventListener('touchstart', onUserActivity, true);
-              iframeWin.addEventListener('mousedown', onUserActivity, true);
-              iframeWin.addEventListener('keydown', onUserActivity, true);
-            }
-            
-            console.log('Added event listeners to iframe content');
+    <script>
+      (function() {
+        var IDLE_TIMEOUT = 15000; // 15 seconds
+        var frame = document.getElementById('frame');
+        var hint = document.getElementById('hint');
+        var idleTimer = null;
+        var current = 'slideshow'; // 'slideshow' or 'target'
+
+        function showTarget() {
+          if (current === 'target') {
+            return;
           }
-        } catch (e) {
-          console.log('Could not access iframe content (cross-origin):', e.message);
+
+          // Load the control UI in the iframe
+          // Note: / at the end is important to be able to use relative resources inside
+          frame.src = '/target/';
+          current = 'target';
+
+          // Hide hint when active (target mode)
+          hint.classList.add('hidden');
         }
-      }
 
-      frame.addEventListener('load', function() {
-        addIframeEventListeners();
+        function showSlideshow() {
+          if (current === 'slideshow') {
+            return;
+          }
 
-        if (current === 'target') {
+          frame.src = '/slideshow';
+          current = 'slideshow';
+
+          // Show hint when idle (slideshow mode)
+          hint.classList.remove('hidden');
+        }
+
+        function resetIdleTimer() {
+          if (idleTimer) {
+            clearTimeout(idleTimer);
+          }
+          
+          // If user interacted, wait IDLE_TIMEOUT and go back to slideshow
+          idleTimer = setTimeout(function() {
+            showSlideshow();
+          }, IDLE_TIMEOUT);
+        }
+
+        // When user interacts: show target if needed and reset idle timer
+        function onUserActivity(e) {
+          console.log('user activity detected:', e.type, e.target);
+          showTarget();
           resetIdleTimer();
         }
-      });
 
-      resetIdleTimer();
-    })();
-  </script>
-</body>
+        // Function to add event listeners to iframe content
+        function addIframeEventListeners() {
+          try {
+            var iframeDoc = frame.contentDocument || frame.contentWindow.document;
+            if (iframeDoc) {
+              // Add event listeners to iframe document
+              iframeDoc.addEventListener('click', onUserActivity, true);
+              iframeDoc.addEventListener('touchstart', onUserActivity, true);
+              iframeDoc.addEventListener('mousedown', onUserActivity, true);
+              iframeDoc.addEventListener('keydown', onUserActivity, true);
+              
+              // Also listen on iframe window
+              var iframeWin = frame.contentWindow;
+              if (iframeWin) {
+                iframeWin.addEventListener('click', onUserActivity, true);
+                iframeWin.addEventListener('touchstart', onUserActivity, true);
+                iframeWin.addEventListener('mousedown', onUserActivity, true);
+                iframeWin.addEventListener('keydown', onUserActivity, true);
+              }
+              
+              console.log('Added event listeners to iframe content');
+            }
+          } catch (e) {
+            console.log('Could not access iframe content (cross-origin):', e.message);
+          }
+        }
+
+        frame.addEventListener('load', function() {
+          addIframeEventListeners();
+
+          if (current === 'target') {
+            resetIdleTimer();
+          }
+        });
+
+        resetIdleTimer();
+      })();
+    </script>
+  </body>
 </html>
