@@ -1,12 +1,17 @@
 package images
 
 import (
+	"bytes"
+	"image"
+	"image/jpeg"
 	"io/fs"
 	"math/rand"
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
 	"time"
+
+	"golang.org/x/image/draw"
 )
 
 var logger = log.CreateLogger("mylife:server:images")
@@ -81,12 +86,69 @@ func (service *imagesService) Dependencies() []string {
 	return []string{}
 }
 
-func (service *imagesService) getNextImage() ([]byte, string, error) {
+func (service *imagesService) getNextImage(smallDevice bool) ([]byte, string, error) {
 	if err := service.refreshChooser(); err != nil {
 		return nil, "", err
 	}
 
-	return service.currentChooser.GetNextImage()
+	content, contentType, err := service.currentChooser.GetNextImage()
+	if err != nil {
+		return nil, "", err
+	}
+
+	if smallDevice {
+		return service.reduceImage(content, contentType)
+	} else {
+		return content, contentType, nil
+	}
+}
+
+func (service *imagesService) reduceImage(content []byte, contentType string) ([]byte, string, error) {
+	// Decode the image
+	img, _, err := image.Decode(bytes.NewReader(content))
+	if err != nil {
+		return nil, "", err
+	}
+
+	// Get original dimensions
+	bounds := img.Bounds()
+	origWidth := bounds.Dx()
+	origHeight := bounds.Dy()
+
+	// Calculate new dimensions (max 1024 on longest side)
+	maxSize := 1024
+	if origWidth > maxSize || origHeight > maxSize {
+		// Calculate scaling factor
+		var newWidth, newHeight int
+		if origWidth > origHeight {
+			newWidth = maxSize
+			newHeight = (origHeight * maxSize) / origWidth
+		} else {
+			newHeight = maxSize
+			newWidth = (origWidth * maxSize) / origHeight
+		}
+
+		// Create new image with calculated dimensions
+		resized := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
+
+		// Resize using high-quality scaling
+		draw.BiLinear.Scale(resized, resized.Bounds(), img, img.Bounds(), draw.Over, nil)
+
+		img = resized
+	}
+
+	// Re-encode with lower quality
+	var buf bytes.Buffer
+
+	err = jpeg.Encode(&buf, img, &jpeg.Options{Quality: 70})
+
+	if err != nil {
+		return nil, "", err
+	}
+
+	logger.Debugf("Reduced image from %d bytes (%s) to %d bytes (image/jpeg)", len(content), contentType, buf.Len())
+
+	return buf.Bytes(), "image/jpeg", err
 }
 
 func (service *imagesService) refreshChooser() error {
@@ -171,8 +233,8 @@ func (service *imagesService) selectFolders() ([]string, error) {
 	return folders, nil
 }
 
-func (service *imagesService) safeGetNextImage() ([]byte, string) {
-	content, contentType, err := getService().getNextImage()
+func (service *imagesService) safeGetNextImage(smallDevice bool) ([]byte, string) {
+	content, contentType, err := getService().getNextImage(smallDevice)
 	if err != nil {
 		logger.WithError(err).Error("GetNextImage failed")
 		return service.generateErrorImage()
@@ -204,6 +266,6 @@ func getService() *imagesService {
 
 // Public access
 
-func GetNextImage() ([]byte, string) {
-	return getService().safeGetNextImage()
+func GetNextImage(smallDevice bool) ([]byte, string) {
+	return getService().safeGetNextImage(smallDevice)
 }
