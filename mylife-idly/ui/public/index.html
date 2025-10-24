@@ -49,35 +49,16 @@
         position: fixed;
         top:0; left:0;
       }
-      #hint {
-        position:fixed;
-        left:12px;
-        bottom:12px;
-        padding:6px 10px;
-        background:rgba(0,0,0,0.5);
-        color:#fff;
-        font-family: sans-serif;
-        font-size:14px;
-        border-radius:6px;
-        z-index:9999;
-        pointer-events:none;
-        opacity:0.6;
-        transition: opacity 0.3s ease;
-      }
-      #hint.hidden {
-        opacity:0;
-      }
+
     </style>
   </head>
   <body>
     <iframe id="frame" src="/slideshow" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
-    <div id="hint">Tap to open controls</div>
 
     <script>
       (function() {
         var IDLE_TIMEOUT = 15000; // 15 seconds
         var frame = document.getElementById('frame');
-        var hint = document.getElementById('hint');
         var idleTimer = null;
         var current = 'slideshow'; // 'slideshow' or 'target'
 
@@ -90,9 +71,6 @@
           // Note: / at the end is important to be able to use relative resources inside
           frame.src = '/target/';
           current = 'target';
-
-          // Hide hint when active (target mode)
-          hint.classList.add('hidden');
         }
 
         function showSlideshow() {
@@ -102,9 +80,6 @@
 
           frame.src = '/slideshow';
           current = 'slideshow';
-
-          // Show hint when idle (slideshow mode)
-          hint.classList.remove('hidden');
         }
 
         function resetIdleTimer() {
