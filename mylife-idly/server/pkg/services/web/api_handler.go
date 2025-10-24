@@ -1,7 +1,6 @@
 package web
 
 import (
-	"encoding/json"
 	"mylife-idly/pkg/services/images"
 	"net/http"
 	"strings"
@@ -17,33 +16,15 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 		smallDevice = true
 	}
 
-	content, contentType := images.GetNextImage(smallDevice)
+	image := images.GetNextImage(smallDevice)
 
 	// Set headers to disable caching
-	w.Header().Set("Content-Type", contentType)
+	w.Header().Set("Content-Type", image.ContentType)
+	w.Header().Set("X-Album-Name", image.AlbumName)
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 	w.Header().Set("Pragma", "no-cache")
 	w.Header().Set("Expires", "0")
 
 	w.WriteHeader(200)
-	w.Write(content)
-}
-
-func albumHandler(w http.ResponseWriter, r *http.Request) {
-	albumNames := images.GetAlbumNames()
-
-	// Create response
-	response := map[string]interface{}{
-		"albums": albumNames,
-	}
-
-	// Set headers
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-	w.Header().Set("Pragma", "no-cache")
-	w.Header().Set("Expires", "0")
-
-	// Encode and send JSON
-	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(response)
+	w.Write(image.Content)
 }

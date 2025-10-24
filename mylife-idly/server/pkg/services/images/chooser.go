@@ -80,9 +80,9 @@ func (c *chooser) getNextIndex() int {
 	return c.lastIndex
 }
 
-func (c *chooser) GetNextImage() ([]byte, string, error) {
+func (c *chooser) GetNextImage() (*ImageData, error) {
 	if len(c.images) == 0 {
-		return nil, "", fmt.Errorf("no images available")
+		return nil, fmt.Errorf("no images available")
 	}
 
 	path := c.images[c.getNextIndex()]
@@ -90,14 +90,19 @@ func (c *chooser) GetNextImage() ([]byte, string, error) {
 	// Load the image file
 	content, err := fs.ReadFile(c.fs, path)
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 
 	contentType := getMimeType(path)
+	albumName := strings.Split(path, "/")[0]
 
 	logger.Debugf("Loaded image: %s (%d bytes, '%s')", path, len(content), contentType)
 
-	return content, contentType, nil
+	return &ImageData{
+		Content:     content,
+		ContentType: contentType,
+		AlbumName:   albumName,
+	}, nil
 }
 
 func getMimeType(filename string) string {

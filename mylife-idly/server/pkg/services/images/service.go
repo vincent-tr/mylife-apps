@@ -15,6 +15,12 @@ import (
 	"golang.org/x/image/draw"
 )
 
+type ImageData struct {
+	Content     []byte
+	ContentType string
+	AlbumName   string
+}
+
 var logger = log.CreateLogger("mylife:server:images")
 
 func init() {
@@ -88,29 +94,31 @@ func (service *imagesService) Dependencies() []string {
 	return []string{}
 }
 
-func (service *imagesService) getNextImage(smallDevice bool) ([]byte, string, error) {
+func (service *imagesService) getNextImage(smallDevice bool) (*ImageData, error) {
 	chooser, err := service.getChooser()
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 
-	content, contentType, err := chooser.GetNextImage()
+	image, err := chooser.GetNextImage()
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 
 	if smallDevice {
-		return service.reduceImage(content, contentType)
-	} else {
-		return content, contentType, nil
+		if err := service.reduceImage(image); err != nil {
+			return nil, err
+		}
 	}
+
+	return image, nil
 }
 
-func (service *imagesService) reduceImage(content []byte, contentType string) ([]byte, string, error) {
+func (service *imagesService) reduceImage(imgData *ImageData) error {
 	// Decode the image
-	img, _, err := image.Decode(bytes.NewReader(content))
+	img, _, err := image.Decode(bytes.NewReader(imgData.Content))
 	if err != nil {
-		return nil, "", err
+		return err
 	}
 
 	// Get original dimensions
@@ -146,12 +154,15 @@ func (service *imagesService) reduceImage(content []byte, contentType string) ([
 	err = jpeg.Encode(&buf, img, &jpeg.Options{Quality: 70})
 
 	if err != nil {
-		return nil, "", err
+		return err
 	}
 
-	logger.Debugf("Reduced image from %d bytes (%s) to %d bytes (image/jpeg)", len(content), contentType, buf.Len())
+	logger.Debugf("Reduced image from %d bytes (%s) to %d bytes (image/jpeg)", len(imgData.Content), imgData.ContentType, buf.Len())
 
-	return buf.Bytes(), "image/jpeg", err
+	imgData.Content = buf.Bytes()
+	imgData.ContentType = "image/jpeg"
+
+	return nil
 }
 
 func (service *imagesService) getChooser() (*chooser, error) {
@@ -247,19 +258,19 @@ func (service *imagesService) selectFolders() ([]string, error) {
 	return folders, nil
 }
 
-func (service *imagesService) safeGetNextImage(smallDevice bool) ([]byte, string) {
-	content, contentType, err := getService().getNextImage(smallDevice)
+func (service *imagesService) safeGetNextImage(smallDevice bool) *ImageData {
+	image, err := getService().getNextImage(smallDevice)
 	if err != nil {
 		logger.WithError(err).Error("GetNextImage failed")
 		return service.generateErrorImage()
 	}
 
-	return content, contentType
+	return image
 }
 
-func (service *imagesService) generateErrorImage() ([]byte, string) {
+func (service *imagesService) generateErrorImage() *ImageData {
 	// Simple placeholder image (1x1 pixel transparent PNG)
-	placeholder := []byte{
+	content := []byte{
 		0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
 		0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
 		0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
@@ -271,17 +282,11 @@ func (service *imagesService) generateErrorImage() ([]byte, string) {
 		0xAE, 0x42, 0x60, 0x82,
 	}
 
-	return placeholder, "image/png"
-}
-
-func (service *imagesService) getAlbumNames() []string {
-	chooser, err := service.getChooser()
-	if err != nil {
-		logger.WithError(err).Error("Failed to refresh chooser")
-		return []string{}
+	return &ImageData{
+		Content:     content,
+		ContentType: "image/png",
+		AlbumName:   "Error",
 	}
-
-	return chooser.GetSources()
 }
 
 func getService() *imagesService {
@@ -290,10 +295,6 @@ func getService() *imagesService {
 
 // Public access
 
-func GetNextImage(smallDevice bool) ([]byte, string) {
+func GetNextImage(smallDevice bool) *ImageData {
 	return getService().safeGetNextImage(smallDevice)
-}
-
-func GetAlbumNames() []string {
-	return getService().getAlbumNames()
 }
