@@ -33,12 +33,28 @@
     #slideshow img.visible {
       opacity:1;
     }
+    #albumOverlay {
+      position:absolute;
+      bottom:20px;
+      left:20px;
+      background:rgba(0,0,0,0.7);
+      color:white;
+      padding:8px 12px;
+      border-radius:5px;
+      font-family:Arial, sans-serif;
+      font-size:12px;
+      z-index:10;
+      opacity:0.8;
+      max-width:250px;
+      word-wrap:break-word;
+    }
   </style>
 </head>
 <body>
   <div id="slideshow">
     <img id="imgA" class="visible" src="" alt="" />
     <img id="imgB" src="" alt="" />
+    <div id="albumOverlay">Loading albums...</div>
   </div>
 
   <script>
@@ -49,41 +65,65 @@
       var imgB = document.getElementById('imgB');
       var showingA = true;
       var timer = null;
+      var albumOverlay = document.getElementById('albumOverlay');
 
-      // Provide the server endpoint returning an image URL.
-      // For simplicity, we'll directly request an image URL that returns an image.
-      // Use a cache-buster query param to avoid cached repeats.
-      function nextImageUrl() {
-        return '/api/random-image?ts=' + (new Date()).getTime();
+      // Load image and get album name from header
+      function loadImageWithAlbum(imgElement, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/api/random-image?ts=' + (new Date()).getTime(), true);
+        
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            // Get album name from header
+            var albumName = xhr.getResponseHeader('X-Album-Name') || 'Unknown album';
+            
+            // Create blob URL for the image
+            var blob = new Blob([xhr.response], {type: xhr.getResponseHeader('Content-Type')});
+            var imageUrl = URL.createObjectURL(blob);
+            
+            // Update image source
+            imgElement.src = imageUrl;
+            
+            // Update album overlay with this specific image's album
+            albumOverlay.textContent = albumName;
+            
+            // Clean up previous blob URL to free memory
+            if (imgElement.dataset.prevUrl) {
+              URL.revokeObjectURL(imgElement.dataset.prevUrl);
+            }
+            imgElement.dataset.prevUrl = imageUrl;
+            
+            if (callback) callback();
+          } else {
+            albumOverlay.textContent = 'Image unavailable';
+            if (callback) callback();
+          }
+        };
+        
+        xhr.onerror = function() {
+          albumOverlay.textContent = 'Network error';
+          if (callback) callback();
+        };
+        
+        xhr.responseType = 'arraybuffer';
+        xhr.send();
       }
 
       // Initialize first image immediately
       function init() {
-        // Load first image into imgA
-        var first = new Image();
-        first.onload = function() {
-          imgA.src = first.src;
+        albumOverlay.textContent = 'Loading...';
+        loadImageWithAlbum(imgA, function() {
           imgA.className = 'visible';
           scheduleNext();
-        };
-        first.onerror = function() {
-          // fallback: retry after interval
-          scheduleNext();
-        };
-        first.src = nextImageUrl();
+        });
       }
 
       // Preload next and swap by toggling classes
       function preloadAndSwap() {
-        var next = new Image();
         var hiddenImg = showingA ? imgB : imgA;
         var visibleImg = showingA ? imgA : imgB;
 
-        // When image loaded, set src of hidden image, then crossfade
-        next.onload = function() {
-          // Set the hidden element's src to the preloaded one
-          hiddenImg.src = next.src;
-
+        loadImageWithAlbum(hiddenImg, function() {
           // crossfade: add visible to hidden, remove from visible
           hiddenImg.className = 'visible';
           visibleImg.className = '';
@@ -93,15 +133,7 @@
 
           // schedule next cycle
           scheduleNext();
-        };
-
-        next.onerror = function() {
-          // if error, try again after interval
-          scheduleNext();
-        };
-
-        // start loading
-        next.src = nextImageUrl();
+        });
       }
 
       function scheduleNext() {
