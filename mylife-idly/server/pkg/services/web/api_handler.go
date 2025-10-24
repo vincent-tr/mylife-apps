@@ -30,11 +30,11 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func albumHandler(w http.ResponseWriter, r *http.Request) {
-	albumName := images.GetAlbumName()
+	albumNames := images.GetAlbumNames()
 
 	// Create response
-	response := map[string]string{
-		"album": albumName,
+	response := map[string]interface{}{
+		"albums": albumNames,
 	}
 
 	// Set headers

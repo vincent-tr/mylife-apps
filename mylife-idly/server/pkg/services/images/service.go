@@ -9,7 +9,6 @@ import (
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
-	"strings"
 	"sync"
 	"time"
 
@@ -275,23 +274,14 @@ func (service *imagesService) generateErrorImage() ([]byte, string) {
 	return placeholder, "image/png"
 }
 
-func (service *imagesService) getAlbumName() string {
+func (service *imagesService) getAlbumNames() []string {
 	chooser, err := service.getChooser()
 	if err != nil {
 		logger.WithError(err).Error("Failed to refresh chooser")
-		return ""
+		return []string{}
 	}
 
-	if chooser == nil {
-		return ""
-	}
-
-	sources := chooser.GetSources()
-	if len(sources) == 0 {
-		return ""
-	}
-
-	return strings.Join(sources, ", ")
+	return chooser.GetSources()
 }
 
 func getService() *imagesService {
@@ -304,6 +294,6 @@ func GetNextImage(smallDevice bool) ([]byte, string) {
 	return getService().safeGetNextImage(smallDevice)
 }
 
-func GetAlbumName() string {
-	return getService().getAlbumName()
+func GetAlbumNames() []string {
+	return getService().getAlbumNames()
 }
