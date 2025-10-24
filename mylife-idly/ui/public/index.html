@@ -48,17 +48,24 @@
         display: block;
         position: fixed;
         top:0; left:0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      iframe.visible {
+        opacity: 1;
       }
 
     </style>
   </head>
   <body>
-    <iframe id="frame" src="/slideshow" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+    <iframe id="slideshowFrame" class="visible" src="/slideshow" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+    <iframe id="targetFrame" src="/target/" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
 
     <script>
       (function() {
         var IDLE_TIMEOUT = 15000; // 15 seconds
-        var frame = document.getElementById('frame');
+        var slideshowFrame = document.getElementById('slideshowFrame');
+        var targetFrame = document.getElementById('targetFrame');
         var idleTimer = null;
         var current = 'slideshow'; // 'slideshow' or 'target'
 
@@ -67,9 +74,9 @@
             return;
           }
 
-          // Load the control UI in the iframe
-          // Note: / at the end is important to be able to use relative resources inside
-          frame.src = '/target/';
+          // Switch to target frame (instant)
+          targetFrame.className = 'visible';
+          slideshowFrame.className = '';
           current = 'target';
         }
 
@@ -78,7 +85,9 @@
             return;
           }
 
-          frame.src = '/slideshow';
+          // Switch to slideshow frame (instant)
+          slideshowFrame.className = 'visible';
+          targetFrame.className = '';
           current = 'slideshow';
         }
 
@@ -101,7 +110,7 @@
         }
 
         // Function to add event listeners to iframe content
-        function addIframeEventListeners() {
+        function addIframeEventListeners(frame) {
           try {
             var iframeDoc = frame.contentDocument || frame.contentWindow.document;
             if (iframeDoc) {
@@ -127,9 +136,12 @@
           }
         }
 
-        frame.addEventListener('load', function() {
-          addIframeEventListeners();
+        slideshowFrame.addEventListener('load', function() {
+          addIframeEventListeners(slideshowFrame);
+        });
 
+        targetFrame.addEventListener('load', function() {
+          addIframeEventListeners(targetFrame);
           if (current === 'target') {
             resetIdleTimer();
           }
