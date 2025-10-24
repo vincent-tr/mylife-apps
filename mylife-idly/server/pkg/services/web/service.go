@@ -62,9 +62,8 @@ func (service *webService) Init(arg interface{}) error {
 		return err
 	}
 
-	imageHandler := makeImageHandler()
-
-	service.mux.Handle("/api/random-image", imageHandler)
+	service.mux.HandleFunc("/api/random-image", imageHandler)
+	service.mux.HandleFunc("/api/current-album", albumHandler)
 	service.mux.PathPrefix("/target").Handler(http.StripPrefix("/target", proxyHandler))
 	service.mux.PathPrefix("/").Handler(fileServerHandler)
 

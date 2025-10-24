@@ -6,13 +6,15 @@ import (
 	"math/rand"
 	"path/filepath"
 	"strings"
+	"sync"
 )
 
 type chooser struct {
-	fs        fs.FS
-	sources   []string
-	images    []string
-	lastIndex int
+	fs            fs.FS
+	sources       []string
+	images        []string
+	lastIndex     int
+	lastIndexLock sync.Mutex
 }
 
 func makeChooser(fs fs.FS) *chooser {
@@ -71,13 +73,19 @@ func (c *chooser) ImageCount() int {
 	return len(c.images)
 }
 
+func (c *chooser) getNextIndex() int {
+	c.lastIndexLock.Lock()
+	defer c.lastIndexLock.Unlock()
+	c.lastIndex = (c.lastIndex + 1) % len(c.images)
+	return c.lastIndex
+}
+
 func (c *chooser) GetNextImage() ([]byte, string, error) {
 	if len(c.images) == 0 {
 		return nil, "", fmt.Errorf("no images available")
 	}
 
-	c.lastIndex = (c.lastIndex + 1) % len(c.images)
-	path := c.images[c.lastIndex]
+	path := c.images[c.getNextIndex()]
 
 	// Load the image file
 	content, err := fs.ReadFile(c.fs, path)

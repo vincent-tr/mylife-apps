@@ -9,6 +9,8 @@ import (
 	"mylife-tools-server/config"
 	"mylife-tools-server/log"
 	"mylife-tools-server/services"
+	"strings"
+	"sync"
 	"time"
 
 	"golang.org/x/image/draw"
@@ -38,6 +40,7 @@ type imagesService struct {
 	imagesMinCount  int
 	chooserDuration time.Duration
 	lastChooserTime time.Time
+	chooserLock     sync.Mutex
 }
 
 func (service *imagesService) Init(arg interface{}) error {
@@ -87,11 +90,12 @@ func (service *imagesService) Dependencies() []string {
 }
 
 func (service *imagesService) getNextImage(smallDevice bool) ([]byte, string, error) {
-	if err := service.refreshChooser(); err != nil {
+	chooser, err := service.getChooser()
+	if err != nil {
 		return nil, "", err
 	}
 
-	content, contentType, err := service.currentChooser.GetNextImage()
+	content, contentType, err := chooser.GetNextImage()
 	if err != nil {
 		return nil, "", err
 	}
@@ -149,6 +153,17 @@ func (service *imagesService) reduceImage(content []byte, contentType string) ([
 	logger.Debugf("Reduced image from %d bytes (%s) to %d bytes (image/jpeg)", len(content), contentType, buf.Len())
 
 	return buf.Bytes(), "image/jpeg", err
+}
+
+func (service *imagesService) getChooser() (*chooser, error) {
+	service.chooserLock.Lock()
+	defer service.chooserLock.Unlock()
+
+	if err := service.refreshChooser(); err != nil {
+		return nil, err
+	}
+
+	return service.currentChooser, nil
 }
 
 func (service *imagesService) refreshChooser() error {
@@ -260,6 +275,25 @@ func (service *imagesService) generateErrorImage() ([]byte, string) {
 	return placeholder, "image/png"
 }
 
+func (service *imagesService) getAlbumName() string {
+	chooser, err := service.getChooser()
+	if err != nil {
+		logger.WithError(err).Error("Failed to refresh chooser")
+		return ""
+	}
+
+	if chooser == nil {
+		return ""
+	}
+
+	sources := chooser.GetSources()
+	if len(sources) == 0 {
+		return ""
+	}
+
+	return strings.Join(sources, ", ")
+}
+
 func getService() *imagesService {
 	return services.GetService[*imagesService]("images")
 }
@@ -268,4 +302,8 @@ func getService() *imagesService {
 
 func GetNextImage(smallDevice bool) ([]byte, string) {
 	return getService().safeGetNextImage(smallDevice)
+}
+
+func GetAlbumName() string {
+	return getService().getAlbumName()
 }
