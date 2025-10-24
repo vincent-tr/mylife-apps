@@ -2,15 +2,14 @@ package images
 
 import (
 	"bytes"
-	"image"
 	"image/jpeg"
 
-	"golang.org/x/image/draw"
+	"github.com/disintegration/imaging"
 )
 
 func reduceImage(imgData *ImageData, maxSize int) error {
-	// Decode the image
-	img, _, err := image.Decode(bytes.NewReader(imgData.Content))
+	// Decode the image with automatic EXIF orientation correction
+	img, err := imaging.Decode(bytes.NewReader(imgData.Content))
 	if err != nil {
 		return err
 	}
@@ -20,32 +19,15 @@ func reduceImage(imgData *ImageData, maxSize int) error {
 	origWidth := bounds.Dx()
 	origHeight := bounds.Dy()
 
-	// Calculate new dimensions and resize if necessary
+	// Resize if necessary using high-quality algorithm
 	if origWidth > maxSize || origHeight > maxSize {
-		// Calculate scaling factor
-		var newWidth, newHeight int
-		if origWidth > origHeight {
-			newWidth = maxSize
-			newHeight = (origHeight * maxSize) / origWidth
-		} else {
-			newHeight = maxSize
-			newWidth = (origWidth * maxSize) / origHeight
-		}
-
-		// Create new image with calculated dimensions
-		resized := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
-
-		// Resize using high-quality scaling
-		draw.BiLinear.Scale(resized, resized.Bounds(), img, img.Bounds(), draw.Over, nil)
-
-		img = resized
+		// Use imaging.Fit to maintain aspect ratio and fit within maxSize
+		img = imaging.Fit(img, maxSize, maxSize, imaging.Lanczos)
 	}
 
 	// Re-encode with lower quality
 	var buf bytes.Buffer
-
 	err = jpeg.Encode(&buf, img, &jpeg.Options{Quality: 70})
-
 	if err != nil {
 		return err
 	}
