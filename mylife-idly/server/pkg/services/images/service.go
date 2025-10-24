@@ -1,9 +1,6 @@
 package images
 
 import (
-	"bytes"
-	"image"
-	"image/jpeg"
 	"io/fs"
 	"math/rand"
 	"mylife-tools-server/config"
@@ -11,8 +8,6 @@ import (
 	"mylife-tools-server/services"
 	"sync"
 	"time"
-
-	"golang.org/x/image/draw"
 )
 
 type ImageData struct {
@@ -106,63 +101,14 @@ func (service *imagesService) getNextImage(smallDevice bool) (*ImageData, error)
 	}
 
 	if smallDevice {
-		if err := service.reduceImage(image); err != nil {
+		// max 1024 on longest side
+		maxSize := 1024
+		if err := reduceImage(image, maxSize); err != nil {
 			return nil, err
 		}
 	}
 
 	return image, nil
-}
-
-func (service *imagesService) reduceImage(imgData *ImageData) error {
-	// Decode the image
-	img, _, err := image.Decode(bytes.NewReader(imgData.Content))
-	if err != nil {
-		return err
-	}
-
-	// Get original dimensions
-	bounds := img.Bounds()
-	origWidth := bounds.Dx()
-	origHeight := bounds.Dy()
-
-	// Calculate new dimensions (max 1024 on longest side)
-	maxSize := 1024
-	if origWidth > maxSize || origHeight > maxSize {
-		// Calculate scaling factor
-		var newWidth, newHeight int
-		if origWidth > origHeight {
-			newWidth = maxSize
-			newHeight = (origHeight * maxSize) / origWidth
-		} else {
-			newHeight = maxSize
-			newWidth = (origWidth * maxSize) / origHeight
-		}
-
-		// Create new image with calculated dimensions
-		resized := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
-
-		// Resize using high-quality scaling
-		draw.BiLinear.Scale(resized, resized.Bounds(), img, img.Bounds(), draw.Over, nil)
-
-		img = resized
-	}
-
-	// Re-encode with lower quality
-	var buf bytes.Buffer
-
-	err = jpeg.Encode(&buf, img, &jpeg.Options{Quality: 70})
-
-	if err != nil {
-		return err
-	}
-
-	logger.Debugf("Reduced image from %d bytes (%s) to %d bytes (image/jpeg)", len(imgData.Content), imgData.ContentType, buf.Len())
-
-	imgData.Content = buf.Bytes()
-	imgData.ContentType = "image/jpeg"
-
-	return nil
 }
 
 func (service *imagesService) getChooser() (*chooser, error) {
