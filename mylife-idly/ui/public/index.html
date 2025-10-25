@@ -108,14 +108,6 @@
         function onUserActivity(e) {
           console.log('user activity detected:', e.type, e.target);
           
-          // Prevent event from bubbling to underlying iframe
-          if (e.stopPropagation) {
-            e.stopPropagation();
-          }
-          if (e.preventDefault) {
-            e.preventDefault();
-          }
-          
           showTarget();
           resetIdleTimer();
         }
