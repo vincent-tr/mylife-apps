@@ -1,7 +1,10 @@
 'use strict';
 
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+// React 18
+//import { createRoot } from 'react-dom/client';
+// React 16
+import { render as reactDomRender } from 'react-dom';
 import { Application } from '../components/application';
 
 interface RenderOptions {
@@ -24,6 +27,9 @@ export function render({
   ...props
 }: RenderOptions = {}) {
 
-  const root = createRoot(container);
-  root.render(<Application {...props} />);
+  // React 18
+  //const root = createRoot(container);
+  //root.render(<Application {...props} />);
+  // React 16
+  reactDomRender(<Application {...props} />, container);
 }
