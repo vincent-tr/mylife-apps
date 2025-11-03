@@ -52,7 +52,7 @@ func parseRecords(account string, data string) ([]record, error) {
 
 		record, err := parseRecord(account, raw)
 		if err != nil {
-			return nil, fmt.Errorf("error parsing record: %w", err)
+			return nil, fmt.Errorf("error parsing record: %w (record: '%v')", err, raw)
 		}
 
 		records = append(records, record)
