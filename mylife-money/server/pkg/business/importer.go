@@ -100,8 +100,6 @@ func parseRecord(account string, input []string) (record, error) {
 		amount = debit
 	} else if credit != 0 {
 		amount = credit
-	} else {
-		return record{}, fmt.Errorf("invalid record: no debit or credit")
 	}
 
 	_ = valDate
