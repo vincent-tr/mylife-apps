@@ -100,6 +100,8 @@ func parseRecord(account string, input []string) (record, error) {
 		amount = debit
 	} else if credit != 0 {
 		amount = credit
+	} else {
+		logger.Warnf("Record with no debit or credit: '%v'", input)
 	}
 
 	_ = valDate
