@@ -245,7 +245,11 @@ func OperationsSetNote(note string, operationIds []string) error {
 
 func OperationAppendNote(note string, operationId string) error {
 	return operationsUpdate([]string{operationId}, func(values *entities.OperationValues) {
-		values.Note = fmt.Sprintf("%s\n\n---\n\n%s", values.Note, note)
+		if values.Note == "" {
+			values.Note = note
+		} else {
+			values.Note = fmt.Sprintf("%s\n\n---\n\n%s", values.Note, note)
+		}
 	})
 }
 
