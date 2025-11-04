@@ -269,7 +269,7 @@ func (b *bot) download() ([]byte, error) {
 		break
 	}
 
-	return nil, fmt.Errorf("Unexpected response, expected attachment after %d retries", downloadMaxRetries)
+	return nil, fmt.Errorf("unexpected response, expected attachment after %d retries", downloadMaxRetries)
 }
 
 func (b *bot) httpProcess(targetUrl string, postData map[string]string, headers map[string]string) (*response, error) {
