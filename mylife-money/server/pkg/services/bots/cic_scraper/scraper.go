@@ -56,7 +56,7 @@ func (b *bot) authenticate() error {
 		b.logger.Info("Validation required")
 
 	default:
-		return fmt.Errorf("Login failed: unknown response '%s'", resp.requestUrl)
+		return fmt.Errorf("login failed: unknown response '%s'", resp.requestUrl)
 	}
 
 	transactionId, err := resp.FindJsValue("transactionId")
@@ -85,7 +85,7 @@ func (b *bot) authenticate() error {
 
 	action, exists := form.Attr("action")
 	if !exists {
-		return fmt.Errorf("Form action not found")
+		return fmt.Errorf("form action not found")
 	}
 
 	formData := make(map[string]string)
@@ -164,7 +164,7 @@ func (b *bot) waitAuth(transactionId string, getTransactionValidationStateUrl st
 
 		elapsed := time.Since(startDate)
 		if elapsed > authTimeout {
-			return fmt.Errorf("Timeout while waiting for authentication")
+			return fmt.Errorf("timeout while waiting for authentication")
 		}
 
 		time.Sleep(authCheckInterval)
@@ -191,7 +191,7 @@ func (b *bot) download() ([]byte, error) {
 
 		action, exists := form.Attr("action")
 		if !exists {
-			return nil, fmt.Errorf("Form action not found")
+			return nil, fmt.Errorf("form action not found")
 		}
 
 		cpt, exists := form.Find("input[name='_CPT'").First().Attr("value")
@@ -295,10 +295,8 @@ func (b *bot) httpProcess(targetUrl string, postData map[string]string, headers 
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	}
 
-	if headers != nil {
-		for k, v := range headers {
-			req.Header.Set(k, v)
-		}
+	for k, v := range headers {
+		req.Header.Set(k, v)
 	}
 
 	resp, err := b.client.Do(req)
@@ -336,7 +334,7 @@ func (resp *response) FindJsValue(key string) (string, error) {
 	matches := rx.FindStringSubmatch(resp.bodyString)
 
 	if len(matches) < 2 {
-		return "", fmt.Errorf("Value not found for key '%s'", key)
+		return "", fmt.Errorf("value not found for key '%s'", key)
 	}
 	return matches[1], nil
 }
