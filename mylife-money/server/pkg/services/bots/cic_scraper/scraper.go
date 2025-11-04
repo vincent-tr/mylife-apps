@@ -187,57 +187,29 @@ func (b *bot) download() ([]byte, error) {
 			return nil, err
 		}
 
-		form := doc.Find("form[id='P:F']")
+		form := doc.Find("form[id='C:P:F']")
 
 		action, exists := form.Attr("action")
 		if !exists {
 			return nil, fmt.Errorf("form action not found")
 		}
 
-		cpt, exists := form.Find("input[name='_CPT'").First().Attr("value")
-		if !exists {
-			cpt = ""
-		}
+		formData := b.getFormData(form)
 
-		formData := map[string]string{
-			// picked from Chrome session dev tools
-			"data_formats_selected":                         "csv",
-			"data_formats_options_cmi_download":             "0",
-			"data_formats_options_ofx_format":               "7",
-			"Bool:data_formats_options_ofx_zonetiers":       "false",
-			"CB:data_formats_options_ofx_zonetiers":         "on",
-			"data_formats_options_qif_fileformat":           "6",
-			"data_formats_options_qif_dateformat":           "0",
-			"data_formats_options_qif_amountformat":         "0",
-			"data_formats_options_qif_headerformat":         "0",
-			"Bool:data_formats_options_qif_zonetiers":       "false",
-			"CB:data_formats_options_qif_zonetiers":         "on",
-			"data_formats_options_csv_fileformat":           "2",
-			"data_formats_options_csv_dateformat":           "0",
-			"data_formats_options_csv_fieldseparator":       "0",
-			"data_formats_options_csv_amountcolnumber":      "1",
-			"data_formats_options_csv_decimalseparator":     "0",
-			"Bool:data_accounts_account_ischecked":          "true",
-			"CB:data_accounts_account_ischecked":            "on",
-			"Bool:data_accounts_account_2__ischecked":       "false",
-			"Bool:data_accounts_account_3__ischecked":       "false",
-			"Bool:data_accounts_account_4__ischecked":       "false",
-			"Bool:data_accounts_account_5__ischecked":       "false",
-			"Bool:data_accounts_account_6__ischecked":       "false",
-			"data_daterange_value":                          "all",
-			"_FID_DoDownload.x":                             "65",
-			"_FID_DoDownload.y":                             "17",
-			"data_accounts_selection":                       "100000000000",
-			"data_formats_options_cmi_show":                 "True",
-			"data_formats_options_qif_show":                 "True",
-			"data_formats_options_excel_show":               "True",
-			"data_formats_options_csv_show":                 "True",
-			"[t:dbt%3adate;]data_daterange_startdate_value": "",
-			"[t:dbt%3adate;]data_daterange_enddate_value":   "",
+		// Type submit button clicked
+		formData["_FID_DoDownload"] = ""
 
-			// The only custom
-			"_CPT": cpt,
-		}
+		// Select first account
+		formData["Bool:data_accounts_account_ischecked"] = "true"
+		formData["CB:data_accounts_account_ischecked"] = "on"
+
+		// Click on CSV format + setup options
+		formData["data_formats_selected"] = "csv"
+		formData["data_formats_options_csv_fileformat"] = "2"
+		formData["data_formats_options_csv_dateformat"] = "0"
+		formData["data_formats_options_csv_fieldseparator"] = "0"
+		formData["data_formats_options_csv_amountcolnumber"] = "1"
+		formData["data_formats_options_csv_decimalseparator"] = "0"
 
 		headers := map[string]string{
 			"Referer": downloadUrl,
@@ -270,6 +242,49 @@ func (b *bot) download() ([]byte, error) {
 	}
 
 	return nil, fmt.Errorf("unexpected response, expected attachment after %d retries", downloadMaxRetries)
+}
+
+func (b *bot) getFormData(form *goquery.Selection) map[string]string {
+
+	formData := make(map[string]string)
+
+	for _, node := range form.Find("input").Nodes {
+		if common.HasAttribute(node, "disabled") {
+			continue
+		}
+
+		name, _ := common.FindAttribute(node, "name")
+		if name == "" {
+			continue
+		}
+
+		type_, _ := common.FindAttribute(node, "type")
+		switch type_ {
+		case "submit", "button", "reset":
+			// skip
+
+		case "checkbox":
+			checked := common.HasAttribute(node, "checked")
+			if checked {
+				formData[name] = "on"
+			}
+
+		case "radio":
+			checked := common.HasAttribute(node, "checked")
+			if checked {
+				value, _ := common.FindAttribute(node, "value")
+				formData[name] = value
+			}
+
+		default:
+			value, _ := common.FindAttribute(node, "value")
+			formData[name] = value
+		}
+
+	}
+	// TODO: select, textarea, ..
+
+	return formData
 }
 
 func (b *bot) httpProcess(targetUrl string, postData map[string]string, headers map[string]string) (*response, error) {
