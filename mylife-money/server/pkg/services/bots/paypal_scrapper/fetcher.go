@@ -117,21 +117,6 @@ func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
 
 	receipt.Amount = totalItem.Amount.Value
 
-	// Find "Numéro de transaction" in transaction details
-	var transItem *transactionItem
-	for _, item := range receipt.Transaction {
-		if item.Name == "Numéro de transaction" {
-			transItem = &item
-			break
-		}
-	}
-
-	if transItem == nil {
-		return nil, fmt.Errorf("no transaction number found in receipt transaction details")
-	}
-
-	receipt.Id = strings.TrimSpace(transItem.Value[0])
-
 	return receipt, nil
 }
 
@@ -142,13 +127,21 @@ func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
 		return fmt.Errorf("failed to parse HTML content: %w", err)
 	}
 
-	url, found := doc.Find("a:contains(\"Afficher l'état du paiement\")").First().Attr("href")
-	if !found {
-		return fmt.Errorf("failed to find receipt url")
+	receipt.Id, err = b.findTransactionId(doc)
+	if err != nil {
+		return fmt.Errorf("failed to find transaction ID: %w", err)
 	}
 
-	// Pick only before ?
-	receipt.Url = strings.Split(url, "?")[0]
+	// It looks like the receipt URL is broken for now
+	//
+	// url, found := doc.Find("a:contains(\"Afficher l'état du paiement\")").First().Attr("href")
+	// if !found {
+	// 	return fmt.Errorf("failed to find receipt url")
+	// }
+	//
+	// // Pick only before ?
+	// receipt.Url = strings.Split(url, "?")[0]
+	receipt.Url = "https://www.paypal.com/myaccount/activities/details/" + receipt.Id
 
 	// first cartDetails table is transaction info
 	// if any, cartDetails table here is items info
@@ -192,55 +185,61 @@ func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
 	return nil
 }
 
-func (b *bot) parseTransactionTable(table *html.Node) ([]transactionItem, error) {
-	// Get direct tbody > tr > td nodes
-	cells, err := b.listTableCells(table)
+func (b *bot) findTransactionId(doc *goquery.Document) (string, error) {
+	// Parse transaction ID:
+	// Find <tr> with data-testid="transaction-id"
+	node := doc.Find("tr[data-testid='transaction-id'] > td")
+	if node.Length() == 0 {
+		return "", fmt.Errorf("failed to find transaction ID row")
+	}
+	rawId, err := b.readName(node.Nodes[0])
 	if err != nil {
-		return nil, fmt.Errorf("failed to list table cells: %w", err)
+		return "", fmt.Errorf("failed to read transaction ID: %w", err)
+	}
+
+	// Expect format: "Numéro de transaction : XXXXXXXXXXXX"
+	parts := strings.SplitN(rawId, ":", 2)
+	if len(parts) != 2 {
+		return "", fmt.Errorf("unexpected transaction ID format: '%s'", rawId)
+	}
+	return strings.TrimSpace(parts[1]), nil
+}
+
+func (b *bot) parseTransactionTable(table *html.Node) ([]transactionItem, error) {
+	rows, err := b.listTableRows(table)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list table rows: %w", err)
 	}
 
 	items := make([]transactionItem, 0)
 
-	for _, cell := range cells {
-		item, err := b.parseTransactionCell(cell)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse table cell: %w", err)
+	for _, row := range rows {
+		// expect rows with 2 cells: name and value
+		cells := b.childNodes(row)
+		if len(cells) != 2 {
+			return nil, fmt.Errorf("expected 2 cells in row, got %d", len(cells))
+		}
+		if cells[0].Data != "td" || cells[1].Data != "td" {
+			return nil, fmt.Errorf("expected 'td' nodes in row, got %s and %s", cells[0].Data, cells[1].Data)
 		}
 
-		items = append(items, item)
+		name, err := b.readName(cells[0])
+		if err != nil {
+			return nil, fmt.Errorf("failed to read name from cell: %w", err)
+		}
+
+		value, err := b.readText(cells[1])
+		if err != nil {
+			return nil, fmt.Errorf("failed to read value from cell: %w", err)
+		}
+
+		items = append(items, transactionItem{
+			Name:  name,
+			Value: value,
+		})
 	}
 
 	return items, nil
-}
-
-func (b *bot) parseTransactionCell(node *html.Node) (transactionItem, error) {
-	// one span for title and one for values
-	nodes := b.childNodes(node)
-
-	// remove br nodes
-	nodes = slices.DeleteFunc(nodes, func(n *html.Node) bool {
-		return n.Data == "br"
-	})
-
-	if len(nodes) != 2 {
-		return transactionItem{}, fmt.Errorf("expected 2 nodes in item, got %d", len(nodes))
-	}
-
-	name := goquery.NewDocumentFromNode(nodes[0]).Text()
-
-	// Value is always in a span, but the span can be in a table, p, another span, etc.
-	// So we look for the node which is a span at the deepest level
-	value, err := b.readText(nodes[1])
-	if err != nil {
-		return transactionItem{}, fmt.Errorf("failed to read text from node: %w", err)
-	}
-
-	item := transactionItem{
-		Name:  name,
-		Value: value,
-	}
-
-	return item, nil
 }
 
 func (b *bot) parseTableItemsTable(table *html.Node) ([]item, error) {
@@ -415,32 +414,6 @@ func (b *bot) listTableRows(table *html.Node) ([]*html.Node, error) {
 	}
 
 	return rows, nil
-}
-
-func (b *bot) listTableCells(table *html.Node) ([]*html.Node, error) {
-	rows, err := b.listTableRows(table)
-	if err != nil {
-		return nil, err
-	}
-
-	cells := make([]*html.Node, 0)
-
-	for _, trNode := range rows {
-		if trNode.Data != "tr" {
-			return nil, fmt.Errorf("expected 'tr' node, got %s", trNode.Data)
-		}
-
-		// Iterate over all td nodes in tr
-		for _, tdNode := range b.childNodes(trNode) {
-			if tdNode.Data != "td" {
-				return nil, fmt.Errorf("expected 'td' node, got %s", tdNode.Data)
-			}
-
-			cells = append(cells, tdNode)
-		}
-	}
-
-	return cells, nil
 }
 
 func (b *bot) readName(node *html.Node) (string, error) {
