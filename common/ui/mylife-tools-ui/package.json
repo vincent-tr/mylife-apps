@@ -46,9 +46,5 @@
     "reselect": "^4.1.6",
     "socket.io-client": "^4.5.1",
     "typeface-roboto": "1.1.13"
-  },
-  "devDependencies": {
-    "@types/react-virtualized": "^9.21.21",
-    "@types/redux-actions": "^2.6.2"
   }
 }
