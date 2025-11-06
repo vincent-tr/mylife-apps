@@ -15,7 +15,10 @@
     "react": "^16.14.0",
     "react-battery-gauge": "^1.0.5",
     "react-dom": "^16.14.0",
-    "react-virtualized": "^9.22.3"
+    "react-redux": "^8.0.2",
+    "react-virtualized": "^9.22.3",
+    "react-virtuoso": "^2.14.0",
+    "redux-actions": "^2.6.5"
   },
   "license": "GPL-3.0+"
 }

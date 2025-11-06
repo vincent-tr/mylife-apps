@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
-import { mui, useSelector, useScreenPhone } from 'mylife-tools-ui';
+import { useSelector } from 'react-redux';
+import { mui, useScreenPhone } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { LiveDevice } from '../../../../shared/metadata';

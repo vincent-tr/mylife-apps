@@ -1,7 +1,8 @@
 'use strict';
 
 import React, { useMemo } from 'react';
-import { mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
+import { useDispatch, useSelector } from 'react-redux';
+import { mui, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getNagiosView, getUpsmonView, getUpdatesView } from '../selectors';
 import NagiosSummary from './nagios-summary';

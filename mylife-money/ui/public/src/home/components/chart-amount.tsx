@@ -1,7 +1,8 @@
 'use strict';
 
 import React from 'react';
-import { mui, useSelector, chart, useChartColors } from 'mylife-tools-ui';
+import { useSelector } from 'react-redux';
+import { mui, chart, useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
 
 const ChartAmount = (props) => {

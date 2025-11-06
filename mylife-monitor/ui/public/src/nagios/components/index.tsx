@@ -3,7 +3,8 @@
 import humanizeDuration from 'humanize-duration';
 import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
-import { mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
+import { useDispatch, useSelector } from 'react-redux';
+import { mui, useLifecycle } from 'mylife-tools-ui';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
 import { enter, leave, changeCriteria } from '../actions';

@@ -2,7 +2,8 @@
 
 import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
-import { mui, useSelector, useDispatch, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
+import { useSelector, useDispatch } from 'react-redux';
+import { mui, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
 import { getSelectedOperations, getCriteria } from '../../selectors';

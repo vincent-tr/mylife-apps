@@ -2,7 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mui, useSelector } from 'mylife-tools-ui';
+import { useSelector } from 'react-redux';
+import { mui } from 'mylife-tools-ui';
 import { getAccounts } from '../../reference/selectors';
 
 const useConnect = () => useSelector(state => ({

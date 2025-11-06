@@ -1,7 +1,8 @@
 'use strict';
 
 import immutable from 'immutable';
-import { handleActions, io } from 'mylife-tools-ui';
+import { handleActions } from 'redux-actions';
+import { io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 type FIXME_any = any;

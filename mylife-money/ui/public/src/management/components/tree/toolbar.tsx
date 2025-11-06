@@ -1,7 +1,8 @@
 'use strict';
 
 import React, { useMemo } from 'react';
-import { mui, useSelector, useDispatch, dialogs } from 'mylife-tools-ui';
+import { useSelector, useDispatch } from 'react-redux';
+import { mui, dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import groupEditor from './group-editor';
 import { getGroup } from '../../../reference/selectors';

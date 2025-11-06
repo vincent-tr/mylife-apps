@@ -1,6 +1,7 @@
 'use strict';
 
-import { createAction, io, views, dialogs } from 'mylife-tools-ui';
+import { createAction } from 'redux-actions';
+import { io, views, dialogs } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId, getOperationIdDetail } from './selectors';
 

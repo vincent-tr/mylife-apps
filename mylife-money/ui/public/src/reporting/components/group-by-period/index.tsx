@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
+import { useDispatch, useSelector } from 'react-redux';
+import { mui, useLifecycle } from 'mylife-tools-ui';
 import { getSortedViewList } from '../../selectors';
 import { reportingLeave } from '../../actions';
 

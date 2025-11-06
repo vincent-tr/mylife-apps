@@ -1,7 +1,8 @@
 'use strict';
 
 import React, { useMemo } from 'react';
-import { mui, useSelector, useDispatch } from 'mylife-tools-ui';
+import { useSelector, useDispatch } from 'react-redux';
+import { mui } from 'mylife-tools-ui';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../selectors';
 import { getAccount } from '../../../reference/selectors';
 import { selectOperation, showDetail } from '../../actions';

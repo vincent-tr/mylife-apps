@@ -1,6 +1,7 @@
 'use strict';
 
-import { handleActions } from 'mylife-tools-ui';
+import { handleActions } from 'redux-actions';
+
 import actionTypes from './action-types';
 
 const initialCriteria = {

@@ -1,4 +1,5 @@
-import { io, createAction, views } from 'mylife-tools-ui';
+import { createAction } from 'redux-actions';
+import { io, views } from 'mylife-tools-ui';
 import actionTypes, { SetValues } from './types';
 import * as viewUids from './view-uids';
 

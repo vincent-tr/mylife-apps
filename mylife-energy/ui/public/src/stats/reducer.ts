@@ -1,4 +1,5 @@
-import { handleActions, routing } from 'mylife-tools-ui';
+import { handleActions } from 'redux-actions';
+import { routing } from 'mylife-tools-ui';
 import actionTypes, { SensorData, SetValues, StatsState } from './types';
 import { Sensor, Measure } from '../../../shared/metadata';
 

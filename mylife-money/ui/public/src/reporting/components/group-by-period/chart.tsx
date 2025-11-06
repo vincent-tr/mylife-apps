@@ -3,7 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AutoSizer } from 'react-virtualized';
-import { chart, useSelector, useChartColors } from 'mylife-tools-ui';
+import { useSelector } from 'react-redux';
+import { chart, useChartColors } from 'mylife-tools-ui';
 import { getGroupStacks, getChildrenList } from '../../../reference/selectors';
 
 const useConnect = ({ display, groups }) => {

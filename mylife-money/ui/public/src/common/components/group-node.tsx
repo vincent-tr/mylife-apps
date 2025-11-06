@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { mui, useSelector } from 'mylife-tools-ui';
+import { useSelector } from 'react-redux';
+import { mui } from 'mylife-tools-ui';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../reference/selectors';
 

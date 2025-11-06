@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { mui, dialogs, useSelector, useAction, CriteriaField, fireAsync } from 'mylife-tools-ui';
+import { useSelector } from 'react-redux';
+import { mui, dialogs, useAction, CriteriaField, fireAsync } from 'mylife-tools-ui';
 import { getState } from '../selectors';
 import { setParameters } from '../actions';
 import { TeslaState } from '../../../../shared/metadata';

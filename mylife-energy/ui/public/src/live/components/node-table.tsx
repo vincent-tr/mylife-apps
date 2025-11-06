@@ -1,5 +1,6 @@
 import React from 'react';
-import { mui, useSelector, views } from 'mylife-tools-ui';
+import { useSelector } from 'react-redux';
+import { mui, views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selectors';
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';

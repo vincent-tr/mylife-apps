@@ -3,7 +3,8 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { mui, useSelector, useDispatch } from 'mylife-tools-ui';
+import { useSelector, useDispatch } from 'react-redux';
+import { mui } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import { getSelectedGroupId } from '../../selectors';
 import { getGroup } from '../../../reference/selectors';

@@ -1,7 +1,8 @@
 'use strict';
 
 import React, { useMemo } from 'react';
-import { mui, useSelector, useDispatch, useLifecycle, useScreenSize } from 'mylife-tools-ui';
+import { useSelector, useDispatch } from 'react-redux';
+import { mui, useLifecycle, useScreenSize } from 'mylife-tools-ui';
 import { managementEnter, managementLeave } from '../actions';
 import { isOperationDetail } from '../selectors';
 
