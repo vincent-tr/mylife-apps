@@ -17,7 +17,8 @@
     "react-dom": "^16.14.0",
     "react-redux": "^8.0.2",
     "react-virtualized": "^9.22.3",
-    "redux-actions": "^2.6.5"
+    "redux-actions": "^2.6.5",
+    "reselect": "^4.1.6"
   },
   "license": "GPL-3.0+"
 }

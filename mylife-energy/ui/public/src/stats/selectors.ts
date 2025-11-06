@@ -1,4 +1,5 @@
-import { views, createSelector } from 'mylife-tools-ui';
+import { createSelector } from 'reselect';
+import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
 import { Device, Sensor } from '../../../shared/metadata';
 import { StatsState } from './types';

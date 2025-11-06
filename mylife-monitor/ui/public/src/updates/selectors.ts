@@ -1,6 +1,7 @@
 'use strict';
 
-import { views, createSelector } from 'mylife-tools-ui';
+import { createSelector } from 'reselect';
+import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
 
 const getUpdates = state => state.updates;
