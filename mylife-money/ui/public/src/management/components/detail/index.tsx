@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { mui, DebouncedTextField } from 'mylife-tools-ui';
+import { DebouncedTextField } from 'mylife-tools-ui';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../actions';
 import { getOperationDetail } from '../../selectors';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
@@ -14,10 +14,9 @@ import Row from './row';
 import GroupBreadcrumbs from './group-breadcrumbs';
 import AmountValue from './amount-value';
 import Markdown from '../../../common/components/markdown';
+import { Paper, Typography, Tabs, Tab, makeStyles } from '@material-ui/core';
 
 type FIXME_any = any;
-
-const { makeStyles } = mui;
 
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
@@ -54,14 +53,14 @@ const DetailContainer = ({ className }) => {
   const { operation, account, groupStack, close, onOpenGroup, onSetNote, onMove } = useConnect();
 
   return (
-    <mui.Paper className={clsx(classes.container, className)}>
+    <Paper className={clsx(classes.container, className)}>
       <Title onClose={close} />
 
       <div className={classes.grid}>
         <Row label='Compte'>
-          <mui.Typography>
+          <Typography>
             {account.display}
-          </mui.Typography>
+          </Typography>
         </Row>
 
         <Row label='Groupe'>
@@ -73,22 +72,22 @@ const DetailContainer = ({ className }) => {
         </Row>
 
         <Row label='Date'>
-          <mui.Typography>
+          <Typography>
             {new Date(operation.date).toLocaleDateString('fr-FR')}
-          </mui.Typography>
+          </Typography>
         </Row>
 
         <Row label='Libellé'>
-          <mui.Typography>
+          <Typography>
             {operation.label}
-          </mui.Typography>
+          </Typography>
         </Row>
 
         <Row label='Notes'>
           <NoteEditor value={operation.note} onChange={onSetNote} />
         </Row>
       </div>
-    </mui.Paper>
+    </Paper>
   );
 };
 
@@ -122,11 +121,11 @@ const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: s
   };
 
   return (
-    <mui.Paper square className={classes.container}>
-      <mui.Tabs value={tabValue} indicatorColor="primary" textColor="primary" onChange={handleChange}>
-        <mui.Tab label="Visualiser" value={'view' as TabValues} />
-        <mui.Tab label="Modifier" value={'update' as TabValues} />
-      </mui.Tabs>
+    <Paper square className={classes.container}>
+      <Tabs value={tabValue} indicatorColor="primary" textColor="primary" onChange={handleChange}>
+        <Tab label="Visualiser" value={'view' as TabValues} />
+        <Tab label="Modifier" value={'update' as TabValues} />
+      </Tabs>
 
       {tabValue === 'view' && (
         <Markdown className={classes.view} value={value} />
@@ -135,7 +134,7 @@ const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: s
       {tabValue === 'update' && (
         <DebouncedTextField variant='outlined' value={value} onChange={onChange} fullWidth multiline minRows={19} maxRows={19}/>
       )}
-    </mui.Paper>
+    </Paper>
   );
 };
 

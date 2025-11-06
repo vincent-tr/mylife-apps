@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { mui, useLifecycle, useActions, views, useInterval } from 'mylife-tools-ui';
+import { useLifecycle, useActions, views, useInterval } from 'mylife-tools-ui';
 import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
 import { enter, leave } from '../actions';
 import { getDataView } from '../selectors';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
+import { makeStyles, Typography, Paper } from '@material-ui/core';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   section: {
     margin: theme.spacing(2),
     padding: theme.spacing(4),
@@ -33,10 +34,10 @@ const Home: React.FunctionComponent = () => {
           Live
         </>
       }>
-        <mui.Typography variant='h3'>
+        <Typography variant='h3'>
           <icons.devices.Total fontSize='inherit' />
           {totalPower?.toFixed()} W
-        </mui.Typography>
+        </Typography>
 
         <LastUpdate section='live' />
       </Section>
@@ -61,13 +62,13 @@ const Section: React.FunctionComponent<{ title: React.ReactNode; }> = ({ title, 
   const classes = useStyles();
 
   return (
-    <mui.Paper variant='outlined' className={classes.section}>
-      <mui.Typography variant='h1' className={classes.sectionTitle}>
+    <Paper variant='outlined' className={classes.section}>
+      <Typography variant='h1' className={classes.sectionTitle}>
         {title}
-      </mui.Typography>
+      </Typography>
 
       {children}
-    </mui.Paper>
+    </Paper>
   );
 };
 
@@ -76,9 +77,9 @@ const LastUpdate: React.FunctionComponent<{ section: string }> = ({ section }) =
   const value = useLastUpdate(section);
 
   return (
-    <mui.Typography variant='body2' color='textSecondary' className={classes.lastUpdate}>
+    <Typography variant='body2' color='textSecondary' className={classes.lastUpdate}>
       Mis à jour il y a {value}
-    </mui.Typography>
+    </Typography>
   );
 };
 

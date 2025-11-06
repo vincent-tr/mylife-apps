@@ -2,17 +2,16 @@
 
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { mui, useLifecycle, useScreenSize } from 'mylife-tools-ui';
+import { useLifecycle, useScreenSize } from 'mylife-tools-ui';
 import { managementEnter, managementLeave } from '../actions';
 import { isOperationDetail } from '../selectors';
+import { makeStyles } from '@material-ui/core';
 
 import Tree from './tree';
 import List from './list';
 import Detail from './detail';
 
 type FIXME_any = any;
-
-const { makeStyles } = mui;
 
 const useStyles = makeStyles({
   container: {

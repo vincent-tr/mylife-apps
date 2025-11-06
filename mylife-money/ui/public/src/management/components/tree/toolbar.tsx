@@ -2,13 +2,14 @@
 
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { mui, dialogs } from 'mylife-tools-ui';
+import { dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import groupEditor from './group-editor';
 import { getGroup } from '../../../reference/selectors';
 import { getSelectedGroupId } from '../../selectors';
 import { createGroup, updateGroup, deleteGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
+import { Toolbar as MuiToolbar, Tooltip, IconButton } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -67,39 +68,39 @@ const Toolbar = () => {
   };
 
   return (
-    <mui.Toolbar>
+    <MuiToolbar>
 
-      <mui.Tooltip title='Créer un groupe enfant'>
-        <mui.IconButton onClick={onGroupCreate} style={styles.button}>
+      <Tooltip title='Créer un groupe enfant'>
+        <IconButton onClick={onGroupCreate} style={styles.button}>
           <icons.actions.New />
-        </mui.IconButton>
-      </mui.Tooltip>
+        </IconButton>
+      </Tooltip>
 
-      <mui.Tooltip title='Editer le groupe'>
+      <Tooltip title='Editer le groupe'>
         <div>
-          <mui.IconButton onClick={handleEdit} disabled={!canChange} style={styles.button}>
+          <IconButton onClick={handleEdit} disabled={!canChange} style={styles.button}>
             <icons.actions.Edit />
-          </mui.IconButton>
+          </IconButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
 
-      <mui.Tooltip title='Déplacer le groupe'>
+      <Tooltip title='Déplacer le groupe'>
         <div>
           <GroupSelectorButton onSelect={handleMove} disabled={!canChange} style={styles.button} options={moveOptions}>
             <icons.actions.Move />
           </GroupSelectorButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
 
-      <mui.Tooltip title='Supprimer le groupe'>
+      <Tooltip title='Supprimer le groupe'>
         <div>
-          <mui.IconButton onClick={handleDelete} disabled={!canChange} style={styles.button}>
+          <IconButton onClick={handleDelete} disabled={!canChange} style={styles.button}>
             <icons.actions.Delete />
-          </mui.IconButton>
+          </IconButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
 
-    </mui.Toolbar>
+    </MuiToolbar>
   );
 };
 

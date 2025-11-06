@@ -1,12 +1,12 @@
 'use strict';
 
 import React from 'react';
-import { mui } from 'mylife-tools-ui';
 import Stats from './stats';
 import ChartCount from './chart-count';
 import ChartAmount from './chart-amount';
+import { makeStyles } from '@material-ui/core';
 
-const useStyles = mui.makeStyles({
+const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',

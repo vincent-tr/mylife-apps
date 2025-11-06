@@ -2,12 +2,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 
 import GroupSelector from '../../../common/components/group-selector';
+import { makeStyles, Typography, Tooltip, IconButton } from '@material-ui/core';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column'
@@ -34,21 +34,21 @@ const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <mui.Typography className={classes.label}>Groupes</mui.Typography>
-        <mui.Tooltip title='Ajouter un groupe'>
-          <mui.IconButton onClick={() => onGroupAdd()} className={classes.addButton}>
+        <Typography className={classes.label}>Groupes</Typography>
+        <Tooltip title='Ajouter un groupe'>
+          <IconButton onClick={() => onGroupAdd()} className={classes.addButton}>
             <icons.actions.New />
-          </mui.IconButton>
-        </mui.Tooltip>
+          </IconButton>
+        </Tooltip>
       </div>
       {groups.map((group, index) => (
         <div key={index} className={classes.item}>
           <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
-          <mui.Tooltip title='Supprimer le groupe'>
-            <mui.IconButton onClick={() => onGroupDelete(index)}>
+          <Tooltip title='Supprimer le groupe'>
+            <IconButton onClick={() => onGroupDelete(index)}>
               <icons.actions.Delete />
-            </mui.IconButton>
-          </mui.Tooltip>
+            </IconButton>
+          </Tooltip>
         </div>
       ))}
     </div>

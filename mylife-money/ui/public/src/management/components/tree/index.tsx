@@ -3,12 +3,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { mui } from 'mylife-tools-ui';
 
 import Tree from './tree';
 import Toolbar from './toolbar';
-
-const { makeStyles } = mui;
+import { makeStyles, Paper, Divider } from '@material-ui/core';
 
 const useStyles = makeStyles({
   container: {
@@ -26,11 +24,11 @@ const TreeContainer = ({ className }) => {
   const classes = useStyles();
 
   return (
-    <mui.Paper className={clsx(classes.container, className)}>
+    <Paper className={clsx(classes.container, className)}>
       <Tree className={classes.tree}/>
-      <mui.Divider />
+      <Divider />
       <Toolbar />
-    </mui.Paper>
+    </Paper>
   );
 };
 

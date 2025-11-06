@@ -2,8 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
+import { Tooltip, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
 
 interface HeaderProps {
   onImport;
@@ -48,27 +48,27 @@ class Header extends React.Component<HeaderProps, { account?; anchorEl?; open; }
     const { anchorEl } = this.state;
     return (
     <div>
-      <mui.Tooltip title='Importer des opérations'>
-        <mui.IconButton
+      <Tooltip title='Importer des opérations'>
+        <IconButton
           aria-owns={anchorEl ? 'simple-menu' : undefined}
           aria-haspopup='true'
           onClick={this.handleClick}>
           <icons.actions.Import />
-        </mui.IconButton>
-      </mui.Tooltip>
+        </IconButton>
+      </Tooltip>
 
-      <mui.Menu id="simple-menu" anchorEl={anchorEl} open={!!anchorEl} onClose={this.handleClose}>
+      <Menu id="simple-menu" anchorEl={anchorEl} open={!!anchorEl} onClose={this.handleClose}>
         {accounts.map(account => (
-          <mui.MenuItem key={account._id} onClick={() => this.handleMenuClick(account._id)}>
-            <mui.ListItemIcon>
+          <MenuItem key={account._id} onClick={() => this.handleMenuClick(account._id)}>
+            <ListItemIcon>
               <icons.Account />
-            </mui.ListItemIcon>
-            <mui.Typography variant='inherit'>
+            </ListItemIcon>
+            <Typography variant='inherit'>
               {account.display}
-            </mui.Typography>
-          </mui.MenuItem>
+            </Typography>
+          </MenuItem>
         ))}
-      </mui.Menu>
+      </Menu>
 
       <input
         ref={(input) => { this.fileInput = input; }}

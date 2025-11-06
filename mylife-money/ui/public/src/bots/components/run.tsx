@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { mui, CriteriaField, ListContainer, DeleteButton, useAction, useActions, useLifecycle, fireAsync, services } from 'mylife-tools-ui';
+import { CriteriaField, ListContainer, DeleteButton, useAction, useActions, useLifecycle, fireAsync, services } from 'mylife-tools-ui';
+import { makeStyles, Grid, Typography, Divider, darken } from '@material-ui/core';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
@@ -17,7 +18,7 @@ interface BotRunLog {
   message: string;
 }
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -50,7 +51,7 @@ const useStyles = mui.makeStyles(theme => ({
     overflowWrap: 'break-word',
   },
   logTimestamp: {
-    color: mui.darken(theme.palette.background.paper, 0.5),
+    color: darken(theme.palette.background.paper, 0.5),
   },
   logLevel: {
 
@@ -67,26 +68,26 @@ const Run: React.FunctionComponent<{ run: BotRun; className?: string }> = ({ run
   return (
     <div className={clsx(classes.container, className)}>
       <div className={classes.gridContainer}>
-        <mui.Grid container spacing={2}>
-          <mui.Grid item xs={6}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
             <CriteriaField label={services.getStructureFieldName(structure, 'start')}>
-              <mui.Typography>{run.start.toLocaleString('fr-FR')}</mui.Typography>
+              <Typography>{run.start.toLocaleString('fr-FR')}</Typography>
             </CriteriaField>
-          </mui.Grid>
+          </Grid>
 
-          <mui.Grid item xs={6}>
+          <Grid item xs={6}>
             <CriteriaField label={services.getStructureFieldName(structure, 'end')}>
-              <mui.Typography>{run.end?.toLocaleString('fr-FR') || '-'}</mui.Typography>
+              <Typography>{run.end?.toLocaleString('fr-FR') || '-'}</Typography>
             </CriteriaField>
-          </mui.Grid>
+          </Grid>
 
-          <mui.Grid item xs={12}>
+          <Grid item xs={12}>
             <RunResult value={run.result} />
-          </mui.Grid>
-        </mui.Grid>
+          </Grid>
+        </Grid>
       </div>
 
-      <mui.Divider />
+      <Divider />
   
       <div className={classes.logsList}>
         {(run.logs as BotRunLog[]).map((log, index) => (
@@ -106,7 +107,7 @@ const Run: React.FunctionComponent<{ run: BotRun; className?: string }> = ({ run
 
 export default Run;
 
-const useResultStyles = mui.makeStyles(theme => ({
+const useResultStyles = makeStyles(theme => ({
   success: {
     color: theme.palette.success.main
   },
@@ -123,16 +124,16 @@ const RunResult: React.FunctionComponent<{ value: 'success' | 'warning' | 'error
 
   if (!value) {
     return (
-      <mui.Typography>
+      <Typography>
         {'-'}
-      </mui.Typography>
+      </Typography>
     );
   }
 
   return (
-    <mui.Typography className={classes[value]}>
+    <Typography className={classes[value]}>
       {value.toUpperCase()}
-    </mui.Typography>
+    </Typography>
   );
 };
 
@@ -145,7 +146,7 @@ const Timestamp: React.FunctionComponent<{ value: Date }> = ({ value }) => {
   );
 };
 
-const useLevelStyles = mui.makeStyles((theme) => ({
+const useLevelStyles = makeStyles((theme) => ({
   fatal: {
     // inverse
     color: theme.palette.background.default,

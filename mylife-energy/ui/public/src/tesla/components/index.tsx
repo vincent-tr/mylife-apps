@@ -2,15 +2,17 @@ import BatteryGauge from 'react-battery-gauge';
 import humanizeDuration from 'humanize-duration';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { mui, useLifecycle, useActions } from 'mylife-tools-ui';
+import { useLifecycle, useActions } from 'mylife-tools-ui';
 import { enter, leave, setMode } from '../actions';
 import { getState } from '../selectors';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../shared/metadata';
 import icons from '../../common/icons';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
+import { makeStyles, Typography, Divider, Tooltip, IconButton, SvgIcon } from '@material-ui/core';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
     alignItems: 'center',
@@ -71,54 +73,54 @@ const Tesla: React.FunctionComponent = () => {
         </Part>
 
         <Part>
-          <mui.Typography variant='body2' color='textSecondary'>
+          <Typography variant='body2' color='textSecondary'>
             {`Cible de chargement : ${state.batteryTargetLevel}%`}
             <br />
             {`Dernière mise à jour : ${state.batteryLastTimestamp.toLocaleString()}`}
-          </mui.Typography>
+          </Typography>
         </Part>
 
       </Section>
 
-      <mui.Divider />
+      <Divider />
 
       <Section title={'Charge'}>
 
         <Part>
           <div className={classes.buttons}>
-            <mui.ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)} className={classes.buttonGroup}>
-              <mui.ToggleButton value={TeslaMode.Off}>
-                <mui.Tooltip title='Eteint'>
+            <ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)} className={classes.buttonGroup}>
+              <ToggleButton value={TeslaMode.Off}>
+                <Tooltip title='Eteint'>
                   <icons.actions.Off fontSize='large'/>
-                </mui.Tooltip>
-              </mui.ToggleButton>
+                </Tooltip>
+              </ToggleButton>
 
-              <mui.ToggleButton value={TeslaMode.Fast}>
-                <mui.Tooltip title='Rapide'>
+              <ToggleButton value={TeslaMode.Fast}>
+                <Tooltip title='Rapide'>
                   <icons.actions.Fast fontSize='large'/>
-                </mui.Tooltip>
-              </mui.ToggleButton>
+                </Tooltip>
+              </ToggleButton>
 
-              <mui.ToggleButton value={TeslaMode.Smart}>
-                <mui.Tooltip title='Intelligent'>
+              <ToggleButton value={TeslaMode.Smart}>
+                <Tooltip title='Intelligent'>
                   <icons.actions.Smart fontSize='large'/>
-                </mui.Tooltip>
-              </mui.ToggleButton>
+                </Tooltip>
+              </ToggleButton>
 
-            </mui.ToggleButtonGroup>
+            </ToggleButtonGroup>
 
-            <mui.IconButton onClick={showParameters}>
-              <mui.Tooltip title='Paramètres'>
+            <IconButton onClick={showParameters}>
+              <Tooltip title='Paramètres'>
                 <icons.actions.Settings fontSize='large'/>
-              </mui.Tooltip>
-            </mui.IconButton>
+              </Tooltip>
+            </IconButton>
           </div>
 
           <ChargeStatus current={state.chargingCurrent} power={state.chargingPower} />
         </Part>
 
         <Part footer>
-            <mui.Typography variant='body2' color='textSecondary'>
+            <Typography variant='body2' color='textSecondary'>
               {`Décision de charge : ${getChargingStatusString(state.chargingStatus)}`}
               <br />
               {state.mode == TeslaMode.Fast && state.chargingStatus == TeslaChargingStatus.Charging && (
@@ -128,20 +130,20 @@ const Tesla: React.FunctionComponent = () => {
                 </>
               )}
               {`Dernière mise à jour : ${state.lastUpdate.toLocaleString()}`}
-            </mui.Typography>
+            </Typography>
 
             <Spacer/>
 
-            <mui.Tooltip title={`Wall connector`}>
+            <Tooltip title={`Wall connector`}>
               <icons.tesla.WallConnector />
-            </mui.Tooltip>
+            </Tooltip>
             <DeviceStatus value={state.wallConnectorStatus} />
 
             <Spacer/>
 
-            <mui.Tooltip title={`Voiture`}>
+            <Tooltip title={`Voiture`}>
               <icons.tesla.Car />
-            </mui.Tooltip>
+            </Tooltip>
             <DeviceStatus value={state.carStatus} />
         </Part>
 
@@ -163,9 +165,9 @@ const Section: React.FunctionComponent<{ title: string; }> = ({ title, children}
 
   return (
     <div className={classes.section}>
-      <mui.Typography variant='h1' className={classes.sectionTitle}>
+      <Typography variant='h1' className={classes.sectionTitle}>
         {title}
-      </mui.Typography>
+      </Typography>
 
       {children}
     </div>
@@ -200,7 +202,7 @@ const DeviceStatus: React.FunctionComponent<{ value: TeslaDeviceStatus; }> = ({ 
   const classes = useStyles();
 
   let label: string;
-  let Icon: typeof mui.SvgIcon;
+  let Icon: typeof SvgIcon;
   let className: string = null;
 
   switch (value) {
@@ -233,9 +235,9 @@ const DeviceStatus: React.FunctionComponent<{ value: TeslaDeviceStatus; }> = ({ 
   }
 
   return (
-    <mui.Tooltip title={label}>
+    <Tooltip title={label}>
       <Icon className={className} />
-    </mui.Tooltip>
+    </Tooltip>
   );
 };
 
@@ -244,7 +246,7 @@ const ChargeStatus: React.FunctionComponent<{ current: number; power: number; }>
 
   if (current <= 0) {
     return (
-      <mui.Typography variant='body2'>{`(Stoppé)`}</mui.Typography>
+      <Typography variant='body2'>{`(Stoppé)`}</Typography>
     );
   }
 

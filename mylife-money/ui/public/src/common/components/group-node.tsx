@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { mui } from 'mylife-tools-ui';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../reference/selectors';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import { makeStyles, ListItem, ListItemIcon, ListItemText, IconButton, Collapse, List } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -14,7 +15,7 @@ const useConnect = ({ group }) => {
   }));
 };
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   listItem: (props: FIXME_any) => ({
     paddingLeft: theme.spacing(2 * (props.level + 1))
   })
@@ -38,21 +39,21 @@ const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, 
   const hasChildren = children.length > 0;
   return (
     <React.Fragment>
-      <mui.ListItem button onClick={() => onSelect(group._id)} className={classes.listItem} selected={selected} disabled={disabled}>
-        <mui.ListItemIcon><icons.Group /></mui.ListItemIcon>
-        <mui.ListItemText primary={group.display} />
+      <ListItem button onClick={() => onSelect(group._id)} className={classes.listItem} selected={selected} disabled={disabled}>
+        <ListItemIcon><icons.Group /></ListItemIcon>
+        <ListItemText primary={group.display} />
         {hasChildren && (
-          <mui.IconButton size='small' onClick={(e) => { e.stopPropagation(); setOpen(!open); } }>
-            {open ? <mui.icons.ExpandLess /> : <mui.icons.ExpandMore />}
-          </mui.IconButton>
+          <IconButton size='small' onClick={(e) => { e.stopPropagation(); setOpen(!open); } }>
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </IconButton>
         )}
-      </mui.ListItem>
+      </ListItem>
       {hasChildren && (
-        <mui.Collapse in={open} timeout="auto" unmountOnExit>
-          <mui.List component="div" disablePadding>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
             {children.map((child) => (<GroupNode key={child._id} group={child} level={level+1} onSelect={onSelect} selectedGroupId={selectedGroupId} disabledGroupIds={disabledGroupIds} parentDisabled={disabled} />))}
-          </mui.List>
-        </mui.Collapse>
+          </List>
+        </Collapse>
       )}
     </React.Fragment>
   );

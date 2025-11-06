@@ -1,8 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
-import { mui } from 'mylife-tools-ui';
 import { StatsType } from '../actions';
 import icons from '../../common/icons';
+import { makeStyles, IconButton } from '@material-ui/core';
+import { DatePicker as MuiDatePicker } from '@material-ui/pickers';
 
 export interface DatePickerProps {
   className?: string;
@@ -11,7 +12,7 @@ export interface DatePickerProps {
   onChange: (newValue: Date) => void;
 }
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -45,15 +46,15 @@ const DayPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ cla
   const classes = useStyles();
   return (
     <div className={clsx(classes.container, className)}>
-      <mui.IconButton onClick={() => onChange(addDay(value, -1))}>
+      <IconButton onClick={() => onChange(addDay(value, -1))}>
         <icons.actions.Prev />
-      </mui.IconButton>
+      </IconButton>
 
-      <mui.DatePicker className={classes.picker} views={["year", "month", "date"]} value={value} onChange={onChange} />
+      <MuiDatePicker className={classes.picker} views={["year", "month", "date"]} value={value} onChange={onChange} />
       
-      <mui.IconButton onClick={() => onChange(addDay(value, 1))}>
+      <IconButton onClick={() => onChange(addDay(value, 1))}>
         <icons.actions.Next />
-      </mui.IconButton>
+      </IconButton>
     </div>
   );
 };
@@ -62,15 +63,15 @@ const MonthPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ c
   const classes = useStyles();
   return (
     <div className={clsx(classes.container, className)}>
-      <mui.IconButton onClick={() => onChange(addMonth(value, -1))}>
+      <IconButton onClick={() => onChange(addMonth(value, -1))}>
         <icons.actions.Prev />
-      </mui.IconButton>
+      </IconButton>
 
-      <mui.DatePicker className={classes.picker} views={["year", "month"]} value={value} onChange={onChange} />
+      <MuiDatePicker className={classes.picker} views={["year", "month"]} value={value} onChange={onChange} />
 
-      <mui.IconButton onClick={() => onChange(addMonth(value, 1))}>
+      <IconButton onClick={() => onChange(addMonth(value, 1))}>
         <icons.actions.Next />
-      </mui.IconButton>
+      </IconButton>
     </div>
   );
 };
@@ -79,15 +80,15 @@ const YearPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ cl
   const classes = useStyles();
   return (
     <div className={clsx(classes.container, className)}>
-      <mui.IconButton onClick={() => onChange(addYear(value, -1))}>
+      <IconButton onClick={() => onChange(addYear(value, -1))}>
         <icons.actions.Prev />
-      </mui.IconButton>
+      </IconButton>
 
-      <mui.DatePicker className={classes.picker} views={["year"]} value={value} onChange={onChange} />
+      <MuiDatePicker className={classes.picker} views={["year"]} value={value} onChange={onChange} />
 
-      <mui.IconButton onClick={() => onChange(addYear(value, 1))}>
+      <IconButton onClick={() => onChange(addYear(value, 1))}>
         <icons.actions.Next />
-      </mui.IconButton>
+      </IconButton>
     </div>
   );
 };

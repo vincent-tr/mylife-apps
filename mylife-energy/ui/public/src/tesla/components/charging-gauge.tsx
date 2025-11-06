@@ -1,7 +1,7 @@
 // from https://github.com/Reggino/react-svg-gauge/blob/master/src/Gauge.tsx
 
 import React from 'react';
-import { mui } from 'mylife-tools-ui';
+
 
 //global unique key for every gauge (needed for SVG groups to stay separated)
 let uniqueId = 0;

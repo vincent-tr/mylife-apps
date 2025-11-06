@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { mui, views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getMeasureView, getDevice } from '../selectors';
 import { Measure, LiveDevice } from '../../../../shared/metadata';
+import { makeStyles, Typography, Badge, Tooltip } from '@material-ui/core';
 
-const useMeasureStyles = mui.makeStyles(theme => ({
+const useMeasureStyles = makeStyles(theme => ({
   computed: {
     height: 10,
     width: 10,
@@ -31,7 +32,7 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKe
 
   if (sensorData.length === 0) {
     return (
-      <mui.Typography>{`??`}</mui.Typography>
+      <Typography>{`??`}</Typography>
     );
 
   }
@@ -61,27 +62,27 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKe
   }
 
   const value = (
-    <mui.Typography className={clsx(flavor, classes.value)}>
+    <Typography className={clsx(flavor, classes.value)}>
       {sensorData.map(({ value }) => value).join(' / ')}
-    </mui.Typography>
+    </Typography>
   );
 
   const wrapped = device.computed ? (
-    <mui.Badge badgeContent={<icons.devices.Computed className={clsx(classes.computed, flavor)} />}>
+    <Badge badgeContent={<icons.devices.Computed className={clsx(classes.computed, flavor)} />}>
       {value}
-    </mui.Badge>
+    </Badge>
   ) : (
     value
   );
 
   return (
-    <mui.Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} />}>
+    <Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} />}>
       {wrapped}
-    </mui.Tooltip>
+    </Tooltip>
   );
 }
 
-const useMeasuretooltipStyles = mui.makeStyles(theme => ({
+const useMeasuretooltipStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -99,11 +100,11 @@ const DeviceMeasureTooltip: React.FunctionComponent<{ deviceId: string }> = ({ d
   return (
     <div className={classes.container}>
       {getSensorData(device, measures).map(({ display, value }, index) => (
-        <mui.Typography variant='body2' key={index}>{`${display} : ${value}`}</mui.Typography>
+        <Typography variant='body2' key={index}>{`${display} : ${value}`}</Typography>
       ))}
-      <mui.Typography variant='body2'>{`Mis à jour : ${getLastUpdate(device, measures).toLocaleString()}`}</mui.Typography>
+      <Typography variant='body2'>{`Mis à jour : ${getLastUpdate(device, measures).toLocaleString()}`}</Typography>
       {device.computed && (
-        <mui.Typography variant='body2' className={classes.computed}>{`(calculé)`}</mui.Typography>
+        <Typography variant='body2' className={classes.computed}>{`(calculé)`}</Typography>
       )}
     </div>
   );

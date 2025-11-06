@@ -1,9 +1,10 @@
 'use strict';
 
 import React from 'react';
-import { mui, useScreenPhone, addLineBreaks, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools-ui';
+import { useScreenPhone, addLineBreaks, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 import Markdown from '../../../common/components/markdown';
+import { Checkbox, Tooltip } from '@material-ui/core';
 
 const Table = (props) => {
   const { onSelect, onDetail, operations } = useConnect();
@@ -14,7 +15,7 @@ const Table = (props) => {
   const selectedCount = operations.reduce(((acc, op) => op.selected ? acc + 1 : acc), 0);
 
   const headerCheckbox = (
-    <mui.Checkbox
+    <Checkbox
       color='primary'
       indeterminate={selectedCount > 0 && selectedCount < operations.length}
       checked={selectedCount === operations.length}
@@ -23,7 +24,7 @@ const Table = (props) => {
 
 
   const cellCheckbox = (row) => (
-    <mui.Checkbox
+    <Checkbox
       color='primary'
       checked={row.selected}
       onChange={e => onSelect({ id: row.operation._id, selected: e.target.checked })}
@@ -35,11 +36,11 @@ const Table = (props) => {
     const lines = safeValue.split('\n');
     if (lines.length > 1) {
       return (
-        <mui.Tooltip title={<Markdown value={value} />} interactive>
+        <Tooltip title={<Markdown value={value} />} interactive>
           <div>
             <Markdown value={`${lines[0]} ...`} />
           </div>
-        </mui.Tooltip>
+        </Tooltip>
       );
     } else {
       return (

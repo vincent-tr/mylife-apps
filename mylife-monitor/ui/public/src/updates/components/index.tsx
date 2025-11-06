@@ -1,16 +1,17 @@
 import React, { useMemo, useCallback } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { mui, useLifecycle } from 'mylife-tools-ui';
+import { useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
+import { makeStyles, TableContainer, Table, TableHead, TableRow, TableCell, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@material-ui/core';
 
 type FIXME_any = any;
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -50,34 +51,34 @@ const Updates = () => {
 
   return (
     <div className={classes.container}>
-      <mui.TableContainer>
-        <mui.Table size='small' stickyHeader>
-          <mui.TableHead>
-            <mui.TableRow>
-              <mui.TableCell>{'Nom'}</mui.TableCell>
-              <mui.TableCell>
+      <TableContainer>
+        <Table size='small' stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>{'Nom'}</TableCell>
+              <TableCell>
                 {'Etat'}
-                <mui.Tooltip title={'N\'afficher que les dépassés/problèmes'}>
-                  <mui.Checkbox
+                <Tooltip title={'N\'afficher que les dépassés/problèmes'}>
+                  <Checkbox
                     color='primary' 
                     checked={criteria.onlyProblems}
                     onChange={e => changeCriteria({ onlyProblems: e.target.checked })}
                   />
-                </mui.Tooltip>
-              </mui.TableCell>
-              <mui.TableCell>{'Version courante'}</mui.TableCell>
-              <mui.TableCell>{'Dernière version'}</mui.TableCell>
-            </mui.TableRow>
-          </mui.TableHead>
-          <mui.ThemeProvider theme={mui.createTheme({ typography: { fontSize: 10 } })}>
-            <mui.TableBody>
+                </Tooltip>
+              </TableCell>
+              <TableCell>{'Version courante'}</TableCell>
+              <TableCell>{'Dernière version'}</TableCell>
+            </TableRow>
+          </TableHead>
+          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
+            <TableBody>
               {dataSorted.map(version => (
                 <Version key={version._id} data={version} />
               ))}
-            </mui.TableBody>
-          </mui.ThemeProvider>
-        </mui.Table>
-      </mui.TableContainer>
+            </TableBody>
+          </ThemeProvider>
+        </Table>
+      </TableContainer>
     </div>
   );
 }
@@ -102,12 +103,12 @@ const Version = ({ data }) => {
 
   return (
     <>
-      <mui.TableRow className={getClass(data.status)}>
-        <mui.TableCell>{data.path.join('/')}</mui.TableCell>
-        <mui.TableCell>{getStatusStr(data.status)}</mui.TableCell>
-        <mui.TableCell><VersionItem value={data.currentVersion} date={data.currentCreated}/></mui.TableCell>
-        <mui.TableCell><VersionItem value={data.latestVersion} date={data.latestCreated}/></mui.TableCell>
-      </mui.TableRow>
+      <TableRow className={getClass(data.status)}>
+        <TableCell>{data.path.join('/')}</TableCell>
+        <TableCell>{getStatusStr(data.status)}</TableCell>
+        <TableCell><VersionItem value={data.currentVersion} date={data.currentCreated}/></TableCell>
+        <TableCell><VersionItem value={data.latestVersion} date={data.latestCreated}/></TableCell>
+      </TableRow>
     </>
   );
 };
@@ -143,9 +144,9 @@ const VersionItem: React.FunctionComponent<{ value: string; date: Date }> = ({ v
     return content;
   } else {
     return (
-      <mui.Tooltip title={formatDate(date, 'dd/MM/yyyy HH:mm:ss')}>
+      <Tooltip title={formatDate(date, 'dd/MM/yyyy HH:mm:ss')}>
         {content}
-      </mui.Tooltip>
+      </Tooltip>
     );
   }
 };

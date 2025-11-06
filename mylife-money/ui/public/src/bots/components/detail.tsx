@@ -1,16 +1,17 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
-import { mui, CriteriaField, useAction, fireAsync } from 'mylife-tools-ui';
+import { CriteriaField, useAction, fireAsync } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
 import cronParser from 'cron-parser';
 import { startBot } from '../actions';
+import { makeStyles, Grid, IconButton, Link, TextField } from '@material-ui/core';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     overflowY: 'auto',
     padding: theme.spacing(1),
@@ -22,18 +23,18 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bo
 
   return (
     <div className={clsx(classes.container, className)}>
-      <mui.Grid container spacing={2}>
-        <mui.Grid item xs={12}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
           <CronCriteriaField value={bot.schedule} />
-        </mui.Grid>
-        <mui.Grid item xs={12}>
+        </Grid>
+        <Grid item xs={12}>
             <CriteriaField label={'Lancer le robot'}>
-              <mui.IconButton onClick={start}>
+              <IconButton onClick={start}>
                 <icons.actions.Execute />
-              </mui.IconButton>
+              </IconButton>
             </CriteriaField>
-        </mui.Grid>
-      </mui.Grid>
+        </Grid>
+      </Grid>
     </div>
   );
 };
@@ -46,15 +47,15 @@ const CronCriteriaField: React.FunctionComponent<{ value: string; }> = ({ value 
     <CriteriaField label={
       <>
         {'Planification '}
-        <mui.Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
+        <Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
           "cron"
-        </mui.Link>
+        </Link>
       </>
     }>
       { value ? (
-        <mui.TextField InputProps={{ readOnly: true }} value={value} helperText={format(value)} />
+        <TextField InputProps={{ readOnly: true }} value={value} helperText={format(value)} />
       ) : (
-        <mui.TextField InputProps={{ readOnly: true }} value={'-'} helperText={' '} />
+        <TextField InputProps={{ readOnly: true }} value={'-'} helperText={' '} />
       )}
     </CriteriaField>
   );

@@ -2,10 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mui } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
-
-const { makeStyles } = mui;
+import { Tooltip, IconButton, Typography, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -22,17 +20,17 @@ const Title = ({ onClose }) => {
 
   return (
     <div className={classes.container}>
-      <mui.Tooltip title='Retour'>
+      <Tooltip title='Retour'>
         <div>
-          <mui.IconButton onClick={onClose}>
+          <IconButton onClick={onClose}>
             <icons.actions.Back />
-          </mui.IconButton>
+          </IconButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
 
-      <mui.Typography variant='h6' className={classes.typography}>
+      <Typography variant='h6' className={classes.typography}>
         {'Detail de l\'opération'}
-      </mui.Typography>
+      </Typography>
     </div>
   );
 };

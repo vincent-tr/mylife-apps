@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import immutable from 'immutable';
 import { useSelector } from 'react-redux';
-import { mui } from 'mylife-tools-ui';
 import { getDevicesView } from '../selectors';
+import { Select, Input, MenuItem, Checkbox, ListItemText } from '@material-ui/core';
 
 type DeviceMap = { [deviceId: string]: string };
 
@@ -19,21 +19,21 @@ const DeviceList: React.FunctionComponent<DeviceListProps> = ({ className, value
   const renderSelectorValue = useCallback(createSelectorValueRenderer(devices), [devices]);
 
   return (
-    <mui.Select
+    <Select
       multiple
       value={selectorValue}
       onChange={handleChange}
-      input={<mui.Input fullWidth />}
+      input={<Input fullWidth />}
       renderValue={renderSelectorValue}
       className={className}
     >
       {Object.entries(devices).map(([id, display]) => (
-        <mui.MenuItem key={id} value={id}>
-          <mui.Checkbox checked={value.has(id)} />
-          <mui.ListItemText primary={display} />
-        </mui.MenuItem>
+        <MenuItem key={id} value={id}>
+          <Checkbox checked={value.has(id)} />
+          <ListItemText primary={display} />
+        </MenuItem>
       ))}
-    </mui.Select>
+    </Select>
   );
 };
 

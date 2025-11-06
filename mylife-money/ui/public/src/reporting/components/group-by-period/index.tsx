@@ -3,13 +3,14 @@
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { mui, useLifecycle } from 'mylife-tools-ui';
+import { useLifecycle } from 'mylife-tools-ui';
 import { getSortedViewList } from '../../selectors';
 import { reportingLeave } from '../../actions';
 
 import Criteria from './criteria';
 import Chart from './chart';
 import { formatCriteria } from './tools';
+import { makeStyles } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -27,7 +28,7 @@ const useConnect = ({ refreshAction, exportAction }) => {
   };
 };
 
-const useStyles = mui.makeStyles({
+const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',

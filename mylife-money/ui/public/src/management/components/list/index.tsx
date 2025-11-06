@@ -3,13 +3,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { mui } from 'mylife-tools-ui';
 
 import Header from './header';
 import Footer from './footer';
 import Table from './table';
-
-const { makeStyles } = mui;
+import { Paper, Divider, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   container: {
@@ -25,12 +23,12 @@ const ListContainer = ({ className }) => {
   const classes = useStyles();
 
   return (
-    <mui.Paper className={clsx(classes.container, className)}>
+    <Paper className={clsx(classes.container, className)}>
       <Header />
       <Table className={classes.table}/>
-      <mui.Divider />
+      <Divider />
       <Footer />
-    </mui.Paper>
+    </Paper>
   );
 };
 

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { mui, dialogs } from 'mylife-tools-ui';
+import { dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
+import { ExpandMore } from '@material-ui/icons';
+import { makeStyles, Select, MenuItem, TextField, Tooltip, IconButton, Card, CardContent, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, TableRow, TableCell, Accordion, AccordionSummary, AccordionDetails, Table, TableHead, TableBody, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
 
 const operators = {
   $eq       : { display : 'Egal à' },
@@ -19,7 +21,7 @@ const fields = {
   note   : { display : 'Note',        format : val => val }
 };
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -52,28 +54,28 @@ const ConditionEditor = ({ onAddCondition }) => {
 
   return (
     <div className={classes.container}>
-      <mui.Select className={classes.field} value={field || ''} onChange={e => setField(e.target.value || null)}>
+      <Select className={classes.field} value={field || ''} onChange={e => setField(e.target.value || null)}>
         {Object.keys(fields).map(field => (
-          <mui.MenuItem key={field} value={field}>
+          <MenuItem key={field} value={field}>
             {fields[field].display}
-          </mui.MenuItem>
+          </MenuItem>
         ))}
-      </mui.Select>
-      <mui.Select className={classes.field} value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
+      </Select>
+      <Select className={classes.field} value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
         {Object.keys(operators).map(operator => (
-          <mui.MenuItem key={operator} value={operator}>
+          <MenuItem key={operator} value={operator}>
             {operators[operator].display}
-          </mui.MenuItem>
+          </MenuItem>
         ))}
-      </mui.Select>
-      <mui.TextField className={classes.field} value={value || ''} onChange={e => setValue(e.target.value)} />
-      <mui.Tooltip title='Ajouter une condition'>
+      </Select>
+      <TextField className={classes.field} value={value || ''} onChange={e => setValue(e.target.value)} />
+      <Tooltip title='Ajouter une condition'>
         <div>
-          <mui.IconButton disabled={!field || !operator || !value} onClick={onAdd}>
+          <IconButton disabled={!field || !operator || !value} onClick={onAdd}>
             <icons.actions.New />
-          </mui.IconButton>
+          </IconButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
     </div>
   );
 };
@@ -87,30 +89,30 @@ const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
   const addCondition = condition => onConditionsChanged([...conditions, condition]);
 
   return (
-    <mui.Card>
-      <mui.CardContent>
-        <mui.Typography color='textSecondary' gutterBottom>
+    <Card>
+      <CardContent>
+        <Typography color='textSecondary' gutterBottom>
           Conditions
-        </mui.Typography>
-        <mui.List>
+        </Typography>
+        <List>
           {conditions.map((condition, index) => (
-            <mui.ListItem key={index}>
-              <mui.ListItemText primary={displayCondition(condition)} />
-              <mui.ListItemSecondaryAction>
-                <mui.Tooltip title='Supprimer la condition'>
-                  <mui.IconButton onClick={() => deleteCondition(index)}>
+            <ListItem key={index}>
+              <ListItemText primary={displayCondition(condition)} />
+              <ListItemSecondaryAction>
+                <Tooltip title='Supprimer la condition'>
+                  <IconButton onClick={() => deleteCondition(index)}>
                     <icons.actions.Delete />
-                  </mui.IconButton>
-                </mui.Tooltip>
-              </mui.ListItemSecondaryAction>
-            </mui.ListItem>
+                  </IconButton>
+                </Tooltip>
+              </ListItemSecondaryAction>
+            </ListItem>
           ))}
-        </mui.List>
+        </List>
 
         <ConditionEditor onAddCondition={addCondition} />
 
-      </mui.CardContent>
-    </mui.Card>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -123,23 +125,23 @@ const RuleRow = ({ rule, onRuleChanged, onDeleteRule }) => {
   const updateRule = (prop, value) => onRuleChanged({ ...rule, [prop]: value });
 
   return (
-    <mui.TableRow>
-      <mui.TableCell>
-        <mui.Tooltip title='Supprimer la règle'>
+    <TableRow>
+      <TableCell>
+        <Tooltip title='Supprimer la règle'>
           <div>
-            <mui.IconButton onClick={onDeleteRule}>
+            <IconButton onClick={onDeleteRule}>
               <icons.actions.Delete />
-            </mui.IconButton>
+            </IconButton>
           </div>
-        </mui.Tooltip>
-      </mui.TableCell>
-      <mui.TableCell>
-        <mui.TextField label='Nom de la règle' value={rule.name || ''} onChange={e => updateRule('name', e.target.value)} />
-      </mui.TableCell>
-      <mui.TableCell>
+        </Tooltip>
+      </TableCell>
+      <TableCell>
+        <TextField label='Nom de la règle' value={rule.name || ''} onChange={e => updateRule('name', e.target.value)} />
+      </TableCell>
+      <TableCell>
         <ConditionsEditor conditions={rule.conditions} onConditionsChanged={conditions => updateRule('conditions', conditions)} />
-      </mui.TableCell>
-    </mui.TableRow>
+      </TableCell>
+    </TableRow>
   );
 };
 
@@ -161,24 +163,24 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
   };
 
   return (
-    <mui.Accordion>
-      <mui.AccordionSummary expandIcon={<mui.icons.ExpandMore />}>
-        <mui.Typography>{`Règles (${rules.length})`}</mui.Typography>
-      </mui.AccordionSummary>
-      <mui.AccordionDetails>
-        <mui.Table>
-          <mui.TableHead>
-            <mui.TableRow>
-              <mui.TableCell>
-                <mui.Tooltip title='Ajouter une règle'>
-                  <mui.IconButton onClick={addRule}>
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMore />}>
+        <Typography>{`Règles (${rules.length})`}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Tooltip title='Ajouter une règle'>
+                  <IconButton onClick={addRule}>
                     <icons.actions.New />
-                  </mui.IconButton>
-                </mui.Tooltip>
-              </mui.TableCell>
-            </mui.TableRow>
-          </mui.TableHead>
-          <mui.TableBody>
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {rules.map((rule, index) => {
               const deleteRule = () => onRulesChanged(arrayDelete(rules, index));
               const changeRule = (rule) => onRulesChanged(arrayUpdate(rules, index, rule));
@@ -187,10 +189,10 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
                 <RuleRow key={index} rule={rule} onRuleChanged={changeRule} onDeleteRule={deleteRule} />
               );
             })}
-          </mui.TableBody>
-        </mui.Table>
-      </mui.AccordionDetails>
-    </mui.Accordion>
+          </TableBody>
+        </Table>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 
@@ -204,21 +206,21 @@ const EditorDialog = ({ options, show, proceed }) => {
   const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
 
   return (
-    <mui.Dialog aria-labelledby='dialog-title' open={show} maxWidth='lg' fullWidth>
-      <mui.DialogTitle id='dialog-title'>Editer le groupe</mui.DialogTitle>
-      <mui.DialogContent dividers>
-        <mui.TextField label='Nom du groupe' id='display' value={group.display} onChange={e => updateGroup('display', e.target.value)} />
+    <Dialog aria-labelledby='dialog-title' open={show} maxWidth='lg' fullWidth>
+      <DialogTitle id='dialog-title'>Editer le groupe</DialogTitle>
+      <DialogContent dividers>
+        <TextField label='Nom du groupe' id='display' value={group.display} onChange={e => updateGroup('display', e.target.value)} />
 
         {/* TODO: move */}
 
         <RulesEditor rules={group.rules} onRulesChanged={rules => updateGroup('rules', rules)} />
 
-      </mui.DialogContent>
-      <mui.DialogActions>
-        <mui.Button onClick={() => proceed({ result: 'ok', group })} color='primary'>OK</mui.Button>
-        <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
-      </mui.DialogActions>
-    </mui.Dialog>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => proceed({ result: 'ok', group })} color='primary'>OK</Button>
+        <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

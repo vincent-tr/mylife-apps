@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { mui, ListContainer } from 'mylife-tools-ui';
+import { ListContainer } from 'mylife-tools-ui';
 import { useBots } from '../views';
 import Detail from './detail';
 import Run from './run';
+import { makeStyles, List, ListItem, ListItemText, Divider, Typography } from '@material-ui/core';
 
 type FIXME_any = any;
 type Bot = FIXME_any;
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -62,17 +63,17 @@ const Bots: React.FunctionComponent = () => {
     <div className={classes.container}>
       <div className={classes.listContainer}>
         <ListContainer className={classes.list}>
-          <mui.List>
+          <List>
             {view.valueSeq().map(bot => (
-              <mui.ListItem key={bot._id} selected={selection === bot._id} button onClick={() => setSelection(bot._id)}>
-                <mui.ListItemText primary={bot.type} />
-              </mui.ListItem>
+              <ListItem key={bot._id} selected={selection === bot._id} button onClick={() => setSelection(bot._id)}>
+                <ListItemText primary={bot.type} />
+              </ListItem>
             ))}
-          </mui.List>
+          </List>
         </ListContainer>
       </div>
 
-      <mui.Divider orientation='vertical' />
+      <Divider orientation='vertical' />
 
       {bot && (
         <BotView bot={bot} />
@@ -91,7 +92,7 @@ const BotView: React.FunctionComponent<{ bot: Bot; }> = ({ bot }) => {
 
       <div className={classes.title}>
         <div className={classes.titleContent}>
-          <mui.Typography align='center' variant='h6'>{bot.type}</mui.Typography>
+          <Typography align='center' variant='h6'>{bot.type}</Typography>
         </div>
       </div>
 
@@ -99,11 +100,11 @@ const BotView: React.FunctionComponent<{ bot: Bot; }> = ({ bot }) => {
 
       {bot.lastRun && (
         <>
-          <mui.Divider />
+          <Divider />
 
           <div className={classes.title}>
             <div className={classes.titleContent}>
-              <mui.Typography align='center' variant='body1'>{'Dernière exécution'}</mui.Typography>
+              <Typography align='center' variant='body1'>{'Dernière exécution'}</Typography>
             </div>
           </div>
 

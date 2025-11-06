@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { mui, useScreenPhone } from 'mylife-tools-ui';
+import { useScreenPhone, services } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { LiveDevice } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
+import { makeStyles, Paper, Typography, SvgIcon, colors } from '@material-ui/core';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     alignSelf: 'center',
   },
@@ -84,7 +85,7 @@ const MainAnimation: React.FunctionComponent = () => {
 
 export default MainAnimation;
 
-const useDeviceStyles = mui.makeStyles(theme => ({
+const useDeviceStyles = makeStyles(theme => ({
   container: {
     padding: theme.spacing(2),
     display: 'flex',
@@ -110,15 +111,15 @@ const DeviceView: React.FunctionComponent<{ deviceId: string; className?: string
   const Icon = getIcon(device);
 
   return (
-    <mui.Paper variant="outlined" className={clsx(classes.container, className)}>
+    <Paper variant="outlined" className={clsx(classes.container, className)}>
       <Icon className={classes.icon} />
-      <mui.Typography>{device.display}</mui.Typography>
+      <Typography>{device.display}</Typography>
       <DeviceMeasure deviceId={device._id} sensorKeys={sensorKeys} />
-    </mui.Paper>
+    </Paper>
   );
 };
 
-function getIcon(device: LiveDevice): typeof mui.SvgIcon {
+function getIcon(device: LiveDevice): typeof SvgIcon {
   switch(device.type) {
     case 'main':
       return icons.devices.Main;
@@ -131,7 +132,7 @@ function getIcon(device: LiveDevice): typeof mui.SvgIcon {
   return null;
 }
 
-const useArrowsStyles = mui.makeStyles(theme => ({
+const useArrowsStyles = makeStyles(theme => ({
   container: {
     width: 250,
     height: 150,
@@ -251,12 +252,12 @@ const ArrowLeftToRight: React.FunctionComponent = () => {
 };
 
 function useColors() {
-  const theme = mui.useTheme();
+  const theme = services.useTheme();
 
   const colors = useMemo(() => ({
     bad: theme.palette.error.main,
     good: theme.palette.success.main,
-    neutral: mui.colors.grey[100],
+    neutral: colors.grey[100],
   }), [theme]);
 
   return colors;

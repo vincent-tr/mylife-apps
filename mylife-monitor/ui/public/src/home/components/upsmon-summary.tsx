@@ -3,12 +3,12 @@
 import humanizeDuration from 'humanize-duration';
 import React from 'react';
 import clsx from 'clsx';
-import { mui } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
+import { makeStyles, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'inline-block',
     width: 300,
@@ -47,31 +47,31 @@ const UpsmonSummary = ({ view }) => {
   const classes = useStyles();
 
   return (
-    <mui.TableContainer component={mui.Paper} className={classes.container}>
-      <mui.Table size='small'>
-        <mui.TableHead>
-          <mui.TableRow>
-            <mui.TableCell colSpan={3}>
+    <TableContainer component={Paper} className={classes.container}>
+      <Table size='small'>
+        <TableHead>
+          <TableRow>
+            <TableCell colSpan={3}>
               <div className={classes.headerCell}>
                 <icons.menu.Upsmon />
                 {'UPS Monitor'}
               </div>
-            </mui.TableCell>
-          </mui.TableRow>
-          <mui.TableRow>
-            <mui.TableCell className={classes.column}>{'Nom'}</mui.TableCell>
-            <mui.TableCell className={classes.column}>{'Statut'}</mui.TableCell>
-            <mui.TableCell className={classes.column}>{'Mise à jour'}</mui.TableCell>
-          </mui.TableRow>
-        </mui.TableHead>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.column}>{'Nom'}</TableCell>
+            <TableCell className={classes.column}>{'Statut'}</TableCell>
+            <TableCell className={classes.column}>{'Mise à jour'}</TableCell>
+          </TableRow>
+        </TableHead>
 
-        <mui.TableBody>
+        <TableBody>
           {view.valueSeq().map(data => (
             <Row key={data._id} data={data} />
           ))}
-        </mui.TableBody>
-      </mui.Table>
-    </mui.TableContainer>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
@@ -85,10 +85,10 @@ const Row = ({ data }) => {
   const lastUpdateStr = formatDuration(lastUpdate);
 
   return (
-    <mui.TableRow>
-      <mui.TableCell className={clsx(classes.column)}>{data.upsName}</mui.TableCell>
-      <mui.TableCell className={clsx(classes.column, statusOk ? classes.success : classes.error)}>{data.status}</mui.TableCell>
-      <mui.TableCell className={clsx(classes.column, lastUpdateOk ? classes.success : classes.error)}>{lastUpdateStr}</mui.TableCell>
-    </mui.TableRow>
+    <TableRow>
+      <TableCell className={clsx(classes.column)}>{data.upsName}</TableCell>
+      <TableCell className={clsx(classes.column, statusOk ? classes.success : classes.error)}>{data.status}</TableCell>
+      <TableCell className={clsx(classes.column, lastUpdateOk ? classes.success : classes.error)}>{lastUpdateStr}</TableCell>
+    </TableRow>
   );
 }

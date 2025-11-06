@@ -1,11 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 import immutable from 'immutable';
-import { mui } from 'mylife-tools-ui';
 import { StatsType } from '../actions';
 import DeviceList from './device-list';
 import TypeList from './type-list';
 import DatePicker from './date-picker';
+import { makeStyles } from '@material-ui/core';
 
 export interface Criteria {
   type: StatsType;
@@ -13,7 +13,7 @@ export interface Criteria {
   devices: immutable.Set<string>;
 }
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',

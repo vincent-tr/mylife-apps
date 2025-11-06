@@ -3,8 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { mui } from 'mylife-tools-ui';
 import { getAccounts } from '../../reference/selectors';
+import { MenuItem, Select } from '@material-ui/core';
 
 const useConnect = () => useSelector(state => ({
   accounts : getAccounts(state),
@@ -15,9 +15,9 @@ function renderList(accounts, allowNull) {
     accounts = [ { _id: '', display: 'Tous' }, ...accounts ];
   }
   return accounts.map(account => (
-    <mui.MenuItem key={account._id} value={account._id}>
+    <MenuItem key={account._id} value={account._id}>
       {account.display}
-    </mui.MenuItem>
+    </MenuItem>
   ));
 }
 
@@ -28,9 +28,9 @@ const AccountSelector = ({ allowNull = false, value, onChange = null, ...props }
     onChange(value === '' ? null : value);
   };
   return (
-    <mui.Select displayEmpty value={value || ''} onChange={handleChange} inputProps={{ readOnly: !onChange }} {...props}>
+    <Select displayEmpty value={value || ''} onChange={handleChange} inputProps={{ readOnly: !onChange }} {...props}>
       {renderList(accounts, allowNull)}
-    </mui.Select>
+    </Select>
   );
 };
 

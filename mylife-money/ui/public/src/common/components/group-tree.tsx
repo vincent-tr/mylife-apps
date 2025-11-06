@@ -3,9 +3,9 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { mui } from 'mylife-tools-ui';
 import { makeGetSortedChildren } from '../../reference/selectors';
 import GroupNode from './group-node';
+import { List } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -19,11 +19,11 @@ interface GroupTreeProps {
 const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }: GroupTreeProps) => {
   const { groups } = useConnect();
   return (
-    <mui.List component='div' {...props}>
+    <List component='div' {...props}>
       {groups.map((group) => (
         <GroupNode key={group._id} group={group} level={0} onSelect={onSelect} selectedGroupId={selectedGroupId} disabledGroupIds={disabledGroupIds} />
       ))}
-    </mui.List>
+    </List>
   );
 };
 

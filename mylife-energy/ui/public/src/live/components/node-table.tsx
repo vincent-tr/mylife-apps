@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { mui, views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selectors';
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
+import { makeStyles, Table, TableBody, TableRow, TableCell, Typography, LinearProgress } from '@material-ui/core';
 
-const useTableStyles = mui.makeStyles(theme => ({
+const useTableStyles = makeStyles(theme => ({
   container: {
     flex: '1 1 auto',
     minHeight: 0,
@@ -20,24 +21,24 @@ const NoteTable = () => {
 
   return (
     <div className={classes.container}>
-      <mui.Table size='small' stickyHeader>
-        <mui.TableBody>
+      <Table size='small' stickyHeader>
+        <TableBody>
           {nodes.sortBy(device => findPowerMeasure(device._id, measures)).reverse().map(device => (
-            <mui.TableRow key={device._id}>
-              <mui.TableCell><Ratio deviceId={device._id} /></mui.TableCell>
-              <mui.TableCell><mui.Typography>{device.display}</mui.Typography></mui.TableCell>
-              <mui.TableCell><DeviceMeasure deviceId={device._id} sensorKeys={['real-power']} /></mui.TableCell>
-            </mui.TableRow>
+            <TableRow key={device._id}>
+              <TableCell><Ratio deviceId={device._id} /></TableCell>
+              <TableCell><Typography>{device.display}</Typography></TableCell>
+              <TableCell><DeviceMeasure deviceId={device._id} sensorKeys={['real-power']} /></TableCell>
+            </TableRow>
           ))}
-        </mui.TableBody>
-      </mui.Table>
+        </TableBody>
+      </Table>
     </div>
   );
 };
 
 export default NoteTable;
 
-const useRatioStyles = mui.makeStyles(theme => ({
+const useRatioStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     alignItems: 'center',
@@ -64,8 +65,8 @@ const Ratio: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
 
   return (
     <div className={classes.container}>
-      <mui.LinearProgress className={classes.bar} variant='determinate' value={ratio} />
-      <mui.Typography className={classes.label} variant='body2' color='textSecondary'>{`${ratio}%`}</mui.Typography>
+      <LinearProgress className={classes.bar} variant='determinate' value={ratio} />
+      <Typography className={classes.label} variant='body2' color='textSecondary'>{`${ratio}%`}</Typography>
     </div>
   );
 }

@@ -2,10 +2,10 @@
 
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { mui } from 'mylife-tools-ui';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../selectors';
 import { getAccount } from '../../../reference/selectors';
 import { selectOperation, showDetail } from '../../actions';
+import { makeStyles, colors } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -31,18 +31,18 @@ export const useConnect = () => {
   };
 };
 
-export const useStyles = mui.makeStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
   amountDebit: {
-    backgroundColor: mui.colors.red[100]
+    backgroundColor: colors.red[100]
   },
   amountCredit: {
-    backgroundColor: mui.colors.lightGreen[100]
+    backgroundColor: colors.lightGreen[100]
   },
   amountTotal: {
-    backgroundColor: mui.colors.grey[300]
+    backgroundColor: colors.grey[300]
   },
   fromChild: {
-    backgroundColor: mui.colors.grey[200]
+    backgroundColor: colors.grey[200]
   },
   normal: {
   },
