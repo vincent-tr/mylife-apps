@@ -5,10 +5,6 @@
   "private": true,
   "main": "src/index.ts",
   "sideEffects": false,
-  "scripts": {
-    "lint": "./node_modules/.bin/eslint lib/",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vincent-tr/mylife-tools-common.git"
@@ -18,8 +14,5 @@
   "bugs": {
     "url": "https://github.com/vincent-tr/mylife-tools-common/issues"
   },
-  "homepage": "https://github.com/vincent-tr/mylife-tools-common#readme",
-  "dependencies": {
-    "eslint": "^8.18.0"
-  }
+  "homepage": "https://github.com/vincent-tr/mylife-tools-common#readme"
 }
