@@ -6,6 +6,7 @@
   "repository": "https://github.com/vincent-tr/mylife-energy",
   "author": "Vincent Trumpff",
   "devDependencies": {
+    "@latticejs/mui-recharts": "^1.0.1-beta.3",
     "clsx": "^1.1.1",
     "date-fns": "^2.28.0",
     "humanize-duration": "^3.27.2",

@@ -2,7 +2,6 @@ import 'typeface-roboto';
 import 'material-icons/iconfont/material-icons.css';
 
 export * as mui from './mui-components';
-export * as chart from '@latticejs/mui-recharts';
 
 export * from './components';
 export * as constants from './constants';

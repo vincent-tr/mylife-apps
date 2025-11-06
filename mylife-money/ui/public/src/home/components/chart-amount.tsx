@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { mui, chart, useChartColors } from 'mylife-tools-ui';
+import * as chart from '@latticejs/mui-recharts';
+import { mui, useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
 
 const ChartAmount = (props) => {

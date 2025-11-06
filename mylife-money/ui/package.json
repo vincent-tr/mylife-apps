@@ -6,6 +6,7 @@
   "repository": "https://github.com/vincent-tr/mylife-money",
   "author": "Vincent Trumpff",
   "devDependencies": {
+    "@latticejs/mui-recharts": "^1.0.1-beta.3",
     "clsx": "^1.1.1",
     "cron-parser": "^4.7.1",
     "cronstrue": "^2.22.0",
