@@ -2,7 +2,8 @@
 
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { mui, useSelector, useDispatch, clsx, DebouncedTextField } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui, useSelector, useDispatch, DebouncedTextField } from 'mylife-tools-ui';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../actions';
 import { getOperationDetail } from '../../selectors';
 import { getAccount, getGroupStack } from '../../../reference/selectors';

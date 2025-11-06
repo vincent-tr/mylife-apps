@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { mui, VirtualizedTable, useScreenPhone, addLineBreaks, VirtualizedTableColumn } from 'mylife-tools-ui';
+import { mui, useScreenPhone, addLineBreaks, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 import Markdown from '../../../common/components/markdown';
 

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { mui, clsx, CriteriaField, useAction, fireAsync } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui, CriteriaField, useAction, fireAsync } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';

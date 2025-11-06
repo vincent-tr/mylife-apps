@@ -2,7 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { immutable, mui, CriteriaField } from 'mylife-tools-ui';
+import immutable from 'immutable';
+import { mui, CriteriaField } from 'mylife-tools-ui';
 import { getGroupByYear, exportGroupByYear } from '../actions';
 import GroupByPeriod from './group-by-period';
 import { findAmount, roundCurrency } from './group-by-period/tools';

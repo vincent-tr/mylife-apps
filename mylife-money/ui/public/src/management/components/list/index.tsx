@@ -2,7 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mui, clsx } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui } from 'mylife-tools-ui';
 
 import Header from './header';
 import Footer from './footer';

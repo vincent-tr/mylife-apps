@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { mui, clsx, CriteriaField, DeleteButton, useSelector, useAction, useActions, useLifecycle, fireAsync, ListContainer, services } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui, CriteriaField, ListContainer, DeleteButton, useSelector, useAction, useActions, useLifecycle, fireAsync, services } from 'mylife-tools-ui';
 
 type FIXME_any = any;
 type Bot = FIXME_any;

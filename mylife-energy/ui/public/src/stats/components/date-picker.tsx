@@ -1,5 +1,6 @@
 import React from 'react';
-import { mui, clsx } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui } from 'mylife-tools-ui';
 import { StatsType } from '../actions';
 import icons from '../../common/icons';
 

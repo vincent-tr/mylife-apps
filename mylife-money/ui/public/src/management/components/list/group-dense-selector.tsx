@@ -2,7 +2,8 @@
 
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { mui, useSelector, useDispatch, clsx } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui, useSelector, useDispatch } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import { getSelectedGroupId } from '../../selectors';
 import { getGroup } from '../../../reference/selectors';

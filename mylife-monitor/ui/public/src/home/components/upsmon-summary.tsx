@@ -2,7 +2,8 @@
 
 import humanizeDuration from 'humanize-duration';
 import React from 'react';
-import { mui, clsx } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';

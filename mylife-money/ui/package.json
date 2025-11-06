@@ -6,13 +6,17 @@
   "repository": "https://github.com/vincent-tr/mylife-money",
   "author": "Vincent Trumpff",
   "devDependencies": {
+    "clsx": "^1.1.1",
     "cron-parser": "^4.7.1",
     "cronstrue": "^2.22.0",
+    "date-fns": "^2.28.0",
+    "immutable": "^4.1.0",
     "mylife-tools-ui": "^1.1.12",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-markdown": "^8.0.6",
+    "react-virtualized": "^9.22.3",
     "remark-gfm": "^3.0.1"
   },
   "license": "GPL-3.0+"

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { mui, useDispatch, useSelector, useLifecycle, formatDate } from 'mylife-tools-ui';
+import { format as formatDate } from 'date-fns';
+import { mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { metadata } from 'mylife-tools-common';
 import { useStatusColorStyles } from '../../common/status-colors';

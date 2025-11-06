@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { mui, useSelector, clsx, useScreenPhone } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui, useSelector, useScreenPhone } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { LiveDevice } from '../../../../shared/metadata';

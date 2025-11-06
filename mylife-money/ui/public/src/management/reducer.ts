@@ -1,6 +1,7 @@
 'use strict';
 
-import { handleActions, io, immutable } from 'mylife-tools-ui';
+import immutable from 'immutable';
+import { handleActions, io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 type FIXME_any = any;

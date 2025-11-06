@@ -1,5 +1,6 @@
 import React from 'react';
-import { mui, useSelector, views, clsx } from 'mylife-tools-ui';
+import clsx from 'clsx';
+import { mui, useSelector, views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getMeasureView, getDevice } from '../selectors';
 import { Measure, LiveDevice } from '../../../../shared/metadata';

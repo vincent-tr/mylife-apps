@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
-import { chart, AutoSizer, useSelector, useChartColors, formatDate } from 'mylife-tools-ui';
+import { format as formatDate } from 'date-fns';
+import { AutoSizer } from 'react-virtualized';
+import { chart, useSelector, useChartColors } from 'mylife-tools-ui';
 import { fr } from 'date-fns/locale';
 import { StatsType } from '../actions';
 import { getChartData, getSensors, TimestampData } from '../selectors';
