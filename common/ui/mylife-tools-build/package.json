@@ -3,28 +3,12 @@
   "version": "2.0.6",
   "description": "MyLife Tools Build",
   "private": true,
-  "main": "lib/index.js",
-  "bin": {
-    "mylife-ui-watch-tsc": "./bin/ui-watch-tsc.sh",
-    "mylife-ui-watch-vite": "./bin/ui-watch-vite.sh",
-    "mylife-ui-build": "./bin/ui-build.sh",
-    "mylife-server-watch": "./bin/server-watch.sh",
-    "mylife-server-build": "./bin/server-build.sh",
-    "mylife-publish": "./bin/publish.sh"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vincent-tr/mylife-tools-build.git"
   },
   "author": "Vincent Trumpff",
   "license": "GPL-3.0+",
-  "bugs": {
-    "url": "https://github.com/vincent-tr/mylife-tools-build/issues"
-  },
-  "homepage": "https://github.com/vincent-tr/mylife-tools-build#readme",
   "dependencies": {
     "@babel/core": "^7.18.5",
     "@babel/plugin-proposal-class-properties": "^7.17.12",
