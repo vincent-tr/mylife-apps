@@ -18,7 +18,6 @@ docker-build: ui-build
 	docker build --pull -t "$(DOCKER_IMAGE_TAG)" -t "$(DOCKER_IMAGE_LATEST_TAG)" -f docker/Dockerfile $(DIR_ROOT)
 
 ui-build:
-	export VITE_DEDUPE=true; \
 	cd $(DIR_UI) && \
 	npm exec -- tsc --project public/tsconfig.json && \
 	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts build
@@ -26,7 +25,6 @@ ui-build:
 ui-watch:
 	export VITE_WEB_PORT=8017; \
 	export VITE_WSTARGET_PORT=8117; \
-	export VITE_DEDUPE=true; \
 	cd $(DIR_UI) && \
 	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts
 
