@@ -1,10 +1,13 @@
 'use strict';
 
-import { React, PropTypes, mui, useSelector } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import icons from '../icons';
 import { getGroup } from '../../reference/selectors';
 
 import GroupSelectorButton from './group-selector-button';
+import { makeStyles, Tooltip, Breadcrumbs, Typography } from '@material-ui/core';
 
 const useConnect = ({ value }) => {
   return useSelector(state => ({
@@ -12,7 +15,7 @@ const useConnect = ({ value }) => {
   }));
 };
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -32,16 +35,16 @@ const GroupSelector = ({ onChange, value, ...props }) => {
   const { stack } = useConnect({ value });
   return (
     <div className={classes.container} {...props}>
-      <mui.Tooltip title='Sélectionner'>
+      <Tooltip title='Sélectionner'>
         <GroupSelectorButton onSelect={onChange} className={classes.button}>
           <icons.actions.Move />
         </GroupSelectorButton>
-      </mui.Tooltip>
-      <mui.Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
+      </Tooltip>
+      <Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
         {stack.map(node => (
-          <mui.Typography key={node._id} color='textPrimary'>{node.display}</mui.Typography>
+          <Typography key={node._id} color='textPrimary'>{node.display}</Typography>
         ))}
-      </mui.Breadcrumbs>
+      </Breadcrumbs>
     </div>
   );
 };

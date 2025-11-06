@@ -1,12 +1,16 @@
 'use strict';
 
 import humanizeDuration from 'humanize-duration';
-import { React, useMemo, mui, useDispatch, useSelector, useLifecycle, formatDate } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { format as formatDate } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLifecycle } from 'mylife-tools-ui';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
 import { HOST_STATUS_PROBLEM } from '../problems';
+import { makeStyles, TableCell, TableRow, TableContainer, Table, TableHead, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -25,7 +29,7 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -39,11 +43,11 @@ const CommonState = ({ item }) => {
   const duration = rawDuration && humanizeDuration(rawDuration, { language: 'fr', largest: 1, round: true });
   return (
     <>
-      <mui.TableCell>{formatTimestamp(item.lastCheck)}</mui.TableCell>
-      <mui.TableCell>{formatTimestamp(item.nextCheck)}</mui.TableCell>
-      <mui.TableCell>{`${item.currentAttempt}/${item.maxAttempts}`}</mui.TableCell>
-      <mui.TableCell>{duration}</mui.TableCell>
-      <mui.TableCell>{item.statusText}</mui.TableCell>
+      <TableCell>{formatTimestamp(item.lastCheck)}</TableCell>
+      <TableCell>{formatTimestamp(item.nextCheck)}</TableCell>
+      <TableCell>{`${item.currentAttempt}/${item.maxAttempts}`}</TableCell>
+      <TableCell>{duration}</TableCell>
+      <TableCell>{item.statusText}</TableCell>
     </>
   );
 };
@@ -52,13 +56,13 @@ const Service = ({ criteria, service, hostDisplay }) => {
   const classes = useStatusColorStyles();
   const lclasses = serviceStatusClass(service.status, classes);
   return (
-    <mui.TableRow className={lclasses.row}>
-      <mui.TableCell />
-      <mui.TableCell>{criteria.onlyProblems && hostDisplay}</mui.TableCell>
-      <mui.TableCell>{service.display}</mui.TableCell>
-      <mui.TableCell className={lclasses.cell}>{formatStatus(service)}</mui.TableCell>
+    <TableRow className={lclasses.row}>
+      <TableCell />
+      <TableCell>{criteria.onlyProblems && hostDisplay}</TableCell>
+      <TableCell>{service.display}</TableCell>
+      <TableCell className={lclasses.cell}>{formatStatus(service)}</TableCell>
       <CommonState item={service} />
-    </mui.TableRow>
+    </TableRow>
   );
 };
 
@@ -70,13 +74,13 @@ const Host = ({ criteria, item }) => {
   return (
     <>
       {displayRow && (
-        <mui.TableRow className={lclasses.row}>
-          <mui.TableCell />
-          <mui.TableCell>{host.display}</mui.TableCell>
-          <mui.TableCell />
-          <mui.TableCell className={lclasses.cell}>{formatStatus(host)}</mui.TableCell>
+        <TableRow className={lclasses.row}>
+          <TableCell />
+          <TableCell>{host.display}</TableCell>
+          <TableCell />
+          <TableCell className={lclasses.cell}>{formatStatus(host)}</TableCell>
           <CommonState item={host} />
-        </mui.TableRow>
+        </TableRow>
       )}
       {services.map(service => (
         <Service key={service._id} criteria={criteria} service={service} hostDisplay={host.display} />
@@ -87,17 +91,17 @@ const Host = ({ criteria, item }) => {
 
 const Group = ({ criteria, item }) => (
   <>
-    <mui.TableRow>
-      <mui.TableCell>{item.group.display}</mui.TableCell>
-      <mui.TableCell />
-      <mui.TableCell />
-      <mui.TableCell />
-      <mui.TableCell />
-      <mui.TableCell />
-      <mui.TableCell />
-      <mui.TableCell />
-      <mui.TableCell />
-    </mui.TableRow>
+    <TableRow>
+      <TableCell>{item.group.display}</TableCell>
+      <TableCell />
+      <TableCell />
+      <TableCell />
+      <TableCell />
+      <TableCell />
+      <TableCell />
+      <TableCell />
+      <TableCell />
+    </TableRow>
     {item.hosts.map(child => (
       <Host key={child.host._id} criteria={criteria} item={child} />
     ))}
@@ -111,39 +115,39 @@ const Nagios = () => {
 
   return (
     <div className={classes.container}>
-      <mui.TableContainer>
-        <mui.Table size='small' stickyHeader>
-          <mui.TableHead>
-            <mui.TableRow>
-              <mui.TableCell>{'Groupe'}</mui.TableCell>
-              <mui.TableCell>{'Hôte'}</mui.TableCell>
-              <mui.TableCell>{'Service'}</mui.TableCell>
-              <mui.TableCell>
+      <TableContainer>
+        <Table size='small' stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>{'Groupe'}</TableCell>
+              <TableCell>{'Hôte'}</TableCell>
+              <TableCell>{'Service'}</TableCell>
+              <TableCell>
                 {'Statut'}
-                <mui.Tooltip title={'N\'afficher que les problèmes'}>
-                  <mui.Checkbox
+                <Tooltip title={'N\'afficher que les problèmes'}>
+                  <Checkbox
                     color='primary' 
                     checked={criteria.onlyProblems}
                     onChange={e => changeCriteria({ onlyProblems: e.target.checked })}
                   />
-                </mui.Tooltip>
-              </mui.TableCell>
-              <mui.TableCell>{'Dernier check'}</mui.TableCell>
-              <mui.TableCell>{'Prochain check'}</mui.TableCell>
-              <mui.TableCell>{'Essai'}</mui.TableCell>
-              <mui.TableCell>{'Durée'}</mui.TableCell>
-              <mui.TableCell>{'Texte'}</mui.TableCell>
-            </mui.TableRow>
-          </mui.TableHead>
-          <mui.ThemeProvider theme={mui.createTheme({ typography: { fontSize: 10 } })}>
-            <mui.TableBody>
+                </Tooltip>
+              </TableCell>
+              <TableCell>{'Dernier check'}</TableCell>
+              <TableCell>{'Prochain check'}</TableCell>
+              <TableCell>{'Essai'}</TableCell>
+              <TableCell>{'Durée'}</TableCell>
+              <TableCell>{'Texte'}</TableCell>
+            </TableRow>
+          </TableHead>
+          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
+            <TableBody>
               {data.map(item => (
                 <Group key={item.group._id} criteria={criteria} item={item} />
               ))}
-            </mui.TableBody>
-          </mui.ThemeProvider>
-        </mui.Table>
-      </mui.TableContainer>
+            </TableBody>
+          </ThemeProvider>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

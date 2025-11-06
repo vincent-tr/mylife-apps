@@ -1,11 +1,14 @@
 'use strict';
 
-import { React, useMemo, mui, useDispatch, useSelector, useLifecycle } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getNagiosView, getUpsmonView, getUpdatesView } from '../selectors';
 import NagiosSummary from './nagios-summary';
 import UpsmonSummary from './upsmon-summary';
 import UpdatesSummary from './updates-summary';
+import { makeStyles } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -24,7 +27,7 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles({
+const useStyles = makeStyles({
   container: {
     flex: '1 1 auto',
     overflowY: 'auto',

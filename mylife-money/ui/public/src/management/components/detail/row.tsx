@@ -1,8 +1,8 @@
 'use strict';
 
-import { React, mui, PropTypes } from 'mylife-tools-ui';
-
-const { makeStyles } = mui;
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Typography, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -23,9 +23,9 @@ const Row = ({ label, children }) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <mui.Typography className={classes.label}>
+      <Typography className={classes.label}>
         {label}
-      </mui.Typography>
+      </Typography>
 
       <div className={classes.content}>
         {children}

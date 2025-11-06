@@ -1,5 +1,6 @@
-import { React, mui, useCallback } from 'mylife-tools-ui';
+import React, { useCallback } from 'react';
 import { StatsType } from '../actions';
+import { Select, Input, MenuItem } from '@material-ui/core';
 
 export interface TypeListProps {
   className?: string;
@@ -17,19 +18,19 @@ const TypeList: React.FunctionComponent<TypeListProps> = ({ className, value, on
   const renderSelectorValue = useCallback((selection: unknown) => TYPES.get(selection as StatsType), []);
 
   return (
-    <mui.Select
+    <Select
       value={value}
       onChange={event => onChange(event.target.value as StatsType)}
-      input={<mui.Input fullWidth />}
+      input={<Input fullWidth />}
       renderValue={renderSelectorValue}
       className={className}
     >
       {Array.from(TYPES.entries()).map(([id, display]) => (
-        <mui.MenuItem key={id} value={id}>
+        <MenuItem key={id} value={id}>
           {display}
-        </mui.MenuItem>
+        </MenuItem>
       ))}
-    </mui.Select>
+    </Select>
   );
 };
 

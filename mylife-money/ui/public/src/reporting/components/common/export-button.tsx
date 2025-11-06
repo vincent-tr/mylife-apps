@@ -1,14 +1,16 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
+import { Tooltip, IconButton } from '@material-ui/core';
 
 const ExportButton = ({ onClick, ...props }) => (
-  <mui.Tooltip title='Exporter les données'>
-    <mui.IconButton {...props} onClick={wrapClick(onClick)}>
+  <Tooltip title='Exporter les données'>
+    <IconButton {...props} onClick={wrapClick(onClick)}>
       <icons.actions.Export />
-    </mui.IconButton>
-  </mui.Tooltip>
+    </IconButton>
+  </Tooltip>
 );
 
 ExportButton.propTypes = {

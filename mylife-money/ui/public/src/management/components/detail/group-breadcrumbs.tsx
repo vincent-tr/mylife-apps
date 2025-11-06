@@ -1,10 +1,10 @@
 'use strict';
 
-import { React, mui, PropTypes } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-
-const { makeStyles } = mui;
+import { Tooltip, Breadcrumbs, Link, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,15 +24,15 @@ const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
 
   return (
     <div className={classes.container}>
-      <mui.Tooltip title={'Déplacer l\'opération'}>
+      <Tooltip title={'Déplacer l\'opération'}>
         <div>
           <GroupSelectorButton onSelect={onMove}>
             <icons.actions.Move />
           </GroupSelectorButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
 
-      <mui.Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
+      <Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
         {groupStack.map(group => {
           const handleClick = e => {
             e.preventDefault();
@@ -40,12 +40,12 @@ const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
           };
 
           return (
-            <mui.Link key={group._id} color='textPrimary' href='#' onClick={handleClick}>
+            <Link key={group._id} color='textPrimary' href='#' onClick={handleClick}>
               {group.display}
-            </mui.Link>
+            </Link>
           );
         })}
-      </mui.Breadcrumbs>
+      </Breadcrumbs>
     </div>
   );
 };

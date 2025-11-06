@@ -1,9 +1,10 @@
 'use strict';
 
-import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
-
-const { makeStyles } = mui;
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   paper: {
@@ -16,20 +17,20 @@ const GroupSelectorDialog = ({ show, proceed, options }) => {
   const classes = useStyles();
 
   return (
-    <mui.Dialog aria-labelledby='dialog-title' open={show} PaperProps={{ className: classes.paper }} fullWidth={true} maxWidth='sm'>
-      <mui.DialogTitle id='dialog-title'>
+    <Dialog aria-labelledby='dialog-title' open={show} PaperProps={{ className: classes.paper }} fullWidth={true} maxWidth='sm'>
+      <DialogTitle id='dialog-title'>
         Sélectionnez un groupe
-      </mui.DialogTitle>
+      </DialogTitle>
 
-      <mui.DialogContent dividers>
+      <DialogContent dividers>
         <GroupTree onSelect={group => proceed({ result: 'ok', group })} {...options} />
-      </mui.DialogContent>
+      </DialogContent>
 
-      <mui.DialogActions>
-        <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
-      </mui.DialogActions>
+      <DialogActions>
+        <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
+      </DialogActions>
 
-    </mui.Dialog>
+    </Dialog>
   );
 };
 
@@ -61,7 +62,7 @@ const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorBut
   };
 
   return (
-    <mui.IconButton ref={ref} onClick={clickHandler} {...props}/>
+    <IconButton ref={ref} onClick={clickHandler} {...props}/>
   );
 });
 

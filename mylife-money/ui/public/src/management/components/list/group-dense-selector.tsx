@@ -1,15 +1,17 @@
 'use strict';
 
-import { React, PropTypes, mui, useMemo, useSelector, useDispatch, clsx } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { useSelector, useDispatch } from 'react-redux';
 import icons from '../../../common/icons';
 import { getSelectedGroupId } from '../../selectors';
 import { getGroup } from '../../../reference/selectors';
 import { selectGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
+import { Tooltip, Typography, makeStyles } from '@material-ui/core';
 
 type FIXME_any = any;
-
-const { makeStyles } = mui;
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -46,16 +48,16 @@ const GroupDenseSelector = ({ className, ...props }: GroupDenseSelectorProps) =>
 
   return (
     <div className={clsx(className, classes.container)} {...props}>
-      <mui.Tooltip title={'Déplacer l\'opération'}>
+      <Tooltip title={'Déplacer l\'opération'}>
         <div>
           <GroupSelectorButton onSelect={onSelect}>
             <icons.actions.Move />
           </GroupSelectorButton>
         </div>
-      </mui.Tooltip>
-      <mui.Typography className={classes.typography}>
+      </Tooltip>
+      <Typography className={classes.typography}>
         {selectedGroup.display}
-      </mui.Typography>
+      </Typography>
     </div>
   );
 };

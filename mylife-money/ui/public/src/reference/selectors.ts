@@ -1,6 +1,8 @@
 'use strict';
 
-import { views, immutable, createSelector } from 'mylife-tools-ui';
+import immutable from 'immutable';
+import { createSelector } from 'reselect';
+import { views } from 'mylife-tools-ui';
 import { ACCOUNTS, GROUPS } from './view-ids';
 
 const getAccountView = (state) => views.getView(state, ACCOUNTS);

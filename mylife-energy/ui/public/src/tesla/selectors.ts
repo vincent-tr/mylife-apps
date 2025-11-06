@@ -1,4 +1,4 @@
-import { views, createSelector } from 'mylife-tools-ui';
+import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
 import { TeslaState } from '../../../shared/metadata';
 

@@ -1,4 +1,5 @@
-import { React } from 'mylife-tools-ui';
+import React from 'react';
+
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 

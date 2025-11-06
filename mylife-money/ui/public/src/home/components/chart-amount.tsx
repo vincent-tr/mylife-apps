@@ -1,15 +1,18 @@
 'use strict';
 
-import { React, mui, useSelector, chart, useChartColors } from 'mylife-tools-ui';
+import React from 'react';
+import * as chart from '@latticejs/mui-recharts';
+import { useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
+import { colors as muiColors } from '@material-ui/core';
 
 const ChartAmount = (props) => {
   const { sorted: data } = useTotalByMonth();
   const chartColors = useChartColors();
 
   const colors = {
-    debit: mui.colors.red[200],
-    credit: mui.colors.green[200],
+    debit: muiColors.red[200],
+    credit: muiColors.green[200],
     balance: chartColors[1],
   };
 

@@ -1,9 +1,11 @@
-import { React, mui, useLifecycle, useActions } from 'mylife-tools-ui';
+import React from 'react';
+import { useLifecycle, useActions } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import MainAnimation from './main-animation';
 import NodeTable from './node-table';
+import { makeStyles } from '@material-ui/core';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     flex: '1 1 auto',
     minHeight: 0,

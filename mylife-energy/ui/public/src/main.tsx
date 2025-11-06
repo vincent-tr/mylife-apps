@@ -1,4 +1,5 @@
-import { React, services } from 'mylife-tools-ui';
+import React from 'react';
+import { services } from 'mylife-tools-ui';
 import * as reducers from './reducers';
 import metadataDefintions from '../../shared/metadata';
 

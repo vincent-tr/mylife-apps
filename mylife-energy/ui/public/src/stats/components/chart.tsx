@@ -1,4 +1,9 @@
-import { React, chart, AutoSizer, useSelector, useChartColors, useMemo, formatDate } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { format as formatDate } from 'date-fns';
+import { AutoSizer } from 'react-virtualized';
+import { useSelector } from 'react-redux';
+import * as chart from '@latticejs/mui-recharts';
+import { useChartColors } from 'mylife-tools-ui';
 import { fr } from 'date-fns/locale';
 import { StatsType } from '../actions';
 import { getChartData, getSensors, TimestampData } from '../selectors';

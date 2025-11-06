@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, chart, useChartColors } from 'mylife-tools-ui';
+import React from 'react';
+import * as chart from '@latticejs/mui-recharts';
+import { useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
 
 const ChartCount = (props) => {

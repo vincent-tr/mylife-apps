@@ -1,14 +1,18 @@
-import { React, mui, useDispatch, useSelector, useMemo, useLifecycle, formatDate } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { format as formatDate } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { metadata } from 'mylife-tools-common';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
 import { enter, leave } from '../actions';
 import { getView } from '../selectors';
+import { makeStyles, TableContainer, Table, TableHead, TableRow, TableCell, ThemeProvider, TableBody, createTheme } from '@material-ui/core';
 
 type FIXME_any = any;
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -24,24 +28,24 @@ const Upsmon = () => {
 
   return (
     <div className={classes.container}>
-      <mui.TableContainer>
-        <mui.Table size='small' stickyHeader>
-          <mui.TableHead>
-            <mui.TableRow>
-              <mui.TableCell>{'Onduleur'}</mui.TableCell>
-              <mui.TableCell>{'Nom'}</mui.TableCell>
-              <mui.TableCell>{'Valeur'}</mui.TableCell>
-            </mui.TableRow>
-          </mui.TableHead>
-          <mui.ThemeProvider theme={mui.createTheme({ typography: { fontSize: 10 } })}>
-            <mui.TableBody>
+      <TableContainer>
+        <Table size='small' stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>{'Onduleur'}</TableCell>
+              <TableCell>{'Nom'}</TableCell>
+              <TableCell>{'Valeur'}</TableCell>
+            </TableRow>
+          </TableHead>
+          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
+            <TableBody>
               {data.valueSeq().map(item => (
                 <Ups key={item._id} data={item} />
               ))}
-            </mui.TableBody>
-          </mui.ThemeProvider>
-        </mui.Table>
-      </mui.TableContainer>
+            </TableBody>
+          </ThemeProvider>
+        </Table>
+      </TableContainer>
     </div>
   );
 }
@@ -59,11 +63,11 @@ const Ups = ({ data }) => {
 
   return (
     <>
-      <mui.TableRow className={isOk ? classes.success : classes.error}>
-        <mui.TableCell>{data.upsName}</mui.TableCell>
-        <mui.TableCell />
-        <mui.TableCell />
-      </mui.TableRow>
+      <TableRow className={isOk ? classes.success : classes.error}>
+        <TableCell>{data.upsName}</TableCell>
+        <TableCell />
+        <TableCell />
+      </TableRow>
       {entity.fields
         .filter(field => !EXCLUDED_FIELDS.includes(field.id))
         .map(field => (
@@ -75,11 +79,11 @@ const Ups = ({ data }) => {
 
 const Item = ({ data, field }) => {
   return (
-    <mui.TableRow>
-      <mui.TableCell />
-      <mui.TableCell>{field.name}</mui.TableCell>
-      <mui.TableCell>{formatValue(data, field)}</mui.TableCell>
-    </mui.TableRow>
+    <TableRow>
+      <TableCell />
+      <TableCell>{field.name}</TableCell>
+      <TableCell>{formatValue(data, field)}</TableCell>
+    </TableRow>
   );
 };
 

@@ -1,11 +1,12 @@
 'use strict';
 
-import { React, mui, PropTypes, clsx } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 import Tree from './tree';
 import Toolbar from './toolbar';
-
-const { makeStyles } = mui;
+import { makeStyles, Paper, Divider } from '@material-ui/core';
 
 const useStyles = makeStyles({
   container: {
@@ -23,11 +24,11 @@ const TreeContainer = ({ className }) => {
   const classes = useStyles();
 
   return (
-    <mui.Paper className={clsx(classes.container, className)}>
+    <Paper className={clsx(classes.container, className)}>
       <Tree className={classes.tree}/>
-      <mui.Divider />
+      <Divider />
       <Toolbar />
-    </mui.Paper>
+    </Paper>
   );
 };
 

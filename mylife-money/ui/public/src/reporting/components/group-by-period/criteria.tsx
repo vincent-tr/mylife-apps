@@ -1,12 +1,16 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate, SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { format as formatDate } from 'date-fns';
+import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
 
 import AccountSelector from '../../../common/components/account-selector';
 import GroupCriteriaField from '../common/group-field';
 import ExportButton from '../common/export-button';
+import { makeStyles, Grid, Checkbox, Typography } from '@material-ui/core';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -37,79 +41,79 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
   const onGroupDelete = (index) => setCriteria('groups', criteria.groups.delete(index));
 
   const grid = isPhone ? (
-    <mui.Grid container spacing={2}>
-      <mui.Grid item xs={6}>
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
         <CriteriaField label='Du'>
           <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={6}>
+      </Grid>
+      <Grid item xs={6}>
         <CriteriaField label='Au'>
           <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={6}>
+      </Grid>
+      <Grid item xs={6}>
         <CriteriaField label='Compte'>
           <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={6}>
+      </Grid>
+      <Grid item xs={6}>
         <CriteriaField label='Inverser montant'>
-          <mui.Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
+          <Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={6}>
+      </Grid>
+      <Grid item xs={6}>
         <CriteriaField label='Afficher les groupes enfants'>
-          <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+          <Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={6}>
+      </Grid>
+      <Grid item xs={6}>
         <CriteriaField label='Afficher les noms complets'>
-          <mui.Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
+          <Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
         </CriteriaField>
-      </mui.Grid>
+      </Grid>
       {additionalComponents}
-      <mui.Grid item xs={12}>
+      <Grid item xs={12}>
         <GroupCriteriaField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
-      </mui.Grid>
-    </mui.Grid>
+      </Grid>
+    </Grid>
   ) : (
-    <mui.Grid container spacing={2}>
-      <mui.Grid item xs={4}>
+    <Grid container spacing={2}>
+      <Grid item xs={4}>
         <CriteriaField label='Date début'>
           <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={4}>
+      </Grid>
+      <Grid item xs={4}>
         <CriteriaField label='Date fin'>
           <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={4}>
+      </Grid>
+      <Grid item xs={4}>
         <CriteriaField label='Compte'>
           <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={4}>
+      </Grid>
+      <Grid item xs={4}>
         <CriteriaField label='Inverser montant'>
-          <mui.Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
+          <Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={4}>
+      </Grid>
+      <Grid item xs={4}>
         <CriteriaField label='Afficher les groupes enfants'>
-          <mui.Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
+          <Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
         </CriteriaField>
-      </mui.Grid>
-      <mui.Grid item xs={4}>
+      </Grid>
+      <Grid item xs={4}>
         <CriteriaField label='Afficher les noms complets'>
-          <mui.Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
+          <Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
         </CriteriaField>
-      </mui.Grid>
+      </Grid>
       {additionalComponents}
-      <mui.Grid item xs={12}>
+      <Grid item xs={12}>
         <GroupCriteriaField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
-      </mui.Grid>
-    </mui.Grid>
+      </Grid>
+    </Grid>
   );
 
   return (
@@ -136,7 +140,7 @@ const ExpandedSummary = ({ onExport }) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <mui.Typography variant='h6' className={classes.title}>Critères de sélection</mui.Typography>
+      <Typography variant='h6' className={classes.title}>Critères de sélection</Typography>
       <ExportButton onClick={onExport} className={classes.button} />
     </div>
   );
@@ -150,7 +154,7 @@ const CollapsedSummary = ({ criteria, onExport }) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <mui.Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</mui.Typography>
+      <Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</Typography>
       <ExportButton onClick={onExport} className={classes.button} />
     </div>
   );

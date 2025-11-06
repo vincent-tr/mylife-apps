@@ -6,10 +6,22 @@
   "repository": "https://github.com/vincent-tr/mylife-energy",
   "author": "Vincent Trumpff",
   "devDependencies": {
+    "@latticejs/mui-recharts": "^1.0.1-beta.3",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@material-ui/pickers": "^3.3.10",
+    "clsx": "^1.1.1",
     "date-fns": "^2.28.0",
     "humanize-duration": "^3.27.2",
+    "immutable": "^4.1.0",
     "mylife-tools-ui": "^1.1.12",
-    "react-battery-gauge": "^1.0.5"
+    "react": "^16.14.0",
+    "react-battery-gauge": "^1.0.5",
+    "react-redux": "^8.0.2",
+    "react-virtualized": "^9.22.3",
+    "redux-actions": "^2.6.5",
+    "reselect": "^4.1.6"
   },
   "license": "GPL-3.0+"
 }

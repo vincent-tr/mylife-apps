@@ -1,6 +1,7 @@
 'use strict';
 
-import { createAction, views } from 'mylife-tools-ui';
+import { createAction } from 'redux-actions';
+import { views } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getCriteria } from './selectors';
 import * as viewUids from './view-uids';

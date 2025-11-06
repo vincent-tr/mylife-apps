@@ -1,4 +1,4 @@
-import { immutable } from '../..';
+import immutable from 'immutable';
 
 export * from './actions';
 export * from './selectors';

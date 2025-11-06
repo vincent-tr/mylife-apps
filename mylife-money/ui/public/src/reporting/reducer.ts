@@ -1,6 +1,7 @@
 'use strict';
 
-import { handleActions, io } from 'mylife-tools-ui';
+import { handleActions } from 'redux-actions';
+import { io } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 
 export default handleActions({

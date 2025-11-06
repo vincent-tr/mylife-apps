@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, immutable } from 'mylife-tools-ui';
+import React from 'react';
+import immutable from 'immutable';
+
 import { getGroupByMonth, exportGroupByMonth } from '../actions';
 import GroupByPeriod from './group-by-period';
 import { findAmount } from './group-by-period/tools';

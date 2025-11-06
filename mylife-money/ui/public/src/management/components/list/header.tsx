@@ -1,6 +1,9 @@
 'use strict';
 
-import { React, useMemo, mui, useSelector, useDispatch, formatDate, ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { format as formatDate } from 'date-fns';
+import { useSelector, useDispatch } from 'react-redux';
+import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
 import { getSelectedOperations, getCriteria } from '../../selectors';
@@ -10,6 +13,7 @@ import AccountSelector from '../../../common/components/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import GroupDenseSelector from './group-dense-selector';
+import { makeStyles, Tooltip, IconButton, Toolbar, Typography } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -44,7 +48,7 @@ const useConnect = () => {
   };
 };
 
-const useStyles = mui.makeStyles({
+const useStyles = makeStyles({
   accountField: {
     minWidth: 200
   },
@@ -104,30 +108,30 @@ const Header = () => {
     <React.Fragment>
       <ImportButton accounts={accounts} onImport={onOperationsImport} />
       {showExecuteRules && (
-        <mui.Tooltip title='Executer les règles sur les opérations'>
-          <mui.IconButton onClick={onOperationsExecuteRules}>
+        <Tooltip title='Executer les règles sur les opérations'>
+          <IconButton onClick={onOperationsExecuteRules}>
             <icons.actions.Execute />
-          </mui.IconButton>
-        </mui.Tooltip>
+          </IconButton>
+        </Tooltip>
       )}
 
-      <mui.Tooltip title='Déplacer'>
+      <Tooltip title='Déplacer'>
         <div>
           <GroupSelectorButton onSelect={onOperationsMove} disabled={!canProcessOperations}>
             <icons.actions.Move />
           </GroupSelectorButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
 
-      <mui.Tooltip title='Editer la note des opérations sélectionnées'>
+      <Tooltip title='Editer la note des opérations sélectionnées'>
         <div>
-          <mui.IconButton
+          <IconButton
             onClick={editNote}
             disabled={!canProcessOperations}>
             <icons.actions.Comment />
-          </mui.IconButton>
+          </IconButton>
         </div>
-      </mui.Tooltip>
+      </Tooltip>
     </React.Fragment>
   );
 
@@ -139,50 +143,50 @@ const Header = () => {
   );
 
   const wideHeader = (
-    <mui.Toolbar>
+    <Toolbar>
       {toolbar}
       <ToolbarSeparator />
       {selectors}
       <ToolbarSeparator />
       {search}
-    </mui.Toolbar>
+    </Toolbar>
   );
 
   const normalHeader = (
     <React.Fragment>
-      <mui.Toolbar variant='dense'>
+      <Toolbar variant='dense'>
         {selectors}
-      </mui.Toolbar>
-      <mui.Toolbar variant='dense'>
+      </Toolbar>
+      <Toolbar variant='dense'>
         {toolbar}
         <ToolbarSeparator />
         {search}
-      </mui.Toolbar>
+      </Toolbar>
     </React.Fragment>
   );
 
   const denseHeader = (
     <React.Fragment>
       <SummaryAccordion
-        collapsedSummary={<mui.Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup && selectedGroup.display}`}</mui.Typography>}
-        expandedSummary={<mui.Typography>{'Critères d\'affichage'}</mui.Typography>}>
+        collapsedSummary={<Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup && selectedGroup.display}`}</Typography>}
+        expandedSummary={<Typography>{'Critères d\'affichage'}</Typography>}>
         <div className={classes.expansionPanelContainer}>
-          <mui.Toolbar variant='dense'>
+          <Toolbar variant='dense'>
             {minDateSelector}
             {maxDateSelector}
-          </mui.Toolbar>
-          <mui.Toolbar variant='dense'>
+          </Toolbar>
+          <Toolbar variant='dense'>
             <ToolbarFieldTitle>Groupe</ToolbarFieldTitle>
             <GroupDenseSelector />
-          </mui.Toolbar>
-          <mui.Toolbar variant='dense'>
+          </Toolbar>
+          <Toolbar variant='dense'>
             {search}
-          </mui.Toolbar>
+          </Toolbar>
         </div>
       </SummaryAccordion>
-      <mui.Toolbar variant='dense'>
+      <Toolbar variant='dense'>
         {toolbar}
-      </mui.Toolbar>
+      </Toolbar>
     </React.Fragment>
   );
 

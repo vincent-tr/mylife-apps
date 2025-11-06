@@ -1,6 +1,11 @@
 'use strict';
 
-import { React, PropTypes,  chart, useSelector, useChartColors, AutoSizer } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { AutoSizer } from 'react-virtualized';
+import { useSelector } from 'react-redux';
+import * as chart from '@latticejs/mui-recharts';
+import { useChartColors } from 'mylife-tools-ui';
 import { getGroupStacks, getChildrenList } from '../../../reference/selectors';
 
 const useConnect = ({ display, groups }) => {

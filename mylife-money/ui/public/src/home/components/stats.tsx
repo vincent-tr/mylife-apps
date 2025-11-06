@@ -1,9 +1,11 @@
 'use strict';
 
-import { React, mui, formatDate } from 'mylife-tools-ui';
+import React from 'react';
+import { format as formatDate } from 'date-fns';
 import { useOperationStats } from '../views';
+import { makeStyles, Typography } from '@material-ui/core';
 
-const useStyles = mui.makeStyles({
+const useStyles = makeStyles({
   container: {
     marginTop: 20,
     marginRight: 20,
@@ -22,9 +24,9 @@ const Stats = (props) => {
   return (
     <div {...props}>
       <div className={classes.container}>
-        <mui.Typography>{`Nombre total d'opérations : ${count}`}</mui.Typography>
-        <mui.Typography>{`Nombre d'opérations non triées cette année : ${unsortedCount}`}</mui.Typography>
-        <mui.Typography>{`Date de l'opération la plus récente : ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</mui.Typography>
+        <Typography>{`Nombre total d'opérations : ${count}`}</Typography>
+        <Typography>{`Nombre d'opérations non triées cette année : ${unsortedCount}`}</Typography>
+        <Typography>{`Date de l'opération la plus récente : ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</Typography>
       </div>
     </div>
   );

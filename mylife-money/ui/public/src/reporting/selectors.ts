@@ -1,4 +1,5 @@
-import { io, createSelector } from 'mylife-tools-ui';
+import { createSelector } from 'reselect';
+import { io } from 'mylife-tools-ui';
 
 type FIXME_any = any;
 

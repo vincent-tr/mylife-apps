@@ -1,7 +1,10 @@
-import { React, mui, dialogs, useSelector, useAction, useCallback, CriteriaField, useState, fireAsync, useEffect } from 'mylife-tools-ui';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { dialogs, useAction, fireAsync } from 'mylife-tools-ui';
 import { getState } from '../selectors';
 import { setParameters } from '../actions';
 import { TeslaState } from '../../../../shared/metadata';
+import { makeStyles, Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Button } from '@material-ui/core';
 
 interface Parameters {
 	fastLimit: number; // Fast mode charge limit (%)
@@ -12,7 +15,7 @@ interface Parameters {
 
 type ProceedCallback = (arg: { result: 'ok' | 'cancel', parameters?: Parameters }) => void;
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   parameterTitle: {
     marginLeft: theme.spacing(2),
   },
@@ -28,72 +31,72 @@ const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: Procee
   }, [setValues]);
 
   return (
-    <mui.Dialog aria-labelledby='dialog-title' open={show}>
-      <mui.DialogTitle id='dialog-title'>{`Paramètres`}</mui.DialogTitle>
+    <Dialog aria-labelledby='dialog-title' open={show}>
+      <DialogTitle id='dialog-title'>{`Paramètres`}</DialogTitle>
 
-      <mui.DialogContent dividers>
-          <mui.Grid container spacing={2}>
+      <DialogContent dividers>
+          <Grid container spacing={2}>
 
             <>
-              <mui.Grid item xs={12}>
-                <mui.Typography variant='h6'>{'Mode rapide'}</mui.Typography>
-              </mui.Grid>
+              <Grid item xs={12}>
+                <Typography variant='h6'>{'Mode rapide'}</Typography>
+              </Grid>
 
               <>
-                <mui.Grid item xs={6}>
-                  <mui.Typography className={classes.parameterTitle}>{'Limite de charge (%)'}</mui.Typography>
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.parameterTitle}>{'Limite de charge (%)'}</Typography>
+                </Grid>
 
-                <mui.Grid item xs={6}>
-                  <mui.TextField value={values.fastLimit || '0'} onChange={e => update({ fastLimit: safeParseInt(e.target.value) })} />
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <TextField value={values.fastLimit || '0'} onChange={e => update({ fastLimit: safeParseInt(e.target.value) })} />
+                </Grid>
               </>
             </>
 
             <>
-              <mui.Grid item xs={12}>
-                <mui.Typography variant='h6'>{'Mode intelligent'}</mui.Typography>
-              </mui.Grid>
+              <Grid item xs={12}>
+                <Typography variant='h6'>{'Mode intelligent'}</Typography>
+              </Grid>
 
               <>
-                <mui.Grid item xs={6}>
-                  <mui.Typography className={classes.parameterTitle}>{'Limite de charge rapide (%)'}</mui.Typography>
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.parameterTitle}>{'Limite de charge rapide (%)'}</Typography>
+                </Grid>
 
-                <mui.Grid item xs={6}>
-                  <mui.TextField value={values.smartLimitLow || '0'} onChange={e => update({ smartLimitLow: safeParseInt(e.target.value) })} />
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <TextField value={values.smartLimitLow || '0'} onChange={e => update({ smartLimitLow: safeParseInt(e.target.value) })} />
+                </Grid>
               </>
 
               <>
-                <mui.Grid item xs={6}>
-                  <mui.Typography className={classes.parameterTitle}>{'Limite de charge complète (%)'}</mui.Typography>
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.parameterTitle}>{'Limite de charge complète (%)'}</Typography>
+                </Grid>
 
-                <mui.Grid item xs={6}>
-                  <mui.TextField value={values.smartLimitHigh || '0'} onChange={e => update({ smartLimitHigh: safeParseInt(e.target.value) })} />
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <TextField value={values.smartLimitHigh || '0'} onChange={e => update({ smartLimitHigh: safeParseInt(e.target.value) })} />
+                </Grid>
               </>
 
               <>
-                <mui.Grid item xs={6}>
-                  <mui.Typography className={classes.parameterTitle}>{'Courant de charge rapide (A)'}</mui.Typography>
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.parameterTitle}>{'Courant de charge rapide (A)'}</Typography>
+                </Grid>
 
-                <mui.Grid item xs={6}>
-                  <mui.TextField value={values.smartFastCurrent || '0'} onChange={e => update({ smartFastCurrent: safeParseInt(e.target.value) })} />
-                </mui.Grid>
+                <Grid item xs={6}>
+                  <TextField value={values.smartFastCurrent || '0'} onChange={e => update({ smartFastCurrent: safeParseInt(e.target.value) })} />
+                </Grid>
               </>
             </>
 
-          </mui.Grid>
-        </mui.DialogContent>
+          </Grid>
+        </DialogContent>
 
-        <mui.DialogActions>
-          <mui.Button onClick={() => proceed({ result: 'ok', parameters: values })} color='primary'>OK</mui.Button>
-          <mui.Button onClick={() => proceed({ result: 'cancel' })}>Annuler</mui.Button>
-        </mui.DialogActions>
-    </mui.Dialog>
+        <DialogActions>
+          <Button onClick={() => proceed({ result: 'ok', parameters: values })} color='primary'>OK</Button>
+          <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
+        </DialogActions>
+    </Dialog>
   );
 };
 

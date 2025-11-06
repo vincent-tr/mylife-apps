@@ -1,9 +1,12 @@
-import { React, mui, useActions, useLifecycle, immutable, useReducer, useEffect } from 'mylife-tools-ui';
+import React, { useReducer, useEffect } from 'react';
+import immutable from 'immutable';
+import { useActions, useLifecycle } from 'mylife-tools-ui';
 import { StatsType, fetchValues, enter, leave } from '../actions';
 import CriteriaSelector, { Criteria } from './criteria-selector';
 import Chart from './chart';
+import { makeStyles } from '@material-ui/core';
 
-const useStyles = mui.makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
     flex: '1 1 auto',
     minHeight: 0,

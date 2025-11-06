@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, useMemo, useSelector, useDispatch, ListContainer } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ListContainer } from 'mylife-tools-ui';
 import GroupTree from '../../../common/components/group-tree';
 import { getSelectedGroupId } from '../../selectors';
 import { selectGroup } from '../../actions';

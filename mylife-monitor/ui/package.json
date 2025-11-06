@@ -14,8 +14,16 @@
   },
   "homepage": "https://github.com/vincent-tr/mylife-monitor#readme",
   "devDependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "clsx": "^1.1.1",
+    "date-fns": "^2.28.0",
     "humanize-duration": "^3.27.2",
     "mylife-tools-common": "^1.1.4",
-    "mylife-tools-ui": "^1.1.12"
+    "mylife-tools-ui": "^1.1.12",
+    "react": "^16.14.0",
+    "react-redux": "^8.0.2",
+    "redux-actions": "^2.6.5",
+    "reselect": "^4.1.6"
   }
 }

@@ -1,7 +1,10 @@
 'use strict';
 
-import { React, mui, clsx, useScreenPhone } from 'mylife-tools-ui';
+import React from 'react';
+import clsx from 'clsx';
+import { useScreenPhone } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
+import { Toolbar, Typography } from '@material-ui/core';
 
 function summaries(operations) {
   let totalDebit = 0;
@@ -28,13 +31,13 @@ const Footer = (props) => {
   const totalOpsClasses = [classes.total, isPhone ? classes.totalOpsDense : classes.totalOpsNormal];
 
   return (
-    <mui.Toolbar {...props}>
-      <mui.Typography>Total</mui.Typography>
-      <mui.Typography className={clsx(classes.amountDebit, ...totalClasses)}>{totalDebit}</mui.Typography>
-      <mui.Typography className={clsx(classes.amountCredit, ...totalClasses)}>{totalCredit}</mui.Typography>
-      <mui.Typography className={clsx(classes.amountTotal, ...totalClasses)}>{total}</mui.Typography>
-      <mui.Typography className={clsx(...totalOpsClasses)}>{operations.length} opérations</mui.Typography>
-    </mui.Toolbar>
+    <Toolbar {...props}>
+      <Typography>Total</Typography>
+      <Typography className={clsx(classes.amountDebit, ...totalClasses)}>{totalDebit}</Typography>
+      <Typography className={clsx(classes.amountCredit, ...totalClasses)}>{totalCredit}</Typography>
+      <Typography className={clsx(classes.amountTotal, ...totalClasses)}>{total}</Typography>
+      <Typography className={clsx(...totalOpsClasses)}>{operations.length} opérations</Typography>
+    </Toolbar>
   );
 };
 
