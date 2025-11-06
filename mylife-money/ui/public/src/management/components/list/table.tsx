@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { useScreenPhone, addLineBreaks, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools-ui';
+import { useScreenPhone, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 import Markdown from '../../../common/components/markdown';
 import { Checkbox, Tooltip } from '@material-ui/core';

@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { useSelector } from 'react-redux';
 import * as chart from '@latticejs/mui-recharts';
 import { useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';

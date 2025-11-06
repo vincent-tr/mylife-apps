@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
-import { CriteriaField, ListContainer, DeleteButton, useAction, useActions, useLifecycle, fireAsync, services } from 'mylife-tools-ui';
+import { CriteriaField, services } from 'mylife-tools-ui';
 import { makeStyles, Grid, Typography, Divider, darken } from '@material-ui/core';
 
 type FIXME_any = any;

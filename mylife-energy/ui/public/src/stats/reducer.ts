@@ -1,7 +1,6 @@
 import { handleActions } from 'redux-actions';
-import { routing } from 'mylife-tools-ui';
 import actionTypes, { SensorData, SetValues, StatsState } from './types';
-import { Sensor, Measure } from '../../../shared/metadata';
+import { Measure } from '../../../shared/metadata';
 
 type FIXME_any = any;
 

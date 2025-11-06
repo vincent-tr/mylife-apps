@@ -1,6 +1,5 @@
 'use strict';
 
-import humanizeDuration from 'humanize-duration';
 import React from 'react';
 import clsx from 'clsx';
 import icons from '../../common/icons';

@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { makeStyles, colors, Portal, SnackbarContent, IconButton } from '@material-ui/core';
+import { makeStyles, Portal, SnackbarContent, IconButton } from '@material-ui/core';
 import * as icons from '@material-ui/icons';
 import { getNotifications } from '../selectors';
 import { notificationDismiss } from '../actions';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLifecycle, useActions, views, useInterval } from 'mylife-tools-ui';
+import { useLifecycle, useActions, useInterval } from 'mylife-tools-ui';
 import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
 import { enter, leave } from '../actions';
 import { getDataView } from '../selectors';
