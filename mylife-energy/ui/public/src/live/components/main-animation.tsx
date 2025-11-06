@@ -6,7 +6,7 @@ import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { LiveDevice } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
-import { makeStyles, Paper, Typography, SvgIcon, colors } from '@material-ui/core';
+import { makeStyles, Paper, Typography, SvgIcon, colors as muiColors } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -257,7 +257,7 @@ function useColors() {
   const colors = useMemo(() => ({
     bad: theme.palette.error.main,
     good: theme.palette.success.main,
-    neutral: colors.grey[100],
+    neutral: muiColors.grey[100],
   }), [theme]);
 
   return colors;
