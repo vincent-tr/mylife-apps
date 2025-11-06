@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, chart, useChartColors } from 'mylife-tools-ui';
+import React from 'react';
+import { chart, useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
 
 const ChartCount = (props) => {

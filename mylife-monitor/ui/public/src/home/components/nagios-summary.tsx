@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, mui, clsx } from 'mylife-tools-ui';
+import React from 'react';
+import { mui, clsx } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { useStatusColorStyles } from '../../common/status-colors';
 

@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, PropTypes, mui, dialogs } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { mui, dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
 
 const { makeStyles } = mui;

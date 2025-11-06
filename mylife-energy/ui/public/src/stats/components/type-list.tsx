@@ -1,4 +1,5 @@
-import { React, mui, useCallback } from 'mylife-tools-ui';
+import React, { useCallback } from 'react';
+import { mui } from 'mylife-tools-ui';
 import { StatsType } from '../actions';
 
 export interface TypeListProps {

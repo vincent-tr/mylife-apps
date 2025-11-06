@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, PropTypes, mui, formatDate, SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { mui, formatDate, SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
 
 import AccountSelector from '../../../common/components/account-selector';
 import GroupCriteriaField from '../common/group-field';

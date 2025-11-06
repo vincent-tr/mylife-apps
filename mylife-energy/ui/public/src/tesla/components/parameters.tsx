@@ -1,4 +1,5 @@
-import { React, mui, dialogs, useSelector, useAction, useCallback, CriteriaField, useState, fireAsync, useEffect } from 'mylife-tools-ui';
+import React, { useCallback, useState, useEffect } from 'react';
+import { mui, dialogs, useSelector, useAction, CriteriaField, fireAsync } from 'mylife-tools-ui';
 import { getState } from '../selectors';
 import { setParameters } from '../actions';
 import { TeslaState } from '../../../../shared/metadata';

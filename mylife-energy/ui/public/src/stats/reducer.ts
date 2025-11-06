@@ -1,6 +1,8 @@
-import { Action, handleActions, routing } from 'mylife-tools-ui';
+import { handleActions, routing } from 'mylife-tools-ui';
 import actionTypes, { SensorData, SetValues, StatsState } from './types';
 import { Sensor, Measure } from '../../../shared/metadata';
+
+type FIXME_any = any;
 
 const initialState: StatsState = {
   sensors: {},
@@ -9,7 +11,7 @@ const initialState: StatsState = {
 
 export default handleActions({
 
-  [actionTypes.SET_VALUES] : (state, action: Action<SetValues>) => ({
+  [actionTypes.SET_VALUES] : (state, action: FIXME_any/*Action<SetValues>*/) => ({
     ...state,
     ...buildValues(action.payload),
   }),

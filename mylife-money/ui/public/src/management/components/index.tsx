@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, mui, useMemo, useSelector, useDispatch, useLifecycle, useScreenSize } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { mui, useSelector, useDispatch, useLifecycle, useScreenSize } from 'mylife-tools-ui';
 import { managementEnter, managementLeave } from '../actions';
 import { isOperationDetail } from '../selectors';
 

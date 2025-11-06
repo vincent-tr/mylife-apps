@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, mui, PropTypes, clsx } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { mui, clsx } from 'mylife-tools-ui';
 
 const { makeStyles } = mui;
 

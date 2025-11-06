@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, PropTypes, mui } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { mui } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 
 const ExportButton = ({ onClick, ...props }) => (

@@ -1,4 +1,6 @@
-import { React, useState, PropTypes, mui, dialogs } from 'mylife-tools-ui';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { mui, dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 
 const operators = {

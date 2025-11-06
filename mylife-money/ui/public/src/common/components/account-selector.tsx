@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, PropTypes, mui, useSelector } from 'mylife-tools-ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { mui, useSelector } from 'mylife-tools-ui';
 import { getAccounts } from '../../reference/selectors';
 
 const useConnect = () => useSelector(state => ({

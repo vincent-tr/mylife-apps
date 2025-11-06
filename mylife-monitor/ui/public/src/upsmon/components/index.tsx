@@ -1,4 +1,5 @@
-import { React, mui, useDispatch, useSelector, useMemo, useLifecycle, formatDate } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { mui, useDispatch, useSelector, useLifecycle, formatDate } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { metadata } from 'mylife-tools-common';
 import { useStatusColorStyles } from '../../common/status-colors';

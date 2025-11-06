@@ -1,4 +1,5 @@
-import { React, mui, useLifecycle, useActions, useSelector, views, useInterval, useState } from 'mylife-tools-ui';
+import React, { useState } from 'react';
+import { mui, useLifecycle, useActions, useSelector, views, useInterval } from 'mylife-tools-ui';
 import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
 import { enter, leave } from '../actions';
 import { getDataView } from '../selectors';

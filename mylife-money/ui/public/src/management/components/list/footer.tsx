@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, mui, clsx, useScreenPhone } from 'mylife-tools-ui';
+import React from 'react';
+import { mui, clsx, useScreenPhone } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 
 function summaries(operations) {

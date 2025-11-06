@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, mui, formatDate } from 'mylife-tools-ui';
+import React from 'react';
+import { mui, formatDate } from 'mylife-tools-ui';
 import { useOperationStats } from '../views';
 
 const useStyles = mui.makeStyles({

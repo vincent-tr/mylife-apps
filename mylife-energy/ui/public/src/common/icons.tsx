@@ -1,6 +1,7 @@
 'use strict';
 
-import { React, mui } from 'mylife-tools-ui';
+import React from 'react';
+import { mui } from 'mylife-tools-ui';
 
 const {
   LiveTv,

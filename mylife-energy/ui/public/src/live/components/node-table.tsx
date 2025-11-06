@@ -1,4 +1,5 @@
-import { React, mui, useSelector, views } from 'mylife-tools-ui';
+import React from 'react';
+import { mui, useSelector, views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selectors';
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';

@@ -1,7 +1,8 @@
 'use strict';
 
 import humanizeDuration from 'humanize-duration';
-import { React, useMemo, mui, useDispatch, useSelector, useLifecycle, formatDate } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import { mui, useDispatch, useSelector, useLifecycle, formatDate } from 'mylife-tools-ui';
 import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
 import { enter, leave, changeCriteria } from '../actions';

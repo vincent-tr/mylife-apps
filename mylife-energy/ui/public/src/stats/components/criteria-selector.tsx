@@ -1,4 +1,5 @@
-import { React, mui, immutable, clsx } from 'mylife-tools-ui';
+import React from 'react';
+import { mui, immutable, clsx } from 'mylife-tools-ui';
 import { StatsType } from '../actions';
 import DeviceList from './device-list';
 import TypeList from './type-list';

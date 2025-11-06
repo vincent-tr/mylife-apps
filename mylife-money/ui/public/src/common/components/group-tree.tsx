@@ -1,6 +1,8 @@
 'use strict';
 
-import { React, useMemo, PropTypes, mui, useSelector } from 'mylife-tools-ui';
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { mui, useSelector } from 'mylife-tools-ui';
 import { makeGetSortedChildren } from '../../reference/selectors';
 import GroupNode from './group-node';
 

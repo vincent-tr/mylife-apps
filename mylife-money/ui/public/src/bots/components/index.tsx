@@ -1,4 +1,5 @@
-import { React, mui, useState, ListContainer } from 'mylife-tools-ui';
+import React, { useState } from 'react';
+import { mui, ListContainer } from 'mylife-tools-ui';
 import { useBots } from '../views';
 import Detail from './detail';
 import Run from './run';

@@ -1,6 +1,7 @@
 import BatteryGauge from 'react-battery-gauge';
 import humanizeDuration from 'humanize-duration';
-import { React, mui, useLifecycle, useActions, useSelector } from 'mylife-tools-ui';
+import React from 'react';
+import { mui, useLifecycle, useActions, useSelector } from 'mylife-tools-ui';
 import { enter, leave, setMode } from '../actions';
 import { getState } from '../selectors';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../shared/metadata';

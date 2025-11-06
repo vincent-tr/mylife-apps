@@ -1,4 +1,6 @@
-import { React, useState, useMemo, PropTypes, mui, useSelector } from 'mylife-tools-ui';
+import React, { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { mui, useSelector } from 'mylife-tools-ui';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../reference/selectors';
 

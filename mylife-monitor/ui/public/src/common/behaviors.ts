@@ -1,4 +1,5 @@
-import { useState, useEffect, useInterval } from 'mylife-tools-ui';
+import React, { useState, useEffect } from 'react';
+import { useInterval } from 'mylife-tools-ui';
 
 export function useSince(timestamp: Date) {
   const [duration, setDuration] = useState<number>();

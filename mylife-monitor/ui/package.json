@@ -16,6 +16,9 @@
   "devDependencies": {
     "humanize-duration": "^3.27.2",
     "mylife-tools-common": "^1.1.4",
-    "mylife-tools-ui": "^1.1.12"
+    "mylife-tools-ui": "^1.1.12",
+    "prop-types": "^15.8.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   }
 }

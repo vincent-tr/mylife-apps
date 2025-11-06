@@ -1,4 +1,5 @@
-import { React, mui, useCallback, useSelector, immutable, useMemo } from 'mylife-tools-ui';
+import React, { useCallback, useMemo } from 'react';
+import { mui, useSelector, immutable } from 'mylife-tools-ui';
 import { getDevicesView } from '../selectors';
 
 type DeviceMap = { [deviceId: string]: string };
