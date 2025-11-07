@@ -11,6 +11,6 @@
     "ws:outdated": "npm outdated --workspaces"
   },
   "devDependencies": {
-    "@types/node": "^18.13.0"
+    "typescript": "^5.9.3"
   }
 }
