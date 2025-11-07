@@ -1,8 +1,5 @@
 import { addPlugin } from './engine';
 
-// @ts-ignore: process has no def
-const isNode = (typeof process !== 'undefined') && (process.release.name === 'node');
-
 class RemoteError extends Error {
   constructor(message: string, public readonly stacktrace: string) {
     super(message);
@@ -31,8 +28,8 @@ addPlugin({
 addPlugin({
   name: 'buffer',
   is: payload => payload instanceof Uint8Array,
-  serialize: isNode ? (payload => payload.toString('base64')) : serializeBuffer,
-  deserialize: isNode ? (raw => Buffer.from(raw, 'base64')) : deserializeBuffer
+  serialize: serializeBuffer,
+  deserialize: deserializeBuffer
 })
 
 function serializeBuffer(buffer) {
