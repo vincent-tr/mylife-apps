@@ -14,6 +14,12 @@ In app directory:
 - Shell 3: `make run-web` _-> Run backend_
 - `http://arch-desktop:<ui-vite-port>`
 
+## All build
+
+In root directory:
+- `make all-ui`
+- `make all-server`
+
 ## Update UI packages
 
 see root package.json

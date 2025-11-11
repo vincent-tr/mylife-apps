@@ -8,7 +8,7 @@ DOCKER_PACKAGE_VERSION ?= $(shell node -p "require('$(DIR_UI)/package.json').ver
 DOCKER_IMAGE_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):$(DOCKER_PACKAGE_VERSION)
 DOCKER_IMAGE_LATEST_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):latest
 
-.PHONY: docker-publish docker-build ui-build ui-watch ui-watch-tsc ui-lint run-web
+.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint run-web
 
 docker-publish: docker-build
 	docker push "$(DOCKER_IMAGE_TAG)"
@@ -16,6 +16,9 @@ docker-publish: docker-build
 
 docker-build: ui-build
 	docker build --pull -t "$(DOCKER_IMAGE_TAG)" -t "$(DOCKER_IMAGE_LATEST_TAG)" -f docker/Dockerfile $(DIR_ROOT)
+
+server-build:
+	cd $(DIR_SERVER) && go build -o ../dist/mylife-idly-server main.go
 
 ui-build:
 	cd $(DIR_UI) && \
