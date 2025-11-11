@@ -9,6 +9,7 @@
     "@latticejs/mui-recharts": "^1.0.1-beta.3",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
+    "@types/react": "^16.14.0",
     "clsx": "^1.1.1",
     "cron-parser": "^4.7.1",
     "cronstrue": "^2.22.0",
