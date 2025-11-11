@@ -115,7 +115,7 @@ VirtualizedTable.propTypes = {
   onRowClick: PropTypes.func
 };
 
-VirtualizedTable.defaultProps = {
+(VirtualizedTable as FIXME_any).defaultProps = {
   headerHeight: 48,
   rowHeight: 48
 };

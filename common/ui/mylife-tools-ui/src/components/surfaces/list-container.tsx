@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // Taken from AutoSizer. Why do we need that ?!
-const ListContainer: React.FunctionComponent<{ className?: string }> = ({ className, children }) => {
+const ListContainer: React.FunctionComponent<PropsWithChildren<{ className?: string }>> = ({ className, children }) => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.container, className)}>

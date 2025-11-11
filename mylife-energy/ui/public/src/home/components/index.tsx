@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLifecycle, useActions, useInterval } from 'mylife-tools-ui';
 import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
@@ -58,7 +58,7 @@ const Home: React.FunctionComponent = () => {
 
 export default Home;
 
-const Section: React.FunctionComponent<{ title: React.ReactNode; }> = ({ title, children}) => {
+const Section: React.FunctionComponent<PropsWithChildren<{ title: React.ReactNode; }>> = ({ title, children}) => {
   const classes = useStyles();
 
   return (

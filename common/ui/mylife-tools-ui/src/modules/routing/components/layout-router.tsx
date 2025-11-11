@@ -6,7 +6,7 @@ import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';
 import PathToRegex from 'path-to-regex';
 
-const LayoutRouter = ({ routes, menu, ...props }) => {
+const LayoutRouter = ({ routes, menu, appName, appIcon, ...props }) => {
   const { location, navigate } = useRoutingConnect();
   const mappedMenu = mapMenu({ navigate, menu });
   const routesInfo = useMemo(() => new RoutesInfo(routes), [routes]);
@@ -20,6 +20,8 @@ const LayoutRouter = ({ routes, menu, ...props }) => {
       viewAdditionalHeader={routeMatch.renderAdditionalHeader()}
       viewAdditionalBreadcrumb={routeMatch.routerAdditionalBreadcrumb()}
       menu={mappedMenu}
+      appName={appName}
+      appIcon={appIcon}
       {...props}>
       {routeMatch.render()}
     </Layout>
@@ -48,7 +50,9 @@ LayoutRouter.propTypes = {
       additionalBreadcrumbRenderer: PropTypes.func,
       renderer: PropTypes.func.isRequired
     }).isRequired
-  ).isRequired
+  ).isRequired,
+  appName: Layout.propTypes.appName,
+  appIcon: Layout.propTypes.appIcon,
 };
 
 export default LayoutRouter;

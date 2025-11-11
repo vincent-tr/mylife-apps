@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { colors, Typography, makeStyles } from '@material-ui/core';
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AmountValue = ({ className, value }) => {
+const AmountValue : FunctionComponent<AmountValueProps> = ({ className, value }) => {
   const classes = useStyles();
 
   return (
@@ -28,9 +28,9 @@ const AmountValue = ({ className, value }) => {
   );
 };
 
-AmountValue.propTypes = {
-  className: PropTypes.string,
-  value: PropTypes.number.isRequired,
+type AmountValueProps = {
+  className?: string,
+  value: number
 };
 
 export default AmountValue;

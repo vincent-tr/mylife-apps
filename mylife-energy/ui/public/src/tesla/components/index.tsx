@@ -1,6 +1,6 @@
 import BatteryGauge from 'react-battery-gauge';
 import humanizeDuration from 'humanize-duration';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useSelector } from 'react-redux';
 import { useLifecycle, useActions } from 'mylife-tools-ui';
 import { enter, leave, setMode } from '../actions';
@@ -160,7 +160,7 @@ function useViewLifecycle() {
   useLifecycle(actions.enter, actions.leave);
 }
 
-const Section: React.FunctionComponent<{ title: string; }> = ({ title, children}) => {
+const Section: React.FunctionComponent<PropsWithChildren<{ title: string; }>> = ({ title, children}) => {
   const classes = useStyles();
 
   return (
@@ -174,7 +174,7 @@ const Section: React.FunctionComponent<{ title: string; }> = ({ title, children}
   );
 };
 
-const Part: React.FunctionComponent<{ footer?: boolean; }> = ({ footer = false, children }) => {
+const Part: React.FunctionComponent<PropsWithChildren<{ footer?: boolean; }>> = ({ footer = false, children }) => {
   const classes = useStyles();
 
   const content = footer ? (

@@ -21,7 +21,14 @@ const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }: Gr
   return (
     <List component='div' {...props}>
       {groups.map((group) => (
-        <GroupNode key={group._id} group={group} level={0} onSelect={onSelect} selectedGroupId={selectedGroupId} disabledGroupIds={disabledGroupIds} />
+        <GroupNode
+          key={group._id}
+          group={group}
+          level={0}
+          onSelect={onSelect}
+          selectedGroupId={selectedGroupId}
+          disabledGroupIds={disabledGroupIds}
+          parentDisabled={false} />
       ))}
     </List>
   );

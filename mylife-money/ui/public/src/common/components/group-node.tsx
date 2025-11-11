@@ -27,7 +27,7 @@ interface GroupNodeProps {
   selectedGroupId;
   onSelect;
   disabledGroupIds?;
-  parentDisabled;
+  parentDisabled: boolean;
 }
 
 const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, parentDisabled }: GroupNodeProps) => {

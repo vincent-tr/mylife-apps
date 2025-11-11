@@ -4,10 +4,10 @@ import { busySet } from '../../dialogs';
 const CALL_TIMEOUT = 5000;
 
 const timer = (performance && typeof performance.now === 'function') ? performance : Date;
-const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
+const logger = import.meta.env.PROD ? () => {} : logCall;
 
 class Pending {
-  private readonly timeout: NodeJS.Timeout;
+  private readonly timeout: number;
   private readonly begin: number;
   private end: number;
 

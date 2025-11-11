@@ -6,7 +6,7 @@ import routing from '../../modules/routing/middleware';
 
 const middlewares = [download, routing, io, thunk];
 
-if (process.env.NODE_ENV !== 'production') {
+if (!import.meta.env.PROD) {
   middlewares.push(createLogger({ duration: true, collapsed: () => true }));
 }
 

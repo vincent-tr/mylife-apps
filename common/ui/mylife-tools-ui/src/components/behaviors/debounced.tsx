@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 const WAIT_INTERVAL = 300;
 
 class Debounce<T> {
-  private timer: NodeJS.Timeout;
+  private timer: number;
 
   constructor(private readonly callback: (args: T) => void, private readonly waitInterval: number) {
     this.timer = null;
