@@ -1,8 +1,6 @@
-'use strict';
-
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles, Dialog, DialogTitle, Typography, CircularProgress } from '@material-ui/core';
+import { makeStyles, Dialog, DialogTitle, Typography, CircularProgress } from '@mui/material';
 import { getBusy } from '../selectors';
 
 const useConnect = () => {

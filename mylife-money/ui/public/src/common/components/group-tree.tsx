@@ -1,11 +1,9 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { makeGetSortedChildren } from '../../reference/selectors';
 import GroupNode from './group-node';
-import { List } from '@material-ui/core';
+import { List } from '@mui/material';
 
 type FIXME_any = any;
 

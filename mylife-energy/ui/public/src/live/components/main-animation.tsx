@@ -6,7 +6,7 @@ import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { LiveDevice } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
-import { makeStyles, Paper, Typography, SvgIcon, colors as muiColors } from '@material-ui/core';
+import { makeStyles, Paper, Typography, SvgIcon, colors as muiColors } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

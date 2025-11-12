@@ -1,6 +1,4 @@
-import { makeStyles, alpha } from '@material-ui/core';
-'use strict';
-
+import { makeStyles, alpha } from '@mui/material';
 
 export const useStatusColorStyles = makeStyles(theme => ({
   success: {

@@ -1,5 +1,3 @@
-'use strict';
-
 import { io, dialogs } from 'mylife-tools-ui';
 
 export const startBot = (id: string) => async (dispatch) => {

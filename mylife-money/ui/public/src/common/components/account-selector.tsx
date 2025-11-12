@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getAccounts } from '../../reference/selectors';
-import { MenuItem, Select } from '@material-ui/core';
+import { MenuItem, Select } from '@mui/material';
 
 const useConnect = () => useSelector(state => ({
   accounts : getAccounts(state),

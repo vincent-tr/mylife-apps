@@ -1,4 +1,4 @@
-import { colors, createTheme, responsiveFontSizes, ThemeOptions } from '@material-ui/core';
+import { colors, createTheme, responsiveFontSizes, ThemeOptions } from '@mui/material';
 import { useScreenPhone } from '../components/behaviors/responsive';
 
 const base: ThemeOptions = {

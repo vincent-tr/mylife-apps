@@ -1,5 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react';
-import { MuiThemeProvider } from '@material-ui/core';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useTheme } from '../../services/theme-factory';
 
 const ThemeProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {

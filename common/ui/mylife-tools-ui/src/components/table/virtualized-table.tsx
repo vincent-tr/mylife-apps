@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { AutoSizer, Column, Table } from 'react-virtualized';
-import { TableCell, makeStyles } from '@material-ui/core';
+import { TableCell, makeStyles } from '@mui/material';
 
 const identity = x => x;
 

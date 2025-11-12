@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -9,7 +7,7 @@ import { getSelectedGroupId } from '../../selectors';
 import { getGroup } from '../../../reference/selectors';
 import { selectGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Tooltip, Typography, makeStyles } from '@material-ui/core';
+import { Tooltip, Typography, makeStyles } from '@mui/material';
 
 type FIXME_any = any;
 

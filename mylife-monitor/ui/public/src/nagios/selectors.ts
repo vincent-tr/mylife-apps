@@ -1,5 +1,3 @@
-'use strict';
-
 import { createSelector } from 'reselect';
 import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';

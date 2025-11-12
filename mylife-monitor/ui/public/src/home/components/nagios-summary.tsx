@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import clsx from 'clsx';
 import icons from '../../common/icons';
 import { useStatusColorStyles } from '../../common/status-colors';
-import { makeStyles, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { makeStyles, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   container: {

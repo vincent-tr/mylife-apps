@@ -1,8 +1,6 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Button } from '@mui/material';
 import { getError } from '../selectors';
 import { errorClear } from '../actions';
 

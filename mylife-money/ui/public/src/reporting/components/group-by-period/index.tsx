@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +8,7 @@ import { reportingLeave } from '../../actions';
 import Criteria from './criteria';
 import Chart from './chart';
 import { formatCriteria } from './tools';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/material';
 
 type FIXME_any = any;
 

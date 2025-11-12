@@ -1,8 +1,6 @@
-'use strict';
-
 import React, { FunctionComponent, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Stepper, Step, StepLabel, makeStyles } from '@material-ui/core';
+import { Box, Stepper, Step, StepLabel, makeStyles } from '@mui/material';
 import clsx from 'clsx';
 import StepperActions from './stepper-actions';
 

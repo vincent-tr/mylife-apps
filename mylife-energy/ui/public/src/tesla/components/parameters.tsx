@@ -4,7 +4,7 @@ import { dialogs, useAction, fireAsync } from 'mylife-tools-ui';
 import { getState } from '../selectors';
 import { setParameters } from '../actions';
 import { TeslaState } from '../../../../shared/metadata';
-import { makeStyles, Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Button } from '@material-ui/core';
+import { makeStyles, Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Button } from '@mui/material';
 
 interface Parameters {
 	fastLimit: number; // Fast mode charge limit (%)

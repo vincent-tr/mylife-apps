@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import * as chart from '@latticejs/mui-recharts';
 import { useChartColors } from 'mylife-tools-ui';

@@ -5,7 +5,7 @@ import { StatsType } from '../actions';
 import DeviceList from './device-list';
 import TypeList from './type-list';
 import DatePicker from './date-picker';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/material';
 
 export interface Criteria {
   type: StatsType;

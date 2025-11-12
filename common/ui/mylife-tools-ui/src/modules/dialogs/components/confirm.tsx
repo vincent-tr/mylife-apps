@@ -1,8 +1,6 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 
 const Confirm = ({ show, proceed, options }) => (
   <Dialog aria-labelledby='dialog-title' open={show} scroll='paper'>

@@ -3,7 +3,7 @@ import { useLifecycle, useActions } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import MainAnimation from './main-animation';
 import NodeTable from './node-table';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   container: {

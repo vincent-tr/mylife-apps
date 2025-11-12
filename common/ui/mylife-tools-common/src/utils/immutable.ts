@@ -1,5 +1,3 @@
-'use strict';
-
 // https://redux.js.org/recipes/structuring-reducers/immutable-update-patterns
 // https://github.com/sindresorhus/array-move/blob/master/index.js
 

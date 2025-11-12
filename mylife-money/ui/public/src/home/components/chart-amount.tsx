@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import * as chart from '@latticejs/mui-recharts';
 import { useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
-import { colors as muiColors } from '@material-ui/core';
+import { colors as muiColors } from '@mui/material';
 
 const ChartAmount = (props) => {
   const { sorted: data } = useTotalByMonth();

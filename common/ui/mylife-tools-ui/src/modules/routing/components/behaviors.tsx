@@ -1,5 +1,3 @@
-'use strict';
-
 import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { push } from '../actions';

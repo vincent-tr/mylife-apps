@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -14,7 +12,7 @@ import Row from './row';
 import GroupBreadcrumbs from './group-breadcrumbs';
 import AmountValue from './amount-value';
 import Markdown from '../../../common/components/markdown';
-import { Paper, Typography, Tabs, Tab, makeStyles } from '@material-ui/core';
+import { Paper, Typography, Tabs, Tab, makeStyles } from '@mui/material';
 
 type FIXME_any = any;
 

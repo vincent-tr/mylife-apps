@@ -1,8 +1,6 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Slider } from '@material-ui/core';
+import Slider from '@mui/material/Slider';
 import { useDebounced } from '../behaviors';
 
 const DebouncedSlider = ({ value, onChange, ...props }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { CriteriaField, services } from 'mylife-tools-ui';
-import { makeStyles, Grid, Typography, Divider, darken } from '@material-ui/core';
+import { makeStyles, Grid, Typography, Divider, darken } from '@mui/material';
 
 type FIXME_any = any;
 type BotRun = FIXME_any;

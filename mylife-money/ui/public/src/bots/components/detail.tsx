@@ -5,7 +5,7 @@ import icons from '../../common/icons';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
 import { startBot } from '../actions';
-import { makeStyles, Grid, IconButton, Link, TextField } from '@material-ui/core';
+import { makeStyles, Grid, IconButton, Link, TextField } from '@mui/material';
 
 type FIXME_any = any;
 type Bot = FIXME_any;

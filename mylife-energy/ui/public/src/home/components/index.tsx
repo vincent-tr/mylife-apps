@@ -6,7 +6,7 @@ import { enter, leave } from '../actions';
 import { getDataView } from '../selectors';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
-import { makeStyles, Typography, Paper } from '@material-ui/core';
+import { makeStyles, Typography, Paper } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   section: {

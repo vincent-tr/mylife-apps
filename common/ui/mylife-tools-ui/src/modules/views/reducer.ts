@@ -1,5 +1,3 @@
-'use strict';
-
 import immutable         from 'immutable';
 import { handleActions } from 'redux-actions';
 import * as io           from '../io';

@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Tooltip, Breadcrumbs, Link, makeStyles } from '@material-ui/core';
+import { Tooltip, Breadcrumbs, Link, makeStyles } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   container: {

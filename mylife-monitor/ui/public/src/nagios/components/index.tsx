@@ -1,5 +1,3 @@
-'use strict';
-
 import humanizeDuration from 'humanize-duration';
 import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
@@ -10,7 +8,7 @@ import { useSince } from '../../common/behaviors';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
 import { HOST_STATUS_PROBLEM } from '../problems';
-import { makeStyles, TableCell, TableRow, TableContainer, Table, TableHead, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@material-ui/core';
+import { makeStyles, TableCell, TableRow, TableContainer, Table, TableHead, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@mui/material';
 
 type FIXME_any = any;
 

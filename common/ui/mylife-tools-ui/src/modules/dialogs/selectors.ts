@@ -1,5 +1,3 @@
-'use strict';
-
 import { getInternalState } from '../../selectors/base';
 
 const getDialogs = state => getInternalState(state).dialogs;

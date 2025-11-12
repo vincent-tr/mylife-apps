@@ -1,12 +1,10 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import Tree from './tree';
 import Toolbar from './toolbar';
-import { makeStyles, Paper, Divider } from '@material-ui/core';
+import { makeStyles, Paper, Divider } from '@mui/material';
 
 const useStyles = makeStyles({
   container: {

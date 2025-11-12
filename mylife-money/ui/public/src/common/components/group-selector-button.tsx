@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, makeStyles } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, makeStyles } from '@mui/material';
 
 const useStyles = makeStyles({
   paper: {

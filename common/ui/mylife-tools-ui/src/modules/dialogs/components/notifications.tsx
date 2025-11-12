@@ -1,11 +1,9 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { makeStyles, Portal, SnackbarContent, IconButton } from '@material-ui/core';
-import * as icons from '@material-ui/icons';
+import { makeStyles, Portal, SnackbarContent, IconButton } from '@mui/material';
+import * as icons from '@mui/icons-material';
 import { getNotifications } from '../selectors';
 import { notificationDismiss } from '../actions';
 

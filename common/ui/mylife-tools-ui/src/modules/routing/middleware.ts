@@ -1,5 +1,3 @@
-'use strict';
-
 import { createBrowserHistory } from 'history';
 import actionTypes from './action-types';
 import { onLocationChanged } from './actions';

@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import Stats from './stats';
 import ChartCount from './chart-count';
 import ChartAmount from './chart-amount';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/material';
 
 const useStyles = makeStyles({
   container: {

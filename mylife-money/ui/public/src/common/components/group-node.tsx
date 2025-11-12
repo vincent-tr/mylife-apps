@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../reference/selectors';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import { makeStyles, ListItem, ListItemIcon, ListItemText, IconButton, Collapse, List } from '@material-ui/core';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { makeStyles, ListItem, ListItemIcon, ListItemText, IconButton, Collapse, List } from '@mui/material';
 
 type FIXME_any = any;
 

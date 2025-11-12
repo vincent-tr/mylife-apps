@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycle } from 'mylife-tools-ui';
@@ -8,7 +6,7 @@ import { getNagiosView, getUpsmonView, getUpdatesView } from '../selectors';
 import NagiosSummary from './nagios-summary';
 import UpsmonSummary from './upsmon-summary';
 import UpdatesSummary from './updates-summary';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/material';
 
 type FIXME_any = any;
 

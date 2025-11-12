@@ -1,8 +1,6 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem } from '@material-ui/core';
+import { Select, MenuItem } from '@mui/material';
 
 const NULL_ID = 'null-id';
 

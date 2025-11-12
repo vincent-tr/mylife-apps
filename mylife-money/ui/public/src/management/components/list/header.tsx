@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,7 +11,7 @@ import AccountSelector from '../../../common/components/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import GroupDenseSelector from './group-dense-selector';
-import { makeStyles, Tooltip, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { makeStyles, Tooltip, IconButton, Toolbar, Typography } from '@mui/material';
 
 type FIXME_any = any;
 

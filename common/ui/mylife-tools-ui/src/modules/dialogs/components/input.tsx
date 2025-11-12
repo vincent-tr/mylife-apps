@@ -1,8 +1,6 @@
-'use strict';
-
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@mui/material';
 
 const Confirm = ({ show, proceed, options }) => {
   const [text, setText] = useState(options.text);

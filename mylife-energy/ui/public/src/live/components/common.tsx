@@ -5,7 +5,7 @@ import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getMeasureView, getDevice } from '../selectors';
 import { Measure, LiveDevice } from '../../../../shared/metadata';
-import { makeStyles, Typography, Badge, Tooltip } from '@material-ui/core';
+import { makeStyles, Typography, Badge, Tooltip } from '@mui/material';
 
 const useMeasureStyles = makeStyles(theme => ({
   computed: {

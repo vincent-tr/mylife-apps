@@ -1,9 +1,7 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
-import { Tooltip, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
+import { Tooltip, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
 
 interface HeaderProps {
   onImport;

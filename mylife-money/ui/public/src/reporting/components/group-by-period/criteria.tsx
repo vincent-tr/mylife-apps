@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { format as formatDate } from 'date-fns';
@@ -8,7 +6,7 @@ import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } f
 import AccountSelector from '../../../common/components/account-selector';
 import GroupCriteriaField from '../common/group-field';
 import ExportButton from '../common/export-button';
-import { makeStyles, Grid, Checkbox, Typography } from '@material-ui/core';
+import { makeStyles, Grid, Checkbox, Typography } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   container: {

@@ -1,8 +1,6 @@
-'use strict';
-
 import React from 'react';
-import * as icons from '@material-ui/icons';
-import { SvgIcon } from '@material-ui/core';
+import * as icons from '@mui/icons-material';
+import { SvgIcon } from '@mui/material';
 
 
 const {

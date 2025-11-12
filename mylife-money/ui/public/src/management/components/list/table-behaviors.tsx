@@ -1,11 +1,9 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../selectors';
 import { getAccount } from '../../../reference/selectors';
 import { selectOperation, showDetail } from '../../actions';
-import { makeStyles, colors } from '@material-ui/core';
+import { makeStyles, colors } from '@mui/material';
 
 type FIXME_any = any;
 

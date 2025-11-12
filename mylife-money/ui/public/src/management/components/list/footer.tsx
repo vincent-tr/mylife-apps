@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import clsx from 'clsx';
 import { useScreenPhone } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
-import { Toolbar, Typography } from '@material-ui/core';
+import { Toolbar, Typography } from '@mui/material';
 
 function summaries(operations) {
   let totalDebit = 0;

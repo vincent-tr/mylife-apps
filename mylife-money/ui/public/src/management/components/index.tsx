@@ -1,11 +1,9 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLifecycle, useScreenSize } from 'mylife-tools-ui';
 import { managementEnter, managementLeave } from '../actions';
 import { isOperationDetail } from '../selectors';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/material';
 
 import Tree from './tree';
 import List from './list';

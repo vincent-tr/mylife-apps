@@ -4,7 +4,7 @@ import { useActions, useLifecycle } from 'mylife-tools-ui';
 import { StatsType, fetchValues, enter, leave } from '../actions';
 import CriteriaSelector, { Criteria } from './criteria-selector';
 import Chart from './chart';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   container: {

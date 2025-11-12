@@ -9,7 +9,7 @@ import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../s
 import icons from '../../common/icons';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
-import { makeStyles, Typography, Divider, Tooltip, IconButton, SvgIcon } from '@material-ui/core';
+import { makeStyles, Typography, Divider, Tooltip, IconButton, SvgIcon } from '@mui/material';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 
 const useStyles = makeStyles(theme => ({

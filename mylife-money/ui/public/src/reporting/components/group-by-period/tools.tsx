@@ -1,5 +1,3 @@
-'use strict';
-
 export function findAmount(periodItem, serie) {
   const item = periodItem.groups[serie.stackId];
   if(!item) {

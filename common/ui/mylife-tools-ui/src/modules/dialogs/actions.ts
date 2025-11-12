@@ -1,5 +1,3 @@
-'use strict';
-
 import { createAction }   from 'redux-actions';
 import actionTypes        from './action-types';
 import notificationTypes  from './notification-types';

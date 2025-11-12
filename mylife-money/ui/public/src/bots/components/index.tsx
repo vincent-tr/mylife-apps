@@ -3,7 +3,7 @@ import { ListContainer } from 'mylife-tools-ui';
 import { useBots } from '../views';
 import Detail from './detail';
 import Run from './run';
-import { makeStyles, List, ListItem, ListItemText, Divider, Typography } from '@material-ui/core';
+import { makeStyles, List, ListItem, ListItemText, Divider, Typography } from '@mui/material';
 
 type FIXME_any = any;
 type Bot = FIXME_any;

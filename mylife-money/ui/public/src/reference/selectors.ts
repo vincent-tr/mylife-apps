@@ -1,5 +1,3 @@
-'use strict';
-
 import immutable from 'immutable';
 import { createSelector } from 'reselect';
 import { views } from 'mylife-tools-ui';

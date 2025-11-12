@@ -1,9 +1,7 @@
-'use strict';
-
 import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { colors, Typography, makeStyles } from '@material-ui/core';
+import { colors, Typography, makeStyles } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   base: {

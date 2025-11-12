@@ -1,10 +1,8 @@
-'use strict';
-
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
-import * as icons from '@material-ui/icons';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import * as icons from '@mui/icons-material';
 
 const SummaryAccordion = ({ initialExpanded = true, expandedSummary, collapsedSummary, children, ...props }) => {
   const [expanded, setExpanded] = useState(initialExpanded);

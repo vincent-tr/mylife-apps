@@ -2,8 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import { StatsType } from '../actions';
 import icons from '../../common/icons';
-import { makeStyles, IconButton } from '@material-ui/core';
-import { DatePicker as MuiDatePicker } from '@material-ui/pickers';
+import { makeStyles, IconButton } from '@mui/material';
+import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 
 export interface DatePickerProps {
   className?: string;

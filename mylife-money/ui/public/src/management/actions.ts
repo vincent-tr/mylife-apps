@@ -1,5 +1,3 @@
-'use strict';
-
 import { createAction } from 'redux-actions';
 import { io, views, dialogs } from 'mylife-tools-ui';
 import actionTypes from './action-types';

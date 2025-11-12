@@ -1,6 +1,4 @@
-'use strict';
-
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // https://gist.github.com/gokulkrishh/242e68d1ee94ad05f488
 export const useScreenPhone = () => useMediaQuery('(max-width: 767px)');

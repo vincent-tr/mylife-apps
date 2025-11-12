@@ -7,7 +7,7 @@ import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
 import { enter, leave, changeCriteria } from '../actions';
 import { getCriteria, getDisplayView } from '../selectors';
-import { makeStyles, TableContainer, Table, TableHead, TableRow, TableCell, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@material-ui/core';
+import { makeStyles, TableContainer, Table, TableHead, TableRow, TableCell, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@mui/material';
 
 type FIXME_any = any;
 

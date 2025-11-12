@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
-import { DatePicker } from '@material-ui/pickers';
+import { makeStyles } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import YearSelectorButton from './year-selector-button';
 

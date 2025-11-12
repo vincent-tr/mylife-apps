@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as dialogs from '../../modules/dialogs/helpers';
-import { makeStyles, Dialog, DialogContent, DialogActions, Button, Tooltip, IconButton } from '@material-ui/core';
-import { DatePicker } from '@material-ui/pickers';
-import { CalendarToday } from '@material-ui/icons';
+import { makeStyles, Dialog, DialogContent, DialogActions, Button, Tooltip, IconButton } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import { CalendarToday } from '@mui/icons-material';
 
 const useStyles = makeStyles({
   actions: {

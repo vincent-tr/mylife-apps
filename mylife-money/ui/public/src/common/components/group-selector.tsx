@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -7,7 +5,7 @@ import icons from '../icons';
 import { getGroup } from '../../reference/selectors';
 
 import GroupSelectorButton from './group-selector-button';
-import { makeStyles, Tooltip, Breadcrumbs, Typography } from '@material-ui/core';
+import { makeStyles, Tooltip, Breadcrumbs, Typography } from '@mui/material';
 
 const useConnect = ({ value }) => {
   return useSelector(state => ({

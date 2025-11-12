@@ -1,9 +1,7 @@
-'use strict';
-
 import React from 'react';
 import { format as formatDate } from 'date-fns';
 import { useOperationStats } from '../views';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@mui/material';
 
 const useStyles = makeStyles({
   container: {

@@ -4,7 +4,7 @@ import { views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selectors';
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
-import { makeStyles, Table, TableBody, TableRow, TableCell, Typography, LinearProgress } from '@material-ui/core';
+import { makeStyles, Table, TableBody, TableRow, TableCell, Typography, LinearProgress } from '@mui/material';
 
 const useTableStyles = makeStyles(theme => ({
   container: {

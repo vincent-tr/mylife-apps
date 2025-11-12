@@ -1,5 +1,3 @@
-'use strict';
-
 import { views } from 'mylife-tools-ui';
 
 const operationStatsViewRef = new views.SharedViewReference({

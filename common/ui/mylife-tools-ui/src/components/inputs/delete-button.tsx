@@ -1,9 +1,7 @@
-'use strict';
-
 import React, {FunctionComponent, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography, makeStyles } from '@material-ui/core';
-import { Delete as DeleteIcon } from '@material-ui/icons';
+import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography, makeStyles } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({

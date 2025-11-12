@@ -1,10 +1,8 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, AppBar, Toolbar, Typography, IconButton, Breadcrumbs, Link } from '@material-ui/core';
-import * as icons from '@material-ui/icons';
+import { makeStyles, AppBar, Toolbar, Typography, IconButton, Breadcrumbs, Link } from '@mui/material';
+import * as icons from '@mui/icons-material';
 
 const {
   Menu: MenuIcon,

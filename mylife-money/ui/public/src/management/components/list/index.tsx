@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -7,7 +5,7 @@ import clsx from 'clsx';
 import Header from './header';
 import Footer from './footer';
 import Table from './table';
-import { Paper, Divider, makeStyles } from '@material-ui/core';
+import { Paper, Divider, makeStyles } from '@mui/material';
 
 const useStyles = makeStyles({
   container: {

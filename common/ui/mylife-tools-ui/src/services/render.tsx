@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 // React 18
 //import { createRoot } from 'react-dom/client';

@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { dialogs } from 'mylife-tools-ui';
@@ -9,7 +7,7 @@ import { getGroup } from '../../../reference/selectors';
 import { getSelectedGroupId } from '../../selectors';
 import { createGroup, updateGroup, deleteGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Toolbar as MuiToolbar, Tooltip, IconButton } from '@material-ui/core';
+import { Toolbar as MuiToolbar, Tooltip, IconButton } from '@mui/material';
 
 type FIXME_any = any;
 

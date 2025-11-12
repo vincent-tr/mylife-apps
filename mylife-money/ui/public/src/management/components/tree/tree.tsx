@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ListContainer } from 'mylife-tools-ui';

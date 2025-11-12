@@ -1,9 +1,7 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { makeStyles, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { useScreen } from '../behaviors/responsive';
 
 const drawerWidth = 240;
