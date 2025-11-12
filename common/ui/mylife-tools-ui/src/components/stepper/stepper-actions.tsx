@@ -1,26 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, makeStyles } from '@mui/material';
+import { Button } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
+const Root = styled('div')(({ theme }) => ({
+  '& > *': {
+    margin: theme.spacing(1),
   },
 }));
 
 const StepperActions = ({ className, canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }) => {
-  const classes = useStyles();
   return (
-    <div className={clsx(className, classes.root)} {...props} >
+    <Root className={className} {...props} >
       <Button disabled={!canPrev} onClick={() => onAction('prev')} variant='contained'>{'Précédent'}</Button>
       <Button disabled={!canNext} onClick={() => onAction('next')} variant='contained' color='primary'>{'Suivant'}</Button>
       {canSkip && (<Button onClick={() => onAction('skip')} variant='contained'>{'Sauter'}</Button>)}
       {canFinish && (<Button onClick={() => onAction('finish')} variant='contained' color='primary'>{'Terminer'}</Button>)}
       {canCancel && (<Button onClick={() => onAction('cancel')} variant='contained'>{'Annuler'}</Button>)}
-    </div>
+    </Root>
   );
 };
 

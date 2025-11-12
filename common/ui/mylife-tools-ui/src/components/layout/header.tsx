@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, AppBar, Toolbar, Typography, IconButton, Breadcrumbs, Link } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Breadcrumbs, Link } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import * as icons from '@mui/icons-material';
 
 const {
@@ -9,59 +10,66 @@ const {
   NavigateNext: NavigateNextIcon,
 } = icons;
 
-const useStyles = makeStyles(theme => ({
-  menuButton: {
-    marginRight: theme.spacing(4),
-  },
-  breadcrumbs: {
-    overflowX: 'auto'
-  },
-  breadcrumbList: {
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  marginRight: theme.spacing(4),
+}));
+
+const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
+  overflowX: 'auto',
+  '& .MuiBreadcrumbs-ol': {
     flexWrap: 'nowrap'
-  },
-  pad: {
-    flexGrow: 1,
-  },
-  titleIcon: {
-    marginRight: theme.spacing(0.5),
-    width: 20,
-    height: 20,
-  },
-  titleLink: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 }));
+
+const PadDiv = styled('div')({
+  flexGrow: 1,
+});
+
+const TitleIcon = styled('svg')(({ theme }) => ({
+  marginRight: theme.spacing(0.5),
+  width: 20,
+  height: 20,
+}));
+
+const StyledLink = styled(Link)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+}) as typeof Link;
+
+const StyledTypography = styled(Typography)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+});
 
 const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, onMenuButtonClick, ...props }) => {
   const AppIcon = appIcon;
   const ViewIcon = viewIcon;
-  const classes = useStyles();
 
   return (
     <AppBar position='absolute' {...props}>
       <Toolbar>
         {onMenuButtonClick && (
-          <IconButton edge='start' color='inherit' aria-label='Open drawer' onClick={onMenuButtonClick} className={classes.menuButton}>
+          <StyledIconButton edge='start' color='inherit' aria-label='Open drawer' onClick={onMenuButtonClick}>
             <MenuIcon />
-          </IconButton>
+          </StyledIconButton>
         )}
-        <Breadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />} classes={{ root: classes.breadcrumbs, ol: classes.breadcrumbList }}>
-          <Link color='inherit' component='button' variant='h6' className={classes.titleLink} onClick={onMainClick} noWrap>
-            <AppIcon className={classes.titleIcon} />
+        <StyledBreadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />}>
+          <StyledLink color='inherit' component='button' variant='h6' onClick={onMainClick} noWrap>
+            <TitleIcon as={AppIcon} />
             {appName}
-          </Link>
+          </StyledLink>
           {viewName && (
-            <Typography color='inherit' variant='h6' className={classes.titleLink} noWrap>
-              <ViewIcon className={classes.titleIcon} />
+            <StyledTypography color='inherit' variant='h6' noWrap>
+              <TitleIcon as={ViewIcon} />
               {viewName}
-            </Typography>
+            </StyledTypography>
           )}
           {viewAdditionalBreadcrumb}
-        </Breadcrumbs>
+        </StyledBreadcrumbs>
 
-        <div className={classes.pad} />
+        <PadDiv />
 
         {viewAdditionalHeader}
       </Toolbar>

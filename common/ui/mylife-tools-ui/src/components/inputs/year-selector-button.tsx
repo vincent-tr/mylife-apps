@@ -1,43 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as dialogs from '../../modules/dialogs/helpers';
-import { makeStyles, Dialog, DialogContent, DialogActions, Button, Tooltip, IconButton } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button, Tooltip, IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers';
 import { CalendarToday } from '@mui/icons-material';
 
-const useStyles = makeStyles({
-  actions: {
-    // https://github.com/mui-org/material-ui-pickers/blob/next/lib/src/_shared/ModalDialog.tsx
-    justifyContent: 'flex-start',
+const StyledDialogActions = styled(DialogActions)({
+  // https://github.com/mui-org/material-ui-pickers/blob/next/lib/src/_shared/ModalDialog.tsx
+  justifyContent: 'flex-start',
 
-    '& > *:first-child': {
-      marginRight: 'auto',
-    },
+  '& > *:first-child': {
+    marginRight: 'auto',
   },
 });
 
-const YearSelectorDialog = ({ show, proceed, options }) => {
-  const classes = useStyles();
+interface YearSelectorDialogProps {
+  show: boolean;
+  proceed: (result: { result: 'ok' | 'cancel'; selectedValue?: Date }) => void;
+  options: { value: Date };
+}
+
+const YearSelectorDialog: React.FC<YearSelectorDialogProps> = ({ show, proceed, options }) => {
   return (
     <Dialog open={show} onClose={() => proceed({ result: 'cancel' })} >
       <DialogContent dividers>
-        <DatePicker autoOk variant='static' views={['year']} value={options.value} onChange={selectedValue => proceed({ result: 'ok', selectedValue })} />
+        <DatePicker 
+          views={['year']} 
+          value={options.value} 
+          onChange={selectedValue => proceed({ result: 'ok', selectedValue })}
+          slotProps={{
+            actionBar: {
+              actions: []
+            }
+          }}
+        />
       </DialogContent>
 
-      <DialogActions classes={{ root: classes.actions }}>
+      <StyledDialogActions>
         <Button onClick={() => proceed({ result: 'ok', selectedValue: null })} color='primary'>Aucun</Button>
         <Button onClick={() => proceed({ result: 'cancel' })} color='primary'>Annuler</Button>
         <Button onClick={() => proceed({ result: 'ok', selectedValue: options.value })} color='primary'>OK</Button>
-      </DialogActions>
+      </StyledDialogActions>
 
     </Dialog>
   );
-};
-
-YearSelectorDialog.propTypes = {
-  show: PropTypes.bool,
-  proceed: PropTypes.func,
-  options: PropTypes.object
 };
 
 const selectorDialog = dialogs.create(YearSelectorDialog);
@@ -54,7 +61,8 @@ interface YearSelectorButtonProps {
 const YearSelectorButton = React.forwardRef<HTMLButtonElement, YearSelectorButtonProps>(({ value, onChange, selectLastDay = false, ...props }, ref) => {
 
   const clickHandler = async () => {
-    const { result, selectedValue } = await selectorDialog({ options: { value } });
+    const response = await selectorDialog({ options: { value } }) as { result: 'ok' | 'cancel'; selectedValue?: Date };
+    const { result, selectedValue } = response;
     if(result !== 'ok') {
       return;
     }
@@ -74,12 +82,6 @@ const YearSelectorButton = React.forwardRef<HTMLButtonElement, YearSelectorButto
 });
 
 YearSelectorButton.displayName = 'YearSelectorButton';
-
-YearSelectorButton.propTypes = {
-  value: PropTypes.instanceOf(Date),
-  onChange: PropTypes.func.isRequired,
-  selectLastDay: PropTypes.bool
-};
 
 export default YearSelectorButton;
 

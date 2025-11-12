@@ -1,16 +1,14 @@
 import React from 'react';
-import { makeStyles, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(theme => ({
-  title: {
-    marginRight: theme.spacing(2),
-  }
+const Title = styled(Typography)(({ theme }) => ({
+  marginRight: theme.spacing(2),
 }));
 
 const ToolbarFieldTitle = ({ ...props }) => {
-  const classes = useStyles();
   return (
-    <Typography className={classes.title} {...props} />
+    <Title {...props} />
   );
 };
 

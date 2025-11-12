@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/material';
+import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import { useScreenSize } from '../behaviors';
 import Header from './header';
 import Menu from './menu';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    position: 'fixed',
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0
+const Root = styled(Box)({
+  display: 'flex',
+  position: 'fixed',
+  left: 0,
+  top: 0,
+  right: 0,
+  bottom: 0
+});
+
+const StyledHeader = styled(Header)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1
+}));
+
+const Content = styled('main')(({ theme }) => ({
+  flexGrow: 1,
+  width: 0,
+  height: '100dvh',
+  '@supports not (height: 100dvh)': {
+    height: '100vh',
   },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
-  },
-  content: {
-    flexGrow: 1,
-    width: 0,
-    height: '100dvh',
-    '@supports not (height: 100dvh)': {
-      height: '100vh',
-    },
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  appBarSpacer: {
-    ...theme.mixins.toolbar,
-    flex: '0 0 auto'
-  },
+  display: 'flex',
+  flexDirection: 'column'
+}));
+
+const AppBarSpacer = styled(Box)(({ theme }) => ({
+  ...theme.mixins.toolbar,
+  flex: '0 0 auto'
 }));
 
 const menuStates = {
@@ -62,7 +64,6 @@ const hideValueMenuState = {
 };
 
 const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, menu, children }) => {
-  const classes = useStyles();
   const screenSize = useScreenSize();
   const [menuState, setMenuState] = useState(initialMenuState[screenSize]);
   useEffect(() => setMenuState(initialMenuState[screenSize]), [screenSize]);
@@ -80,9 +81,9 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
   };
 
   return (
-    <div className={classes.root}>
+    <Root>
 
-      <Header
+      <StyledHeader
         onMenuButtonClick={menu && menuButtonClick}
         appName={appName}
         appIcon={appIcon}
@@ -90,19 +91,18 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
         viewName={viewName}
         viewAdditionalHeader={viewAdditionalHeader}
         viewAdditionalBreadcrumb={viewAdditionalBreadcrumb}
-        viewIcon={viewIcon}
-        className={classes.appBar} />
+        viewIcon={viewIcon} />
 
       {menu && menuState !== menuStates.HIDE && (
         <Menu items={menu} open={menuState === menuStates.VISIBLE} onSelect={menuSelect} />
       )}
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
+      <Content>
+        <AppBarSpacer />
         {children}
-      </main>
+      </Content>
 
-    </div>
+    </Root>
   );
 };
 

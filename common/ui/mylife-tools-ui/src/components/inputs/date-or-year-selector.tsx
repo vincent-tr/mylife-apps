@@ -1,30 +1,20 @@
 import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import YearSelectorButton from './year-selector-button';
 
-const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  input: {
-    width: 100
-  },
-  button: {
-  }
+const Container = styled(Box)({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
 });
 
-const pickerOptions = {
-  clearable: true,
-  autoOk: true,
-  format: 'dd/MM/yyyy',
-  cancelLabel: 'Annuler',
-  clearLabel: 'Aucun'
-};
+const StyledDatePicker = styled(DatePicker)({
+  width: 100
+});
 
 interface DateOrYearSelectorProps {
   disabled?: boolean;
@@ -35,21 +25,33 @@ interface DateOrYearSelectorProps {
 }
 
 const DateOrYearSelector: FunctionComponent<DateOrYearSelectorProps> = ({ disabled = false, onChange, value, showYearSelector = false, selectLastDay = false }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.container}>
-      <DatePicker disabled={disabled} className={classes.input} value={value} onChange={onChange} {...pickerOptions} />
-      {showYearSelector && (<YearSelectorButton disabled={disabled} className={classes.button} value={value} onChange={onChange} selectLastDay={selectLastDay} />)}
-    </div>
+    <Container>
+      <StyledDatePicker 
+        disabled={disabled} 
+        value={value} 
+        onChange={onChange}
+        format="dd/MM/yyyy"
+        slotProps={{
+          textField: {
+            variant: 'outlined',
+            size: 'small'
+          },
+          actionBar: {
+            actions: ['clear', 'cancel', 'accept']
+          }
+        }}
+      />
+      {showYearSelector && (
+        <YearSelectorButton 
+          disabled={disabled} 
+          value={value} 
+          onChange={onChange} 
+          selectLastDay={selectLastDay} 
+        />
+      )}
+    </Container>
   );
-};
-
-DateOrYearSelector.propTypes = {
-  disabled: PropTypes.bool,
-  value: PropTypes.instanceOf(Date),
-  onChange: PropTypes.func.isRequired,
-  showYearSelector: PropTypes.bool,
-  selectLastDay: PropTypes.bool
 };
 
 export default DateOrYearSelector;

@@ -1,21 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: '100%'
-  },
-  label: {
-    marginRight: theme.spacing(1)
-  },
-  children: {
-    flex: '1 1 auto'
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: '100%'
+});
+
+const Label = styled(Typography)(({ theme }) => ({
+  marginRight: theme.spacing(1)
 }));
+
+const Children = styled('div')({
+  flex: '1 1 auto'
+});
 
 interface CriteriaFieldProps {
   label: React.ReactNode;
@@ -23,20 +24,14 @@ interface CriteriaFieldProps {
 }
 
 const CriteriaField: React.FunctionComponent<CriteriaFieldProps> = ({ label, children }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.container}>
-      <Typography className={classes.label}>{label}</Typography>
-      <div className={classes.children}>
+    <Container>
+      <Label>{label}</Label>
+      <Children>
         {children}
-      </div>
-    </div>
+      </Children>
+    </Container>
   );
-};
-
-CriteriaField.propTypes = {
-  label: PropTypes.node.isRequired,
-  children: PropTypes.node
 };
 
 export default CriteriaField;

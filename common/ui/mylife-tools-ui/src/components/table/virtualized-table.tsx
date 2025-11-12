@@ -2,30 +2,23 @@ import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { AutoSizer, Column, Table } from 'react-virtualized';
-import { TableCell, makeStyles } from '@mui/material';
+import { TableCell } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const identity = x => x;
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    boxSizing: 'border-box'
-  },
-  row: {
-  },
-  clickableRow: {
-    // https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/TableRow/TableRow.js
-    '&:hover': {
-      cursor: 'pointer',
-      backgroundColor:
-        theme.palette.type === 'light'
-          ? 'rgba(0, 0, 0, 0.07)' // grey[200]
-          : 'rgba(255, 255, 255, 0.14)',
-    }
-  },
-  cell: {
-    flex: 1
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  boxSizing: 'border-box',
+  flex: 1,
+  // Support for clickable rows
+  '.clickableRow &:hover': {
+    cursor: 'pointer',
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? 'rgba(0, 0, 0, 0.07)' // grey[200]
+        : 'rgba(255, 255, 255, 0.14)',
   }
 }));
 
@@ -55,8 +48,7 @@ export interface VirtualizedTableColumn {
 }
 
 const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, columns, rowClassName, headerHeight, rowHeight, onRowClick, ...props }) => {
-  const classes = useStyles();
-  const rowIndexClassName = (({ index }) => clsx(classes.container, classes.row, classes.clickableRow, runPropGetter(rowClassName, data[index], index)));
+  const rowIndexClassName = (({ index }) => clsx('container', 'row', 'clickableRow', runPropGetter(rowClassName, data[index], index)));
   const rowGetter = ({ index }) => data[index];
 
   return (
@@ -74,14 +66,14 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, colu
                   key={dataKey}
                   dataKey={dataKey}
                   headerRenderer={() => (
-                    <TableCell component='div' className={clsx(classes.container, classes.cell, runPropGetter(headerClassName, dataKey))} variant='head' style={{ height: headerHeight }} {...runPropGetter(headerProps, dataKey)}>
+                    <StyledTableCell component='div' className={runPropGetter(headerClassName, dataKey)} variant='head' style={{ height: headerHeight }} {...runPropGetter(headerProps, dataKey)}>
                       {runRenderer(headerRenderer, dataKey)}
-                    </TableCell>
+                    </StyledTableCell>
                   )}
                   cellRenderer={({ rowData, cellData, rowIndex }) => (
-                    <TableCell onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} component='div' className={clsx(classes.container, classes.cell, runPropGetter(cellClassName, cellData, dataKey))} variant='body' style={{ height: rowHeight }} {...runPropGetter(cellProps, cellData, dataKey)}>
+                    <StyledTableCell onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} component='div' className={runPropGetter(cellClassName, cellData, dataKey)} variant='body' style={{ height: rowHeight }} {...runPropGetter(cellProps, cellData, dataKey)}>
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
-                    </TableCell>
+                    </StyledTableCell>
                   )}
                   width={colWidth}
                   {...props}
