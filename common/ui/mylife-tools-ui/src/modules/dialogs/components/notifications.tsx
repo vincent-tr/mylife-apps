@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import clsx from 'clsx';
-import { makeStyles, Portal, SnackbarContent, IconButton } from '@mui/material';
+import { Portal, SnackbarContent, IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import * as icons from '@mui/icons-material';
 import { getNotifications } from '../selectors';
 import { notificationDismiss } from '../actions';
@@ -28,56 +28,56 @@ const useConnect = () => {
   };
 };
 
-const useStyles = makeStyles(theme => ({
-  success: {
+const Content = styled(SnackbarContent)(({ theme }) => ({
+  marginBottom: '0.2rem',
+  '&.success': {
     backgroundColor: theme.palette.success.main,
   },
-  info: {
+  '&.info': {
     backgroundColor: theme.palette.info.main,
   },
-  warning: {
+  '&.warning': {
     backgroundColor: theme.palette.warning.main,
   },
-  error: {
+  '&.error': {
     backgroundColor: theme.palette.error.main,
   },
-  box: {
-    marginBottom: '0.2rem'
-  },
-  icon: {
-    fontSize: 20,
-    opacity: 0.9,
-    marginRight: theme.spacing(1),
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  overlay: {
-    position  : 'fixed',
-    top       : '1rem',
-    right     : 0,
-    left      : 0,
-    zIndex    : 1000,
-    width     : '80%',
-    maxWidth  : '20rem',
-    margin    : 'auto'
-  }
 }));
 
+const StyledIcon = styled('svg')(({ theme }) => ({
+  fontSize: 20,
+  opacity: 0.9,
+  marginRight: theme.spacing(1),
+}));
+
+const Message = styled('span')({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const Overlay = styled('div')({
+  position: 'fixed',
+  top: '1rem',
+  right: 0,
+  left: 0,
+  zIndex: 1000,
+  width: '80%',
+  maxWidth: '20rem',
+  margin: 'auto'
+});
+
 const Notification = ({ message, type, onCloseClick }) => {
-  const classes = useStyles();
   const typeValue = type.description;
   const Icon = typeIcons[typeValue];
   return (
-    <SnackbarContent
+    <Content
       aria-describedby='message-id'
-      className={clsx(classes.box, classes[typeValue])}
+      className={typeValue}
       message={
-        <span id='message-id' className={classes.message}>
-          <Icon className={classes.icon} />
+        <Message id='message-id'>
+          <StyledIcon as={Icon} />
           {message}
-        </span>
+        </Message>
       }
       action={[
         <IconButton key='close' aria-label='Fermer' color='inherit' onClick={onCloseClick}>
@@ -95,11 +95,10 @@ Notification.propTypes = {
 };
 
 const Notifications = () => {
-  const classes = useStyles();
   const { dismiss, notifications } = useConnect();
   return (
     <Portal key='notificationsPortal'>
-      <div className={classes.overlay}>
+      <Overlay>
         {notifications.map(notification => (
           <Notification
             key={notification.id}
@@ -107,7 +106,7 @@ const Notifications = () => {
             {...notification}
           />
         ))}
-      </div>
+      </Overlay>
     </Portal>
   );
 };

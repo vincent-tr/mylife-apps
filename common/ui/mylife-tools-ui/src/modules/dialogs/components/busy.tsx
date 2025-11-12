@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles, Dialog, DialogTitle, Typography, CircularProgress } from '@mui/material';
+import { Dialog, DialogTitle, Typography, CircularProgress } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { getBusy } from '../selectors';
 
 const useConnect = () => {
@@ -9,26 +10,24 @@ const useConnect = () => {
   }));
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  progress: {
-    marginRight: theme.spacing(2),
-  }
+const Container = styled(Typography)({
+  display: 'flex',
+  alignItems: 'center'
+});
+
+const Progress = styled(CircularProgress)(({ theme }) => ({
+  marginRight: theme.spacing(2),
 }));
 
 const Busy = () => {
   const { busy } = useConnect();
-  const classes = useStyles();
   return (
     <Dialog open={busy} aria-labelledby='alert-dialog-title'>
-      <DialogTitle id='alert-dialog-title' disableTypography>
-        <Typography variant='h6' className={classes.container}>
-          <CircularProgress color='inherit' className={classes.progress} />
+      <DialogTitle id='alert-dialog-title'>
+        <Container variant='h6'>
+          <Progress color='inherit' />
           {'Traitement en cours ...'}
-        </Typography>
+        </Container>
       </DialogTitle>
     </Dialog>
   );
