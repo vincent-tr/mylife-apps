@@ -4,7 +4,6 @@ import { CriteriaField, useAction, fireAsync } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
-import cronParser from 'cron-parser';
 import { startBot } from '../actions';
 import { makeStyles, Grid, IconButton, Link, TextField } from '@material-ui/core';
 
@@ -61,26 +60,16 @@ const CronCriteriaField: React.FunctionComponent<{ value: string; }> = ({ value 
   );
 };
 
-export function validate(value: string) {
-  if (!value) {
-    return false;
-  }
-  
-  try { 
-    cronParser.parseExpression(value);
-    cronstrue.toString(value);
-    return true;
-  } catch(e) {
-    return false;
-  }
-}
+function format(value: string) {
+  try {
+    if (!value) {
+      throw new Error('Empty value');
+    }
 
-export function format(value: string) {
-  if (!validate(value)) {
+    return cronstrue.toString(value, { locale: 'fr' });
+  } catch (e) {
     return '<invalide>';
   }
-
-  return cronstrue.toString(value, { locale: 'fr' });
 }
 
 function useStart(id: string) {

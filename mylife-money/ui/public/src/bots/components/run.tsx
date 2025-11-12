@@ -4,7 +4,6 @@ import { CriteriaField, services } from 'mylife-tools-ui';
 import { makeStyles, Grid, Typography, Divider, darken } from '@material-ui/core';
 
 type FIXME_any = any;
-type Bot = FIXME_any;
 type BotRun = FIXME_any;
 
 // FIXME: should be in entities
