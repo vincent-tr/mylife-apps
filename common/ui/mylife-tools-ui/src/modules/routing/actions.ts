@@ -1,6 +1,6 @@
 // see : https://github.com/supasate/connected-react-router/blob/master/src/actions.js
 
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
 import actionTypes from './action-types';
 
 // This action type will be dispatched when your history receives a location change.

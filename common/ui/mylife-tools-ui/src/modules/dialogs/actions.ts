@@ -1,6 +1,6 @@
-import { createAction }   from 'redux-actions';
-import actionTypes        from './action-types';
-import notificationTypes  from './notification-types';
+import { createAction } from '@reduxjs/toolkit';
+import actionTypes from './action-types';
+import notificationTypes from './notification-types';
 
 export const busySet = createAction(actionTypes.BUSY_SET);
 export const errorClear = createAction(actionTypes.ERROR_CLEAR);

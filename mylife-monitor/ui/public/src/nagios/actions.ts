@@ -1,4 +1,4 @@
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import actionTypes from './action-types';
 import { getCriteria } from './selectors';

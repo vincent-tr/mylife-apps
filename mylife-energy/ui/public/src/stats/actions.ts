@@ -1,4 +1,4 @@
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
 import { io, views } from 'mylife-tools-ui';
 import actionTypes, { SetValues } from './types';
 import * as viewUids from './view-uids';

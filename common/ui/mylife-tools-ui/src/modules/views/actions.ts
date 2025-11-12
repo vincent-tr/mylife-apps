@@ -1,6 +1,6 @@
 import { debounce } from 'debounce';
 import { Mutex } from 'async-mutex';
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
 import { observeStore, getStore } from '../../services/store-factory';
 import * as io from '../io';
 import actionTypes from './action-types';
