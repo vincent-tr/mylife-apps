@@ -1,14 +1,14 @@
 // see : https://github.com/supasate/connected-react-router/blob/master/src/actions.js
 
 import { createAction } from '@reduxjs/toolkit';
-import actionTypes from './action-types';
+import actionTypes, { CallPayload, SetOnlinePayload, ViewChangePayload, ViewClosePayload } from './action-types';
 
-export const setOnline = createAction(actionTypes.SET_ONLINE);
+export const setOnline = createAction<SetOnlinePayload>(actionTypes.SET_ONLINE);
 
-export const viewChange = createAction(actionTypes.VIEW_CHANGE);
-const viewClose = createAction(actionTypes.VIEW_CLOSE);
+export const viewChange = createAction<ViewChangePayload>(actionTypes.VIEW_CHANGE);
+const viewClose = createAction<ViewClosePayload>(actionTypes.VIEW_CLOSE);
 
-export const call = createAction(actionTypes.CALL);
+export const call = createAction<CallPayload>(actionTypes.CALL);
 
 export const unnotify = (viewId, service = 'common') => async dispatch => {
 

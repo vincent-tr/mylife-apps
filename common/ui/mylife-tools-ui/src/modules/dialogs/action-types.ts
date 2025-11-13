@@ -10,3 +10,18 @@ export default wrap({
   NOTIFICATION_CLEAR   : null,
 
 }, STATE_PREFIX, 'dialogs');
+
+
+export interface NotificationPayload {
+  message: string;
+  type: string;
+  id: number;
+}
+
+export type BusyPayload = boolean;
+
+export interface ErrorPayload {
+  error: Error | string | null;
+}
+
+export type NotificationDismissPayload = number;

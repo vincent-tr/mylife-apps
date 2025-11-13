@@ -1,13 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
-import actionTypes from './action-types';
+import actionTypes, { BusyPayload, ErrorPayload, NotificationDismissPayload, NotificationPayload } from './action-types';
 import notificationTypes from './notification-types';
 
-export const busySet = createAction(actionTypes.BUSY_SET);
-export const errorClear = createAction(actionTypes.ERROR_CLEAR);
+export const busySet = createAction<BusyPayload>(actionTypes.BUSY_SET);
+export const errorClear = createAction<ErrorPayload>(actionTypes.ERROR_CLEAR);
 
-export const notificationDismiss = createAction(actionTypes.NOTIFICATION_DISMISS);
+export const notificationDismiss = createAction<NotificationDismissPayload>(actionTypes.NOTIFICATION_DISMISS);
 export const notificationClearAll = createAction(actionTypes.NOTIFICATION_CLEAR);
-const notificationShowInternal = createAction(actionTypes.NOTIFICATION_SHOW);
+const notificationShowInternal = createAction<NotificationPayload>(actionTypes.NOTIFICATION_SHOW);
 
 // https://gist.github.com/markerikson/7621fca0e9704e99db5598bed0db861d
 let notificationIdGenerator = 0;

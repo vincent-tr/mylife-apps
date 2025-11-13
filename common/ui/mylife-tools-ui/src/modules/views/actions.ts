@@ -1,14 +1,14 @@
-import { debounce } from 'debounce';
+import debounce from 'debounce';
 import { Mutex } from 'async-mutex';
 import { createAction } from '@reduxjs/toolkit';
 import { observeStore, getStore } from '../../services/store-factory';
 import * as io from '../io';
-import actionTypes from './action-types';
+import actionTypes, { RefPayload, SetViewPayload, UnrefPayload } from './action-types';
 import { getViewId, getRefCount } from './selectors';
 
-const setView = createAction(actionTypes.SET_VIEW);
-const ref = createAction(actionTypes.REF);
-const unref = createAction(actionTypes.UNREF);
+const setView = createAction<SetViewPayload>(actionTypes.SET_VIEW);
+const ref = createAction<RefPayload>(actionTypes.REF);
+const unref = createAction<UnrefPayload>(actionTypes.UNREF);
 
 interface CreateOrUpdateViewOptions {
 	criteriaSelector;

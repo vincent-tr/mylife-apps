@@ -8,3 +8,11 @@ export default wrap({
   UNREF: null
 
 }, STATE_PREFIX, 'views');
+
+export interface SetViewPayload {
+  uid: string;
+  viewId: string;
+}
+
+export type RefPayload = string;
+export type UnrefPayload = string;
