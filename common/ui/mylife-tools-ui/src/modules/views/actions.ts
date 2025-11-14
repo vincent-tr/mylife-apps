@@ -1,14 +1,8 @@
 import debounce from 'debounce';
 import { Mutex } from 'async-mutex';
-import { createAction } from '@reduxjs/toolkit';
 import { observeStore, getStore } from '../../services/store-factory';
 import * as io from '../io';
-import actionTypes, { RefPayload, SetViewPayload, UnrefPayload } from './action-types';
-import { getViewId, getRefCount } from './selectors';
-
-const setView = createAction<SetViewPayload>(actionTypes.SET_VIEW);
-const ref = createAction<RefPayload>(actionTypes.REF);
-const unref = createAction<UnrefPayload>(actionTypes.UNREF);
+import { getViewId, getRefCount, setView, ref, unref } from './store';
 
 interface CreateOrUpdateViewOptions {
 	criteriaSelector;
@@ -52,7 +46,7 @@ export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelect
 }
 
 // call on views that cannot be updated
-export function createOrRenewView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }) {
+function createOrRenewView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }) {
 	return async (dispatch, getState) => {
 		const state = getState();
 
@@ -68,28 +62,6 @@ export function createOrRenewView({ criteriaSelector, selectorProps, viewSelecto
 				service,
 				method,
 				...criteria,
-			})
-		);
-
-		dispatch(setViewAction(newViewId));
-	};
-}
-
-export function createOrSkipView({ viewSelector, setViewAction, service, method }) {
-	return async (dispatch, getState) => {
-		const state = getState();
-
-		const viewId = viewSelector(state);
-
-		if (viewId) {
-			return;
-		}
-
-		const newViewId = await dispatch(
-			io.call({
-				service,
-				method,
-				criteria: {},
 			})
 		);
 

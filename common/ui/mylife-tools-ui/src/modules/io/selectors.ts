@@ -7,5 +7,4 @@ const emptyView = immutable.Map();
 
 export const getOnline = state => getIo(state).online;
 export const getView = (state, viewId) => getIo(state).views.get(viewId) || emptyView;
-export const getViewItem = (state, viewId, itemId) => getView(state, viewId).get(itemId);
 export const getViewList = (state, viewId) => getView(state, viewId).valueSeq().toArray();
