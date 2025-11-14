@@ -1,35 +1,38 @@
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Button } from '@mui/material';
-import { getError } from '../selectors';
-import { errorClear } from '../actions';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+
+import { clearError, getError } from '../store';
 
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
-    ...useSelector(state => ({
-      error: getError(state)
-    })),
+    error: useSelector(getError),
     ...useMemo(() => ({
-      clear : () => dispatch(errorClear())
+      clear : () => dispatch(clearError())
     }), [dispatch])
   };
 };
 
-const Error = () => {
+const Error: React.FC = () => {
   const { error, clear } = useConnect();
   return (
     <Dialog open={!!error} onClose={clear} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description' fullWidth maxWidth='sm'>
-      <DialogTitle id='alert-dialog-title' disableTypography>
-        <Typography variant='h6' color='error'>
-          {'Erreur'}
-        </Typography>
+      <DialogTitle id='alert-dialog-title' variant='h6' color='error'>
+        {'Erreur'}
       </DialogTitle>
+
       <DialogContent>
         <DialogContentText id='alert-dialog-description'>
           {error && error.message}
         </DialogContentText>
       </DialogContent>
+      
       <DialogActions>
         <Button onClick={clear} color='primary'>
           Ok

@@ -1,14 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Dialog, DialogTitle, Typography, CircularProgress } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 import { styled } from '@mui/material/styles';
-import { getBusy } from '../selectors';
 
-const useConnect = () => {
-  return useSelector(state => ({
-    busy : getBusy(state),
-  }));
-};
+import { getBusy } from '../store';
+
+const useConnect = () => ({
+  busy: useSelector(getBusy),
+});
 
 const Container = styled(Typography)({
   display: 'flex',
@@ -19,7 +21,7 @@ const Progress = styled(CircularProgress)(({ theme }) => ({
   marginRight: theme.spacing(2),
 }));
 
-const Busy = () => {
+const Busy: React.FC = () => {
   const { busy } = useConnect();
   return (
     <Dialog open={busy} aria-labelledby='alert-dialog-title'>

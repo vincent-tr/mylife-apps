@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
-const Confirm = ({ show, proceed, options }) => {
+interface InputProps {
+  show: boolean;
+  proceed: (value: { result: 'ok' | 'cancel'; text?: string }) => void;
+  options: {
+    title?: string;
+    message?: string;
+    label: string;
+    text?: string;
+  };
+}
+
+const Input: React.FC<InputProps> = ({ show, proceed, options }) => {
   const [text, setText] = useState(options.text);
   return (
     <Dialog aria-labelledby='dialog-title' open={show} scroll='paper' maxWidth='sm' fullWidth>
@@ -29,10 +46,4 @@ const Confirm = ({ show, proceed, options }) => {
   );
 };
 
-Confirm.propTypes = {
-  show: PropTypes.bool,
-  proceed: PropTypes.func,
-  options: PropTypes.object
-};
-
-export default Confirm;
+export default Input;

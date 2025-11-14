@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import dialogs from '../modules/dialogs/reducer';
+import dialogs from '../modules/dialogs/store';
 import routing from '../modules/routing/reducer';
 import io from '../modules/io/reducer';
 import views from '../modules/views/reducer';
