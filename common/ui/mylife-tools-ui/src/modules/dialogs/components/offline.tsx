@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { styled } from '@mui/material/styles';
 
-import { getOnline } from '../../io/selectors';
+import { getOnline } from '../../io';
 
 const useConnect = () => ({
   online: useSelector(getOnline),
