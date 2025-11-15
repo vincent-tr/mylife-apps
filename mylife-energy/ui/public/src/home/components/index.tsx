@@ -6,20 +6,20 @@ import { enter, leave } from '../actions';
 import { getDataView } from '../selectors';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
-import { makeStyles, Typography, Paper } from '@mui/material';
+import { Typography, Paper, styled } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  section: {
-    margin: theme.spacing(2),
-    padding: theme.spacing(4),
-  },
-  sectionTitle: {
-    margin: theme.spacing(2),
-  },
-  lastUpdate: {
-    fontStyle: 'italic',
-  },
+const SectionRoot = styled(Paper)(({ theme }) => ({
+  margin: theme.spacing(2),
+  padding: theme.spacing(4),
 }));
+
+const SectionTitle = styled(Typography)(({ theme }) => ({
+  margin: theme.spacing(2),
+}));
+
+const LastUpdateText = styled(Typography)({
+  fontStyle: 'italic',
+});
 
 const Home: React.FunctionComponent = () => {
   useViewLifecycle();
@@ -59,27 +59,24 @@ const Home: React.FunctionComponent = () => {
 export default Home;
 
 const Section: React.FunctionComponent<PropsWithChildren<{ title: React.ReactNode; }>> = ({ title, children}) => {
-  const classes = useStyles();
-
   return (
-    <Paper variant='outlined' className={classes.section}>
-      <Typography variant='h1' className={classes.sectionTitle}>
+    <SectionRoot variant='outlined'>
+      <SectionTitle variant='h1'>
         {title}
-      </Typography>
+      </SectionTitle>
 
       {children}
-    </Paper>
+    </SectionRoot>
   );
 };
 
 const LastUpdate: React.FunctionComponent<{ section: string }> = ({ section }) => {
-  const classes = useStyles();
   const value = useLastUpdate(section);
 
   return (
-    <Typography variant='body2' color='textSecondary' className={classes.lastUpdate}>
+    <LastUpdateText variant='body2' color='textSecondary'>
       Mis à jour il y a {value}
-    </Typography>
+    </LastUpdateText>
   );
 };
 
@@ -96,7 +93,7 @@ function useNow() {
 
 function useValue(section: string, key: string) {
   const data = useSelector(getDataView);
-  const item = data.get(`${section}/${key}`);
+  const item = data[`${section}/${key}`];
   return item?.value;
 }
 
