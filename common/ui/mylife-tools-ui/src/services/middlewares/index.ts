@@ -2,7 +2,7 @@ import thunk from './thunk';
 import { createLogger } from 'redux-logger';
 import { middleware as download } from '../../modules/download/store';
 import { middleware as io } from '../../modules/io/store';
-import routing from '../../modules/routing/middleware';
+import { middleware as routing } from '../../modules/routing/store';
 
 const middlewares = [download, routing, io, thunk];
 

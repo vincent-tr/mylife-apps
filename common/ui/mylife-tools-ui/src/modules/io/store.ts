@@ -148,6 +148,6 @@ export const middleware = (/*store*/) => next => {
     }
 
     next(action);
-    return engines.call.executeCall(action.payload);
+    return engines.call.executeCall(action.payload as CallPayload);
   };
 };

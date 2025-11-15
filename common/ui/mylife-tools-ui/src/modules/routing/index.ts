@@ -1,4 +1,2 @@
-export * from './actions';
-export * from './selectors';
+export { navigate, getLocation } from './store';
 export * from './components';
-export { default as actionTypes } from './action-types';
