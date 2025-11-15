@@ -1,5 +1,5 @@
 import { utils } from 'mylife-tools-common';
-import { busySet } from '../../dialogs';
+import { setBusy } from '../../dialogs/store';
 
 const CALL_TIMEOUT = 5000;
 
@@ -79,14 +79,14 @@ class CallEngine {
   addPending(pending) {
     this.pendings.set(pending.transaction, pending);
     if(this.pendings.size === 1) {
-      this.dispatch(busySet(true));
+      this.dispatch(setBusy(true));
     }
   }
 
   removePending(pending) {
     this.pendings.delete(pending.transaction);
     if(this.pendings.size === 0) {
-      this.dispatch(busySet(false));
+      this.dispatch(setBusy(false));
     }
   }
 

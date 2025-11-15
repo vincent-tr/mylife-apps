@@ -9,9 +9,8 @@ export function fireAsync(target) {
 export class AbortError extends Error {}
 
 // throws AbortError if aborted
-export async function abortableDelay(delay, controller) {
+export async function abortableDelay(delay: number, signal: AbortSignal) {
   await new Promise<void>((resolve, reject) => {
-    const signal = controller.signal;
     let timer;
 
     const abortHandler = () => {

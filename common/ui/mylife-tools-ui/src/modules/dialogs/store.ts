@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
 import { Notification, NotificationType } from './types';
+import { abortableDelay } from '../../utils';
 
 interface DialogState {
   busy          : boolean,
@@ -61,7 +62,11 @@ export const showNotification = createAsyncThunk(
     api.dispatch(local.show({ message, type, id }));
 
     if (dismissAfter) {
-      setTimeout(() => api.dispatch(local.dismiss(id)), dismissAfter);
+      try {
+        await abortableDelay(dismissAfter, api.signal);
+      } finally {
+        api.dispatch(local.dismiss(id));
+      }
     }
   }
 );

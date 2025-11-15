@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Portal, SnackbarContent, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import * as icons from '@mui/icons-material';
-import { getNotifications } from '../selectors';
-import { notificationDismiss } from '../actions';
+import { getNotifications, dismissNotification } from '../store';
+import { NotificationType } from '../types';
 
 const typeIcons = {
   success: icons.CheckCircle,
@@ -19,11 +19,9 @@ const { Close: CloseIcon } = icons;
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
-    ...useSelector(state => ({
-      notifications: getNotifications(state)
-    })),
+    notifications: useSelector(getNotifications),
     ...useMemo(() => ({
-      dismiss : (id) => dispatch(notificationDismiss(id))
+      dismiss: (id: number) => dispatch(dismissNotification(id))
     }), [dispatch])
   };
 };
@@ -66,13 +64,18 @@ const Overlay = styled('div')({
   margin: 'auto'
 });
 
-const Notification = ({ message, type, onCloseClick }) => {
-  const typeValue = type.description;
-  const Icon = typeIcons[typeValue];
+interface NotificationProps {
+  message: string;
+  type: NotificationType;
+  onCloseClick: () => void;
+}
+
+const Notification: React.FC<NotificationProps> = ({ message, type, onCloseClick }) => {
+  const Icon = typeIcons[type];
   return (
     <Content
       aria-describedby='message-id'
-      className={typeValue}
+      className={type}
       message={
         <Message id='message-id'>
           <StyledIcon as={Icon} />
@@ -88,13 +91,7 @@ const Notification = ({ message, type, onCloseClick }) => {
   );
 };
 
-Notification.propTypes = {
-  message: PropTypes.string.isRequired,
-  onCloseClick: PropTypes.func.isRequired,
-  type: PropTypes.symbol.isRequired,
-};
-
-const Notifications = () => {
+const Notifications: React.FC = () => {
   const { dismiss, notifications } = useConnect();
   return (
     <Portal key='notificationsPortal'>
