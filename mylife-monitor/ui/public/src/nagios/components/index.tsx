@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycle } from 'mylife-tools-ui';
-import { successColor, warningColor, errorColor } from '../../common/status-colors';
+import { SuccessRow, WarningRow, ErrorRow, SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
 import { enter, leave } from '../actions';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
@@ -31,14 +31,6 @@ const Container = styled('div')({
   flex: '1 1 auto',
   overflowY: 'auto',
 });
-
-const SuccessRow = styled(TableRow)(({ theme }) => successColor(theme));
-const WarningRow = styled(TableRow)(({ theme }) => warningColor(theme));
-const ErrorRow = styled(TableRow)(({ theme }) => errorColor(theme));
-
-const SuccessCell = styled(TableCell)(({ theme }) => successColor(theme));
-const WarningCell = styled(TableCell)(({ theme }) => warningColor(theme));
-const ErrorCell = styled(TableCell)(({ theme }) => errorColor(theme));
 
 const CommonState = ({ item }) => {
   const rawDuration = useSince(item.lastStateChange);

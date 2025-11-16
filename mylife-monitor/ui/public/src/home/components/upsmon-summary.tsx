@@ -3,7 +3,7 @@ import React from 'react';
 import { styled, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import icons from '../../common/icons';
 import { useSince } from '../../common/behaviors';
-import { SuccessCell, WarningCell, ErrorCell } from './status-cells';
+import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 
 const Container = styled(Paper)(({ theme }) => ({
   display: 'inline-block',
