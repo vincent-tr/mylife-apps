@@ -3,22 +3,20 @@ import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycle } from 'mylife-tools-ui';
-import { useStatusColorStyles } from '../../common/status-colors';
+import { successColor, warningColor, errorColor } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
-import { enter, leave, changeCriteria } from '../actions';
-import { getCriteria, getDisplayView } from '../selectors';
+import { enter, leave } from '../actions';
+import { changeCriteria, getCriteria, getDisplayView } from '../store';
 import { HOST_STATUS_PROBLEM } from '../problems';
-import { makeStyles, TableCell, TableRow, TableContainer, Table, TableHead, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@mui/material';
+import { styled, TableCell, TableRow, TableContainer, Table, TableHead, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@mui/material';
 
 type FIXME_any = any;
 
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      criteria: getCriteria(state),
-      data: getDisplayView(state)
-    })),
+    criteria: useSelector(getCriteria),
+    data: useSelector(getDisplayView),
     ...useMemo(() => ({
       enter: () => dispatch(enter()),
       leave: () => dispatch(leave()),
@@ -27,14 +25,20 @@ const useConnect = () => {
   };
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: '1 1 auto',
-    overflowY: 'auto'
-  }
-}));
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto',
+  overflowY: 'auto',
+});
+
+const SuccessRow = styled(TableRow)(({ theme }) => successColor(theme));
+const WarningRow = styled(TableRow)(({ theme }) => warningColor(theme));
+const ErrorRow = styled(TableRow)(({ theme }) => errorColor(theme));
+
+const SuccessCell = styled(TableCell)(({ theme }) => successColor(theme));
+const WarningCell = styled(TableCell)(({ theme }) => warningColor(theme));
+const ErrorCell = styled(TableCell)(({ theme }) => errorColor(theme));
 
 const CommonState = ({ item }) => {
   const rawDuration = useSince(item.lastStateChange);
@@ -51,34 +55,32 @@ const CommonState = ({ item }) => {
 };
 
 const Service = ({ criteria, service, hostDisplay }) => {
-  const classes = useStatusColorStyles();
-  const lclasses = serviceStatusClass(service.status, classes);
+  const { RowComponent, CellComponent } = getServiceStatusComponents(service.status);
   return (
-    <TableRow className={lclasses.row}>
+    <RowComponent>
       <TableCell />
       <TableCell>{criteria.onlyProblems && hostDisplay}</TableCell>
       <TableCell>{service.display}</TableCell>
-      <TableCell className={lclasses.cell}>{formatStatus(service)}</TableCell>
+      <CellComponent>{formatStatus(service)}</CellComponent>
       <CommonState item={service} />
-    </TableRow>
+    </RowComponent>
   );
 };
 
 const Host = ({ criteria, item }) => {
-  const classes = useStatusColorStyles();
   const { host, services } = item;
-  const lclasses = hostStatusClass(host.status, classes);
+  const { RowComponent, CellComponent } = getHostStatusComponents(host.status);
   const displayRow = !criteria.onlyProblems || HOST_STATUS_PROBLEM[host.status];
   return (
     <>
       {displayRow && (
-        <TableRow className={lclasses.row}>
+        <RowComponent>
           <TableCell />
           <TableCell>{host.display}</TableCell>
           <TableCell />
-          <TableCell className={lclasses.cell}>{formatStatus(host)}</TableCell>
+          <CellComponent>{formatStatus(host)}</CellComponent>
           <CommonState item={host} />
-        </TableRow>
+        </RowComponent>
       )}
       {services.map(service => (
         <Service key={service._id} criteria={criteria} service={service} hostDisplay={host.display} />
@@ -107,12 +109,11 @@ const Group = ({ criteria, item }) => (
 );
 
 const Nagios = () => {
-  const classes = useStyles();
   const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
   return (
-    <div className={classes.container}>
+    <Container>
       <TableContainer>
         <Table size='small' stickyHeader>
           <TableHead>
@@ -146,7 +147,7 @@ const Nagios = () => {
           </ThemeProvider>
         </Table>
       </TableContainer>
-    </div>
+    </Container>
   );
 };
 
@@ -170,39 +171,25 @@ function formatTimestamp(date) {
   return formatDate(date, isToday ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss');
 }
 
-const HOST_STATUS_CLASSES = {
-  pending: null,
-  up: 'success',
-  down: 'error',
-  unreachable: 'error'
+const HOST_STATUS_COMPONENTS = {
+  pending: { RowComponent: TableRow, CellComponent: TableCell },
+  up: { RowComponent: SuccessRow, CellComponent: SuccessCell },
+  down: { RowComponent: ErrorRow, CellComponent: ErrorCell },
+  unreachable: { RowComponent: ErrorRow, CellComponent: ErrorCell },
 };
 
-const SERVICE_STATUS_CLASSES = {
-  pending: null,
-  ok: 'success',
-  warning: 'warning',
-  unknown: 'error',
-  critical: 'error',
+const SERVICE_STATUS_COMPONENTS = {
+  pending: { RowComponent: TableRow, CellComponent: TableCell },
+  ok: { RowComponent: SuccessRow, CellComponent: SuccessCell },
+  warning: { RowComponent: WarningRow, CellComponent: WarningCell },
+  unknown: { RowComponent: ErrorRow, CellComponent: ErrorCell },
+  critical: { RowComponent: ErrorRow, CellComponent: ErrorCell },
 };
 
-function statusClass(value, classes) {
-  if(!value) {
-    return { row: null, cell: null };
-  }
-
-  if(value === 'success') {
-    return { row: null, cell: classes[value] };
-  }
-
-  return { row: classes[value] , cell: null };
+function getHostStatusComponents(status) {
+  return HOST_STATUS_COMPONENTS[status] || { RowComponent: TableRow, CellComponent: TableCell };
 }
 
-function hostStatusClass(status, classes) {
-  const value = HOST_STATUS_CLASSES[status];
-  return statusClass(value, classes);
-}
-
-function serviceStatusClass(status, classes) {
-  const value = SERVICE_STATUS_CLASSES[status];
-  return statusClass(value, classes);
+function getServiceStatusComponents(status) {
+  return SERVICE_STATUS_COMPONENTS[status] || { RowComponent: TableRow, CellComponent: TableCell };
 }

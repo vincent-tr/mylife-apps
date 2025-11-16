@@ -39,7 +39,7 @@ const Upsmon = () => {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {data.valueSeq().map(item => (
+              {Object.values(data).map(item => (
                 <Ups key={item._id} data={item} />
               ))}
             </TableBody>
