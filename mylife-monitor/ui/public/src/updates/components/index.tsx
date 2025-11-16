@@ -5,8 +5,8 @@ import { useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
-import { enter, leave, changeCriteria } from '../actions';
-import { getCriteria, getDisplayView } from '../selectors';
+import { enter, leave } from '../actions';
+import { changeCriteria, getCriteria, getDisplayView } from '../store';
 import { styled, TableContainer, Table, TableHead, TableRow, TableCell, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@mui/material';
 
 type FIXME_any = any;
@@ -42,7 +42,7 @@ const Updates = () => {
   useLifecycle(enter, leave);
 
   const dataSorted = useMemo(
-    () => data.valueSeq().sortBy(({ path }) => path.join('/')).toArray(),
+    () => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))),
     [data]
   );
 
@@ -151,10 +151,8 @@ const VersionItem: React.FunctionComponent<{ value: string; date: Date }> = ({ v
 function useConnect() {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      criteria: getCriteria(state),
-      data: getDisplayView(state)
-    })),
+    criteria: useSelector(getCriteria),
+    data: useSelector(getDisplayView),
     ...useMemo(() => ({
       enter: () => dispatch(enter()),
       leave: () => dispatch(leave()),
