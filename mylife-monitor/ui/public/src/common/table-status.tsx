@@ -1,17 +1,16 @@
-import { alpha, Theme } from '@mui/material';
+import { alpha, styled } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import styled from '@emotion/styled';
 
-const successColor = ({ theme }: { theme: Theme }) => ({
+const successColor = ({ theme }) => ({
   backgroundColor: alpha(theme.palette.success.main, 0.25),
 });
 
-const warningColor = ({ theme }: { theme: Theme }) => ({
+const warningColor = ({ theme }) => ({
   backgroundColor: alpha(theme.palette.warning.main, 0.25),
 });
 
-const errorColor = ({ theme }: { theme: Theme }) => ({
+const errorColor = ({ theme }) => ({
   backgroundColor: alpha(theme.palette.error.main, 0.25),
 });
 

@@ -4,30 +4,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { metadata } from 'mylife-tools-common';
-import { useStatusColorStyles } from '../../common/status-colors';
+import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
 import { enter, leave } from '../actions';
 import { getView } from '../selectors';
-import { makeStyles, TableContainer, Table, TableHead, TableRow, TableCell, ThemeProvider, TableBody, createTheme } from '@mui/material';
+import { styled, TableContainer, Table, TableHead, TableRow, TableCell, ThemeProvider, TableBody, createTheme } from '@mui/material';
 
 type FIXME_any = any;
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: '1 1 auto',
-    overflowY: 'auto'
-  }
-}));
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto',
+  overflowY: 'auto',
+});
 
 const Upsmon = () => {
-  const classes = useStyles();
   const { enter, leave, data } = useConnect();
   useLifecycle(enter, leave);
 
   return (
-    <div className={classes.container}>
+    <Container>
       <TableContainer>
         <Table size='small' stickyHeader>
           <TableHead>
@@ -46,7 +43,7 @@ const Upsmon = () => {
           </ThemeProvider>
         </Table>
       </TableContainer>
-    </div>
+    </Container>
   );
 }
 
@@ -55,19 +52,19 @@ export default Upsmon;
 const EXCLUDED_FIELDS = ['_id', 'upsName'];
 
 const Ups = ({ data }) => {
-  const classes = useStatusColorStyles();
   const lastUpdate = useSince(data.date);
 
   const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
   const entity = metadata.getEntity(data._entity);
+  const RowComponent = isOk ? SuccessRow : ErrorRow;
 
   return (
     <>
-      <TableRow className={isOk ? classes.success : classes.error}>
+      <RowComponent>
         <TableCell>{data.upsName}</TableCell>
         <TableCell />
         <TableCell />
-      </TableRow>
+      </RowComponent>
       {entity.fields
         .filter(field => !EXCLUDED_FIELDS.includes(field.id))
         .map(field => (
