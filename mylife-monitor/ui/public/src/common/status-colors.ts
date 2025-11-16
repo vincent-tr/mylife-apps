@@ -1,13 +1,13 @@
-import { makeStyles, alpha } from '@mui/material';
+import { alpha } from '@mui/material';
 
-export const useStatusColorStyles = makeStyles(theme => ({
-  success: {
-    backgroundColor: alpha(theme.palette.success.main, 0.25),
-  },
-  warning: {
-    backgroundColor: alpha(theme.palette.warning.main, 0.25),
-  },
-  error: {
-    backgroundColor: alpha(theme.palette.error.main, 0.25),
-  }
-}));
+export const successColor = (theme) => ({
+  backgroundColor: alpha(theme.palette.success.main, 0.25),
+});
+
+export const warningColor = (theme) => ({
+  backgroundColor: alpha(theme.palette.warning.main, 0.25),
+});
+
+export const errorColor = (theme) => ({
+  backgroundColor: alpha(theme.palette.error.main, 0.25),
+});

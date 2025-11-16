@@ -1,45 +1,39 @@
 import React from 'react';
-import clsx from 'clsx';
+import { styled, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import icons from '../../common/icons';
-import { useStatusColorStyles } from '../../common/status-colors';
-import { makeStyles, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { SuccessCell, WarningCell, ErrorCell } from './status-cells';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'inline-block',
-    width: 400,
-    margin: theme.spacing(4)
+const Container = styled(Paper)(({ theme }) => ({
+  display: 'inline-block',
+  width: 400,
+  margin: theme.spacing(4),
+}));
+
+const HeaderCell = styled('div')(({ theme }) => ({
+  display: 'flex',
+  '& > *': {
+    marginRight: theme.spacing(2),
   },
-  headerCell: {
-    display: 'flex',
-    '& > *': {
-      marginRight: theme.spacing(2)
-    },
-  },
-  column: {
-  }
 }));
 
 const UpdatesSummary = ({ view }) => {
-  const classes = useStyles();
-
   return (
-    <TableContainer component={Paper} className={classes.container}>
+    <Container>
       <Table size='small'>
         <TableHead>
           <TableRow>
             <TableCell colSpan={3}>
-              <div className={classes.headerCell}>
+              <HeaderCell>
                 <icons.menu.Updates />
                 {'Updates'}
-              </div>
+              </HeaderCell>
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.column}>{'Catégorie'}</TableCell>
-            <TableCell className={classes.column}>{'OK'}</TableCell>
-            <TableCell className={classes.column}>{'Dépassés'}</TableCell>
-            <TableCell className={classes.column}>{'Inconnus'}</TableCell>
+            <TableCell>{'Catégorie'}</TableCell>
+            <TableCell>{'OK'}</TableCell>
+            <TableCell>{'Dépassés'}</TableCell>
+            <TableCell>{'Inconnus'}</TableCell>
           </TableRow>
         </TableHead>
 
@@ -49,21 +43,19 @@ const UpdatesSummary = ({ view }) => {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </Container>
   );
 };
 
 export default UpdatesSummary;
 
 const Row = ({ data }) => {
-  const classes = { ...useStatusColorStyles(), ...useStyles() };
-
   return (
     <TableRow>
-      <TableCell className={clsx(classes.column)}>{data.category}</TableCell>
-      <TableCell className={clsx(classes.column, classes.success)}>{data.ok}</TableCell>
-      <TableCell className={clsx(classes.column, classes.warning)}>{data.outdated}</TableCell>
-      <TableCell className={clsx(classes.column, classes.error)}>{data.unknown}</TableCell>
+      <TableCell>{data.category}</TableCell>
+      <SuccessCell>{data.ok}</SuccessCell>
+      <WarningCell>{data.outdated}</WarningCell>
+      <ErrorCell>{data.unknown}</ErrorCell>
     </TableRow>
   );
 }
