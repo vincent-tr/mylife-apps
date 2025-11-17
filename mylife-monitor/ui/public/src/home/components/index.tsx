@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
+import { styled } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools-ui';
+import { views, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getNagiosView, getUpsmonView, getUpdatesView } from '../selectors';
 import NagiosSummary from './nagios-summary';
 import UpsmonSummary from './upsmon-summary';
 import UpdatesSummary from './updates-summary';
-import { styled } from '@mui/material';
 
 type FIXME_any = any;
 
@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <Container>
       <Section>
-        {Object.values(nagios).map(summary => (
+        {Object.values(nagios).map((summary: views.Entity) => (
           <NagiosSummary key={summary._id} data={summary} />
         ))}
       </Section>

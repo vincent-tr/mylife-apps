@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools-ui';
+import { views, useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
@@ -42,7 +42,7 @@ const Updates = () => {
   useLifecycle(enter, leave);
 
   const dataSorted = useMemo(
-    () => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))),
+    () => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as views.Entity[],
     [data]
   );
 

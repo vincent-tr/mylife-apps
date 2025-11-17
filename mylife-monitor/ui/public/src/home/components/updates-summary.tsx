@@ -1,5 +1,6 @@
 import React from 'react';
 import { styled, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 
@@ -38,7 +39,7 @@ const UpdatesSummary = ({ view }) => {
         </TableHead>
 
         <TableBody>
-          {Object.values(view).map(data => (
+          {Object.values(view).map((data: views.Entity) => (
             <Row key={data._id} data={data} />
           ))}
         </TableBody>

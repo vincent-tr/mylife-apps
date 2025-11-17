@@ -54,7 +54,7 @@ export const getView = state => views.getView(state, viewUids.NAGIOS_DATA);
 
 export const getDisplayView = createSelector(
   [ getView, getCriteria ],
-  (view, criteria) => {
+  (view: views.Entity, criteria) => {
     const groups = new Map();
     const hosts = new Map();
     const services = new Map();

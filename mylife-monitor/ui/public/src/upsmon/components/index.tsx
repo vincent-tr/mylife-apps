@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools-ui';
+import { views, useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
 import { metadata } from 'mylife-tools-common';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
@@ -36,7 +36,7 @@ const Upsmon = () => {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {Object.values(data).map(item => (
+              {Object.values(data).map((item: views.Entity) => (
                 <Ups key={item._id} data={item} />
               ))}
             </TableBody>
