@@ -72,6 +72,6 @@ const Ratio: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
 }
 
 function findPowerMeasure(deviceId: string, measures: views.View<Measure>) {
-  const measure = measures.get(`${deviceId}-real-power`);
+  const measure = measures[`${deviceId}-real-power`];
   return measure ? measure.value : NaN;
 }

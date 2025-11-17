@@ -49,7 +49,7 @@ function useDevices() {
   return useMemo(() => {
     const devices: DeviceMap = {};
 
-    for (const device of view.valueSeq()) {
+    for (const device of Object.values(view)) {
       devices[device.deviceId] = device.display;
     }
     

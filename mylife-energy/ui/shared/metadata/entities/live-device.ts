@@ -1,7 +1,7 @@
+import { views } from 'mylife-tools-ui';
 import { DeviceType } from './device';
 
-export interface LiveDevice {
-	_id: string
+export interface LiveDevice extends views.Entity {
 	display: string
 	type: DeviceType
 	computed: boolean

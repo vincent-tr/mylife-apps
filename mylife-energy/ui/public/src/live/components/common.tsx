@@ -150,7 +150,7 @@ function findBestSensorMeasure(device: LiveDevice, measures: views.View<Measure>
 
   for (const target of order) {
     const sensor = device.sensors.find(sensor => sensor.key === target);
-    const measure = measures.get(`${device._id}-${target}`);
+    const measure = measures[`${device._id}-${target}`];
 
     if (sensor && measure) {
       return { sensor, measure };
