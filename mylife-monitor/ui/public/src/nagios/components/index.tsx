@@ -47,13 +47,13 @@ const CommonState = ({ item }) => {
 };
 
 const Service = ({ criteria, service, hostDisplay }) => {
-  const { RowComponent, CellComponent } = getServiceStatusComponents(service.status);
+  const RowComponent = getServiceRowComponent(service.status);
   return (
     <RowComponent>
       <TableCell />
       <TableCell>{criteria.onlyProblems && hostDisplay}</TableCell>
       <TableCell>{service.display}</TableCell>
-      <CellComponent>{formatStatus(service)}</CellComponent>
+      <TableCell>{formatStatus(service)}</TableCell>
       <CommonState item={service} />
     </RowComponent>
   );
@@ -61,7 +61,7 @@ const Service = ({ criteria, service, hostDisplay }) => {
 
 const Host = ({ criteria, item }) => {
   const { host, services } = item;
-  const { RowComponent, CellComponent } = getHostStatusComponents(host.status);
+  const RowComponent = getHostRowComponent(host.status);
   const displayRow = !criteria.onlyProblems || HOST_STATUS_PROBLEM[host.status];
   return (
     <>
@@ -70,7 +70,7 @@ const Host = ({ criteria, item }) => {
           <TableCell />
           <TableCell>{host.display}</TableCell>
           <TableCell />
-          <CellComponent>{formatStatus(host)}</CellComponent>
+          <TableCell>{formatStatus(host)}</TableCell>
           <CommonState item={host} />
         </RowComponent>
       )}
@@ -164,24 +164,24 @@ function formatTimestamp(date) {
 }
 
 const HOST_STATUS_COMPONENTS = {
-  pending: { RowComponent: TableRow, CellComponent: TableCell },
-  up: { RowComponent: SuccessRow, CellComponent: SuccessCell },
-  down: { RowComponent: ErrorRow, CellComponent: ErrorCell },
-  unreachable: { RowComponent: ErrorRow, CellComponent: ErrorCell },
+  pending: TableRow,
+  up: SuccessRow,
+  down: ErrorRow,
+  unreachable: ErrorRow,
 };
 
 const SERVICE_STATUS_COMPONENTS = {
-  pending: { RowComponent: TableRow, CellComponent: TableCell },
-  ok: { RowComponent: SuccessRow, CellComponent: SuccessCell },
-  warning: { RowComponent: WarningRow, CellComponent: WarningCell },
-  unknown: { RowComponent: ErrorRow, CellComponent: ErrorCell },
-  critical: { RowComponent: ErrorRow, CellComponent: ErrorCell },
+  pending: TableRow,
+  ok: SuccessRow,
+  warning: WarningRow,
+  unknown: ErrorRow,
+  critical: ErrorRow,
 };
 
-function getHostStatusComponents(status) {
-  return HOST_STATUS_COMPONENTS[status] || { RowComponent: TableRow, CellComponent: TableCell };
+function getHostRowComponent(status) {
+  return HOST_STATUS_COMPONENTS[status] || TableRow;
 }
 
-function getServiceStatusComponents(status) {
-  return SERVICE_STATUS_COMPONENTS[status] || { RowComponent: TableRow, CellComponent: TableCell };
+function getServiceRowComponent(status) {
+  return SERVICE_STATUS_COMPONENTS[status] || TableRow;
 }
