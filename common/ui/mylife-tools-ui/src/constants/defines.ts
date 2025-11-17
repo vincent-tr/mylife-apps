@@ -1,1 +1,1 @@
-export const STATE_PREFIX = 'mylife-tools-ui';
+export const STATE_PREFIX = 'common';

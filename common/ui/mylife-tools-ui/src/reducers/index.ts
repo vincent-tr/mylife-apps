@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 
 import dialogs from '../modules/dialogs/store';
 import routing from '../modules/routing/store';

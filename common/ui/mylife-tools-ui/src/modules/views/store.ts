@@ -18,8 +18,7 @@ const initialState: ViewsState = {
 };
 
 const viewsSlice = createSlice({
-  name: 'views',
-  reducerPath: `${STATE_PREFIX}/views`,
+  name: `${STATE_PREFIX}/views`,
   initialState,
   reducers: {
     setView(state, action: PayloadAction<SetViewPayload>) {

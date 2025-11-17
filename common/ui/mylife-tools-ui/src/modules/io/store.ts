@@ -32,8 +32,7 @@ const initialState: IOState = {
 const emptyView: View<Entity> = {};
 
 const ioSlice = createSlice({
-  name: 'io',
-  reducerPath: `${STATE_PREFIX}/io`,
+  name: `${STATE_PREFIX}/io`,
   initialState,
   reducers: {
     setOnline(state, action: PayloadAction<boolean>) {

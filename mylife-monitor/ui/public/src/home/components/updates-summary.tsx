@@ -38,7 +38,7 @@ const UpdatesSummary = ({ view }) => {
         </TableHead>
 
         <TableBody>
-          {view.valueSeq().map(data => (
+          {Object.values(view).map(data => (
             <Row key={data._id} data={data} />
           ))}
         </TableBody>

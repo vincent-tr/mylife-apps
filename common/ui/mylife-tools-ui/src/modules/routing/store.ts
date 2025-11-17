@@ -14,8 +14,7 @@ const initialState: RoutingState = {
 };
 
 const routingSlice = createSlice({
-  name: 'routing',
-  reducerPath: `${STATE_PREFIX}/routing`,
+  name: `${STATE_PREFIX}/routing`,
   initialState,
   reducers: {
     locationChange: (state, action: PayloadAction<string>) => {

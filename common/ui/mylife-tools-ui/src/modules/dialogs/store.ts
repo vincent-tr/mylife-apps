@@ -16,8 +16,7 @@ const initialState: DialogState = {
 };
 
 const dialogSlice = createSlice({
-  name: 'dialogs',
-  reducerPath: `${STATE_PREFIX}/dialogs`,
+  name: `${STATE_PREFIX}/dialogs`,
   initialState,
 
   reducers: {
