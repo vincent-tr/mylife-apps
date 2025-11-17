@@ -23,7 +23,7 @@ const NoteTable = () => {
     <div className={classes.container}>
       <Table size='small' stickyHeader>
         <TableBody>
-          {nodes.sortBy(device => findPowerMeasure(device._id, measures)).reverse().map(device => (
+          {nodes.slice().sort((a, b) => findPowerMeasure(b._id, measures) - findPowerMeasure(a._id, measures)).map(device => (
             <TableRow key={device._id}>
               <TableCell><Ratio deviceId={device._id} /></TableCell>
               <TableCell><Typography>{device.display}</Typography></TableCell>

@@ -33,7 +33,7 @@ const Stats: React.FunctionComponent = () => {
   );
 
   useEffect(() => {
-    actions.fetchValues(criteria.type, criteria.date, criteria.devices.toArray());
+    actions.fetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices.toArray() });
   }, [criteria]);
 
   return (
