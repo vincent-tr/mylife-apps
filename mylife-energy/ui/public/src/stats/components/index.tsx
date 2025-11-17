@@ -1,7 +1,9 @@
 import React, { useReducer, useEffect } from 'react';
 import immutable from 'immutable';
 import { useActions, useLifecycle } from 'mylife-tools-ui';
-import { StatsType, fetchValues, enter, leave } from '../actions';
+import { enter, leave } from '../actions';
+import { fetchValues } from '../store';
+import { StatsType } from '../types';
 import CriteriaSelector, { Criteria } from './criteria-selector';
 import Chart from './chart';
 import { makeStyles } from '@mui/material';
