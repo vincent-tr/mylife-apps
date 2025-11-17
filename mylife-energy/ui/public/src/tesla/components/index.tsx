@@ -9,8 +9,7 @@ import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../s
 import icons from '../../common/icons';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
-import { makeStyles, Typography, Divider, Tooltip, IconButton, SvgIcon } from '@mui/material';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
+import { makeStyles, Typography, Divider, Tooltip, IconButton, SvgIcon, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 const useStyles = makeStyles(theme => ({
   buttons: {
@@ -107,14 +106,14 @@ const Tesla: React.FunctionComponent = () => {
                 </Tooltip>
               </ToggleButton>
 
-            </ToggleButtonGroup>
+            </StyledToggleButtonGroup>
 
             <IconButton onClick={showParameters}>
               <Tooltip title='Paramètres'>
                 <icons.actions.Settings fontSize='large'/>
               </Tooltip>
             </IconButton>
-          </div>
+          </StyledButtons>
 
           <ChargeStatus current={state.chargingCurrent} power={state.chargingPower} />
         </Part>
