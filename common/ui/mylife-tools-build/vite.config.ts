@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { defineConfig, loadEnv, UserConfigExport } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ command, mode }) => {
   const { VITE_WEB_PORT, VITE_WSTARGET_PORT } = loadEnv(mode, process.cwd(), '');
@@ -28,12 +29,12 @@ export default defineConfig(({ command, mode }) => {
         treeshake: false 
       }
     },
-    plugins: [ fixReactVirtualized() ],
+    plugins: [ react() ],
   };
 
   return config;
 });
-
+/*
 // https://github.com/uber/baseweb/issues/4129
 function fixReactVirtualized() {
   return {
@@ -57,3 +58,4 @@ function fixReactVirtualized() {
     fs.writeFileSync(absPath, modified);
   }
 }
+*/
