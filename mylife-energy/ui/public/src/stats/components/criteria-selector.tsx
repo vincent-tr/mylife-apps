@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import immutable from 'immutable';
-import { StatsType } from '../actions';
+import { StatsType } from '../types';
 import DeviceList from './device-list';
 import TypeList from './type-list';
 import DatePicker from './date-picker';

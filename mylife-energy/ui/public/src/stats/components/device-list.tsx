@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
-import immutable from 'immutable';
-import { useSelector } from 'react-redux';
-import { getDevicesView } from '../selectors';
 import { Select, Input, MenuItem, Checkbox, ListItemText } from '@mui/material';
+import { useSelector } from 'react-redux';
+import immutable from 'immutable';
+import { getDevicesView } from '../store';
 
 type DeviceMap = { [deviceId: string]: string };
 

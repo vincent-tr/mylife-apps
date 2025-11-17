@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import * as chart from '@latticejs/mui-recharts';
 import { useChartColors } from 'mylife-tools-ui';
 import { fr } from 'date-fns/locale';
-import { StatsType } from '../actions';
-import { getChartData, getSensors, TimestampData } from '../selectors';
+import { StatsType, TimestampData } from '../types';
+import { getChartData, getSensors } from '../store';
 
 const Chart: React.FunctionComponent<{ className?: string; type: StatsType}> = ({ className, type }) => {
   const data = useSelector(getChartData);

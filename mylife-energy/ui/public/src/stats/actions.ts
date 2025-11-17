@@ -1,31 +1,6 @@
-import { createAction } from '@reduxjs/toolkit';
-import { io, views } from 'mylife-tools-ui';
-import actionTypes, { SetValues } from './types';
+import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
-
-
-const local = {
-  setValues: createAction<SetValues>(actionTypes.SET_VALUES),
-};
-
-export enum StatsType {
-	Day = 1,
-	Month,
-	Year,
-};
-
-export const fetchValues = (type: StatsType, timestamp: Date, sensors: string[]) => async (dispatch) => {
-  const values: SetValues = await dispatch(io.call({
-    service: 'stats',
-    method: 'getValues',
-    type,
-    timestamp,
-    sensors,
-    timeout: 60000 // can be slower for now as we request long db queries
-  }));
-
-  dispatch(local.setValues(values));
-};
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const devicesViewRef = new views.ViewReference({
   uid: viewUids.DEVICES,
@@ -33,10 +8,10 @@ const devicesViewRef = new views.ViewReference({
   method: 'notifyDevices'
 });
 
-export const enter = () => async (dispatch) => {
+export const enter = createAsyncThunk('stats/enter', async () => {
   await devicesViewRef.attach();
-};
+});
 
-export const leave = () => async (dispatch) => {
+export const leave = createAsyncThunk('stats/leave', async () => {
   await devicesViewRef.detach();
-};
+});

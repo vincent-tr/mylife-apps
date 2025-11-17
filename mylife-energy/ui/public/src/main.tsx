@@ -1,6 +1,6 @@
 import React from 'react';
 import { services } from 'mylife-tools-ui';
-import * as reducers from './reducers';
+import statsReducer from './stats/store';
 import metadataDefintions from '../../shared/metadata';
 
 import icons from './common/icons';
@@ -8,6 +8,10 @@ import Home from './home/components';
 import Live from './live/components';
 import Tesla from './tesla/components';
 import Stats from './stats/components';
+
+const reducers = {
+  stats: statsReducer
+};
 
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);
