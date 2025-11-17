@@ -106,14 +106,14 @@ const Tesla: React.FunctionComponent = () => {
                 </Tooltip>
               </ToggleButton>
 
-            </StyledToggleButtonGroup>
+            </ToggleButtonGroup>
 
             <IconButton onClick={showParameters}>
               <Tooltip title='Paramètres'>
                 <icons.actions.Settings fontSize='large'/>
               </Tooltip>
             </IconButton>
-          </StyledButtons>
+          </div>
 
           <ChargeStatus current={state.chargingCurrent} power={state.chargingPower} />
         </Part>
