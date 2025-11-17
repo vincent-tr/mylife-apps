@@ -4,7 +4,7 @@ import { dialogs, useAction, fireAsync } from 'mylife-tools-ui';
 import { getState } from '../selectors';
 import { setParameters } from '../actions';
 import { TeslaState } from '../../../../shared/metadata';
-import { makeStyles, Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Button } from '@mui/material';
+import { styled, Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Button } from '@mui/material';
 
 type FIXME_any = any;
 
@@ -17,14 +17,11 @@ interface Parameters {
 
 type ProceedCallback = (arg: { result: 'ok' | 'cancel', parameters?: Parameters }) => void;
 
-const useStyles = makeStyles(theme => ({
-  parameterTitle: {
-    marginLeft: theme.spacing(2),
-  },
+const ParameterTitle = styled(Typography)(({ theme }) => ({
+  marginLeft: theme.spacing(2),
 }));
 
 const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: ProceedCallback; parameters: Parameters; }> = ({ show, proceed, parameters }) => {
-  const classes = useStyles();
   const [values, setValues] = useState(parameters);
   useEffect(() => setValues(parameters), [parameters]);
 
@@ -46,7 +43,7 @@ const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: Procee
 
               <>
                 <Grid size={6}>
-                  <Typography className={classes.parameterTitle}>{'Limite de charge (%)'}</Typography>
+                  <ParameterTitle>{'Limite de charge (%)'}</ParameterTitle>
                 </Grid>
 
                 <Grid size={6}>
@@ -62,7 +59,7 @@ const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: Procee
 
               <>
                 <Grid size={6}>
-                  <Typography className={classes.parameterTitle}>{'Limite de charge rapide (%)'}</Typography>
+                  <ParameterTitle>{'Limite de charge rapide (%)'}</ParameterTitle>
                 </Grid>
 
                 <Grid size={6}>
@@ -72,7 +69,7 @@ const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: Procee
 
               <>
                 <Grid size={6}>
-                  <Typography className={classes.parameterTitle}>{'Limite de charge complète (%)'}</Typography>
+                  <ParameterTitle>{'Limite de charge complète (%)'}</ParameterTitle>
                 </Grid>
 
                 <Grid size={6}>
@@ -82,7 +79,7 @@ const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: Procee
 
               <>
                 <Grid size={6}>
-                  <Typography className={classes.parameterTitle}>{'Courant de charge rapide (A)'}</Typography>
+                  <ParameterTitle>{'Courant de charge rapide (A)'}</ParameterTitle>
                 </Grid>
 
                 <Grid size={6}>
