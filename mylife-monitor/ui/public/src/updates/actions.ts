@@ -1,3 +1,4 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
 import { resetCriteria } from './store';
@@ -8,11 +9,11 @@ const viewRef = new views.ViewReference({
   method: 'notify'
 });
 
-export const enter = () => async () => {
+export const enter = createAsyncThunk('updates/enter', async () => {
   await viewRef.attach();
-};
+});
 
-export const leave = () => async (dispatch) => {
+export const leave = createAsyncThunk('updates/leave', async ({}, api) => {
   await viewRef.detach();
-  dispatch(resetCriteria(null));
-};
+  api.dispatch(resetCriteria(null));
+});
