@@ -3,7 +3,7 @@ export { getView } from './store';
 export { ViewReference, SharedViewReference, createOrUpdateView, deleteView } from './actions';
 export { useSharedView, createViewSelector } from './behaviors';
 
-export { View, Entity };
+export type { View, Entity };
 
 export function filter<TEntity extends Entity>(view: View<TEntity>, predicate: (item: TEntity) => boolean): View<TEntity> {
   const filteredView: View<TEntity> = {};
