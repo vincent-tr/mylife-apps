@@ -1,15 +1,22 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import builtinMiddlewares from './middlewares';
+import { createLogger } from 'redux-logger';
 
 import dialogs from '../modules/dialogs/store';
-import routing from '../modules/routing/store';
-import io from '../modules/io/store';
+import { middleware as downloadMiddleware } from '../modules/download/store';
+import routing, { middleware as routingMiddlerware } from '../modules/routing/store';
+import io, { middleware as ioMiddleware } from '../modules/io/store';
 import views from '../modules/views/store';
 import { STATE_PREFIX } from '../constants/defines';
 
+const middlewares = [downloadMiddleware, routingMiddlerware, ioMiddleware];
+
+if (!import.meta.env.PROD) {
+  middlewares.push(createLogger({ duration: true, collapsed: () => true }));
+}
+
 let store;
 
-export function initStore(reducers, ...middlewares) {
+export function initStore(reducers) {
   const reducer = combineReducers({
     ...reducers,
     [`${STATE_PREFIX}/dialogs`]: dialogs,
@@ -21,7 +28,7 @@ export function initStore(reducers, ...middlewares) {
   store = configureStore(
     {
       reducer,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares, ...builtinMiddlewares)
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares)
     }
   );
 }
