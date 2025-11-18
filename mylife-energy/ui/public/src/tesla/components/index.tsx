@@ -1,4 +1,5 @@
 import BatteryGauge from 'react-battery-gauge';
+import { styled, Typography, Divider, Tooltip, IconButton, SvgIcon, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import humanizeDuration from 'humanize-duration';
 import React, { PropsWithChildren } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,55 +10,13 @@ import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../s
 import icons from '../../common/icons';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
-import { makeStyles, Typography, Divider, Tooltip, IconButton, SvgIcon, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  buttons: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  buttonGroup: {
-    margin: theme.spacing(2),
-  },
-  success: {
-    color: theme.palette.success.main,
-  },
-  warning: {
-    color: theme.palette.warning.main,
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
-  section: {
-    padding: theme.spacing(2),
-  },
-  sectionTitle: {
-    margin: theme.spacing(2),
-  },
-  part: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    margin: theme.spacing(1),
-  },
-  footer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  spacer: {
-    height: 1,
-    width: theme.spacing(3),
-  }
-}));
-
-const Tesla: React.FunctionComponent = () => {
+const Tesla: React.FC = () => {
   useViewLifecycle();
 
   const state = useSelector(state => getState(state));
   const actions = useActions({ setMode });
   const showParameters = useParameters();
-
-  const classes = useStyles();
 
   if (!state) {
     return null;
@@ -86,8 +45,8 @@ const Tesla: React.FunctionComponent = () => {
       <Section title={'Charge'}>
 
         <Part>
-          <div className={classes.buttons}>
-            <ToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)} className={classes.buttonGroup}>
+          <ButtonsContainer>
+            <StyledToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)}>
               <ToggleButton value={TeslaMode.Off}>
                 <Tooltip title='Eteint'>
                   <icons.actions.Off fontSize='large'/>
@@ -106,14 +65,14 @@ const Tesla: React.FunctionComponent = () => {
                 </Tooltip>
               </ToggleButton>
 
-            </ToggleButtonGroup>
+            </StyledToggleButtonGroup>
 
             <IconButton onClick={showParameters}>
               <Tooltip title='Paramètres'>
                 <icons.actions.Settings fontSize='large'/>
               </Tooltip>
             </IconButton>
-          </div>
+          </ButtonsContainer>
 
           <ChargeStatus current={state.chargingCurrent} power={state.chargingPower} />
         </Part>
@@ -159,88 +118,123 @@ function useViewLifecycle() {
   useLifecycle(actions.enter, actions.leave);
 }
 
-const Section: React.FunctionComponent<PropsWithChildren<{ title: string; }>> = ({ title, children}) => {
-  const classes = useStyles();
+const ButtonsContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+}));
 
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  margin: theme.spacing(2),
+}));
+
+const SectionTitle = styled(Typography)(({ theme }) => ({
+  margin: theme.spacing(2),
+}));
+
+const SectionRoot = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
+}));
+
+const Section: React.FC<PropsWithChildren<{ title: string; }>> = ({ title, children}) => {
   return (
-    <div className={classes.section}>
-      <Typography variant='h1' className={classes.sectionTitle}>
+    <SectionRoot>
+      <SectionTitle variant='h1'>
         {title}
-      </Typography>
+      </SectionTitle>
 
       {children}
-    </div>
+    </SectionRoot>
   );
 };
 
-const Part: React.FunctionComponent<PropsWithChildren<{ footer?: boolean; }>> = ({ footer = false, children }) => {
-  const classes = useStyles();
+const PartFooter = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+}));
 
+const PartContainer = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    margin: theme.spacing(1),
+}));
+
+const Part: React.FC<PropsWithChildren<{ footer?: boolean; }>> = ({ footer = false, children }) => {
   const content = footer ? (
-    <div className={classes.footer}>
+    <PartFooter>
       {children}
-    </div>
+    </PartFooter>
   ) : children;
 
   return (
-    <div className={classes.part}>
+    <PartContainer>
       {content}
-    </div>
+    </PartContainer>
   );
 };
 
-const Spacer: React.FunctionComponent = () => {
-  const classes = useStyles();
+const Spacer = styled('div')(({ theme }) => ({
+  height: 1,
+  width: theme.spacing(3),
+}));
 
-  return (
-    <div className={classes.spacer} />
-  )
-}
+const StatusUnknownIcon = styled(icons.deviceStatus.Unknown)(({ theme }) => ({
+  color: theme.palette.warning.main,
+}));
 
-const DeviceStatus: React.FunctionComponent<{ value: TeslaDeviceStatus; }> = ({ value }) => {
-  const classes = useStyles();
+const StatusUnknown: React.FC = () => (
+  <Tooltip title={'Inconnu'}>
+    <StatusUnknownIcon />
+  </Tooltip>
+);
 
-  let label: string;
-  let Icon: typeof SvgIcon;
-  let className: string = null;
+const StatusOnlineIcon = styled(icons.deviceStatus.Online)(({ theme }) => ({
+  color: theme.palette.success.main,
+}));
+
+const StatusOnline: React.FC = () => (
+  <Tooltip title={'En ligne'}>
+    <StatusOnlineIcon />
+  </Tooltip>
+);
+
+const StatusOfflineIcon = styled(icons.deviceStatus.Offline)(({ theme }) => ({
+  color: theme.palette.success.main,
+}));
+
+const StatusOffline: React.FC = () => (
+  <Tooltip title={'Hors ligne'}>
+    <StatusOfflineIcon />
+  </Tooltip>
+);
+
+const StatusFailureIcon = styled(icons.deviceStatus.Failure)(({ theme }) => ({
+  color: theme.palette.error.main,
+}));
+
+const StatusFailure: React.FC = () => (
+  <Tooltip title={'Echec'}>
+    <StatusFailureIcon />
+  </Tooltip>
+);
+
+const DeviceStatus: React.FC<{ value: TeslaDeviceStatus; }> = ({ value }) => {
 
   switch (value) {
   case TeslaDeviceStatus.Unknown:
-    label = 'Inconnu';
-    Icon = icons.deviceStatus.Unknown;
-    className = classes.warning;
-    break;
-
+    return <StatusUnknown />;
   case TeslaDeviceStatus.Online:
-    label = 'En ligne';
-    Icon = icons.deviceStatus.Online;
-    className = classes.success;
-    break;
-
+    return <StatusOnline />;
   case TeslaDeviceStatus.Offline:
-    label = 'Hors ligne';
-    Icon = icons.deviceStatus.Offline;
-    className = classes.success;
-    break;
-
+    return <StatusOffline />;
   case TeslaDeviceStatus.Failure:
-    label = 'Echec';
-    Icon = icons.deviceStatus.Failure;
-    className = classes.error;
-    break;
-
+    return <StatusFailure />;
   default:
     throw new Error(`Unknown status '${value}'`);
   }
-
-  return (
-    <Tooltip title={label}>
-      <Icon className={className} />
-    </Tooltip>
-  );
 };
 
-const ChargeStatus: React.FunctionComponent<{ current: number; power: number; }> = ({ current, power }) => {
+const ChargeStatus: React.FC<{ current: number; power: number; }> = ({ current, power }) => {
   const MAX_CURRENT = 32; // Note: should be fetched from server
 
   if (current <= 0) {
@@ -254,7 +248,7 @@ const ChargeStatus: React.FunctionComponent<{ current: number; power: number; }>
   );
 };
 
-export const BatteryStatus: React.FunctionComponent<{ level: number; }> = ({ level }) => {
+export const BatteryStatus: React.FC<{ level: number; }> = ({ level }) => {
   // TODO: pick from theme
   const COLOR_PRIMARY = '#2196f3';
 
