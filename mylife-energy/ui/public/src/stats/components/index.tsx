@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
+import { styled } from '@mui/material';
 import immutable from 'immutable';
 import { useActions, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
@@ -6,25 +7,20 @@ import { fetchValues } from '../store';
 import { StatsType } from '../types';
 import CriteriaSelector, { Criteria } from './criteria-selector';
 import Chart from './chart';
-import { makeStyles } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    flex: '1 1 auto',
-    minHeight: 0,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  criteria: {
-  },
-  chart: {
-    flex: '1 1 auto',
-  }
-}));
+const Container = styled('div')({
+  flex: '1 1 auto',
+  minHeight: 0,
+  display: 'flex',
+  flexDirection: 'column',
+});
 
-const Stats: React.FunctionComponent = () => {
+const StyledChart = styled(Chart)({
+  flex: '1 1 auto',
+});
+
+const Stats: React.FC = () => {
   useViewLifecycle();
-  const classes = useStyles();
   const actions = useActions({ fetchValues });
 
   const [criteria, onCriteriaChange] = useReducer(
@@ -37,10 +33,10 @@ const Stats: React.FunctionComponent = () => {
   }, [criteria]);
 
   return (
-    <div className={classes.container}>
-      <CriteriaSelector className={classes.criteria} criteria={criteria} onChange={onCriteriaChange} />
-      <Chart className={classes.chart} type={criteria.type} />
-    </div>
+    <Container>
+      <CriteriaSelector criteria={criteria} onChange={onCriteriaChange} />
+      <StyledChart type={criteria.type} />
+    </Container>
   );
 };
 

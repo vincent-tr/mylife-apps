@@ -118,10 +118,10 @@ function useViewLifecycle() {
   useLifecycle(actions.enter, actions.leave);
 }
 
-const ButtonsContainer = styled('div')(({ theme }) => ({
+const ButtonsContainer = styled('div')({
   display: 'flex',
   alignItems: 'center',
-}));
+});
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(2),
@@ -147,10 +147,10 @@ const Section: React.FC<PropsWithChildren<{ title: string; }>> = ({ title, child
   );
 };
 
-const PartFooter = styled('div')(({ theme }) => ({
+const PartFooter = styled('div')({
     display: 'flex',
     alignItems: 'center',
-}));
+});
 
 const PartContainer = styled('div')(({ theme }) => ({
     display: 'flex',

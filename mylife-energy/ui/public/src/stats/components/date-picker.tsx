@@ -1,39 +1,32 @@
 import React from 'react';
-import clsx from 'clsx';
 import { StatsType } from '../types';
 import icons from '../../common/icons';
-import { makeStyles, IconButton } from '@mui/material';
+import { styled, IconButton } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 
 export interface DatePickerProps {
-  className?: string;
   type: StatsType;
   value: Date;
   onChange: (newValue: Date) => void;
 }
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  picker: {
-    flex: '1 1 auto',
-  }
-}));
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-end',
+});
 
-const DatePicker: React.FunctionComponent<DatePickerProps> = ({ className, type, value, onChange }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ type, value, onChange }) => {
   switch (type) {
 
   case StatsType.Day:
-    return (<DayPicker className={className} value={value} onChange={onChange} />);
+    return (<DayPicker value={value} onChange={onChange} />);
 
   case StatsType.Month:
-    return (<MonthPicker className={className} value={value} onChange={onChange} />);
+    return (<MonthPicker value={value} onChange={onChange} />);
 
   case StatsType.Year:
-    return (<YearPicker className={className} value={value} onChange={onChange} />);
+    return (<YearPicker value={value} onChange={onChange} />);
 
   default:
     throw new Error(`Unknown type: ${type}`);
@@ -42,56 +35,51 @@ const DatePicker: React.FunctionComponent<DatePickerProps> = ({ className, type,
 
 export default DatePicker;
 
-const DayPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ className, value, onChange }) => {
-  const classes = useStyles();
-  return (
-    <div className={clsx(classes.container, className)}>
-      <IconButton onClick={() => onChange(addDay(value, -1))}>
-        <icons.actions.Prev />
-      </IconButton>
+const StyledPicker = styled(MuiDatePicker)(({ theme }) => ({
+  flex: '1 1 auto',
+}));
 
-      <MuiDatePicker className={classes.picker} views={["year", "month", "date"]} value={value} onChange={onChange} />
-      
-      <IconButton onClick={() => onChange(addDay(value, 1))}>
-        <icons.actions.Next />
-      </IconButton>
-    </div>
-  );
-};
+const DayPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => (
+  <Container>
+    <IconButton onClick={() => onChange(addDay(value, -1))}>
+      <icons.actions.Prev />
+    </IconButton>
 
-const MonthPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ className, value, onChange }) => {
-  const classes = useStyles();
-  return (
-    <div className={clsx(classes.container, className)}>
-      <IconButton onClick={() => onChange(addMonth(value, -1))}>
-        <icons.actions.Prev />
-      </IconButton>
+    <StyledPicker views={["year", "month", "day"]} value={value} onChange={onChange} />
+    
+    <IconButton onClick={() => onChange(addDay(value, 1))}>
+      <icons.actions.Next />
+    </IconButton>
+  </Container>
+);
 
-      <MuiDatePicker className={classes.picker} views={["year", "month"]} value={value} onChange={onChange} />
+const MonthPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => (
+  <Container>
+    <IconButton onClick={() => onChange(addMonth(value, -1))}>
+      <icons.actions.Prev />
+    </IconButton>
 
-      <IconButton onClick={() => onChange(addMonth(value, 1))}>
-        <icons.actions.Next />
-      </IconButton>
-    </div>
-  );
-};
+    <StyledPicker views={["year", "month"]} value={value} onChange={onChange} />
 
-const YearPicker: React.FunctionComponent<Omit<DatePickerProps, 'type'>> = ({ className, value, onChange }) => {
-  const classes = useStyles();
-  return (
-    <div className={clsx(classes.container, className)}>
-      <IconButton onClick={() => onChange(addYear(value, -1))}>
-        <icons.actions.Prev />
-      </IconButton>
+    <IconButton onClick={() => onChange(addMonth(value, 1))}>
+      <icons.actions.Next />
+    </IconButton>
+  </Container>
+);
 
-      <MuiDatePicker className={classes.picker} views={["year"]} value={value} onChange={onChange} />
+const YearPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => (
+  <Container>
+    <IconButton onClick={() => onChange(addYear(value, -1))}>
+      <icons.actions.Prev />
+    </IconButton>
 
-      <IconButton onClick={() => onChange(addYear(value, 1))}>
-        <icons.actions.Next />
-      </IconButton>
-    </div>
-  );
-};
+    <StyledPicker views={["year"]} value={value} onChange={onChange} />
+
+    <IconButton onClick={() => onChange(addYear(value, 1))}>
+      <icons.actions.Next />
+    </IconButton>
+  </Container>
+);
 
 function addDay(date: Date, count: number) {
   const newDate = new Date(date);
