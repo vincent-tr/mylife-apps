@@ -5,26 +5,40 @@ import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getMeasureView, getDevice } from '../selectors';
 import { Measure, LiveDevice } from '../../../../shared/metadata';
-import { makeStyles, Typography, Badge, Tooltip } from '@mui/material';
+import { Typography, Badge, Tooltip, styled, Theme } from '@mui/material';
 
-const useMeasureStyles = makeStyles(theme => ({
-  computed: {
-    height: 10,
-    width: 10,
-  },
-  good: {
-    color: theme.palette.success.main,
-  },
-  bad: {
-    color: theme.palette.error.main,
-  },
-  value: {
-    minWidth: 60,
-  },
+type Flavor = 'good' | 'bad' | null;
+
+interface ValueProps {
+  flavor: Flavor;
+}
+
+const flavorColor = (theme: Theme, flavor: Flavor) => {
+  const colors = {
+    good: theme.palette.success.main,
+    bad: theme.palette.error.main,
+    null: null,
+  };
+
+  return colors[flavor];
+};
+
+const Value = styled(Typography)<ValueProps>(({ theme, flavor }) => ({
+  minWidth: 60,
+  color: flavorColor(theme, flavor),
+}));
+
+interface ComputedIconProps {
+  flavor: Flavor;
+}
+
+const ComputedIcon = styled(icons.devices.Computed)<ComputedIconProps>(({ theme, flavor }) => ({
+  height: 10,
+  width: 10,
+  color: flavorColor(theme, flavor),
 }));
 
 export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKeys: string[] }> = ({ deviceId, sensorKeys }) => {
-  const classes = useMeasureStyles();
   const device = useSelector(state => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
@@ -37,15 +51,15 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKe
 
   }
 
-  let flavor: string = null;
+  let flavor: Flavor = null;
   let measureValue = sensorData[0].measureValue;
 
   switch(device.type) {
     case 'main': {
       if (measureValue > 0) {
-        flavor = classes.bad;
+        flavor = 'bad';
       } else if (measureValue < 0) {
-        flavor = classes.good;
+        flavor = 'good';
         measureValue = -measureValue;
       }
 
@@ -54,7 +68,7 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKe
 
     case 'solar': {
       if (measureValue > 0) {
-        flavor = classes.good;
+        flavor = 'good';
       }
 
       break;
@@ -62,13 +76,13 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKe
   }
 
   const value = (
-    <Typography className={clsx(flavor, classes.value)}>
+    <Value flavor={flavor}>
       {sensorData.map(({ value }) => value).join(' / ')}
-    </Typography>
+    </Value>
   );
 
   const wrapped = device.computed ? (
-    <Badge badgeContent={<icons.devices.Computed className={clsx(classes.computed, flavor)} />}>
+    <Badge badgeContent={<ComputedIcon flavor={flavor} />}>
       {value}
     </Badge>
   ) : (
@@ -82,31 +96,29 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKe
   );
 }
 
-const useMeasuretooltipStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  computed: {
-    fontStyle: 'italic',
-  }
+const TooltipContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+}));
+
+const TooltipComputedLabel = styled(Typography)(({ theme }) => ({
+  fontStyle: 'italic',
 }));
 
 const DeviceMeasureTooltip: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
-  const classes = useMeasuretooltipStyles();
   const device = useSelector(state => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
   return (
-    <div className={classes.container}>
+    <TooltipContainer>
       {getSensorData(device, measures).map(({ display, value }, index) => (
         <Typography variant='body2' key={index}>{`${display} : ${value}`}</Typography>
       ))}
       <Typography variant='body2'>{`Mis à jour : ${getLastUpdate(device, measures).toLocaleString()}`}</Typography>
       {device.computed && (
-        <Typography variant='body2' className={classes.computed}>{`(calculé)`}</Typography>
+        <TooltipComputedLabel variant='body2'>{`(calculé)`}</TooltipComputedLabel>
       )}
-    </div>
+    </TooltipContainer>
   );
 };
 
