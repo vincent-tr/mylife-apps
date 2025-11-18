@@ -130,7 +130,7 @@ function getSensorData(device, measures, sensorKeys: string[] = null) {
       continue;
     }
 
-    const measure = measures.get(`${device._id}-${sensor.key}`);
+    const measure = measures[`${device._id}-${sensor.key}`];
     if (!measure) {
       continue;
     }
@@ -144,7 +144,7 @@ function getSensorData(device, measures, sensorKeys: string[] = null) {
 function getLastUpdate(device, measures) {
   let date = new Date();
   for (const sensor of device.sensors) {
-    const measure = measures.get(`${device._id}-${sensor.key}`);
+    const measure = measures[`${device._id}-${sensor.key}`];
     if (!measure) {
       continue
     }
