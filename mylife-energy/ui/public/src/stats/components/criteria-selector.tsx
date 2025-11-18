@@ -1,5 +1,4 @@
 import React from 'react';
-import immutable from 'immutable';
 import { StatsType } from '../types';
 import DeviceList from './device-list';
 import TypeList from './type-list';
@@ -9,7 +8,7 @@ import { styled } from '@mui/material';
 export interface Criteria {
   type: StatsType;
   date: Date;
-  devices: immutable.Set<string>;
+  devices: string[];
 }
 
 const Container = styled('div')<{ className?: string }>(({ theme }) => ({

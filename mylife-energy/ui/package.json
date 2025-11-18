@@ -16,7 +16,6 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "humanize-duration": "^3.27.2",
-    "immutable": "^5.1.4",
     "mylife-tools-common": "*",
     "mylife-tools-ui": "*",
     "react": "^19.2.0",

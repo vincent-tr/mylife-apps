@@ -1,27 +1,25 @@
 import React, { useCallback, useMemo } from 'react';
 import { Select, Input, MenuItem, Checkbox, ListItemText } from '@mui/material';
 import { useSelector } from 'react-redux';
-import immutable from 'immutable';
 import { getDevicesView } from '../store';
 
 type DeviceMap = { [deviceId: string]: string };
 
 export interface DeviceListProps {
   className?: string;
-  value: immutable.Set<string>;
-  onChange: (newValue: immutable.Set<string>) => void;
+  value: string[];
+  onChange: (newValue: string[]) => void;
 }
 
 const DeviceList: React.FunctionComponent<DeviceListProps> = ({ className, value, onChange }) => {
   const devices = useDevices();
-  const handleChange = event => onChange(immutable.Set(event.target.value));
-  const selectorValue = useMemo(() => value.toArray(), [value]);
+  const handleChange = event => onChange(event.target.value);
   const renderSelectorValue = useCallback(createSelectorValueRenderer(devices), [devices]);
 
   return (
     <Select
       multiple
-      value={selectorValue}
+      value={value}
       onChange={handleChange}
       input={<Input fullWidth />}
       renderValue={renderSelectorValue}
@@ -29,7 +27,7 @@ const DeviceList: React.FunctionComponent<DeviceListProps> = ({ className, value
     >
       {Object.entries(devices).map(([id, display]) => (
         <MenuItem key={id} value={id}>
-          <Checkbox checked={value.has(id)} />
+          <Checkbox checked={value.includes(id)} />
           <ListItemText primary={display} />
         </MenuItem>
       ))}

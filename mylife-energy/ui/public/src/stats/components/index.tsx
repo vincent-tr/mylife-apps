@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
 import { styled } from '@mui/material';
-import immutable from 'immutable';
 import { useActions, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { fetchValues } from '../store';
@@ -25,11 +24,11 @@ const Stats: React.FC = () => {
 
   const [criteria, onCriteriaChange] = useReducer(
     (criteria: Criteria, props: Partial<Criteria>) => ({ ... criteria, ...props }), 
-    { type: StatsType.Day, date: new Date(), devices: immutable.Set<string>() } as Criteria
+    { type: StatsType.Day, date: new Date(), devices: [] } as Criteria
   );
 
   useEffect(() => {
-    actions.fetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices.toArray() });
+    actions.fetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices });
   }, [criteria]);
 
   return (
