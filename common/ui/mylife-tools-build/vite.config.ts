@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+//import path from 'path';
+//import fs from 'fs';
 import { defineConfig, loadEnv, UserConfigExport } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -12,13 +12,14 @@ export default defineConfig(({ command, mode }) => {
     server: {
       host: true,
       port: parseInt(VITE_WEB_PORT),
+      allowedHosts: true,
       strictPort: true,
       proxy: {
         '/socket.io': {
           target: `ws://localhost:${VITE_WSTARGET_PORT}`,
           ws: true,
         },
-      }
+      },
     },
     build: {
       outDir: '../dist/prod/static',
