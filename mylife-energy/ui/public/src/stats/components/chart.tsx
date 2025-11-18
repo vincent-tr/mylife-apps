@@ -2,13 +2,13 @@ import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { AutoSizer } from 'react-virtualized';
 import { useSelector } from 'react-redux';
-import * as chart from '@latticejs/mui-recharts';
+import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools-ui';
 import { fr } from 'date-fns/locale';
 import { StatsType, TimestampData } from '../types';
 import { getChartData, getSensors } from '../store';
 
-const Chart: React.FunctionComponent<{ className?: string; type: StatsType}> = ({ className, type }) => {
+const Chart: React.FC<{ type: StatsType}> = ({ type }) => {
   const data = useSelector(getChartData);
   const sensors = useSelector(getSensors);
 
@@ -16,19 +16,19 @@ const Chart: React.FunctionComponent<{ className?: string; type: StatsType}> = (
   const colors = useChartColors();
 
   return (
-    <div className={className}>
+    <div>
       <AutoSizer>
         {({ height, width }) => (
-          <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-            <chart.XAxis dataKey={dateFormatter} />
-            <chart.YAxis unit='Wh' />
-            <chart.Tooltip formatter={(value, name, props) => `${value} Wh`}/>
-            <chart.Legend/>
+          <BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
+            <XAxis dataKey={dateFormatter} />
+            <YAxis unit='Wh' />
+            <Tooltip formatter={(value, name, props) => `${value} Wh`}/>
+            <Legend/>
             {sensors.map((sensor, index) => (
-              <chart.Bar key={sensor._id} stackId={sensor._id} dataKey={item => Math.round(item.measures[sensor._id])} name={sensor.display} fill={colors[index % colors.length]} />
+              <Bar key={sensor._id} stackId={sensor._id} dataKey={item => Math.round(item.measures[sensor._id])} name={sensor.display} fill={colors[index % colors.length]} />
             ))}
 
-          </chart.BarChart>
+          </BarChart>
         )}
       </AutoSizer>
     </div>
