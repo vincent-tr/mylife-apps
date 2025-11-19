@@ -29,19 +29,17 @@ export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelect
 					criteria,
 				})
 			);
+		} else {
+			const newViewId = await dispatch(
+				io.call({
+					service,
+					method,
+					criteria,
+				})
+			);
 
-			return;
+			dispatch(setViewAction(newViewId));
 		}
-
-		const newViewId = await dispatch(
-			io.call({
-				service,
-				method,
-				criteria,
-			})
-		);
-
-		dispatch(setViewAction(newViewId));
 	};
 }
 
