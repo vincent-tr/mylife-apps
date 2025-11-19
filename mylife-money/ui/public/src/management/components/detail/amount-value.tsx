@@ -1,28 +1,26 @@
 import React, { FunctionComponent } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { colors, Typography, makeStyles } from '@mui/material';
+import { colors, Typography, styled } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  base: {
-    width: 100,
-    paddingLeft: theme.spacing(1)
-  },
-  debit: {
-    backgroundColor: colors.red[100]
-  },
-  credit: {
-    backgroundColor: colors.lightGreen[100]
-  },
+type AmountType = 'debit' | 'credit';
+
+const COLORS = {
+  'debit': colors.red[100],
+  'credit': colors.lightGreen[100],
+};
+
+const AmountTypography = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'amountType',
+})<{ amountType: AmountType }>(({ amountType, theme }) => ({
+  width: 100,
+  paddingLeft: theme.spacing(1),
+  backgroundColor: COLORS[amountType],
 }));
 
 const AmountValue : FunctionComponent<AmountValueProps> = ({ className, value }) => {
-  const classes = useStyles();
-
   return (
-    <Typography className={clsx(className, classes.base, value < 0 ? classes.debit : classes.credit)}>
+    <AmountTypography amountType={value < 0 ? 'debit' : 'credit'} className={className}>
       {value}
-    </Typography>
+    </AmountTypography>
   );
 };
 

@@ -4,7 +4,7 @@ import actionTypes from './action-types';
 import { getCriteria, getSelectedGroupId, getSelectedOperations, getOperationIds, getOperationViewId, getOperationIdDetail } from './selectors';
 
 const local = {
-  showSuccess: message => dialogs.notificationShow({ message, type: dialogs.notificationShow.types.success }),
+  showSuccess: message => dialogs.showNotification({ message, type: 'success' }),
   setOperationView: createAction(actionTypes.SET_OPERATION_VIEW),
   setCriteria: createAction(actionTypes.SET_CRITERIA),
   selectOperations: createAction(actionTypes.SELECT_OPERATIONS),
