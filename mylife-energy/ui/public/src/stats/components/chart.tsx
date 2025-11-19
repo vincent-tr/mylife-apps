@@ -19,7 +19,7 @@ const Chart: React.FC<{ className?: string; type: StatsType}> = ({ className, ty
     <div className={className}>
       <AutoSizer>
         {({ height, width }) => (
-          <BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
+          <BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width} style={{ fontFamily: 'Roboto, sans-serif' }}>
             <XAxis dataKey={dateFormatter} />
             <YAxis unit='Wh' />
             <Tooltip formatter={(value, name, props) => `${value} Wh`}/>
