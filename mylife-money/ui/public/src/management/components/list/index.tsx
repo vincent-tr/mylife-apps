@@ -17,7 +17,11 @@ const useStyles = makeStyles({
   }
 });
 
-const ListContainer = ({ className }) => {
+interface ListContainerProps {
+  className?: string;
+}
+
+const ListContainer: React.FC<ListContainerProps> = ({ className }) => {
   const classes = useStyles();
 
   return (
@@ -28,10 +32,6 @@ const ListContainer = ({ className }) => {
       <Footer />
     </Paper>
   );
-};
-
-ListContainer.propTypes = {
-  className: PropTypes.string
 };
 
 export default ListContainer;

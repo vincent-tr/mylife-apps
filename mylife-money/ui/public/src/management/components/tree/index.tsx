@@ -18,7 +18,11 @@ const useStyles = makeStyles({
   },
 });
 
-const TreeContainer = ({ className }) => {
+interface TreeContainerProps {
+  className?: string;
+}
+
+const TreeContainer: React.FC<TreeContainerProps> = ({ className }) => {
   const classes = useStyles();
 
   return (
@@ -30,8 +34,5 @@ const TreeContainer = ({ className }) => {
   );
 };
 
-TreeContainer.propTypes = {
-  className: PropTypes.string
-};
 
 export default TreeContainer;

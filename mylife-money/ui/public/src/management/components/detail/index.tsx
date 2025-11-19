@@ -46,7 +46,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DetailContainer = ({ className }) => {
+interface DetailContainerProps {
+  className?: string;
+}
+
+const DetailContainer: React.FC<DetailContainerProps> = ({ className }) => {
   const classes = useStyles();
   const { operation, account, groupStack, close, onOpenGroup, onSetNote, onMove } = useConnect();
 
@@ -87,10 +91,6 @@ const DetailContainer = ({ className }) => {
       </div>
     </Paper>
   );
-};
-
-DetailContainer.propTypes = {
-  className: PropTypes.string
 };
 
 export default DetailContainer;
