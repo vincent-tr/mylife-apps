@@ -7,5 +7,5 @@ export const startBot = (id: string) => async (dispatch) => {
     id
   }));
 
-  dispatch(dialogs.notificationShow({ message: 'Robot démarré', type: dialogs.notificationShow.types.success }));
+  dispatch(dialogs.showNotification({ message: 'Robot démarré', type: 'success' }));
 };

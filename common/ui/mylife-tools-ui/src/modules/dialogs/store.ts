@@ -56,7 +56,7 @@ let notificationIdGenerator = 0;
 
 export const showNotification = createAsyncThunk(
   `${STATE_PREFIX}/dialogs/showNotification`,
-  async({message, type = 'info', dismissAfter = 5000}: { message: string, type: NotificationType, dismissAfter: number }, api) => {
+  async({message, type = 'info', dismissAfter = 5000}: { message: string, type?: NotificationType, dismissAfter?: number }, api) => {
     const id = ++notificationIdGenerator;
     api.dispatch(local.show({ message, type, id }));
 
