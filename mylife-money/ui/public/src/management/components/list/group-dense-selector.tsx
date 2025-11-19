@@ -7,21 +7,20 @@ import { getSelectedGroupId } from '../../selectors';
 import { getGroup } from '../../../reference/selectors';
 import { selectGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Tooltip, Typography, makeStyles } from '@mui/material';
+import { Tooltip, Typography, styled } from '@mui/material';
 
 type FIXME_any = any;
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  typography: {
-    flex: '1 1 auto',
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
+const Label = styled(Typography)(({ theme }) => ({
+  flex: '1 1 auto',
+  marginLeft: theme.spacing(1),
+  marginRight: theme.spacing(1),
 }));
 
 const useConnect = () => {
@@ -40,12 +39,11 @@ interface GroupDenseSelectorProps {
   className?: string;
 }
 
-const GroupDenseSelector = ({ className, ...props }: GroupDenseSelectorProps) => {
+const GroupDenseSelector: React.FC<GroupDenseSelectorProps> = ({ className, ...props }) => {
   const { selectedGroup, onSelect } = useConnect();
-  const classes = useStyles();
 
   return (
-    <div className={clsx(className, classes.container)} {...props}>
+    <Container className={className} {...props}>
       <Tooltip title={'Déplacer l\'opération'}>
         <div>
           <GroupSelectorButton onSelect={onSelect}>
@@ -53,15 +51,11 @@ const GroupDenseSelector = ({ className, ...props }: GroupDenseSelectorProps) =>
           </GroupSelectorButton>
         </div>
       </Tooltip>
-      <Typography className={classes.typography}>
+      <Label>
         {selectedGroup.display}
-      </Typography>
-    </div>
+      </Label>
+    </Container>
   );
-};
-
-GroupDenseSelector.propTypes = {
-  className: PropTypes.string,
 };
 
 export default GroupDenseSelector;

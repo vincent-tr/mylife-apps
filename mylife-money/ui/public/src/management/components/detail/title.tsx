@@ -1,23 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
-import { Tooltip, IconButton, Typography, makeStyles } from '@mui/material';
+import { Tooltip, IconButton, Typography, styled } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  typography: {
-    marginLeft: theme.spacing(2)
-  }
+const Container = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const Label = styled(Typography)(({ theme }) => ({
+  marginLeft: theme.spacing(2)
 }));
 
 const Title = ({ onClose }) => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.container}>
+    <Container>
       <Tooltip title='Retour'>
         <div>
           <IconButton onClick={onClose}>
@@ -26,10 +23,10 @@ const Title = ({ onClose }) => {
         </div>
       </Tooltip>
 
-      <Typography variant='h6' className={classes.typography}>
+      <Label variant='h6'>
         {'Detail de l\'opération'}
-      </Typography>
-    </div>
+      </Label>
+    </Container>
   );
 };
 

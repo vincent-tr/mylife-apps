@@ -6,19 +6,16 @@ import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } f
 import AccountSelector from '../../../common/components/account-selector';
 import GroupCriteriaField from '../common/group-field';
 import ExportButton from '../common/export-button';
-import { makeStyles, Grid, Checkbox, Typography } from '@mui/material';
+import { styled, Grid, Checkbox, Typography } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  title: {
-    marginRight: theme.spacing(4)
-  },
-  button: {
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
+const Title = styled(Typography)(({ theme }) => ({
+  marginRight: theme.spacing(4)
 }));
 
 const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }) => {
@@ -135,12 +132,11 @@ Criteria.propTypes = {
 export default Criteria;
 
 const ExpandedSummary = ({ onExport }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.container}>
-      <Typography variant='h6' className={classes.title}>Critères de sélection</Typography>
-      <ExportButton onClick={onExport} className={classes.button} />
-    </div>
+    <Container>
+      <Title variant='h6'>Critères de sélection</Title>
+      <ExportButton onClick={onExport} />
+    </Container>
   );
 };
 
@@ -149,12 +145,11 @@ ExpandedSummary.propTypes = {
 };
 
 const CollapsedSummary = ({ criteria, onExport }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.container}>
-      <Typography className={classes.title}>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</Typography>
-      <ExportButton onClick={onExport} className={classes.button} />
-    </div>
+    <Container>
+      <Title>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</Title>
+      <ExportButton onClick={onExport} />
+    </Container>
   );
 };
 

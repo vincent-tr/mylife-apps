@@ -8,16 +8,14 @@ import { reportingLeave } from '../../actions';
 import Criteria from './criteria';
 import Chart from './chart';
 import { formatCriteria } from './tools';
-import { makeStyles } from '@mui/material';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 
 const useConnect = ({ refreshAction, exportAction }) => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector((state: FIXME_any) => ({
-      data: getSortedViewList(state)
-    })),
+    data: useSelector(getSortedViewList),
     ...useMemo(() => ({
       refresh: (criteria) => dispatch(refreshAction(criteria)),
       exportReport: (criteria, display) => dispatch(exportAction(criteria, display)),
@@ -26,15 +24,14 @@ const useConnect = ({ refreshAction, exportAction }) => {
   };
 };
 
-const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: '1 1 auto'
-  },
-  chart: {
-    flex: '1 1 auto'
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto'
+});
+
+const StyledChart = styled(Chart)({
+  flex: '1 1 auto'
 });
 
 const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }) => {
@@ -45,8 +42,6 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
 
   // on mount run query, on leave clean
   useLifecycle(() => refresh(formatCriteria(criteria)), leave);
-
-  const classes = useStyles();
 
   const changeCriteria = (criteria) => {
     setCriteria(criteria);
@@ -65,10 +60,10 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
   const additionalCriteria = additionalCriteriaFactory({ display, onDisplayChanged: setDisplay, criteria, onCriteriaChanged: changeCriteria });
 
   return (
-    <div className={classes.container}>
+    <Container>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} onExport={doExport} additionalComponents={additionalCriteria} />
-      <Chart data={data} groups={groups} display={chartDisplay} className={classes.chart} amountSelector={amountSelectorFactory({ display, criteria })}/>
-    </div>
+      <StyledChart data={data} groups={groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })}/>
+    </Container>
   );
 };
 
