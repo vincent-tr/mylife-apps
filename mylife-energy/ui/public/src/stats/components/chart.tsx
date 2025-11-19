@@ -8,7 +8,7 @@ import { fr } from 'date-fns/locale';
 import { StatsType, TimestampData } from '../types';
 import { getChartData, getSensors } from '../store';
 
-const Chart: React.FC<{ type: StatsType}> = ({ type }) => {
+const Chart: React.FC<{ className?: string; type: StatsType}> = ({ className, type }) => {
   const data = useSelector(getChartData);
   const sensors = useSelector(getSensors);
 
@@ -16,7 +16,7 @@ const Chart: React.FC<{ type: StatsType}> = ({ type }) => {
   const colors = useChartColors();
 
   return (
-    <div>
+    <div className={className}>
       <AutoSizer>
         {({ height, width }) => (
           <BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
