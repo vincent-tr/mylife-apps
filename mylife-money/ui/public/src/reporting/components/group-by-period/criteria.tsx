@@ -40,75 +40,75 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
 
   const grid = isPhone ? (
     <Grid container spacing={2}>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <CriteriaField label='Du'>
           <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
         </CriteriaField>
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <CriteriaField label='Au'>
           <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
         </CriteriaField>
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <CriteriaField label='Compte'>
           <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <CriteriaField label='Inverser montant'>
           <Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <CriteriaField label='Afficher les groupes enfants'>
           <Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <CriteriaField label='Afficher les noms complets'>
           <Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
       {additionalComponents}
-      <Grid item xs={12}>
+      <Grid size={12}>
         <GroupCriteriaField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
       </Grid>
     </Grid>
   ) : (
     <Grid container spacing={2}>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Date début'>
           <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />
         </CriteriaField>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Date fin'>
           <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />
         </CriteriaField>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Compte'>
           <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Inverser montant'>
           <Checkbox color='primary' checked={display.invert} onChange={e => onInvertChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Afficher les groupes enfants'>
           <Checkbox color='primary' checked={criteria.children} onChange={e => onChildrenChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Afficher les noms complets'>
           <Checkbox color='primary' checked={display.fullnames} onChange={e => onFullnamesChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
       {additionalComponents}
-      <Grid item xs={12}>
+      <Grid size={12}>
         <GroupCriteriaField groups={criteria.groups} onGroupAdd={onGroupAdd} onGroupChanged={onGroupChanged} onGroupDelete={onGroupDelete} />
       </Grid>
     </Grid>
