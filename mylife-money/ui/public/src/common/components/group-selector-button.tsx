@@ -4,6 +4,8 @@ import { dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, makeStyles } from '@mui/material';
 
+type FIXME_any = any;
+
 const useStyles = makeStyles({
   paper: {
     minHeight: '90%',
@@ -51,7 +53,7 @@ interface GroupSelectorButton {
 
 const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorButton>(({ onSelect, options, ...props }, ref) => {
   const clickHandler = async () => {
-    const { result, group } = await selectorDialog({ options });
+    const { result, group } = await selectorDialog({ options }) as FIXME_any;
     if(result !== 'ok') {
       return;
     }
@@ -63,12 +65,5 @@ const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorBut
     <IconButton ref={ref} onClick={clickHandler} {...props}/>
   );
 });
-
-GroupSelectorButton.displayName = 'GroupSelectorButton';
-
-GroupSelectorButton.propTypes = {
-  onSelect : PropTypes.func.isRequired,
-  options: PropTypes.object
-};
 
 export default GroupSelectorButton;

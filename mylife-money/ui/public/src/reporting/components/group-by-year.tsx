@@ -27,12 +27,12 @@ const AdditionalCriteria = ({ display, onDisplayChanged }) => {
 
   return (
     <React.Fragment>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Moyenne par mois'>
           <Checkbox color='primary' checked={display.monthAverage} onChange={e => onMonthAverageChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={8} />
+      <Grid size={8} />
     </React.Fragment>
   );
 };
