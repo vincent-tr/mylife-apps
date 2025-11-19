@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AutoSizer } from 'react-virtualized';
 import { useSelector } from 'react-redux';
-import * as chart from '@latticejs/mui-recharts';
+import { BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools-ui';
 import { getGroupStacks, getChildrenList } from '../../../reference/selectors';
 
@@ -25,14 +25,14 @@ const Chart = ({ data, groups, display, amountSelector, ...props }) => {
     <div {...props}>
       <AutoSizer>
         {({ height, width }) => (
-          <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-            <chart.XAxis dataKey={'period'} name='Date' />
-            <chart.YAxis name='Montant' />
-            <chart.CartesianGrid strokeDasharray='3 3'/>
-            <chart.Tooltip/>
-            <chart.Legend />
-            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
-          </chart.BarChart>
+          <BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width} style={{ fontFamily: 'Roboto, sans-serif' }}>
+            <XAxis dataKey={'period'} name='Date' />
+            <YAxis name='Montant' />
+            <CartesianGrid strokeDasharray='3 3'/>
+            <Tooltip/>
+            <Legend />
+            {bars.map(serie => (<Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
+          </BarChart>
         )}
       </AutoSizer>
     </div>
