@@ -11,7 +11,7 @@ import AccountSelector from '../../../common/components/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import GroupDenseSelector from './group-dense-selector';
-import { makeStyles, Tooltip, IconButton, Toolbar, Typography } from '@mui/material';
+import { styled, Tooltip, IconButton, Toolbar, Typography } from '@mui/material';
 
 type FIXME_any = any;
 
@@ -46,14 +46,13 @@ const useConnect = () => {
   };
 };
 
-const useStyles = makeStyles({
-  accountField: {
-    minWidth: 200
-  },
-  expansionPanelContainer: {
-    display: 'flex',
-    flexDirection: 'column'
-  }
+const AccountField = styled(AccountSelector)({
+  minWidth: 200
+});
+
+const ExpansionPanelContainer = styled('div')({
+  display: 'flex',
+  flexDirection: 'column'
 });
 
 const Header = () => {
@@ -65,11 +64,10 @@ const Header = () => {
     onMinDateChanged, onMaxDateChanged, onAccountChanged, onLookupTextChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
   } = useConnect();
 
-  const classes = useStyles();
   const screenSize = useScreenSize();
 
   const editNote = async () => {
-    const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
+    const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText }) as FIXME_any;
     if(result !== 'ok') {
       return;
     }
@@ -97,7 +95,7 @@ const Header = () => {
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
-      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} className={classes.accountField} />
+      <AccountField allowNull={true} value={account} onChange={onAccountChanged} />
 
     </React.Fragment>
   );
@@ -168,7 +166,7 @@ const Header = () => {
       <SummaryAccordion
         collapsedSummary={<Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup && selectedGroup.display}`}</Typography>}
         expandedSummary={<Typography>{'Critères d\'affichage'}</Typography>}>
-        <div className={classes.expansionPanelContainer}>
+        <ExpansionPanelContainer>
           <Toolbar variant='dense'>
             {minDateSelector}
             {maxDateSelector}
@@ -180,7 +178,7 @@ const Header = () => {
           <Toolbar variant='dense'>
             {search}
           </Toolbar>
-        </div>
+        </ExpansionPanelContainer>
       </SummaryAccordion>
       <Toolbar variant='dense'>
         {toolbar}
