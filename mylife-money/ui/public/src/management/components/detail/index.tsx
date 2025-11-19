@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { DebouncedTextField } from 'mylife-tools-ui';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../actions';
@@ -12,7 +11,7 @@ import Row from './row';
 import GroupBreadcrumbs from './group-breadcrumbs';
 import AmountValue from './amount-value';
 import Markdown from '../../../common/components/markdown';
-import { Paper, Typography, Tabs, Tab, makeStyles } from '@mui/material';
+import { Paper, Typography, Tabs, Tab, styled } from '@mui/material';
 
 type FIXME_any = any;
 
@@ -36,29 +35,27 @@ const useConnect = () => {
   };
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    padding: theme.spacing(2),
-  },
-  grid: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
+const Container = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
 }));
+
+const Grid = styled('div')({
+  display: 'flex',
+  flexDirection: 'column'
+});
 
 interface DetailContainerProps {
   className?: string;
 }
 
 const DetailContainer: React.FC<DetailContainerProps> = ({ className }) => {
-  const classes = useStyles();
   const { operation, account, groupStack, close, onOpenGroup, onSetNote, onMove } = useConnect();
 
   return (
-    <Paper className={clsx(classes.container, className)}>
+    <Container className={className}>
       <Title onClose={close} />
 
-      <div className={classes.grid}>
+      <Grid>
         <Row label='Compte'>
           <Typography>
             {account.display}
@@ -88,28 +85,26 @@ const DetailContainer: React.FC<DetailContainerProps> = ({ className }) => {
         <Row label='Notes'>
           <NoteEditor value={operation.note} onChange={onSetNote} />
         </Row>
-      </div>
-    </Paper>
+      </Grid>
+    </Container>
   );
 };
 
 export default DetailContainer;
 
 
-const useNoteEditorStyles = makeStyles(theme => ({
-  container: {
-    height: 450, // must match min/maxRows of TextField
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  view: {
-    flex: 1,
-    overflowY: 'auto',
-  },
-}));
+const NoteContainer = styled(Paper)({
+  height: 450, // must match min/maxRows of TextField
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const NoteView = styled(Markdown)({
+  flex: 1,
+  overflowY: 'auto',
+});
 
 const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: string) => void; }> = ({ value, onChange}) => {
-  const classes = useNoteEditorStyles();
   type TabValues = 'view' | 'update';
 
   const [tabValue, setTabValue] = React.useState<TabValues>('view');
@@ -119,20 +114,20 @@ const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: s
   };
 
   return (
-    <Paper square className={classes.container}>
+    <NoteContainer square>
       <Tabs value={tabValue} indicatorColor="primary" textColor="primary" onChange={handleChange}>
         <Tab label="Visualiser" value={'view' as TabValues} />
         <Tab label="Modifier" value={'update' as TabValues} />
       </Tabs>
 
       {tabValue === 'view' && (
-        <Markdown className={classes.view} value={value} />
+        <NoteView value={value} />
       )}
 
       {tabValue === 'update' && (
         <DebouncedTextField variant='outlined' value={value} onChange={onChange} fullWidth multiline minRows={19} maxRows={19}/>
       )}
-    </Paper>
+    </NoteContainer>
   );
 };
 
