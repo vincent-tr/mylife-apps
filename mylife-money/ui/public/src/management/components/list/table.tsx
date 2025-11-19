@@ -34,7 +34,7 @@ const Table = (props) => {
     const lines = safeValue.split('\n');
     if (lines.length > 1) {
       return (
-        <Tooltip title={<Markdown value={value} />} interactive>
+        <Tooltip title={<Markdown value={value} />}>
           <div>
             <Markdown value={`${lines[0]} ...`} />
           </div>

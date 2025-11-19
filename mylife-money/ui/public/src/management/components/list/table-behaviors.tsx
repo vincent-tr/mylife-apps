@@ -29,6 +29,11 @@ export const useConnect = () => {
   };
 };
 
+export const AMOUNT_DEBIT = colors.red[100];
+export const AMOUNT_CREDIT = colors.lightGreen[100];
+export const AMOUNT_TOTAL = colors.grey[300];
+export const FROM_CHILD = colors.grey[200];
+
 export const useStyles = makeStyles(theme => ({
   amountDebit: {
     backgroundColor: colors.red[100]
@@ -36,32 +41,7 @@ export const useStyles = makeStyles(theme => ({
   amountCredit: {
     backgroundColor: colors.lightGreen[100]
   },
-  amountTotal: {
-    backgroundColor: colors.grey[300]
-  },
   fromChild: {
     backgroundColor: colors.grey[200]
   },
-  normal: {
-  },
-  total: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  totalNormal: {
-    width: 100,
-    marginLeft: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-  },
-  totalDense: {
-    width: 80,
-    marginLeft: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-  },
-  totalOpsNormal: {
-    marginLeft: theme.spacing(2),
-  },
-  totalOpsDense: {
-    marginLeft: theme.spacing(1),
-  }
 }));
