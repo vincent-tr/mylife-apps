@@ -22,7 +22,7 @@ const useConnect = () => {
 const Error: React.FC = () => {
   const { error, clear } = useConnect();
   return (
-    <Dialog open={!!error} onClose={clear} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description' fullWidth maxWidth='sm'>
+    <Dialog open={!!error} onClose={clear} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description' fullWidth maxWidth='sm' closeAfterTransition={false}>
       <DialogTitle id='alert-dialog-title' variant='h6' color='error'>
         {'Erreur'}
       </DialogTitle>

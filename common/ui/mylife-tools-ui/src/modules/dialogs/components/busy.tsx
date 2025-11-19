@@ -23,7 +23,7 @@ const Progress = styled(CircularProgress)(({ theme }) => ({
 const Busy: React.FC = () => {
   const { busy } = useConnect();
   return (
-    <Dialog open={busy} aria-labelledby='alert-dialog-title'>
+    <Dialog open={busy} aria-labelledby='alert-dialog-title' closeAfterTransition={false}>
       <StyledDialogTitle id='alert-dialog-title' variant='h6'>
         <Progress color='inherit' />
         {'Traitement en cours ...'}

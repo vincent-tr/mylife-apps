@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers, isPlain } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 
 import dialogs from '../modules/dialogs/store';
@@ -28,7 +28,10 @@ export function initStore(reducers) {
   store = configureStore(
     {
       reducer,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares)
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        // Allow dates for now
+        serializableCheck: { isSerializable: (value: any) => isPlain(value) || value instanceof Date },
+      }).concat(...middlewares)
     }
   );
 }

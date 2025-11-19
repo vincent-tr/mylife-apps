@@ -22,7 +22,7 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ show, proceed, options }) => {
   const [text, setText] = useState(options.text);
   return (
-    <Dialog aria-labelledby='dialog-title' open={show} scroll='paper' maxWidth='sm' fullWidth>
+    <Dialog aria-labelledby='dialog-title' open={show} scroll='paper' maxWidth='sm' fullWidth closeAfterTransition={false}>
       {options.title && (
         <DialogTitle id='dialog-title'>
           {options.title}

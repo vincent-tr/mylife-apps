@@ -20,7 +20,7 @@ interface ConfirmProps<TValue> {
 }
 
 const Confirm = <TValue,>({ show, proceed, options }: ConfirmProps<TValue>) => (
-  <Dialog aria-labelledby='dialog-title' open={show} scroll='paper'>
+  <Dialog aria-labelledby='dialog-title' open={show} scroll='paper' closeAfterTransition={false}>
     {options.title && (
       <DialogTitle id='dialog-title'>
         {options.title}
