@@ -30,9 +30,6 @@ const viewsSlice = createSlice({
         state.viewReferences[uid] = viewId;
       }
     },
-    setOnline(state) {
-      state.viewReferences = {};
-    },
     ref(state, action: PayloadAction<string>) {
       const uid = action.payload;
       addRef(state.refCounts, uid, 1);
@@ -41,6 +38,14 @@ const viewsSlice = createSlice({
       const uid = action.payload;
       addRef(state.refCounts, uid, -1);
     },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(io.setOnline, (state, action: PayloadAction<boolean>) => {
+      if (!action.payload) {
+        state.viewReferences = {};
+      }
+    });
   },
 
   selectors: {
@@ -66,7 +71,7 @@ const local = {
 
 export const getView = (state, uid) => io.getView(state, local.getViewId(state, uid))
 
-export const { setView, setOnline, ref, unref } = viewsSlice.actions;
+export const { setView, ref, unref } = viewsSlice.actions;
 export const { getViewId, getRefCount } = viewsSlice.selectors;
 
 export default viewsSlice.reducer;

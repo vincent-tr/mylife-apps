@@ -94,7 +94,7 @@ export const unnotify = (viewId: string, service = 'common') => async dispatch =
   dispatch(local.viewClose(viewId));
 };
 
-export const { viewChange } = ioSlice.actions;
+export const { viewChange, setOnline } = ioSlice.actions; // setOnline can be used in extraReducers
 export const { getOnline, getView, getViewList } = ioSlice.selectors;
 
 export default ioSlice.reducer;
