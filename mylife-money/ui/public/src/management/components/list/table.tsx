@@ -1,8 +1,8 @@
 import React from 'react';
+import { Checkbox, Tooltip } from '@mui/material';
 import { useScreenPhone, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools-ui';
 import { useConnect, useStyles } from './table-behaviors';
 import Markdown from '../../../common/components/markdown';
-import { Checkbox, Tooltip } from '@mui/material';
 
 const Table = (props) => {
   const { onSelect, onDetail, operations } = useConnect();

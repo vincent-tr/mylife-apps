@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ListContainer } from 'mylife-tools-ui';
 import GroupTree from '../../../common/components/group-tree';
-import { getSelectedGroupId } from '../../selectors';
-import { selectGroup } from '../../actions';
+import { getSelectedGroupId, selectGroup } from '../../store';
 
 type FIXME_any = any;
 

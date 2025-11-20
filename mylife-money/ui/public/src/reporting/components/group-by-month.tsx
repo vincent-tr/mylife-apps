@@ -1,7 +1,7 @@
 import React from 'react';
 import immutable from 'immutable';
 
-import { getGroupByMonth, exportGroupByMonth } from '../actions';
+import { getGroupByMonth, exportGroupByMonth } from '../store';
 import GroupByPeriod from './group-by-period';
 import { findAmount } from './group-by-period/tools';
 

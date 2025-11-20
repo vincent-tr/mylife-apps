@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 import { DebouncedTextField } from 'mylife-tools-ui';
-import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup } from '../../actions';
-import { getOperationDetail } from '../../selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup, getOperationDetail } from '../../store';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
 
 import Title from './title';

@@ -3,8 +3,7 @@ import { format as formatDate } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
-import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
-import { getSelectedOperations, getCriteria } from '../../selectors';
+import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations, getSelectedOperations, getCriteria } from '../../store';
 import { getAccounts, getGroup } from '../../../reference/selectors';
 
 import AccountSelector from '../../../common/components/account-selector';

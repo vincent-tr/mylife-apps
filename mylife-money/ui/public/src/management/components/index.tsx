@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
+import { styled } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLifecycle, useScreenSize } from 'mylife-tools-ui';
-import { managementEnter, managementLeave } from '../actions';
-import { isOperationDetail } from '../selectors';
-import { makeStyles, styled } from '@mui/material';
+import { managementEnter, managementLeave, isOperationDetail } from '../store';
 
 import Tree from './tree';
 import List from './list';
@@ -28,9 +27,7 @@ const StyledDetail = styled(Detail)({
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      detail: isOperationDetail(state)
-    })),
+    detail: useSelector(isOperationDetail),
     ...useMemo(() => ({
       enter : () => dispatch(managementEnter()),
       leave : () => dispatch(managementLeave()),

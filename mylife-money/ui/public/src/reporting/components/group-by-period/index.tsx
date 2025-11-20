@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react';
+import { useLifecycle } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools-ui';
-import { getSortedViewList } from '../../selectors';
-import { reportingLeave } from '../../actions';
+import { reportingLeave, getSortedViewList } from '../../store';
 
 import Criteria from './criteria';
 import Chart from './chart';
