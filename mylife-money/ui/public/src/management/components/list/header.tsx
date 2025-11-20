@@ -17,7 +17,7 @@ type FIXME_any = any;
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => {
+    ...useSelector((state: FIXME_any) => {
       const selectedOperations = getSelectedOperations(state);
       const criteria = getCriteria(state);
       return {
@@ -29,7 +29,7 @@ const useConnect = () => {
         selectedGroup        : getGroup(state, { group: criteria.group }),
         account              : criteria.account,
         lookupText           : criteria.lookupText,
-        noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
+        noteText             : selectedOperations.length === 1 ? (selectedOperations[0] as FIXME_any).note : ''
       };
     }),
     ...useMemo(() => ({
