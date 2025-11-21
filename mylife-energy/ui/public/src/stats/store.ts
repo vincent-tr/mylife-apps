@@ -49,13 +49,15 @@ const statsSlice = createSlice({
     },
   },
   selectors: {
-    getStats: (state) => state,
+    getStatsSensors: (state) => state.sensors,
+    getStatsMeasures: (state) => state.measures,
   },
 });
 
 const local = {
   setValues: statsSlice.actions.setValues,
-  getStats: statsSlice.selectors.getStats,
+  getStatsSensors: statsSlice.selectors.getStatsSensors,
+  getStatsMeasures: statsSlice.selectors.getStatsMeasures,
 };
 
 export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, timestamp, sensors }: { type: StatsType, timestamp: Date, sensors: string[] }, api) => {
@@ -74,7 +76,7 @@ export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, 
 export const getDevicesView = state => views.getView(state, viewUids.DEVICES) as views.View<Device>;
 
 export const getChartData = createSelector(
-  [ state => local.getStats(state).measures ], 
+  [ local.getStatsMeasures ], 
   (measures) => {
     // Note: time range with no value will be omitted
     const map = new Map<number, TimestampData>();
@@ -100,7 +102,7 @@ export const getChartData = createSelector(
 export const getSensors = createSelector(
   [ 
     getDevicesView,
-    state => local.getStats(state).sensors,
+    local.getStatsSensors,
   ], 
   (devices, sensors) => {
     const deviceDisplay = new Map(Object.values(devices).map(device => ([device.deviceId, device.display])));
