@@ -49,7 +49,7 @@ const GroupDenseSelector: React.FC<GroupDenseSelectorProps> = ({ className, ...p
         </div>
       </Tooltip>
       <Label>
-        {selectedGroup.display}
+        {(selectedGroup as FIXME_any).display}
       </Label>
     </Container>
   );

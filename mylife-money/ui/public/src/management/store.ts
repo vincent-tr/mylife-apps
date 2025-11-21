@@ -103,8 +103,7 @@ const local = {
 }
 
 const getOperationView = state => io.getView(state, local.getOperationViewId(state));
-const getOperationList = state => io.getViewList(state, local.getOperationViewId(state));
-export const getOperationDetail = state => getOperationView(state).get(local.getOperationIdDetail(state));
+export const getOperationDetail = state => getOperationView(state)[local.getOperationIdDetail(state)];
 
 export const getSelectedOperationIds = createSelector(
   [ local.getSelected, getOperationView ],
@@ -124,8 +123,8 @@ export const getSelectedOperations = createSelector(
 export const getSelectedGroupId = state => local.getCriteria(state).group;
 
 export const getSortedOperations = createSelector(
-  [ getOperationList ],
-  (operations: views.View<views.Entity>) => {
+  [ getOperationView ],
+  (operations) => {
     const ret = Object.values(operations);
     ret.sort((op1, op2) => {
       let comp = (op1 as FIXME_any).date - (op2 as FIXME_any).date;
