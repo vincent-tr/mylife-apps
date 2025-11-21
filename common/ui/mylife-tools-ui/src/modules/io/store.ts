@@ -67,12 +67,6 @@ const ioSlice = createSlice({
   selectors: {
     getOnline: (state) => state.online,
     getView: (state, viewId: string) => state.views[viewId] || emptyView,
-    getViewList: createSelector(
-      [
-        (state, viewId: string) => ioSlice.getSelectors().getViewList(state, viewId),
-      ],
-      (view: View<Entity>) => Object.values(view),
-    ),
   },
 });
 
@@ -95,7 +89,7 @@ export const unnotify = (viewId: string, service = 'common') => async dispatch =
 };
 
 export const { viewChange, setOnline } = ioSlice.actions; // setOnline can be used in extraReducers
-export const { getOnline, getView, getViewList } = ioSlice.selectors;
+export const { getOnline, getView } = ioSlice.selectors;
 
 export default ioSlice.reducer;
 

@@ -9,7 +9,8 @@ export const getMeasureView = state => views.getView(state, viewUids.MEASURES) a
 export const getMeasure = (state, deviceId: string, sensorKey: string) => getMeasureView(state)[`${deviceId}-${sensorKey}`];
 export const getDevice = (state, deviceId: string) => getDeviceView(state)[deviceId];
 export const getFirstDeviceByType = (state, deviceType: DeviceType) => Object.values(getDeviceView(state)).find(device => device.type === deviceType);
-export const getDevicesByType = createSelector(
+
+export const makeGetDevicesByType = () => createSelector(
   [
     getDeviceView,
     (state, deviceType: DeviceType) => deviceType,

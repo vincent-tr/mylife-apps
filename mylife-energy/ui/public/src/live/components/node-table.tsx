@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { styled, Table, TableBody, TableRow, TableCell, Typography, LinearProgress } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { views } from 'mylife-tools-ui';
-import { getMeasureView, getFirstDeviceByType, getDevicesByType } from '../selectors';
+import { getMeasureView, getFirstDeviceByType, makeGetDevicesByType } from '../selectors';
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
 
@@ -13,6 +13,7 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const NoteTable = () => {
+  const getDevicesByType = useMemo(() => makeGetDevicesByType(), []);
   const nodes = useSelector(state => getDevicesByType(state, 'node'));
   const measures = useSelector(getMeasureView);
 
