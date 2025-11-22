@@ -26,8 +26,8 @@ const useConnect = () => {
         accounts             : getAccounts(state),
         minDate              : criteria.minDate,
         maxDate              : criteria.maxDate,
-        selectedGroup        : getGroup(state, { group: criteria.group }),
-        account              : criteria.account,
+        selectedGroup        : getGroup(state, criteria.group) as FIXME_any,
+        account              : criteria.account as FIXME_any,
         lookupText           : criteria.lookupText,
         noteText             : selectedOperations.length === 1 ? (selectedOperations[0] as FIXME_any).note : ''
       };

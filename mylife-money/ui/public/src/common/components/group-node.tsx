@@ -7,10 +7,13 @@ import { makeStyles, ListItem, ListItemIcon, ListItemText, IconButton, Collapse,
 
 type FIXME_any = any;
 
+const emptyArray = [];
+
 const useConnect = ({ group }) => {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
   return {
-    children: useSelector((state: FIXME_any) => getSortedChildren(state, { group }))
+    // 'Non triés' => no children
+    children: group ? useSelector((state: FIXME_any) => getSortedChildren(state, group._id)) : emptyArray
   };
 };
 

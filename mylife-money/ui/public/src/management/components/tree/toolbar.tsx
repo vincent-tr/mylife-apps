@@ -16,7 +16,7 @@ const useConnect = () => {
     ...useSelector(state => {
       const selected = getSelectedGroupId(state);
       return {
-        group     : selected && getGroup(state, { group: selected }),
+        group     : selected && getGroup(state, selected) as FIXME_any,
         canChange : !!selected
       };
     }),

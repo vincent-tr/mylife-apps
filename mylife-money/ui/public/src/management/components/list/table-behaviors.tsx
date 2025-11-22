@@ -15,7 +15,7 @@ export const useConnect = () => {
       return {
         operations: getSortedOperations(state).map((operation: FIXME_any) => ({
           operation,
-          account        : getAccount(state, operation),
+          account        : getAccount(state, operation.account),
           fromChildGroup : (operation.group || null) !== selectedGroup,
           selected       : selectedOperationIds.includes(operation._id)
         }))

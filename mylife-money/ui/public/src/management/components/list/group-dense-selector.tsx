@@ -24,7 +24,7 @@ const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
-      selectedGroup : getGroup(state, { group: getSelectedGroupId(state) }),
+      selectedGroup : getGroup(state, getSelectedGroupId(state)),
     })),
     ...useMemo(() => ({
       onSelect : (id) => dispatch(selectGroup(id))

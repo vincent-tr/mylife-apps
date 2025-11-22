@@ -4,7 +4,7 @@ import { AutoSizer } from 'react-virtualized';
 import { useSelector } from 'react-redux';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools-ui';
-import { getGroupStacks, getChildrenList } from '../../../reference/selectors';
+import { getGroupStacks, getChildrenView } from '../../../reference/selectors';
 
 const useConnect = ({ display, groups }) => {
   return useSelector(state => ({
@@ -52,12 +52,15 @@ function getChildren(state, display, groups) {
   if(!display.children || !groups) {
     return {};
   }
+
+  const childrenView = getChildrenView(state);
+
   const result = {};
-  for(const group of groups) {
-    if(!group) {
+  for(const groupId of groups) {
+    if (!groupId) {
       continue;
     }
-    result[group] = getChildrenList(state, { group });
+    result[groupId] = childrenView[groupId].map(group => group._id);
   }
   return result;
 }
@@ -65,24 +68,24 @@ function getChildren(state, display, groups) {
 function createBars(groups, display, groupStacks, groupChildren, colors) {
   const bars = [];
   let index = 0;
-  for(const group of groups) {
-    bars.push(createBar(colors, display, groupStacks, group, group, index++, true));
-    if(display.children && group) {
-      for(const child of groupChildren[group]) {
-        bars.push(createBar(colors, display, groupStacks, group, child, index++, false));
+  for(const groupId of groups) {
+    bars.push(createBar(colors, display, groupStacks, groupId, groupId, index++, true));
+    if(display.children && groupId) {
+      for(const childId of groupChildren[groupId]) {
+        bars.push(createBar(colors, display, groupStacks, groupId, childId, index++, false));
       }
     }
   }
   return bars;
 }
 
-function createBar(colors, display, groupStacks, stackId, group, index, root) {
-  const path = groupStacks.get(group).map(group => group.display);
+function createBar(colors, display, groupStacks, stackId, groupId, index, root) {
+  const path = groupStacks[groupId].map(group => group.display);
   const name = display.fullnames ? path.join('/') : path[path.length - 1];
   return {
     index,
     stackId,
-    group,
+    group: groupId,
     name,
     fill: colors[index % colors.length],
     root

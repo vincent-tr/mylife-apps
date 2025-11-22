@@ -17,11 +17,11 @@ const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => {
-      const operation = getOperationDetail(state);
+      const operation = getOperationDetail(state) as FIXME_any;
       return {
         operation,
-        account: getAccount(state, operation),
-        groupStack: getGroupStack(state, operation)
+        account: getAccount(state, operation.account) as FIXME_any,
+        groupStack: getGroupStack(state, operation.group)
       };
     }),
     ...useMemo(() => ({

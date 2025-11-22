@@ -7,6 +7,8 @@ import { getGroup } from '../../reference/selectors';
 import GroupSelectorButton from './group-selector-button';
 import { styled, Tooltip, Breadcrumbs, Typography } from '@mui/material';
 
+type FIXME_any = any;
+
 const useConnect = ({ value }) => {
   return useSelector(state => ({
     stack: getStack(state, value)
@@ -53,7 +55,7 @@ export default GroupSelector;
 
 function getStack(state, value) {
   if(!value) {
-    const group = getGroup(state, { group: value });
+    const group = getGroup(state, value);
     if(!group) {
       return []; // not loaded
     }
@@ -61,10 +63,10 @@ function getStack(state, value) {
   }
 
   const ret = [];
-  while(value) {
-    const group = getGroup(state, { group: value });
+  while (value) {
+    const group = getGroup(state, value);
     ret.push(group);
-    value = group.parent;
+    value = (group as FIXME_any).parent;
   }
 
   ret.reverse();
