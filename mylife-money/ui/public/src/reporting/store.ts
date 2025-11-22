@@ -37,16 +37,11 @@ const local = {
 }
 
 export const getView = state => io.getView(state, local.getViewId(state));
-export const getViewList = state => io.getViewList(state, local.getViewId(state));
 
 // sort on id, should be usefull with report's custom keys
 export const getSortedViewList = createSelector(
-  [ getViewList ],
-  (items: views.Entity[]) => {
-    const ret = Array.from(items);
-    ret.sort((item1, item2) => item1._id < item2._id ? -1 : 1);
-    return ret;
-  }
+  [ getView ],
+  (view) => Object.values(view).sort((item1, item2) => item1._id < item2._id ? -1 : 1)
 );
 
 export const getGroupByMonth = (criteria) => views.createOrUpdateView({
