@@ -12,7 +12,7 @@ const StyledTableCell = styled(TableCell)({
   flex: 1,
 });
 
-const StyledTable = styled('div')(({ theme }) => ({
+const StyledTable = styled(Table)(({ theme }) => ({
   '.ReactVirtualized__Table__row:hover': {
     cursor: 'pointer',
     backgroundColor:
@@ -67,10 +67,10 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
   const rowGetter = ({ index }) => data[index];
 
   return (
-    <StyledTable {...props}>
+    <div {...props}>
       <AutoSizer>
         {({ height, width }) => (
-          <Table height={height} width={width} rowStyle={rowIndexStyle} rowGetter={rowGetter} rowCount={data.length} rowHeight={rowHeight} headerHeight={headerHeight}>
+          <StyledTable height={height} width={width} rowStyle={rowIndexStyle} rowGetter={rowGetter} rowCount={data.length} rowHeight={rowHeight} headerHeight={headerHeight}>
             {columns.map(({ dataKey, headerRenderer, cellRenderer, cellStyle, width: colWidth, headerProps, cellProps, ...props }) => {
               if (!colWidth) {
                 colWidth = computeColumnWidth(width, columns);
@@ -81,12 +81,12 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
                   key={dataKey}
                   dataKey={dataKey}
                   headerRenderer={() => (
-                    <StyledTableCell variant='head' style={{ height: headerHeight, width: colWidth }} {...runPropGetter(headerProps, dataKey)}>
+                    <StyledTableCell component='div' variant='head' style={{ height: headerHeight, width: colWidth }} {...runPropGetter(headerProps, dataKey)}>
                       {runRenderer(headerRenderer, dataKey)}
                     </StyledTableCell>
                   )}
                   cellRenderer={({ rowData, cellData, rowIndex }) => (
-                    <StyledTableCell onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} style={{ height: rowHeight, width: colWidth, ...runPropGetter(cellStyle, cellData, dataKey)}} variant='body'>
+                    <StyledTableCell component='div' variant='body' onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} style={{ height: rowHeight, width: colWidth, ...runPropGetter(cellStyle, cellData, dataKey)}}>
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </StyledTableCell>
                   )}
@@ -95,10 +95,10 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
                 />
               );
             })}
-          </Table>
+          </StyledTable>
         )}
       </AutoSizer>
-    </StyledTable>
+    </div>
   );
 };
 
