@@ -5,12 +5,21 @@ import { styled } from '@mui/material/styles';
 
 const identity = x => x;
 
-const StyledTableCell = styled(TableCell, { name: 'TOTO' })(({ theme }) => ({
+const StyledTableCell = styled(TableCell)({
   display: 'flex',
   alignItems: 'center',
   boxSizing: 'border-box',
   flex: 1,
-  // Support for clickable rows
+});
+
+const StyledTable = styled('div')(({ theme }) => ({
+  '.ReactVirtualized__Table__row:hover': {
+    cursor: 'pointer',
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? 'rgba(0, 0, 0, 0.07)' // grey[200]
+        : 'rgba(255, 255, 255, 0.14)',
+  }
 }));
 
 type FIXME_any = any;
@@ -53,19 +62,12 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
       display: 'flex',
     };
 
-    if (index >= 0) {
-      style['&:hover'] = {
-        cursor: 'pointer',
-        backgroundColor: 'rgba(0, 0, 0, 0.07)' // grey[200]
-      };
-    }
-
     return style;
   };
   const rowGetter = ({ index }) => data[index];
 
   return (
-    <div {...props}>
+    <StyledTable {...props}>
       <AutoSizer>
         {({ height, width }) => (
           <Table height={height} width={width} rowStyle={rowIndexStyle} rowGetter={rowGetter} rowCount={data.length} rowHeight={rowHeight} headerHeight={headerHeight}>
@@ -96,7 +98,7 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
           </Table>
         )}
       </AutoSizer>
-    </div>
+    </StyledTable>
   );
 };
 
