@@ -49,8 +49,6 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
 
   const doExport = () => exportReport(formatCriteria(criteria), display);
 
-  const groups = criteria.groups.toArray();
-
   const chartDisplay = {
     ...display,
     children: criteria.children,
@@ -61,7 +59,7 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
   return (
     <Container>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} onExport={doExport} additionalComponents={additionalCriteria} />
-      <StyledChart data={data} groups={groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })}/>
+      <StyledChart data={data} groups={criteria.groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })}/>
     </Container>
   );
 };

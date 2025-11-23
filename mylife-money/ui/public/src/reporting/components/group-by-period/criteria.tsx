@@ -31,9 +31,9 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
   const onInvertChanged = (value) => setDisplay('invert', value);
   const onFullnamesChanged = (value) => setDisplay('fullnames', value);
 
-  const onGroupAdd = () => setCriteria('groups', criteria.groups.push(null));
-  const onGroupChanged = (index, value) => setCriteria('groups', criteria.groups.set(index, value));
-  const onGroupDelete = (index) => setCriteria('groups', criteria.groups.delete(index));
+  const onGroupAdd = () => setCriteria('groups', [ ...criteria.groups, null ]);
+  const onGroupChanged = (index, value) => setCriteria('groups', criteria.groups.map((group, i) => i === index ? value : group));
+  const onGroupDelete = (index) => setCriteria('groups', criteria.groups.filter((_, i) => i !== index));
 
   const grid = isPhone ? (
     <Grid container spacing={2}>

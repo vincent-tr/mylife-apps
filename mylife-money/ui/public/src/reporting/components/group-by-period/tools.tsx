@@ -16,12 +16,9 @@ export function findAmount(periodItem, serie) {
 }
 
 export function formatCriteria(criteria) {
-  const { groups, fullnames, ...props } = criteria;
+  const { fullnames, ...props } = criteria;
   void fullnames;
-  return {
-    groups: groups.toArray(),
-    ...props
-  };
+  return props;
 }
 
 export function roundCurrency(number) {
