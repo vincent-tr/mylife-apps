@@ -2,5 +2,9 @@
   "extends": "../../../tsconfig.json",
   "include": [
       "src/main.tsx"
-  ]
+  ],
+  "compilerOptions": {
+    // used for recharts, remove after
+    "skipLibCheck": true,
+  }
 }
