@@ -13,7 +13,7 @@ const Container = styled(Box)({
 });
 
 const StyledDatePicker = styled(DatePicker)({
-  width: 100
+  width: 170
 });
 
 interface DateOrYearSelectorProps {
