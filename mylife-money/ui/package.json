@@ -24,6 +24,7 @@
     "react-markdown": "^10.1.0",
     "react-redux": "^9.2.0",
     "react-virtualized": "^9.22.3",
+    "rehype-external-links": "^3.0.0",
     "remark-gfm": "^4.0.1",
     "recharts": "^3.4.1"
   },
