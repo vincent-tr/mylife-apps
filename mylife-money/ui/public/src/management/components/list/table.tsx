@@ -1,15 +1,13 @@
 import React from 'react';
 import { Checkbox, Tooltip } from '@mui/material';
 import { useScreenPhone, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools-ui';
-import { useConnect, useStyles } from './table-behaviors';
+import { useConnect, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_CREDIT, COLOR_FROM_CHILD } from './table-behaviors';
 import Markdown from '../../../common/components/markdown';
 
 const Table = (props) => {
   const { onSelect, onDetail, operations } = useConnect();
-  const classes = useStyles();
   const isPhone = useScreenPhone();
-  const rowClassName = (row) => row && row.fromChildGroup ? classes.fromChild : classes.normal; // row undefined => header
-
+  const rowStyle = (row) => (row && row.fromChildGroup ? { backgroundColor: COLOR_FROM_CHILD } : null);
   const selectedCount = operations.reduce(((acc, op) => op.selected ? acc + 1 : acc), 0);
 
   const headerCheckbox = (
@@ -50,7 +48,7 @@ const Table = (props) => {
   const columns: VirtualizedTableColumn[] = [
     { dataKey: 'checkbox', width: isPhone ? 60 : 80, headerRenderer: headerCheckbox, cellDataGetter: ({ rowData }) => rowData, cellRenderer: cellCheckbox },
     //{ dataKey: 'account', width: 150, headerRenderer: 'Compte', cellDataGetter: ({ rowData }) => rowData.account && rowData.account.display },
-    { dataKey: 'amount', width: 80, headerRenderer: 'Montant', cellDataGetter: ({ rowData }) => rowData.operation.amount, cellClassName: value => value < 0 ? classes.amountDebit : classes.amountCredit },
+    { dataKey: 'amount', width: 80, headerRenderer: 'Montant', cellDataGetter: ({ rowData }) => rowData.operation.amount, cellStyle: value => ({ backgroundColor: value < 0 ? COLOR_AMOUNT_DEBIT : COLOR_AMOUNT_CREDIT }) },
     { dataKey: 'date', width: 100, headerRenderer: 'Date', cellDataGetter: ({ rowData }) => new Date(rowData.operation.date).toLocaleDateString('fr-FR') }, // TODO: formatter
     { dataKey: 'label', headerRenderer: 'Libellé', cellDataGetter: ({ rowData }) => rowData.operation.label }
   ];
@@ -59,7 +57,7 @@ const Table = (props) => {
   }
 
   return (
-    <VirtualizedTable data={operations} columns={columns} {...props} rowClassName={rowClassName} onRowClick={row => onDetail(row.operation._id)} />
+    <VirtualizedTable data={operations} columns={columns} {...props} rowStyle={rowStyle} onRowClick={row => onDetail(row.operation._id)} />
   );
 };
 

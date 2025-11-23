@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { makeStyles, colors } from '@mui/material';
+import { useMemo } from 'react';
+import { colors } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 import { getAccount } from '../../../reference/selectors';
@@ -28,19 +28,7 @@ export const useConnect = () => {
   };
 };
 
-export const AMOUNT_DEBIT = colors.red[100];
-export const AMOUNT_CREDIT = colors.lightGreen[100];
-export const AMOUNT_TOTAL = colors.grey[300];
-export const FROM_CHILD = colors.grey[200];
-
-export const useStyles = makeStyles(theme => ({
-  amountDebit: {
-    backgroundColor: colors.red[100]
-  },
-  amountCredit: {
-    backgroundColor: colors.lightGreen[100]
-  },
-  fromChild: {
-    backgroundColor: colors.grey[200]
-  },
-}));
+export const COLOR_AMOUNT_DEBIT = colors.red[100];
+export const COLOR_AMOUNT_CREDIT = colors.lightGreen[100];
+export const COLOR_AMOUNT_TOTAL = colors.grey[300];
+export const COLOR_FROM_CHILD = colors.grey[200];

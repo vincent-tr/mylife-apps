@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toolbar, Typography, styled } from '@mui/material';
 import { useScreenPhone } from 'mylife-tools-ui';
-import { AMOUNT_CREDIT, AMOUNT_DEBIT, AMOUNT_TOTAL, useConnect } from './table-behaviors';
+import { COLOR_AMOUNT_CREDIT, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_TOTAL, useConnect } from './table-behaviors';
 
 function summaries(operations) {
   let totalDebit = 0;
@@ -25,9 +25,9 @@ interface TotalProps {
 }
 
 const colors = {
-  debit: AMOUNT_DEBIT,
-  credit: AMOUNT_CREDIT,
-  total: AMOUNT_TOTAL,
+  debit: COLOR_AMOUNT_DEBIT,
+  credit: COLOR_AMOUNT_CREDIT,
+  total: COLOR_AMOUNT_TOTAL,
 };
 
 const Total = styled(Typography, {
