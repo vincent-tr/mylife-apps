@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../reference/selectors';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { makeStyles, ListItem, ListItemIcon, ListItemText, IconButton, Collapse, List, styled, ListItemButton } from '@mui/material';
+import { ListItem, ListItemIcon, ListItemText, IconButton, Collapse, List, styled, ListItemButton } from '@mui/material';
 
 type FIXME_any = any;
 
@@ -16,12 +16,6 @@ const useConnect = ({ group }) => {
     children: group ? useSelector((state: FIXME_any) => getSortedChildren(state, group._id)) : emptyArray
   };
 };
-
-const useStyles = makeStyles(theme => ({
-  listItem: (props: FIXME_any) => ({
-    paddingLeft: theme.spacing(2 * (props.level + 1))
-  })
-}));
 
 const LevelListItem = styled(ListItem, {
   shouldForwardProp: (prop) => prop !== 'level',

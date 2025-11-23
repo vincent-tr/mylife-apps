@@ -1,7 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { format as formatDate } from 'date-fns';
 import { useOperationStats } from '../views';
 import { styled, Typography } from '@mui/material';
+
+type FIXME_any = any;
 
 const Container = styled('div')({
   marginTop: 20,
@@ -28,9 +30,9 @@ const Stats: React.FC = () => {
 export default Stats;
 
 function statValue(stats, code) {
-  const stat = stats.find(stat => stat.code === code);
-  if(!stat) {
+  const stat = Object.values(stats).find(stat => (stat as FIXME_any).code === code);
+  if (!stat) {
     return null;
   }
-  return stat.value;
+  return (stat as FIXME_any).value;
 }

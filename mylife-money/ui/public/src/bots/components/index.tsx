@@ -54,14 +54,14 @@ const StyledRun = styled(Run)({
 const Bots: React.FC = () => {
   const { view } = useBots();
   const [selection, setSelection] = useState<string>(null);
-  const bot = view.get(selection);
+  const bot = view[selection];
 
   return (
     <Container>
       <ToolsListContainer>
         <StyledListContainer>
           <List>
-            {view.valueSeq().map(bot => (
+            {Object.values(view).map((bot: FIXME_any) => (
               <ListItem key={bot._id} disablePadding>
                 <ListItemButton 
                   selected={selection === bot._id} 
