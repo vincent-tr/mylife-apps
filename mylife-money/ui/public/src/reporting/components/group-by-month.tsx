@@ -1,5 +1,4 @@
 import React from 'react';
-import immutable from 'immutable';
 
 import { getGroupByMonth, exportGroupByMonth } from '../store';
 import GroupByPeriod from './group-by-period';
@@ -10,7 +9,7 @@ const initialCriteria = {
   minDate: null,
   maxDate: null,
   account: null,
-  groups: immutable.List([ null ])
+  groups: [ null ]
 };
 
 const initialDisplay = {

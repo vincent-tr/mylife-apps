@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import immutable from 'immutable';
 import { CriteriaField } from 'mylife-tools-ui';
 import { getGroupByYear, exportGroupByYear } from '../store';
 import GroupByPeriod from './group-by-period';
@@ -12,7 +11,7 @@ const initialCriteria = {
   minDate: null,
   maxDate: null,
   account: null,
-  groups: immutable.List([ null ])
+  groups: [ null ]
 };
 
 const initialDisplay = {
