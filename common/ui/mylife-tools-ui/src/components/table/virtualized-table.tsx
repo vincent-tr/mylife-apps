@@ -47,14 +47,21 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
   onRowClick, 
   ...props 
 }) => {
-  const rowIndexStyle = (({ index }) => ({
-    ...runPropGetter(rowStyle, data[index], index),
-    display: 'flex',
-    '&:hover': {
-      cursor: 'pointer',
-      backgroundColor: 'rgba(0, 0, 0, 0.07)' // grey[200]
+  const rowIndexStyle = ({ index }) => {
+    const style = {
+      ...runPropGetter(rowStyle, data[index], index),
+      display: 'flex',
+    };
+
+    if (index >= 0) {
+      style['&:hover'] = {
+        cursor: 'pointer',
+        backgroundColor: 'rgba(0, 0, 0, 0.07)' // grey[200]
+      };
     }
-  }));
+
+    return style;
+  };
   const rowGetter = ({ index }) => data[index];
 
   return (
