@@ -36,6 +36,6 @@ export default GroupTree;
 function useConnect() {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
   return useSelector((state: FIXME_any) => ({
-    groups : getSortedChildren(state, {} as FIXME_any)
+    groups : getSortedChildren(state, 'root')
   }));
 }

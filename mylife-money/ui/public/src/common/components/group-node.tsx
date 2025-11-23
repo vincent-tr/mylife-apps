@@ -9,11 +9,11 @@ type FIXME_any = any;
 
 const emptyArray = [];
 
-const useConnect = ({ group }) => {
+const useConnect = (groupId: string) => {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
   return {
     // 'Non triés' => no children
-    children: group ? useSelector((state: FIXME_any) => getSortedChildren(state, group._id)) : emptyArray
+    children: groupId ? useSelector((state: FIXME_any) => getSortedChildren(state, groupId)) : emptyArray
   };
 };
 
@@ -34,7 +34,7 @@ interface GroupNodeProps {
 
 const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, parentDisabled }: GroupNodeProps) => {
   const [open, setOpen] = useState(true);
-  const { children } = useConnect({ group });
+  const { children } = useConnect(group._id);
   const selected = selectedGroupId === group._id;
   const disabled = parentDisabled || !!(disabledGroupIds?.includes(group._id));
   const hasChildren = children.length > 0;
