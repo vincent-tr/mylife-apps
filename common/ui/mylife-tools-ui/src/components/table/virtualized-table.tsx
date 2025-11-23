@@ -1,25 +1,16 @@
 import React, { FunctionComponent } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import { TableCell } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const identity = x => x;
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell, { name: 'TOTO' })(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   boxSizing: 'border-box',
   flex: 1,
   // Support for clickable rows
-  '.clickableRow &:hover': {
-    cursor: 'pointer',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? 'rgba(0, 0, 0, 0.07)' // grey[200]
-        : 'rgba(255, 255, 255, 0.14)',
-  }
 }));
 
 type FIXME_any = any;
@@ -40,27 +31,30 @@ export interface VirtualizedTableColumn {
   dataKey: string;
   cellDataGetter?;
   cellRenderer?: string | React.ReactNode | ((cellData, dataKey) => string) | ((cellData, dataKey) => React.ReactNode);
-  cellClassName?: string | ((cellData, dataKey) => string);
   cellStyle?: React.CSSProperties | ((cellData, dataKey) => React.CSSProperties);
   headerRenderer: string | React.ReactNode | ((dataKey) => string) | ((dataKey) => React.ReactNode);
-  headerClassName?: string | ((dataKey) => string);
   cellProps?;
   headerProps?;
-  width?;
+  width?: number;
 }
 
 const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ 
   data, 
   columns, 
-  rowClassName, 
   rowStyle, 
   headerHeight = 48, 
   rowHeight = 48, 
   onRowClick, 
   ...props 
 }) => {
-  //const rowIndexClassName = (({ index }) => clsx('container', 'row', 'clickableRow', runPropGetter(rowClassName, data[index], index)));
-  const rowIndexStyle = (({ index }) => runPropGetter(rowStyle, data[index], index));
+  const rowIndexStyle = (({ index }) => ({
+    ...runPropGetter(rowStyle, data[index], index),
+    display: 'flex',
+    '&:hover': {
+      cursor: 'pointer',
+      backgroundColor: 'rgba(0, 0, 0, 0.07)' // grey[200]
+    }
+  }));
   const rowGetter = ({ index }) => data[index];
 
   return (
@@ -68,7 +62,7 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
       <AutoSizer>
         {({ height, width }) => (
           <Table height={height} width={width} rowStyle={rowIndexStyle} rowGetter={rowGetter} rowCount={data.length} rowHeight={rowHeight} headerHeight={headerHeight}>
-            {columns.map(({ dataKey, headerRenderer, headerClassName, cellRenderer, cellClassName, cellStyle, width: colWidth, headerProps, cellProps, ...props }) => {
+            {columns.map(({ dataKey, headerRenderer, cellRenderer, cellStyle, width: colWidth, headerProps, cellProps, ...props }) => {
               if (!colWidth) {
                 colWidth = computeColumnWidth(width, columns);
               }
@@ -78,12 +72,12 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
                   key={dataKey}
                   dataKey={dataKey}
                   headerRenderer={() => (
-                    <StyledTableCell component='div' className={runPropGetter(headerClassName, dataKey)} variant='head' style={{ height: headerHeight }} {...runPropGetter(headerProps, dataKey)}>
+                    <StyledTableCell variant='head' style={{ height: headerHeight, width: colWidth }} {...runPropGetter(headerProps, dataKey)}>
                       {runRenderer(headerRenderer, dataKey)}
                     </StyledTableCell>
                   )}
                   cellRenderer={({ rowData, cellData, rowIndex }) => (
-                    <StyledTableCell onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} component='div' className={runPropGetter(cellClassName, cellData, dataKey)} cellStyle={runPropGetter(cellStyle, cellData, dataKey)} variant='body' style={{ height: rowHeight }} {...runPropGetter(cellProps, cellData, dataKey)}>
+                    <StyledTableCell onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} style={{ height: rowHeight, width: colWidth, ...runPropGetter(cellStyle, cellData, dataKey)}} variant='body'>
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </StyledTableCell>
                   )}
@@ -97,26 +91,6 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
       </AutoSizer>
     </div>
   );
-};
-
-const rendererType = PropTypes.oneOfType([ PropTypes.string, PropTypes.node, PropTypes.func ]);
-const classNameType = PropTypes.oneOfType([ PropTypes.string, PropTypes.func ]);
-
-VirtualizedTable.propTypes = {
-  data: PropTypes.array.isRequired,
-  rowClassName: classNameType,
-  columns: PropTypes.arrayOf(
-    PropTypes.exact({
-      dataKey: PropTypes.string.isRequired,
-      cellRenderer: rendererType,
-      cellClassName: classNameType,
-      headerRenderer: rendererType.isRequired,
-      headerClassName: classNameType
-    }).isRequired
-  ).isRequired,
-  rowHeight: PropTypes.number,
-  headerHeight: PropTypes.number,
-  onRowClick: PropTypes.func
 };
 
 export default VirtualizedTable;
