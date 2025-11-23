@@ -49,7 +49,16 @@ export interface VirtualizedTableColumn {
   width?;
 }
 
-const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, columns, rowClassName, rowStyle, headerHeight, rowHeight, onRowClick, ...props }) => {
+const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ 
+  data, 
+  columns, 
+  rowClassName, 
+  rowStyle, 
+  headerHeight = 48, 
+  rowHeight = 48, 
+  onRowClick, 
+  ...props 
+}) => {
   //const rowIndexClassName = (({ index }) => clsx('container', 'row', 'clickableRow', runPropGetter(rowClassName, data[index], index)));
   const rowIndexStyle = (({ index }) => runPropGetter(rowStyle, data[index], index));
   const rowGetter = ({ index }) => data[index];
@@ -108,11 +117,6 @@ VirtualizedTable.propTypes = {
   rowHeight: PropTypes.number,
   headerHeight: PropTypes.number,
   onRowClick: PropTypes.func
-};
-
-(VirtualizedTable as FIXME_any).defaultProps = {
-  headerHeight: 48,
-  rowHeight: 48
 };
 
 export default VirtualizedTable;
