@@ -6,8 +6,8 @@
   "repository": "https://github.com/vincent-tr/mylife-energy",
   "author": "Vincent Trumpff",
   "scripts": {
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint": "eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write --config ../../.prettierrc --ignore-path ../../.prettierignore \"**/*.{js,jsx,ts,tsx}\"",
     "format:check": "prettier --check --config ../../.prettierrc --ignore-path ../../.prettierignore \"**/*.{js,jsx,ts,tsx}\""
   },
