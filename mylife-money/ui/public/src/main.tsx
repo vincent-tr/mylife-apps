@@ -15,7 +15,7 @@ import GroupByYear from './reporting/components/group-by-year';
 
 const reducers = {
   management: managementReducer,
-  reporting: reportingReducer
+  reporting: reportingReducer,
 };
 
 services.initStore(reducers);
@@ -40,7 +40,7 @@ services.render({
   appIcon: icons.Money,
   appName: 'Money',
   routes,
-  menu
+  menu,
 });
 
 const store = services.getStore();

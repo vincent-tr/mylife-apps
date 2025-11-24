@@ -4,5 +4,5 @@ export default {
   fields: [
     { id: 'period', datatype: 'name' },
     { id: 'groups', datatype: 'any' },
-  ]
+  ],
 };

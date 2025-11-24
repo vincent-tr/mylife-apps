@@ -9,13 +9,13 @@ const Container = styled('div')({
 });
 
 const Label = styled(Typography)(({ theme }) => ({
-  marginLeft: theme.spacing(2)
+  marginLeft: theme.spacing(2),
 }));
 
 const Title = ({ onClose }) => {
   return (
     <Container>
-      <Tooltip title='Retour'>
+      <Tooltip title="Retour">
         <div>
           <IconButton onClick={onClose}>
             <icons.actions.Back />
@@ -23,15 +23,13 @@ const Title = ({ onClose }) => {
         </div>
       </Tooltip>
 
-      <Label variant='h6'>
-        {'Detail de l\'opération'}
-      </Label>
+      <Label variant="h6">{"Detail de l'opération"}</Label>
     </Container>
   );
 };
 
 Title.propTypes = {
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Title;

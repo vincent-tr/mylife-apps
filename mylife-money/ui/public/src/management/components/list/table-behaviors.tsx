@@ -15,16 +15,19 @@ export const useConnect = () => {
       return {
         operations: getSortedOperations(state).map((operation: FIXME_any) => ({
           operation,
-          account        : getAccount(state, operation.account),
-          fromChildGroup : (operation.group || null) !== selectedGroup,
-          selected       : selectedOperationIds.includes(operation._id)
-        }))
+          account: getAccount(state, operation.account),
+          fromChildGroup: (operation.group || null) !== selectedGroup,
+          selected: selectedOperationIds.includes(operation._id),
+        })),
       };
     }),
-    ...useMemo(() => ({
-      onSelect : (val) => dispatch(selectOperation(val)),
-      onDetail : (val) => dispatch(showDetail(val))
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        onSelect: (val) => dispatch(selectOperation(val)),
+        onDetail: (val) => dispatch(showDetail(val)),
+      }),
+      [dispatch]
+    ),
   };
 };
 

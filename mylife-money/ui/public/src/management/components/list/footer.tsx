@@ -7,7 +7,7 @@ function summaries(operations) {
   let totalDebit = 0;
   let totalCredit = 0;
   let total = 0;
-  for(const op of operations) {
+  for (const op of operations) {
     const amount = op.operation.amount;
     amount < 0 ? (totalDebit += -amount) : (totalCredit += amount);
     total += amount;
@@ -39,17 +39,19 @@ const Total = styled(Typography, {
     backgroundColor: colors[type],
   };
 
-  return dense ? {
-    ...base,
-    width: 80,
-    marginLeft: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-  } : {
-    ...base,
-    width: 100,
-    marginLeft: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-  };
+  return dense
+    ? {
+        ...base,
+        width: 80,
+        marginLeft: theme.spacing(1),
+        paddingLeft: theme.spacing(1),
+      }
+    : {
+        ...base,
+        width: 100,
+        marginLeft: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
+      };
 });
 
 interface TotalOpsProps {
@@ -64,14 +66,16 @@ const TotalOps = styled(Typography, {
     paddingBottom: theme.spacing(1),
   };
 
-  return dense ? {
-    ...base,
-    width: 80,
-    marginLeft: theme.spacing(1),
-  } : {
-    ...base,
-    marginLeft: theme.spacing(2),
-  };
+  return dense
+    ? {
+        ...base,
+        width: 80,
+        marginLeft: theme.spacing(1),
+      }
+    : {
+        ...base,
+        marginLeft: theme.spacing(2),
+      };
 });
 
 const Footer = (props) => {
@@ -82,9 +86,15 @@ const Footer = (props) => {
   return (
     <Toolbar {...props}>
       <Typography>Total</Typography>
-      <Total dense={isPhone} type="debit">{totalDebit}</Total>
-      <Total dense={isPhone} type="credit">{totalCredit}</Total>
-      <Total dense={isPhone} type="total">{total}</Total>
+      <Total dense={isPhone} type="debit">
+        {totalDebit}
+      </Total>
+      <Total dense={isPhone} type="credit">
+        {totalCredit}
+      </Total>
+      <Total dense={isPhone} type="total">
+        {total}
+      </Total>
       <TotalOps dense={isPhone}>{operations.length} opérations</TotalOps>
     </Toolbar>
   );

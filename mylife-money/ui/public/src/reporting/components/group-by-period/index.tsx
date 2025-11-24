@@ -15,22 +15,25 @@ const useConnect = ({ refreshAction, exportAction }) => {
   const dispatch = useDispatch<FIXME_any>();
   return {
     data: useSelector(getSortedViewList),
-    ...useMemo(() => ({
-      refresh: (criteria) => dispatch(refreshAction(criteria)),
-      exportReport: (criteria, display) => dispatch(exportAction({ criteria, display })),
-      leave: () => dispatch(reportingLeave()),
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        refresh: (criteria) => dispatch(refreshAction(criteria)),
+        exportReport: (criteria, display) => dispatch(exportAction({ criteria, display })),
+        leave: () => dispatch(reportingLeave()),
+      }),
+      [dispatch]
+    ),
   };
 };
 
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  flex: '1 1 auto'
+  flex: '1 1 auto',
 });
 
 const StyledChart = styled(Chart)({
-  flex: '1 1 auto'
+  flex: '1 1 auto',
 });
 
 const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }) => {
@@ -58,8 +61,15 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
 
   return (
     <Container>
-      <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} onExport={doExport} additionalComponents={additionalCriteria} />
-      <StyledChart data={data} groups={criteria.groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })}/>
+      <Criteria
+        criteria={criteria}
+        onCriteriaChanged={changeCriteria}
+        display={display}
+        onDisplayChanged={setDisplay}
+        onExport={doExport}
+        additionalComponents={additionalCriteria}
+      />
+      <StyledChart data={data} groups={criteria.groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })} />
     </Container>
   );
 };

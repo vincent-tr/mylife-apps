@@ -8,15 +8,15 @@ const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   flex: '1 1 auto',
-  overflowY: 'auto'
+  overflowY: 'auto',
 });
 
 const Home = () => {
   return (
     <Container>
-      <Stats/>
-      <ChartCount/>
-      <ChartAmount/>
+      <Stats />
+      <ChartCount />
+      <ChartAmount />
     </Container>
   );
 };

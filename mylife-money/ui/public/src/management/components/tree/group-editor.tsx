@@ -3,30 +3,57 @@ import PropTypes from 'prop-types';
 import { dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import { ExpandMore } from '@mui/icons-material';
-import { styled, Select, MenuItem, TextField, Tooltip, IconButton, Card, CardContent, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, TableRow, TableCell, Accordion, AccordionSummary, AccordionDetails, Table, TableHead, TableBody, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import {
+  styled,
+  Select,
+  MenuItem,
+  TextField,
+  Tooltip,
+  IconButton,
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  TableRow,
+  TableCell,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Table,
+  TableHead,
+  TableBody,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from '@mui/material';
 
 type FIXME_any = any;
 
 const operators = {
-  $eq       : { display : 'Egal à' },
-  $gt       : { display : 'Inférieur à' },
-  $gte      : { display : 'Inférieur ou égal à' },
-  $lt       : { display : 'Supérieur à' },
-  $lte      : { display : 'Supérieur ou égal à' },
-  $regex    : { display : '(Expression régulière)' },
-  $contains : { display : 'Contient' }
+  $eq: { display: 'Egal à' },
+  $gt: { display: 'Inférieur à' },
+  $gte: { display: 'Inférieur ou égal à' },
+  $lt: { display: 'Supérieur à' },
+  $lte: { display: 'Supérieur ou égal à' },
+  $regex: { display: '(Expression régulière)' },
+  $contains: { display: 'Contient' },
 };
 
 const fields = {
-  amount : { display : 'Montant',     format : val => parseInt(val, 10) },
-  label  : { display : 'Description', format : val => val },
-  note   : { display : 'Note',        format : val => val }
+  amount: { display: 'Montant', format: (val) => parseInt(val, 10) },
+  label: { display: 'Description', format: (val) => val },
+  note: { display: 'Note', format: (val) => val },
 };
 
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const SelectField = styled(Select)(({ theme }) => ({
@@ -44,9 +71,9 @@ const ConditionEditor = ({ onAddCondition }) => {
 
   const onAdd = () => {
     const condition = {
-      field    : field,
-      operator : operator,
-      value    : fields[field].format(value)
+      field: field,
+      operator: operator,
+      value: fields[field].format(value),
     };
 
     onAddCondition(condition);
@@ -58,22 +85,22 @@ const ConditionEditor = ({ onAddCondition }) => {
 
   return (
     <Container>
-      <SelectField value={field || ''} onChange={e => setField(e.target.value || null)}>
-        {Object.keys(fields).map(field => (
+      <SelectField value={field || ''} onChange={(e) => setField(e.target.value || null)}>
+        {Object.keys(fields).map((field) => (
           <MenuItem key={field} value={field}>
             {fields[field].display}
           </MenuItem>
         ))}
       </SelectField>
-      <SelectField value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
-        {Object.keys(operators).map(operator => (
+      <SelectField value={operator || ''} onChange={(e) => setOperator(e.target.value || null)}>
+        {Object.keys(operators).map((operator) => (
           <MenuItem key={operator} value={operator}>
             {operators[operator].display}
           </MenuItem>
         ))}
       </SelectField>
-      <TextInputField value={value || ''} onChange={e => setValue(e.target.value)} />
-      <Tooltip title='Ajouter une condition'>
+      <TextInputField value={value || ''} onChange={(e) => setValue(e.target.value)} />
+      <Tooltip title="Ajouter une condition">
         <div>
           <IconButton disabled={!field || !operator || !value} onClick={onAdd}>
             <icons.actions.New />
@@ -85,17 +112,17 @@ const ConditionEditor = ({ onAddCondition }) => {
 };
 
 ConditionEditor.propTypes = {
-  onAddCondition: PropTypes.func.isRequired
+  onAddCondition: PropTypes.func.isRequired,
 };
 
 const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
-  const deleteCondition = index => onConditionsChanged(arrayDelete(conditions, index));
-  const addCondition = condition => onConditionsChanged([...conditions, condition]);
+  const deleteCondition = (index) => onConditionsChanged(arrayDelete(conditions, index));
+  const addCondition = (condition) => onConditionsChanged([...conditions, condition]);
 
   return (
     <Card>
       <CardContent>
-        <Typography color='textSecondary' gutterBottom>
+        <Typography color="textSecondary" gutterBottom>
           Conditions
         </Typography>
         <List>
@@ -103,7 +130,7 @@ const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
             <ListItem key={index}>
               <ListItemText primary={displayCondition(condition)} />
               <ListItemSecondaryAction>
-                <Tooltip title='Supprimer la condition'>
+                <Tooltip title="Supprimer la condition">
                   <IconButton onClick={() => deleteCondition(index)}>
                     <icons.actions.Delete />
                   </IconButton>
@@ -114,7 +141,6 @@ const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
         </List>
 
         <ConditionEditor onAddCondition={addCondition} />
-
       </CardContent>
     </Card>
   );
@@ -122,7 +148,7 @@ const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
 
 ConditionsEditor.propTypes = {
   conditions: PropTypes.array.isRequired,
-  onConditionsChanged: PropTypes.func.isRequired
+  onConditionsChanged: PropTypes.func.isRequired,
 };
 
 const RuleRow = ({ rule, onRuleChanged, onDeleteRule }) => {
@@ -131,7 +157,7 @@ const RuleRow = ({ rule, onRuleChanged, onDeleteRule }) => {
   return (
     <TableRow>
       <TableCell>
-        <Tooltip title='Supprimer la règle'>
+        <Tooltip title="Supprimer la règle">
           <div>
             <IconButton onClick={onDeleteRule}>
               <icons.actions.Delete />
@@ -140,10 +166,10 @@ const RuleRow = ({ rule, onRuleChanged, onDeleteRule }) => {
         </Tooltip>
       </TableCell>
       <TableCell>
-        <TextField label='Nom de la règle' value={rule.name || ''} onChange={e => updateRule('name', e.target.value)} />
+        <TextField label="Nom de la règle" value={rule.name || ''} onChange={(e) => updateRule('name', e.target.value)} />
       </TableCell>
       <TableCell>
-        <ConditionsEditor conditions={rule.conditions} onConditionsChanged={conditions => updateRule('conditions', conditions)} />
+        <ConditionsEditor conditions={rule.conditions} onConditionsChanged={(conditions) => updateRule('conditions', conditions)} />
       </TableCell>
     </TableRow>
   );
@@ -156,11 +182,10 @@ RuleRow.propTypes = {
 };
 
 const RulesEditor = ({ rules, onRulesChanged }) => {
-
   const addRule = () => {
-    const rule   = {
-      conditions : [],
-      name       : 'Nouvelle règle'
+    const rule = {
+      conditions: [],
+      name: 'Nouvelle règle',
     };
 
     onRulesChanged([...rules, rule]);
@@ -176,7 +201,7 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
           <TableHead>
             <TableRow>
               <TableCell>
-                <Tooltip title='Ajouter une règle'>
+                <Tooltip title="Ajouter une règle">
                   <IconButton onClick={addRule}>
                     <icons.actions.New />
                   </IconButton>
@@ -189,9 +214,7 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
               const deleteRule = () => onRulesChanged(arrayDelete(rules, index));
               const changeRule = (rule) => onRulesChanged(arrayUpdate(rules, index, rule));
 
-              return (
-                <RuleRow key={index} rule={rule} onRuleChanged={changeRule} onDeleteRule={deleteRule} />
-              );
+              return <RuleRow key={index} rule={rule} onRuleChanged={changeRule} onDeleteRule={deleteRule} />;
             })}
           </TableBody>
         </Table>
@@ -210,18 +233,19 @@ const EditorDialog = ({ options, show, proceed }) => {
   const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
 
   return (
-    <Dialog aria-labelledby='dialog-title' open={show} maxWidth='lg' fullWidth>
-      <DialogTitle id='dialog-title'>Editer le groupe</DialogTitle>
+    <Dialog aria-labelledby="dialog-title" open={show} maxWidth="lg" fullWidth>
+      <DialogTitle id="dialog-title">Editer le groupe</DialogTitle>
       <DialogContent dividers>
-        <TextField label='Nom du groupe' id='display' value={group.display} onChange={e => updateGroup('display', e.target.value)} />
+        <TextField label="Nom du groupe" id="display" value={group.display} onChange={(e) => updateGroup('display', e.target.value)} />
 
         {/* TODO: move */}
 
-        <RulesEditor rules={group.rules} onRulesChanged={rules => updateGroup('rules', rules)} />
-
+        <RulesEditor rules={group.rules} onRulesChanged={(rules) => updateGroup('rules', rules)} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => proceed({ result: 'ok', group })} color='primary'>OK</Button>
+        <Button onClick={() => proceed({ result: 'ok', group })} color="primary">
+          OK
+        </Button>
         <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
       </DialogActions>
     </Dialog>
@@ -231,15 +255,15 @@ const EditorDialog = ({ options, show, proceed }) => {
 EditorDialog.propTypes = {
   options: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
-  proceed: PropTypes.func.isRequired
+  proceed: PropTypes.func.isRequired,
 };
 
 const edit = dialogs.create(EditorDialog);
 
 export default async (group) => {
   group = clone(group);
-  const res = await edit({ options: { group } }) as FIXME_any;
-  if(res.result !== 'ok') {
+  const res = (await edit({ options: { group } })) as FIXME_any;
+  if (res.result !== 'ok') {
     return;
   }
 
@@ -266,5 +290,5 @@ function displayCondition(condition) {
 }
 
 function cleanGroup(group) {
-  return { ...group, rules : group.rules.filter(rule => rule.conditions.length) };
+  return { ...group, rules: group.rules.filter((rule) => rule.conditions.length) };
 }

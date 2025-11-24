@@ -7,7 +7,7 @@ import { Tooltip, Breadcrumbs, Link, styled } from '@mui/material';
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
@@ -19,7 +19,7 @@ const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
 const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
   return (
     <Container>
-      <Tooltip title={'Déplacer l\'opération'}>
+      <Tooltip title={"Déplacer l'opération"}>
         <div>
           <GroupSelectorButton onSelect={onMove}>
             <icons.actions.Move />
@@ -27,15 +27,15 @@ const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
         </div>
       </Tooltip>
 
-      <GroupPath aria-label='breadcrumb'>
-        {groupStack.map(group => {
-          const handleClick = e => {
+      <GroupPath aria-label="breadcrumb">
+        {groupStack.map((group) => {
+          const handleClick = (e) => {
             e.preventDefault();
             onOpenGroup(group._id);
           };
 
           return (
-            <Link key={group._id} color='textPrimary' href='#' onClick={handleClick}>
+            <Link key={group._id} color="textPrimary" href="#" onClick={handleClick}>
               {group.display}
             </Link>
           );

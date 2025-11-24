@@ -4,15 +4,16 @@ import { useSelector } from 'react-redux';
 import { getAccounts } from '../../reference/selectors';
 import { MenuItem, Select } from '@mui/material';
 
-const useConnect = () => useSelector(state => ({
-  accounts : getAccounts(state),
-}));
+const useConnect = () =>
+  useSelector((state) => ({
+    accounts: getAccounts(state),
+  }));
 
 function renderList(accounts, allowNull) {
-  if(allowNull) {
-    accounts = [ { _id: '', display: 'Tous' }, ...accounts ];
+  if (allowNull) {
+    accounts = [{ _id: '', display: 'Tous' }, ...accounts];
   }
-  return accounts.map(account => (
+  return accounts.map((account) => (
     <MenuItem key={account._id} value={account._id}>
       {account.display}
     </MenuItem>
@@ -21,7 +22,7 @@ function renderList(accounts, allowNull) {
 
 const AccountSelector = ({ allowNull = false, value, onChange = null, ...props }) => {
   const { accounts } = useConnect();
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { value } = e.target;
     onChange(value === '' ? null : value);
   };
@@ -33,9 +34,9 @@ const AccountSelector = ({ allowNull = false, value, onChange = null, ...props }
 };
 
 AccountSelector.propTypes = {
-  allowNull : PropTypes.bool,
-  value     : PropTypes.string,
-  onChange  : PropTypes.func,
+  allowNull: PropTypes.bool,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 export default AccountSelector;

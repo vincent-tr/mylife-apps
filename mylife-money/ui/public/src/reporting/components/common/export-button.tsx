@@ -4,7 +4,7 @@ import icons from '../../../common/icons';
 import { Tooltip, IconButton } from '@mui/material';
 
 const ExportButton = ({ onClick, ...props }) => (
-  <Tooltip title='Exporter les données'>
+  <Tooltip title="Exporter les données">
     <IconButton {...props} onClick={wrapClick(onClick)}>
       <icons.actions.Export />
     </IconButton>
@@ -12,13 +12,13 @@ const ExportButton = ({ onClick, ...props }) => (
 );
 
 ExportButton.propTypes = {
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 
 export default ExportButton;
 
 function wrapClick(onClick) {
-  if(!onClick) {
+  if (!onClick) {
     return onClick;
   }
 

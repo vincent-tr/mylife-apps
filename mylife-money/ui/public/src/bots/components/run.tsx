@@ -27,7 +27,7 @@ const GridContainer = styled('div')(({ theme }) => ({
 const LogsList = styled('div')({
   flex: '1 1 auto',
   overflowY: 'auto',
-  height: 1 // else use gigantic height if log of logs, with no scroll ?!?
+  height: 1, // else use gigantic height if log of logs, with no scroll ?!?
 });
 
 const LogRow = styled('span')(({ theme }) => ({
@@ -68,7 +68,7 @@ const Run: React.FunctionComponent<{ run: BotRun; className?: string }> = ({ run
       </GridContainer>
 
       <Divider />
-  
+
       <LogsList>
         {(run.logs as BotRunLog[]).map((log, index) => (
           <LogRow key={index}>
@@ -102,26 +102,14 @@ const ResultTypography = styled(Typography, {
 
 const RunResult: React.FunctionComponent<{ value: 'success' | 'warning' | 'error' }> = ({ value }) => {
   if (!value) {
-    return (
-      <Typography>
-        {'-'}
-      </Typography>
-    );
+    return <Typography>{'-'}</Typography>;
   }
 
-  return (
-    <ResultTypography value={value}>
-      {value.toUpperCase()}
-    </ResultTypography>
-  );
+  return <ResultTypography value={value}>{value.toUpperCase()}</ResultTypography>;
 };
 
 const Timestamp: React.FunctionComponent<{ value: Date }> = ({ value }) => {
-  return (
-    <LogTimestamp>
-      {value.toLocaleString('fr-FR')}
-    </LogTimestamp>
-  );
+  return <LogTimestamp>{value.toLocaleString('fr-FR')}</LogTimestamp>;
 };
 
 const LevelSpan = styled('span', {
@@ -158,33 +146,17 @@ const LevelSpan = styled('span', {
 });
 
 const Level: React.FunctionComponent<{ value: BotRunLogSeverity }> = ({ value }) => {
-  return (
-    <LevelSpan severity={value}>
-      {value.toUpperCase()}
-    </LevelSpan>
-  );
+  return <LevelSpan severity={value}>{value.toUpperCase()}</LevelSpan>;
 };
 
 const Message: React.FunctionComponent<{ value: string }> = ({ value }) => {
-  return (
-    <span>
-      {value}
-    </span>
-  );
+  return <span>{value}</span>;
 };
 
 const Space: React.FunctionComponent = () => {
-  return (
-    <span>
-      {' '}
-    </span>
-  );
+  return <span> </span>;
 };
 
 const LineEnd: React.FunctionComponent = () => {
-  return (
-    <span>
-      {'\n'}
-    </span>
-  );
+  return <span>{'\n'}</span>;
 };

@@ -14,7 +14,7 @@ const Container = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
-const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bot, className }) => {
+const Detail: React.FunctionComponent<{ bot: Bot; className?: string }> = ({ bot, className }) => {
   const start = useStart(bot._id);
 
   return (
@@ -24,11 +24,11 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bo
           <CronCriteriaField value={bot.schedule} />
         </Grid>
         <Grid size={12}>
-            <CriteriaField label={'Lancer le robot'}>
-              <IconButton onClick={start}>
-                <icons.actions.Execute />
-              </IconButton>
-            </CriteriaField>
+          <CriteriaField label={'Lancer le robot'}>
+            <IconButton onClick={start}>
+              <icons.actions.Execute />
+            </IconButton>
+          </CriteriaField>
         </Grid>
       </Grid>
     </Container>
@@ -37,22 +37,19 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string; }> = ({ bo
 
 export default Detail;
 
-const CronCriteriaField: React.FunctionComponent<{ value: string; }> = ({ value }) => {
-
+const CronCriteriaField: React.FunctionComponent<{ value: string }> = ({ value }) => {
   return (
-    <CriteriaField label={
-      <>
-        {'Planification '}
-        <Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
-          "cron"
-        </Link>
-      </>
-    }>
-      { value ? (
-        <TextField InputProps={{ readOnly: true }} value={value} helperText={format(value)} />
-      ) : (
-        <TextField InputProps={{ readOnly: true }} value={'-'} helperText={' '} />
-      )}
+    <CriteriaField
+      label={
+        <>
+          {'Planification '}
+          <Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
+            "cron"
+          </Link>
+        </>
+      }
+    >
+      {value ? <TextField InputProps={{ readOnly: true }} value={value} helperText={format(value)} /> : <TextField InputProps={{ readOnly: true }} value={'-'} helperText={' '} />}
     </CriteriaField>
   );
 };

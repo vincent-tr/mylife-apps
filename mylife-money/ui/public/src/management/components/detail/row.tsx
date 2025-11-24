@@ -10,30 +10,26 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const Label = styled(Typography)({
-  width: 100
+  width: 100,
 });
 
 const Content = styled('div')({
-  flex: '1 1 auto'
+  flex: '1 1 auto',
 });
 
 const Row = ({ label, children }) => {
   return (
     <Container>
-      <Label>
-        {label}
-      </Label>
+      <Label>{label}</Label>
 
-      <Content>
-        {children}
-      </Content>
+      <Content>{children}</Content>
     </Container>
   );
 };
 
 Row.propTypes = {
   label: PropTypes.string,
-  children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 export default Row;
