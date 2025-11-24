@@ -14,7 +14,7 @@ export interface DeviceListProps {
 const DeviceList: React.FC<DeviceListProps> = ({ className, value, onChange }) => {
   const devices = useDevices();
   const handleChange = (event) => onChange(event.target.value);
-  const renderSelectorValue = useCallback(createSelectorValueRenderer(devices), [devices]);
+  const renderSelectorValue = useCallback((selection: string[]) => selection.map((id) => devices[id]).join(', '), [devices]);
 
   return (
     <Select multiple value={value} onChange={handleChange} input={<Input fullWidth />} renderValue={renderSelectorValue} className={className}>
@@ -29,10 +29,6 @@ const DeviceList: React.FC<DeviceListProps> = ({ className, value, onChange }) =
 };
 
 export default DeviceList;
-
-function createSelectorValueRenderer(devices: DeviceMap) {
-  return (selection: string[]) => selection.map((id) => devices[id]).join(', ');
-}
 
 function useDevices() {
   const view = useSelector(getDevicesView);
