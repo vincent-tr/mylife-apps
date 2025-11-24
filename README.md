@@ -190,18 +190,16 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 # TODO
 
-- mui v5
-- mui pickers not supported (update to mui v5)
-- */bin/* : cleanup other than server?
-- remove babel after we have no jsx, only tsx
-- remove fonts ? (2 first includes of ui/src/index.js)
-- review lint
-- review defines :
-  - __dirname usage :
-    - http server public dir
-    - config dir
-- redux toolkit for state updates instead of immutable objects
-- log app + tools version at startup
+- merge tools-common into tools-ui
+- make TS stricter
+- linter: eslint
+- formatter: prettier
+- import mui direct component
+- merge shared and public
+- review metadata vs typescript types
+- review isScreenPhone, etc for style: should not go through JS to go back to CSS
+- remove socket errors
+- use mui charts, table, treeview
 - remove PropTypes use
 - FIXME_any
 
