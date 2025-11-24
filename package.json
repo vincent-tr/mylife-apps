@@ -9,10 +9,10 @@
     "ws:list": "npm ls --workspaces --depth=0",
     "ws:info": "npm query '.workspace'",
     "ws:outdated": "npm outdated --workspaces",
-    "lint": "npm run lint --workspaces --if-present",
-    "lint:fix": "npm run lint:fix --workspaces --if-present",
-    "format": "npm run format --workspaces --if-present",
-    "format:check": "npm run format:check --workspaces --if-present"
+    "ws:lint": "npm run lint --workspaces --if-present",
+    "ws:lint:fix": "npm run lint:fix --workspaces --if-present",
+    "ws:format": "npm run format --workspaces --if-present",
+    "ws:format:check": "npm run format:check --workspaces --if-present"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.18.1",

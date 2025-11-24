@@ -59,10 +59,10 @@ npm run format:check      # Check formatting without changes
 
 **All packages at once** (from root):
 ```bash
-npm run lint              # Lint all UI packages
-npm run lint:fix          # Fix all UI packages
-npm run format            # Format all UI packages
-npm run format:check      # Check all UI packages
+npm run ws:lint           # Lint all UI packages
+npm run ws:lint:fix       # Fix all UI packages
+npm run ws:format         # Format all UI packages
+npm run ws:format:check   # Check all UI packages
 ```
 
 **Configuration** (`.eslintrc.json`, `.prettierrc`):
