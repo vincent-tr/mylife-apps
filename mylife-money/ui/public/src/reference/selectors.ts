@@ -37,6 +37,11 @@ export const getChildrenView = createSelector([getGroupView], (view) => {
 
 export const makeGetSortedChildren = () =>
   createSelector([getChildrenView, (state, groupId: string) => groupId], (chlidrenView, groupId) => {
+    if (!groupId) {
+      // Non triés
+      return [];
+    }
+
     const groups = chlidrenView[groupId] || [];
     return groups.slice().sort((a, b) => (a as FIXME_any).display.localeCompare((b as FIXME_any).display));
   });

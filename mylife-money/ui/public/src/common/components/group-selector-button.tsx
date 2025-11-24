@@ -59,4 +59,6 @@ const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorBut
   return <IconButton ref={ref} onClick={clickHandler} {...props} />;
 });
 
+GroupSelectorButton.displayName = 'GroupSelectorButton';
+
 export default GroupSelectorButton;
