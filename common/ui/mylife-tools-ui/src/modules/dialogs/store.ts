@@ -1,7 +1,11 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Action, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
 import { Notification, NotificationType } from './types';
 import { abortableDelay } from '../../utils';
+
+interface ErrorAction extends Action {
+  error: Error;
+}
 
 interface DialogState {
   busy          : boolean,
@@ -37,6 +41,15 @@ const dialogSlice = createSlice({
     clearNotifications(state) {
       state.notifications = [];
     },
+  },
+
+  extraReducers(builder) {
+    builder.addMatcher(
+      (action) => action.error,
+      (state, action: ErrorAction) => {
+        state.error = action.error;
+      }
+    );
   },
 
   selectors: {
