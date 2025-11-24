@@ -6,7 +6,7 @@ import { resetCriteria } from './store';
 const viewRef = new views.ViewReference({
   uid: viewUids.NAGIOS_DATA,
   service: 'nagios',
-  method: 'notify'
+  method: 'notify',
 });
 
 export const enter = createAsyncThunk('nagios/enter', async () => {

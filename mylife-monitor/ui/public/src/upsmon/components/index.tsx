@@ -26,7 +26,7 @@ const Upsmon = () => {
   return (
     <Container>
       <TableContainer>
-        <Table size='small' stickyHeader>
+        <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>{'Onduleur'}</TableCell>
@@ -45,7 +45,7 @@ const Upsmon = () => {
       </TableContainer>
     </Container>
   );
-}
+};
 
 export default Upsmon;
 
@@ -66,10 +66,10 @@ const Ups = ({ data }) => {
         <TableCell />
       </RowComponent>
       {entity.fields
-        .filter(field => !EXCLUDED_FIELDS.includes(field.id))
-        .map(field => (
-        <Item key={field.id} data={data} field={field} />
-      ))}
+        .filter((field) => !EXCLUDED_FIELDS.includes(field.id))
+        .map((field) => (
+          <Item key={field.id} data={data} field={field} />
+        ))}
     </>
   );
 };
@@ -87,15 +87,18 @@ const Item = ({ data, field }) => {
 function useConnect() {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      data: getView(state)
+    ...useSelector((state) => ({
+      data: getView(state),
     })),
-    ...useMemo(() => ({
-      enter: () => dispatch(enter()),
-      leave: () => dispatch(leave()),
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        enter: () => dispatch(enter()),
+        leave: () => dispatch(leave()),
+      }),
+      [dispatch]
+    ),
   };
-};
+}
 
 function formatValue(data, field) {
   const datatype = field.datatype;
@@ -106,29 +109,28 @@ function formatValue(data, field) {
   }
 
   switch (datatype.id) {
-  
-  case 'name':
-  case 'text':
-    return value;
-  
-  case 'datetime':
-    return formatDate(value, 'dd/MM/yyyy HH:mm:ss');
-  case 'duration':
-    return humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true });
-  case 'percent':
-    return `${value.toFixed()} %`;
-  case 'voltage':
-    return `${value.toFixed()} V`;
-  case 'power':
-    return `${value.toFixed()} W`;
-  case 'count':
-    return value.toFixed();
+    case 'name':
+    case 'text':
+      return value;
 
-  case 'upsmon-status-flag':
-    return formatStatusFlag(value);
-    
-  default:
-    return `Unhandled type ${datatype.id} with value ${JSON.stringify(value)}`;
+    case 'datetime':
+      return formatDate(value, 'dd/MM/yyyy HH:mm:ss');
+    case 'duration':
+      return humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true });
+    case 'percent':
+      return `${value.toFixed()} %`;
+    case 'voltage':
+      return `${value.toFixed()} V`;
+    case 'power':
+      return `${value.toFixed()} W`;
+    case 'count':
+      return value.toFixed();
+
+    case 'upsmon-status-flag':
+      return formatStatusFlag(value);
+
+    default:
+      return `Unhandled type ${datatype.id} with value ${JSON.stringify(value)}`;
   }
 }
 
@@ -174,5 +176,5 @@ function formatStatusFlag(value: number): string {
     }
   }
 
-  return values.map(value => value.name).join(', ');
+  return values.map((value) => value.name).join(', ');
 }

@@ -18,13 +18,13 @@ const HeaderCell = styled('div')(({ theme }) => ({
 
 const TYPE_DISPLAY = {
   host: 'Hôtes',
-  service: 'Services'
+  service: 'Services',
 };
 
 const NagiosSummary = ({ data }) => {
   return (
     <Container>
-      <Table size='small'>
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell colSpan={3}>

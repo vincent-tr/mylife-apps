@@ -26,14 +26,14 @@ const formatDuration = humanizeDuration.humanizer({
 
   languages: {
     shortFr: {
-      y: () => "ans",
-      mo: () => "mois",
-      w: () => "semaines",
-      d: () => "jours",
-      h: () => "heures",
-      m: () => "min",
-      s: () => "sec",
-      ms: () => "ms",
+      y: () => 'ans',
+      mo: () => 'mois',
+      w: () => 'semaines',
+      d: () => 'jours',
+      h: () => 'heures',
+      m: () => 'min',
+      s: () => 'sec',
+      ms: () => 'ms',
     },
   },
 });
@@ -41,7 +41,7 @@ const formatDuration = humanizeDuration.humanizer({
 const UpsmonSummary = ({ view }) => {
   return (
     <Container>
-      <Table size='small'>
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell colSpan={3}>
@@ -86,4 +86,4 @@ const Row = ({ data }) => {
       <UpdateCell>{lastUpdateStr}</UpdateCell>
     </TableRow>
   );
-}
+};

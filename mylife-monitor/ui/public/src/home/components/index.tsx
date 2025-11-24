@@ -16,10 +16,13 @@ const useConnect = () => {
     nagios: useSelector(getNagiosView),
     upsmon: useSelector(getUpsmonView),
     updates: useSelector(getUpdatesView),
-    ...useMemo(() => ({
-      enter: () => dispatch(enter()),
-      leave: () => dispatch(leave()),
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        enter: () => dispatch(enter()),
+        leave: () => dispatch(leave()),
+      }),
+      [dispatch]
+    ),
   };
 };
 
@@ -43,7 +46,7 @@ const Home = () => {
           <NagiosSummary key={summary._id} data={summary} />
         ))}
       </Section>
-      
+
       <Section>
         <UpsmonSummary view={upsmon} />
       </Section>

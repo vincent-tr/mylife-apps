@@ -10,6 +10,5 @@ export default {
     { id: 'latestVersion', name: 'Dernière version', datatype: 'version' },
     { id: 'latestCreated', name: 'Date de création (dernière)', datatype: 'datetime' },
   ],
-  display: obj => obj.path.join('.')
+  display: (obj) => obj.path.join('.'),
 };
-

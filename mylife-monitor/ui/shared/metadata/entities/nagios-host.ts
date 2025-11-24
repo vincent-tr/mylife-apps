@@ -12,8 +12,8 @@ export default {
     { id: 'maxAttempts', name: 'Tentatives totales', datatype: 'count' },
     { id: 'lastCheck', name: 'Dernier check', datatype: 'datetime' },
     { id: 'nextCheck', name: 'Prochain check', datatype: 'datetime' },
-    { id: 'lastStateChange', name: 'Dernier changement d\'état', datatype: 'datetime' },
+    { id: 'lastStateChange', name: "Dernier changement d'état", datatype: 'datetime' },
     { id: 'isFlapping', name: 'Instable', datatype: 'boolean' },
   ],
-  display: obj => obj.display
+  display: (obj) => obj.display,
 };
