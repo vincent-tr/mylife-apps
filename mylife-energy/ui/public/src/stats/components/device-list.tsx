@@ -11,7 +11,7 @@ export interface DeviceListProps {
   onChange: (newValue: string[]) => void;
 }
 
-const DeviceList: React.FunctionComponent<DeviceListProps> = ({ className, value, onChange }) => {
+const DeviceList: React.FC<DeviceListProps> = ({ className, value, onChange }) => {
   const devices = useDevices();
   const handleChange = (event) => onChange(event.target.value);
   const renderSelectorValue = useCallback(createSelectorValueRenderer(devices), [devices]);

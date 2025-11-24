@@ -58,7 +58,7 @@ const ArrowsCell = styled('div')(() => ({
   justifySelf: 'center',
 }));
 
-const MainAnimation: React.FunctionComponent = () => {
+const MainAnimation: React.FC = () => {
   const isPhone = useScreenPhone();
 
   const main = useSelector((state) => getFirstDeviceByType(state, 'main'));
@@ -105,7 +105,7 @@ const StyledDeviceIcon = styled(SvgIcon)(() => ({
   width: 50,
 }));
 
-const DeviceView: React.FunctionComponent<{ deviceId: string; as?: React.ElementType; sensorKeys: string[] }> = ({ deviceId, as: Component = 'div', sensorKeys }) => {
+const DeviceView: React.FC<{ deviceId: string; as?: React.ElementType; sensorKeys: string[] }> = ({ deviceId, as: Component = 'div', sensorKeys }) => {
   const device = useSelector((state) => getDevice(state, deviceId));
 
   if (!device) {
@@ -162,7 +162,7 @@ const StyledBottomArrow = styled('div')(() => ({
   height: 25,
 }));
 
-const ArrowsArea: React.FunctionComponent<{ as?: React.ElementType; solarToMain: boolean; solarToTotal: boolean; mainToTotal: boolean }> = ({
+const ArrowsArea: React.FC<{ as?: React.ElementType; solarToMain: boolean; solarToTotal: boolean; mainToTotal: boolean }> = ({
   as: Component = 'div',
   solarToMain,
   solarToTotal,
@@ -185,7 +185,7 @@ const ArrowsArea: React.FunctionComponent<{ as?: React.ElementType; solarToMain:
 
 // Taken from https://enlighten.enphaseenergy.com/
 
-const ArrowTopToRight: React.FunctionComponent = () => {
+const ArrowTopToRight: React.FC = () => {
   const colors = useColors();
 
   return (
@@ -212,7 +212,7 @@ const ArrowTopToRight: React.FunctionComponent = () => {
   );
 };
 
-const ArrowTopToLeft: React.FunctionComponent = () => {
+const ArrowTopToLeft: React.FC = () => {
   const colors = useColors();
 
   return (
@@ -247,7 +247,7 @@ const ArrowTopToLeft: React.FunctionComponent = () => {
   );
 };
 
-const ArrowLeftToRight: React.FunctionComponent = () => {
+const ArrowLeftToRight: React.FC = () => {
   const colors = useColors();
 
   return (

@@ -8,10 +8,10 @@ const viewRef = new views.ViewReference({
   method: 'notifyHomeData',
 });
 
-export const enter = createAsyncThunk('home/enter', async (_, api) => {
+export const enter = createAsyncThunk('home/enter', async (_, _api) => {
   await viewRef.attach();
 });
 
-export const leave = createAsyncThunk('home/leave', async (_, api) => {
+export const leave = createAsyncThunk('home/leave', async (_, _api) => {
   await viewRef.detach();
 });

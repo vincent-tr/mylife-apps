@@ -42,7 +42,7 @@ const LogTimestamp = styled('span')(({ theme }) => ({
   color: darken(theme.palette.background.paper, 0.5),
 }));
 
-const Run: React.FunctionComponent<{ run: BotRun; className?: string }> = ({ run, className }) => {
+const Run: React.FC<{ run: BotRun; className?: string }> = ({ run, className }) => {
   const structure = services.getFieldDatatype('bot', 'lastRun');
 
   return (
@@ -100,7 +100,7 @@ const ResultTypography = styled(Typography, {
   }
 });
 
-const RunResult: React.FunctionComponent<{ value: 'success' | 'warning' | 'error' }> = ({ value }) => {
+const RunResult: React.FC<{ value: 'success' | 'warning' | 'error' }> = ({ value }) => {
   if (!value) {
     return <Typography>{'-'}</Typography>;
   }
@@ -108,7 +108,7 @@ const RunResult: React.FunctionComponent<{ value: 'success' | 'warning' | 'error
   return <ResultTypography value={value}>{value.toUpperCase()}</ResultTypography>;
 };
 
-const Timestamp: React.FunctionComponent<{ value: Date }> = ({ value }) => {
+const Timestamp: React.FC<{ value: Date }> = ({ value }) => {
   return <LogTimestamp>{value.toLocaleString('fr-FR')}</LogTimestamp>;
 };
 
@@ -145,18 +145,18 @@ const LevelSpan = styled('span', {
   }
 });
 
-const Level: React.FunctionComponent<{ value: BotRunLogSeverity }> = ({ value }) => {
+const Level: React.FC<{ value: BotRunLogSeverity }> = ({ value }) => {
   return <LevelSpan severity={value}>{value.toUpperCase()}</LevelSpan>;
 };
 
-const Message: React.FunctionComponent<{ value: string }> = ({ value }) => {
+const Message: React.FC<{ value: string }> = ({ value }) => {
   return <span>{value}</span>;
 };
 
-const Space: React.FunctionComponent = () => {
+const Space: React.FC = () => {
   return <span> </span>;
 };
 
-const LineEnd: React.FunctionComponent = () => {
+const LineEnd: React.FC = () => {
   return <span>{'\n'}</span>;
 };

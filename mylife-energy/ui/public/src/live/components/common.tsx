@@ -38,7 +38,7 @@ const ComputedIcon = styled(icons.devices.Computed)<ComputedIconProps>(({ theme,
   color: flavorColor(theme, flavor),
 }));
 
-export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKeys: string[] }> = ({ deviceId, sensorKeys }) => {
+export const DeviceMeasure: React.FC<{ deviceId: string; sensorKeys: string[] }> = ({ deviceId, sensorKeys }) => {
   const device = useSelector((state) => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
@@ -88,7 +88,7 @@ const TooltipComputedLabel = styled(Typography)(({ theme }) => ({
   fontStyle: 'italic',
 }));
 
-const DeviceMeasureTooltip: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
+const DeviceMeasureTooltip: React.FC<{ deviceId: string }> = ({ deviceId }) => {
   const device = useSelector((state) => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 

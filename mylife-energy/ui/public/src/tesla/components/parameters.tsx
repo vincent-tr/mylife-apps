@@ -21,7 +21,7 @@ const ParameterTitle = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
-const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: ProceedCallback; parameters: Parameters }> = ({ show, proceed, parameters }) => {
+const ParametersDialog: React.FC<{ show: boolean; proceed: ProceedCallback; parameters: Parameters }> = ({ show, proceed, parameters }) => {
   const [values, setValues] = useState(parameters);
   useEffect(() => setValues(parameters), [parameters]);
 

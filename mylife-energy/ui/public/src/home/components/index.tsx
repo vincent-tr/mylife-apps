@@ -21,7 +21,7 @@ const LastUpdateText = styled(Typography)({
   fontStyle: 'italic',
 });
 
-const Home: React.FunctionComponent = () => {
+const Home: React.FC = () => {
   useViewLifecycle();
   const totalPower = useValue('live', 'total-power');
   const batteryLevel = useValue('tesla', 'battery-level');
@@ -61,7 +61,7 @@ const Home: React.FunctionComponent = () => {
 
 export default Home;
 
-const Section: React.FunctionComponent<PropsWithChildren<{ title: React.ReactNode }>> = ({ title, children }) => {
+const Section: React.FC<PropsWithChildren<{ title: React.ReactNode }>> = ({ title, children }) => {
   return (
     <SectionRoot variant="outlined">
       <SectionTitle variant="h1">{title}</SectionTitle>
@@ -71,7 +71,7 @@ const Section: React.FunctionComponent<PropsWithChildren<{ title: React.ReactNod
   );
 };
 
-const LastUpdate: React.FunctionComponent<{ section: string }> = ({ section }) => {
+const LastUpdate: React.FC<{ section: string }> = ({ section }) => {
   const value = useLastUpdate(section);
 
   return (

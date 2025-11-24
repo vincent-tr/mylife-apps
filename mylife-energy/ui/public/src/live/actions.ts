@@ -14,12 +14,12 @@ const measureViewRef = new views.ViewReference({
   method: 'notifyMeasures',
 });
 
-export const enter = createAsyncThunk('live/enter', async (_, api) => {
+export const enter = createAsyncThunk('live/enter', async (_, _api) => {
   await sensorViewRef.attach();
   await measureViewRef.attach();
 });
 
-export const leave = createAsyncThunk('live/leave', async (_, api) => {
+export const leave = createAsyncThunk('live/leave', async (_, _api) => {
   await sensorViewRef.detach();
   await measureViewRef.detach();
 });

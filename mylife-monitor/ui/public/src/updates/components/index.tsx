@@ -120,7 +120,7 @@ function getStatusStr(status) {
   }
 }
 
-const VersionItem: React.FunctionComponent<{ value: string; date: Date }> = ({ value, date }) => {
+const VersionItem: React.FC<{ value: string; date: Date }> = ({ value, date }) => {
   const lastUpdate = useSince(date);
 
   if (!value) {

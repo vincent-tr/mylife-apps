@@ -5,14 +5,14 @@ import MainAnimation from './main-animation';
 import NodeTable from './node-table';
 import { styled } from '@mui/material';
 
-const Container = styled('div')(({ theme }) => ({
+const Container = styled('div')({
   flex: '1 1 auto',
   minHeight: 0,
   display: 'flex',
   flexDirection: 'column',
-}));
+});
 
-const Live: React.FunctionComponent = () => {
+const Live: React.FC = () => {
   useViewLifecycle();
 
   return (

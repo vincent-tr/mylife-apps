@@ -14,7 +14,7 @@ const Container = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
-const Detail: React.FunctionComponent<{ bot: Bot; className?: string }> = ({ bot, className }) => {
+const Detail: React.FC<{ bot: Bot; className?: string }> = ({ bot, className }) => {
   const start = useStart(bot._id);
 
   return (
@@ -37,7 +37,7 @@ const Detail: React.FunctionComponent<{ bot: Bot; className?: string }> = ({ bot
 
 export default Detail;
 
-const CronCriteriaField: React.FunctionComponent<{ value: string }> = ({ value }) => {
+const CronCriteriaField: React.FC<{ value: string }> = ({ value }) => {
   return (
     <CriteriaField
       label={

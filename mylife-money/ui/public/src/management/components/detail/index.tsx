@@ -98,7 +98,7 @@ const NoteView = styled(Markdown)({
   overflowY: 'auto',
 });
 
-const NoteEditor: React.FunctionComponent<{ value: string; onChange: (newValue: string) => void }> = ({ value, onChange }) => {
+const NoteEditor: React.FC<{ value: string; onChange: (newValue: string) => void }> = ({ value, onChange }) => {
   type TabValues = 'view' | 'update';
 
   const [tabValue, setTabValue] = React.useState<TabValues>('view');

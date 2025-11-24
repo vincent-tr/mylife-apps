@@ -32,7 +32,7 @@ const DatePickerSelector = styled(DatePicker)(({ theme }) => ({
   marginLeft: theme.spacing(4),
 }));
 
-const CriteriaSelector: React.FunctionComponent<{ className?: string; criteria: Criteria; onChange: (newCriteriaProps: Partial<Criteria>) => void }> = ({
+const CriteriaSelector: React.FC<{ className?: string; criteria: Criteria; onChange: (newCriteriaProps: Partial<Criteria>) => void }> = ({
   className,
   criteria,
   onChange,
