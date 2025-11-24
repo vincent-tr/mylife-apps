@@ -1,36 +1,33 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Typography, styled } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    display: 'flex',
-    alignItems: 'baseline',
-  },
-  label: {
-    width: 100
-  },
-  content: {
-    flex: '1 1 auto'
-  },
+const Container = styled('div')(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+  display: 'flex',
+  alignItems: 'baseline',
 }));
 
-const Row = ({ label, children }) => {
-  const classes = useStyles();
-  return (
-    <div className={classes.container}>
-      <Typography className={classes.label}>
-        {label}
-      </Typography>
+const Label = styled(Typography)({
+  width: 100
+});
 
-      <div className={classes.content}>
+const Content = styled('div')({
+  flex: '1 1 auto'
+});
+
+const Row = ({ label, children }) => {
+  return (
+    <Container>
+      <Label>
+        {label}
+      </Label>
+
+      <Content>
         {children}
-      </div>
-    </div>
+      </Content>
+    </Container>
   );
 };
 

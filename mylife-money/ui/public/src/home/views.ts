@@ -1,6 +1,6 @@
-'use strict';
-
 import { views } from 'mylife-tools-ui';
+
+type FIXME_any = any;
 
 const operationStatsViewRef = new views.SharedViewReference({
   uid: 'home-operation-stats',
@@ -18,7 +18,7 @@ const totalByMonthViewRef = new views.SharedViewReference({
   method: 'notifyTotalByMonth',
 });
 
-const getSortedTotalByMonth = views.createViewSelector((view) => view.valueSeq().sortBy(item => item.month).toArray());
+const getSortedTotalByMonth = views.createViewSelector((view) => Object.values(view).sort((a: FIXME_any, b: FIXME_any) => a.month.localeCompare(b.month)));
 
 export function useTotalByMonth() {
   return views.useSharedView(totalByMonthViewRef, { sorted: getSortedTotalByMonth });

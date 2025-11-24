@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
-import { ExpandMore } from '@material-ui/icons';
-import { makeStyles, Select, MenuItem, TextField, Tooltip, IconButton, Card, CardContent, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, TableRow, TableCell, Accordion, AccordionSummary, AccordionDetails, Table, TableHead, TableBody, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
+import { ExpandMore } from '@mui/icons-material';
+import { styled, Select, MenuItem, TextField, Tooltip, IconButton, Card, CardContent, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, TableRow, TableCell, Accordion, AccordionSummary, AccordionDetails, Table, TableHead, TableBody, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+
+type FIXME_any = any;
 
 const operators = {
   $eq       : { display : 'Egal à' },
@@ -21,22 +23,24 @@ const fields = {
   note   : { display : 'Note',        format : val => val }
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  field: {
-    marginLeft: theme.spacing(1),
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
+const SelectField = styled(Select)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+}));
+
+const TextInputField = styled(TextField)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
 }));
 
 const ConditionEditor = ({ onAddCondition }) => {
   const [field, setField] = useState(null);
   const [operator, setOperator] = useState(null);
   const [value, setValue] = useState(null);
-  const classes = useStyles();
 
   const onAdd = () => {
     const condition = {
@@ -53,22 +57,22 @@ const ConditionEditor = ({ onAddCondition }) => {
   };
 
   return (
-    <div className={classes.container}>
-      <Select className={classes.field} value={field || ''} onChange={e => setField(e.target.value || null)}>
+    <Container>
+      <SelectField value={field || ''} onChange={e => setField(e.target.value || null)}>
         {Object.keys(fields).map(field => (
           <MenuItem key={field} value={field}>
             {fields[field].display}
           </MenuItem>
         ))}
-      </Select>
-      <Select className={classes.field} value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
+      </SelectField>
+      <SelectField value={operator || ''} onChange={e => setOperator(e.target.value || null)} >
         {Object.keys(operators).map(operator => (
           <MenuItem key={operator} value={operator}>
             {operators[operator].display}
           </MenuItem>
         ))}
-      </Select>
-      <TextField className={classes.field} value={value || ''} onChange={e => setValue(e.target.value)} />
+      </SelectField>
+      <TextInputField value={value || ''} onChange={e => setValue(e.target.value)} />
       <Tooltip title='Ajouter une condition'>
         <div>
           <IconButton disabled={!field || !operator || !value} onClick={onAdd}>
@@ -76,7 +80,7 @@ const ConditionEditor = ({ onAddCondition }) => {
           </IconButton>
         </div>
       </Tooltip>
-    </div>
+    </Container>
   );
 };
 
@@ -234,7 +238,7 @@ const edit = dialogs.create(EditorDialog);
 
 export default async (group) => {
   group = clone(group);
-  const res = await edit({ options: { group } });
+  const res = await edit({ options: { group } }) as FIXME_any;
   if(res.result !== 'ok') {
     return;
   }

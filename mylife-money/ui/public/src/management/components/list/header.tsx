@@ -1,26 +1,23 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
-import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations } from '../../actions';
-import { getSelectedOperations, getCriteria } from '../../selectors';
+import { setMinDate, setMaxDate, setAccount, setLookupText, importOperations, operationsExecuteRules, operationsSetNote, moveOperations, getSelectedOperations, getCriteria } from '../../store';
 import { getAccounts, getGroup } from '../../../reference/selectors';
 
 import AccountSelector from '../../../common/components/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import GroupDenseSelector from './group-dense-selector';
-import { makeStyles, Tooltip, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { styled, Tooltip, IconButton, Toolbar, Typography } from '@mui/material';
 
 type FIXME_any = any;
 
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => {
+    ...useSelector((state: FIXME_any) => {
       const selectedOperations = getSelectedOperations(state);
       const criteria = getCriteria(state);
       return {
@@ -29,10 +26,10 @@ const useConnect = () => {
         accounts             : getAccounts(state),
         minDate              : criteria.minDate,
         maxDate              : criteria.maxDate,
-        selectedGroup        : getGroup(state, { group: criteria.group }),
-        account              : criteria.account,
+        selectedGroup        : getGroup(state, criteria.group) as FIXME_any,
+        account              : criteria.account as FIXME_any,
         lookupText           : criteria.lookupText,
-        noteText             : selectedOperations.length === 1 ? selectedOperations[0].note : ''
+        noteText             : selectedOperations.length === 1 ? (selectedOperations[0] as FIXME_any).note : ''
       };
     }),
     ...useMemo(() => ({
@@ -40,7 +37,7 @@ const useConnect = () => {
       onMaxDateChanged         : (value) => dispatch(setMaxDate(value)),
       onAccountChanged         : (value) => dispatch(setAccount(value)),
       onLookupTextChanged      : (value) => dispatch(setLookupText(value)),
-      onOperationsImport       : (account, file) => dispatch(importOperations(account, file)),
+      onOperationsImport       : (account, file) => dispatch(importOperations({ account, file })),
       onOperationsExecuteRules : () => dispatch(operationsExecuteRules()),
       onOperationsSetNote      : (note) => dispatch(operationsSetNote(note)),
       onOperationsMove         : (group) => dispatch(moveOperations(group))
@@ -48,14 +45,13 @@ const useConnect = () => {
   };
 };
 
-const useStyles = makeStyles({
-  accountField: {
-    minWidth: 200
-  },
-  expansionPanelContainer: {
-    display: 'flex',
-    flexDirection: 'column'
-  }
+const AccountField = styled(AccountSelector)({
+  minWidth: 200
+});
+
+const ExpansionPanelContainer = styled('div')({
+  display: 'flex',
+  flexDirection: 'column'
 });
 
 const Header = () => {
@@ -67,11 +63,10 @@ const Header = () => {
     onMinDateChanged, onMaxDateChanged, onAccountChanged, onLookupTextChanged, onOperationsImport, onOperationsExecuteRules, onOperationsSetNote, onOperationsMove
   } = useConnect();
 
-  const classes = useStyles();
   const screenSize = useScreenSize();
 
   const editNote = async () => {
-    const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
+    const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText }) as FIXME_any;
     if(result !== 'ok') {
       return;
     }
@@ -99,7 +94,7 @@ const Header = () => {
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
-      <AccountSelector allowNull={true} value={account} onChange={onAccountChanged} className={classes.accountField} />
+      <AccountField allowNull={true} value={account} onChange={onAccountChanged} />
 
     </React.Fragment>
   );
@@ -170,7 +165,7 @@ const Header = () => {
       <SummaryAccordion
         collapsedSummary={<Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup && selectedGroup.display}`}</Typography>}
         expandedSummary={<Typography>{'Critères d\'affichage'}</Typography>}>
-        <div className={classes.expansionPanelContainer}>
+        <ExpansionPanelContainer>
           <Toolbar variant='dense'>
             {minDateSelector}
             {maxDateSelector}
@@ -182,7 +177,7 @@ const Header = () => {
           <Toolbar variant='dense'>
             {search}
           </Toolbar>
-        </div>
+        </ExpansionPanelContainer>
       </SummaryAccordion>
       <Toolbar variant='dense'>
         {toolbar}

@@ -1,13 +1,11 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import clsx from 'clsx';
-import { makeStyles, Portal, SnackbarContent, IconButton } from '@material-ui/core';
-import * as icons from '@material-ui/icons';
-import { getNotifications } from '../selectors';
-import { notificationDismiss } from '../actions';
+import { Portal, SnackbarContent, IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import * as icons from '@mui/icons-material';
+import { getNotifications, dismissNotification } from '../store';
+import { NotificationType } from '../types';
 
 const typeIcons = {
   success: icons.CheckCircle,
@@ -21,65 +19,68 @@ const { Close: CloseIcon } = icons;
 const useConnect = () => {
   const dispatch = useDispatch();
   return {
-    ...useSelector(state => ({
-      notifications: getNotifications(state)
-    })),
+    notifications: useSelector(getNotifications),
     ...useMemo(() => ({
-      dismiss : (id) => dispatch(notificationDismiss(id))
+      dismiss: (id: number) => dispatch(dismissNotification(id))
     }), [dispatch])
   };
 };
 
-const useStyles = makeStyles(theme => ({
-  success: {
+const Content = styled(SnackbarContent)(({ theme }) => ({
+  marginBottom: '0.2rem',
+  '&.success': {
     backgroundColor: theme.palette.success.main,
   },
-  info: {
+  '&.info': {
     backgroundColor: theme.palette.info.main,
   },
-  warning: {
+  '&.warning': {
     backgroundColor: theme.palette.warning.main,
   },
-  error: {
+  '&.error': {
     backgroundColor: theme.palette.error.main,
   },
-  box: {
-    marginBottom: '0.2rem'
-  },
-  icon: {
-    fontSize: 20,
-    opacity: 0.9,
-    marginRight: theme.spacing(1),
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  overlay: {
-    position  : 'fixed',
-    top       : '1rem',
-    right     : 0,
-    left      : 0,
-    zIndex    : 1000,
-    width     : '80%',
-    maxWidth  : '20rem',
-    margin    : 'auto'
-  }
 }));
 
-const Notification = ({ message, type, onCloseClick }) => {
-  const classes = useStyles();
-  const typeValue = type.description;
-  const Icon = typeIcons[typeValue];
+const StyledIcon = styled('svg')(({ theme }) => ({
+  fontSize: 20,
+  opacity: 0.9,
+  marginRight: theme.spacing(1),
+}));
+
+const Message = styled('span')({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const Overlay = styled('div')({
+  position: 'fixed',
+  top: '1rem',
+  right: 0,
+  left: 0,
+  zIndex: 1000,
+  width: '80%',
+  maxWidth: '20rem',
+  margin: 'auto'
+});
+
+interface NotificationProps {
+  message: string;
+  type: NotificationType;
+  onCloseClick: () => void;
+}
+
+const Notification: React.FC<NotificationProps> = ({ message, type, onCloseClick }) => {
+  const Icon = typeIcons[type];
   return (
-    <SnackbarContent
+    <Content
       aria-describedby='message-id'
-      className={clsx(classes.box, classes[typeValue])}
+      className={type}
       message={
-        <span id='message-id' className={classes.message}>
-          <Icon className={classes.icon} />
+        <Message id='message-id'>
+          <StyledIcon as={Icon} />
           {message}
-        </span>
+        </Message>
       }
       action={[
         <IconButton key='close' aria-label='Fermer' color='inherit' onClick={onCloseClick}>
@@ -90,18 +91,11 @@ const Notification = ({ message, type, onCloseClick }) => {
   );
 };
 
-Notification.propTypes = {
-  message: PropTypes.string.isRequired,
-  onCloseClick: PropTypes.func.isRequired,
-  type: PropTypes.symbol.isRequired,
-};
-
-const Notifications = () => {
-  const classes = useStyles();
+const Notifications: React.FC = () => {
   const { dismiss, notifications } = useConnect();
   return (
     <Portal key='notificationsPortal'>
-      <div className={classes.overlay}>
+      <Overlay>
         {notifications.map(notification => (
           <Notification
             key={notification.id}
@@ -109,7 +103,7 @@ const Notifications = () => {
             {...notification}
           />
         ))}
-      </div>
+      </Overlay>
     </Portal>
   );
 };

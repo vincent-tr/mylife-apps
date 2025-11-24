@@ -1,5 +1,6 @@
 // from https://github.com/Reggino/react-svg-gauge/blob/master/src/Gauge.tsx
 
+import Typography from '@mui/material/Typography';
 import React from 'react';
 
 
@@ -116,32 +117,29 @@ export default class ChargingGauge extends React.Component<ChargingGaugeProps> {
           d={this._getPath(this.props.value)}
           filter={`url(#${this.uniqueFilterId})`}
         />
-        <text
+        <Typography variant='body1' component='text'
           x={this.props.width / 2}
           y={this.props.height / 8}
           textAnchor="middle"
-          className='MuiTypography-body1'
         >
           {this.props.valueText}
-        </text>
-        <text
+        </Typography>
+        <Typography variant='body1' component='text'
           x={(Cx - Ro + (Cx - Ri)) / 2}
           y={Cy + minMaxLabelsOffset}
           textAnchor="middle"
           style={{ fill: COLOR_TEXT_SECONDARY}}
-          className='MuiTypography-body1'
         >
           {this.props.minText}
-        </text>
-        <text
+        </Typography>
+        <Typography variant='body1' component='text'
           x={(Xo + Xi) / 2}
           y={Cy + minMaxLabelsOffset}
           textAnchor="middle"
           style={{ fill: COLOR_TEXT_SECONDARY}}
-          className='MuiTypography-body1'
         >
           {this.props.maxText}
-        </text>
+        </Typography>
       </svg>
     );
   }

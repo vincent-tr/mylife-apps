@@ -1,11 +1,8 @@
-'use strict';
-
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
+import { colors } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds } from '../../selectors';
+import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 import { getAccount } from '../../../reference/selectors';
-import { selectOperation, showDetail } from '../../actions';
-import { makeStyles, colors } from '@material-ui/core';
 
 type FIXME_any = any;
 
@@ -18,7 +15,7 @@ export const useConnect = () => {
       return {
         operations: getSortedOperations(state).map((operation: FIXME_any) => ({
           operation,
-          account        : getAccount(state, operation),
+          account        : getAccount(state, operation.account),
           fromChildGroup : (operation.group || null) !== selectedGroup,
           selected       : selectedOperationIds.includes(operation._id)
         }))
@@ -31,39 +28,7 @@ export const useConnect = () => {
   };
 };
 
-export const useStyles = makeStyles(theme => ({
-  amountDebit: {
-    backgroundColor: colors.red[100]
-  },
-  amountCredit: {
-    backgroundColor: colors.lightGreen[100]
-  },
-  amountTotal: {
-    backgroundColor: colors.grey[300]
-  },
-  fromChild: {
-    backgroundColor: colors.grey[200]
-  },
-  normal: {
-  },
-  total: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  totalNormal: {
-    width: 100,
-    marginLeft: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-  },
-  totalDense: {
-    width: 80,
-    marginLeft: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-  },
-  totalOpsNormal: {
-    marginLeft: theme.spacing(2),
-  },
-  totalOpsDense: {
-    marginLeft: theme.spacing(1),
-  }
-}));
+export const COLOR_AMOUNT_DEBIT = colors.red[100];
+export const COLOR_AMOUNT_CREDIT = colors.lightGreen[100];
+export const COLOR_AMOUNT_TOTAL = colors.grey[300];
+export const COLOR_FROM_CHILD = colors.grey[200];

@@ -1,24 +1,22 @@
 import React, { useMemo, useCallback } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools-ui';
+import { views, useLifecycle } from 'mylife-tools-ui';
 import humanizeDuration from 'humanize-duration';
-import { useStatusColorStyles } from '../../common/status-colors';
+import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
-import { enter, leave, changeCriteria } from '../actions';
-import { getCriteria, getDisplayView } from '../selectors';
-import { makeStyles, TableContainer, Table, TableHead, TableRow, TableCell, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@material-ui/core';
+import { enter, leave } from '../actions';
+import { changeCriteria, getCriteria, getDisplayView } from '../store';
+import { styled, TableContainer, Table, TableHead, TableRow, TableCell, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@mui/material';
 
 type FIXME_any = any;
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: '1 1 auto',
-    overflowY: 'auto'
-  }
-}));
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto',
+  overflowY: 'auto',
+});
 
 const formatDuration = humanizeDuration.humanizer({
   language: 'shortFr',
@@ -40,17 +38,16 @@ const formatDuration = humanizeDuration.humanizer({
 });
 
 const Updates = () => {
-  const classes = useStyles();
   const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
   const dataSorted = useMemo(
-    () => data.valueSeq().sortBy(({ path }) => path.join('/')).toArray(),
+    () => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as views.Entity[],
     [data]
   );
 
   return (
-    <div className={classes.container}>
+    <Container>
       <TableContainer>
         <Table size='small' stickyHeader>
           <TableHead>
@@ -79,36 +76,36 @@ const Updates = () => {
           </ThemeProvider>
         </Table>
       </TableContainer>
-    </div>
+    </Container>
   );
 }
 
 export default Updates;
 
 const Version = ({ data }) => {
-  const classes = useStatusColorStyles();
-
-  const getClass = useCallback((status) => {
+  const getRowComponent = useCallback((status) => {
     switch (status) {
       case 'uptodate':
-        return classes.success;
+        return SuccessRow;
       case 'outdated':
-        return classes.warning;
+        return WarningRow;
       case 'unknown':
-        return classes.error;
+        return ErrorRow;
       default:
         throw new Error(`Unsupported status: '${status}'`);
     }
-  }, [classes]);
+  }, []);
+
+  const RowComponent = getRowComponent(data.status);
 
   return (
     <>
-      <TableRow className={getClass(data.status)}>
+      <RowComponent>
         <TableCell>{data.path.join('/')}</TableCell>
         <TableCell>{getStatusStr(data.status)}</TableCell>
         <TableCell><VersionItem value={data.currentVersion} date={data.currentCreated}/></TableCell>
         <TableCell><VersionItem value={data.latestVersion} date={data.latestCreated}/></TableCell>
-      </TableRow>
+      </RowComponent>
     </>
   );
 };
@@ -154,10 +151,8 @@ const VersionItem: React.FunctionComponent<{ value: string; date: Date }> = ({ v
 function useConnect() {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      criteria: getCriteria(state),
-      data: getDisplayView(state)
-    })),
+    criteria: useSelector(getCriteria),
+    data: useSelector(getDisplayView),
     ...useMemo(() => ({
       enter: () => dispatch(enter()),
       leave: () => dispatch(leave()),

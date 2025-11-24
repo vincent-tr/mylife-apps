@@ -1,13 +1,12 @@
-'use strict';
-
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { io, dialogs } from 'mylife-tools-ui';
 
-export const startBot = (id: string) => async (dispatch) => {
-  await dispatch(io.call({
+export const startBot = createAsyncThunk('bots/startBot', async (id: string, api) => {
+  await api.dispatch(io.call({
     service: 'bots',
     method: 'startBot',
     id
   }));
 
-  dispatch(dialogs.notificationShow({ message: 'Robot démarré', type: dialogs.notificationShow.types.success }));
-};
+  api.dispatch(dialogs.showNotification({ message: 'Robot démarré', type: 'success' }));
+});

@@ -1,23 +1,21 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { dialogs } from 'mylife-tools-ui';
 import GroupTree from './group-tree';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, makeStyles } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, styled } from '@mui/material';
 
-const useStyles = makeStyles({
-  paper: {
+type FIXME_any = any;
+
+const StyledDialog = styled(Dialog)({
+  '& .MuiDialog-paper': {
     minHeight: '90%',
     maxHeight: '90%',
   }
 });
 
 const GroupSelectorDialog = ({ show, proceed, options }) => {
-  const classes = useStyles();
-
   return (
-    <Dialog aria-labelledby='dialog-title' open={show} PaperProps={{ className: classes.paper }} fullWidth={true} maxWidth='sm'>
+    <StyledDialog aria-labelledby='dialog-title' open={show} fullWidth={true} maxWidth='sm'>
       <DialogTitle id='dialog-title'>
         Sélectionnez un groupe
       </DialogTitle>
@@ -30,7 +28,7 @@ const GroupSelectorDialog = ({ show, proceed, options }) => {
         <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
       </DialogActions>
 
-    </Dialog>
+    </StyledDialog>
   );
 };
 
@@ -53,7 +51,7 @@ interface GroupSelectorButton {
 
 const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorButton>(({ onSelect, options, ...props }, ref) => {
   const clickHandler = async () => {
-    const { result, group } = await selectorDialog({ options });
+    const { result, group } = await selectorDialog({ options }) as FIXME_any;
     if(result !== 'ok') {
       return;
     }
@@ -65,12 +63,5 @@ const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorBut
     <IconButton ref={ref} onClick={clickHandler} {...props}/>
   );
 });
-
-GroupSelectorButton.displayName = 'GroupSelectorButton';
-
-GroupSelectorButton.propTypes = {
-  onSelect : PropTypes.func.isRequired,
-  options: PropTypes.object
-};
 
 export default GroupSelectorButton;

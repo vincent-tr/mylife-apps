@@ -1,36 +1,32 @@
-'use strict';
+import React, { FunctionComponent } from 'react';
+import { colors, Typography, styled } from '@mui/material';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { colors, Typography, makeStyles } from '@material-ui/core';
+type AmountType = 'debit' | 'credit';
 
-const useStyles = makeStyles(theme => ({
-  base: {
-    width: 100,
-    paddingLeft: theme.spacing(1)
-  },
-  debit: {
-    backgroundColor: colors.red[100]
-  },
-  credit: {
-    backgroundColor: colors.lightGreen[100]
-  },
+const COLORS = {
+  'debit': colors.red[100],
+  'credit': colors.lightGreen[100],
+};
+
+const AmountTypography = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'amountType',
+})<{ amountType: AmountType }>(({ amountType, theme }) => ({
+  width: 100,
+  paddingLeft: theme.spacing(1),
+  backgroundColor: COLORS[amountType],
 }));
 
-const AmountValue = ({ className, value }) => {
-  const classes = useStyles();
-
+const AmountValue : FunctionComponent<AmountValueProps> = ({ className, value }) => {
   return (
-    <Typography className={clsx(className, classes.base, value < 0 ? classes.debit : classes.credit)}>
+    <AmountTypography amountType={value < 0 ? 'debit' : 'credit'} className={className}>
       {value}
-    </Typography>
+    </AmountTypography>
   );
 };
 
-AmountValue.propTypes = {
-  className: PropTypes.string,
-  value: PropTypes.number.isRequired,
+type AmountValueProps = {
+  className?: string,
+  value: number
 };
 
 export default AmountValue;

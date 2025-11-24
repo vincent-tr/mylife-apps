@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import { confirmable, createConfirmation } from 'react-confirm';
 import Confirm from './components/confirm';

@@ -3,8 +3,8 @@
   "include": [
       "src/main.tsx"
   ],
-  // make react-image-pan-zoom-rotate work
   "compilerOptions": {
+    // used for recharts, remove after
     "skipLibCheck": true,
   }
 }

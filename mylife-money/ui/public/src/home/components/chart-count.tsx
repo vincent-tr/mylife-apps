@@ -1,7 +1,5 @@
-'use strict';
-
 import React from 'react';
-import * as chart from '@latticejs/mui-recharts';
+import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line } from 'recharts';
 import { useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
 
@@ -11,14 +9,14 @@ const ChartCount = (props) => {
 
   return (
     <div {...props}>
-      <chart.LineChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} width={600} height={400}>
-        <chart.XAxis dataKey='month' name='Mois' />
-        <chart.YAxis/>
-        <chart.CartesianGrid strokeDasharray='3 3'/>
-        <chart.Tooltip/>
-        <chart.Legend />
-        <chart.Line type='monotone' dataKey='count' stroke={color} name="Nombre d'opérations" />
-      </chart.LineChart>
+      <LineChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} width={600} height={400} style={{ fontFamily: 'Roboto, sans-serif' }}>
+        <XAxis dataKey='month' name='Mois' />
+        <YAxis/>
+        <CartesianGrid strokeDasharray='3 3'/>
+        <Tooltip/>
+        <Legend />
+        <Line type='monotone' dataKey='count' stroke={color} name="Nombre d'opérations" />
+      </LineChart>
     </div>
   );
 };

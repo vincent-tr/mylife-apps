@@ -1,3 +1,5 @@
+import { views } from 'mylife-tools-ui';
+
 export default {
   id: 'measure',
   parent: 'base',
@@ -10,8 +12,7 @@ export default {
   display: obj => `${obj.date} => ${obj.value}`
 };
 
-export interface Measure {
-  _id: string;
+export interface Measure extends views.Entity {
   timestamp: Date;
   sensor: string;
   value: number;

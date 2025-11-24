@@ -1,25 +1,18 @@
-'use strict';
-
 import React, { FunctionComponent, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Stepper, Step, StepLabel, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+import { Box, Stepper, Step, StepLabel } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import StepperActions from './stepper-actions';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  header: {
-  },
-  main: {
-    flex: '1 1 auto',
-    marginBottom: theme.spacing(1),
-    borderColor: theme.palette.divider
-  },
-  actions: {
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const Main = styled(Box)(({ theme }) => ({
+  flex: '1 1 auto',
+  marginBottom: theme.spacing(1),
+  borderColor: theme.palette.divider
 }));
 
 interface StepperControlProps {
@@ -31,7 +24,6 @@ interface StepperControlProps {
 
 
 const StepperControl: FunctionComponent<StepperControlProps> = ({ className, steps, onStepChanged, onEnd, ...props }) => {
-  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const step = steps[activeStep];
@@ -75,8 +67,8 @@ const StepperControl: FunctionComponent<StepperControlProps> = ({ className, ste
   };
 
   return (
-    <div className={clsx(className, classes.container)} {...props}>
-      <Stepper activeStep={activeStep} className={classes.header}>
+    <Container className={className} {...props}>
+      <Stepper activeStep={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
             <StepLabel>{step.label}</StepLabel>
@@ -84,12 +76,12 @@ const StepperControl: FunctionComponent<StepperControlProps> = ({ className, ste
         ))}
       </Stepper>
 
-      <Box borderTop={1} borderBottom={1} className={classes.main}>
+      <Main borderTop={1} borderBottom={1}>
         {render(step)}
-      </Box>
+      </Main>
 
-      <StepperActions {...finalActions} onAction={handleAction} className={classes.actions} />
-    </div>
+      <StepperActions {...finalActions} onAction={handleAction} />
+    </Container>
   );
 };
 

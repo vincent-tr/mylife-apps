@@ -1,15 +1,12 @@
-'use strict';
-
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
 import groupEditor from './group-editor';
 import { getGroup } from '../../../reference/selectors';
-import { getSelectedGroupId } from '../../selectors';
-import { createGroup, updateGroup, deleteGroup } from '../../actions';
+import { getSelectedGroupId, createGroup, updateGroup, deleteGroup } from '../../store';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Toolbar as MuiToolbar, Tooltip, IconButton } from '@material-ui/core';
+import { Toolbar as MuiToolbar, Tooltip, IconButton } from '@mui/material';
 
 type FIXME_any = any;
 
@@ -19,7 +16,7 @@ const useConnect = () => {
     ...useSelector(state => {
       const selected = getSelectedGroupId(state);
       return {
-        group     : selected && getGroup(state, { group: selected }),
+        group     : selected && getGroup(state, selected) as FIXME_any,
         canChange : !!selected
       };
     }),

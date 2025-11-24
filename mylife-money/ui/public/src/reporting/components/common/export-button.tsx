@@ -1,9 +1,7 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
-import { Tooltip, IconButton } from '@material-ui/core';
+import { Tooltip, IconButton } from '@mui/material';
 
 const ExportButton = ({ onClick, ...props }) => (
   <Tooltip title='Exporter les données'>

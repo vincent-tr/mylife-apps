@@ -1,16 +1,16 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useScreen } from '../behaviors/responsive';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
-  drawerHeader: theme.mixins.toolbar,
-  drawerPaper: {
+const StyledDrawer = styled(Drawer, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<{ open?: boolean }>(({ theme, open }) => ({
+  '& .MuiDrawer-paper': {
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -18,24 +18,27 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+    ...(open === false && {
+      overflowX: 'hidden',
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),
     }),
-    width: theme.spacing(7),
-  }
+  },
+}));
+
+const DrawerHeader = styled(Box)(({ theme }) => ({
+  ...theme.mixins.toolbar,
 }));
 
 const Menu = ({ items, open, onSelect }) => {
-  const classes = useStyles();
   const reponsiveItems = useResponsiveItems(items);
 
   return (
-    <Drawer variant='permanent' open={open} classes={{paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
-      <div className={classes.drawerHeader} />
+    <StyledDrawer variant='permanent' open={open}>
+      <DrawerHeader />
       <List>
         {reponsiveItems.map(({ id, text, icon: Icon, onClick }) => {
           const handler = () => {
@@ -43,14 +46,14 @@ const Menu = ({ items, open, onSelect }) => {
             onClick();
           };
           return (
-            <ListItem button key={id} onClick={handler}>
+            <ListItem key={id} onClick={handler} sx={{ cursor: 'pointer' }}>
               <ListItemIcon><Icon /></ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           );
         })}
       </List>
-    </Drawer>
+    </StyledDrawer>
   );
 };
 

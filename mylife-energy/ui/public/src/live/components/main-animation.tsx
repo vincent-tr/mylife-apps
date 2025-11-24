@@ -1,58 +1,64 @@
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { useScreenPhone, services } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { LiveDevice } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
-import { makeStyles, Paper, Typography, SvgIcon, colors as muiColors } from '@material-ui/core';
+import { Paper, Typography, SvgIcon, colors as muiColors } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(theme => ({
-  wrapper: {
-    alignSelf: 'center',
-  },
-  wrapperSmall: {
+interface WrapperProps {
+  isPhone?: boolean;
+}
+
+const StyledWrapper = styled('div')<WrapperProps>(({ theme, isPhone }) => ({
+  alignSelf: 'center',
+  ...(isPhone && {
     height: 200,
     width: 375,
-  },
-  container: {
-    display: 'grid',
-    gridTemplateColumns: '250px 250px 250px',
-    gridTemplateRows: '200px 200px',
-  },
-  containerSmall: {
+  }),
+}));
+
+const StyledContainer = styled('div')<WrapperProps>(({ theme, isPhone }) => ({
+  display: 'grid',
+  gridTemplateColumns: '250px 250px 250px',
+  gridTemplateRows: '200px 200px',
+  ...(isPhone && {
     transform: 'scale(0.5)',
     transformOrigin: 'top left',
     marginBottom: -200
-  },
-  cell: {
-    alignSelf: 'center',
-    justifySelf: 'center',
-  },
-  main: {
-    gridColumn: 1,
-    gridRow: 2,
-  },
-  solar: {
-    gridColumn: 2,
-    gridRow: 1,
-  },
-  total: {
-    gridColumn: 3,
-    gridRow: 2,
-  },
-  arrows: {
-    gridColumn: 2,
-    gridRow: 2,
+  }),
+}));
 
-    alignSelf: 'top',
-    justifySelf: 'center',
-  },
+const StyledCell = styled('div')(() => ({
+  alignSelf: 'center',
+  justifySelf: 'center',
+}));
+
+const MainCell = styled(StyledCell)(() => ({
+  gridColumn: 1,
+  gridRow: 2,
+}));
+
+const SolarCell = styled(StyledCell)(() => ({
+  gridColumn: 2,
+  gridRow: 1,
+}));
+
+const TotalCell = styled(StyledCell)(() => ({
+  gridColumn: 3,
+  gridRow: 2,
+}));
+
+const ArrowsCell = styled('div')(() => ({
+  gridColumn: 2,
+  gridRow: 2,
+  alignSelf: 'top',
+  justifySelf: 'center',
 }));
 
 const MainAnimation: React.FunctionComponent = () => {
-  const classes = useStyles();
   const isPhone = useScreenPhone();
 
   const main = useSelector(state => getFirstDeviceByType(state, 'main'));
@@ -72,36 +78,34 @@ const MainAnimation: React.FunctionComponent = () => {
   const mainToTotal = mainCurrent > 0 && totalCurrent > 0;
 
   return (
-    <div className={clsx(classes.wrapper, isPhone && classes.wrapperSmall)}>
-      <div className={clsx(classes.container, isPhone && classes.containerSmall)}>
-        <DeviceView className={clsx(classes.cell, classes.main)} deviceId={main._id} sensorKeys={['apparent-power']} />
-        <DeviceView className={clsx(classes.cell, classes.solar)} deviceId={solar._id} sensorKeys={['apparent-power']} />
-        <DeviceView className={clsx(classes.cell, classes.total)} deviceId={total._id} sensorKeys={['apparent-power', 'real-power']} />
-        <ArrowsArea className={classes.arrows} solarToMain={solarToMain} solarToTotal={solarToTotal} mainToTotal={mainToTotal} />
-      </div>
-    </div>
+    <StyledWrapper isPhone={isPhone}>
+      <StyledContainer isPhone={isPhone}>
+        <DeviceView as={MainCell} deviceId={main._id} sensorKeys={['apparent-power']} />
+        <DeviceView as={SolarCell} deviceId={solar._id} sensorKeys={['apparent-power']} />
+        <DeviceView as={TotalCell} deviceId={total._id} sensorKeys={['apparent-power', 'real-power']} />
+        <ArrowsArea as={ArrowsCell} solarToMain={solarToMain} solarToTotal={solarToTotal} mainToTotal={mainToTotal} />
+      </StyledContainer>
+    </StyledWrapper>
   );
 };
 
 export default MainAnimation;
 
-const useDeviceStyles = makeStyles(theme => ({
-  container: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    width: 150,
-    height: 100,
-    alignItems: 'center',
-  },
-  icon: {
-    height: 50,
-    width: 50,
-  },
+const StyledDevicePaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  display: 'flex',
+  flexDirection: 'column',
+  width: 150,
+  height: 100,
+  alignItems: 'center',
 }));
 
-const DeviceView: React.FunctionComponent<{ deviceId: string; className?: string; sensorKeys: string[]; }> = ({ deviceId, className, sensorKeys }) => {
-  const classes = useDeviceStyles();
+const StyledDeviceIcon = styled(SvgIcon)(() => ({
+  height: 50,
+  width: 50,
+}));
+
+const DeviceView: React.FunctionComponent<{ deviceId: string; as?: React.ElementType; sensorKeys: string[]; }> = ({ deviceId, as: Component = 'div', sensorKeys }) => {
   const device = useSelector(state => getDevice(state, deviceId));
 
   if (!device) {
@@ -111,15 +115,17 @@ const DeviceView: React.FunctionComponent<{ deviceId: string; className?: string
   const Icon = getIcon(device);
 
   return (
-    <Paper variant="outlined" className={clsx(classes.container, className)}>
-      <Icon className={classes.icon} />
-      <Typography>{device.display}</Typography>
-      <DeviceMeasure deviceId={device._id} sensorKeys={sensorKeys} />
-    </Paper>
+    <Component>
+      <StyledDevicePaper variant="outlined">
+        <StyledDeviceIcon as={Icon} />
+        <Typography>{device.display}</Typography>
+        <DeviceMeasure deviceId={device._id} sensorKeys={sensorKeys} />
+      </StyledDevicePaper>
+    </Component>
   );
 };
 
-function getIcon(device: LiveDevice): typeof SvgIcon {
+function getIcon(device: LiveDevice): React.ComponentType<any> | null {
   switch(device.type) {
     case 'main':
       return icons.devices.Main;
@@ -132,54 +138,55 @@ function getIcon(device: LiveDevice): typeof SvgIcon {
   return null;
 }
 
-const useArrowsStyles = makeStyles(theme => ({
-  container: {
-    width: 250,
-    height: 150,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-  },
-  subContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-  topArrow: {
-    width: 125,
-    height: 125,
-  },
-  bottomArrow: {
-    width: 250,
-    height: 25,
-  }
+const StyledArrowsContainer = styled('div')(() => ({
+  width: 250,
+  height: 150,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'stretch',
 }));
 
-const ArrowsArea: React.FunctionComponent<{ className?: string; solarToMain: boolean; solarToTotal: boolean; mainToTotal: boolean; }> = ({ className, solarToMain, solarToTotal, mainToTotal }) => {
-  const classes = useArrowsStyles();
+const StyledArrowsSubContainer = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'stretch',
+}));
 
+const StyledTopArrow = styled('div')(() => ({
+  width: 125,
+  height: 125,
+}));
+
+const StyledBottomArrow = styled('div')(() => ({
+  width: 250,
+  height: 25,
+}));
+
+const ArrowsArea: React.FunctionComponent<{ as?: React.ElementType; solarToMain: boolean; solarToTotal: boolean; mainToTotal: boolean; }> = ({ as: Component = 'div', solarToMain, solarToTotal, mainToTotal }) => {
   return (
-    <div className={clsx(classes.container, className)}>
-      <div className={classes.subContainer}>
-        <div className={classes.topArrow}>
-          {solarToMain && (
-            <ArrowTopToLeft />
-          )}
-        </div>
+    <Component>
+      <StyledArrowsContainer>
+        <StyledArrowsSubContainer>
+          <StyledTopArrow>
+            {solarToMain && (
+              <ArrowTopToLeft />
+            )}
+          </StyledTopArrow>
 
-        <div className={classes.topArrow}>
-          {solarToTotal && (
-            <ArrowTopToRight />
-          )}
-        </div>
-      </div>
+          <StyledTopArrow>
+            {solarToTotal && (
+              <ArrowTopToRight />
+            )}
+          </StyledTopArrow>
+        </StyledArrowsSubContainer>
 
-      <div className={classes.bottomArrow}>
-        {mainToTotal && (
-          <ArrowLeftToRight />
-        )}
-      </div>
-    </div>
+        <StyledBottomArrow>
+          {mainToTotal && (
+            <ArrowLeftToRight />
+          )}
+        </StyledBottomArrow>
+      </StyledArrowsContainer>
+    </Component>
   );
 }
 

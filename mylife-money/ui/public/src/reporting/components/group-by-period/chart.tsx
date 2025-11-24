@@ -1,12 +1,10 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AutoSizer } from 'react-virtualized';
 import { useSelector } from 'react-redux';
-import * as chart from '@latticejs/mui-recharts';
+import { BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools-ui';
-import { getGroupStacks, getChildrenList } from '../../../reference/selectors';
+import { getGroupStacks, getChildrenView } from '../../../reference/selectors';
 
 const useConnect = ({ display, groups }) => {
   return useSelector(state => ({
@@ -27,14 +25,14 @@ const Chart = ({ data, groups, display, amountSelector, ...props }) => {
     <div {...props}>
       <AutoSizer>
         {({ height, width }) => (
-          <chart.BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width}>
-            <chart.XAxis dataKey={'period'} name='Date' />
-            <chart.YAxis name='Montant' />
-            <chart.CartesianGrid strokeDasharray='3 3'/>
-            <chart.Tooltip/>
-            <chart.Legend />
-            {bars.map(serie => (<chart.Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
-          </chart.BarChart>
+          <BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width} style={{ fontFamily: 'Roboto, sans-serif' }}>
+            <XAxis dataKey={'period'} name='Date' />
+            <YAxis name='Montant' />
+            <CartesianGrid strokeDasharray='3 3'/>
+            <Tooltip/>
+            <Legend />
+            {bars.map(serie => (<Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
+          </BarChart>
         )}
       </AutoSizer>
     </div>
@@ -54,12 +52,15 @@ function getChildren(state, display, groups) {
   if(!display.children || !groups) {
     return {};
   }
+
+  const childrenView = getChildrenView(state);
+
   const result = {};
-  for(const group of groups) {
-    if(!group) {
+  for(const groupId of groups) {
+    if (!groupId) {
       continue;
     }
-    result[group] = getChildrenList(state, { group });
+    result[groupId] = childrenView[groupId].map(group => group._id);
   }
   return result;
 }
@@ -67,24 +68,24 @@ function getChildren(state, display, groups) {
 function createBars(groups, display, groupStacks, groupChildren, colors) {
   const bars = [];
   let index = 0;
-  for(const group of groups) {
-    bars.push(createBar(colors, display, groupStacks, group, group, index++, true));
-    if(display.children && group) {
-      for(const child of groupChildren[group]) {
-        bars.push(createBar(colors, display, groupStacks, group, child, index++, false));
+  for(const groupId of groups) {
+    bars.push(createBar(colors, display, groupStacks, groupId, groupId, index++, true));
+    if(display.children && groupId) {
+      for(const childId of groupChildren[groupId]) {
+        bars.push(createBar(colors, display, groupStacks, groupId, childId, index++, false));
       }
     }
   }
   return bars;
 }
 
-function createBar(colors, display, groupStacks, stackId, group, index, root) {
-  const path = groupStacks.get(group).map(group => group.display);
+function createBar(colors, display, groupStacks, stackId, groupId, index, root) {
+  const path = groupStacks[groupId].map(group => group.display);
   const name = display.fullnames ? path.join('/') : path[path.length - 1];
   return {
     index,
     stackId,
-    group,
+    group: groupId,
     name,
     fill: colors[index % colors.length],
     root

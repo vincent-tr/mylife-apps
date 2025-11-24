@@ -1,14 +1,38 @@
-import { applyMiddleware, createStore, combineReducers } from 'redux';
-import builtinMiddlewares from './middlewares';
-import builtinReducers from '../reducers';
+import { configureStore, combineReducers, isPlain } from '@reduxjs/toolkit';
+import { createLogger } from 'redux-logger';
+
+import dialogs from '../modules/dialogs/store';
+import { middleware as downloadMiddleware } from '../modules/download/store';
+import routing, { middleware as routingMiddlerware } from '../modules/routing/store';
+import io, { middleware as ioMiddleware } from '../modules/io/store';
+import views from '../modules/views/store';
 import { STATE_PREFIX } from '../constants/defines';
+
+const middlewares = [downloadMiddleware, routingMiddlerware, ioMiddleware];
+
+if (!import.meta.env.PROD) {
+  middlewares.push(createLogger({ duration: true, collapsed: () => true }));
+}
 
 let store;
 
-export function initStore(reducers, ...middlewares) {
-  store = createStore(
-    combineReducers({ [STATE_PREFIX]: builtinReducers, ...reducers }),
-    applyMiddleware(...middlewares, ...builtinMiddlewares)
+export function initStore(reducers) {
+  const reducer = combineReducers({
+    ...reducers,
+    [`${STATE_PREFIX}/dialogs`]: dialogs,
+    [`${STATE_PREFIX}/routing`]: routing,
+    [`${STATE_PREFIX}/io`]: io,
+    [`${STATE_PREFIX}/views`]: views,
+  });
+
+  store = configureStore(
+    {
+      reducer,
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        // Allow dates for now
+        serializableCheck: { isSerializable: (value: any) => isPlain(value) || value instanceof Date },
+      }).concat(...middlewares)
+    }
   );
 }
 

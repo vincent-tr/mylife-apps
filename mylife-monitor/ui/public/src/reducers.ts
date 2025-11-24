@@ -1,4 +1,2 @@
-'use strict';
-
-export { default as nagios } from './nagios/reducer';
-export { default as updates } from './updates/reducer';
+export { default as nagios } from './nagios/store';
+export { default as updates } from './updates/store';

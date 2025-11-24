@@ -1,11 +1,8 @@
-'use strict';
-
 import React, { useMemo } from 'react';
+import { styled } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLifecycle, useScreenSize } from 'mylife-tools-ui';
-import { managementEnter, managementLeave } from '../actions';
-import { isOperationDetail } from '../selectors';
-import { makeStyles } from '@material-ui/core';
+import { managementEnter, managementLeave, isOperationDetail } from '../store';
 
 import Tree from './tree';
 import List from './list';
@@ -13,28 +10,24 @@ import Detail from './detail';
 
 type FIXME_any = any;
 
-const useStyles = makeStyles({
-  container: {
-    flex: '1 1 auto',
-    display: 'flex',
-    flexDirection: 'row'
-  },
-  tree: {
-  },
-  list: {
-    flex: '1 1 auto',
-  },
-  detail: {
-    flex: 5,
-  },
+const Container = styled('div')({
+  flex: '1 1 auto',
+  display: 'flex',
+  flexDirection: 'row'
+});
+
+const StyledList = styled(List)({
+  flex: '1 1 auto',
+});
+
+const StyledDetail = styled(Detail)({
+  flex: 5,
 });
 
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      detail: isOperationDetail(state)
-    })),
+    detail: useSelector(isOperationDetail),
     ...useMemo(() => ({
       enter : () => dispatch(managementEnter()),
       leave : () => dispatch(managementLeave()),
@@ -43,28 +36,27 @@ const useConnect = () => {
 };
 
 const Management = () => {
-  const classes = useStyles();
   const screenSize = useScreenSize();
   const { enter, leave, detail } = useConnect();
   useLifecycle(enter, leave);
 
   const main = detail ? (
-    <Detail className={classes.detail} />
+    <StyledDetail />
   ) : (
-    <List className={classes.list} />
+    <StyledList />
   );
 
   const normalLayout = (
-    <div className={classes.container}>
-      <Tree className={classes.tree} />
+    <Container>
+      <Tree />
       {main}
-    </div>
+    </Container>
   );
 
   const smallLayout = (
-    <div className={classes.container}>
+    <Container>
       {main}
-    </div>
+    </Container>
   );
 
   switch(screenSize) {

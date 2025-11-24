@@ -1,20 +1,18 @@
-import { constants } from 'mylife-tools-ui';
-import { Measure, Sensor } from '../../../shared/metadata';
+import { Sensor } from '../../../shared/metadata';
 
-export default constants.wrap({
-  SET_VALUES : null,
-}, 'stats');
-
-export type SetValues = {
-  sensor: Sensor,
-  measures: Measure[],
-}[];
+export enum StatsType {
+  Day = 1,
+  Month,
+  Year,
+};
 
 export interface SensorData extends Sensor {
   measures: string[];
 }
 
-export interface StatsState {
-  sensors: { [id: string]: SensorData },
-  measures: { [id: string]: Measure },
+export type UiSensor = Sensor & { display: string };
+
+export interface TimestampData {
+  timestamp: Date;
+  measures: { [sensorId: string]: number };
 }

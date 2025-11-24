@@ -1,36 +1,30 @@
-'use strict';
-
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import { Tooltip, Typography, styled } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import icons from '../../../common/icons';
-import { getSelectedGroupId } from '../../selectors';
+import { getSelectedGroupId, selectGroup } from '../../store';
 import { getGroup } from '../../../reference/selectors';
-import { selectGroup } from '../../actions';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Tooltip, Typography, makeStyles } from '@material-ui/core';
 
 type FIXME_any = any;
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  typography: {
-    flex: '1 1 auto',
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
+const Label = styled(Typography)(({ theme }) => ({
+  flex: '1 1 auto',
+  marginLeft: theme.spacing(1),
+  marginRight: theme.spacing(1),
 }));
 
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
     ...useSelector(state => ({
-      selectedGroup : getGroup(state, { group: getSelectedGroupId(state) }),
+      selectedGroup : getGroup(state, getSelectedGroupId(state)),
     })),
     ...useMemo(() => ({
       onSelect : (id) => dispatch(selectGroup(id))
@@ -42,12 +36,11 @@ interface GroupDenseSelectorProps {
   className?: string;
 }
 
-const GroupDenseSelector = ({ className, ...props }: GroupDenseSelectorProps) => {
+const GroupDenseSelector: React.FC<GroupDenseSelectorProps> = ({ className, ...props }) => {
   const { selectedGroup, onSelect } = useConnect();
-  const classes = useStyles();
 
   return (
-    <div className={clsx(className, classes.container)} {...props}>
+    <Container className={className} {...props}>
       <Tooltip title={'Déplacer l\'opération'}>
         <div>
           <GroupSelectorButton onSelect={onSelect}>
@@ -55,15 +48,11 @@ const GroupDenseSelector = ({ className, ...props }: GroupDenseSelectorProps) =>
           </GroupSelectorButton>
         </div>
       </Tooltip>
-      <Typography className={classes.typography}>
-        {selectedGroup.display}
-      </Typography>
-    </div>
+      <Label>
+        {(selectedGroup as FIXME_any).display}
+      </Label>
+    </Container>
   );
-};
-
-GroupDenseSelector.propTypes = {
-  className: PropTypes.string,
 };
 
 export default GroupDenseSelector;

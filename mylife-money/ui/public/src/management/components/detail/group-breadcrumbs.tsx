@@ -1,29 +1,24 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Tooltip, Breadcrumbs, Link, makeStyles } from '@material-ui/core';
+import { Tooltip, Breadcrumbs, Link, styled } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  breadcrumbs: {
-    flex: '1 1 auto',
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
+const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
+  flex: '1 1 auto',
+  marginLeft: theme.spacing(1),
+  marginRight: theme.spacing(1),
 }));
 
 const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.container}>
+    <Container>
       <Tooltip title={'Déplacer l\'opération'}>
         <div>
           <GroupSelectorButton onSelect={onMove}>
@@ -32,7 +27,7 @@ const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
         </div>
       </Tooltip>
 
-      <Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
+      <GroupPath aria-label='breadcrumb'>
         {groupStack.map(group => {
           const handleClick = e => {
             e.preventDefault();
@@ -45,8 +40,8 @@ const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
             </Link>
           );
         })}
-      </Breadcrumbs>
-    </div>
+      </GroupPath>
+    </Container>
   );
 };
 

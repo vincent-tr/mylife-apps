@@ -1,25 +1,30 @@
-'use strict';
-
 import React, {FunctionComponent, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography, makeStyles } from '@material-ui/core';
-import { Delete as DeleteIcon } from '@material-ui/icons';
-import clsx from 'clsx';
+import { Button, IconButton, Tooltip, Popper, ClickAwayListener, Paper, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    color: theme.palette.getContrastText(theme.palette.error.main),
-    backgroundColor: theme.palette.error.main,
-    '&:hover': {
-      backgroundColor: theme.palette.error.dark,
-    }
-  },
-  paper: {
-    padding: theme.spacing(2),
-    '& > *': {
-      margin: theme.spacing(2)
-    },
+const StyledButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(theme.palette.error.main),
+  backgroundColor: theme.palette.error.main,
+  '&:hover': {
+    backgroundColor: theme.palette.error.dark,
   }
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.getContrastText(theme.palette.error.main),
+  backgroundColor: theme.palette.error.main,
+  '&:hover': {
+    backgroundColor: theme.palette.error.dark,
+  }
+}));
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  '& > *': {
+    margin: theme.spacing(2)
+  },
 }));
 
 interface DeleteButtonProps {
@@ -34,7 +39,6 @@ interface DeleteButtonProps {
 }
 
 const DeleteButton: FunctionComponent<DeleteButtonProps> = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed, className, disablePortal = false, ...props }) => {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -50,22 +54,22 @@ const DeleteButton: FunctionComponent<DeleteButtonProps> = ({ icon = false, text
   const isTooltipOpen = tooltipOpen && !anchorEl; // do not show tooltip when popup is shown
 
   let button = text ? (
-    <Button
+    <StyledButton
       variant='contained'
-      className={clsx(classes.button, className)}
+      className={className}
       onClick={handleButtonClick}
       startIcon={icon ? <DeleteIcon /> : null}
       {...props}
     >
       {text}
-    </Button>
+    </StyledButton>
   ) : (
-    <IconButton
-      className={clsx(classes.button, className)}
+    <StyledIconButton
+      className={className}
       onClick={handleButtonClick}
     >
       <DeleteIcon />
-    </IconButton>
+    </StyledIconButton>
   );
 
   if(tooltip) {
@@ -81,30 +85,19 @@ const DeleteButton: FunctionComponent<DeleteButtonProps> = ({ icon = false, text
       {button}
       <Popper open={!!anchorEl} anchorEl={anchorEl} disablePortal={disablePortal}>
         <ClickAwayListener onClickAway={handleClose}>
-          <Paper className={classes.paper}>
+          <StyledPaper>
             <Typography>{confirmText}</Typography>
-            <Button
+            <StyledButton
               variant='contained'
-              className={classes.button}
               onClick={handleConfirm}
             >
               {'Supprimer'}
-            </Button>
-          </Paper>
+            </StyledButton>
+          </StyledPaper>
         </ClickAwayListener>
       </Popper>
     </>
   );
-};
-
-DeleteButton.propTypes = {
-  icon: PropTypes.bool,
-  text: PropTypes.string,
-  tooltip: PropTypes.string,
-  confirmText: PropTypes.string,
-  onConfirmed: PropTypes.func,
-  className: PropTypes.string,
-  disablePortal: PropTypes.bool,
 };
 
 export default DeleteButton;

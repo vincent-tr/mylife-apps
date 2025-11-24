@@ -1,8 +1,7 @@
-'use strict';
-
 import React from 'react';
 import { services } from 'mylife-tools-ui';
-import * as reducers from './reducers';
+import managementReducer from './management/store';
+import reportingReducer from './reporting/store';
 import metadataDefintions from '../../shared/metadata';
 
 import { referenceInit } from './reference/actions';
@@ -13,6 +12,11 @@ import Management from './management/components';
 import Bots from './bots/components';
 import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
+
+const reducers = {
+  management: managementReducer,
+  reporting: reportingReducer
+};
 
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);

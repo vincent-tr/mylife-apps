@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { StatsType } from '../actions';
-import { Select, Input, MenuItem } from '@material-ui/core';
+import { StatsType } from '../types';
+import { Select, Input, MenuItem } from '@mui/material';
 
 export interface TypeListProps {
   className?: string;

@@ -1,69 +1,95 @@
-'use strict';
-
-import immutable from 'immutable';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import { ACCOUNTS, GROUPS } from './view-ids';
+import group from 'mylife-money/ui/shared/metadata/entities/group';
+
+type FIXME_any = any;
 
 const getAccountView = (state) => views.getView(state, ACCOUNTS);
-export const getAccounts = (state) => getAccountView(state).valueSeq().toArray()
-export const getAccount  = (state, { account }) => getAccountView(state).get(account);
 
-const defaultGroup = Object.freeze({
-  _id     : null,
-  display : 'Non triés'
-});
-
-const getGroupView = createSelector([ state => views.getView(state, GROUPS) ], view => view.set(null, defaultGroup));
-
-export const getGroups = (state) => getGroupView(state).valueSeq().toArray();
-export const getGroup  = (state, { group }) => getGroupView(state).get(group);
-
-const getChildren = (state, { group }) => {
-  if(!group) {
-    return getGroupView(state).filter(it => !it.parent); // Root elements
-  } else if (!group._id) {
-    return immutable.Map(); // Non tries -> no children
-  } else {
-    return getGroupView(state).filter(it => it.parent === group._id);
-  }
-};
-
-export const makeGetSortedChildren = () => createSelector(
-  [ getChildren ],
-  (groups) => groups.valueSeq().sortBy(it => it.display).toArray()
+export const getAccounts = createSelector(
+  [ getAccountView ],
+  (view) => Object.values(view)
 );
 
-export const getChildrenList = (state, { group }) => {
-  if(!group) {
-    return [];
-  }
-  return getGroupView(state).filter(it => it.parent === group).keySeq().toArray();
+export const getAccount = (state, accountId: string) => getAccountView(state)[accountId];
+
+const defaultGroup = {
+  _id     : null,
+  _entity : 'group',
+  display : 'Non triés'
 };
 
-// stack from root for each group
-export const getGroupStacks = createSelector([ getGroups ], groups => {
-  const groupStacks = new Map();
+const getGroupView = createSelector(
+  [ state => views.getView(state, GROUPS) ],
+  view => ({ ...view, ['null']: defaultGroup } as views.View<views.Entity>) 
+);
 
-  groupStacks.set(null, [ groups.find(g => !g._id) ]);
+export const getGroup = (state, groupId: string) => getGroupView(state)[groupId];
 
-  for(const group of groups) {
-    if(!group._id) { continue; }
+export const getChildrenView = createSelector(
+  [ getGroupView ],
+  (view) => {
+    const childrenView: { [groupId: string]: views.Entity[] } = {};
 
-    const stack = [];
-    let value = group._id;
-    while(value) {
-      const iterGroup = groups.find(g => g._id === value); // use map ?
-      if(!iterGroup) { break; } // broken structure ?
-      stack.push(iterGroup);
-      value = iterGroup.parent;
+    for (const id of Object.keys(view)) {
+      const group = view[id] as FIXME_any;
+      const parentId = group.parent || 'root';
+      if (!childrenView[parentId]) {
+        childrenView[parentId] = [];
+      }
+      childrenView[parentId].push(group);
     }
-    stack.reverse();
 
-    groupStacks.set(group._id, stack);
+    return childrenView;
   }
+);
 
-  return immutable.Map(groupStacks);
-});
+export const makeGetSortedChildren = () => createSelector(
+  [ 
+    getChildrenView,
+    (state, groupId: string) => groupId,
+  ],
+  (chlidrenView, groupId) => {
+    const groups = chlidrenView[groupId] || [];
+    return groups.slice().sort((a, b) => (a as FIXME_any).display.localeCompare((b as FIXME_any).display));
+  }
+);
 
-export const getGroupStack = (state, { group }) => getGroupStacks(state).get(group);
+// stack from root for each group
+export const getGroupStacks = createSelector(
+  [ getGroupView ],
+  (view) => {
+    // Entity => Group
+    const groupStacks: { [groupId: string]: views.Entity[] } = {};
+
+    groupStacks['null'] = [ view['null'] ];
+
+    for (const id of Object.keys(view)) {
+      if (id == 'null') {
+        continue;
+      }
+
+      // Entity => Group
+      const stack: views.Entity[] = [];
+      let value = id;
+      while (value) {
+        const iterGroup = view[value];
+        if (!iterGroup) {
+          // broken structure ?
+          break;
+        } 
+
+        stack.push(iterGroup);
+        value = (iterGroup as FIXME_any).parent;
+      }
+      stack.reverse();
+
+      groupStacks[id] = stack;
+    }
+    
+    return groupStacks;
+  }
+);
+
+export const getGroupStack = (state, groupId: string) => getGroupStacks(state)[groupId];

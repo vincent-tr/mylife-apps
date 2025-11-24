@@ -1,37 +1,33 @@
-'use strict';
-
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles, Dialog, DialogTitle, Typography, CircularProgress } from '@material-ui/core';
-import { getOnline } from '../../io/selectors';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import CircularProgress from '@mui/material/CircularProgress';
+import { styled } from '@mui/material/styles';
 
-const useConnect = () => {
-  return useSelector(state => ({
-    online : getOnline(state),
-  }));
-};
+import { getOnline } from '../../io';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  progress: {
-    marginRight: theme.spacing(2),
-  }
+const useConnect = () => ({
+  online: useSelector(getOnline),
+});
+
+const StyledDialogTitle = styled(DialogTitle)({
+  display: 'flex',
+  alignItems: 'center'
+});
+
+const Progress = styled(CircularProgress)(({ theme }) => ({
+  marginRight: theme.spacing(2),
 }));
 
 const Busy = () => {
   const { online } = useConnect();
-  const classes = useStyles();
   return (
     <Dialog open={!online} aria-labelledby='alert-dialog-title'>
-      <DialogTitle id='alert-dialog-title' disableTypography>
-        <Typography variant='h6' className={classes.container}>
-          <CircularProgress color='inherit' className={classes.progress} />
-          {'Reconnexion en cours ...'}
-        </Typography>
-      </DialogTitle>
+      <StyledDialogTitle id='alert-dialog-title' variant='h6'>
+        <Progress color='inherit' />
+        {'Reconnexion en cours ...'}
+      </StyledDialogTitle>
     </Dialog>
   );
 };

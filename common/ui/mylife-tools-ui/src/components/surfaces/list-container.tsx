@@ -1,25 +1,22 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+import React, { PropsWithChildren } from 'react';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    overflowY: 'auto',
-  },
-  wrapper: {
-    height: 0,
-  }
-}));
+const Container = styled('div')({
+  overflowY: 'auto',
+});
+
+const Wrapper = styled('div')({
+  height: 0,
+});
 
 // Taken from AutoSizer. Why do we need that ?!
-const ListContainer: React.FunctionComponent<{ className?: string }> = ({ className, children }) => {
-  const classes = useStyles();
+const ListContainer: React.FunctionComponent<PropsWithChildren<{ className?: string }>> = ({ className, children }) => {
   return (
-    <div className={clsx(classes.container, className)}>
-      <div className={classes.wrapper}>
+    <Container className={className}>
+      <Wrapper>
         {children}
-      </div>
-    </div>
+      </Wrapper>
+    </Container>
   );
 };
 

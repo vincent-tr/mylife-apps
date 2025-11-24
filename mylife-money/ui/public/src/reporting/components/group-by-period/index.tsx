@@ -1,42 +1,36 @@
-'use strict';
-
 import React, { useState, useMemo } from 'react';
+import { useLifecycle } from 'mylife-tools-ui';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools-ui';
-import { getSortedViewList } from '../../selectors';
-import { reportingLeave } from '../../actions';
+import { reportingLeave, getSortedViewList } from '../../store';
 
 import Criteria from './criteria';
 import Chart from './chart';
 import { formatCriteria } from './tools';
-import { makeStyles } from '@material-ui/core';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 
 const useConnect = ({ refreshAction, exportAction }) => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector((state: FIXME_any) => ({
-      data: getSortedViewList(state)
-    })),
+    data: useSelector(getSortedViewList),
     ...useMemo(() => ({
       refresh: (criteria) => dispatch(refreshAction(criteria)),
-      exportReport: (criteria, display) => dispatch(exportAction(criteria, display)),
+      exportReport: (criteria, display) => dispatch(exportAction({ criteria, display })),
       leave: () => dispatch(reportingLeave()),
     }), [dispatch])
   };
 };
 
-const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: '1 1 auto'
-  },
-  chart: {
-    flex: '1 1 auto'
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto'
+});
+
+const StyledChart = styled(Chart)({
+  flex: '1 1 auto'
 });
 
 const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }) => {
@@ -48,16 +42,12 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
   // on mount run query, on leave clean
   useLifecycle(() => refresh(formatCriteria(criteria)), leave);
 
-  const classes = useStyles();
-
   const changeCriteria = (criteria) => {
     setCriteria(criteria);
     refresh(formatCriteria(criteria));
   };
 
   const doExport = () => exportReport(formatCriteria(criteria), display);
-
-  const groups = criteria.groups.toArray();
 
   const chartDisplay = {
     ...display,
@@ -67,10 +57,10 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
   const additionalCriteria = additionalCriteriaFactory({ display, onDisplayChanged: setDisplay, criteria, onCriteriaChanged: changeCriteria });
 
   return (
-    <div className={classes.container}>
+    <Container>
       <Criteria criteria={criteria} onCriteriaChanged={changeCriteria} display={display} onDisplayChanged={setDisplay} onExport={doExport} additionalComponents={additionalCriteria} />
-      <Chart data={data} groups={groups} display={chartDisplay} className={classes.chart} amountSelector={amountSelectorFactory({ display, criteria })}/>
-    </div>
+      <StyledChart data={data} groups={criteria.groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })}/>
+    </Container>
   );
 };
 

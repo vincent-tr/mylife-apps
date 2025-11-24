@@ -1,57 +1,53 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
 
 import GroupSelector from '../../../common/components/group-selector';
-import { makeStyles, Typography, Tooltip, IconButton } from '@material-ui/core';
+import { styled, Typography, Tooltip, IconButton } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  label: {
-    marginRight: theme.spacing(1)
-  },
-  addButton: {
-  },
-  item: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column'
+});
+
+const Header = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
+const Label = styled(Typography)(({ theme }) => ({
+  marginRight: theme.spacing(1)
 }));
 
+const Item = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
 const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.container}>
-      <div className={classes.header}>
-        <Typography className={classes.label}>Groupes</Typography>
+    <Container>
+      <Header>
+        <Label>Groupes</Label>
         <Tooltip title='Ajouter un groupe'>
-          <IconButton onClick={() => onGroupAdd()} className={classes.addButton}>
+          <IconButton onClick={() => onGroupAdd()}>
             <icons.actions.New />
           </IconButton>
         </Tooltip>
-      </div>
+      </Header>
       {groups.map((group, index) => (
-        <div key={index} className={classes.item}>
+        <Item key={index}>
           <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
           <Tooltip title='Supprimer le groupe'>
             <IconButton onClick={() => onGroupDelete(index)}>
               <icons.actions.Delete />
             </IconButton>
           </Tooltip>
-        </div>
+        </Item>
       ))}
-    </div>
+    </Container>
   );
 };
 

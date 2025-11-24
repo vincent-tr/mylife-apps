@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -7,7 +5,9 @@ import icons from '../icons';
 import { getGroup } from '../../reference/selectors';
 
 import GroupSelectorButton from './group-selector-button';
-import { makeStyles, Tooltip, Breadcrumbs, Typography } from '@material-ui/core';
+import { styled, Tooltip, Breadcrumbs, Typography } from '@mui/material';
+
+type FIXME_any = any;
 
 const useConnect = ({ value }) => {
   return useSelector(state => ({
@@ -15,37 +15,33 @@ const useConnect = ({ value }) => {
   }));
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  button: {
-  },
-  breadcrumbs: {
-    flex: '1 1 auto',
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  }
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center'
+});
+
+const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
+  flex: '1 1 auto',
+  marginLeft: theme.spacing(1),
+  marginRight: theme.spacing(1),
 }));
 
 const GroupSelector = ({ onChange, value, ...props }) => {
-  const classes = useStyles();
   const { stack } = useConnect({ value });
   return (
-    <div className={classes.container} {...props}>
+    <Container {...props}>
       <Tooltip title='Sélectionner'>
-        <GroupSelectorButton onSelect={onChange} className={classes.button}>
+        <GroupSelectorButton onSelect={onChange}>
           <icons.actions.Move />
         </GroupSelectorButton>
       </Tooltip>
-      <Breadcrumbs aria-label='breadcrumb' className={classes.breadcrumbs}>
+      <GroupPath aria-label='breadcrumb'>
         {stack.map(node => (
           <Typography key={node._id} color='textPrimary'>{node.display}</Typography>
         ))}
-      </Breadcrumbs>
-    </div>
+      </GroupPath>
+    </Container>
   );
 };
 
@@ -59,7 +55,7 @@ export default GroupSelector;
 
 function getStack(state, value) {
   if(!value) {
-    const group = getGroup(state, { group: value });
+    const group = getGroup(state, value);
     if(!group) {
       return []; // not loaded
     }
@@ -67,10 +63,10 @@ function getStack(state, value) {
   }
 
   const ret = [];
-  while(value) {
-    const group = getGroup(state, { group: value });
+  while (value) {
+    const group = getGroup(state, value);
     ret.push(group);
-    value = group.parent;
+    value = (group as FIXME_any).parent;
   }
 
   ret.reverse();

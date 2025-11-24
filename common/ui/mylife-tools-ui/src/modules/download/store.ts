@@ -1,4 +1,10 @@
-import actionTypes from './action-types';
+import { createAction } from '@reduxjs/toolkit';
+import { STATE_PREFIX } from '../../constants/defines';
+import { FileData } from './types';
+
+const ACTION_DOWNLOAD_FILE = `${STATE_PREFIX}/download/file`;
+
+export const file = createAction<FileData>(ACTION_DOWNLOAD_FILE);
 
 const toBase64 = array => btoa(String.fromCharCode.apply(null, array));
 
@@ -11,9 +17,9 @@ const download = (name, link) => {
   pom.remove();
 };
 
-export default (/*store*/) => next => action => {
+export const middleware = (/*store*/) => next => action => {
 
-  if (action.type === actionTypes.FILE) {
+  if (action.type === ACTION_DOWNLOAD_FILE) {
     const { name, mime, content } = action.payload;
     download(name, `data:${mime};base64,${toBase64(content)}`);
   }

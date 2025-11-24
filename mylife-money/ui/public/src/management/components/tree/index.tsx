@@ -1,39 +1,32 @@
-'use strict';
-
 import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-
+import { styled, Paper, Divider } from '@mui/material';
 import Tree from './tree';
 import Toolbar from './toolbar';
-import { makeStyles, Paper, Divider } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    minWidth: 500,
-  },
-  tree: {
-    overflowY: 'auto',
-    flex: '1 1 auto',
-  },
+const Container = styled(Paper)({
+  display: 'flex',
+  flexDirection: 'column',
+  minWidth: 500,
 });
 
-const TreeContainer = ({ className }) => {
-  const classes = useStyles();
+const StyledTree = styled(Tree)({
+  overflowY: 'auto',
+  flex: '1 1 auto',
+});
 
+interface TreeContainerProps {
+  className?: string;
+}
+
+const TreeContainer: React.FC<TreeContainerProps> = ({ className }) => {
   return (
-    <Paper className={clsx(classes.container, className)}>
-      <Tree className={classes.tree}/>
+    <Container className={className}>
+      <StyledTree />
       <Divider />
       <Toolbar />
-    </Paper>
+    </Container>
   );
 };
 
-TreeContainer.propTypes = {
-  className: PropTypes.string
-};
 
 export default TreeContainer;

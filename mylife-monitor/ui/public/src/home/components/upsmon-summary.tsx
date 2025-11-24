@@ -1,27 +1,22 @@
-'use strict';
-
 import humanizeDuration from 'humanize-duration';
 import React from 'react';
-import clsx from 'clsx';
+import { styled, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
-import { useStatusColorStyles } from '../../common/status-colors';
 import { useSince } from '../../common/behaviors';
-import { makeStyles, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'inline-block',
-    width: 300,
-    margin: theme.spacing(4)
+const Container = styled(Paper)(({ theme }) => ({
+  display: 'inline-block',
+  width: 300,
+  margin: theme.spacing(4),
+}));
+
+const HeaderCell = styled('div')(({ theme }) => ({
+  display: 'flex',
+  '& > *': {
+    marginRight: theme.spacing(2),
   },
-  headerCell: {
-    display: 'flex',
-    '& > *': {
-      marginRight: theme.spacing(2)
-    },
-  },
-  column: {
-  }
 }));
 
 const formatDuration = humanizeDuration.humanizer({
@@ -44,51 +39,51 @@ const formatDuration = humanizeDuration.humanizer({
 });
 
 const UpsmonSummary = ({ view }) => {
-  const classes = useStyles();
-
   return (
-    <TableContainer component={Paper} className={classes.container}>
+    <Container>
       <Table size='small'>
         <TableHead>
           <TableRow>
             <TableCell colSpan={3}>
-              <div className={classes.headerCell}>
+              <HeaderCell>
                 <icons.menu.Upsmon />
                 {'UPS Monitor'}
-              </div>
+              </HeaderCell>
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.column}>{'Nom'}</TableCell>
-            <TableCell className={classes.column}>{'Statut'}</TableCell>
-            <TableCell className={classes.column}>{'Mise à jour'}</TableCell>
+            <TableCell>{'Nom'}</TableCell>
+            <TableCell>{'Statut'}</TableCell>
+            <TableCell>{'Mise à jour'}</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {view.valueSeq().map(data => (
+          {Object.values(view).map((data: views.Entity) => (
             <Row key={data._id} data={data} />
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </Container>
   );
 };
 
 export default UpsmonSummary;
 
 const Row = ({ data }) => {
-  const classes = { ...useStatusColorStyles(), ...useStyles() };
   const statusOk = data.status == 'ONLINE';
   const lastUpdate = useSince(data.date);
   const lastUpdateOk = lastUpdate < 5 * 60 * 1000; // 5 mins
   const lastUpdateStr = formatDuration(lastUpdate);
 
+  const StatusCell = statusOk ? SuccessCell : ErrorCell;
+  const UpdateCell = lastUpdateOk ? SuccessCell : ErrorCell;
+
   return (
     <TableRow>
-      <TableCell className={clsx(classes.column)}>{data.upsName}</TableCell>
-      <TableCell className={clsx(classes.column, statusOk ? classes.success : classes.error)}>{data.status}</TableCell>
-      <TableCell className={clsx(classes.column, lastUpdateOk ? classes.success : classes.error)}>{lastUpdateStr}</TableCell>
+      <TableCell>{data.upsName}</TableCell>
+      <StatusCell>{data.status}</StatusCell>
+      <UpdateCell>{lastUpdateStr}</UpdateCell>
     </TableRow>
   );
 }

@@ -1,12 +1,10 @@
-'use strict';
-
-import React         from 'react';
-import Offline       from './offline';
-import Busy          from './busy';
-import Error         from './error';
+import React from 'react';
+import Offline from './offline';
+import Busy from './busy';
+import Error from './error';
 import Notifications from './notifications';
 
-const Dialogs = () => (
+const Dialogs: React.FC = () => (
   <React.Fragment>
     <Offline />
     <Busy />

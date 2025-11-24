@@ -1,20 +1,17 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import immutable from 'immutable';
 import { CriteriaField } from 'mylife-tools-ui';
-import { getGroupByYear, exportGroupByYear } from '../actions';
+import { getGroupByYear, exportGroupByYear } from '../store';
 import GroupByPeriod from './group-by-period';
 import { findAmount, roundCurrency } from './group-by-period/tools';
-import { Grid, Checkbox } from '@material-ui/core';
+import { Grid, Checkbox } from '@mui/material';
 
 const initialCriteria = {
   children: false,
   minDate: null,
   maxDate: null,
   account: null,
-  groups: immutable.List([ null ])
+  groups: [ null ]
 };
 
 const initialDisplay = {
@@ -29,12 +26,12 @@ const AdditionalCriteria = ({ display, onDisplayChanged }) => {
 
   return (
     <React.Fragment>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <CriteriaField label='Moyenne par mois'>
           <Checkbox color='primary' checked={display.monthAverage} onChange={e => onMonthAverageChanged(e.target.checked)} />
         </CriteriaField>
       </Grid>
-      <Grid item xs={8} />
+      <Grid size={8} />
     </React.Fragment>
   );
 };

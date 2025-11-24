@@ -1,4 +1,4 @@
-import { viewChange } from '../actions';
+import { viewChange } from '../store';
 
 class NotifyEngine {
   constructor(private readonly emitter, private readonly dispatch) {

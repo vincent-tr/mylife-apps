@@ -1,5 +1,3 @@
-'use strict';
-
 export function findAmount(periodItem, serie) {
   const item = periodItem.groups[serie.stackId];
   if(!item) {
@@ -18,12 +16,9 @@ export function findAmount(periodItem, serie) {
 }
 
 export function formatCriteria(criteria) {
-  const { groups, fullnames, ...props } = criteria;
+  const { fullnames, ...props } = criteria;
   void fullnames;
-  return {
-    groups: groups.toArray(),
-    ...props
-  };
+  return props;
 }
 
 export function roundCurrency(number) {

@@ -1,39 +1,31 @@
-'use strict';
-
 import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-
+import { Paper, Divider, styled } from '@mui/material';
 import Header from './header';
 import Footer from './footer';
 import Table from './table';
-import { Paper, Divider, makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  table: {
-    flex: '1 1 auto',
-  }
+const Container = styled(Paper)({
+  display: 'flex',
+  flexDirection: 'column',
 });
 
-const ListContainer = ({ className }) => {
-  const classes = useStyles();
+const StyledTable = styled(Table)({
+  flex: '1 1 auto',
+});
 
+interface ListContainerProps {
+  className?: string;
+}
+
+const ListContainer: React.FC<ListContainerProps> = ({ className }) => {
   return (
-    <Paper className={clsx(classes.container, className)}>
+    <Container className={className}>
       <Header />
-      <Table className={classes.table}/>
+      <StyledTable />
       <Divider />
       <Footer />
-    </Paper>
+    </Container>
   );
-};
-
-ListContainer.propTypes = {
-  className: PropTypes.string
 };
 
 export default ListContainer;

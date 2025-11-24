@@ -1,13 +1,13 @@
 import { utils } from 'mylife-tools-common';
-import { busySet } from '../../dialogs';
+import { setBusy } from '../../dialogs/store';
 
 const CALL_TIMEOUT = 5000;
 
 const timer = (performance && typeof performance.now === 'function') ? performance : Date;
-const logger = process.env.NODE_ENV === 'production' ? () => {} : logCall;
+const logger = import.meta.env.PROD ? () => {} : logCall;
 
 class Pending {
-  private readonly timeout: NodeJS.Timeout;
+  private readonly timeout: number;
   private readonly begin: number;
   private end: number;
 
@@ -79,14 +79,14 @@ class CallEngine {
   addPending(pending) {
     this.pendings.set(pending.transaction, pending);
     if(this.pendings.size === 1) {
-      this.dispatch(busySet(true));
+      this.dispatch(setBusy(true));
     }
   }
 
   removePending(pending) {
     this.pendings.delete(pending.transaction);
     if(this.pendings.size === 0) {
-      this.dispatch(busySet(false));
+      this.dispatch(setBusy(false));
     }
   }
 

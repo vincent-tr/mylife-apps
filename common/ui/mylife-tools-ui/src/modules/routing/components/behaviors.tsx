@@ -1,18 +1,13 @@
-'use strict';
-
 import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { push } from '../actions';
-import { getLocation } from '../selectors';
+import { navigate, getLocation } from '../store';
 
 export const useRoutingConnect = () => {
   const dispatch = useDispatch();
   return {
-    ...useSelector(state => ({
-      location: getLocation(state)
-    })),
+    location: useSelector(getLocation),
     ...useMemo(() => ({
-      navigate : location => dispatch(push(location))
+      navigate : location => dispatch(navigate(location))
     }), [dispatch])
   };
 };

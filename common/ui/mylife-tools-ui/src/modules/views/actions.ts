@@ -1,14 +1,12 @@
-import { debounce } from 'debounce';
+import debounce from 'debounce';
 import { Mutex } from 'async-mutex';
-import { createAction } from 'redux-actions';
 import { observeStore, getStore } from '../../services/store-factory';
 import * as io from '../io';
-import actionTypes from './action-types';
-import { getViewId, getRefCount } from './selectors';
+import { getViewId, getRefCount, setView, ref, unref } from './store';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { STATE_PREFIX } from '../../constants/defines';
 
-const setView = createAction(actionTypes.SET_VIEW);
-const ref = createAction(actionTypes.REF);
-const unref = createAction(actionTypes.UNREF);
+type FIXME_any = any;
 
 interface CreateOrUpdateViewOptions {
 	criteriaSelector;
@@ -19,15 +17,16 @@ interface CreateOrUpdateViewOptions {
 	method;
 }
 
-export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions) {
-	return async (dispatch, getState) => {
-		const state = getState();
+export const createOrUpdateView = createAsyncThunk(
+	`${STATE_PREFIX}/views/createOrUpdateView`,
+	async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
+		const state = api.getState();
 
 		const criteria = criteriaSelector(state, selectorProps);
 		const viewId = viewSelector(state);
 
 		if (viewId) {
-			await dispatch(
+			await api.dispatch(
 				io.call({
 					service: 'common',
 					method: 'renotifyWithCriteria',
@@ -35,35 +34,33 @@ export function createOrUpdateView({ criteriaSelector, selectorProps, viewSelect
 					criteria,
 				})
 			);
+		} else {
+			const newViewId = await api.dispatch(
+				io.call({
+					service,
+					method,
+					criteria,
+				})
+			);
 
-			return;
+			api.dispatch(setViewAction(newViewId));
 		}
-
-		const newViewId = await dispatch(
-			io.call({
-				service,
-				method,
-				criteria,
-			})
-		);
-
-		dispatch(setViewAction(newViewId));
-	};
-}
+});
 
 // call on views that cannot be updated
-export function createOrRenewView({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }) {
-	return async (dispatch, getState) => {
-		const state = getState();
+const createOrRenewView = createAsyncThunk(
+	`${STATE_PREFIX}/views/createOrRenewView`,
+	async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
+		const state = api.getState();
 
 		const oldViewId = viewSelector(state);
 		if (oldViewId) {
-			dispatch(setViewAction(null));
-			await dispatch(io.unnotify(oldViewId));
+			api.dispatch(setViewAction(null));
+			await api.dispatch(io.unnotify(oldViewId));
 		}
 
 		const criteria = criteriaSelector(state, selectorProps);
-		const newViewId = await dispatch(
+		const newViewId = await api.dispatch(
 			io.call({
 				service,
 				method,
@@ -71,44 +68,21 @@ export function createOrRenewView({ criteriaSelector, selectorProps, viewSelecto
 			})
 		);
 
-		dispatch(setViewAction(newViewId));
-	};
-}
+		api.dispatch(setViewAction(newViewId));
+});
 
-export function createOrSkipView({ viewSelector, setViewAction, service, method }) {
-	return async (dispatch, getState) => {
-		const state = getState();
-
-		const viewId = viewSelector(state);
-
-		if (viewId) {
-			return;
-		}
-
-		const newViewId = await dispatch(
-			io.call({
-				service,
-				method,
-				criteria: {},
-			})
-		);
-
-		dispatch(setViewAction(newViewId));
-	};
-}
-
-export function deleteView({ viewSelector, setViewAction }) {
-	return async (dispatch, getState) => {
-		const state = getState();
+export const deleteView = createAsyncThunk(
+	`${STATE_PREFIX}/views/deleteView`,
+	async ({ viewSelector, setViewAction }: { viewSelector: FIXME_any; setViewAction: FIXME_any }, api) => {
+		const state = api.getState();
 		const oldViewId = viewSelector(state);
 		if (!oldViewId) {
 			return;
 		}
 
-		dispatch(setViewAction(null));
-		await dispatch(io.unnotify(oldViewId));
-	};
-}
+		api.dispatch(setViewAction(null));
+		await api.dispatch(io.unnotify(oldViewId));
+});
 
 interface ViewReferenceOptions {
 	uid: string;
