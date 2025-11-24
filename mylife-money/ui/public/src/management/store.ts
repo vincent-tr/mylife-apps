@@ -218,7 +218,7 @@ export const updateGroup = createAsyncThunk('management/updateGroup', async (gro
   }));
 });
 
-export const moveOperations = createAsyncThunk('management/moveOperations', async (group, api) => {
+export const moveOperations = createAsyncThunk('management/moveOperations', async (group: string, api) => {
   const operations = getSelectedOperations(api.getState()).map(op => op._id);
 
   await api.dispatch(io.call({
@@ -229,7 +229,7 @@ export const moveOperations = createAsyncThunk('management/moveOperations', asyn
   }));
 });
 
-export const operationMoveDetail = createAsyncThunk('management/operationMoveDetail', async (group, api) => {
+export const operationMoveDetail = createAsyncThunk('management/operationMoveDetail', async (group: string, api) => {
   const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
 
   api.dispatch(closeDetail());
@@ -241,7 +241,7 @@ export const operationMoveDetail = createAsyncThunk('management/operationMoveDet
   }));
 });
 
-export const operationsSetNote = createAsyncThunk('management/operationsSetNote', async (note, api) => {
+export const operationsSetNote = createAsyncThunk('management/operationsSetNote', async (note: string, api) => {
   const operations = getSelectedOperations(api.getState()).map(op => op._id);
 
   await api.dispatch(io.call({
@@ -252,7 +252,7 @@ export const operationsSetNote = createAsyncThunk('management/operationsSetNote'
   }));
 });
 
-export const operationSetNoteDetail = createAsyncThunk('management/operationSetNoteDetail', async (note, api) => {
+export const operationSetNoteDetail = createAsyncThunk('management/operationSetNoteDetail', async (note: string, api) => {
   const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
 
   await api.dispatch(io.call({

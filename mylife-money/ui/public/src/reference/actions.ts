@@ -1,5 +1,6 @@
 import { views } from 'mylife-tools-ui';
 import { ACCOUNTS, GROUPS } from './view-ids';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const accountViewRef = new views.ViewReference({
   uid: ACCOUNTS,
@@ -14,7 +15,7 @@ const groupViewRef = new views.ViewReference({
   method: 'notifyGroups'
 });
 
-export const referenceInit = () => async (dispatch) => {
+export const referenceInit = createAsyncThunk('reference/init', async (_, api) => {
   await accountViewRef.attach();
   await groupViewRef.attach();
-};
+});

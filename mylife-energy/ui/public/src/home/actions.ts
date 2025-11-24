@@ -1,5 +1,6 @@
 import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const viewRef = new views.ViewReference({
   uid: viewUids.DATA,
@@ -7,10 +8,10 @@ const viewRef = new views.ViewReference({
   method: 'notifyHomeData'
 });
 
-export const enter = () => async (dispatch) => {
+export const enter = createAsyncThunk('home/enter', async (_, api) => {
   await viewRef.attach();
-};
+});
 
-export const leave = () => async (dispatch) => {
+export const leave = createAsyncThunk('home/leave', async (_, api) => {
   await viewRef.detach();
-};
+});
