@@ -1,5 +1,5 @@
 import BatteryGauge from 'react-battery-gauge';
-import { styled, Typography, Divider, Tooltip, IconButton, SvgIcon, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { styled, Typography, Divider, Tooltip, IconButton, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import humanizeDuration from 'humanize-duration';
 import React, { PropsWithChildren } from 'react';
 import { useSelector } from 'react-redux';

@@ -20,7 +20,7 @@ const StyledChart = styled(Chart)({
 
 const Stats: React.FC = () => {
   useViewLifecycle();
-  const actions = useActions({ fetchValues });
+  const { fetchValues: localFetchValues } = useActions({ fetchValues });
 
   const [criteria, onCriteriaChange] = useReducer((criteria: Criteria, props: Partial<Criteria>) => ({ ...criteria, ...props }), {
     type: StatsType.Day,
@@ -29,8 +29,8 @@ const Stats: React.FC = () => {
   } as Criteria);
 
   useEffect(() => {
-    actions.fetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices });
-  }, [criteria]);
+    localFetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices });
+  }, [criteria, localFetchValues]);
 
   return (
     <Container>

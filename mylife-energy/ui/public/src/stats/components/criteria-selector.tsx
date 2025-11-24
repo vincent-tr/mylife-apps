@@ -11,11 +11,11 @@ export interface Criteria {
   devices: string[];
 }
 
-const Container = styled('div')<{ className?: string }>(({ theme }) => ({
+const Container = styled('div')<{ className?: string }>({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
-}));
+});
 
 const DeviceListSelector = styled(DeviceList)(({ theme }) => ({
   width: 300,

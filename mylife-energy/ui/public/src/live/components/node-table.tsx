@@ -6,11 +6,11 @@ import { getMeasureView, getFirstDeviceByType, makeGetDevicesByType } from '../s
 import { Measure } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
 
-const Container = styled('div')(({ theme }) => ({
+const Container = styled('div')({
   flex: '1 1 auto',
   minHeight: 0,
   overflowY: 'auto',
-}));
+});
 
 const NoteTable = () => {
   const getDevicesByType = useMemo(() => makeGetDevicesByType(), []);
@@ -45,20 +45,20 @@ const NoteTable = () => {
 
 export default NoteTable;
 
-const RatioContainer = styled('div')(({ theme }) => ({
+const RatioContainer = styled('div')({
   display: 'flex',
   alignItems: 'center',
   width: 100,
-}));
+});
 
 const RatioBar = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
   marginRight: theme.spacing(1),
 }));
 
-const RatioLabel = styled(Typography)(({ theme }) => ({
+const RatioLabel = styled(Typography)({
   minWidth: 35,
-}));
+});
 
 const Ratio: React.FC<{ deviceId: string }> = ({ deviceId }) => {
   const total = useSelector((state) => getFirstDeviceByType(state, 'total'));

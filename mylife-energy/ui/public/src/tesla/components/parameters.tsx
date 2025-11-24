@@ -119,7 +119,7 @@ export function useParameters() {
 
         await set(parameters);
       }),
-    [setParameters, state]
+    [set, state]
   );
 }
 

@@ -34,9 +34,9 @@ const DatePicker: React.FC<DatePickerProps> = ({ type, value, onChange }) => {
 
 export default DatePicker;
 
-const StyledPicker = styled(MuiDatePicker)(({ theme }) => ({
+const StyledPicker = styled(MuiDatePicker)({
   flex: '1 1 auto',
-}));
+});
 
 const DayPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => (
   <Container>

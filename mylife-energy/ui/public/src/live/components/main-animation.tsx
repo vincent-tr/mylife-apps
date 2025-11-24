@@ -12,7 +12,7 @@ interface WrapperProps {
   isPhone?: boolean;
 }
 
-const StyledWrapper = styled('div')<WrapperProps>(({ theme, isPhone }) => ({
+const StyledWrapper = styled('div')<WrapperProps>(({ isPhone }) => ({
   alignSelf: 'center',
   ...(isPhone && {
     height: 200,
@@ -20,7 +20,7 @@ const StyledWrapper = styled('div')<WrapperProps>(({ theme, isPhone }) => ({
   }),
 }));
 
-const StyledContainer = styled('div')<WrapperProps>(({ theme, isPhone }) => ({
+const StyledContainer = styled('div')<WrapperProps>(({ isPhone }) => ({
   display: 'grid',
   gridTemplateColumns: '250px 250px 250px',
   gridTemplateRows: '200px 200px',

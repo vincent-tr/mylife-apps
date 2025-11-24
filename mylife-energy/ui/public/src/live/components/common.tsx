@@ -1,10 +1,7 @@
 import React from 'react';
-import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { getMeasureView, getDevice } from '../selectors';
-import { Measure, LiveDevice } from '../../../../shared/metadata';
 import { Typography, Badge, Tooltip, styled, Theme } from '@mui/material';
 
 type Flavor = 'good' | 'bad' | null;
@@ -79,14 +76,14 @@ export const DeviceMeasure: React.FC<{ deviceId: string; sensorKeys: string[] }>
   return <Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} />}>{wrapped}</Tooltip>;
 };
 
-const TooltipContainer = styled('div')(({ theme }) => ({
+const TooltipContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-}));
+});
 
-const TooltipComputedLabel = styled(Typography)(({ theme }) => ({
+const TooltipComputedLabel = styled(Typography)({
   fontStyle: 'italic',
-}));
+});
 
 const DeviceMeasureTooltip: React.FC<{ deviceId: string }> = ({ deviceId }) => {
   const device = useSelector((state) => getDevice(state, deviceId));
@@ -137,7 +134,7 @@ function getLastUpdate(device, measures) {
 
   return date;
 }
-
+/*
 function findBestSensorMeasure(device: LiveDevice, measures: views.View<Measure>) {
   const order = ['real-power', 'apparent-power', 'current'];
 
@@ -152,3 +149,4 @@ function findBestSensorMeasure(device: LiveDevice, measures: views.View<Measure>
 
   return { sensor: null, measure: null };
 }
+*/

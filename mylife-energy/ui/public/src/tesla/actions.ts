@@ -9,11 +9,11 @@ const stateViewRef = new views.ViewReference({
   method: 'notifyState',
 });
 
-export const enter = createAsyncThunk('tesla/enter', async (_, api) => {
+export const enter = createAsyncThunk('tesla/enter', async (_, _api) => {
   await stateViewRef.attach();
 });
 
-export const leave = createAsyncThunk('tesla/leave', async (_, api) => {
+export const leave = createAsyncThunk('tesla/leave', async (_, _api) => {
   await stateViewRef.detach();
 });
 
