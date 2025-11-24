@@ -43,7 +43,7 @@ interface GroupSelectorButton {
   style?: React.CSSProperties;
   children?: React.ReactNode;
   onSelect: (group: string) => void;
-  options?: {};
+  options?: FIXME_any;
 }
 
 const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorButton>(({ onSelect, options, ...props }, ref) => {

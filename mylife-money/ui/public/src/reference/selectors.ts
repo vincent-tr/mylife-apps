@@ -1,7 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import { ACCOUNTS, GROUPS } from './view-ids';
-import group from 'mylife-money/ui/shared/metadata/entities/group';
 
 type FIXME_any = any;
 

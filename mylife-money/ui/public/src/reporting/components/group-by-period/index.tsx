@@ -21,7 +21,7 @@ const useConnect = ({ refreshAction, exportAction }) => {
         exportReport: (criteria, display) => dispatch(exportAction({ criteria, display })),
         leave: () => dispatch(reportingLeave()),
       }),
-      [dispatch]
+      [dispatch, refreshAction, exportAction]
     ),
   };
 };

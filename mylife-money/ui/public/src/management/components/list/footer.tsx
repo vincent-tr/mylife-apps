@@ -9,7 +9,11 @@ function summaries(operations) {
   let total = 0;
   for (const op of operations) {
     const amount = op.operation.amount;
-    amount < 0 ? (totalDebit += -amount) : (totalCredit += amount);
+    if (amount < 0) {
+      totalDebit += -amount;
+    } else {
+      totalCredit += amount;
+    }
     total += amount;
   }
   totalDebit = Math.round(totalDebit * 100) / 100;

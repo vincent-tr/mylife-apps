@@ -44,7 +44,7 @@ const CronCriteriaField: React.FC<{ value: string }> = ({ value }) => {
         <>
           {'Planification '}
           <Link href="https://github.com/node-cron/node-cron#cron-syntax" target="_blank" rel="noopener">
-            "cron"
+            cron
           </Link>
         </>
       }
@@ -61,12 +61,12 @@ function format(value: string) {
     }
 
     return cronstrue.toString(value, { locale: 'fr' });
-  } catch (e) {
+  } catch {
     return '<invalide>';
   }
 }
 
 function useStart(id: string) {
   const start = useAction(startBot);
-  return useCallback(() => fireAsync(async () => start(id)), [id, start, fireAsync]);
+  return useCallback(() => fireAsync(async () => start(id)), [id, start]);
 }

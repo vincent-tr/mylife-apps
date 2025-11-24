@@ -14,7 +14,7 @@ const groupViewRef = new views.ViewReference({
   method: 'notifyGroups',
 });
 
-export const referenceInit = createAsyncThunk('reference/init', async (_, api) => {
+export const referenceInit = createAsyncThunk('reference/init', async (_, _api) => {
   await accountViewRef.attach();
   await groupViewRef.attach();
 });

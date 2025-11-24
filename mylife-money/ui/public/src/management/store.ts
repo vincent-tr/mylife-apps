@@ -116,7 +116,7 @@ export const getSelectedGroupId = (state) => local.getCriteria(state).group;
 export const getSortedOperations = createSelector([getOperationView], (operations) => {
   const ret = Object.values(operations);
   ret.sort((op1, op2) => {
-    let comp = (op1 as FIXME_any).date - (op2 as FIXME_any).date;
+    const comp = (op1 as FIXME_any).date - (op2 as FIXME_any).date;
     if (comp) {
       return comp;
     }
