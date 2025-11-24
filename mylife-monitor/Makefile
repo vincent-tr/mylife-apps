@@ -8,7 +8,7 @@ DOCKER_PACKAGE_VERSION ?= $(shell node -p "require('$(DIR_UI)/package.json').ver
 DOCKER_IMAGE_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):$(DOCKER_PACKAGE_VERSION)
 DOCKER_IMAGE_LATEST_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):latest
 
-.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint run-web
+.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint ui-lint-fix ui-format run-web
 
 docker-publish: docker-build
 	docker push "$(DOCKER_IMAGE_TAG)"
@@ -22,6 +22,8 @@ server-build:
 
 ui-build:
 	cd $(DIR_UI) && \
+	npm run lint && \
+	npm run format:check && \
 	npm exec -- tsc --project public/tsconfig.json && \
 	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts build
 
@@ -34,6 +36,15 @@ ui-watch:
 ui-watch-tsc:
 	cd $(DIR_UI) && \
 	npm exec -- tsc --project public/tsconfig.json --watch
+
+ui-lint:
+	cd $(DIR_UI) && npm run lint
+
+ui-lint-fix:
+	cd $(DIR_UI) && npm run lint:fix
+
+ui-format:
+	cd $(DIR_UI) && npm run format
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web
