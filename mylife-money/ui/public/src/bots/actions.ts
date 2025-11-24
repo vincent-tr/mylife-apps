@@ -1,11 +1,12 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { io, dialogs } from 'mylife-tools-ui';
 
-export const startBot = (id: string) => async (dispatch) => {
-  await dispatch(io.call({
+export const startBot = createAsyncThunk('bots/startBot', async (id: string, api) => {
+  await api.dispatch(io.call({
     service: 'bots',
     method: 'startBot',
     id
   }));
 
-  dispatch(dialogs.showNotification({ message: 'Robot démarré', type: 'success' }));
-};
+  api.dispatch(dialogs.showNotification({ message: 'Robot démarré', type: 'success' }));
+});

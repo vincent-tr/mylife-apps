@@ -17,7 +17,7 @@ const useConnect = ({ refreshAction, exportAction }) => {
     data: useSelector(getSortedViewList),
     ...useMemo(() => ({
       refresh: (criteria) => dispatch(refreshAction(criteria)),
-      exportReport: (criteria, display) => dispatch(exportAction(criteria, display)),
+      exportReport: (criteria, display) => dispatch(exportAction({ criteria, display })),
       leave: () => dispatch(reportingLeave()),
     }), [dispatch])
   };

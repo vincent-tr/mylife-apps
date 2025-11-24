@@ -152,10 +152,10 @@ export const showDetail = operationId => local.setDetail(operationId);
 export const closeDetail = () => local.setDetail(null);
 
 export const managementEnter = getOperations;
-export const managementLeave = () => async (dispatch) => {
-  await dispatch(clearOperations());
-  dispatch(closeDetail());
-};
+export const managementLeave = createAsyncThunk('management/managementLeave', async (_, api) => {
+  await api.dispatch(clearOperations());
+  api.dispatch(closeDetail());
+});
 
 export const setMinDate = (value) => setCriteriaValue('minDate', value);
 export const setMaxDate = (value) => setCriteriaValue('maxDate', value);
@@ -182,100 +182,86 @@ function setCriteriaValue(name, value) {
 
 let groupIdCount = 0;
 
-export const createGroup = () => {
-  return async (dispatch, getState) => {
-    const parentGroup = getSelectedGroupId(getState());
-    const newGroup = {
-      display: `group${++groupIdCount}`,
-      parent: parentGroup
-    };
-
-    const id = await dispatch(io.call({
-      service: 'management',
-      method: 'createGroup',
-      object: newGroup
-    }));
-
-    dispatch(selectGroup(id));
+export const createGroup = createAsyncThunk('management/createGroup', async (_, api) => {
+  const parentGroup = getSelectedGroupId(api.getState());
+  const newGroup = {
+    display: `group${++groupIdCount}`,
+    parent: parentGroup
   };
-};
 
-export const deleteGroup = () => {
-  return async (dispatch, getState) => {
-    const id = getSelectedGroupId(getState());
+  const id = await api.dispatch(io.call({
+    service: 'management',
+    method: 'createGroup',
+    object: newGroup
+  }));
 
-    await dispatch(io.call({
-      service: 'management',
-      method: 'deleteGroup',
-      id
-    }));
+  api.dispatch(selectGroup(id));
+});
 
-    dispatch(selectGroup(null));
-  };
-};
+export const deleteGroup = createAsyncThunk('management/deleteGroup', async (_, api) => {
+  const id = getSelectedGroupId(api.getState());
 
-export const updateGroup = (group) => {
-  return async (dispatch) => {
-    await dispatch(io.call({
-      service: 'management',
-      method: 'updateGroup',
-      object: group
-    }));
-  };
-};
+  await api.dispatch(io.call({
+    service: 'management',
+    method: 'deleteGroup',
+    id
+  }));
 
-export const moveOperations = (group) => {
-  return async (dispatch, getState) => {
-    const operations = getSelectedOperations(getState()).map(op => op._id);
+  api.dispatch(selectGroup(null));
+});
 
-    await dispatch(io.call({
-      service: 'management',
-      method: 'moveOperations',
-      group,
-      operations
-    }));
-  };
-};
+export const updateGroup = createAsyncThunk('management/updateGroup', async (group, api) => {
+  await api.dispatch(io.call({
+    service: 'management',
+    method: 'updateGroup',
+    object: group
+  }));
+});
 
-export const operationMoveDetail = (group) => {
-  return async (dispatch, getState) => {
-    const operations = [local.getOperationIdDetail(getState())];
+export const moveOperations = createAsyncThunk('management/moveOperations', async (group, api) => {
+  const operations = getSelectedOperations(api.getState()).map(op => op._id);
 
-    dispatch(closeDetail());
-    await dispatch(io.call({
-      service: 'management',
-      method: 'moveOperations',
-      group,
-      operations
-    }));
-  };
-};
+  await api.dispatch(io.call({
+    service: 'management',
+    method: 'moveOperations',
+    group,
+    operations
+  }));
+});
 
-export const operationsSetNote = (note) => {
-  return async (dispatch, getState) => {
-    const operations = getSelectedOperations(getState()).map(op => op._id);
+export const operationMoveDetail = createAsyncThunk('management/operationMoveDetail', async (group, api) => {
+  const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
 
-    await dispatch(io.call({
-      service: 'management',
-      method: 'operationsSetNote',
-      note,
-      operations
-    }));
-  };
-};
+  api.dispatch(closeDetail());
+  await api.dispatch(io.call({
+    service: 'management',
+    method: 'moveOperations',
+    group,
+    operations
+  }));
+});
 
-export const operationSetNoteDetail = (note) => {
-  return async (dispatch, getState) => {
-    const operations = [local.getOperationIdDetail(getState())];
+export const operationsSetNote = createAsyncThunk('management/operationsSetNote', async (note, api) => {
+  const operations = getSelectedOperations(api.getState()).map(op => op._id);
 
-    await dispatch(io.call({
-      service: 'management',
-      method: 'operationsSetNote',
-      note,
-      operations
-    }));
-  };
-};
+  await api.dispatch(io.call({
+    service: 'management',
+    method: 'operationsSetNote',
+    note,
+    operations
+  }));
+});
+
+export const operationSetNoteDetail = createAsyncThunk('management/operationSetNoteDetail', async (note, api) => {
+  const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
+
+  await api.dispatch(io.call({
+    service: 'management',
+    method: 'operationsSetNote',
+    note,
+    operations
+  }));
+});
 
 export const selectOperation = ({ id, selected }) => {
   return (dispatch, getState) => {

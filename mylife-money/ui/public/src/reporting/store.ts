@@ -1,5 +1,7 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { download, io, views } from 'mylife-tools-ui';
+
+type FIXME_any = any;
 
 interface ReportingState {
   view: string | null;
@@ -65,9 +67,9 @@ const clearReportingView = () => views.deleteView({
   setViewAction: local.setView,
 });
 
-export const reportingLeave = () => async (dispatch) => {
-  await dispatch(clearReportingView());
-};
+export const reportingLeave = createAsyncThunk('reporting/reportingLeave', async (_, api) => {
+  await api.dispatch(clearReportingView());
+});
 
 export const exportGroupByMonth = createExportAction({
   service: 'reporting',
@@ -84,15 +86,14 @@ export const exportGroupByYear = createExportAction({
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 function createExportAction({ service, method, fileName }) {
-  return (criteria, display) => async (dispatch) => {
-
-    const content = await dispatch(io.call({
+  return createAsyncThunk('reporting/' + method, async ({ criteria, display }: { criteria: FIXME_any, display: FIXME_any }, api) => {
+    const content = await api.dispatch(io.call({
       service,
       method,
       criteria,
       display
-    }));
+    })) as FIXME_any;
 
-    dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
-  };
+    api.dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
+  });
 }
