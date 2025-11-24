@@ -4,7 +4,7 @@ import { styled, Paper, Table, TableHead, TableRow, TableCell, TableBody } from 
 import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { useSince } from '../../common/behaviors';
-import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
+import { SuccessCell, ErrorCell } from '../../common/table-status';
 
 const Container = styled(Paper)(({ theme }) => ({
   display: 'inline-block',

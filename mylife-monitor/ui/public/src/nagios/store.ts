@@ -26,7 +26,7 @@ const nagiosSlice = createSlice({
     setCriteria(state, action: PayloadAction<Criteria>) {
       state.criteria = action.payload;
     },
-    resetCriteria(state, action) {
+    resetCriteria(state, _action) {
       state.criteria = initialState.criteria;
     },
   },

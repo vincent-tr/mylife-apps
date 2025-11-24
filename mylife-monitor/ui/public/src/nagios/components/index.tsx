@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycle } from 'mylife-tools-ui';
-import { SuccessRow, WarningRow, ErrorRow, SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
+import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
 import { enter, leave } from '../actions';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';

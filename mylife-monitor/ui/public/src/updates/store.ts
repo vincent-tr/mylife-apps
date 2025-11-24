@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
-import { id } from 'date-fns/locale';
 
 type FIXME_any = any;
 
@@ -26,7 +25,7 @@ const updatesSlice = createSlice({
     setCriteria(state, action: PayloadAction<Criteria>) {
       state.criteria = action.payload;
     },
-    resetCriteria(state, action) {
+    resetCriteria(state, _action) {
       state.criteria = initialState.criteria;
     },
   },
