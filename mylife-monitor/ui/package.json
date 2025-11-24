@@ -16,8 +16,8 @@
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx}\""
+    "format": "prettier --write --config ../../.prettierrc --ignore-path ../../.prettierignore \"**/*.{js,jsx,ts,tsx}\"",
+    "format:check": "prettier --check --config ../../.prettierrc --ignore-path ../../.prettierignore \"**/*.{js,jsx,ts,tsx}\""
   },
   "devDependencies": {
     "@mui/material": "^7.3.5",

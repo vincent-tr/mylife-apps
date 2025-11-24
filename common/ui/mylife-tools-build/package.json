@@ -9,6 +9,12 @@
   },
   "author": "Vincent Trumpff",
   "license": "GPL-3.0+",
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write --config ../../../.prettierrc --ignore-path ../../../.prettierignore \"**/*.{js,jsx,ts,tsx}\"",
+    "format:check": "prettier --check --config ../../../.prettierrc --ignore-path ../../../.prettierignore \"**/*.{js,jsx,ts,tsx}\""
+  },
   "dependencies": {
     "vite": "^7.2.2",
     "@vitejs/plugin-react": "^5.1.1"
