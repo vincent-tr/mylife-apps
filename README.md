@@ -221,8 +221,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 - merge tools-common into tools-ui
 - make TS stricter
-- linter: eslint
-- formatter: prettier
 - import mui direct component
 - merge shared and public
 - review metadata vs typescript types
