@@ -14,12 +14,9 @@ const Container = styled('div')({
   flex: '1 1 auto',
 });
 
-const ListContainer = styled('div')({
+const StyledList = styled(List)({
   display: 'flex',
   flexDirection: 'column',
-});
-
-const StyledListContainer = styled(ListContainer)({
   flex: '1 1 auto',
   width: 300,
   minWidth: 300,
@@ -59,20 +56,18 @@ const Bots: React.FC = () => {
   return (
     <Container>
       <ToolsListContainer>
-        <StyledListContainer>
-          <List>
-            {Object.values(view).map((bot: FIXME_any) => (
-              <ListItem key={bot._id} disablePadding>
-                <ListItemButton 
-                  selected={selection === bot._id} 
-                  onClick={() => setSelection(bot._id)}
-                >
-                  <ListItemText primary={bot.displayName} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </StyledListContainer>
+        <StyledList>
+          {Object.values(view).map((bot: FIXME_any) => (
+            <ListItem key={bot._id} disablePadding>
+              <ListItemButton 
+                selected={selection === bot._id} 
+                onClick={() => setSelection(bot._id)}
+              >
+                <ListItemText primary={bot.type} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </StyledList>
       </ToolsListContainer>
 
       <Divider orientation='vertical' />
