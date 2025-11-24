@@ -13,7 +13,7 @@ export const enter = createAsyncThunk('nagios/enter', async () => {
   await viewRef.attach();
 });
 
-export const leave = createAsyncThunk('nagios/leave', async ({}, api) => {
+export const leave = createAsyncThunk('nagios/leave', async (_, api) => {
   await viewRef.detach();
   api.dispatch(resetCriteria(null));
 });
