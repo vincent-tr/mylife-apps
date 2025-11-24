@@ -42,6 +42,35 @@ npm run ws:list
 
 **TODO**
 
+## Code Quality
+
+### Linting & Formatting
+
+All UI packages share common ESLint and Prettier configurations.
+
+**Per-package** (in each UI folder):
+```bash
+cd common/ui/mylife-tools-ui  # or any UI package
+npm run lint              # Check for linting errors
+npm run lint:fix          # Auto-fix linting errors
+npm run format            # Format all files
+npm run format:check      # Check formatting without changes
+```
+
+**All packages at once** (from root):
+```bash
+npm run ws:lint           # Lint all UI packages
+npm run ws:lint:fix       # Fix all UI packages
+npm run ws:format         # Format all UI packages
+npm run ws:format:check   # Check all UI packages
+```
+
+**Configuration** (`.eslintrc.json`, `.prettierrc`):
+- TypeScript & React support with recommended rules
+- Prettier integration (no conflicts)
+- Single quotes, semicolons, 2-space indentation, 180-char line width
+- Allows `any` type, warns on unused vars (except `_` prefixed)
+
 # Framework (tools)
 
 ## Organization
@@ -192,8 +221,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 - merge tools-common into tools-ui
 - make TS stricter
-- linter: eslint
-- formatter: prettier
 - import mui direct component
 - merge shared and public
 - review metadata vs typescript types

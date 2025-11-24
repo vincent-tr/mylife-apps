@@ -16,16 +16,9 @@ interface GroupTreeProps {
 const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }: GroupTreeProps) => {
   const { groups } = useConnect();
   return (
-    <List component='div' {...props}>
+    <List component="div" {...props}>
       {groups.map((group) => (
-        <GroupNode
-          key={group._id}
-          group={group}
-          level={0}
-          onSelect={onSelect}
-          selectedGroupId={selectedGroupId}
-          disabledGroupIds={disabledGroupIds}
-          parentDisabled={false} />
+        <GroupNode key={group._id} group={group} level={0} onSelect={onSelect} selectedGroupId={selectedGroupId} disabledGroupIds={disabledGroupIds} parentDisabled={false} />
       ))}
     </List>
   );
@@ -36,6 +29,6 @@ export default GroupTree;
 function useConnect() {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
   return useSelector((state: FIXME_any) => ({
-    groups : getSortedChildren(state, 'root')
+    groups: getSortedChildren(state, 'root'),
   }));
 }

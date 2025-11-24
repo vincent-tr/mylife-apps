@@ -13,7 +13,7 @@ type FIXME_any = any;
 const Container = styled('div')({
   flex: '1 1 auto',
   display: 'flex',
-  flexDirection: 'row'
+  flexDirection: 'row',
 });
 
 const StyledList = styled(List)({
@@ -28,10 +28,13 @@ const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
     detail: useSelector(isOperationDetail),
-    ...useMemo(() => ({
-      enter : () => dispatch(managementEnter()),
-      leave : () => dispatch(managementLeave()),
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        enter: () => dispatch(managementEnter()),
+        leave: () => dispatch(managementLeave()),
+      }),
+      [dispatch]
+    ),
   };
 };
 
@@ -40,11 +43,7 @@ const Management = () => {
   const { enter, leave, detail } = useConnect();
   useLifecycle(enter, leave);
 
-  const main = detail ? (
-    <StyledDetail />
-  ) : (
-    <StyledList />
-  );
+  const main = detail ? <StyledDetail /> : <StyledList />;
 
   const normalLayout = (
     <Container>
@@ -53,13 +52,9 @@ const Management = () => {
     </Container>
   );
 
-  const smallLayout = (
-    <Container>
-      {main}
-    </Container>
-  );
+  const smallLayout = <Container>{main}</Container>;
 
-  switch(screenSize) {
+  switch (screenSize) {
     case 'phone':
       return smallLayout;
 

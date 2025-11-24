@@ -29,11 +29,11 @@ const initialState: ManagementState = {
     group: null,
     lookupText: null,
   },
-  operations : {
+  operations: {
     view: null,
     selected: [], // immutable.Set(),
     detail: null,
-  }
+  },
 };
 
 const managementSlice = createSlice({
@@ -44,12 +44,12 @@ const managementSlice = createSlice({
       Object.assign(state.criteria, action.payload);
 
       // clear selection when criteria changes
-      state.operations.selected = []; 
+      state.operations.selected = [];
     },
 
     setOperationView(state, action: PayloadAction<string | null>) {
       state.operations.view = action.payload;
-      state.operations.selected = []; 
+      state.operations.selected = [];
     },
 
     selectOperations(state, action: PayloadAction<SelectOperation>) {
@@ -58,23 +58,23 @@ const managementSlice = createSlice({
         state.operations.selected = Array.from(new Set([...state.operations.selected, ...ids]));
       } else {
         const idsToRemove = new Set(ids);
-        state.operations.selected = state.operations.selected.filter(id => !idsToRemove.has(id));
+        state.operations.selected = state.operations.selected.filter((id) => !idsToRemove.has(id));
       }
     },
 
     setDetail(state, action: PayloadAction<string | null>) {
       state.operations.detail = action.payload;
-    }
+    },
   },
 
   extraReducers: (builder) => {
     builder.addCase(io.setOnline, (state, action) => {
       if (!action.payload) {
         state.operations.view = null;
-        state.operations.selected = []; 
+        state.operations.selected = [];
         state.operations.detail = null;
       }
-    })
+    });
   },
 
   selectors: {
@@ -83,7 +83,7 @@ const managementSlice = createSlice({
     getOperationIdDetail: (state) => state.operations.detail,
     getSelected: (state) => state.operations.selected,
     getCriteria: (state) => state.criteria,
-  }
+  },
 });
 
 export const { getCriteria, isOperationDetail } = managementSlice.selectors;
@@ -91,7 +91,7 @@ export const { getCriteria, isOperationDetail } = managementSlice.selectors;
 export default managementSlice.reducer;
 
 const local = {
-  showSuccess: message => dialogs.showNotification({ message, type: 'success' }),
+  showSuccess: (message) => dialogs.showNotification({ message, type: 'success' }),
   setOperationView: managementSlice.actions.setOperationView,
   setCriteria: managementSlice.actions.setCriteria,
   selectOperations: managementSlice.actions.selectOperations,
@@ -100,55 +100,47 @@ const local = {
   getOperationViewId: managementSlice.selectors.getOperationViewId,
   getOperationIdDetail: managementSlice.selectors.getOperationIdDetail,
   getSelected: managementSlice.selectors.getSelected,
-}
+};
 
-const getOperationView = state => io.getView(state, local.getOperationViewId(state));
-export const getOperationDetail = state => getOperationView(state)[local.getOperationIdDetail(state)];
+const getOperationView = (state) => io.getView(state, local.getOperationViewId(state));
+export const getOperationDetail = (state) => getOperationView(state)[local.getOperationIdDetail(state)];
 
-export const getSelectedOperationIds = createSelector(
-  [ local.getSelected, getOperationView ],
-  (selected, view) => selected.filter(id => id in view)
-);
+export const getSelectedOperationIds = createSelector([local.getSelected, getOperationView], (selected, view) => selected.filter((id) => id in view));
 
-const getOperationIds = createSelector(
-  [ getOperationView ],
-  view => Object.keys(view)
-);
+const getOperationIds = createSelector([getOperationView], (view) => Object.keys(view));
 
-export const getSelectedOperations = createSelector(
-  [ getSelectedOperationIds, getOperationView ],
-  (selectedIds, view) => selectedIds.map(id => view[id])
-);
+export const getSelectedOperations = createSelector([getSelectedOperationIds, getOperationView], (selectedIds, view) => selectedIds.map((id) => view[id]));
 
-export const getSelectedGroupId = state => local.getCriteria(state).group;
+export const getSelectedGroupId = (state) => local.getCriteria(state).group;
 
-export const getSortedOperations = createSelector(
-  [ getOperationView ],
-  (operations) => {
-    const ret = Object.values(operations);
-    ret.sort((op1, op2) => {
-      let comp = (op1 as FIXME_any).date - (op2 as FIXME_any).date;
-      if(comp) { return comp; }
-      return op1._id < op2._id ? -1 : 1; // consistency
-    });
-    return ret;
-  }
-);
-
-export const getOperations = () => views.createOrUpdateView({
-  criteriaSelector: local.getCriteria,
-  viewSelector: local.getOperationViewId,
-  setViewAction: local.setOperationView,
-  service: 'management',
-  method: 'notifyOperations'
+export const getSortedOperations = createSelector([getOperationView], (operations) => {
+  const ret = Object.values(operations);
+  ret.sort((op1, op2) => {
+    const comp = (op1 as FIXME_any).date - (op2 as FIXME_any).date;
+    if (comp) {
+      return comp;
+    }
+    return op1._id < op2._id ? -1 : 1; // consistency
+  });
+  return ret;
 });
 
-const clearOperations = () => views.deleteView({
-  viewSelector: local.getOperationViewId,
-  setViewAction: local.setOperationView
-});
+export const getOperations = () =>
+  views.createOrUpdateView({
+    criteriaSelector: local.getCriteria,
+    viewSelector: local.getOperationViewId,
+    setViewAction: local.setOperationView,
+    service: 'management',
+    method: 'notifyOperations',
+  });
 
-export const showDetail = operationId => local.setDetail(operationId);
+const clearOperations = () =>
+  views.deleteView({
+    viewSelector: local.getOperationViewId,
+    setViewAction: local.setOperationView,
+  });
+
+export const showDetail = (operationId) => local.setDetail(operationId);
 export const closeDetail = () => local.setDetail(null);
 
 export const managementEnter = getOperations;
@@ -171,7 +163,7 @@ function setCriteriaValue(name, value) {
   return (dispatch, getState) => {
     const state = getState();
     const criteria = local.getCriteria(state);
-    if(criteria[name] === value) {
+    if (criteria[name] === value) {
       return;
     }
 
@@ -186,14 +178,16 @@ export const createGroup = createAsyncThunk('management/createGroup', async (_, 
   const parentGroup = getSelectedGroupId(api.getState());
   const newGroup = {
     display: `group${++groupIdCount}`,
-    parent: parentGroup
+    parent: parentGroup,
   };
 
-  const id = await api.dispatch(io.call({
-    service: 'management',
-    method: 'createGroup',
-    object: newGroup
-  }));
+  const id = await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'createGroup',
+      object: newGroup,
+    })
+  );
 
   api.dispatch(selectGroup(id));
 });
@@ -201,71 +195,83 @@ export const createGroup = createAsyncThunk('management/createGroup', async (_, 
 export const deleteGroup = createAsyncThunk('management/deleteGroup', async (_, api) => {
   const id = getSelectedGroupId(api.getState());
 
-  await api.dispatch(io.call({
-    service: 'management',
-    method: 'deleteGroup',
-    id
-  }));
+  await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'deleteGroup',
+      id,
+    })
+  );
 
   api.dispatch(selectGroup(null));
 });
 
 export const updateGroup = createAsyncThunk('management/updateGroup', async (group, api) => {
-  await api.dispatch(io.call({
-    service: 'management',
-    method: 'updateGroup',
-    object: group
-  }));
+  await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'updateGroup',
+      object: group,
+    })
+  );
 });
 
 export const moveOperations = createAsyncThunk('management/moveOperations', async (group: string, api) => {
-  const operations = getSelectedOperations(api.getState()).map(op => op._id);
+  const operations = getSelectedOperations(api.getState()).map((op) => op._id);
 
-  await api.dispatch(io.call({
-    service: 'management',
-    method: 'moveOperations',
-    group,
-    operations
-  }));
+  await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'moveOperations',
+      group,
+      operations,
+    })
+  );
 });
 
 export const operationMoveDetail = createAsyncThunk('management/operationMoveDetail', async (group: string, api) => {
   const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
 
   api.dispatch(closeDetail());
-  await api.dispatch(io.call({
-    service: 'management',
-    method: 'moveOperations',
-    group,
-    operations
-  }));
+  await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'moveOperations',
+      group,
+      operations,
+    })
+  );
 });
 
 export const operationsSetNote = createAsyncThunk('management/operationsSetNote', async (note: string, api) => {
-  const operations = getSelectedOperations(api.getState()).map(op => op._id);
+  const operations = getSelectedOperations(api.getState()).map((op) => op._id);
 
-  await api.dispatch(io.call({
-    service: 'management',
-    method: 'operationsSetNote',
-    note,
-    operations
-  }));
+  await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'operationsSetNote',
+      note,
+      operations,
+    })
+  );
 });
 
 export const operationSetNoteDetail = createAsyncThunk('management/operationSetNoteDetail', async (note: string, api) => {
   const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
 
-  await api.dispatch(io.call({
-    service: 'management',
-    method: 'operationsSetNote',
-    note,
-    operations
-  }));
+  await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'operationsSetNote',
+      note,
+      operations,
+    })
+  );
 });
 
 export const selectOperation = ({ id, selected }) => {
   return (dispatch, getState) => {
-    if(id) {
+    if (id) {
       dispatch(local.selectOperations({ ids: [id], selected }));
       return;
     }
@@ -280,21 +286,25 @@ export const selectOperation = ({ id, selected }) => {
 export const importOperations = createAsyncThunk('management/importOperations', async ({ account, file }: { account: string; file: File }, api) => {
   const content = await readFile(file);
 
-  const count = await api.dispatch(io.call({
-    service: 'management',
-    method: 'operationsImport',
-    account,
-    content
-  }));
+  const count = await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'operationsImport',
+      account,
+      content,
+    })
+  );
 
   api.dispatch(local.showSuccess(`${count} operation(s) importée(s)`));
 });
 
 export const operationsExecuteRules = createAsyncThunk('management/operationsExecuteRules', async (_, api) => {
-  const count = await api.dispatch(io.call({
-    service: 'management',
-    method: 'operationsExecuteRules'
-  }));
+  const count = await api.dispatch(
+    io.call({
+      service: 'management',
+      method: 'operationsExecuteRules',
+    })
+  );
 
   api.dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
 });
@@ -305,7 +315,9 @@ async function readFile(file) {
 
     reader.onloadend = () => {
       const err = reader.error;
-      if(err) { return reject(err); }
+      if (err) {
+        return reject(err);
+      }
       resolve(reader.result);
     };
 

@@ -1,16 +1,16 @@
 export function findAmount(periodItem, serie) {
   const item = periodItem.groups[serie.stackId];
-  if(!item) {
+  if (!item) {
     return 0;
   }
 
-  if(serie.root) {
+  if (serie.root) {
     return item.amount;
   }
 
   const childItem = item.children[serie.group];
-  if(!childItem) {
-    return  0;
+  if (!childItem) {
+    return 0;
   }
   return childItem.amount;
 }
@@ -22,7 +22,7 @@ export function formatCriteria(criteria) {
 }
 
 export function roundCurrency(number) {
-  if(!isFinite(number)) {
+  if (!isFinite(number)) {
     return number;
   }
   return Math.round(number * 100) / 100;

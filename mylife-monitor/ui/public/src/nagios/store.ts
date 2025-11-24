@@ -15,8 +15,8 @@ interface Criteria {
 
 const initialState: NagiosState = {
   criteria: {
-    onlyProblems: true
-  }
+    onlyProblems: true,
+  },
 };
 
 const nagiosSlice = createSlice({
@@ -26,13 +26,13 @@ const nagiosSlice = createSlice({
     setCriteria(state, action: PayloadAction<Criteria>) {
       state.criteria = action.payload;
     },
-    resetCriteria(state, action) {
+    resetCriteria(state, _action) {
       state.criteria = initialState.criteria;
     },
   },
   selectors: {
     getCriteria: (state) => state.criteria,
-  }
+  },
 });
 
 const local = {
@@ -50,81 +50,77 @@ export const changeCriteria = createAsyncThunk('nagios/changeCriteria', async (c
 });
 
 export const getCriteria = nagiosSlice.selectors.getCriteria;
-export const getView = state => views.getView(state, viewUids.NAGIOS_DATA);
+export const getView = (state) => views.getView(state, viewUids.NAGIOS_DATA);
 
-export const getDisplayView = createSelector(
-  [ getView, getCriteria ],
-  (view: views.View<views.Entity>, criteria) => {
-    const groups = new Map();
-    const hosts = new Map();
-    const services = new Map();
+export const getDisplayView = createSelector([getView, getCriteria], (view: views.View<views.Entity>, criteria) => {
+  const groups = new Map();
+  const hosts = new Map();
+  const services = new Map();
 
-    for(const item of Object.values(view)) {
-      switch(item._entity) {
+  for (const item of Object.values(view)) {
+    switch (item._entity) {
+      case 'nagios-host-group':
+        groups.set(item._id, { group: item, hosts: [] });
+        break;
 
-        case 'nagios-host-group':
-          groups.set(item._id, { group: item, hosts: [] });
-          break;
+      case 'nagios-host':
+        hosts.set(item._id, { host: item, services: [] });
+        break;
 
-        case 'nagios-host':
-          hosts.set(item._id, { host: item, services: [] });
-          break;
-
-        case 'nagios-service':
-          services.set(item._id, item);
-          break;
-      }
+      case 'nagios-service':
+        services.set(item._id, item);
+        break;
     }
-
-    for(const service of services.values()) {
-      const host = hosts.get(service.host);
-      host.services.push(service);
-    }
-
-    for(const item of hosts.values()) {
-      const { host } = item;
-      const group = groups.get(host.group);
-      group.hosts.push(item);
-    }
-
-    const data = Array.from(groups.values());
-    data.sort(createDisplayComparer('group'));
-
-    for(const group of data) {
-      group.hosts.sort(createDisplayComparer('host'));
-
-      for(const host of group.hosts) {
-        host.services.sort(createDisplayComparer(null));
-      }
-    }
-
-    if(!criteria.onlyProblems) {
-      return data;
-    }
-
-    const filtered = data.filter(groupHasProblem);
-    for(const group of filtered) {
-      group.hosts = group.hosts.filter(hostHasProblem);
-
-      for(const host of group.hosts) {
-        host.services = host.services.filter(serviceHasProblem);
-      }
-    }
-
-    return filtered;
   }
-);
+
+  for (const service of services.values()) {
+    const host = hosts.get(service.host);
+    host.services.push(service);
+  }
+
+  for (const item of hosts.values()) {
+    const { host } = item;
+    const group = groups.get(host.group);
+    group.hosts.push(item);
+  }
+
+  const data = Array.from(groups.values());
+  data.sort(createDisplayComparer('group'));
+
+  for (const group of data) {
+    group.hosts.sort(createDisplayComparer('host'));
+
+    for (const host of group.hosts) {
+      host.services.sort(createDisplayComparer(null));
+    }
+  }
+
+  if (!criteria.onlyProblems) {
+    return data;
+  }
+
+  const filtered = data.filter(groupHasProblem);
+  for (const group of filtered) {
+    group.hosts = group.hosts.filter(hostHasProblem);
+
+    for (const host of group.hosts) {
+      host.services = host.services.filter(serviceHasProblem);
+    }
+  }
+
+  return filtered;
+});
 
 function createDisplayComparer(propName) {
-  if(propName) {
-    return (obj1, obj2) => obj1[propName].display < obj2[propName].display ? -1 : 1;
+  if (propName) {
+    return (obj1, obj2) => (obj1[propName].display < obj2[propName].display ? -1 : 1);
   }
-  return (obj1, obj2) => obj1.display < obj2.display ? -1 : 1;
+  return (obj1, obj2) => (obj1.display < obj2.display ? -1 : 1);
 }
-  
+
 function groupHasProblem(item) {
-  for(const host of item.hosts) {
-    if(hostHasProblem(host)) {
+  for (const host of item.hosts) {
+    if (hostHasProblem(host)) {
       return true;
     }
   }
@@ -133,12 +129,12 @@ function groupHasProblem(item) {
 }
 
 function hostHasProblem(item) {
-  if(HOST_STATUS_PROBLEM[item.host.status]) {
+  if (HOST_STATUS_PROBLEM[item.host.status]) {
     return true;
   }
 
-  for(const service of item.services) {
-    if(serviceHasProblem(service)) {
+  for (const service of item.services) {
+    if (serviceHasProblem(service)) {
       return true;
     }
   }
@@ -151,4 +147,3 @@ function serviceHasProblem(service) {
 }
 
 export default nagiosSlice.reducer;
-

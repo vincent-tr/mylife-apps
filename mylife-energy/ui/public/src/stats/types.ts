@@ -4,7 +4,7 @@ export enum StatsType {
   Day = 1,
   Month,
   Year,
-};
+}
 
 export interface SensorData extends Sensor {
   measures: string[];

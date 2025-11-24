@@ -31,5 +31,5 @@ services.render({
   appIcon: icons.Monitor,
   appName: 'Monitor',
   routes,
-  menu
+  menu,
 });

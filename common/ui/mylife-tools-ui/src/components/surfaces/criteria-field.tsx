@@ -23,7 +23,7 @@ interface CriteriaFieldProps {
   children: React.ReactNode;
 }
 
-const CriteriaField: React.FunctionComponent<CriteriaFieldProps> = ({ label, children }) => {
+const CriteriaField: React.FC<CriteriaFieldProps> = ({ label, children }) => {
   return (
     <Container>
       <Label>{label}</Label>

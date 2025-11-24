@@ -9,7 +9,7 @@ const Container = styled('div')({
   marginTop: 20,
   marginRight: 20,
   marginLeft: 20,
-  marginBottom: 20
+  marginBottom: 20,
 });
 
 const Stats: React.FC = () => {
@@ -30,7 +30,7 @@ const Stats: React.FC = () => {
 export default Stats;
 
 function statValue(stats, code) {
-  const stat = Object.values(stats).find(stat => (stat as FIXME_any).code === code);
+  const stat = Object.values(stats).find((stat) => (stat as FIXME_any).code === code);
   if (!stat) {
     return null;
   }

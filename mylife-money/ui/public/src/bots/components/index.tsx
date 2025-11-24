@@ -25,7 +25,7 @@ const StyledList = styled(List)({
 const View = styled('div')({
   flex: '1 1 auto',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 });
 
 const Title = styled('div')(({ theme }) => ({
@@ -59,10 +59,7 @@ const Bots: React.FC = () => {
         <StyledList>
           {Object.values(view).map((bot: FIXME_any) => (
             <ListItem key={bot._id} disablePadding>
-              <ListItemButton 
-                selected={selection === bot._id} 
-                onClick={() => setSelection(bot._id)}
-              >
+              <ListItemButton selected={selection === bot._id} onClick={() => setSelection(bot._id)}>
                 <ListItemText primary={bot.type} />
               </ListItemButton>
             </ListItem>
@@ -70,24 +67,23 @@ const Bots: React.FC = () => {
         </StyledList>
       </ToolsListContainer>
 
-      <Divider orientation='vertical' />
+      <Divider orientation="vertical" />
 
-      {bot && (
-        <BotView bot={bot} />
-      )}
+      {bot && <BotView bot={bot} />}
     </Container>
   );
 };
 
 export default Bots;
 
-const BotView: React.FC<{ bot: Bot; }> = ({ bot }) => {
+const BotView: React.FC<{ bot: Bot }> = ({ bot }) => {
   return (
     <View>
-
       <Title>
         <TitleContent>
-          <Typography align='center' variant='h6'>{bot.type}</Typography>
+          <Typography align="center" variant="h6">
+            {bot.type}
+          </Typography>
         </TitleContent>
       </Title>
 
@@ -99,7 +95,9 @@ const BotView: React.FC<{ bot: Bot; }> = ({ bot }) => {
 
           <Title>
             <TitleContent>
-              <Typography align='center' variant='body1'>{'Dernière exécution'}</Typography>
+              <Typography align="center" variant="body1">
+                {'Dernière exécution'}
+              </Typography>
             </TitleContent>
           </Title>
 

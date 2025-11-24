@@ -6,7 +6,7 @@ import { resetCriteria } from './store';
 const viewRef = new views.ViewReference({
   uid: viewUids.UPDATES_DATA,
   service: 'updates',
-  method: 'notify'
+  method: 'notify',
 });
 
 export const enter = createAsyncThunk('updates/enter', async () => {

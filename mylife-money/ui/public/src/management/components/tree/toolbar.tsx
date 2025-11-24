@@ -13,18 +13,21 @@ type FIXME_any = any;
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => {
+    ...useSelector((state) => {
       const selected = getSelectedGroupId(state);
       return {
-        group     : selected && getGroup(state, selected) as FIXME_any,
-        canChange : !!selected
+        group: selected && (getGroup(state, selected) as FIXME_any),
+        canChange: !!selected,
       };
     }),
-    ...useMemo(() => ({
-      onGroupCreate   : () => dispatch(createGroup()),
-      onGroupEdit     : (group) => dispatch(updateGroup(group)),
-      onGroupDelete   : () => dispatch(deleteGroup())
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        onGroupCreate: () => dispatch(createGroup()),
+        onGroupEdit: (group) => dispatch(updateGroup(group)),
+        onGroupDelete: () => dispatch(deleteGroup()),
+      }),
+      [dispatch]
+    ),
   };
 };
 
@@ -35,45 +38,44 @@ const styles = {
   button: {
     height: '56px',
     width: '56px',
-    overflow: 'inherit'
-  }
+    overflow: 'inherit',
+  },
 };
 
 const Toolbar = () => {
   const { group, onGroupCreate, onGroupEdit, onGroupDelete, canChange } = useConnect();
 
-  const handleDelete = async() => {
-    if(await dialogs.confirm({ title: 'Supprimer le groupe ?' })) {
+  const handleDelete = async () => {
+    if (await dialogs.confirm({ title: 'Supprimer le groupe ?' })) {
       onGroupDelete();
     }
   };
 
-  const handleEdit = async() => {
+  const handleEdit = async () => {
     const res = await groupEditor(group);
-    if(res) {
+    if (res) {
       onGroupEdit(res);
     }
   };
 
   const handleMove = (parent) => {
-    onGroupEdit({ ... group, parent });
+    onGroupEdit({ ...group, parent });
   };
 
   const moveOptions = group && {
     selectedGroupId: group.parent,
-    disabledGroupIds: [group._id]
+    disabledGroupIds: [group._id],
   };
 
   return (
     <MuiToolbar>
-
-      <Tooltip title='Créer un groupe enfant'>
+      <Tooltip title="Créer un groupe enfant">
         <IconButton onClick={onGroupCreate} style={styles.button}>
           <icons.actions.New />
         </IconButton>
       </Tooltip>
 
-      <Tooltip title='Editer le groupe'>
+      <Tooltip title="Editer le groupe">
         <div>
           <IconButton onClick={handleEdit} disabled={!canChange} style={styles.button}>
             <icons.actions.Edit />
@@ -81,7 +83,7 @@ const Toolbar = () => {
         </div>
       </Tooltip>
 
-      <Tooltip title='Déplacer le groupe'>
+      <Tooltip title="Déplacer le groupe">
         <div>
           <GroupSelectorButton onSelect={handleMove} disabled={!canChange} style={styles.button} options={moveOptions}>
             <icons.actions.Move />
@@ -89,14 +91,13 @@ const Toolbar = () => {
         </div>
       </Tooltip>
 
-      <Tooltip title='Supprimer le groupe'>
+      <Tooltip title="Supprimer le groupe">
         <div>
           <IconButton onClick={handleDelete} disabled={!canChange} style={styles.button}>
             <icons.actions.Delete />
           </IconButton>
         </div>
       </Tooltip>
-
     </MuiToolbar>
   );
 };

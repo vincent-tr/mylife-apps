@@ -11,7 +11,7 @@ type FIXME_any = any;
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const Label = styled(Typography)(({ theme }) => ({
@@ -23,12 +23,15 @@ const Label = styled(Typography)(({ theme }) => ({
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      selectedGroup : getGroup(state, getSelectedGroupId(state)),
+    ...useSelector((state) => ({
+      selectedGroup: getGroup(state, getSelectedGroupId(state)),
     })),
-    ...useMemo(() => ({
-      onSelect : (id) => dispatch(selectGroup(id))
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        onSelect: (id) => dispatch(selectGroup(id)),
+      }),
+      [dispatch]
+    ),
   };
 };
 
@@ -41,16 +44,14 @@ const GroupDenseSelector: React.FC<GroupDenseSelectorProps> = ({ className, ...p
 
   return (
     <Container className={className} {...props}>
-      <Tooltip title={'Déplacer l\'opération'}>
+      <Tooltip title={"Déplacer l'opération"}>
         <div>
           <GroupSelectorButton onSelect={onSelect}>
             <icons.actions.Move />
           </GroupSelectorButton>
         </div>
       </Tooltip>
-      <Label>
-        {(selectedGroup as FIXME_any).display}
-      </Label>
+      <Label>{(selectedGroup as FIXME_any).display}</Label>
     </Container>
   );
 };

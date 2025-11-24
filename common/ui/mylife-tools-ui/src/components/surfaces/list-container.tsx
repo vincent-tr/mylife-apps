@@ -10,7 +10,7 @@ const Wrapper = styled('div')({
 });
 
 // Taken from AutoSizer. Why do we need that ?!
-const ListContainer: React.FunctionComponent<PropsWithChildren<{ className?: string }>> = ({ className, children }) => {
+const ListContainer: React.FC<PropsWithChildren<{ className?: string }>> = ({ className, children }) => {
   return (
     <Container className={className}>
       <Wrapper>

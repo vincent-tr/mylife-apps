@@ -11,14 +11,5 @@ import updatesVersion from './entities/updates-version';
 
 export default {
   datatypes,
-  entities: [
-    nagiosHostGroup,
-    nagiosHost,
-    nagiosService,
-    nagiosSummary,
-    upsmonStatus,
-    upsmonSummary,
-    updatesSummary,
-    updatesVersion,
-  ]
+  entities: [nagiosHostGroup, nagiosHost, nagiosService, nagiosSummary, upsmonStatus, upsmonSummary, updatesSummary, updatesVersion],
 };

@@ -7,9 +7,9 @@ import { useChartColors } from 'mylife-tools-ui';
 import { getGroupStacks, getChildrenView } from '../../../reference/selectors';
 
 const useConnect = ({ display, groups }) => {
-  return useSelector(state => ({
-    groupStacks : getGroupStacks(state),
-    groupChildren: getChildren(state, display, groups)
+  return useSelector((state) => ({
+    groupStacks: getGroupStacks(state),
+    groupChildren: getChildren(state, display, groups),
   }));
 };
 
@@ -17,7 +17,9 @@ const Chart = ({ data, groups, display, amountSelector, ...props }) => {
   const { groupStacks, groupChildren } = useConnect({ display, groups });
   const colors = useChartColors();
 
-  if(!data.length || !groups) { return null; }
+  if (!data.length || !groups) {
+    return null;
+  }
 
   const bars = createBars(groups, display, groupStacks, groupChildren, colors);
 
@@ -25,13 +27,15 @@ const Chart = ({ data, groups, display, amountSelector, ...props }) => {
     <div {...props}>
       <AutoSizer>
         {({ height, width }) => (
-          <BarChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} height={height} width={width} style={{ fontFamily: 'Roboto, sans-serif' }}>
-            <XAxis dataKey={'period'} name='Date' />
-            <YAxis name='Montant' />
-            <CartesianGrid strokeDasharray='3 3'/>
-            <Tooltip/>
+          <BarChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 20 }} height={height} width={width} style={{ fontFamily: 'Roboto, sans-serif' }}>
+            <XAxis dataKey={'period'} name="Date" />
+            <YAxis name="Montant" />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip />
             <Legend />
-            {bars.map(serie => (<Bar key={serie.index} stackId={serie.stackId} dataKey={item => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />))}
+            {bars.map((serie) => (
+              <Bar key={serie.index} stackId={serie.stackId} dataKey={(item) => amountSelector(item, serie)} name={serie.name} fill={serie.fill} />
+            ))}
           </BarChart>
         )}
       </AutoSizer>
@@ -49,18 +53,18 @@ Chart.propTypes = {
 export default Chart;
 
 function getChildren(state, display, groups) {
-  if(!display.children || !groups) {
+  if (!display.children || !groups) {
     return {};
   }
 
   const childrenView = getChildrenView(state);
 
   const result = {};
-  for(const groupId of groups) {
+  for (const groupId of groups) {
     if (!groupId) {
       continue;
     }
-    result[groupId] = childrenView[groupId].map(group => group._id);
+    result[groupId] = childrenView[groupId].map((group) => group._id);
   }
   return result;
 }
@@ -68,10 +72,10 @@ function getChildren(state, display, groups) {
 function createBars(groups, display, groupStacks, groupChildren, colors) {
   const bars = [];
   let index = 0;
-  for(const groupId of groups) {
+  for (const groupId of groups) {
     bars.push(createBar(colors, display, groupStacks, groupId, groupId, index++, true));
-    if(display.children && groupId) {
-      for(const childId of groupChildren[groupId]) {
+    if (display.children && groupId) {
+      for (const childId of groupChildren[groupId]) {
         bars.push(createBar(colors, display, groupStacks, groupId, childId, index++, false));
       }
     }
@@ -80,7 +84,7 @@ function createBars(groups, display, groupStacks, groupChildren, colors) {
 }
 
 function createBar(colors, display, groupStacks, stackId, groupId, index, root) {
-  const path = groupStacks[groupId].map(group => group.display);
+  const path = groupStacks[groupId].map((group) => group.display);
   const name = display.fullnames ? path.join('/') : path[path.length - 1];
   return {
     index,
@@ -88,6 +92,6 @@ function createBar(colors, display, groupStacks, stackId, groupId, index, root) 
     group: groupId,
     name,
     fill: colors[index % colors.length],
-    root
+    root,
   };
 }

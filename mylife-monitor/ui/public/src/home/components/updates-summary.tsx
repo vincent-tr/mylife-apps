@@ -20,7 +20,7 @@ const HeaderCell = styled('div')(({ theme }) => ({
 const UpdatesSummary = ({ view }) => {
   return (
     <Container>
-      <Table size='small'>
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell colSpan={3}>
@@ -59,4 +59,4 @@ const Row = ({ data }) => {
       <ErrorCell>{data.unknown}</ErrorCell>
     </TableRow>
   );
-}
+};

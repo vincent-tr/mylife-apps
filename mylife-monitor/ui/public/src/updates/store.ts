@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
-import { id } from 'date-fns/locale';
 
 type FIXME_any = any;
 
@@ -15,8 +14,8 @@ interface Criteria {
 
 const initialState: UpdatesState = {
   criteria: {
-    onlyProblems: true
-  }
+    onlyProblems: true,
+  },
 };
 
 const updatesSlice = createSlice({
@@ -26,13 +25,13 @@ const updatesSlice = createSlice({
     setCriteria(state, action: PayloadAction<Criteria>) {
       state.criteria = action.payload;
     },
-    resetCriteria(state, action) {
+    resetCriteria(state, _action) {
       state.criteria = initialState.criteria;
     },
   },
   selectors: {
     getCriteria: (state) => state.criteria,
-  }
+  },
 });
 
 const local = {
@@ -50,18 +49,14 @@ export const changeCriteria = createAsyncThunk('updates/changeCriteria', async (
 });
 
 export const getCriteria = updatesSlice.selectors.getCriteria;
-export const getView = state => views.getView(state, viewUids.UPDATES_DATA);
+export const getView = (state) => views.getView(state, viewUids.UPDATES_DATA);
 
-export const getDisplayView = createSelector(
-  [ getView, getCriteria ],
-  (view, criteria) => {
-
-    if (criteria.onlyProblems) {
-      return views.filter(view, item => (item as FIXME_any).status !== 'uptodate');
-    } else {
-      return view;
-    }
+export const getDisplayView = createSelector([getView, getCriteria], (view, criteria) => {
+  if (criteria.onlyProblems) {
+    return views.filter(view, (item) => (item as FIXME_any).status !== 'uptodate');
+  } else {
+    return view;
   }
-);
+});
 
 export default updatesSlice.reducer;

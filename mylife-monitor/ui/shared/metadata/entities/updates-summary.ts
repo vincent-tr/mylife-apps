@@ -8,5 +8,5 @@ export default {
     { id: 'outdated', name: 'Dépassés', datatype: 'count' },
     { id: 'unknown', name: 'Inconnus', datatype: 'count' },
   ],
-  display: obj => obj.category
+  display: (obj) => obj.category,
 };

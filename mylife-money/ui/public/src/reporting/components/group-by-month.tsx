@@ -9,7 +9,7 @@ const initialCriteria = {
   minDate: null,
   maxDate: null,
   account: null,
-  groups: [ null ]
+  groups: [null],
 };
 
 const initialDisplay = {
@@ -24,7 +24,8 @@ const GroupByMonth = () => (
     initialCriteria={initialCriteria}
     initialDisplay={initialDisplay}
     additionalCriteriaFactory={additionalCriteriaFactory}
-    amountSelectorFactory={amountSelectorFactory} />
+    amountSelectorFactory={amountSelectorFactory}
+  />
 );
 
 export default GroupByMonth;
@@ -36,6 +37,6 @@ function additionalCriteriaFactory() {
 function amountSelectorFactory({ display }) {
   return (periodItem, serie) => {
     const value = findAmount(periodItem, serie);
-    return display.invert ? - value : value;
+    return display.invert ? -value : value;
   };
 }

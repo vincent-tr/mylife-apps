@@ -10,24 +10,21 @@ const StyledDialog = styled(Dialog)({
   '& .MuiDialog-paper': {
     minHeight: '90%',
     maxHeight: '90%',
-  }
+  },
 });
 
 const GroupSelectorDialog = ({ show, proceed, options }) => {
   return (
-    <StyledDialog aria-labelledby='dialog-title' open={show} fullWidth={true} maxWidth='sm'>
-      <DialogTitle id='dialog-title'>
-        Sélectionnez un groupe
-      </DialogTitle>
+    <StyledDialog aria-labelledby="dialog-title" open={show} fullWidth={true} maxWidth="sm">
+      <DialogTitle id="dialog-title">Sélectionnez un groupe</DialogTitle>
 
       <DialogContent dividers>
-        <GroupTree onSelect={group => proceed({ result: 'ok', group })} {...options} />
+        <GroupTree onSelect={(group) => proceed({ result: 'ok', group })} {...options} />
       </DialogContent>
 
       <DialogActions>
         <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
       </DialogActions>
-
     </StyledDialog>
   );
 };
@@ -35,7 +32,7 @@ const GroupSelectorDialog = ({ show, proceed, options }) => {
 GroupSelectorDialog.propTypes = {
   show: PropTypes.bool,
   proceed: PropTypes.func,
-  options: PropTypes.object
+  options: PropTypes.object,
 };
 
 const selectorDialog = dialogs.create(GroupSelectorDialog);
@@ -46,22 +43,22 @@ interface GroupSelectorButton {
   style?: React.CSSProperties;
   children?: React.ReactNode;
   onSelect: (group: string) => void;
-  options?: {};
+  options?: FIXME_any;
 }
 
 const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorButton>(({ onSelect, options, ...props }, ref) => {
   const clickHandler = async () => {
-    const { result, group } = await selectorDialog({ options }) as FIXME_any;
-    if(result !== 'ok') {
+    const { result, group } = (await selectorDialog({ options })) as FIXME_any;
+    if (result !== 'ok') {
       return;
     }
 
     onSelect(group);
   };
 
-  return (
-    <IconButton ref={ref} onClick={clickHandler} {...props}/>
-  );
+  return <IconButton ref={ref} onClick={clickHandler} {...props} />;
 });
+
+GroupSelectorButton.displayName = 'GroupSelectorButton';
 
 export default GroupSelectorButton;

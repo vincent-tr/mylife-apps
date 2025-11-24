@@ -1,5 +1,5 @@
 import BatteryGauge from 'react-battery-gauge';
-import { styled, Typography, Divider, Tooltip, IconButton, SvgIcon, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { styled, Typography, Divider, Tooltip, IconButton, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import humanizeDuration from 'humanize-duration';
 import React, { PropsWithChildren } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,62 +14,58 @@ import { useParameters } from './parameters';
 const Tesla: React.FC = () => {
   useViewLifecycle();
 
-  const state = useSelector(state => getState(state));
+  const state = useSelector((state) => getState(state));
   const actions = useActions({ setMode });
   const showParameters = useParameters();
 
   if (!state) {
     return null;
   }
-  
+
   return (
     <div>
       <Section title={'Batterie'}>
-
         <Part>
           <BatteryStatus level={state.batteryLevel} />
         </Part>
 
         <Part>
-          <Typography variant='body2' color='textSecondary'>
+          <Typography variant="body2" color="textSecondary">
             {`Cible de chargement : ${state.batteryTargetLevel}%`}
             <br />
             {`Dernière mise à jour : ${state.batteryLastTimestamp.toLocaleString()}`}
           </Typography>
         </Part>
-
       </Section>
 
       <Divider />
 
       <Section title={'Charge'}>
-
         <Part>
           <ButtonsContainer>
             <StyledToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)}>
               <ToggleButton value={TeslaMode.Off}>
-                <Tooltip title='Eteint'>
-                  <icons.actions.Off fontSize='large'/>
+                <Tooltip title="Eteint">
+                  <icons.actions.Off fontSize="large" />
                 </Tooltip>
               </ToggleButton>
 
               <ToggleButton value={TeslaMode.Fast}>
-                <Tooltip title='Rapide'>
-                  <icons.actions.Fast fontSize='large'/>
+                <Tooltip title="Rapide">
+                  <icons.actions.Fast fontSize="large" />
                 </Tooltip>
               </ToggleButton>
 
               <ToggleButton value={TeslaMode.Smart}>
-                <Tooltip title='Intelligent'>
-                  <icons.actions.Smart fontSize='large'/>
+                <Tooltip title="Intelligent">
+                  <icons.actions.Smart fontSize="large" />
                 </Tooltip>
               </ToggleButton>
-
             </StyledToggleButtonGroup>
 
             <IconButton onClick={showParameters}>
-              <Tooltip title='Paramètres'>
-                <icons.actions.Settings fontSize='large'/>
+              <Tooltip title="Paramètres">
+                <icons.actions.Settings fontSize="large" />
               </Tooltip>
             </IconButton>
           </ButtonsContainer>
@@ -78,35 +74,33 @@ const Tesla: React.FC = () => {
         </Part>
 
         <Part footer>
-            <Typography variant='body2' color='textSecondary'>
-              {`Décision de charge : ${getChargingStatusString(state.chargingStatus)}`}
-              <br />
-              {state.mode == TeslaMode.Fast && state.chargingStatus == TeslaChargingStatus.Charging && (
-                <>
-                  {`Temps restant : ${humanizeDuration(state.chargingTimeLeft * 60 * 1000, { language: 'fr' })}`}
-                  <br />
-                </>
-              )}
-              {`Dernière mise à jour : ${state.lastUpdate.toLocaleString()}`}
-            </Typography>
+          <Typography variant="body2" color="textSecondary">
+            {`Décision de charge : ${getChargingStatusString(state.chargingStatus)}`}
+            <br />
+            {state.mode == TeslaMode.Fast && state.chargingStatus == TeslaChargingStatus.Charging && (
+              <>
+                {`Temps restant : ${humanizeDuration(state.chargingTimeLeft * 60 * 1000, { language: 'fr' })}`}
+                <br />
+              </>
+            )}
+            {`Dernière mise à jour : ${state.lastUpdate.toLocaleString()}`}
+          </Typography>
 
-            <Spacer/>
+          <Spacer />
 
-            <Tooltip title={`Wall connector`}>
-              <icons.tesla.WallConnector />
-            </Tooltip>
-            <DeviceStatus value={state.wallConnectorStatus} />
+          <Tooltip title={`Wall connector`}>
+            <icons.tesla.WallConnector />
+          </Tooltip>
+          <DeviceStatus value={state.wallConnectorStatus} />
 
-            <Spacer/>
+          <Spacer />
 
-            <Tooltip title={`Voiture`}>
-              <icons.tesla.Car />
-            </Tooltip>
-            <DeviceStatus value={state.carStatus} />
+          <Tooltip title={`Voiture`}>
+            <icons.tesla.Car />
+          </Tooltip>
+          <DeviceStatus value={state.carStatus} />
         </Part>
-
       </Section>
-
     </div>
   );
 };
@@ -135,12 +129,10 @@ const SectionRoot = styled('div')(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-const Section: React.FC<PropsWithChildren<{ title: string; }>> = ({ title, children}) => {
+const Section: React.FC<PropsWithChildren<{ title: string }>> = ({ title, children }) => {
   return (
     <SectionRoot>
-      <SectionTitle variant='h1'>
-        {title}
-      </SectionTitle>
+      <SectionTitle variant="h1">{title}</SectionTitle>
 
       {children}
     </SectionRoot>
@@ -148,29 +140,21 @@ const Section: React.FC<PropsWithChildren<{ title: string; }>> = ({ title, child
 };
 
 const PartFooter = styled('div')({
-    display: 'flex',
-    alignItems: 'center',
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const PartContainer = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    margin: theme.spacing(1),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-evenly',
+  margin: theme.spacing(1),
 }));
 
-const Part: React.FC<PropsWithChildren<{ footer?: boolean; }>> = ({ footer = false, children }) => {
-  const content = footer ? (
-    <PartFooter>
-      {children}
-    </PartFooter>
-  ) : children;
+const Part: React.FC<PropsWithChildren<{ footer?: boolean }>> = ({ footer = false, children }) => {
+  const content = footer ? <PartFooter>{children}</PartFooter> : children;
 
-  return (
-    <PartContainer>
-      {content}
-    </PartContainer>
-  );
+  return <PartContainer>{content}</PartContainer>;
 };
 
 const Spacer = styled('div')(({ theme }) => ({
@@ -218,43 +202,38 @@ const StatusFailure: React.FC = () => (
   </Tooltip>
 );
 
-const DeviceStatus: React.FC<{ value: TeslaDeviceStatus; }> = ({ value }) => {
-
+const DeviceStatus: React.FC<{ value: TeslaDeviceStatus }> = ({ value }) => {
   switch (value) {
-  case TeslaDeviceStatus.Unknown:
-    return <StatusUnknown />;
-  case TeslaDeviceStatus.Online:
-    return <StatusOnline />;
-  case TeslaDeviceStatus.Offline:
-    return <StatusOffline />;
-  case TeslaDeviceStatus.Failure:
-    return <StatusFailure />;
-  default:
-    throw new Error(`Unknown status '${value}'`);
+    case TeslaDeviceStatus.Unknown:
+      return <StatusUnknown />;
+    case TeslaDeviceStatus.Online:
+      return <StatusOnline />;
+    case TeslaDeviceStatus.Offline:
+      return <StatusOffline />;
+    case TeslaDeviceStatus.Failure:
+      return <StatusFailure />;
+    default:
+      throw new Error(`Unknown status '${value}'`);
   }
 };
 
-const ChargeStatus: React.FC<{ current: number; power: number; }> = ({ current, power }) => {
+const ChargeStatus: React.FC<{ current: number; power: number }> = ({ current, power }) => {
   const MAX_CURRENT = 32; // Note: should be fetched from server
 
   if (current <= 0) {
-    return (
-      <Typography variant='body2'>{`(Stoppé)`}</Typography>
-    );
+    return <Typography variant="body2">{`(Stoppé)`}</Typography>;
   }
 
-  return (
-    <ChargingGauge height={100} width={100} min={0} max={MAX_CURRENT} value={current} minText='0A' maxText={`${MAX_CURRENT}A`} valueText={`${current}A / ${power}kW`} />
-  );
+  return <ChargingGauge height={100} width={100} min={0} max={MAX_CURRENT} value={current} minText="0A" maxText={`${MAX_CURRENT}A`} valueText={`${current}A / ${power}kW`} />;
 };
 
-export const BatteryStatus: React.FC<{ level: number; }> = ({ level }) => {
+export const BatteryStatus: React.FC<{ level: number }> = ({ level }) => {
   // TODO: pick from theme
   const COLOR_PRIMARY = '#2196f3';
 
   return (
     <BatteryGauge
-      orientation='vertical'
+      orientation="vertical"
       size={100}
       value={level}
       customization={{
@@ -281,19 +260,19 @@ export const BatteryStatus: React.FC<{ level: number; }> = ({ level }) => {
 
 function getChargingStatusString(status: TeslaChargingStatus) {
   switch (status) {
-  case TeslaChargingStatus.Unknown:
-    return 'Inconnu';
-  case TeslaChargingStatus.Charging:
-    return 'En charge';
-  case TeslaChargingStatus.Complete:
-    return 'Charge terminée';
-  case TeslaChargingStatus.NotPlugged:
-    return 'Voiture pas branchée';
-  case TeslaChargingStatus.NoPower:
-    return 'Pas de puissance disponible';
-  case TeslaChargingStatus.Disabled:
-    return 'Désactivé';
-  default:
-    return `${status}`;
+    case TeslaChargingStatus.Unknown:
+      return 'Inconnu';
+    case TeslaChargingStatus.Charging:
+      return 'En charge';
+    case TeslaChargingStatus.Complete:
+      return 'Charge terminée';
+    case TeslaChargingStatus.NotPlugged:
+      return 'Voiture pas branchée';
+    case TeslaChargingStatus.NoPower:
+      return 'Pas de puissance disponible';
+    case TeslaChargingStatus.Disabled:
+      return 'Désactivé';
+    default:
+      return `${status}`;
   }
 }

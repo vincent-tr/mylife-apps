@@ -25,14 +25,14 @@ const formatDuration = humanizeDuration.humanizer({
 
   languages: {
     shortFr: {
-      y: () => "ans",
-      mo: () => "mois",
-      w: () => "semaines",
-      d: () => "jours",
-      h: () => "heures",
-      m: () => "min",
-      s: () => "sec",
-      ms: () => "ms",
+      y: () => 'ans',
+      mo: () => 'mois',
+      w: () => 'semaines',
+      d: () => 'jours',
+      h: () => 'heures',
+      m: () => 'min',
+      s: () => 'sec',
+      ms: () => 'ms',
     },
   },
 });
@@ -41,26 +41,19 @@ const Updates = () => {
   const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
-  const dataSorted = useMemo(
-    () => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as views.Entity[],
-    [data]
-  );
+  const dataSorted = useMemo(() => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as views.Entity[], [data]);
 
   return (
     <Container>
       <TableContainer>
-        <Table size='small' stickyHeader>
+        <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>{'Nom'}</TableCell>
               <TableCell>
                 {'Etat'}
-                <Tooltip title={'N\'afficher que les dépassés/problèmes'}>
-                  <Checkbox
-                    color='primary' 
-                    checked={criteria.onlyProblems}
-                    onChange={e => changeCriteria({ onlyProblems: e.target.checked })}
-                  />
+                <Tooltip title={"N'afficher que les dépassés/problèmes"}>
+                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={(e) => changeCriteria({ onlyProblems: e.target.checked })} />
                 </Tooltip>
               </TableCell>
               <TableCell>{'Version courante'}</TableCell>
@@ -69,7 +62,7 @@ const Updates = () => {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {dataSorted.map(version => (
+              {dataSorted.map((version) => (
                 <Version key={version._id} data={version} />
               ))}
             </TableBody>
@@ -78,7 +71,7 @@ const Updates = () => {
       </TableContainer>
     </Container>
   );
-}
+};
 
 export default Updates;
 
@@ -103,8 +96,12 @@ const Version = ({ data }) => {
       <RowComponent>
         <TableCell>{data.path.join('/')}</TableCell>
         <TableCell>{getStatusStr(data.status)}</TableCell>
-        <TableCell><VersionItem value={data.currentVersion} date={data.currentCreated}/></TableCell>
-        <TableCell><VersionItem value={data.latestVersion} date={data.latestCreated}/></TableCell>
+        <TableCell>
+          <VersionItem value={data.currentVersion} date={data.currentCreated} />
+        </TableCell>
+        <TableCell>
+          <VersionItem value={data.latestVersion} date={data.latestCreated} />
+        </TableCell>
       </RowComponent>
     </>
   );
@@ -123,7 +120,7 @@ function getStatusStr(status) {
   }
 }
 
-const VersionItem: React.FunctionComponent<{ value: string; date: Date }> = ({ value, date }) => {
+const VersionItem: React.FC<{ value: string; date: Date }> = ({ value, date }) => {
   const lastUpdate = useSince(date);
 
   if (!value) {
@@ -134,17 +131,16 @@ const VersionItem: React.FunctionComponent<{ value: string; date: Date }> = ({ v
   const lastUpdateStr = isDateNull ? '' : ` (${formatDuration(lastUpdate)})`;
 
   const content = (
-    <div>{value}{lastUpdateStr}</div>
+    <div>
+      {value}
+      {lastUpdateStr}
+    </div>
   );
 
   if (isDateNull) {
     return content;
   } else {
-    return (
-      <Tooltip title={formatDate(date, 'dd/MM/yyyy HH:mm:ss')}>
-        {content}
-      </Tooltip>
-    );
+    return <Tooltip title={formatDate(date, 'dd/MM/yyyy HH:mm:ss')}>{content}</Tooltip>;
   }
 };
 
@@ -153,10 +149,13 @@ function useConnect() {
   return {
     criteria: useSelector(getCriteria),
     data: useSelector(getDisplayView),
-    ...useMemo(() => ({
-      enter: () => dispatch(enter()),
-      leave: () => dispatch(leave()),
-      changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        enter: () => dispatch(enter()),
+        leave: () => dispatch(leave()),
+        changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
+      }),
+      [dispatch]
+    ),
   };
-};
+}

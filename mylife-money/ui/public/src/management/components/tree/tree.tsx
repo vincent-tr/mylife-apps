@@ -9,12 +9,15 @@ type FIXME_any = any;
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => ({
-      selectedGroupId : getSelectedGroupId(state),
+    ...useSelector((state) => ({
+      selectedGroupId: getSelectedGroupId(state),
     })),
-    ...useMemo(() => ({
-      onSelect : (id) => dispatch(selectGroup(id))
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        onSelect: (id) => dispatch(selectGroup(id)),
+      }),
+      [dispatch]
+    ),
   };
 };
 

@@ -16,15 +16,15 @@ const ChartAmount = (props) => {
 
   return (
     <div {...props}>
-      <LineChart data={data} margin={{top: 20, right: 20, left: 20, bottom: 20}} width={600} height={400} style={{ fontFamily: 'Roboto, sans-serif' }}>
-        <XAxis dataKey='month' name='Mois' />
+      <LineChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 20 }} width={600} height={400} style={{ fontFamily: 'Roboto, sans-serif' }}>
+        <XAxis dataKey="month" name="Mois" />
         <YAxis />
-        <CartesianGrid strokeDasharray='3 3'/>
-        <Tooltip/>
+        <CartesianGrid strokeDasharray="3 3" />
+        <Tooltip />
         <Legend />
-        <Line type='monotone' dataKey='sumCredit' stroke={colors.credit} name='Crédit' />
-        <Line type='monotone' dataKey='sumDebit' stroke={colors.debit} name='Débit' />
-        <Line type='monotone' dataKey='balance' stroke={colors.balance} name='Total' />
+        <Line type="monotone" dataKey="sumCredit" stroke={colors.credit} name="Crédit" />
+        <Line type="monotone" dataKey="sumDebit" stroke={colors.debit} name="Débit" />
+        <Line type="monotone" dataKey="balance" stroke={colors.balance} name="Total" />
       </LineChart>
     </div>
   );

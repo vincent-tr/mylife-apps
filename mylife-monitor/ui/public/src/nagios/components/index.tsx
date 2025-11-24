@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycle } from 'mylife-tools-ui';
-import { SuccessRow, WarningRow, ErrorRow, SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
+import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
 import { enter, leave } from '../actions';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
@@ -17,11 +17,14 @@ const useConnect = () => {
   return {
     criteria: useSelector(getCriteria),
     data: useSelector(getDisplayView),
-    ...useMemo(() => ({
-      enter: () => dispatch(enter()),
-      leave: () => dispatch(leave()),
-      changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        enter: () => dispatch(enter()),
+        leave: () => dispatch(leave()),
+        changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
+      }),
+      [dispatch]
+    ),
   };
 };
 
@@ -74,7 +77,7 @@ const Host = ({ criteria, item }) => {
           <CommonState item={host} />
         </RowComponent>
       )}
-      {services.map(service => (
+      {services.map((service) => (
         <Service key={service._id} criteria={criteria} service={service} hostDisplay={host.display} />
       ))}
     </>
@@ -94,7 +97,7 @@ const Group = ({ criteria, item }) => (
       <TableCell />
       <TableCell />
     </TableRow>
-    {item.hosts.map(child => (
+    {item.hosts.map((child) => (
       <Host key={child.host._id} criteria={criteria} item={child} />
     ))}
   </>
@@ -107,7 +110,7 @@ const Nagios = () => {
   return (
     <Container>
       <TableContainer>
-        <Table size='small' stickyHeader>
+        <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>{'Groupe'}</TableCell>
@@ -115,12 +118,8 @@ const Nagios = () => {
               <TableCell>{'Service'}</TableCell>
               <TableCell>
                 {'Statut'}
-                <Tooltip title={'N\'afficher que les problèmes'}>
-                  <Checkbox
-                    color='primary' 
-                    checked={criteria.onlyProblems}
-                    onChange={e => changeCriteria({ onlyProblems: e.target.checked })}
-                  />
+                <Tooltip title={"N'afficher que les problèmes"}>
+                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={(e) => changeCriteria({ onlyProblems: e.target.checked })} />
                 </Tooltip>
               </TableCell>
               <TableCell>{'Dernier check'}</TableCell>
@@ -132,7 +131,7 @@ const Nagios = () => {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {data.map(item => (
+              {data.map((item) => (
                 <Group key={item.group._id} criteria={criteria} item={item} />
               ))}
             </TableBody>
@@ -147,7 +146,7 @@ export default Nagios;
 
 function formatStatus(item) {
   let value = item.status.toUpperCase();
-  if(item.isFlapping) {
+  if (item.isFlapping) {
     value += ' (instable)';
   }
   return value;
@@ -155,10 +154,7 @@ function formatStatus(item) {
 
 function formatTimestamp(date) {
   const today = new Date();
-  const isToday =
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear();
+  const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
 
   return formatDate(date, isToday ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss');
 }

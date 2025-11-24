@@ -4,8 +4,8 @@ import { colors, Typography, styled } from '@mui/material';
 type AmountType = 'debit' | 'credit';
 
 const COLORS = {
-  'debit': colors.red[100],
-  'credit': colors.lightGreen[100],
+  debit: colors.red[100],
+  credit: colors.lightGreen[100],
 };
 
 const AmountTypography = styled(Typography, {
@@ -16,7 +16,7 @@ const AmountTypography = styled(Typography, {
   backgroundColor: COLORS[amountType],
 }));
 
-const AmountValue : FunctionComponent<AmountValueProps> = ({ className, value }) => {
+const AmountValue: FunctionComponent<AmountValueProps> = ({ className, value }) => {
   return (
     <AmountTypography amountType={value < 0 ? 'debit' : 'credit'} className={className}>
       {value}
@@ -25,8 +25,8 @@ const AmountValue : FunctionComponent<AmountValueProps> = ({ className, value })
 };
 
 type AmountValueProps = {
-  className?: string,
-  value: number
+  className?: string;
+  value: number;
 };
 
 export default AmountValue;

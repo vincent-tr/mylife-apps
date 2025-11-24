@@ -18,26 +18,25 @@ const Container = styled('div')({
 
 const DatePicker: React.FC<DatePickerProps> = ({ type, value, onChange }) => {
   switch (type) {
+    case StatsType.Day:
+      return <DayPicker value={value} onChange={onChange} />;
 
-  case StatsType.Day:
-    return (<DayPicker value={value} onChange={onChange} />);
+    case StatsType.Month:
+      return <MonthPicker value={value} onChange={onChange} />;
 
-  case StatsType.Month:
-    return (<MonthPicker value={value} onChange={onChange} />);
+    case StatsType.Year:
+      return <YearPicker value={value} onChange={onChange} />;
 
-  case StatsType.Year:
-    return (<YearPicker value={value} onChange={onChange} />);
-
-  default:
-    throw new Error(`Unknown type: ${type}`);
+    default:
+      throw new Error(`Unknown type: ${type}`);
   }
 };
 
 export default DatePicker;
 
-const StyledPicker = styled(MuiDatePicker)(({ theme }) => ({
+const StyledPicker = styled(MuiDatePicker)({
   flex: '1 1 auto',
-}));
+});
 
 const DayPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange }) => (
   <Container>
@@ -45,8 +44,8 @@ const DayPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange })
       <icons.actions.Prev />
     </IconButton>
 
-    <StyledPicker views={["year", "month", "day"]} value={value} onChange={onChange} />
-    
+    <StyledPicker views={['year', 'month', 'day']} value={value} onChange={onChange} />
+
     <IconButton onClick={() => onChange(addDay(value, 1))}>
       <icons.actions.Next />
     </IconButton>
@@ -59,7 +58,7 @@ const MonthPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange 
       <icons.actions.Prev />
     </IconButton>
 
-    <StyledPicker views={["year", "month"]} value={value} onChange={onChange} />
+    <StyledPicker views={['year', 'month']} value={value} onChange={onChange} />
 
     <IconButton onClick={() => onChange(addMonth(value, 1))}>
       <icons.actions.Next />
@@ -73,7 +72,7 @@ const YearPicker: React.FC<Omit<DatePickerProps, 'type'>> = ({ value, onChange }
       <icons.actions.Prev />
     </IconButton>
 
-    <StyledPicker views={["year"]} value={value} onChange={onChange} />
+    <StyledPicker views={['year']} value={value} onChange={onChange} />
 
     <IconButton onClick={() => onChange(addYear(value, 1))}>
       <icons.actions.Next />

@@ -10,15 +10,15 @@ import { styled, Tooltip, Breadcrumbs, Typography } from '@mui/material';
 type FIXME_any = any;
 
 const useConnect = ({ value }) => {
-  return useSelector(state => ({
-    stack: getStack(state, value)
+  return useSelector((state) => ({
+    stack: getStack(state, value),
   }));
 };
 
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
@@ -31,14 +31,16 @@ const GroupSelector = ({ onChange, value, ...props }) => {
   const { stack } = useConnect({ value });
   return (
     <Container {...props}>
-      <Tooltip title='Sélectionner'>
+      <Tooltip title="Sélectionner">
         <GroupSelectorButton onSelect={onChange}>
           <icons.actions.Move />
         </GroupSelectorButton>
       </Tooltip>
-      <GroupPath aria-label='breadcrumb'>
-        {stack.map(node => (
-          <Typography key={node._id} color='textPrimary'>{node.display}</Typography>
+      <GroupPath aria-label="breadcrumb">
+        {stack.map((node) => (
+          <Typography key={node._id} color="textPrimary">
+            {node.display}
+          </Typography>
         ))}
       </GroupPath>
     </Container>
@@ -46,20 +48,19 @@ const GroupSelector = ({ onChange, value, ...props }) => {
 };
 
 GroupSelector.propTypes = {
-  value     : PropTypes.string,
-  onChange  : PropTypes.func.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default GroupSelector;
 
-
 function getStack(state, value) {
-  if(!value) {
+  if (!value) {
     const group = getGroup(state, value);
-    if(!group) {
+    if (!group) {
       return []; // not loaded
     }
-    return [ group ]; // non tries
+    return [group]; // non tries
   }
 
   const ret = [];

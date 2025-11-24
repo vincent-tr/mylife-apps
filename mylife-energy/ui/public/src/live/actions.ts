@@ -5,21 +5,21 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const sensorViewRef = new views.ViewReference({
   uid: viewUids.DEVICES,
   service: 'live',
-  method: 'notifyDevices'
+  method: 'notifyDevices',
 });
 
 const measureViewRef = new views.ViewReference({
   uid: viewUids.MEASURES,
   service: 'live',
-  method: 'notifyMeasures'
+  method: 'notifyMeasures',
 });
 
-export const enter = createAsyncThunk('live/enter', async (_, api) => {
+export const enter = createAsyncThunk('live/enter', async (_, _api) => {
   await sensorViewRef.attach();
   await measureViewRef.attach();
 });
 
-export const leave = createAsyncThunk('live/leave', async (_, api) => {
+export const leave = createAsyncThunk('live/leave', async (_, _api) => {
   await sensorViewRef.detach();
   await measureViewRef.detach();
 });

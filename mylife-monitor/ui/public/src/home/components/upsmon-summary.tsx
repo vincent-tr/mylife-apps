@@ -4,7 +4,7 @@ import { styled, Paper, Table, TableHead, TableRow, TableCell, TableBody } from 
 import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { useSince } from '../../common/behaviors';
-import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
+import { SuccessCell, ErrorCell } from '../../common/table-status';
 
 const Container = styled(Paper)(({ theme }) => ({
   display: 'inline-block',
@@ -26,14 +26,14 @@ const formatDuration = humanizeDuration.humanizer({
 
   languages: {
     shortFr: {
-      y: () => "ans",
-      mo: () => "mois",
-      w: () => "semaines",
-      d: () => "jours",
-      h: () => "heures",
-      m: () => "min",
-      s: () => "sec",
-      ms: () => "ms",
+      y: () => 'ans',
+      mo: () => 'mois',
+      w: () => 'semaines',
+      d: () => 'jours',
+      h: () => 'heures',
+      m: () => 'min',
+      s: () => 'sec',
+      ms: () => 'ms',
     },
   },
 });
@@ -41,7 +41,7 @@ const formatDuration = humanizeDuration.humanizer({
 const UpsmonSummary = ({ view }) => {
   return (
     <Container>
-      <Table size='small'>
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell colSpan={3}>
@@ -86,4 +86,4 @@ const Row = ({ data }) => {
       <UpdateCell>{lastUpdateStr}</UpdateCell>
     </TableRow>
   );
-}
+};

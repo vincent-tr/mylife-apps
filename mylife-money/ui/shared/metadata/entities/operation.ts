@@ -8,7 +8,7 @@ export default {
     { id: 'label', name: 'Libellé', datatype: 'name', constraints: ['not-null', 'not-empty'] },
     { id: 'account', name: 'Compte', datatype: 'account', constraints: ['not-null'] },
     { id: 'group', name: 'Groupe', datatype: 'group' },
-    { id: 'note', name: 'Note', datatype: 'text' }
+    { id: 'note', name: 'Note', datatype: 'text' },
   ],
-  display: obj => `${obj.date} - ${obj.amount} (${obj.label})`
+  display: (obj) => `${obj.date} - ${obj.amount} (${obj.label})`,
 };

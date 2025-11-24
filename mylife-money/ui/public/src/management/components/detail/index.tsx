@@ -16,20 +16,23 @@ type FIXME_any = any;
 const useConnect = () => {
   const dispatch = useDispatch<FIXME_any>();
   return {
-    ...useSelector(state => {
+    ...useSelector((state) => {
       const operation = getOperationDetail(state) as FIXME_any;
       return {
         operation,
         account: getAccount(state, operation.account) as FIXME_any,
-        groupStack: getGroupStack(state, operation.group)
+        groupStack: getGroupStack(state, operation.group),
       };
     }),
-    ...useMemo(() => ({
-      close: () => dispatch(closeDetail()),
-      onOpenGroup: (id: string) => dispatch(selectGroup(id)),
-      onSetNote: (note: string) => dispatch(operationSetNoteDetail(note)),
-      onMove: (id: string) => dispatch(operationMoveDetail(id)),
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        close: () => dispatch(closeDetail()),
+        onOpenGroup: (id: string) => dispatch(selectGroup(id)),
+        onSetNote: (note: string) => dispatch(operationSetNoteDetail(note)),
+        onMove: (id: string) => dispatch(operationMoveDetail(id)),
+      }),
+      [dispatch]
+    ),
   };
 };
 
@@ -39,7 +42,7 @@ const Container = styled(Paper)(({ theme }) => ({
 
 const Grid = styled('div')({
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 });
 
 interface DetailContainerProps {
@@ -54,33 +57,27 @@ const DetailContainer: React.FC<DetailContainerProps> = ({ className }) => {
       <Title onClose={close} />
 
       <Grid>
-        <Row label='Compte'>
-          <Typography>
-            {account.display}
-          </Typography>
+        <Row label="Compte">
+          <Typography>{account.display}</Typography>
         </Row>
 
-        <Row label='Groupe'>
+        <Row label="Groupe">
           <GroupBreadcrumbs groupStack={groupStack} onMove={onMove} onOpenGroup={onOpenGroup} />
         </Row>
 
-        <Row label='Montant'>
+        <Row label="Montant">
           <AmountValue value={operation.amount} />
         </Row>
 
-        <Row label='Date'>
-          <Typography>
-            {new Date(operation.date).toLocaleDateString('fr-FR')}
-          </Typography>
+        <Row label="Date">
+          <Typography>{new Date(operation.date).toLocaleDateString('fr-FR')}</Typography>
         </Row>
 
-        <Row label='Libellé'>
-          <Typography>
-            {operation.label}
-          </Typography>
+        <Row label="Libellé">
+          <Typography>{operation.label}</Typography>
         </Row>
 
-        <Row label='Notes'>
+        <Row label="Notes">
           <NoteEditor value={operation.note} onChange={onSetNote} />
         </Row>
       </Grid>
@@ -89,7 +86,6 @@ const DetailContainer: React.FC<DetailContainerProps> = ({ className }) => {
 };
 
 export default DetailContainer;
-
 
 const NoteContainer = styled(Paper)({
   height: 450, // must match min/maxRows of TextField
@@ -102,7 +98,7 @@ const NoteView = styled(Markdown)({
   overflowY: 'auto',
 });
 
-const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: string) => void; }> = ({ value, onChange}) => {
+const NoteEditor: React.FC<{ value: string; onChange: (newValue: string) => void }> = ({ value, onChange }) => {
   type TabValues = 'view' | 'update';
 
   const [tabValue, setTabValue] = React.useState<TabValues>('view');
@@ -118,15 +114,9 @@ const NoteEditor: React.FunctionComponent<{ value:string; onChange: (newValue: s
         <Tab label="Modifier" value={'update' as TabValues} />
       </Tabs>
 
-      {tabValue === 'view' && (
-        <NoteView value={value} />
-      )}
+      {tabValue === 'view' && <NoteView value={value} />}
 
-      {tabValue === 'update' && (
-        <DebouncedTextField variant='outlined' value={value} onChange={onChange} fullWidth multiline minRows={19} maxRows={19}/>
-      )}
+      {tabValue === 'update' && <DebouncedTextField variant="outlined" value={value} onChange={onChange} fullWidth multiline minRows={19} maxRows={19} />}
     </NoteContainer>
   );
 };
-
-

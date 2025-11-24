@@ -7,23 +7,23 @@ import { styled, Typography, Tooltip, IconButton } from '@mui/material';
 
 const Container = styled('div')({
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 });
 
 const Header = styled('div')({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const Label = styled(Typography)(({ theme }) => ({
-  marginRight: theme.spacing(1)
+  marginRight: theme.spacing(1),
 }));
 
 const Item = styled('div')({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
@@ -31,7 +31,7 @@ const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
     <Container>
       <Header>
         <Label>Groupes</Label>
-        <Tooltip title='Ajouter un groupe'>
+        <Tooltip title="Ajouter un groupe">
           <IconButton onClick={() => onGroupAdd()}>
             <icons.actions.New />
           </IconButton>
@@ -40,7 +40,7 @@ const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
       {groups.map((group, index) => (
         <Item key={index}>
           <GroupSelector value={group} onChange={(value) => onGroupChanged(index, value)} />
-          <Tooltip title='Supprimer le groupe'>
+          <Tooltip title="Supprimer le groupe">
             <IconButton onClick={() => onGroupDelete(index)}>
               <icons.actions.Delete />
             </IconButton>
@@ -55,7 +55,7 @@ GroupField.propTypes = {
   groups: PropTypes.object.isRequired,
   onGroupAdd: PropTypes.func.isRequired,
   onGroupChanged: PropTypes.func.isRequired,
-  onGroupDelete: PropTypes.func.isRequired
+  onGroupDelete: PropTypes.func.isRequired,
 };
 
 export default GroupField;

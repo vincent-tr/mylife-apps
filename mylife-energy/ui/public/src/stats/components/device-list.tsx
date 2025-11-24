@@ -11,20 +11,13 @@ export interface DeviceListProps {
   onChange: (newValue: string[]) => void;
 }
 
-const DeviceList: React.FunctionComponent<DeviceListProps> = ({ className, value, onChange }) => {
+const DeviceList: React.FC<DeviceListProps> = ({ className, value, onChange }) => {
   const devices = useDevices();
-  const handleChange = event => onChange(event.target.value);
-  const renderSelectorValue = useCallback(createSelectorValueRenderer(devices), [devices]);
+  const handleChange = (event) => onChange(event.target.value);
+  const renderSelectorValue = useCallback((selection: string[]) => selection.map((id) => devices[id]).join(', '), [devices]);
 
   return (
-    <Select
-      multiple
-      value={value}
-      onChange={handleChange}
-      input={<Input fullWidth />}
-      renderValue={renderSelectorValue}
-      className={className}
-    >
+    <Select multiple value={value} onChange={handleChange} input={<Input fullWidth />} renderValue={renderSelectorValue} className={className}>
       {Object.entries(devices).map(([id, display]) => (
         <MenuItem key={id} value={id}>
           <Checkbox checked={value.includes(id)} />
@@ -37,10 +30,6 @@ const DeviceList: React.FunctionComponent<DeviceListProps> = ({ className, value
 
 export default DeviceList;
 
-function createSelectorValueRenderer(devices: DeviceMap) {
-  return (selection: string[]) => selection.map(id => devices[id]).join(', ');
-}
-
 function useDevices() {
   const view = useSelector(getDevicesView);
 
@@ -50,7 +39,7 @@ function useDevices() {
     for (const device of Object.values(view)) {
       devices[device.deviceId] = device.display;
     }
-    
+
     return devices;
   }, [view]);
 }
