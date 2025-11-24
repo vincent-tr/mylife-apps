@@ -24,8 +24,6 @@ const dialogSlice = createSlice({
   initialState,
 
   reducers: {
-    // TODO: action.error?
-
     setBusy(state, action: PayloadAction<boolean>) {
       state.busy = action.payload;
     },
@@ -48,6 +46,9 @@ const dialogSlice = createSlice({
       (action) => action.error,
       (state, action: ErrorAction) => {
         state.error = action.error;
+        
+        console.error('Got error action', action.error);
+        console.error(action.error.stack);
       }
     );
   },
