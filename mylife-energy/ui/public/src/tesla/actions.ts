@@ -1,6 +1,7 @@
 import { views, io } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
 import { TeslaMode } from '../../../shared/metadata';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const stateViewRef = new views.ViewReference({
   uid: viewUids.STATE,
@@ -16,25 +17,21 @@ export const leave = () => async (dispatch) => {
   await stateViewRef.detach();
 };
 
-export const setMode = (mode: TeslaMode) => {
-  return async (dispatch) => {
-    await dispatch(io.call({
-      service: 'tesla',
-      method: 'setMode',
-      mode,
-    }));
-  };
-};
+export const setMode = createAsyncThunk('tesla/setMode', async (mode: TeslaMode, api) => {
+  await api.dispatch(io.call({
+    service: 'tesla',
+    method: 'setMode',
+    mode,
+  }));
+});
 
-export const setParameters = ({ fastLimit, smartLimitLow, smartLimitHigh, smartFastCurrent}: { fastLimit: number, smartLimitLow: number, smartLimitHigh: number, smartFastCurrent: number}) => {
-  return async (dispatch) => {
-    await dispatch(io.call({
-      service: 'tesla',
-      method: 'setParameters',
-      fastLimit,
-      smartLimitLow,
-      smartLimitHigh,
-      smartFastCurrent,
-    }));
-  };
-};
+export const setParameters = createAsyncThunk('tesla/setParameters', async ({ fastLimit, smartLimitLow, smartLimitHigh, smartFastCurrent }: { fastLimit: number, smartLimitLow: number, smartLimitHigh: number, smartFastCurrent: number }, api) => {
+  await api.dispatch(io.call({
+    service: 'tesla',
+    method: 'setParameters',
+    fastLimit,
+    smartLimitLow,
+    smartLimitHigh,
+    smartFastCurrent,
+  }));
+});

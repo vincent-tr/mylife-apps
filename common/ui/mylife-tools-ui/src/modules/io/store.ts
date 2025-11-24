@@ -1,4 +1,4 @@
-import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
 
 import { serializer } from 'mylife-tools-common';
@@ -77,16 +77,15 @@ const local = {
 
 export const call = createAction<CallPayload>(ACTION_CALL);
 
-export const unnotify = (viewId: string, service = 'common') => async dispatch => {
-
-  await dispatch(call({
-    service,
+export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
+  await api.dispatch(call({
+    service: 'common',
     method: 'unnotify',
     viewId
   }));
 
-  dispatch(local.viewClose(viewId));
-};
+  api.dispatch(local.viewClose(viewId));
+});
 
 export const { viewChange, setOnline } = ioSlice.actions; // setOnline can be used in extraReducers
 export const { getOnline, getView } = ioSlice.selectors;
