@@ -7,13 +7,13 @@ import * as viewUids from './view-uids';
 type FIXME_any = any;
 
 interface StatsState {
-  sensors: { [id: string]: SensorData },
-  measures: { [id: string]: Measure },
+  sensors: { [id: string]: SensorData };
+  measures: { [id: string]: Measure };
 }
 
 type SetValues = {
-  sensor: Sensor,
-  measures: Measure[],
+  sensor: Sensor;
+  measures: Measure[];
 }[];
 
 const initialState: StatsState = {
@@ -34,7 +34,7 @@ const statsSlice = createSlice({
         sensors[sensor._id] = sensor;
 
         const measuresList = item.measures.slice();
-        measuresList.sort((a, b) => (a.timestamp.valueOf() - b.timestamp.valueOf()))
+        measuresList.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf());
 
         for (const measure of measuresList) {
           // make a reducer-wide unique id
@@ -60,56 +60,49 @@ const local = {
   getStatsMeasures: statsSlice.selectors.getStatsMeasures,
 };
 
-export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, timestamp, sensors }: { type: StatsType, timestamp: Date, sensors: string[] }, api) => {
-  const values = await api.dispatch(io.call({
-    service: 'stats',
-    method: 'getValues',
-    type,
-    timestamp,
-    sensors,
-    timeout: 60000 // can be slower for now as we request long db queries
-  })) as FIXME_any as SetValues;
+export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, timestamp, sensors }: { type: StatsType; timestamp: Date; sensors: string[] }, api) => {
+  const values = (await api.dispatch(
+    io.call({
+      service: 'stats',
+      method: 'getValues',
+      type,
+      timestamp,
+      sensors,
+      timeout: 60000, // can be slower for now as we request long db queries
+    })
+  )) as FIXME_any as SetValues;
 
   api.dispatch(local.setValues(values));
 });
 
-export const getDevicesView = state => views.getView(state, viewUids.DEVICES) as views.View<Device>;
+export const getDevicesView = (state) => views.getView(state, viewUids.DEVICES) as views.View<Device>;
 
-export const getChartData = createSelector(
-  [ local.getStatsMeasures ], 
-  (measures) => {
-    // Note: time range with no value will be omitted
-    const map = new Map<number, TimestampData>();
+export const getChartData = createSelector([local.getStatsMeasures], (measures) => {
+  // Note: time range with no value will be omitted
+  const map = new Map<number, TimestampData>();
 
-    for (const measure of Object.values(measures)) {
-      const mapId = measure.timestamp.valueOf();
+  for (const measure of Object.values(measures)) {
+    const mapId = measure.timestamp.valueOf();
 
-      let item = map.get(mapId);
-      if (!item) {
-        item = { timestamp: measure.timestamp, measures: {} };
-        map.set(mapId, item);
-      }
-
-      item.measures[measure.sensor] = measure.value;
+    let item = map.get(mapId);
+    if (!item) {
+      item = { timestamp: measure.timestamp, measures: {} };
+      map.set(mapId, item);
     }
 
-    const array = Array.from(map.values());
-    array.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf());
-    return array;
+    item.measures[measure.sensor] = measure.value;
   }
-);
 
-export const getSensors = createSelector(
-  [ 
-    getDevicesView,
-    local.getStatsSensors,
-  ], 
-  (devices, sensors) => {
-    const deviceDisplay = new Map(Object.values(devices).map(device => ([device.deviceId, device.display])));
-    const array: UiSensor[] = Object.values(sensors).map(sensor => ({ ...sensor, display: deviceDisplay.get(sensor._id) }));
-    array.sort((a, b) => a.display < b.display ? 1 : -1);
-    return array;
-  },
-);
+  const array = Array.from(map.values());
+  array.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf());
+  return array;
+});
+
+export const getSensors = createSelector([getDevicesView, local.getStatsSensors], (devices, sensors) => {
+  const deviceDisplay = new Map(Object.values(devices).map((device) => [device.deviceId, device.display]));
+  const array: UiSensor[] = Object.values(sensors).map((sensor) => ({ ...sensor, display: deviceDisplay.get(sensor._id) }));
+  array.sort((a, b) => (a.display < b.display ? 1 : -1));
+  return array;
+});
 
 export default statsSlice.reducer;

@@ -39,22 +39,19 @@ const ComputedIcon = styled(icons.devices.Computed)<ComputedIconProps>(({ theme,
 }));
 
 export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKeys: string[] }> = ({ deviceId, sensorKeys }) => {
-  const device = useSelector(state => getDevice(state, deviceId));
+  const device = useSelector((state) => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
   const sensorData = getSensorData(device, measures, sensorKeys);
 
   if (sensorData.length === 0) {
-    return (
-      <Typography>{`??`}</Typography>
-    );
-
+    return <Typography>{`??`}</Typography>;
   }
 
   let flavor: Flavor = null;
   let measureValue = sensorData[0].measureValue;
 
-  switch(device.type) {
+  switch (device.type) {
     case 'main': {
       if (measureValue > 0) {
         flavor = 'bad';
@@ -75,26 +72,12 @@ export const DeviceMeasure: React.FunctionComponent<{ deviceId: string; sensorKe
     }
   }
 
-  const value = (
-    <Value flavor={flavor}>
-      {sensorData.map(({ value }) => value).join(' / ')}
-    </Value>
-  );
+  const value = <Value flavor={flavor}>{sensorData.map(({ value }) => value).join(' / ')}</Value>;
 
-  const wrapped = device.computed ? (
-    <Badge badgeContent={<ComputedIcon flavor={flavor} />}>
-      {value}
-    </Badge>
-  ) : (
-    value
-  );
+  const wrapped = device.computed ? <Badge badgeContent={<ComputedIcon flavor={flavor} />}>{value}</Badge> : value;
 
-  return (
-    <Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} />}>
-      {wrapped}
-    </Tooltip>
-  );
-}
+  return <Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} />}>{wrapped}</Tooltip>;
+};
 
 const TooltipContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -106,18 +89,16 @@ const TooltipComputedLabel = styled(Typography)(({ theme }) => ({
 }));
 
 const DeviceMeasureTooltip: React.FunctionComponent<{ deviceId: string }> = ({ deviceId }) => {
-  const device = useSelector(state => getDevice(state, deviceId));
+  const device = useSelector((state) => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
   return (
     <TooltipContainer>
       {getSensorData(device, measures).map(({ display, value }, index) => (
-        <Typography variant='body2' key={index}>{`${display} : ${value}`}</Typography>
+        <Typography variant="body2" key={index}>{`${display} : ${value}`}</Typography>
       ))}
-      <Typography variant='body2'>{`Mis à jour : ${getLastUpdate(device, measures).toLocaleString()}`}</Typography>
-      {device.computed && (
-        <TooltipComputedLabel variant='body2'>{`(calculé)`}</TooltipComputedLabel>
-      )}
+      <Typography variant="body2">{`Mis à jour : ${getLastUpdate(device, measures).toLocaleString()}`}</Typography>
+      {device.computed && <TooltipComputedLabel variant="body2">{`(calculé)`}</TooltipComputedLabel>}
     </TooltipContainer>
   );
 };
@@ -135,7 +116,7 @@ function getSensorData(device, measures, sensorKeys: string[] = null) {
       continue;
     }
 
-    items.push({ display: sensor.display, measureValue: measure.value, value: `${measure.value.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}`});
+    items.push({ display: sensor.display, measureValue: measure.value, value: `${measure.value.toFixed(sensor.accuracyDecimals)} ${sensor.unitOfMeasurement}` });
   }
 
   return items;
@@ -146,11 +127,11 @@ function getLastUpdate(device, measures) {
   for (const sensor of device.sensors) {
     const measure = measures[`${device._id}-${sensor.key}`];
     if (!measure) {
-      continue
+      continue;
     }
 
     if (measure.timestamp < date) {
-      date = measure.timestamp
+      date = measure.timestamp;
     }
   }
 
@@ -161,7 +142,7 @@ function findBestSensorMeasure(device: LiveDevice, measures: views.View<Measure>
   const order = ['real-power', 'apparent-power', 'current'];
 
   for (const target of order) {
-    const sensor = device.sensors.find(sensor => sensor.key === target);
+    const sensor = device.sensors.find((sensor) => sensor.key === target);
     const measure = measures[`${device._id}-${target}`];
 
     if (sensor && measure) {

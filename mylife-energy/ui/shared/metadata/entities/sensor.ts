@@ -7,11 +7,11 @@ export default {
   fields: [
     { id: 'sensorId', name: 'Identifiant', datatype: 'name', constraints: ['not-null'] },
     { id: 'deviceClass', name: 'Classe du périphérique', datatype: 'name', constraints: ['not-null'] },
-    { id: 'stateClass', name: 'Classe d\'état', datatype: 'name', constraints: ['not-null'] },
+    { id: 'stateClass', name: "Classe d'état", datatype: 'name', constraints: ['not-null'] },
     { id: 'unitOfMeasurement', name: 'Unité de mesure', datatype: 'name', constraints: ['not-null'] },
     { id: 'accuracyDecimals', name: 'Précision (nombre de décimals)', datatype: 'count', constraints: ['not-null'] },
   ],
-  display: obj => `${obj.date} => ${obj.value}`
+  display: (obj) => `${obj.date} => ${obj.value}`,
 };
 
 export interface Sensor extends views.Entity {

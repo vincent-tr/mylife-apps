@@ -22,10 +22,11 @@ const Stats: React.FC = () => {
   useViewLifecycle();
   const actions = useActions({ fetchValues });
 
-  const [criteria, onCriteriaChange] = useReducer(
-    (criteria: Criteria, props: Partial<Criteria>) => ({ ... criteria, ...props }), 
-    { type: StatsType.Day, date: new Date(), devices: [] } as Criteria
-  );
+  const [criteria, onCriteriaChange] = useReducer((criteria: Criteria, props: Partial<Criteria>) => ({ ...criteria, ...props }), {
+    type: StatsType.Day,
+    date: new Date(),
+    devices: [],
+  } as Criteria);
 
   useEffect(() => {
     actions.fetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices });

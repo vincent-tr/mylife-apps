@@ -3,7 +3,6 @@
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
-
 //global unique key for every gauge (needed for SVG groups to stay separated)
 let uniqueId = 0;
 
@@ -33,9 +32,7 @@ export default class ChargingGauge extends React.Component<ChargingGaugeProps> {
     const dx = 0;
     const dy = 0;
 
-    const alpha =
-      (1 - (value - this.props.min) / (this.props.max - this.props.min)) *
-      Math.PI;
+    const alpha = (1 - (value - this.props.min) / (this.props.max - this.props.min)) * Math.PI;
     const Ro = this.props.width / 2 - this.props.width / 10;
     const Ri = Ro - this.props.width / 6.666666666666667;
 
@@ -43,11 +40,9 @@ export default class ChargingGauge extends React.Component<ChargingGaugeProps> {
     const Cy = this.props.height / 1.5 + dy;
 
     const Xo = this.props.width / 2 + dx + Ro * Math.cos(alpha);
-    const Yo =
-      this.props.height - (this.props.height - Cy) - Ro * Math.sin(alpha);
+    const Yo = this.props.height - (this.props.height - Cy) - Ro * Math.sin(alpha);
     const Xi = this.props.width / 2 + dx + Ri * Math.cos(alpha);
-    const Yi =
-      this.props.height - (this.props.height - Cy) - Ri * Math.sin(alpha);
+    const Yi = this.props.height - (this.props.height - Cy) - Ri * Math.sin(alpha);
 
     return { alpha, Ro, Ri, Cx, Cy, Xo, Yo, Xi, Yi };
   };
@@ -60,7 +55,7 @@ export default class ChargingGauge extends React.Component<ChargingGaugeProps> {
     path += `A${Ro},${Ro} 0 0 1 ${Xo},${Yo} `;
     path += `L${Xi},${Yi} `;
     path += `A${Ri},${Ri} 0 0 0 ${Cx - Ri},${Cy} `;
-    path += "Z ";
+    path += 'Z ';
 
     return path;
   };
@@ -79,8 +74,8 @@ export default class ChargingGauge extends React.Component<ChargingGaugeProps> {
         style={{
           width: this.props.width,
           height: this.props.height,
-          overflow: "hidden",
-          position: "relative",
+          overflow: 'hidden',
+          position: 'relative',
           left: 0,
           top: 0,
         }}
@@ -89,55 +84,21 @@ export default class ChargingGauge extends React.Component<ChargingGaugeProps> {
           <filter id={this.uniqueFilterId}>
             <feOffset dx="0" dy="3" />
             <feGaussianBlur result="offset-blur" stdDeviation="5" />
-            <feComposite
-              operator="out"
-              in="SourceGraphic"
-              in2="offset-blur"
-              result="inverse"
-            />
+            <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
             <feFlood floodColor="black" floodOpacity="0.2" result="color" />
-            <feComposite
-              operator="in"
-              in="color"
-              in2="inverse"
-              result="shadow"
-            />
+            <feComposite operator="in" in="color" in2="inverse" result="shadow" />
             <feComposite operator="over" in="shadow" in2="SourceGraphic" />
           </filter>
         </defs>
-        <path
-          fill={COLOR_BACKGROUND}
-          stroke="none"
-          d={this._getPath(this.props.max)}
-          filter={`url(#${this.uniqueFilterId})`}
-        />
-        <path
-          fill={COLOR_PRIMARY}
-          stroke="none"
-          d={this._getPath(this.props.value)}
-          filter={`url(#${this.uniqueFilterId})`}
-        />
-        <Typography variant='body1' component='text'
-          x={this.props.width / 2}
-          y={this.props.height / 8}
-          textAnchor="middle"
-        >
+        <path fill={COLOR_BACKGROUND} stroke="none" d={this._getPath(this.props.max)} filter={`url(#${this.uniqueFilterId})`} />
+        <path fill={COLOR_PRIMARY} stroke="none" d={this._getPath(this.props.value)} filter={`url(#${this.uniqueFilterId})`} />
+        <Typography variant="body1" component="text" x={this.props.width / 2} y={this.props.height / 8} textAnchor="middle">
           {this.props.valueText}
         </Typography>
-        <Typography variant='body1' component='text'
-          x={(Cx - Ro + (Cx - Ri)) / 2}
-          y={Cy + minMaxLabelsOffset}
-          textAnchor="middle"
-          style={{ fill: COLOR_TEXT_SECONDARY}}
-        >
+        <Typography variant="body1" component="text" x={(Cx - Ro + (Cx - Ri)) / 2} y={Cy + minMaxLabelsOffset} textAnchor="middle" style={{ fill: COLOR_TEXT_SECONDARY }}>
           {this.props.minText}
         </Typography>
-        <Typography variant='body1' component='text'
-          x={(Xo + Xi) / 2}
-          y={Cy + minMaxLabelsOffset}
-          textAnchor="middle"
-          style={{ fill: COLOR_TEXT_SECONDARY}}
-        >
+        <Typography variant="body1" component="text" x={(Xo + Xi) / 2} y={Cy + minMaxLabelsOffset} textAnchor="middle" style={{ fill: COLOR_TEXT_SECONDARY }}>
           {this.props.maxText}
         </Typography>
       </svg>

@@ -10,7 +10,7 @@ import Tesla from './tesla/components';
 import Stats from './stats/components';
 
 const reducers = {
-  stats: statsReducer
+  stats: statsReducer,
 };
 
 services.initStore(reducers);
@@ -33,5 +33,5 @@ services.render({
   appIcon: icons.Energy,
   appName: 'Energy',
   routes,
-  menu
+  menu,
 });

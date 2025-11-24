@@ -9,92 +9,95 @@ import { styled, Dialog, DialogTitle, DialogContent, Grid, Typography, TextField
 type FIXME_any = any;
 
 interface Parameters {
-	fastLimit: number; // Fast mode charge limit (%)
-	smartLimitLow: number; // Smart mode charge low limit (%)
-	smartLimitHigh: number; // Smart mode charge high limit (%)
-	smartFastCurrent: number; // Smart mode fast charge current (A)
+  fastLimit: number; // Fast mode charge limit (%)
+  smartLimitLow: number; // Smart mode charge low limit (%)
+  smartLimitHigh: number; // Smart mode charge high limit (%)
+  smartFastCurrent: number; // Smart mode fast charge current (A)
 }
 
-type ProceedCallback = (arg: { result: 'ok' | 'cancel', parameters?: Parameters }) => void;
+type ProceedCallback = (arg: { result: 'ok' | 'cancel'; parameters?: Parameters }) => void;
 
 const ParameterTitle = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
-const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: ProceedCallback; parameters: Parameters; }> = ({ show, proceed, parameters }) => {
+const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: ProceedCallback; parameters: Parameters }> = ({ show, proceed, parameters }) => {
   const [values, setValues] = useState(parameters);
   useEffect(() => setValues(parameters), [parameters]);
 
-  const update = useCallback((newValues: Partial<Parameters>) => {
-    setValues(values => ({...values, ...newValues}));
-  }, [setValues]);
+  const update = useCallback(
+    (newValues: Partial<Parameters>) => {
+      setValues((values) => ({ ...values, ...newValues }));
+    },
+    [setValues]
+  );
 
   return (
-    <Dialog aria-labelledby='dialog-title' open={show}>
-      <DialogTitle id='dialog-title'>{`Paramètres`}</DialogTitle>
+    <Dialog aria-labelledby="dialog-title" open={show}>
+      <DialogTitle id="dialog-title">{`Paramètres`}</DialogTitle>
 
       <DialogContent dividers>
-          <Grid container spacing={2}>
+        <Grid container spacing={2}>
+          <>
+            <Grid size={12}>
+              <Typography variant="h6">{'Mode rapide'}</Typography>
+            </Grid>
 
             <>
-              <Grid size={12}>
-                <Typography variant='h6'>{'Mode rapide'}</Typography>
+              <Grid size={6}>
+                <ParameterTitle>{'Limite de charge (%)'}</ParameterTitle>
               </Grid>
 
-              <>
-                <Grid size={6}>
-                  <ParameterTitle>{'Limite de charge (%)'}</ParameterTitle>
-                </Grid>
+              <Grid size={6}>
+                <TextField value={values.fastLimit || '0'} onChange={(e) => update({ fastLimit: safeParseInt(e.target.value) })} />
+              </Grid>
+            </>
+          </>
 
-                <Grid size={6}>
-                  <TextField value={values.fastLimit || '0'} onChange={e => update({ fastLimit: safeParseInt(e.target.value) })} />
-                </Grid>
-              </>
+          <>
+            <Grid size={12}>
+              <Typography variant="h6">{'Mode intelligent'}</Typography>
+            </Grid>
+
+            <>
+              <Grid size={6}>
+                <ParameterTitle>{'Limite de charge rapide (%)'}</ParameterTitle>
+              </Grid>
+
+              <Grid size={6}>
+                <TextField value={values.smartLimitLow || '0'} onChange={(e) => update({ smartLimitLow: safeParseInt(e.target.value) })} />
+              </Grid>
             </>
 
             <>
-              <Grid size={12}>
-                <Typography variant='h6'>{'Mode intelligent'}</Typography>
+              <Grid size={6}>
+                <ParameterTitle>{'Limite de charge complète (%)'}</ParameterTitle>
               </Grid>
 
-              <>
-                <Grid size={6}>
-                  <ParameterTitle>{'Limite de charge rapide (%)'}</ParameterTitle>
-                </Grid>
-
-                <Grid size={6}>
-                  <TextField value={values.smartLimitLow || '0'} onChange={e => update({ smartLimitLow: safeParseInt(e.target.value) })} />
-                </Grid>
-              </>
-
-              <>
-                <Grid size={6}>
-                  <ParameterTitle>{'Limite de charge complète (%)'}</ParameterTitle>
-                </Grid>
-
-                <Grid size={6}>
-                  <TextField value={values.smartLimitHigh || '0'} onChange={e => update({ smartLimitHigh: safeParseInt(e.target.value) })} />
-                </Grid>
-              </>
-
-              <>
-                <Grid size={6}>
-                  <ParameterTitle>{'Courant de charge rapide (A)'}</ParameterTitle>
-                </Grid>
-
-                <Grid size={6}>
-                  <TextField value={values.smartFastCurrent || '0'} onChange={e => update({ smartFastCurrent: safeParseInt(e.target.value) })} />
-                </Grid>
-              </>
+              <Grid size={6}>
+                <TextField value={values.smartLimitHigh || '0'} onChange={(e) => update({ smartLimitHigh: safeParseInt(e.target.value) })} />
+              </Grid>
             </>
 
-          </Grid>
-        </DialogContent>
+            <>
+              <Grid size={6}>
+                <ParameterTitle>{'Courant de charge rapide (A)'}</ParameterTitle>
+              </Grid>
 
-        <DialogActions>
-          <Button onClick={() => proceed({ result: 'ok', parameters: values })} color='primary'>OK</Button>
-          <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
-        </DialogActions>
+              <Grid size={6}>
+                <TextField value={values.smartFastCurrent || '0'} onChange={(e) => update({ smartFastCurrent: safeParseInt(e.target.value) })} />
+              </Grid>
+            </>
+          </>
+        </Grid>
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={() => proceed({ result: 'ok', parameters: values })} color="primary">
+          OK
+        </Button>
+        <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
+      </DialogActions>
     </Dialog>
   );
 };
@@ -102,23 +105,27 @@ const ParametersDialog: React.FunctionComponent<{ show: boolean; proceed: Procee
 const parametersDialog = dialogs.create(ParametersDialog);
 
 export function useParameters() {
-  const state = useSelector(state => getState(state));
+  const state = useSelector((state) => getState(state));
   const set = useAction(setParameters);
 
   // if 'bot = null' then create
-  return useCallback(() => fireAsync(async() => {
-    const { result, parameters } = await parametersDialog({ parameters: buildParameters(state) }) as FIXME_any;
-    if (result !== 'ok') {
-      return;
-    }
+  return useCallback(
+    () =>
+      fireAsync(async () => {
+        const { result, parameters } = (await parametersDialog({ parameters: buildParameters(state) })) as FIXME_any;
+        if (result !== 'ok') {
+          return;
+        }
 
-    await set(parameters);
-  }), [setParameters, state]);
+        await set(parameters);
+      }),
+    [setParameters, state]
+  );
 }
 
 function buildParameters(state: TeslaState): Parameters {
-  const {	fastLimit, smartLimitLow, smartLimitHigh, smartFastCurrent } = state;
-  return {	fastLimit, smartLimitLow, smartLimitHigh, smartFastCurrent };
+  const { fastLimit, smartLimitLow, smartLimitHigh, smartFastCurrent } = state;
+  return { fastLimit, smartLimitLow, smartLimitHigh, smartFastCurrent };
 }
 
 function safeParseInt(value: string) {

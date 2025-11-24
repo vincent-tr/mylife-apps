@@ -3,10 +3,7 @@ import measure from './entities/measure';
 
 export default {
   datatypes: [],
-  entities: [
-    sensor,
-    measure
-  ]
+  entities: [sensor, measure],
 };
 
 export * from './entities/sensor';

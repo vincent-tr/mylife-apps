@@ -28,42 +28,43 @@ const Home: React.FunctionComponent = () => {
 
   return (
     <div>
-      <Section title={
-        <>
-          <icons.tabs.Live fontSize='inherit' />
-          Live
-        </>
-      }>
-        <Typography variant='h3'>
-          <icons.devices.Total fontSize='inherit' />
+      <Section
+        title={
+          <>
+            <icons.tabs.Live fontSize="inherit" />
+            Live
+          </>
+        }
+      >
+        <Typography variant="h3">
+          <icons.devices.Total fontSize="inherit" />
           {totalPower?.toFixed()} W
         </Typography>
 
-        <LastUpdate section='live' />
+        <LastUpdate section="live" />
       </Section>
 
-      <Section title={
-        <>
-          <icons.tabs.Tesla fontSize='inherit' />
-          Tesla
-        </>
-      }>
+      <Section
+        title={
+          <>
+            <icons.tabs.Tesla fontSize="inherit" />
+            Tesla
+          </>
+        }
+      >
         <BatteryStatus level={batteryLevel || 0} />
-        <LastUpdate section='tesla' />
+        <LastUpdate section="tesla" />
       </Section>
-
     </div>
   );
 };
 
 export default Home;
 
-const Section: React.FunctionComponent<PropsWithChildren<{ title: React.ReactNode; }>> = ({ title, children}) => {
+const Section: React.FunctionComponent<PropsWithChildren<{ title: React.ReactNode }>> = ({ title, children }) => {
   return (
-    <SectionRoot variant='outlined'>
-      <SectionTitle variant='h1'>
-        {title}
-      </SectionTitle>
+    <SectionRoot variant="outlined">
+      <SectionTitle variant="h1">{title}</SectionTitle>
 
       {children}
     </SectionRoot>
@@ -74,7 +75,7 @@ const LastUpdate: React.FunctionComponent<{ section: string }> = ({ section }) =
   const value = useLastUpdate(section);
 
   return (
-    <LastUpdateText variant='body2' color='textSecondary'>
+    <LastUpdateText variant="body2" color="textSecondary">
       Mis à jour il y a {value}
     </LastUpdateText>
   );

@@ -5,7 +5,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const viewRef = new views.ViewReference({
   uid: viewUids.DATA,
   service: 'home',
-  method: 'notifyHomeData'
+  method: 'notifyHomeData',
 });
 
 export const enter = createAsyncThunk('home/enter', async (_, api) => {

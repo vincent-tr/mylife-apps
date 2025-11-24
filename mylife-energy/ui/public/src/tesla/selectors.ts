@@ -4,5 +4,5 @@ import { TeslaState } from '../../../shared/metadata';
 
 const viewStateId = 'unique';
 
-export const getStateView = state => views.getView(state, viewUids.STATE) as views.View<TeslaState>;
-export const getState = state => getStateView(state)[viewStateId];
+export const getStateView = (state) => views.getView(state, viewUids.STATE) as views.View<TeslaState>;
+export const getState = (state) => getStateView(state)[viewStateId];

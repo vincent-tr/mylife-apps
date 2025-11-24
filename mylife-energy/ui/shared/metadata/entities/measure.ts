@@ -9,7 +9,7 @@ export default {
     { id: 'value', name: 'Valeur', datatype: 'real', constraints: ['not-null'] },
     { id: 'sensor', name: 'Capteur', datatype: 'sensor', constraints: ['not-null'] },
   ],
-  display: obj => `${obj.date} => ${obj.value}`
+  display: (obj) => `${obj.date} => ${obj.value}`,
 };
 
 export interface Measure extends views.Entity {
