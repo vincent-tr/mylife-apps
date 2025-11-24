@@ -37,7 +37,7 @@ const useConnect = () => {
       onMaxDateChanged         : (value) => dispatch(setMaxDate(value)),
       onAccountChanged         : (value) => dispatch(setAccount(value)),
       onLookupTextChanged      : (value) => dispatch(setLookupText(value)),
-      onOperationsImport       : (account, file) => dispatch(importOperations(account, file)),
+      onOperationsImport       : (account, file) => dispatch(importOperations({ account, file })),
       onOperationsExecuteRules : () => dispatch(operationsExecuteRules()),
       onOperationsSetNote      : (note) => dispatch(operationsSetNote(note)),
       onOperationsMove         : (group) => dispatch(moveOperations(group))

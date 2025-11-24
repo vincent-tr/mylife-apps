@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Criteria } from './types';
 import { dialogs, io } from 'mylife-tools-ui';
 import { views } from 'mylife-tools-ui';
@@ -291,31 +291,27 @@ export const selectOperation = ({ id, selected }) => {
   };
 };
 
-export const importOperations = (account, file) => {
-  return async (dispatch) => {
-    const content = await readFile(file);
+export const importOperations = createAsyncThunk('management/importOperations', async ({ account, file }: { account: string; file: File }, api) => {
+  const content = await readFile(file);
 
-    const count = await dispatch(io.call({
-      service: 'management',
-      method: 'operationsImport',
-      account,
-      content
-    }));
+  const count = await api.dispatch(io.call({
+    service: 'management',
+    method: 'operationsImport',
+    account,
+    content
+  }));
 
-    dispatch(local.showSuccess(`${count} operation(s) importée(s)`));
-  };
-};
+  api.dispatch(local.showSuccess(`${count} operation(s) importée(s)`));
+});
 
-export const operationsExecuteRules = () => {
-  return async (dispatch) => {
-    const count = await dispatch(io.call({
-      service: 'management',
-      method: 'operationsExecuteRules'
-    }));
+export const operationsExecuteRules = createAsyncThunk('management/operationsExecuteRules', async (_, api) => {
+  const count = await api.dispatch(io.call({
+    service: 'management',
+    method: 'operationsExecuteRules'
+  }));
 
-    dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
-  };
-};
+  api.dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
+});
 
 async function readFile(file) {
   return new Promise((resolve, reject) => {
