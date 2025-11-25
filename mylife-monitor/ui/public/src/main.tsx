@@ -4,9 +4,9 @@ import metadataDefintions from '../../shared/metadata';
 import icons from './common/icons';
 import Home from './home/components';
 import Nagios from './nagios/components';
-import * as reducers from './reducers';
 import Updates from './updates/components';
 import Upsmon from './upsmon/components';
+import * as reducers from './reducers';
 
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);

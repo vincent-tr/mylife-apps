@@ -1,4 +1,3 @@
-import datatypes from './datatypes';
 import nagiosHost from './entities/nagios-host';
 import nagiosHostGroup from './entities/nagios-host-group';
 import nagiosService from './entities/nagios-service';
@@ -7,6 +6,7 @@ import updatesSummary from './entities/updates-summary';
 import updatesVersion from './entities/updates-version';
 import upsmonStatus from './entities/upsmon-status';
 import upsmonSummary from './entities/upsmon-summary';
+import datatypes from './datatypes';
 
 export default {
   datatypes,

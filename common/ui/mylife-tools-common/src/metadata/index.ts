@@ -1,7 +1,7 @@
-import * as builtins from './builtins';
 import Datatype from './engine/datatype';
 import Entity from './engine/entity';
 import * as registry from './engine/registry';
+import * as builtins from './builtins';
 
 export const findDatatype = registry.findDatatype;
 export const getDatatype = registry.getDatatype;

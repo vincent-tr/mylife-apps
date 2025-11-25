@@ -1,7 +1,7 @@
 import React from 'react';
 import { getGroupByMonth, exportGroupByMonth } from '../store';
-import GroupByPeriod from './group-by-period';
 import { findAmount } from './group-by-period/tools';
+import GroupByPeriod from './group-by-period';
 
 const initialCriteria = {
   children: false,
