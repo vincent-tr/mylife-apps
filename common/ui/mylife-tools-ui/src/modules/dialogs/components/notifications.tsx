@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Portal from '@mui/material/Portal';
 import SnackbarContent from '@mui/material/SnackbarContent';

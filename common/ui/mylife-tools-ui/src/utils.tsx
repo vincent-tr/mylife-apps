@@ -11,8 +11,6 @@ export class AbortError extends Error {}
 // throws AbortError if aborted
 export async function abortableDelay(delay: number, signal: AbortSignal) {
   await new Promise<void>((resolve, reject) => {
-    let timer;
-
     const abortHandler = () => {
       clearTimeout(timer);
       signal.removeEventListener('abort', abortHandler);
@@ -21,7 +19,7 @@ export async function abortableDelay(delay: number, signal: AbortSignal) {
 
     signal.addEventListener('abort', abortHandler);
 
-    timer = setTimeout(() => {
+    const timer = setTimeout(() => {
       signal.removeEventListener('abort', abortHandler);
       resolve();
     }, delay);

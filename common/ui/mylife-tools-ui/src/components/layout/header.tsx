@@ -16,12 +16,12 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   marginRight: theme.spacing(4),
 }));
 
-const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
+const StyledBreadcrumbs = styled(Breadcrumbs)({
   overflowX: 'auto',
   '& .MuiBreadcrumbs-ol': {
     flexWrap: 'nowrap',
   },
-}));
+});
 
 const PadDiv = styled('div')({
   flexGrow: 1,

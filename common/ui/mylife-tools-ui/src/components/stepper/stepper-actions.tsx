@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
 
 const Root = styled('div')(({ theme }) => ({
   '& > *': {

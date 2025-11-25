@@ -83,6 +83,7 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, colu
                       variant="body"
                       onClick={onRowClick && (() => onRowClick(rowData, rowIndex))}
                       style={{ height: rowHeight, width: colWidth, ...runPropGetter(cellStyle, cellData, dataKey) }}
+                      {...runPropGetter(cellProps, cellData, dataKey)}
                     >
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </StyledTableCell>

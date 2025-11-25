@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useState } from 'react';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -61,7 +60,7 @@ const DeleteButton: FunctionComponent<DeleteButtonProps> = ({
   const handleClose = () => setAnchorEl(null);
   const handleConfirm = () => {
     handleClose();
-    onConfirmed && onConfirmed();
+    onConfirmed?.();
   };
 
   const handleTooltipOpen = () => setTooltipOpen(true);

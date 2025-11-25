@@ -6,5 +6,5 @@ export function useLifecycle(onMount: Callback, onUnmout: Callback = () => {}, d
   useEffect(() => {
     onMount();
     return onUnmout;
-  }, deps);
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 }

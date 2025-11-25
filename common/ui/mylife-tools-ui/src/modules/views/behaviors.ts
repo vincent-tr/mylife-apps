@@ -27,6 +27,7 @@ export function createViewSelector(selector) {
 
   return (view) => {
     if (view !== cachedView) {
+      cachedView = view;
       cachedOutput = selector(view);
     }
     return cachedOutput;

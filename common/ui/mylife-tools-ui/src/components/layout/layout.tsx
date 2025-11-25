@@ -20,7 +20,7 @@ const StyledHeader = styled(Header)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
 }));
 
-const Content = styled('main')(({ theme }) => ({
+const Content = styled('main')({
   flexGrow: 1,
   width: 0,
   height: '100dvh',
@@ -29,7 +29,7 @@ const Content = styled('main')(({ theme }) => ({
   },
   display: 'flex',
   flexDirection: 'column',
-}));
+});
 
 const AppBarSpacer = styled(Box)(({ theme }) => ({
   ...theme.mixins.toolbar,
