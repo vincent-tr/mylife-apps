@@ -40,7 +40,9 @@
           "internal",
           "parent",
           "sibling",
-          "index"
+          "index",
+          "object",
+          "type"
         ],
         "pathGroups": [
           {
@@ -51,6 +53,11 @@
           {
             "pattern": "mylife-tools-ui",
             "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "./*/**",
+            "group": "sibling",
             "position": "before"
           }
         ],
