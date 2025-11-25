@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
-import * as viewUids from './view-uids';
 import { resetCriteria } from './store';
+import * as viewUids from './view-uids';
 
 const viewRef = new views.ViewReference({
   uid: viewUids.NAGIOS_DATA,

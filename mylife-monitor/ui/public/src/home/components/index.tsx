@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
 import { styled } from '@mui/material/styles';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { views, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { getNagiosView, getUpsmonView, getUpdatesView } from '../selectors';
 import NagiosSummary from './nagios-summary';
-import UpsmonSummary from './upsmon-summary';
 import UpdatesSummary from './updates-summary';
+import UpsmonSummary from './upsmon-summary';
 
 type FIXME_any = any;
 
