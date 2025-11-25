@@ -1,8 +1,7 @@
 import React from 'react';
-import * as icons from '@mui/icons-material';
+import Power from '@mui/icons-material/Power';
+import Update from '@mui/icons-material/Update';
 import SvgIcon from '@mui/material/SvgIcon';
-
-const { Power, Update } = icons;
 
 const Monitor = (props) => (
   <SvgIcon viewBox="0 0 24 24" {...props}>

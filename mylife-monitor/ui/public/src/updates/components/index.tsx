@@ -15,7 +15,7 @@ import TableCell from '@mui/material/TableCell';
 import Tooltip from '@mui/material/Tooltip';
 import Checkbox from '@mui/material/Checkbox';
 import TableBody from '@mui/material/TableBody';
-import { styled, ThemeProvider, createTheme } from '@mui/material';
+import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 
 type FIXME_any = any;
 
