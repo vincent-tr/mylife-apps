@@ -124,7 +124,7 @@ export default class Datatype {
   }
 
   getField(id: string) {
-    this.fields; // access check
+    void(this.fields); // access check
 
     const field = this._fieldMap[id];
     if (!field) {
