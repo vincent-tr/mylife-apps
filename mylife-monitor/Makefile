@@ -22,9 +22,10 @@ server-build:
 	cd $(DIR_SERVER) && go build -o ../dist/mylife-monitor-server main.go
 
 ui-build:
+	cd $(DIR_UI) && npm run lint && npm run format:check
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run lint && npm run format:check
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run lint && npm run format:check
 	cd $(DIR_UI) && \
-	npm run lint && \
-	npm run format:check && \
 	npm exec -- tsc --project public/tsconfig.json && \
 	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts build
 
