@@ -1,19 +1,18 @@
-import React, { useMemo } from 'react';
-import { DebouncedTextField } from 'mylife-tools-ui';
-import { useSelector, useDispatch } from 'react-redux';
-import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup, getOperationDetail } from '../../store';
-import { getAccount, getGroupStack } from '../../../reference/selectors';
-
-import Title from './title';
-import Row from './row';
-import GroupBreadcrumbs from './group-breadcrumbs';
-import AmountValue from './amount-value';
-import Markdown from '../../../common/components/markdown';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import { styled } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { DebouncedTextField } from 'mylife-tools-ui';
+import Markdown from '../../../common/components/markdown';
+import { getAccount, getGroupStack } from '../../../reference/selectors';
+import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup, getOperationDetail } from '../../store';
+import AmountValue from './amount-value';
+import GroupBreadcrumbs from './group-breadcrumbs';
+import Row from './row';
+import Title from './title';
 
 type FIXME_any = any;
 

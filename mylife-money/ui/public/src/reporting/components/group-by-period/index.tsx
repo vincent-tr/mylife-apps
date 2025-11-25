@@ -1,13 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { useLifecycle } from 'mylife-tools-ui';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { reportingLeave, getSortedViewList } from '../../store';
-
-import Criteria from './criteria';
-import Chart from './chart';
-import { formatCriteria } from './tools';
 import { styled } from '@mui/material/styles';
+import PropTypes from 'prop-types';
+import React, { useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLifecycle } from 'mylife-tools-ui';
+import { reportingLeave, getSortedViewList } from '../../store';
+import Chart from './chart';
+import Criteria from './criteria';
+import { formatCriteria } from './tools';
 
 type FIXME_any = any;
 

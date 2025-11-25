@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { format as formatDate } from 'date-fns';
-import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
-
-import AccountSelector from '../../../common/components/account-selector';
-import GroupCriteriaField from '../common/group-field';
-import ExportButton from '../common/export-button';
-import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { format as formatDate } from 'date-fns';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
+import AccountSelector from '../../../common/components/account-selector';
+import ExportButton from '../common/export-button';
+import GroupCriteriaField from '../common/group-field';
 
 const Container = styled('div')({
   display: 'flex',

@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
 import * as colors from '@mui/material/colors';
+import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 import { getAccount } from '../../../reference/selectors';
+import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 
 type FIXME_any = any;
 

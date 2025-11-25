@@ -1,12 +1,11 @@
-import React, { useMemo } from 'react';
 import { styled } from '@mui/material/styles';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLifecycle, useScreenSize } from 'mylife-tools-ui';
 import { managementEnter, managementLeave, isOperationDetail } from '../store';
-
-import Tree from './tree';
-import List from './list';
 import Detail from './detail';
+import List from './list';
+import Tree from './tree';
 
 type FIXME_any = any;
 

@@ -1,8 +1,16 @@
-import React, { useMemo } from 'react';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
+import AccountSelector from '../../../common/components/account-selector';
+import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
+import { getAccounts, getGroup } from '../../../reference/selectors';
 import {
   setMinDate,
   setMaxDate,
@@ -15,17 +23,8 @@ import {
   getSelectedOperations,
   getCriteria,
 } from '../../store';
-import { getAccounts, getGroup } from '../../../reference/selectors';
-
-import AccountSelector from '../../../common/components/account-selector';
-import ImportButton from './import-button';
-import GroupSelectorButton from '../../../common/components/group-selector-button';
 import GroupDenseSelector from './group-dense-selector';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import ImportButton from './import-button';
 
 type FIXME_any = any;
 

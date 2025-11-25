@@ -1,14 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import icons from '../icons';
-import { getGroup } from '../../reference/selectors';
-
-import GroupSelectorButton from './group-selector-button';
-import Tooltip from '@mui/material/Tooltip';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { getGroup } from '../../reference/selectors';
+import icons from '../icons';
+import GroupSelectorButton from './group-selector-button';
 
 type FIXME_any = any;
 

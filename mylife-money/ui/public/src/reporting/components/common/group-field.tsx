@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import icons from '../../../common/icons';
-
-import GroupSelector from '../../../common/components/group-selector';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
+import React from 'react';
+import GroupSelector from '../../../common/components/group-selector';
+import icons from '../../../common/icons';
 
 const Container = styled('div')({
   display: 'flex',

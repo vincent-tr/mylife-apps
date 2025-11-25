@@ -1,8 +1,7 @@
 import React from 'react';
-
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import rehypeExternalLinks from 'rehype-external-links';
+import remarkGfm from 'remark-gfm';
 
 const Markdown: React.FC<{ className?: string; value: string }> = ({ className, value }) => (
   <div className={className}>

@@ -1,14 +1,14 @@
+import IconButton from '@mui/material/IconButton';
+import { default as MuiToolbar } from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { dialogs } from 'mylife-tools-ui';
+import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
-import groupEditor from './group-editor';
 import { getGroup } from '../../../reference/selectors';
 import { getSelectedGroupId, createGroup, updateGroup, deleteGroup } from '../../store';
-import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { default as MuiToolbar } from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
+import groupEditor from './group-editor';
 
 type FIXME_any = any;
 

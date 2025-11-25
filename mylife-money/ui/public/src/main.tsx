@@ -1,17 +1,15 @@
 import React from 'react';
 import { services } from 'mylife-tools-ui';
-import managementReducer from './management/store';
-import reportingReducer from './reporting/store';
 import metadataDefintions from '../../shared/metadata';
-
-import { referenceInit } from './reference/actions';
-
+import Bots from './bots/components';
 import icons from './common/icons';
 import Home from './home/components';
 import Management from './management/components';
-import Bots from './bots/components';
+import managementReducer from './management/store';
+import { referenceInit } from './reference/actions';
 import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
+import reportingReducer from './reporting/store';
 
 const reducers = {
   management: managementReducer,

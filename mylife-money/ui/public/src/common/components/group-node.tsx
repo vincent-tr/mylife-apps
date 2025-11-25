@@ -1,17 +1,17 @@
-import React, { useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import icons from '../icons';
-import { makeGetSortedChildren } from '../../reference/selectors';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import Collapse from '@mui/material/Collapse';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
 import { styled } from '@mui/material/styles';
+import React, { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { makeGetSortedChildren } from '../../reference/selectors';
+import icons from '../icons';
 
 type FIXME_any = any;
 

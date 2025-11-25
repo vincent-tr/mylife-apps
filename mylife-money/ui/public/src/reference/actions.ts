@@ -1,6 +1,6 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import { ACCOUNTS, GROUPS } from './view-ids';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const accountViewRef = new views.ViewReference({
   uid: ACCOUNTS,

@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
+import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import icons from '../../../common/icons';
-import { getSelectedGroupId, selectGroup } from '../../store';
-import { getGroup } from '../../../reference/selectors';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
+import icons from '../../../common/icons';
+import { getGroup } from '../../../reference/selectors';
+import { getSelectedGroupId, selectGroup } from '../../store';
 
 type FIXME_any = any;
 
