@@ -221,11 +221,10 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 - merge tools-common into tools-ui
 - make TS stricter
-- import mui direct component
 - merge shared and public
 - review metadata vs typescript types
 - review isScreenPhone, etc for style: should not go through JS to go back to CSS
-- remove socket errors
+- remove server socket errors
 - use mui charts, table, treeview
 - remove PropTypes use
 - FIXME_any
