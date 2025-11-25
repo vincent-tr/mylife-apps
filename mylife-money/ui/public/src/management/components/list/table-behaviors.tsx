@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import colors from '@mui/material/colors';
+import * as colors from '@mui/material/colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 import { getAccount } from '../../../reference/selectors';

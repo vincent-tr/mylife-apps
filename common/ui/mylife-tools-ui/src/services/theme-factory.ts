@@ -1,5 +1,5 @@
 import { createTheme, responsiveFontSizes, ThemeOptions } from '@mui/material/styles';
-import colors from '@mui/material/colors';
+import * as colors from '@mui/material/colors';
 import { useScreenPhone } from '../components/behaviors/responsive';
 
 const base: ThemeOptions = {
