@@ -20,7 +20,7 @@
       "jsx": true
     }
   },
-  "plugins": ["@typescript-eslint", "react", "react-hooks"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "import"],
   "settings": {
     "react": {
       "version": "detect"
@@ -30,6 +30,17 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["@mui/material", "@mui/icons-material", "@mui/x-charts", "@mui/x-data-grid", "@mui/x-date-pickers", "@mui/x-tree-view"],
+            "message": "Use direct subpath imports (e.g., import Button from '@mui/material/Button' or import { LineChart } from '@mui/x-charts/LineChart') for better development performance."
+          }
+        ]
+      }
+    ]
   }
 }
