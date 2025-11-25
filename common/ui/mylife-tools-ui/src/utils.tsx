@@ -1,6 +1,6 @@
-import { ActionCreatorsMapObject, ActionCreator, bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
 import React, { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { ActionCreatorsMapObject, ActionCreator, bindActionCreators } from 'redux';
 
 export function fireAsync(target) {
   target().catch((err) => console.error('Unhandled promise rejection', err)); // eslint-disable-line no-console

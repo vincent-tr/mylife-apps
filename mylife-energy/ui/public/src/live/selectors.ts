@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
-import * as viewUids from './view-uids';
 import { DeviceType, LiveDevice, Measure } from '../../../shared/metadata';
+import * as viewUids from './view-uids';
 
 export const getDeviceView = (state) => views.getView(state, viewUids.DEVICES) as views.View<LiveDevice>;
 export const getMeasureView = (state) => views.getView(state, viewUids.MEASURES) as views.View<Measure>;

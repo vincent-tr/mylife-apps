@@ -1,7 +1,7 @@
 import { Action, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
-import { Notification, NotificationType } from './types';
 import { abortableDelay } from '../../utils';
+import { Notification, NotificationType } from './types';
 
 interface ErrorAction extends Action {
   error: Error;

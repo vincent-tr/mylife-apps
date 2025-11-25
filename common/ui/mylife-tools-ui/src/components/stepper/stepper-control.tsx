@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useState } from 'react';
-import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
 import { styled } from '@mui/material/styles';
+import PropTypes from 'prop-types';
+import React, { FunctionComponent, useState } from 'react';
 import StepperActions from './stepper-actions';
 
 const Container = styled('div')({

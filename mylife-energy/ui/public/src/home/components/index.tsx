@@ -1,14 +1,14 @@
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
 import React, { PropsWithChildren, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLifecycle, useActions, useInterval } from 'mylife-tools-ui';
-import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
-import { enter, leave } from '../actions';
-import { getDataView } from '../selectors';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
+import { enter, leave } from '../actions';
+import { getDataView } from '../selectors';
 
 const SectionRoot = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),

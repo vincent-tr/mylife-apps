@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+
 
 const SummaryAccordion = ({ initialExpanded = true, expandedSummary, collapsedSummary, children, ...props }) => {
   const [expanded, setExpanded] = useState(initialExpanded);

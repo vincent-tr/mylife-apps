@@ -1,6 +1,6 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools-ui';
 import * as viewUids from './view-uids';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const devicesViewRef = new views.ViewReference({
   uid: viewUids.DEVICES,

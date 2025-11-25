@@ -1,5 +1,5 @@
-import sensor from './entities/sensor';
 import measure from './entities/measure';
+import sensor from './entities/sensor';
 
 export default {
   datatypes: [],

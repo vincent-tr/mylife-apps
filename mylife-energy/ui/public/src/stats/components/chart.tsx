@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
 import { format as formatDate } from 'date-fns';
-import { AutoSizer } from 'react-virtualized';
+import { fr } from 'date-fns/locale';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools-ui';
-import { fr } from 'date-fns/locale';
-import { StatsType, TimestampData } from '../types';
 import { getChartData, getSensors } from '../store';
+import { StatsType, TimestampData } from '../types';
 
 const Chart: React.FC<{ className?: string; type: StatsType }> = ({ className, type }) => {
   const data = useSelector(getChartData);

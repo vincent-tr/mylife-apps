@@ -1,7 +1,7 @@
-import { views, io } from 'mylife-tools-ui';
-import * as viewUids from './view-uids';
-import { TeslaMode } from '../../../shared/metadata';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { views, io } from 'mylife-tools-ui';
+import { TeslaMode } from '../../../shared/metadata';
+import * as viewUids from './view-uids';
 
 const stateViewRef = new views.ViewReference({
   uid: viewUids.STATE,

@@ -1,13 +1,12 @@
 import React from 'react';
 import { services } from 'mylife-tools-ui';
-import statsReducer from './stats/store';
 import metadataDefintions from '../../shared/metadata';
-
 import icons from './common/icons';
 import Home from './home/components';
 import Live from './live/components';
-import Tesla from './tesla/components';
 import Stats from './stats/components';
+import statsReducer from './stats/store';
+import Tesla from './tesla/components';
 
 const reducers = {
   stats: statsReducer,

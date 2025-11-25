@@ -1,8 +1,7 @@
-import React, { FunctionComponent } from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
+import React, { FunctionComponent } from 'react';
 import YearSelectorButton from './year-selector-button';
 
 const Container = styled(Box)({

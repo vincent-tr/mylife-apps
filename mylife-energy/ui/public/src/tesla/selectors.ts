@@ -1,6 +1,6 @@
 import { views } from 'mylife-tools-ui';
-import * as viewUids from './view-uids';
 import { TeslaState } from '../../../shared/metadata';
+import * as viewUids from './view-uids';
 
 const viewStateId = 'unique';
 

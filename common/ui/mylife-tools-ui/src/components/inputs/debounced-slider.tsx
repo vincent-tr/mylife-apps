@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Slider from '@mui/material/Slider';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { useDebounced } from '../behaviors';
 
 const DebouncedSlider = ({ value, onChange, ...props }) => {

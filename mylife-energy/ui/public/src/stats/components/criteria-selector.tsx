@@ -1,9 +1,9 @@
+import { styled } from '@mui/material/styles';
 import React from 'react';
 import { StatsType } from '../types';
+import DatePicker from './date-picker';
 import DeviceList from './device-list';
 import TypeList from './type-list';
-import DatePicker from './date-picker';
-import { styled } from '@mui/material/styles';
 
 export interface Criteria {
   type: StatsType;

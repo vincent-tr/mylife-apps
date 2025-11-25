@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { io, views } from 'mylife-tools-ui';
-import { SensorData, StatsType, TimestampData, UiSensor } from './types';
 import { Device, Measure, Sensor } from '../../../shared/metadata';
+import { SensorData, StatsType, TimestampData, UiSensor } from './types';
 import * as viewUids from './view-uids';
 
 type FIXME_any = any;

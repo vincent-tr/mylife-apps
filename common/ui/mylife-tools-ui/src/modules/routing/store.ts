@@ -1,6 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
-
 import { STATE_PREFIX } from '../../constants/defines';
 
 interface RoutingState {

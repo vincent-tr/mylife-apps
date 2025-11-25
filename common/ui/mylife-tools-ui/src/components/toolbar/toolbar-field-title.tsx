@@ -1,6 +1,6 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import React from 'react';
 
 const Title = styled(Typography)(({ theme }) => ({
   marginRight: theme.spacing(2),

@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import PathToRegex from 'path-to-regex';
 import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';
-import PathToRegex from 'path-to-regex';
 
 const LayoutRouter = ({ routes, menu, appName, appIcon, ...props }) => {
   const { location, navigate } = useRoutingConnect();

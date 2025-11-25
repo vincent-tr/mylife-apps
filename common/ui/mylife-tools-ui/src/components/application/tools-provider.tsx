@@ -1,8 +1,7 @@
 'use strict';
 
-import React from 'react';
 import PropTypes from 'prop-types';
-
+import React from 'react';
 import MuiDateProvider from './mui-date-provider';
 import StoreProvider from './store-provider';
 import ThemeProvider from './theme-provider';

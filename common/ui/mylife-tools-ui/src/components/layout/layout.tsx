@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-
+import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { useScreenSize } from '../behaviors';
 import Header from './header';
 import Menu from './menu';

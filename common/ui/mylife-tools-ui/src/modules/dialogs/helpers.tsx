@@ -1,8 +1,8 @@
 import React from 'react';
 import { confirmable, createConfirmation } from 'react-confirm';
+import { ToolsProvider } from '../../components/application';
 import Confirm from './components/confirm';
 import Input from './components/input';
-import { ToolsProvider } from '../../components/application';
 
 export function create(Dialog) {
   const DialogWrapper = (props) => (

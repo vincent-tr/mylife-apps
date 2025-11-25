@@ -1,13 +1,12 @@
 import { createAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
-
 import { serializer } from 'mylife-tools-common';
+import { STATE_PREFIX } from '../../constants/defines';
 import { View } from '../views';
 import { Entity } from '../views/types';
-import { CallPayload } from './types';
-import { STATE_PREFIX } from '../../constants/defines';
 import CallEngine from './engines/call';
 import NotifyEngine from './engines/notify';
+import { CallPayload } from './types';
 
 interface IOState {
   online: boolean;

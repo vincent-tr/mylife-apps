@@ -1,7 +1,7 @@
+import * as utils from '../../utils';
 import Constraint, { ConstraintDefinition } from './constraint';
 import * as registry from './registry';
 import { lock, Validator } from './utils';
-import * as utils from '../../utils';
 
 export type StructureFieldDefinition = {
   id: string;

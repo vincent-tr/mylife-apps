@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Portal from '@mui/material/Portal';
-import SnackbarContent from '@mui/material/SnackbarContent';
-import IconButton from '@mui/material/IconButton';
-import { styled } from '@mui/material/styles';
 import CheckCircle from '@mui/icons-material/CheckCircle';
+import CloseIcon from '@mui/icons-material/Close';
+import Error from '@mui/icons-material/Error';
 import Info from '@mui/icons-material/Info';
 import Warning from '@mui/icons-material/Warning';
-import Error from '@mui/icons-material/Error';
-import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
+import Portal from '@mui/material/Portal';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import { styled } from '@mui/material/styles';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { getNotifications, dismissNotification } from '../store';
 import { NotificationType } from '../types';
 

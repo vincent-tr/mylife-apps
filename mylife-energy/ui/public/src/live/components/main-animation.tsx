@@ -1,15 +1,15 @@
+import * as muiColors from '@mui/material/colors';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useScreenPhone, services } from 'mylife-tools-ui';
+import { LiveDevice } from '../../../../shared/metadata';
 import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
-import { LiveDevice } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import SvgIcon from '@mui/material/SvgIcon';
-import * as muiColors from '@mui/material/colors';
-import { styled } from '@mui/material/styles';
 
 interface WrapperProps {
   isPhone?: boolean;

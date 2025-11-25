@@ -1,19 +1,19 @@
-import BatteryGauge from 'react-battery-gauge';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { styled } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import humanizeDuration from 'humanize-duration';
 import React, { PropsWithChildren } from 'react';
+import BatteryGauge from 'react-battery-gauge';
 import { useSelector } from 'react-redux';
 import { useLifecycle, useActions } from 'mylife-tools-ui';
-import { enter, leave, setMode } from '../actions';
-import { getState } from '../selectors';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../shared/metadata';
 import icons from '../../common/icons';
+import { enter, leave, setMode } from '../actions';
+import { getState } from '../selectors';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
 

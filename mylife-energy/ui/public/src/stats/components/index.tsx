@@ -1,11 +1,11 @@
-import React, { useReducer, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
+import React, { useReducer, useEffect } from 'react';
 import { useActions, useLifecycle } from 'mylife-tools-ui';
 import { enter, leave } from '../actions';
 import { fetchValues } from '../store';
 import { StatsType } from '../types';
-import CriteriaSelector, { Criteria } from './criteria-selector';
 import Chart from './chart';
+import CriteriaSelector, { Criteria } from './criteria-selector';
 
 const Container = styled('div')({
   flex: '1 1 auto',
