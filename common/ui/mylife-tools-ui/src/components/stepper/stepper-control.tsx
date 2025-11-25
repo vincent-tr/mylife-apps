@@ -15,16 +15,15 @@ const Container = styled('div')({
 const Main = styled(Box)(({ theme }) => ({
   flex: '1 1 auto',
   marginBottom: theme.spacing(1),
-  borderColor: theme.palette.divider
+  borderColor: theme.palette.divider,
 }));
 
 interface StepperControlProps {
   className?: string;
-  steps: { label: string, actions?, render: (step) => React.ReactNode; }[];
+  steps: { label: string; actions?; render: (step) => React.ReactNode }[];
   onStepChanged?: (value, step, activeStep, setActiveStep) => boolean;
   onEnd: (value: 'finish' | 'cancel') => void;
 }
-
 
 const StepperControl: FunctionComponent<StepperControlProps> = ({ className, steps, onStepChanged, onEnd, ...props }) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -41,7 +40,7 @@ const StepperControl: FunctionComponent<StepperControlProps> = ({ className, ste
       }
     }
 
-    switch(value) {
+    switch (value) {
       case 'prev': {
         setActiveStep(activeStep - 1);
         break;
@@ -92,13 +91,13 @@ StepperControl.propTypes = {
   className: PropTypes.string,
   steps: PropTypes.arrayOf(
     PropTypes.exact({
-      label       : PropTypes.string.isRequired,
-      actions     : PropTypes.object,
-      render      : PropTypes.func.isRequired
+      label: PropTypes.string.isRequired,
+      actions: PropTypes.object,
+      render: PropTypes.func.isRequired,
     }).isRequired
   ),
   onStepChanged: PropTypes.func,
-  onEnd: PropTypes.func.isRequired
+  onEnd: PropTypes.func.isRequired,
 };
 
 export default StepperControl;
@@ -113,14 +112,14 @@ function buildActions(currentStep, stepsCount, provided) {
     canSkip: false,
     canFinish: false,
     canCancel: true,
-    ... provided
+    ...provided,
   };
 
-  if(isFirst) {
+  if (isFirst) {
     actions.canPrev = false;
   }
 
-  if(isLast) {
+  if (isLast) {
     actions.canNext = false;
     actions.canFinish = true;
   }

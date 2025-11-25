@@ -9,11 +9,11 @@ import YearSelectorButton from './year-selector-button';
 const Container = styled(Box)({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const StyledDatePicker = styled(DatePicker)({
-  width: 170
+  width: 170,
 });
 
 interface DateOrYearSelectorProps {
@@ -27,29 +27,22 @@ interface DateOrYearSelectorProps {
 const DateOrYearSelector: FunctionComponent<DateOrYearSelectorProps> = ({ disabled = false, onChange, value, showYearSelector = false, selectLastDay = false }) => {
   return (
     <Container>
-      <StyledDatePicker 
-        disabled={disabled} 
-        value={value} 
+      <StyledDatePicker
+        disabled={disabled}
+        value={value}
         onChange={onChange}
         format="dd/MM/yyyy"
         slotProps={{
           textField: {
             variant: 'outlined',
-            size: 'small'
+            size: 'small',
           },
           actionBar: {
-            actions: ['clear', 'cancel', 'accept']
-          }
+            actions: ['clear', 'cancel', 'accept'],
+          },
         }}
       />
-      {showYearSelector && (
-        <YearSelectorButton 
-          disabled={disabled} 
-          value={value} 
-          onChange={onChange} 
-          selectLastDay={selectLastDay} 
-        />
-      )}
+      {showYearSelector && <YearSelectorButton disabled={disabled} value={value} onChange={onChange} selectLastDay={selectLastDay} />}
     </Container>
   );
 };

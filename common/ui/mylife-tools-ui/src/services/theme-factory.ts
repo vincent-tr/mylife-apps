@@ -5,12 +5,12 @@ const base: ThemeOptions = {
   palette: {
     primary: colors.blue,
     secondary: colors.pink,
-  }
-}
+  },
+};
 
 const dense: ThemeOptions = {
   typography: {
-    fontSize: 12
+    fontSize: 12,
   },
 
   spacing: 2,
@@ -84,8 +84,8 @@ const dense: ThemeOptions = {
   },
 };
 
-const defaultTheme = responsiveFontSizes(createTheme({ ... base }));
-const phoneTheme = responsiveFontSizes(createTheme({ ... base, ...dense }));
+const defaultTheme = responsiveFontSizes(createTheme({ ...base }));
+const phoneTheme = responsiveFontSizes(createTheme({ ...base, ...dense }));
 
 export function useTheme() {
   const isPhone = useScreenPhone();

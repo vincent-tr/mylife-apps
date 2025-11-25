@@ -29,7 +29,7 @@ class Field {
     this._datatype = validator.validate(definition.datatype, 'datatype', { type: 'string', mandatory: true });
     this.initialValue = definition.initial === undefined ? null : definition.initial;
 
-    this.constraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
+    this.constraints = validator.validateConstraints(definition.constraints).map((cdef) => new Constraint(cdef));
 
     this.propChain = this.id.split('.');
 
@@ -53,9 +53,9 @@ class Field {
     const chain = Array.from(this.propChain);
     const last = chain.pop();
     let current = object;
-    for(const part of chain) {
+    for (const part of chain) {
       let val = current[part];
-      if(!val) {
+      if (!val) {
         current[part] = val = {};
       }
       current = value;
@@ -65,9 +65,9 @@ class Field {
 
   getValue(object) {
     let current = object;
-    for(const prop of this.propChain) {
+    for (const prop of this.propChain) {
       current = current[prop];
-      if(current === undefined || current === null) {
+      if (current === undefined || current === null) {
         break;
       }
     }
@@ -76,11 +76,11 @@ class Field {
 }
 
 function setValueImpl(object, propChain, value) {
-  const [ prop, ... chain ] = propChain;
-  if(chain.length) {
+  const [prop, ...chain] = propChain;
+  if (chain.length) {
     value = setValueImpl(object[prop] || {}, chain, value);
   }
-  return Object.freeze(Object.assign({}, object, { [prop] : value }));
+  return Object.freeze(Object.assign({}, object, { [prop]: value }));
 }
 
 export type EntityDefinition = {
@@ -109,7 +109,7 @@ export default class Entity {
     this.id = validator.validateId(definition.id);
 
     const parent = validator.validate(definition.parent, 'parent', { type: 'string' });
-    if(parent) {
+    if (parent) {
       this.parent = registry.getEntity(parent);
     }
 
@@ -118,16 +118,19 @@ export default class Entity {
     this.display = validator.validate(definition.display, 'display', { type: 'function' });
 
     const parentFields = this.parent?.fields ?? [];
-    const localFields = validator.validate(definition.fields, 'fields', { type: 'array', defaultValue: [] }).map(fdef => new Field(fdef));
+    const localFields = validator.validate(definition.fields, 'fields', { type: 'array', defaultValue: [] }).map((fdef) => new Field(fdef));
     this.fields = [...parentFields, ...localFields];
 
     const parentConstraints = this.parent ? this.parent.constraints : [];
-    const localConstraints = validator.validateConstraints(definition.constraints).map(cdef => new Constraint(cdef));
+    const localConstraints = validator.validateConstraints(definition.constraints).map((cdef) => new Constraint(cdef));
     this.constraints = [...parentConstraints, ...localConstraints];
 
-    validator.validateUnique(this.fields.map(({ id }) => id), 'fields');
+    validator.validateUnique(
+      this.fields.map(({ id }) => id),
+      'fields'
+    );
     this.fieldsById = new Map();
-    for(const field of this.fields) {
+    for (const field of this.fields) {
       this.fieldsById.set(field.id, field);
     }
 
@@ -147,7 +150,7 @@ export default class Entity {
 
   getField(id) {
     const field = this.fieldsById.get(id);
-    if(field) {
+    if (field) {
       return field;
     }
     throw new Error(`Field '${id}' not found on entity '${this.id}'`);
@@ -155,9 +158,9 @@ export default class Entity {
 
   newObject(values = {}) {
     let object = { _entity: this.id };
-    for(const field of this.fields) {
+    for (const field of this.fields) {
       const value = field.getValue(values);
-      if(value === undefined) {
+      if (value === undefined) {
         object = field.resetValue(object);
       } else {
         object = field.setValue(object, value);
@@ -167,13 +170,13 @@ export default class Entity {
   }
 
   setValues(object, values) {
-    for(const field of this.fields) {
+    for (const field of this.fields) {
       const value = field.getValue(values);
-      if(value === undefined) {
+      if (value === undefined) {
         continue;
       }
       object = field.setValue(object, value);
     }
     return object;
   }
-};
+}

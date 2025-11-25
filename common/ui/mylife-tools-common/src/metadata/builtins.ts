@@ -15,8 +15,6 @@ export const datatypes = [
 export const entities = [
   {
     id: 'base',
-    fields: [
-      { id: '_id', datatype: 'identifier', constraints: ['hidden', 'readonly', 'not-null'] }
-    ]
-  }
+    fields: [{ id: '_id', datatype: 'identifier', constraints: ['hidden', 'readonly', 'not-null'] }],
+  },
 ];

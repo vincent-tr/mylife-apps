@@ -5,6 +5,4 @@ export interface Entity {
 
 export type View<TEntity extends Entity> = {
   [id: string]: TEntity;
-}
-
-
+};

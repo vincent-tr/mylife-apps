@@ -10,14 +10,12 @@ const DebouncedSlider = ({ value, onChange, ...props }) => {
     componentChange(value);
   };
 
-  return (
-    <Slider {...props} value={componentValue} onChange={handleChange} />
-  );
+  return <Slider {...props} value={componentValue} onChange={handleChange} />;
 };
 
 DebouncedSlider.propTypes = {
   value: PropTypes.number,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default DebouncedSlider;

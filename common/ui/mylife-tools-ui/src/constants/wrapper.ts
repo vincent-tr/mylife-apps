@@ -5,10 +5,10 @@ const proxyHandler = {
     }
 
     throw new Error(`Invalid constant name: '${name}'`);
-  }
+  },
 };
 
-export default function (target: { [key: string]: string; }, ...prefixes: string[]): { [key: string]: string; } {
+export default function (target: { [key: string]: string }, ...prefixes: string[]): { [key: string]: string } {
   const prefix = prefixes.length ? prefixes.join(':') + ':' : '';
   const obj = {};
 

@@ -3,7 +3,7 @@ import { AutoSizer, Column, Table } from 'react-virtualized';
 import TableCell from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 
-const identity = x => x;
+const identity = (x) => x;
 
 const StyledTableCell = styled(TableCell)({
   display: 'flex',
@@ -19,7 +19,7 @@ const StyledTable = styled(Table)(({ theme }) => ({
       theme.palette.mode === 'light'
         ? 'rgba(0, 0, 0, 0.07)' // grey[200]
         : 'rgba(255, 255, 255, 0.14)',
-  }
+  },
 }));
 
 type FIXME_any = any;
@@ -47,15 +47,7 @@ export interface VirtualizedTableColumn {
   width?: number;
 }
 
-const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ 
-  data, 
-  columns, 
-  rowStyle, 
-  headerHeight = 48, 
-  rowHeight = 48, 
-  onRowClick, 
-  ...props 
-}) => {
+const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, columns, rowStyle, headerHeight = 48, rowHeight = 48, onRowClick, ...props }) => {
   const rowIndexStyle = ({ index }) => {
     const style = {
       ...runPropGetter(rowStyle, data[index], index),
@@ -81,12 +73,17 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({
                   key={dataKey}
                   dataKey={dataKey}
                   headerRenderer={() => (
-                    <StyledTableCell component='div' variant='head' style={{ height: headerHeight, width: colWidth }} {...runPropGetter(headerProps, dataKey)}>
+                    <StyledTableCell component="div" variant="head" style={{ height: headerHeight, width: colWidth }} {...runPropGetter(headerProps, dataKey)}>
                       {runRenderer(headerRenderer, dataKey)}
                     </StyledTableCell>
                   )}
                   cellRenderer={({ rowData, cellData, rowIndex }) => (
-                    <StyledTableCell component='div' variant='body' onClick={onRowClick && (() => onRowClick(rowData, rowIndex))} style={{ height: rowHeight, width: colWidth, ...runPropGetter(cellStyle, cellData, dataKey)}}>
+                    <StyledTableCell
+                      component="div"
+                      variant="body"
+                      onClick={onRowClick && (() => onRowClick(rowData, rowIndex))}
+                      style={{ height: rowHeight, width: colWidth, ...runPropGetter(cellStyle, cellData, dataKey) }}
+                    >
                       {runRenderer(cellRenderer || identity, cellData, dataKey)}
                     </StyledTableCell>
                   )}
@@ -108,8 +105,8 @@ function computeColumnWidth(tableWidth, columns) {
   // compute space left
   let unsetCount = columns.length;
   let specLeft = tableWidth;
-  for(const { width } of columns) {
-    if(!width) {
+  for (const { width } of columns) {
+    if (!width) {
       continue;
     }
     --unsetCount;
@@ -123,21 +120,17 @@ function computeColumnWidth(tableWidth, columns) {
 function runRenderer(value, ...args) {
   value = runPropGetter(value, ...args);
 
-  if(typeof value !== 'string') {
+  if (typeof value !== 'string') {
     return value;
   }
-  return (
-    <React.Fragment>
-      {value}
-    </React.Fragment>
-  );
+  return <React.Fragment>{value}</React.Fragment>;
 }
 
 function runPropGetter(value, ...args) {
-  if(!value) {
+  if (!value) {
     return;
   }
-  if(value instanceof Function) {
+  if (value instanceof Function) {
     value = value(...args);
   }
   return value;

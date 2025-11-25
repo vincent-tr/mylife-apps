@@ -10,7 +10,7 @@ export function arrayRemove<T>(array: T[], index: number) {
 }
 
 export function arrayUpdate<T>(array: T[], index: number, value: T) {
-  return array.map((item, mapIndex) => mapIndex === index ? value : item);
+  return array.map((item, mapIndex) => (mapIndex === index ? value : item));
 }
 
 export function arrayMove<T>(array: T[], oldIndex: number, newIndex: number) {

@@ -1,7 +1,6 @@
 import { ConstraintDefinition } from './constraint';
 
 export function lock(obj) {
-
   const config = { enumerable: false };
   for (const propName of Object.getOwnPropertyNames(obj)) {
     if (propName.startsWith('_')) {
@@ -36,7 +35,7 @@ export class Validator {
     return id;
   }
 
-  validate<T>(value: T, argumentName: string, { type, mandatory = false, defaultValue }: { type: string; mandatory?: boolean, defaultValue?: T; }) {
+  validate<T>(value: T, argumentName: string, { type, mandatory = false, defaultValue }: { type: string; mandatory?: boolean; defaultValue?: T }) {
     if (value === null || value === undefined) {
       if (mandatory) {
         throw new Error(`Metadata validation failed: ${argumentName} is mandatory for ${this.objectString}`);
@@ -51,7 +50,7 @@ export class Validator {
 
       this.validate(value, argumentName, { type: 'array', mandatory });
 
-      for (const [i, item] of (value as unknown as unknown[] || []).entries()) {
+      for (const [i, item] of ((value as unknown as unknown[]) || []).entries()) {
         this.validate(item, `${argumentName}[${i}]`, { type: itemType, mandatory: true });
       }
 
@@ -97,5 +96,5 @@ function getType(obj: unknown) {
   if (Array.isArray(obj)) {
     return 'array';
   }
-  return typeof (obj);
+  return typeof obj;
 }

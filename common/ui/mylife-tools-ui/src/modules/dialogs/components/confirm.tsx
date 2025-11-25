@@ -20,24 +20,18 @@ interface ConfirmProps<TValue> {
 }
 
 const Confirm = <TValue,>({ show, proceed, options }: ConfirmProps<TValue>) => (
-  <Dialog aria-labelledby='dialog-title' open={show} scroll='paper'>
-    {options.title && (
-      <DialogTitle id='dialog-title'>
-        {options.title}
-      </DialogTitle>
-    )}
+  <Dialog aria-labelledby="dialog-title" open={show} scroll="paper">
+    {options.title && <DialogTitle id="dialog-title">{options.title}</DialogTitle>}
 
     {options.message && (
       <DialogContent dividers>
-        <DialogContentText>
-          {options.message}
-        </DialogContentText>
+        <DialogContentText>{options.message}</DialogContentText>
       </DialogContent>
     )}
-    
+
     <DialogActions>
       {options.actions.map(({ text, value }, index) => (
-        <Button key={index} color='primary' onClick={() => proceed(value)}>
+        <Button key={index} color="primary" onClick={() => proceed(value)}>
           {text}
         </Button>
       ))}

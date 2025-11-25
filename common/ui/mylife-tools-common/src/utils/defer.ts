@@ -1,6 +1,6 @@
 export function defer<T>() {
-	return new Deferred<T>();
-};
+  return new Deferred<T>();
+}
 
 class Deferred<T> {
   public promise: Promise<T>;

@@ -3,7 +3,7 @@ import { setBusy } from '../../dialogs/store';
 
 const CALL_TIMEOUT = 5000;
 
-const timer = (performance && typeof performance.now === 'function') ? performance : Date;
+const timer = performance && typeof performance.now === 'function' ? performance : Date;
 const logger = import.meta.env.PROD ? () => {} : logCall;
 
 class Pending {
@@ -11,7 +11,12 @@ class Pending {
   private readonly begin: number;
   private end: number;
 
-  constructor(private readonly engine, private readonly request, private readonly deferred, timeout: number) {
+  constructor(
+    private readonly engine,
+    private readonly request,
+    private readonly deferred,
+    timeout: number
+  ) {
     this.timeout = setTimeout(() => this.onTimeout(), timeout);
     this.begin = timer.now();
   }
@@ -52,23 +57,24 @@ class CallEngine {
   private readonly pendings = new Map();
   private transactionCounter = 0;
 
-  constructor(private readonly emitter, private readonly dispatch) {
-  }
+  constructor(
+    private readonly emitter,
+    private readonly dispatch
+  ) {}
 
   onDisconnect() {
     const pendings = Array.from(this.pendings.values());
-    for(const pending of pendings) {
+    for (const pending of pendings) {
       pending.onDisconnect();
     }
   }
 
-  onConnect() {
-  }
+  onConnect() {}
 
   onMessage(message) {
     const { transaction } = message;
     const pending = this.pendings.get(transaction);
-    if(!pending) {
+    if (!pending) {
       console.log('Got response for unknown transaction, ignored'); // eslint-disable-line no-console
       return;
     }
@@ -78,14 +84,14 @@ class CallEngine {
 
   addPending(pending) {
     this.pendings.set(pending.transaction, pending);
-    if(this.pendings.size === 1) {
+    if (this.pendings.size === 1) {
       this.dispatch(setBusy(true));
     }
   }
 
   removePending(pending) {
     this.pendings.delete(pending.transaction);
-    if(this.pendings.size === 0) {
+    if (this.pendings.size === 0) {
       this.dispatch(setBusy(false));
     }
   }
@@ -120,7 +126,7 @@ function logCall(pending, error, result) {
   /* eslint-disable no-console */
   console.groupCollapsed(`%c call %c${service}.${method} %c(in ${duration.toFixed(2)} ms)`, styles.lighter, styles.default, styles.lighter);
   console.log('%crequest', styles.request, pending.request);
-  if(error) {
+  if (error) {
     console.log('%cerror', styles.error, error);
   } else {
     console.log('%cresult', styles.result, result);

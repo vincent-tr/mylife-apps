@@ -19,7 +19,7 @@ const routingSlice = createSlice({
   reducers: {
     locationChange: (state, action: PayloadAction<string>) => {
       state.location = action.payload;
-    }
+    },
   },
   selectors: {
     getLocation: (state) => state.location,
@@ -28,7 +28,7 @@ const routingSlice = createSlice({
 
 const local = {
   locationChange: routingSlice.actions.locationChange,
-}
+};
 
 export const { locationChange } = routingSlice.actions;
 export const { getLocation } = routingSlice.selectors;
@@ -36,18 +36,18 @@ export const navigate = createAction<string>(ACTION_NAVIGATE);
 
 export default routingSlice.reducer;
 
-export const middleware = (/*store*/) => next => {
+export const middleware = (/*store*/) => (next) => {
   const history = createBrowserHistory();
-  
+
   const sendHistory = () => {
-    const location =  decodeURI(history.location.pathname);
+    const location = decodeURI(history.location.pathname);
     next(local.locationChange(location));
   };
 
   history.listen(sendHistory);
   sendHistory();
 
-  return action => {
+  return (action) => {
     if (action.type === ACTION_NAVIGATE) {
       const location: string = action.payload;
       history.push(location);

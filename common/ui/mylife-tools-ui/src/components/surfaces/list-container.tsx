@@ -13,9 +13,7 @@ const Wrapper = styled('div')({
 const ListContainer: React.FC<PropsWithChildren<{ className?: string }>> = ({ className, children }) => {
   return (
     <Container className={className}>
-      <Wrapper>
-        {children}
-      </Wrapper>
+      <Wrapper>{children}</Wrapper>
     </Container>
   );
 };

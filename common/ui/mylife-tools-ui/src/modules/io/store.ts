@@ -11,15 +11,12 @@ import NotifyEngine from './engines/notify';
 
 interface IOState {
   online: boolean;
-  views: { [viewId: string]: View<Entity>; };
-};
+  views: { [viewId: string]: View<Entity> };
+}
 
 interface ViewChangePayload {
   viewId: string;
-  list: Array<
-    { type: 'set'; object: Entity; }
-    | { type: 'unset'; objectId: string; }
-  >;
+  list: Array<{ type: 'set'; object: Entity } | { type: 'unset'; objectId: string }>;
 }
 
 const ACTION_CALL = `${STATE_PREFIX}/io/call`;
@@ -73,16 +70,18 @@ const ioSlice = createSlice({
 const local = {
   setOnline: ioSlice.actions.setOnline,
   viewClose: ioSlice.actions.viewClose,
-}
+};
 
 export const call = createAction<CallPayload>(ACTION_CALL);
 
 export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
-  await api.dispatch(call({
-    service: 'common',
-    method: 'unnotify',
-    viewId
-  }));
+  await api.dispatch(
+    call({
+      service: 'common',
+      method: 'unnotify',
+      viewId,
+    })
+  );
 
   api.dispatch(local.viewClose(viewId));
 });
@@ -92,18 +91,17 @@ export const { getOnline, getView } = ioSlice.selectors;
 
 export default ioSlice.reducer;
 
-export const middleware = (/*store*/) => next => {
-
+export const middleware = (/*store*/) => (next) => {
   const socket = io({ transports: ['websocket', 'polling'] });
   const emitter = (message) => socket.emit('message', serializer.serialize(message));
 
   const engines = {
     call: new CallEngine(emitter, next),
-    notify: new NotifyEngine(emitter, next)
+    notify: new NotifyEngine(emitter, next),
   };
 
   socket.on('connect', () => {
-    for(const engine of Object.values(engines)) {
+    for (const engine of Object.values(engines)) {
       engine.onConnect();
     }
 
@@ -112,21 +110,21 @@ export const middleware = (/*store*/) => next => {
 
   socket.on('disconnect', (reason) => {
     next(local.setOnline(false));
-    for(const engine of Object.values(engines)) {
+    for (const engine of Object.values(engines)) {
       engine.onDisconnect();
     }
 
     // failure on network === 'transport closed'
-    if(reason === 'io server disconnect') {
+    if (reason === 'io server disconnect') {
       // need to reconnect manually
       socket.connect();
     }
   });
 
-  socket.on('message', payload => {
+  socket.on('message', (payload) => {
     const message = serializer.deserialize(payload);
     const engine = engines[message.engine];
-    if(!engine) {
+    if (!engine) {
       console.log(`Message with unknown engine '${message.engine}', ignored`);
       return;
     }
@@ -134,7 +132,7 @@ export const middleware = (/*store*/) => next => {
     engine.onMessage(message);
   });
 
-  return action => {
+  return (action) => {
     if (action.type !== ACTION_CALL) {
       return next(action);
     }

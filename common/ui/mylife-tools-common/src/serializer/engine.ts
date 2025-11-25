@@ -7,26 +7,26 @@ export function addPlugin(plugin) {
 }
 
 export function serialize(payload) {
-  if(typeof payload !== 'object' || payload === null) {
+  if (typeof payload !== 'object' || payload === null) {
     return payload;
   }
 
-  if(Array.isArray(payload)) {
-    return payload.map(item => serialize(item));
+  if (Array.isArray(payload)) {
+    return payload.map((item) => serialize(item));
   }
 
-  for(const plugin of plugins) {
-    if(plugin.is(payload)) {
+  for (const plugin of plugins) {
+    if (plugin.is(payload)) {
       return {
         __type: plugin.name,
-        value: plugin.serialize(payload)
+        value: plugin.serialize(payload),
       };
     }
   }
 
-  if(payload.constructor === {}.constructor) {
+  if (payload.constructor === {}.constructor) {
     const raw = {};
-    for(const [ key, value ] of Object.entries(payload)) {
+    for (const [key, value] of Object.entries(payload)) {
       raw[key] = serialize(value);
     }
     return raw;
@@ -36,24 +36,24 @@ export function serialize(payload) {
 }
 
 export function deserialize(raw) {
-  if(typeof raw !== 'object' || raw === null) {
+  if (typeof raw !== 'object' || raw === null) {
     return raw;
   }
 
-  if(Array.isArray(raw)) {
-    return raw.map(item => deserialize(item));
+  if (Array.isArray(raw)) {
+    return raw.map((item) => deserialize(item));
   }
 
-  if(raw.__type) {
+  if (raw.__type) {
     const plugin = pluginByNames.get(raw.__type);
-    if(!plugin) {
+    if (!plugin) {
       throw new Error(`Cannot deserialize value : plugin ${raw.__type} not found`);
     }
     return plugin.deserialize(raw.value);
   }
 
   const payload = {};
-  for(const [ key, value ] of Object.entries(raw)) {
+  for (const [key, value] of Object.entries(raw)) {
     payload[key] = deserialize(value);
   }
   return payload;

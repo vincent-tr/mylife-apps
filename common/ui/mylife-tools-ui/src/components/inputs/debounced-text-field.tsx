@@ -12,24 +12,24 @@ export type DebouncedTextFieldProps = Omit<TextFieldProps, 'value' | 'onChange'>
 const DebouncedTextField: FunctionComponent<DebouncedTextFieldProps> = ({ value, onChange, multiline, ...props }) => {
   const { componentValue, componentChange, flush } = useDebounced(value, onChange);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     componentChange(e.target.value);
   };
 
-  const handleKeyDown = multiline ? null : (e => {
-    if (e.keyCode === ENTER_KEY) {
-      flush();
-    }
-  });
+  const handleKeyDown = multiline
+    ? null
+    : (e) => {
+        if (e.keyCode === ENTER_KEY) {
+          flush();
+        }
+      };
 
-  return (
-    <TextField {...props as TextFieldProps} multiline={multiline} value={componentValue || ''} onChange={handleChange} onKeyDown={handleKeyDown} />
-  );
+  return <TextField {...(props as TextFieldProps)} multiline={multiline} value={componentValue || ''} onChange={handleChange} onKeyDown={handleKeyDown} />;
 };
 
 DebouncedTextField.propTypes = {
   value: PropTypes.any,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default DebouncedTextField;

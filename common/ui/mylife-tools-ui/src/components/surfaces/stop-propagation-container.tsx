@@ -7,18 +7,11 @@ const Container = styled('div')({
 });
 
 const StopPropagationContainer = ({ className, ...props }) => {
-  return (
-    <Container
-      onClick={event => event.stopPropagation()}
-      onFocus={event => event.stopPropagation()}
-      className={className}
-      {...props}
-    />
-  );
+  return <Container onClick={(event) => event.stopPropagation()} onFocus={(event) => event.stopPropagation()} className={className} {...props} />;
 };
 
 StopPropagationContainer.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default StopPropagationContainer;

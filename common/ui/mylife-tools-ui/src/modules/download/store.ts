@@ -6,7 +6,7 @@ const ACTION_DOWNLOAD_FILE = `${STATE_PREFIX}/download/file`;
 
 export const file = createAction<FileData>(ACTION_DOWNLOAD_FILE);
 
-const toBase64 = array => btoa(String.fromCharCode.apply(null, array));
+const toBase64 = (array) => btoa(String.fromCharCode.apply(null, array));
 
 const download = (name, link) => {
   const pom = document.createElement('a');
@@ -17,8 +17,7 @@ const download = (name, link) => {
   pom.remove();
 };
 
-export const middleware = (/*store*/) => next => action => {
-
+export const middleware = (/*store*/) => (next) => (action) => {
   if (action.type === ACTION_DOWNLOAD_FILE) {
     const { name, mime, content } = action.payload;
     download(name, `data:${mime};base64,${toBase64(content)}`);

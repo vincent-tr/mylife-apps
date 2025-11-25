@@ -4,16 +4,16 @@ import { getView } from './store';
 
 type FIXME_any = any;
 
-export function useSharedView(sharedViewRef, selectors: { [key: string]: (state) => FIXME_any} = {}) {
+export function useSharedView(sharedViewRef, selectors: { [key: string]: (state) => FIXME_any } = {}) {
   const enter = () => sharedViewRef.ref();
   const leave = () => sharedViewRef.unref();
   useLifecycle(enter, leave);
 
-  return useSelector(state => {
+  return useSelector((state) => {
     const view = getView(state, sharedViewRef.uid);
     const result: FIXME_any = { view };
 
-    for(const [key, selector] of Object.entries(selectors)) {
+    for (const [key, selector] of Object.entries(selectors)) {
       result[key] = selector(view);
     }
 

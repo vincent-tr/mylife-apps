@@ -7,7 +7,7 @@ export default class Constraint {
   public readonly args: unknown[];
 
   constructor(definition: ConstraintDefinition) {
-    if(Array.isArray(definition)) {
+    if (Array.isArray(definition)) {
       const [id, ...args] = definition;
       this.id = id;
       this.args = args;
@@ -23,4 +23,4 @@ export default class Constraint {
     Object.freeze(this.args);
     lock(this);
   }
-};
+}

@@ -7,9 +7,7 @@ const Title = styled(Typography)(({ theme }) => ({
 }));
 
 const ToolbarFieldTitle = ({ ...props }) => {
-  return (
-    <Title {...props} />
-  );
+  return <Title {...props} />;
 };
 
 export default ToolbarFieldTitle;

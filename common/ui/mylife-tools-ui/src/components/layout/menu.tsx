@@ -42,7 +42,7 @@ const Menu = ({ items, open, onSelect }) => {
   const reponsiveItems = useResponsiveItems(items);
 
   return (
-    <StyledDrawer variant='permanent' open={open}>
+    <StyledDrawer variant="permanent" open={open}>
       <DrawerHeader />
       <List>
         {reponsiveItems.map(({ id, text, icon: Icon, onClick }) => {
@@ -52,7 +52,9 @@ const Menu = ({ items, open, onSelect }) => {
           };
           return (
             <ListItem key={id} onClick={handler} sx={{ cursor: 'pointer' }}>
-              <ListItemIcon><Icon /></ListItemIcon>
+              <ListItemIcon>
+                <Icon />
+              </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           );
@@ -65,14 +67,14 @@ const Menu = ({ items, open, onSelect }) => {
 Menu.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      id      : PropTypes.string.isRequired,
-      text    : PropTypes.node.isRequired,
-      icon    : PropTypes.elementType,
-      onClick : PropTypes.func
+      id: PropTypes.string.isRequired,
+      text: PropTypes.node.isRequired,
+      icon: PropTypes.elementType,
+      onClick: PropTypes.func,
     }).isRequired
   ),
   open: PropTypes.bool.isRequired,
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
 };
 
 export default Menu;
@@ -80,14 +82,14 @@ export default Menu;
 function useResponsiveItems(items) {
   const { size, orientation } = useScreen();
 
-  return items.filter(item => {
+  return items.filter((item) => {
     const { sizes, orientations } = item.responsive || {};
     return isIn(sizes, size) && isIn(orientations, orientation);
   });
 }
 
 function isIn(values, current) {
-  if(!values) {
+  if (!values) {
     return true; // no filter if not provided
   }
 

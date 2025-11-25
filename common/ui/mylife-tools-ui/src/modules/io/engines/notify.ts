@@ -1,14 +1,14 @@
 import { viewChange } from '../store';
 
 class NotifyEngine {
-  constructor(private readonly emitter, private readonly dispatch) {
-  }
+  constructor(
+    private readonly emitter,
+    private readonly dispatch
+  ) {}
 
-  onDisconnect() {
-  }
+  onDisconnect() {}
 
-  onConnect() {
-  }
+  onConnect() {}
 
   onMessage(message) {
     const { view: viewId, list } = message;

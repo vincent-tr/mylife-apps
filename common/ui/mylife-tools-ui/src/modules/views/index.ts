@@ -14,5 +14,5 @@ export function filter<TEntity extends Entity>(view: View<TEntity>, predicate: (
     }
   }
 
-  return filteredView;  
+  return filteredView;
 }

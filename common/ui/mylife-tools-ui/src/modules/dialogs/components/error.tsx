@@ -13,28 +13,29 @@ const useConnect = () => {
   const dispatch = useDispatch();
   return {
     error: useSelector(getError),
-    ...useMemo(() => ({
-      clear : () => dispatch(clearError())
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        clear: () => dispatch(clearError()),
+      }),
+      [dispatch]
+    ),
   };
 };
 
 const Error: React.FC = () => {
   const { error, clear } = useConnect();
   return (
-    <Dialog open={!!error} onClose={clear} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description' fullWidth maxWidth='sm'>
-      <DialogTitle id='alert-dialog-title' variant='h6' color='error'>
+    <Dialog open={!!error} onClose={clear} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" fullWidth maxWidth="sm">
+      <DialogTitle id="alert-dialog-title" variant="h6" color="error">
         {'Erreur'}
       </DialogTitle>
 
       <DialogContent>
-        <DialogContentText id='alert-dialog-description'>
-          {error && error.message}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{error && error.message}</DialogContentText>
       </DialogContent>
-      
+
       <DialogActions>
-        <Button onClick={clear} color='primary'>
+        <Button onClick={clear} color="primary">
           Ok
         </Button>
       </DialogActions>

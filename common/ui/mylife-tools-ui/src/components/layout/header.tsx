@@ -10,10 +10,7 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import * as icons from '@mui/icons-material';
 
-const {
-  Menu: MenuIcon,
-  NavigateNext: NavigateNextIcon,
-} = icons;
+const { Menu: MenuIcon, NavigateNext: NavigateNextIcon } = icons;
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   marginRight: theme.spacing(4),
@@ -22,8 +19,8 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   overflowX: 'auto',
   '& .MuiBreadcrumbs-ol': {
-    flexWrap: 'nowrap'
-  }
+    flexWrap: 'nowrap',
+  },
 }));
 
 const PadDiv = styled('div')({
@@ -39,13 +36,13 @@ const TitleIcon = styled('svg')(({ theme }) => ({
 const StyledLink = styled(Link)({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 }) as typeof Link;
 
 const StyledTypography = styled(Typography)({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 });
 
 const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, onMenuButtonClick, ...props }) => {
@@ -53,20 +50,20 @@ const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
   const ViewIcon = viewIcon;
 
   return (
-    <AppBar position='absolute' {...props}>
+    <AppBar position="absolute" {...props}>
       <Toolbar>
         {onMenuButtonClick && (
-          <StyledIconButton edge='start' color='inherit' aria-label='Open drawer' onClick={onMenuButtonClick}>
+          <StyledIconButton edge="start" color="inherit" aria-label="Open drawer" onClick={onMenuButtonClick}>
             <MenuIcon />
           </StyledIconButton>
         )}
-        <StyledBreadcrumbs aria-label="Breadcrumb" color='inherit' separator={<NavigateNextIcon fontSize='small' />}>
-          <StyledLink color='inherit' component='button' variant='h6' onClick={onMainClick} noWrap>
+        <StyledBreadcrumbs aria-label="Breadcrumb" color="inherit" separator={<NavigateNextIcon fontSize="small" />}>
+          <StyledLink color="inherit" component="button" variant="h6" onClick={onMainClick} noWrap>
             <TitleIcon as={AppIcon} />
             {appName}
           </StyledLink>
           {viewName && (
-            <StyledTypography color='inherit' variant='h6' noWrap>
+            <StyledTypography color="inherit" variant="h6" noWrap>
               <TitleIcon as={ViewIcon} />
               {viewName}
             </StyledTypography>
@@ -88,9 +85,9 @@ Header.propTypes = {
   onMainClick: PropTypes.func,
   viewName: PropTypes.node,
   viewIcon: PropTypes.elementType,
-  viewAdditionalHeader: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
-  viewAdditionalBreadcrumb: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
-  onMenuButtonClick: PropTypes.func
+  viewAdditionalHeader: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  viewAdditionalBreadcrumb: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  onMenuButtonClick: PropTypes.func,
 };
 
 export default Header;

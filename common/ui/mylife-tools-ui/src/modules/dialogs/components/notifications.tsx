@@ -13,7 +13,7 @@ const typeIcons = {
   success: icons.CheckCircle,
   info: icons.Info,
   warning: icons.Warning,
-  error: icons.Error
+  error: icons.Error,
 };
 
 const { Close: CloseIcon } = icons;
@@ -22,9 +22,12 @@ const useConnect = () => {
   const dispatch = useDispatch();
   return {
     notifications: useSelector(getNotifications),
-    ...useMemo(() => ({
-      dismiss: (id: number) => dispatch(dismissNotification(id))
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        dismiss: (id: number) => dispatch(dismissNotification(id)),
+      }),
+      [dispatch]
+    ),
   };
 };
 
@@ -63,7 +66,7 @@ const Overlay = styled('div')({
   zIndex: 1000,
   width: '80%',
   maxWidth: '20rem',
-  margin: 'auto'
+  margin: 'auto',
 });
 
 interface NotificationProps {
@@ -76,18 +79,18 @@ const Notification: React.FC<NotificationProps> = ({ message, type, onCloseClick
   const Icon = typeIcons[type];
   return (
     <Content
-      aria-describedby='message-id'
+      aria-describedby="message-id"
       className={type}
       message={
-        <Message id='message-id'>
+        <Message id="message-id">
           <StyledIcon as={Icon} />
           {message}
         </Message>
       }
       action={[
-        <IconButton key='close' aria-label='Fermer' color='inherit' onClick={onCloseClick}>
+        <IconButton key="close" aria-label="Fermer" color="inherit" onClick={onCloseClick}>
           <CloseIcon />
-        </IconButton>
+        </IconButton>,
       ]}
     />
   );
@@ -96,14 +99,10 @@ const Notification: React.FC<NotificationProps> = ({ message, type, onCloseClick
 const Notifications: React.FC = () => {
   const { dismiss, notifications } = useConnect();
   return (
-    <Portal key='notificationsPortal'>
+    <Portal key="notificationsPortal">
       <Overlay>
-        {notifications.map(notification => (
-          <Notification
-            key={notification.id}
-            onCloseClick={() => dismiss(notification.id)}
-            {...notification}
-          />
+        {notifications.map((notification) => (
+          <Notification key={notification.id} onCloseClick={() => dismiss(notification.id)} {...notification} />
         ))}
       </Overlay>
     </Portal>

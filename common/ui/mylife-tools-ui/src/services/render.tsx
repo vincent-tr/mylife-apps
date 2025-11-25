@@ -16,11 +16,7 @@ interface RenderOptions {
   viewAdditionalBreadcrumb?;
 }
 
-export function render({
-  containerId = 'content',
-  container = document.getElementById(containerId),
-  ...props
-}: RenderOptions = {}) {
+export function render({ containerId = 'content', container = document.getElementById(containerId), ...props }: RenderOptions = {}) {
   const root = createRoot(container);
   root.render(<Application {...props} />);
 }

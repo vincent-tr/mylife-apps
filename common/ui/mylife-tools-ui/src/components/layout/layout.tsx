@@ -13,11 +13,11 @@ const Root = styled(Box)({
   left: 0,
   top: 0,
   right: 0,
-  bottom: 0
+  bottom: 0,
 });
 
 const StyledHeader = styled(Header)(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1
+  zIndex: theme.zIndex.drawer + 1,
 }));
 
 const Content = styled('main')(({ theme }) => ({
@@ -28,39 +28,39 @@ const Content = styled('main')(({ theme }) => ({
     height: '100vh',
   },
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 }));
 
 const AppBarSpacer = styled(Box)(({ theme }) => ({
   ...theme.mixins.toolbar,
-  flex: '0 0 auto'
+  flex: '0 0 auto',
 }));
 
 const menuStates = {
   HIDE: 0,
   REDUCED: 1,
-  VISIBLE: 2
+  VISIBLE: 2,
 };
 
 const initialMenuState = {
   phone: menuStates.HIDE,
   tablet: menuStates.HIDE,
   laptop: menuStates.REDUCED,
-  wide: menuStates.VISIBLE
+  wide: menuStates.VISIBLE,
 };
 
 const afterSelectMenuState = {
   phone: menuStates.HIDE,
   tablet: menuStates.HIDE,
   laptop: menuStates.REDUCED,
-  wide: null // = unchanged
+  wide: null, // = unchanged
 };
 
 const hideValueMenuState = {
   phone: menuStates.HIDE,
   tablet: menuStates.HIDE,
   laptop: menuStates.REDUCED,
-  wide: menuStates.REDUCED
+  wide: menuStates.REDUCED,
 };
 
 const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, menu, children }) => {
@@ -70,7 +70,7 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
 
   const menuSelect = () => {
     const state = afterSelectMenuState[screenSize];
-    if(state !== null) {
+    if (state !== null) {
       setMenuState(state);
     }
   };
@@ -82,7 +82,6 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
 
   return (
     <Root>
-
       <StyledHeader
         onMenuButtonClick={menu && menuButtonClick}
         appName={appName}
@@ -91,17 +90,15 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
         viewName={viewName}
         viewAdditionalHeader={viewAdditionalHeader}
         viewAdditionalBreadcrumb={viewAdditionalBreadcrumb}
-        viewIcon={viewIcon} />
+        viewIcon={viewIcon}
+      />
 
-      {menu && menuState !== menuStates.HIDE && (
-        <Menu items={menu} open={menuState === menuStates.VISIBLE} onSelect={menuSelect} />
-      )}
+      {menu && menuState !== menuStates.HIDE && <Menu items={menu} open={menuState === menuStates.VISIBLE} onSelect={menuSelect} />}
 
       <Content>
         <AppBarSpacer />
         {children}
       </Content>
-
     </Root>
   );
 };
@@ -114,8 +111,8 @@ Layout.propTypes = {
   viewIcon: Header.propTypes.viewIcon,
   viewAdditionalHeader: Header.propTypes.viewAdditionalHeader,
   viewAdditionalBreadcrumb: Header.propTypes.viewAdditionalBreadcrumb,
-  children: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.node), PropTypes.node ]),
-  menu: Menu.propTypes.items
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  menu: Menu.propTypes.items,
 };
 
 export default Layout;

@@ -13,7 +13,7 @@ const useConnect = () => ({
 
 const StyledDialogTitle = styled(DialogTitle)({
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
 });
 
 const Progress = styled(CircularProgress)(({ theme }) => ({
@@ -23,9 +23,9 @@ const Progress = styled(CircularProgress)(({ theme }) => ({
 const Busy = () => {
   const { online } = useConnect();
   return (
-    <Dialog open={!online} aria-labelledby='alert-dialog-title'>
-      <StyledDialogTitle id='alert-dialog-title' variant='h6'>
-        <Progress color='inherit' />
+    <Dialog open={!online} aria-labelledby="alert-dialog-title">
+      <StyledDialogTitle id="alert-dialog-title" variant="h6">
+        <Progress color="inherit" />
         {'Reconnexion en cours ...'}
       </StyledDialogTitle>
     </Dialog>

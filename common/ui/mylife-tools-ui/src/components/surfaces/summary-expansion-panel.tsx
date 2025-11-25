@@ -12,12 +12,8 @@ const SummaryAccordion = ({ initialExpanded = true, expandedSummary, collapsedSu
 
   return (
     <Accordion expanded={expanded} onChange={toggleExpanded} {...props}>
-      <AccordionSummary expandIcon={<icons.ExpandMore />}>
-        {expanded ? expandedSummary : collapsedSummary}
-      </AccordionSummary>
-      <AccordionDetails>
-        {children}
-      </AccordionDetails>
+      <AccordionSummary expandIcon={<icons.ExpandMore />}>{expanded ? expandedSummary : collapsedSummary}</AccordionSummary>
+      <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
   );
 };
@@ -26,10 +22,7 @@ SummaryAccordion.propTypes = {
   initialExpanded: PropTypes.bool,
   expandedSummary: PropTypes.node.isRequired,
   collapsedSummary: PropTypes.node.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 export default SummaryAccordion;

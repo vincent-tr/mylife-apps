@@ -7,15 +7,15 @@ const Container = styled('div')({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  height: '100%'
+  height: '100%',
 });
 
 const Label = styled(Typography)(({ theme }) => ({
-  marginRight: theme.spacing(1)
+  marginRight: theme.spacing(1),
 }));
 
 const Children = styled('div')({
-  flex: '1 1 auto'
+  flex: '1 1 auto',
 });
 
 interface CriteriaFieldProps {
@@ -27,9 +27,7 @@ const CriteriaField: React.FC<CriteriaFieldProps> = ({ label, children }) => {
   return (
     <Container>
       <Label>{label}</Label>
-      <Children>
-        {children}
-      </Children>
+      <Children>{children}</Children>
     </Container>
   );
 };

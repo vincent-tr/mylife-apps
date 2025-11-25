@@ -8,15 +8,15 @@ interface ErrorAction extends Action {
 }
 
 interface DialogState {
-  busy          : boolean,
-  error         : Error | null,
-  notifications : Notification[]
+  busy: boolean;
+  error: Error | null;
+  notifications: Notification[];
 }
 
 const initialState: DialogState = {
-  busy          : false,
-  error         : null,
-  notifications : []
+  busy: false,
+  error: null,
+  notifications: [],
 };
 
 const dialogSlice = createSlice({
@@ -34,7 +34,7 @@ const dialogSlice = createSlice({
       state.notifications.unshift(action.payload);
     },
     dismissNotification(state, action: PayloadAction<number>) {
-      state.notifications = state.notifications.filter(n => n.id !== action.payload);
+      state.notifications = state.notifications.filter((n) => n.id !== action.payload);
     },
     clearNotifications(state) {
       state.notifications = [];
@@ -46,7 +46,7 @@ const dialogSlice = createSlice({
       (action) => action.error,
       (state, action: ErrorAction) => {
         state.error = action.error;
-        
+
         console.error('Got error action', action.error);
         console.error(action.error.stack);
       }
@@ -57,20 +57,20 @@ const dialogSlice = createSlice({
     getBusy: (state) => state.busy,
     getError: (state) => state.error,
     getNotifications: (state) => state.notifications,
-  }
+  },
 });
 
 const local = {
   show: dialogSlice.actions.showNotification,
   dismiss: dialogSlice.actions.dismissNotification,
-}
+};
 
 // https://gist.github.com/markerikson/7621fca0e9704e99db5598bed0db861d
 let notificationIdGenerator = 0;
 
 export const showNotification = createAsyncThunk(
   `${STATE_PREFIX}/dialogs/showNotification`,
-  async({message, type = 'info', dismissAfter = 5000}: { message: string, type?: NotificationType, dismissAfter?: number }, api) => {
+  async ({ message, type = 'info', dismissAfter = 5000 }: { message: string; type?: NotificationType; dismissAfter?: number }, api) => {
     const id = ++notificationIdGenerator;
     api.dispatch(local.show({ message, type, id }));
 

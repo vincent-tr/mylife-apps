@@ -25,15 +25,14 @@ export function initStore(reducers) {
     [`${STATE_PREFIX}/views`]: views,
   });
 
-  store = configureStore(
-    {
-      reducer,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+  store = configureStore({
+    reducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
         // Allow dates for now
         serializableCheck: { isSerializable: (value: any) => isPlain(value) || value instanceof Date },
-      }).concat(...middlewares)
-    }
-  );
+      }).concat(...middlewares),
+  });
 }
 
 export function getStore() {

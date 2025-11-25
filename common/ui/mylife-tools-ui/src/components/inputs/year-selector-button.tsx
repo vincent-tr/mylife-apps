@@ -28,26 +28,31 @@ interface YearSelectorDialogProps {
 
 const YearSelectorDialog: React.FC<YearSelectorDialogProps> = ({ show, proceed, options }) => {
   return (
-    <Dialog open={show} onClose={() => proceed({ result: 'cancel' })} >
+    <Dialog open={show} onClose={() => proceed({ result: 'cancel' })}>
       <DialogContent dividers>
-        <DatePicker 
-          views={['year']} 
-          value={options.value} 
-          onChange={selectedValue => proceed({ result: 'ok', selectedValue })}
+        <DatePicker
+          views={['year']}
+          value={options.value}
+          onChange={(selectedValue) => proceed({ result: 'ok', selectedValue })}
           slotProps={{
             actionBar: {
-              actions: []
-            }
+              actions: [],
+            },
           }}
         />
       </DialogContent>
 
       <StyledDialogActions>
-        <Button onClick={() => proceed({ result: 'ok', selectedValue: null })} color='primary'>Aucun</Button>
-        <Button onClick={() => proceed({ result: 'cancel' })} color='primary'>Annuler</Button>
-        <Button onClick={() => proceed({ result: 'ok', selectedValue: options.value })} color='primary'>OK</Button>
+        <Button onClick={() => proceed({ result: 'ok', selectedValue: null })} color="primary">
+          Aucun
+        </Button>
+        <Button onClick={() => proceed({ result: 'cancel' })} color="primary">
+          Annuler
+        </Button>
+        <Button onClick={() => proceed({ result: 'ok', selectedValue: options.value })} color="primary">
+          OK
+        </Button>
       </StyledDialogActions>
-
     </Dialog>
   );
 };
@@ -64,11 +69,10 @@ interface YearSelectorButtonProps {
 }
 
 const YearSelectorButton = React.forwardRef<HTMLButtonElement, YearSelectorButtonProps>(({ value, onChange, selectLastDay = false, ...props }, ref) => {
-
   const clickHandler = async () => {
-    const response = await selectorDialog({ options: { value } }) as { result: 'ok' | 'cancel'; selectedValue?: Date };
+    const response = (await selectorDialog({ options: { value } })) as { result: 'ok' | 'cancel'; selectedValue?: Date };
     const { result, selectedValue } = response;
-    if(result !== 'ok') {
+    if (result !== 'ok') {
       return;
     }
 
@@ -76,7 +80,7 @@ const YearSelectorButton = React.forwardRef<HTMLButtonElement, YearSelectorButto
   };
 
   return (
-    <Tooltip title='Sélection par année'>
+    <Tooltip title="Sélection par année">
       <div>
         <IconButton ref={ref} onClick={clickHandler} {...props}>
           <CalendarToday />
@@ -94,7 +98,7 @@ function getSelectedDate(selectedValue: Date, selectLastDay: boolean) {
   if (!selectedValue) {
     return null;
   }
-  
+
   return selectLastDay ? lastDayOfYear(selectedValue) : firstDayOfYear(selectedValue);
 }
 

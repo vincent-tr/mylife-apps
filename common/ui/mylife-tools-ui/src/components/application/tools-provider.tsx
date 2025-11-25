@@ -10,15 +10,13 @@ import ThemeProvider from './theme-provider';
 const ToolsProvider = ({ children }) => (
   <MuiDateProvider>
     <ThemeProvider>
-      <StoreProvider>
-        {children}
-      </StoreProvider>
+      <StoreProvider>{children}</StoreProvider>
     </ThemeProvider>
   </MuiDateProvider>
 );
 
 ToolsProvider.propTypes = {
-  children : PropTypes.node
+  children: PropTypes.node,
 };
 
 export default ToolsProvider;

@@ -69,7 +69,7 @@ const local = {
   getViewId: viewsSlice.selectors.getViewId,
 };
 
-export const getView = (state, uid) => io.getView(state, local.getViewId(state, uid))
+export const getView = (state, uid) => io.getView(state, local.getViewId(state, uid));
 
 export const { setView, ref, unref } = viewsSlice.actions;
 export const { getViewId, getRefCount } = viewsSlice.selectors;

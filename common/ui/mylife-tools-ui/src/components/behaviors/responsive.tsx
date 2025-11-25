@@ -13,10 +13,10 @@ export function useScreenSize() {
   const isTablet = useScreenTablet();
   const isLaptop = useScreenLaptop();
 
-  if(isPhone) {
+  if (isPhone) {
     return 'phone';
   }
-  if(isTablet) {
+  if (isTablet) {
     return 'tablet';
   }
   return isLaptop ? 'laptop' : 'wide';
@@ -29,6 +29,6 @@ export function useScreenOrientation() {
 export function useScreen() {
   return {
     size: useScreenSize(),
-    orientation: useScreenOrientation()
+    orientation: useScreenOrientation(),
   };
 }

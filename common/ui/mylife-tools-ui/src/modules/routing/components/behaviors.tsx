@@ -6,8 +6,11 @@ export const useRoutingConnect = () => {
   const dispatch = useDispatch();
   return {
     location: useSelector(getLocation),
-    ...useMemo(() => ({
-      navigate : location => dispatch(navigate(location))
-    }), [dispatch])
+    ...useMemo(
+      () => ({
+        navigate: (location) => dispatch(navigate(location)),
+      }),
+      [dispatch]
+    ),
   };
 };

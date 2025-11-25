@@ -14,7 +14,7 @@ export function findDatatype(id: string) {
 
 export function getDatatype(id: string) {
   const datatype = datatypes.get(id);
-  if(datatype) {
+  if (datatype) {
     return datatype;
   }
 
@@ -31,7 +31,7 @@ export function findEntity(id: string) {
 
 export function getEntity(id: string) {
   const entity = entities.get(id);
-  if(entity) {
+  if (entity) {
     return entity;
   }
 

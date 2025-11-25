@@ -9,173 +9,176 @@ import { STATE_PREFIX } from '../../constants/defines';
 type FIXME_any = any;
 
 interface CreateOrUpdateViewOptions {
-	criteriaSelector;
-	selectorProps?;
-	viewSelector;
-	setViewAction;
-	service;
-	method;
+  criteriaSelector;
+  selectorProps?;
+  viewSelector;
+  setViewAction;
+  service;
+  method;
 }
 
 export const createOrUpdateView = createAsyncThunk(
-	`${STATE_PREFIX}/views/createOrUpdateView`,
-	async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
-		const state = api.getState();
+  `${STATE_PREFIX}/views/createOrUpdateView`,
+  async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
+    const state = api.getState();
 
-		const criteria = criteriaSelector(state, selectorProps);
-		const viewId = viewSelector(state);
+    const criteria = criteriaSelector(state, selectorProps);
+    const viewId = viewSelector(state);
 
-		if (viewId) {
-			await api.dispatch(
-				io.call({
-					service: 'common',
-					method: 'renotifyWithCriteria',
-					viewId,
-					criteria,
-				})
-			);
-		} else {
-			const newViewId = await api.dispatch(
-				io.call({
-					service,
-					method,
-					criteria,
-				})
-			);
+    if (viewId) {
+      await api.dispatch(
+        io.call({
+          service: 'common',
+          method: 'renotifyWithCriteria',
+          viewId,
+          criteria,
+        })
+      );
+    } else {
+      const newViewId = await api.dispatch(
+        io.call({
+          service,
+          method,
+          criteria,
+        })
+      );
 
-			api.dispatch(setViewAction(newViewId));
-		}
-});
+      api.dispatch(setViewAction(newViewId));
+    }
+  }
+);
 
 // call on views that cannot be updated
 const createOrRenewView = createAsyncThunk(
-	`${STATE_PREFIX}/views/createOrRenewView`,
-	async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
-		const state = api.getState();
+  `${STATE_PREFIX}/views/createOrRenewView`,
+  async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
+    const state = api.getState();
 
-		const oldViewId = viewSelector(state);
-		if (oldViewId) {
-			api.dispatch(setViewAction(null));
-			await api.dispatch(io.unnotify(oldViewId));
-		}
+    const oldViewId = viewSelector(state);
+    if (oldViewId) {
+      api.dispatch(setViewAction(null));
+      await api.dispatch(io.unnotify(oldViewId));
+    }
 
-		const criteria = criteriaSelector(state, selectorProps);
-		const newViewId = await api.dispatch(
-			io.call({
-				service,
-				method,
-				...criteria,
-			})
-		);
+    const criteria = criteriaSelector(state, selectorProps);
+    const newViewId = await api.dispatch(
+      io.call({
+        service,
+        method,
+        ...criteria,
+      })
+    );
 
-		api.dispatch(setViewAction(newViewId));
-});
+    api.dispatch(setViewAction(newViewId));
+  }
+);
 
 export const deleteView = createAsyncThunk(
-	`${STATE_PREFIX}/views/deleteView`,
-	async ({ viewSelector, setViewAction }: { viewSelector: FIXME_any; setViewAction: FIXME_any }, api) => {
-		const state = api.getState();
-		const oldViewId = viewSelector(state);
-		if (!oldViewId) {
-			return;
-		}
+  `${STATE_PREFIX}/views/deleteView`,
+  async ({ viewSelector, setViewAction }: { viewSelector: FIXME_any; setViewAction: FIXME_any }, api) => {
+    const state = api.getState();
+    const oldViewId = viewSelector(state);
+    if (!oldViewId) {
+      return;
+    }
 
-		api.dispatch(setViewAction(null));
-		await api.dispatch(io.unnotify(oldViewId));
-});
+    api.dispatch(setViewAction(null));
+    await api.dispatch(io.unnotify(oldViewId));
+  }
+);
 
 interface ViewReferenceOptions {
-	uid: string;
-	criteriaSelector?;
-	service: string;
-	method: string;
-	canUpdate?: boolean;
+  uid: string;
+  criteriaSelector?;
+  service: string;
+  method: string;
+  canUpdate?: boolean;
 }
 
 export class ViewReference {
-	public readonly uid: string;
-	private readonly criteriaSelector;
-	private readonly viewSelector;
-	private readonly setViewAction;
-	private readonly service: string;
-	private readonly method: string;
-	private readonly canUpdate: boolean;
-	private selectorProps;
-	private registering = false;
-	private unsubscribe: () => void;
+  public readonly uid: string;
+  private readonly criteriaSelector;
+  private readonly viewSelector;
+  private readonly setViewAction;
+  private readonly service: string;
+  private readonly method: string;
+  private readonly canUpdate: boolean;
+  private selectorProps;
+  private registering = false;
+  private unsubscribe: () => void;
 
-	constructor({ uid, criteriaSelector = () => null, service, method, canUpdate = false }: ViewReferenceOptions) {
-		if (!uid) {
-			throw new Error('Cannot create ViewReference without uid');
-		}
-		this.uid = uid;
+  constructor({ uid, criteriaSelector = () => null, service, method, canUpdate = false }: ViewReferenceOptions) {
+    if (!uid) {
+      throw new Error('Cannot create ViewReference without uid');
+    }
+    this.uid = uid;
 
-		this.criteriaSelector = criteriaSelector;
-		this.viewSelector = (state) => getViewId(state, uid);
-		this.setViewAction = (viewId) => setView({ uid, viewId });
-		this.service = service;
-		this.method = method;
+    this.criteriaSelector = criteriaSelector;
+    this.viewSelector = (state) => getViewId(state, uid);
+    this.setViewAction = (viewId) => setView({ uid, viewId });
+    this.service = service;
+    this.method = method;
 
-		this.canUpdate = canUpdate;
-	}
+    this.canUpdate = canUpdate;
+  }
 
-	async attach(selectorProps?) {
-		this.selectorProps = selectorProps;
-		await this.getView();
-		this.registering = true;
-		this.unsubscribe = observeStore(io.getOnline, (value) => this._onlineChange(value));
-		this.registering = false;
-	}
+  async attach(selectorProps?) {
+    this.selectorProps = selectorProps;
+    await this.getView();
+    this.registering = true;
+    this.unsubscribe = observeStore(io.getOnline, (value) => this._onlineChange(value));
+    this.registering = false;
+  }
 
-	async detach() {
-		this.unsubscribe();
-		await this.clearView();
-	}
+  async detach() {
+    this.unsubscribe();
+    await this.clearView();
+  }
 
-	async update(selectorProps?) {
-		this.selectorProps = selectorProps;
-		await this.getView();
-	}
+  async update(selectorProps?) {
+    this.selectorProps = selectorProps;
+    await this.getView();
+  }
 
-	_onlineChange(value) {
-		if (!value || this.registering) {
-			return;
-		}
+  _onlineChange(value) {
+    if (!value || this.registering) {
+      return;
+    }
 
-		this.getView();
-	}
+    this.getView();
+  }
 
-	private async getView() {
-		const method = this.canUpdate ? createOrUpdateView : createOrRenewView;
-		await this.dispatch(
-			method({
-				criteriaSelector: this.criteriaSelector,
-				selectorProps: this.selectorProps,
-				viewSelector: this.viewSelector,
-				setViewAction: this.setViewAction,
-				service: this.service,
-				method: this.method,
-			})
-		);
-	}
+  private async getView() {
+    const method = this.canUpdate ? createOrUpdateView : createOrRenewView;
+    await this.dispatch(
+      method({
+        criteriaSelector: this.criteriaSelector,
+        selectorProps: this.selectorProps,
+        viewSelector: this.viewSelector,
+        setViewAction: this.setViewAction,
+        service: this.service,
+        method: this.method,
+      })
+    );
+  }
 
-	private async clearView() {
-		await this.dispatch(
-			deleteView({
-				viewSelector: this.viewSelector,
-				setViewAction: this.setViewAction,
-			})
-		);
-	}
+  private async clearView() {
+    await this.dispatch(
+      deleteView({
+        viewSelector: this.viewSelector,
+        setViewAction: this.setViewAction,
+      })
+    );
+  }
 
-	private dispatch(...args) {
-		const store = getStore();
-		return store.dispatch(...args);
-	}
+  private dispatch(...args) {
+    const store = getStore();
+    return store.dispatch(...args);
+  }
 }
 
 export class SharedViewReference extends ViewReference {
-	private readonly refresh: (prevState: number, currentState: number) => void;
+  private readonly refresh: (prevState: number, currentState: number) => void;
 
   constructor(options: ViewReferenceOptions) {
     super(options);
@@ -190,7 +193,6 @@ export class SharedViewReference extends ViewReference {
     store.dispatch(ref(this.uid));
     const currentRef = getRefCount(store.getState(), this.uid);
     this.refresh(prevRef, currentRef);
-  
   }
 
   unref() {
@@ -202,14 +204,14 @@ export class SharedViewReference extends ViewReference {
     this.refresh(prevRef, currentRef);
   }
 
-  private readonly refreshImpl = async(oldRefCount: number, newRefCount: number) => {
+  private readonly refreshImpl = async (oldRefCount: number, newRefCount: number) => {
     const wasRef = oldRefCount > 0;
     const isRef = newRefCount > 0;
-    if(wasRef === isRef) {
+    if (wasRef === isRef) {
       return;
     }
-  
-    if(isRef) {
+
+    if (isRef) {
       await this.attach();
     } else {
       await this.detach();
@@ -236,7 +238,7 @@ export function createDebouncedRefresh(refresh, timeout = 10) {
   const debounced = debounce(callRefresh, timeout);
 
   return (prevState: number, currentState: number) => {
-    if(initRefs === undefined) {
+    if (initRefs === undefined) {
       initRefs = prevState;
     }
     finalRefs = currentState;

@@ -20,7 +20,8 @@ const LayoutRouter = ({ routes, menu, appName, appIcon, ...props }) => {
       menu={mappedMenu}
       appName={appName}
       appIcon={appIcon}
-      {...props}>
+      {...props}
+    >
       {routeMatch.render()}
     </Layout>
   );
@@ -29,10 +30,10 @@ const LayoutRouter = ({ routes, menu, appName, appIcon, ...props }) => {
 LayoutRouter.propTypes = {
   menu: PropTypes.arrayOf(
     PropTypes.shape({
-      id       : PropTypes.string.isRequired,
-      text     : PropTypes.string.isRequired,
-      icon     : PropTypes.elementType,
-      location : PropTypes.string
+      id: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      icon: PropTypes.elementType,
+      location: PropTypes.string,
     }).isRequired
   ),
   routes: PropTypes.arrayOf(
@@ -46,7 +47,7 @@ LayoutRouter.propTypes = {
       additionalHeaderRenderer: PropTypes.func,
       additionalBreadcrumb: Layout.propTypes.viewAdditionalBreadcrumb,
       additionalBreadcrumbRenderer: PropTypes.func,
-      renderer: PropTypes.func.isRequired
+      renderer: PropTypes.func.isRequired,
     }).isRequired
   ).isRequired,
   appName: Layout.propTypes.appName,
@@ -56,16 +57,19 @@ LayoutRouter.propTypes = {
 export default LayoutRouter;
 
 function mapMenu({ navigate, menu }) {
-  return menu && menu.map(({ location, ... item }) => {
-    if(!location) {
-      return item;
-    }
+  return (
+    menu &&
+    menu.map(({ location, ...item }) => {
+      if (!location) {
+        return item;
+      }
 
-    return {
-      onClick: () => navigate(location),
-      ... item
-    };
-  });
+      return {
+        onClick: () => navigate(location),
+        ...item,
+      };
+    })
+  );
 }
 
 const nullRenderer = () => null;
@@ -73,15 +77,15 @@ const defaultRouteMatch = { renderName: nullRenderer, renderIcon: nullRenderer, 
 
 class RoutesInfo {
   private readonly routesInfo;
-  
+
   constructor(routes) {
-    this.routesInfo = routes.map(route => new RouteInfo(route));
+    this.routesInfo = routes.map((route) => new RouteInfo(route));
   }
 
   findMatch(location) {
-    for(const routeInfo of this.routesInfo) {
+    for (const routeInfo of this.routesInfo) {
       const match = routeInfo.match(location);
-      if(match) {
+      if (match) {
         return match;
       }
     }
@@ -99,7 +103,7 @@ class RouteInfo {
 
   match(location) {
     const result = this.parser.match(location);
-    if(!result) {
+    if (!result) {
       return null;
     }
 
@@ -108,32 +112,34 @@ class RouteInfo {
 }
 
 class RouteMatch {
-  constructor(private readonly route, private readonly parameters) {
-  }
+  constructor(
+    private readonly route,
+    private readonly parameters
+  ) {}
 
   renderName() {
-    if(this.route.nameRenderer) {
+    if (this.route.nameRenderer) {
       return this.route.nameRenderer(this.parameters);
     }
     return this.route.name;
   }
 
   renderIcon() {
-    if(this.route.iconRenderer) {
+    if (this.route.iconRenderer) {
       return this.route.iconRenderer(this.parameters);
     }
     return this.route.icon;
   }
 
   renderAdditionalHeader() {
-    if(this.route.additionalHeaderRenderer) {
+    if (this.route.additionalHeaderRenderer) {
       return this.route.additionalHeaderRenderer(this.parameters);
     }
     return this.route.additionalHeader;
   }
 
   routerAdditionalBreadcrumb() {
-    if(this.route.additionalBreadcrumbRenderer) {
+    if (this.route.additionalBreadcrumbRenderer) {
       return this.route.additionalBreadcrumbRenderer(this.parameters);
     }
     return this.route.additionalBreadcrumb;

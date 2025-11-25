@@ -1,36 +1,39 @@
 import { addPlugin } from './engine';
 
 class RemoteError extends Error {
-  constructor(message: string, public readonly stacktrace: string) {
+  constructor(
+    message: string,
+    public readonly stacktrace: string
+  ) {
     super(message);
   }
 }
 
 addPlugin({
   name: 'error',
-  is: payload => payload instanceof Error,
-  serialize: payload => ({
-    message : payload.message,
-    stacktrace: payload.stacktrace
+  is: (payload) => payload instanceof Error,
+  serialize: (payload) => ({
+    message: payload.message,
+    stacktrace: payload.stacktrace,
   }),
-  deserialize: raw => {
+  deserialize: (raw) => {
     return new RemoteError(raw.message, raw.stacktrace);
-  }
+  },
 });
 
 addPlugin({
   name: 'date',
-  is: payload => payload instanceof Date,
-  serialize: payload => payload.valueOf(),
-  deserialize: raw => new Date(raw)
+  is: (payload) => payload instanceof Date,
+  serialize: (payload) => payload.valueOf(),
+  deserialize: (raw) => new Date(raw),
 });
 
 addPlugin({
   name: 'buffer',
-  is: payload => payload instanceof Uint8Array,
+  is: (payload) => payload instanceof Uint8Array,
   serialize: serializeBuffer,
-  deserialize: deserializeBuffer
-})
+  deserialize: deserializeBuffer,
+});
 
 function serializeBuffer(buffer) {
   // https://github.com/github-tools/github/issues/137
@@ -53,7 +56,7 @@ function deserializeBuffer(buffer) {
   const rawLength = raw.length;
   const array = new Uint8Array(new ArrayBuffer(rawLength));
 
-  for(let i = 0; i < rawLength; ++i) {
+  for (let i = 0; i < rawLength; ++i) {
     array[i] = raw.charCodeAt(i);
   }
   return array;

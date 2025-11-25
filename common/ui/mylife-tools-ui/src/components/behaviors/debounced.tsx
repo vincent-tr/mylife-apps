@@ -5,7 +5,10 @@ const WAIT_INTERVAL = 300;
 class Debounce<T> {
   private timer: number;
 
-  constructor(private readonly callback: (args: T) => void, private readonly waitInterval: number) {
+  constructor(
+    private readonly callback: (args: T) => void,
+    private readonly waitInterval: number
+  ) {
     this.timer = null;
   }
 
@@ -30,8 +33,7 @@ class Debounce<T> {
 }
 
 export function useDebounced<T>(value: T, onChange, waitInterval = WAIT_INTERVAL) {
-
-  const debounceRef = useRef(new Debounce(value => onChange(value), waitInterval));
+  const debounceRef = useRef(new Debounce((value) => onChange(value), waitInterval));
   useEffect(() => () => debounceRef.current.reset(), []);
 
   const [stateValue, setStateValue] = useState(value);
@@ -39,8 +41,6 @@ export function useDebounced<T>(value: T, onChange, waitInterval = WAIT_INTERVAL
     setStateValue(value);
     debounceRef.current.reset();
   }, [value]);
-
-
 
   const componentChange = (newValue: T) => {
     setStateValue(newValue);

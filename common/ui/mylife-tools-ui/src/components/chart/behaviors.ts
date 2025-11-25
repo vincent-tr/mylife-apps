@@ -29,5 +29,5 @@ function createChartColors() {
     'yellow',
     'deepOrange',
   ];
-  return hues.map(hue => colors[hue][shade] as string);
+  return hues.map((hue) => colors[hue][shade] as string);
 }

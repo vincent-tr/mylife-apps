@@ -22,24 +22,18 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ show, proceed, options }) => {
   const [text, setText] = useState(options.text);
   return (
-    <Dialog aria-labelledby='dialog-title' open={show} scroll='paper' maxWidth='sm' fullWidth>
-      {options.title && (
-        <DialogTitle id='dialog-title'>
-          {options.title}
-        </DialogTitle>
-      )}
+    <Dialog aria-labelledby="dialog-title" open={show} scroll="paper" maxWidth="sm" fullWidth>
+      {options.title && <DialogTitle id="dialog-title">{options.title}</DialogTitle>}
 
       <DialogContent dividers>
-        {options.message && (
-          <DialogContentText>
-            {options.message}
-          </DialogContentText>
-        )}
-        <TextField autoFocus fullWidth label={options.label} id='text' value={text || ''} onChange={e => setText(e.target.value)} />
+        {options.message && <DialogContentText>{options.message}</DialogContentText>}
+        <TextField autoFocus fullWidth label={options.label} id="text" value={text || ''} onChange={(e) => setText(e.target.value)} />
       </DialogContent>
 
       <DialogActions>
-        <Button color='primary' onClick={() => proceed({ result: 'ok', text })}>OK</Button>
+        <Button color="primary" onClick={() => proceed({ result: 'ok', text })}>
+          OK
+        </Button>
         <Button onClick={() => proceed({ result: 'cancel' })}>Annuler</Button>
       </DialogActions>
     </Dialog>

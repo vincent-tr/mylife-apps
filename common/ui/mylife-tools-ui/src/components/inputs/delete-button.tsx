@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -15,7 +15,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.error.main,
   '&:hover': {
     backgroundColor: theme.palette.error.dark,
-  }
+  },
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -23,13 +23,13 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.error.main,
   '&:hover': {
     backgroundColor: theme.palette.error.dark,
-  }
+  },
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   '& > *': {
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
 }));
 
@@ -44,11 +44,20 @@ interface DeleteButtonProps {
   disablePortal?: boolean;
 }
 
-const DeleteButton: FunctionComponent<DeleteButtonProps> = ({ icon = false, text = null, tooltip = null, confirmText = 'Etes-vous sûr ?', onConfirmed, className, disablePortal = false, ...props }) => {
+const DeleteButton: FunctionComponent<DeleteButtonProps> = ({
+  icon = false,
+  text = null,
+  tooltip = null,
+  confirmText = 'Etes-vous sûr ?',
+  onConfirmed,
+  className,
+  disablePortal = false,
+  ...props
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  const handleButtonClick = e => setAnchorEl(e.target);
+  const handleButtonClick = (e) => setAnchorEl(e.target);
   const handleClose = () => setAnchorEl(null);
   const handleConfirm = () => {
     handleClose();
@@ -60,25 +69,16 @@ const DeleteButton: FunctionComponent<DeleteButtonProps> = ({ icon = false, text
   const isTooltipOpen = tooltipOpen && !anchorEl; // do not show tooltip when popup is shown
 
   let button = text ? (
-    <StyledButton
-      variant='contained'
-      className={className}
-      onClick={handleButtonClick}
-      startIcon={icon ? <DeleteIcon /> : null}
-      {...props}
-    >
+    <StyledButton variant="contained" className={className} onClick={handleButtonClick} startIcon={icon ? <DeleteIcon /> : null} {...props}>
       {text}
     </StyledButton>
   ) : (
-    <StyledIconButton
-      className={className}
-      onClick={handleButtonClick}
-    >
+    <StyledIconButton className={className} onClick={handleButtonClick}>
       <DeleteIcon />
     </StyledIconButton>
   );
 
-  if(tooltip) {
+  if (tooltip) {
     button = (
       <Tooltip title={tooltip} open={isTooltipOpen} onOpen={handleTooltipOpen} onClose={handleTooltipClose}>
         {button}
@@ -93,10 +93,7 @@ const DeleteButton: FunctionComponent<DeleteButtonProps> = ({ icon = false, text
         <ClickAwayListener onClickAway={handleClose}>
           <StyledPaper>
             <Typography>{confirmText}</Typography>
-            <StyledButton
-              variant='contained'
-              onClick={handleConfirm}
-            >
+            <StyledButton variant="contained" onClick={handleConfirm}>
               {'Supprimer'}
             </StyledButton>
           </StyledPaper>
