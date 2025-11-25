@@ -26,7 +26,6 @@
     "@emotion/styled": "^11.14.1",
     "@reduxjs/toolkit": "^2.10.1",
     "@types/react": "^19.2.0",
-    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "humanize-duration": "^3.27.2",
     "mylife-tools-common": "*",
