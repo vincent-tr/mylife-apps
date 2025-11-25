@@ -8,7 +8,7 @@ import { DeviceMeasure } from './common';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import SvgIcon from '@mui/material/SvgIcon';
-import { colors as muiColors } from '@mui/material';
+import * as muiColors from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 
 interface WrapperProps {

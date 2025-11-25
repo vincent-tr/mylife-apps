@@ -1,8 +1,20 @@
 import React from 'react';
-import * as icons from '@mui/icons-material';
+import LiveTv from '@mui/icons-material/LiveTv';
+import Functions from '@mui/icons-material/Functions';
+import NotInterested from '@mui/icons-material/NotInterested';
+import Timer from '@mui/icons-material/Timer';
+import NetworkCheck from '@mui/icons-material/NetworkCheck';
+import EvStation from '@mui/icons-material/EvStation';
+import DirectionsCar from '@mui/icons-material/DirectionsCar';
+import Help from '@mui/icons-material/Help';
+import Check from '@mui/icons-material/Check';
+import CloudOff from '@mui/icons-material/CloudOff';
+import Error from '@mui/icons-material/Error';
+import Equalizer from '@mui/icons-material/Equalizer';
+import ArrowLeft from '@mui/icons-material/ArrowLeft';
+import ArrowRight from '@mui/icons-material/ArrowRight';
+import Settings from '@mui/icons-material/Settings';
 import SvgIcon from '@mui/material/SvgIcon';
-
-const { LiveTv, Functions, NotInterested, Timer, NetworkCheck, EvStation, DirectionsCar, Help, Check, CloudOff, Error, Equalizer, ArrowLeft, ArrowRight, Settings } = icons;
 
 const Energy = (props) => (
   <SvgIcon viewBox="0 0 88.408 88.408" {...props}>
