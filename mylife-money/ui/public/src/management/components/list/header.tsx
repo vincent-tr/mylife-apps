@@ -25,7 +25,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type FIXME_any = any;
 

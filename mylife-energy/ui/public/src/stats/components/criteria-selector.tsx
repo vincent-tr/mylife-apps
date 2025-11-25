@@ -3,7 +3,7 @@ import { StatsType } from '../types';
 import DeviceList from './device-list';
 import TypeList from './type-list';
 import DatePicker from './date-picker';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 export interface Criteria {
   type: StatsType;

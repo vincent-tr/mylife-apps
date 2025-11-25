@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type FIXME_any = any;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { format as formatDate } from 'date-fns';
 import { useOperationStats } from '../views';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type FIXME_any = any;
 

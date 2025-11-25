@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type FIXME_any = any;
 

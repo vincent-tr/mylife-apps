@@ -9,7 +9,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type FIXME_any = any;
 type Bot = FIXME_any;

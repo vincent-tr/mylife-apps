@@ -2,7 +2,7 @@ import React from 'react';
 import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line } from 'recharts';
 import { useChartColors } from 'mylife-tools-ui';
 import { useTotalByMonth } from '../views';
-import { colors as muiColors } from '@mui/material';
+import muiColors from '@mui/material/colors';
 
 const ChartAmount = (props) => {
   const { sorted: data } = useTotalByMonth();

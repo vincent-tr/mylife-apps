@@ -5,7 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import humanizeDuration from 'humanize-duration';
 import React, { PropsWithChildren } from 'react';
 import { useSelector } from 'react-redux';

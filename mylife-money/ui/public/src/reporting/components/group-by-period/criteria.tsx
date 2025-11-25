@@ -9,7 +9,7 @@ import ExportButton from '../common/export-button';
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const Container = styled('div')({
   display: 'flex',

@@ -4,7 +4,7 @@ import icons from '../../../common/icons';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const Container = styled('div')({
   display: 'flex',

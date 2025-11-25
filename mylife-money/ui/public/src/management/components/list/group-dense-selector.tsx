@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import icons from '../../../common/icons';
 import { getSelectedGroupId, selectGroup } from '../../store';

@@ -3,7 +3,7 @@ import { CriteriaField, services } from 'mylife-tools-ui';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import { styled, darken } from '@mui/material';
+import { styled, darken } from '@mui/material/styles';
 
 type FIXME_any = any;
 type BotRun = FIXME_any;

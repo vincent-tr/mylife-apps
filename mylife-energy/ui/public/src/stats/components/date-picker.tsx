@@ -2,7 +2,7 @@ import React from 'react';
 import { StatsType } from '../types';
 import icons from '../../common/icons';
 import IconButton from '@mui/material/IconButton';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 
 export interface DatePickerProps {

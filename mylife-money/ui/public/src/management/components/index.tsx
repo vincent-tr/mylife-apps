@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLifecycle, useScreenSize } from 'mylife-tools-ui';
 import { managementEnter, managementLeave, isOperationDetail } from '../store';

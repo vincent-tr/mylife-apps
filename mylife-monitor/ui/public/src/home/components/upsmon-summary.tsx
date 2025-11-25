@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { views } from 'mylife-tools-ui';
 import icons from '../../common/icons';
 import { useSince } from '../../common/behaviors';

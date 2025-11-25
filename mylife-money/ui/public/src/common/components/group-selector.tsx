@@ -8,7 +8,7 @@ import GroupSelectorButton from './group-selector-button';
 import Tooltip from '@mui/material/Tooltip';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type FIXME_any = any;
 

@@ -5,7 +5,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import icons from '../../common/icons';
 import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 

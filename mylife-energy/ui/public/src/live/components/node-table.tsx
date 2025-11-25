@@ -5,7 +5,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, makeGetDevicesByType } from '../selectors';

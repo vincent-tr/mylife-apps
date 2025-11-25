@@ -7,7 +7,7 @@ import { reportingLeave, getSortedViewList } from '../../store';
 import Criteria from './criteria';
 import Chart from './chart';
 import { formatCriteria } from './tools';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type FIXME_any = any;
 

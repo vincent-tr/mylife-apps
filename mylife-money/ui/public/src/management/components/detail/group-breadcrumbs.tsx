@@ -5,7 +5,7 @@ import GroupSelectorButton from '../../../common/components/group-selector-butto
 import Tooltip from '@mui/material/Tooltip';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const Container = styled('div')({
   display: 'flex',

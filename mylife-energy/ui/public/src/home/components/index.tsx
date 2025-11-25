@@ -8,7 +8,7 @@ import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const SectionRoot = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),

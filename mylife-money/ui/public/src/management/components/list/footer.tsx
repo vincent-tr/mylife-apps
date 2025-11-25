@@ -1,7 +1,7 @@
 import React from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useScreenPhone } from 'mylife-tools-ui';
 import { COLOR_AMOUNT_CREDIT, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_TOTAL, useConnect } from './table-behaviors';
 
