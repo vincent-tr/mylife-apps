@@ -7,7 +7,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(theme.palette.error.main),

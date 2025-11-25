@@ -7,8 +7,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import { DatePicker } from '@mui/x-date-pickers';
-import { CalendarToday } from '@mui/icons-material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import CalendarToday from '@mui/icons-material/CalendarToday';
 
 const StyledDialogActions = styled(DialogActions)({
   // https://github.com/mui-org/material-ui-pickers/blob/next/lib/src/_shared/ModalDialog.tsx

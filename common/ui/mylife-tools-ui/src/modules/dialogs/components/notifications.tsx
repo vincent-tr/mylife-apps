@@ -4,18 +4,20 @@ import Portal from '@mui/material/Portal';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import * as icons from '@mui/icons-material';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Info from '@mui/icons-material/Info';
+import Warning from '@mui/icons-material/Warning';
+import Error from '@mui/icons-material/Error';
+import CloseIcon from '@mui/icons-material/Close';
 import { getNotifications, dismissNotification } from '../store';
 import { NotificationType } from '../types';
 
 const typeIcons = {
-  success: icons.CheckCircle,
-  info: icons.Info,
-  warning: icons.Warning,
-  error: icons.Error,
+  success: CheckCircle,
+  info: Info,
+  warning: Warning,
+  error: Error,
 };
-
-const { Close: CloseIcon } = icons;
 
 const useConnect = () => {
   const dispatch = useDispatch();

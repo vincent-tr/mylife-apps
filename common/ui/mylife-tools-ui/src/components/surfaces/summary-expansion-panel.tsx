@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import * as icons from '@mui/icons-material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const SummaryAccordion = ({ initialExpanded = true, expandedSummary, collapsedSummary, children, ...props }) => {
   const [expanded, setExpanded] = useState(initialExpanded);
@@ -12,7 +12,7 @@ const SummaryAccordion = ({ initialExpanded = true, expandedSummary, collapsedSu
 
   return (
     <Accordion expanded={expanded} onChange={toggleExpanded} {...props}>
-      <AccordionSummary expandIcon={<icons.ExpandMore />}>{expanded ? expandedSummary : collapsedSummary}</AccordionSummary>
+      <AccordionSummary expandIcon={<ExpandMore />}>{expanded ? expandedSummary : collapsedSummary}</AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
   );

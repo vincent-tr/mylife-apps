@@ -1,4 +1,4 @@
-import { colors } from '@mui/material';
+import colors from '@mui/material/colors';
 
 const chartColors = createChartColors();
 

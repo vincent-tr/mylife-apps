@@ -8,9 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
-import * as icons from '@mui/icons-material';
-
-const { Menu: MenuIcon, NavigateNext: NavigateNextIcon } = icons;
+import MenuIcon from '@mui/icons-material/Menu';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   marginRight: theme.spacing(4),
