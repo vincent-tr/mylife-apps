@@ -1,8 +1,18 @@
 import React from 'react';
-import * as icons from '@mui/icons-material';
+import AccountBalance from '@mui/icons-material/AccountBalance';
+import FormatListBulleted from '@mui/icons-material/FormatListBulleted';
+import ShowChart from '@mui/icons-material/ShowChart';
+import OpenInBrowser from '@mui/icons-material/OpenInBrowser';
+import Settings from '@mui/icons-material/Settings';
+import AddCircle from '@mui/icons-material/AddCircle';
+import ModeComment from '@mui/icons-material/ModeComment';
+import Edit from '@mui/icons-material/Edit';
+import FolderOpen from '@mui/icons-material/FolderOpen';
+import Close from '@mui/icons-material/Close';
+import SaveAlt from '@mui/icons-material/SaveAlt';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import CloudDownload from '@mui/icons-material/CloudDownload';
 import SvgIcon from '@mui/material/SvgIcon';
-
-const { AccountBalance, FormatListBulleted, ShowChart, OpenInBrowser, Settings, AddCircle, ModeComment, Edit, FolderOpen, Close, SaveAlt, ArrowBack, CloudDownload } = icons;
 
 const Money = (props) => (
   <SvgIcon viewBox="0 0 490.996 490.996" {...props}>

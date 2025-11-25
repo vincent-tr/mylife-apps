@@ -2,35 +2,33 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { dialogs } from 'mylife-tools-ui';
 import icons from '../../../common/icons';
-import { ExpandMore } from '@mui/icons-material';
-import {
-  styled,
-  Select,
-  MenuItem,
-  TextField,
-  Tooltip,
-  IconButton,
-  Card,
-  CardContent,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  TableRow,
-  TableCell,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Table,
-  TableHead,
-  TableBody,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from '@mui/material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import { styled } from '@mui/material/styles';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 
 type FIXME_any = any;
 
