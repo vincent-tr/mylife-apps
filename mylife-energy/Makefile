@@ -1,6 +1,7 @@
 DIR_ROOT = $(shell realpath ..)
 DIR_UI = $(shell realpath ui)
 DIR_SERVER = $(shell realpath server)
+DIR_COMMON_UI = $(DIR_ROOT)/common/ui
 
 DOCKER_REPOSITORY ?= vincenttr
 DOCKER_PACKAGE_NAME ?= mylife-energy
@@ -39,12 +40,18 @@ ui-watch-tsc:
 
 ui-lint:
 	cd $(DIR_UI) && npm run lint
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run lint
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run lint
 
 ui-lint-fix:
 	cd $(DIR_UI) && npm run lint:fix
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run lint:fix
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run lint:fix
 
 ui-format:
 	cd $(DIR_UI) && npm run format
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run format
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run format
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web
