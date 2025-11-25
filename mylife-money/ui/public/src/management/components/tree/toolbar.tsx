@@ -6,7 +6,9 @@ import groupEditor from './group-editor';
 import { getGroup } from '../../../reference/selectors';
 import { getSelectedGroupId, createGroup, updateGroup, deleteGroup } from '../../store';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
-import { Toolbar as MuiToolbar, Tooltip, IconButton } from '@mui/material';
+import { default as MuiToolbar } from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 type FIXME_any = any;
 

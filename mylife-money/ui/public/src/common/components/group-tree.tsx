@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { makeGetSortedChildren } from '../../reference/selectors';
 import GroupNode from './group-node';
-import { List } from '@mui/material';
+import List from '@mui/material/List';
 
 type FIXME_any = any;
 

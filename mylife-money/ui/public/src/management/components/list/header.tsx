@@ -21,7 +21,11 @@ import AccountSelector from '../../../common/components/account-selector';
 import ImportButton from './import-button';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import GroupDenseSelector from './group-dense-selector';
-import { styled, Tooltip, IconButton, Toolbar, Typography } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 

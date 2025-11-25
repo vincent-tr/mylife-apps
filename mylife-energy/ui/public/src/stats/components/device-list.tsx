@@ -1,5 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
-import { Select, Input, MenuItem, Checkbox, ListItemText } from '@mui/material';
+import Select from '@mui/material/Select';
+import Input from '@mui/material/Input';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemText from '@mui/material/ListItemText';
 import { useSelector } from 'react-redux';
 import { getDevicesView } from '../store';
 

@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
-import { Tooltip, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Typography from '@mui/material/Typography';
 
 interface HeaderProps {
   onImport;

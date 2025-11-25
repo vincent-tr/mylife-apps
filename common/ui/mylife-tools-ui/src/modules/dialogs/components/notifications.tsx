@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { Portal, SnackbarContent, IconButton } from '@mui/material';
+import Portal from '@mui/material/Portal';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import * as icons from '@mui/icons-material';
 import { getNotifications, dismissNotification } from '../store';

@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as dialogs from '../../modules/dialogs/helpers';
-import { Dialog, DialogContent, DialogActions, Button, Tooltip, IconButton } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers';
 import { CalendarToday } from '@mui/icons-material';

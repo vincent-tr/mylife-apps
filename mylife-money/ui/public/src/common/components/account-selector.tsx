@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getAccounts } from '../../reference/selectors';
-import { MenuItem, Select } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 const useConnect = () =>
   useSelector((state) => ({

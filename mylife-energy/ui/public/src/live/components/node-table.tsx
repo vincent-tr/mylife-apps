@@ -1,5 +1,11 @@
 import React, { useMemo } from 'react';
-import { styled, Table, TableBody, TableRow, TableCell, Typography, LinearProgress } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Typography from '@mui/material/Typography';
+import LinearProgress from '@mui/material/LinearProgress';
+import { styled } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { views } from 'mylife-tools-ui';
 import { getMeasureView, getFirstDeviceByType, makeGetDevicesByType } from '../selectors';

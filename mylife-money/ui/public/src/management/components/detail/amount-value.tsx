@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import { colors, Typography, styled } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { colors, styled } from '@mui/material';
 
 type AmountType = 'debit' | 'credit';
 

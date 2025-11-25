@@ -9,7 +9,11 @@ import Row from './row';
 import GroupBreadcrumbs from './group-breadcrumbs';
 import AmountValue from './amount-value';
 import Markdown from '../../../common/components/markdown';
-import { Paper, Typography, Tabs, Tab, styled } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 

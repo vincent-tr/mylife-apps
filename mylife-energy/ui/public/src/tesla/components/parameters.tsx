@@ -4,7 +4,15 @@ import { dialogs, useAction, fireAsync } from 'mylife-tools-ui';
 import { getState } from '../selectors';
 import { setParameters } from '../actions';
 import { TeslaState } from '../../../../shared/metadata';
-import { styled, Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Button } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 

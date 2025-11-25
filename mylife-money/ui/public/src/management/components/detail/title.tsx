@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
-import { Tooltip, IconButton, Typography, styled } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 
 const Container = styled('div')({
   display: 'flex',

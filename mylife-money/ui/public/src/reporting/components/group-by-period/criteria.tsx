@@ -6,7 +6,10 @@ import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } f
 import AccountSelector from '../../../common/components/account-selector';
 import GroupCriteriaField from '../common/group-field';
 import ExportButton from '../common/export-button';
-import { styled, Grid, Checkbox, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 
 const Container = styled('div')({
   display: 'flex',

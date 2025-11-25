@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import icons from '../../../common/icons';
 
 import GroupSelector from '../../../common/components/group-selector';
-import { styled, Typography, Tooltip, IconButton } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material';
 
 const Container = styled('div')({
   display: 'flex',

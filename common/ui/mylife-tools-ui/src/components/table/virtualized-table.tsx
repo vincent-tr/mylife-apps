@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { AutoSizer, Column, Table } from 'react-virtualized';
-import { TableCell } from '@mui/material';
+import TableCell from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 
 const identity = x => x;

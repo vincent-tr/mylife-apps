@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, styled } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 
 const Container = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(2),

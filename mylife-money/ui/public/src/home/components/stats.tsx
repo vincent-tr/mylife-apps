@@ -1,7 +1,8 @@
 import React from 'react';
 import { format as formatDate } from 'date-fns';
 import { useOperationStats } from '../views';
-import { styled, Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 

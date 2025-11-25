@@ -1,5 +1,7 @@
 import React from 'react';
-import { Paper, Divider, styled } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
+import { styled } from '@mui/material';
 import Header from './header';
 import Footer from './footer';
 import Table from './table';

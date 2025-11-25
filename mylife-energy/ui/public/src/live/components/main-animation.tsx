@@ -5,7 +5,10 @@ import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { LiveDevice } from '../../../../shared/metadata';
 import { DeviceMeasure } from './common';
-import { Paper, Typography, SvgIcon, colors as muiColors } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import SvgIcon from '@mui/material/SvgIcon';
+import { colors as muiColors } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 interface WrapperProps {

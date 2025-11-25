@@ -4,7 +4,11 @@ import icons from '../../common/icons';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
 import { startBot } from '../actions';
-import { styled, Grid, IconButton, Link, TextField } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 type Bot = FIXME_any;

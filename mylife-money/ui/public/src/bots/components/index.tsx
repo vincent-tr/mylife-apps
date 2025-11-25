@@ -3,7 +3,13 @@ import { ListContainer as ToolsListContainer } from 'mylife-tools-ui';
 import { useBots } from '../views';
 import Detail from './detail';
 import Run from './run';
-import { styled, List, ListItem, ListItemButton, ListItemText, Divider, Typography } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 type Bot = FIXME_any;

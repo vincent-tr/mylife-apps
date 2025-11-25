@@ -8,7 +8,13 @@ import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
 import { enter, leave } from '../actions';
 import { getView } from '../selectors';
-import { styled, TableContainer, Table, TableHead, TableRow, TableCell, ThemeProvider, TableBody, createTheme } from '@mui/material';
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import { styled, ThemeProvider, createTheme } from '@mui/material';
 
 type FIXME_any = any;
 

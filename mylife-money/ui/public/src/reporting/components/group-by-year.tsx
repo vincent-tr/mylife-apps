@@ -4,7 +4,8 @@ import { CriteriaField } from 'mylife-tools-ui';
 import { getGroupByYear, exportGroupByYear } from '../store';
 import GroupByPeriod from './group-by-period';
 import { findAmount, roundCurrency } from './group-by-period/tools';
-import { Grid, Checkbox } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Checkbox from '@mui/material/Checkbox';
 
 const initialCriteria = {
   children: false,

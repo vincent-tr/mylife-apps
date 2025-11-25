@@ -1,6 +1,9 @@
 import React from 'react';
 import { CriteriaField, services } from 'mylife-tools-ui';
-import { styled, Grid, Typography, Divider, darken } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import { styled, darken } from '@mui/material';
 
 type FIXME_any = any;
 type BotRun = FIXME_any;

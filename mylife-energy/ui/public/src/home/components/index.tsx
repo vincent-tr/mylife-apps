@@ -6,7 +6,9 @@ import { enter, leave } from '../actions';
 import { getDataView } from '../selectors';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
-import { Typography, Paper, styled } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material';
 
 const SectionRoot = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),

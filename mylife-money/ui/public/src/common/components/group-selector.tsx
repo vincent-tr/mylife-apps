@@ -5,7 +5,10 @@ import icons from '../icons';
 import { getGroup } from '../../reference/selectors';
 
 import GroupSelectorButton from './group-selector-button';
-import { styled, Tooltip, Breadcrumbs, Typography } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 

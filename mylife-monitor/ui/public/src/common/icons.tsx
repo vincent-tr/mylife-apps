@@ -1,6 +1,6 @@
 import React from 'react';
 import * as icons from '@mui/icons-material';
-import { SvgIcon } from '@mui/material';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const { Power, Update } = icons;
 

@@ -3,7 +3,14 @@ import { useSelector } from 'react-redux';
 import icons from '../icons';
 import { makeGetSortedChildren } from '../../reference/selectors';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { ListItem, ListItemIcon, ListItemText, IconButton, Collapse, List, styled, ListItemButton } from '@mui/material';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import { styled } from '@mui/material';
 
 type FIXME_any = any;
 

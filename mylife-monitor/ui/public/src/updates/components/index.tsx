@@ -7,7 +7,15 @@ import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useSince } from '../../common/behaviors';
 import { enter, leave } from '../actions';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
-import { styled, TableContainer, Table, TableHead, TableRow, TableCell, Tooltip, Checkbox, ThemeProvider, TableBody, createTheme } from '@mui/material';
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Tooltip from '@mui/material/Tooltip';
+import Checkbox from '@mui/material/Checkbox';
+import TableBody from '@mui/material/TableBody';
+import { styled, ThemeProvider, createTheme } from '@mui/material';
 
 type FIXME_any = any;
 

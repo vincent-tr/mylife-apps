@@ -2,7 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import icons from '../../common/icons';
 import { getMeasureView, getDevice } from '../selectors';
-import { Typography, Badge, Tooltip, styled, Theme } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Badge from '@mui/material/Badge';
+import Tooltip from '@mui/material/Tooltip';
+import { styled, Theme } from '@mui/material';
 
 type Flavor = 'good' | 'bad' | null;
 
