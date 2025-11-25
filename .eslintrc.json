@@ -34,10 +34,30 @@
     "no-restricted-imports": [
       "error",
       {
-        "patterns": [
+        "paths": [
           {
-            "group": ["@mui/material", "@mui/icons-material", "@mui/x-charts", "@mui/x-data-grid", "@mui/x-date-pickers", "@mui/x-tree-view"],
-            "message": "Use direct subpath imports (e.g., import Button from '@mui/material/Button' or import { LineChart } from '@mui/x-charts/LineChart') for better development performance."
+            "name": "@mui/material",
+            "message": "Use direct subpath imports (e.g., import Button from '@mui/material/Button') for better development performance."
+          },
+          {
+            "name": "@mui/icons-material",
+            "message": "Use direct subpath imports (e.g., import Delete from '@mui/icons-material/Delete') for better development performance."
+          },
+          {
+            "name": "@mui/x-charts",
+            "message": "Use direct subpath imports (e.g., import { LineChart } from '@mui/x-charts/LineChart') for better development performance."
+          },
+          {
+            "name": "@mui/x-data-grid",
+            "message": "Use direct subpath imports for better development performance."
+          },
+          {
+            "name": "@mui/x-date-pickers",
+            "message": "Use direct subpath imports for better development performance."
+          },
+          {
+            "name": "@mui/x-tree-view",
+            "message": "Use direct subpath imports for better development performance."
           }
         ]
       }
