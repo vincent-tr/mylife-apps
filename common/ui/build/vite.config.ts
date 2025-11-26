@@ -1,5 +1,3 @@
-//import path from 'path';
-//import fs from 'fs';
 import { defineConfig, loadEnv, UserConfigExport } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -35,28 +33,3 @@ export default defineConfig(({ command, mode }) => {
 
   return config;
 });
-/*
-// https://github.com/uber/baseweb/issues/4129
-function fixReactVirtualized() {
-  return {
-    name: 'my:react-virtualized',
-    configResolved() {
-      fix('../tools/node_modules/react-virtualized');
-      fix('node_modules/react-virtualized');
-    },
-  }
-
-  function fix(relPath) {
-    const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`
-    const absPath = path.join(path.resolve(process.cwd()), relPath, 'dist/es/WindowScroller/utils/onScroll.js');
-    
-    if (!fs.existsSync(absPath)) {
-      return;
-    }
-
-    const code = fs.readFileSync(absPath, 'utf-8');
-    const modified = code.replace(WRONG_CODE, '');
-    fs.writeFileSync(absPath, modified);
-  }
-}
-*/
