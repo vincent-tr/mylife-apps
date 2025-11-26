@@ -1,10 +1,8 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { io, views } from 'mylife-tools-ui';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, views } from 'mylife-tools-ui';
 import { Device, Measure, Sensor } from '../../../shared/metadata';
 import { SensorData, StatsType, TimestampData, UiSensor } from './types';
 import * as viewUids from './view-uids';
-
-type FIXME_any = any;
 
 interface StatsState {
   sensors: { [id: string]: SensorData };
@@ -61,16 +59,14 @@ const local = {
 };
 
 export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, timestamp, sensors }: { type: StatsType; timestamp: Date; sensors: string[] }, api) => {
-  const values = (await api.dispatch(
-    io.call({
-      service: 'stats',
-      method: 'getValues',
-      type,
-      timestamp,
-      sensors,
-      timeout: 60000, // can be slower for now as we request long db queries
-    })
-  )) as FIXME_any as SetValues;
+  const values: SetValues = await api.extra.call({
+    service: 'stats',
+    method: 'getValues',
+    type,
+    timestamp,
+    sensors,
+    timeout: 60000, // can be slower for now as we request long db queries
+  });
 
   api.dispatch(local.setValues(values));
 });

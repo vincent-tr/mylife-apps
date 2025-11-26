@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { download, io, views } from 'mylife-tools-ui';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, download, io, views } from 'mylife-tools-ui';
 
 type FIXME_any = any;
 
@@ -87,14 +87,12 @@ const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.s
 
 function createExportAction({ service, method, fileName }) {
   return createAsyncThunk('reporting/' + method, async ({ criteria, display }: { criteria: FIXME_any; display: FIXME_any }, api) => {
-    const content = (await api.dispatch(
-      io.call({
-        service,
-        method,
-        criteria,
-        display,
-      })
-    )) as FIXME_any;
+    const content: string = await api.extra.call({
+      service,
+      method,
+      criteria,
+      display,
+    });
 
     api.dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
   });
