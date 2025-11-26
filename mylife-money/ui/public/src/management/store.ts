@@ -30,7 +30,7 @@ const initialState: ManagementState = {
   },
   operations: {
     view: null,
-    selected: [], // immutable.Set(),
+    selected: [],
     detail: null,
   },
 };

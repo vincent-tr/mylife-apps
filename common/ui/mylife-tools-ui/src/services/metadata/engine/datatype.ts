@@ -1,4 +1,3 @@
-import { utils } from 'mylife-tools-common';
 import Constraint, { ConstraintDefinition } from './constraint';
 import * as registry from './registry';
 import { lock, Validator } from './utils';
@@ -82,7 +81,7 @@ export default class Datatype {
     if (definition.structure) {
       this.primitive = 'structure';
       this._fields = validator.validate(definition.structure, 'structure', { type: 'array', defaultValue: [] }).map((fdef) => new StructureField(fdef));
-      this._fieldMap = utils.indexBy(this._fields, 'id');
+      this._fieldMap = indexBy(this._fields, 'id');
       Object.freeze(this._fields);
       Object.freeze(this._fieldMap);
     }
@@ -133,4 +132,12 @@ export default class Datatype {
 
     return field;
   }
+}
+
+function indexBy(array, prop) {
+  const result = {};
+  for (const item of array) {
+    result[item[prop]] = item;
+  }
+  return result;
 }

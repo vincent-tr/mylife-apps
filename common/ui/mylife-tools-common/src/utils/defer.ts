@@ -3,23 +3,23 @@ export function defer<T>() {
 }
 
 class Deferred<T> {
-  public promise: Promise<T>;
+  public readonly promise: Promise<T>;
 
-  private _resolve: (value: T) => void;
-  private _reject: (reason: Error) => void;
+  private resolveImpl: (value: T) => void;
+  private rejectImpl: (reason: Error) => void;
 
   constructor() {
     this.promise = new Promise((resolve, reject) => {
-      this._resolve = resolve;
-      this._reject = reject;
+      this.resolveImpl = resolve;
+      this.rejectImpl = reject;
     });
   }
 
   resolve(value: T) {
-    this._resolve(value);
+    this.resolveImpl(value);
   }
 
   reject(reason: Error) {
-    this._reject(reason);
+    this.rejectImpl(reason);
   }
 }

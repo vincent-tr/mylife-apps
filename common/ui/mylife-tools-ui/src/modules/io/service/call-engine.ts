@@ -1,4 +1,4 @@
-import { utils } from 'mylife-tools-common';
+import { defer, Deferred } from '../../../utils';
 import { Engine, ServiceAPI } from '.';
 
 const CALL_TIMEOUT = 5000;
@@ -30,7 +30,7 @@ class Pending {
   constructor(
     private readonly engine: CallEngine,
     private readonly request: CallRequest,
-    private readonly deferred,
+    private readonly deferred: Deferred<any>,
     timeout: number
   ) {
     this.timeout = setTimeout(() => this.onTimeout(), timeout);
@@ -117,7 +117,7 @@ class CallEngine implements Engine {
 
     this.emitter(request);
 
-    const deferred = utils.defer();
+    const deferred = defer();
     this.addPending(new Pending(this, request, deferred, timeout));
 
     return await deferred.promise;
