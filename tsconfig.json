@@ -1,5 +1,32 @@
 {
   "compilerOptions": {
+    // ============================================================================
+    // Code Quality Rules
+    // ============================================================================
+    
+    // Strict Mode
+    // "strict": true,
+    "noImplicitAny": false,
+    // "strictNullChecks": true,
+    // "strictFunctionTypes": true,
+    // "strictBindCallApply": true,
+    // "strictPropertyInitialization": true,
+    // "noImplicitThis": true,
+    "alwaysStrict": true,
+    
+    // Additional Checks
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    // "noUncheckedIndexedAccess": true,
+    // "noImplicitOverride": true,
+    // "noPropertyAccessFromIndexSignature": false,
+    
+    // ============================================================================
+    // Environment, Package, and Configuration Rules
+    // ============================================================================
+    
     // Language and Environment
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
@@ -20,25 +47,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    
-    // Type Checking - Strict Mode
-    // "strict": true,
-    "noImplicitAny": false,
-    // "strictNullChecks": true,
-    // "strictFunctionTypes": true,
-    // "strictBindCallApply": true,
-    // "strictPropertyInitialization": true,
-    // "noImplicitThis": true,
-    "alwaysStrict": true,
-    
-    // Type Checking - Additional Checks
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    // "noUncheckedIndexedAccess": true,
-    // "noImplicitOverride": true,
-    // "noPropertyAccessFromIndexSignature": false,
     
     // Completeness
     "skipLibCheck": true,
