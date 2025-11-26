@@ -9,8 +9,7 @@ import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { metadata } from 'mylife-tools-common';
-import { views, useLifecycle } from 'mylife-tools-ui';
+import { views, useLifecycle, services } from 'mylife-tools-ui';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { enter, leave } from '../actions';
@@ -61,7 +60,7 @@ const Ups = ({ data }) => {
   const lastUpdate = useSince(data.date);
 
   const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
-  const entity = metadata.getEntity(data._entity);
+  const entity = services.getEntity(data._entity);
   const RowComponent = isOk ? SuccessRow : ErrorRow;
 
   return (

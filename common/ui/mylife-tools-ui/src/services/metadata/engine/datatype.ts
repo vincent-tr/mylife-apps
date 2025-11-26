@@ -1,4 +1,4 @@
-import * as utils from '../../utils';
+import { utils } from 'mylife-tools-common';
 import Constraint, { ConstraintDefinition } from './constraint';
 import * as registry from './registry';
 import { lock, Validator } from './utils';
