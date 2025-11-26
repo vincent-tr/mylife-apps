@@ -22,9 +22,12 @@ server-build:
 	cd $(DIR_SERVER) && go build -o ../dist/mylife-monitor-server main.go
 
 ui-build:
-	cd $(DIR_UI) && npm run lint && npm run format:check
-	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run lint && npm run format:check
-	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run lint && npm run format:check
+	cd $(DIR_UI) && npm exec -- eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx
+	cd $(DIR_UI) && npm exec -- prettier --check --config ../../.prettierrc --ignore-path ../../.prettierignore "**/*.{js,jsx,ts,tsx}"
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- eslint --config ../../../.eslintrc.json --ignore-path ../../../.eslintignore . --ext .js,.jsx,.ts,.tsx
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- prettier --check --config ../../../.prettierrc --ignore-path ../../../.prettierignore "**/*.{js,jsx,ts,tsx}"
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- eslint --config ../../../.eslintrc.json --ignore-path ../../../.eslintignore . --ext .js,.jsx,.ts,.tsx
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- prettier --check --config ../../../.prettierrc --ignore-path ../../../.prettierignore "**/*.{js,jsx,ts,tsx}"
 	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- tsc --noEmit
 	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- tsc --noEmit
 	cd $(DIR_UI) && \
@@ -42,19 +45,19 @@ ui-watch-tsc:
 	npm exec -- tsc --project public/tsconfig.json --watch
 
 ui-lint:
-	cd $(DIR_UI) && npm run lint
-	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run lint
-	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run lint
+	cd $(DIR_UI) && npm exec -- eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- eslint --config ../../../.eslintrc.json --ignore-path ../../../.eslintignore . --ext .js,.jsx,.ts,.tsx
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- eslint --config ../../../.eslintrc.json --ignore-path ../../../.eslintignore . --ext .js,.jsx,.ts,.tsx
 
 ui-lint-fix:
-	cd $(DIR_UI) && npm run lint:fix
-	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run lint:fix
-	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run lint:fix
+	cd $(DIR_UI) && npm exec -- eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx --fix
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- eslint --config ../../../.eslintrc.json --ignore-path ../../../.eslintignore . --ext .js,.jsx,.ts,.tsx --fix
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- eslint --config ../../../.eslintrc.json --ignore-path ../../../.eslintignore . --ext .js,.jsx,.ts,.tsx --fix
 
 ui-format:
-	cd $(DIR_UI) && npm run format
-	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run format
-	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run format
+	cd $(DIR_UI) && npm exec -- prettier --write --config ../../.prettierrc --ignore-path ../../.prettierignore "**/*.{js,jsx,ts,tsx}"
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- prettier --write --config ../../../.prettierrc --ignore-path ../../../.prettierignore "**/*.{js,jsx,ts,tsx}"
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- prettier --write --config ../../../.prettierrc --ignore-path ../../../.prettierignore "**/*.{js,jsx,ts,tsx}"
 
 ui-typecheck:
 	cd $(DIR_UI) && npm exec -- tsc --project public/tsconfig.json --noEmit
