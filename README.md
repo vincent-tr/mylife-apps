@@ -215,7 +215,7 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 # TODO
 
 - make TS stricter
-- merge shared and public
+- remove public, move subfolders to root, rm .npmignore, move shared/metadata into src
 - review metadata vs typescript types
 - review isScreenPhone, etc for style: should not go through JS to go back to CSS
 - remove server socket errors
