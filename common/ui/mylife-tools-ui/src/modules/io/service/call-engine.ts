@@ -1,24 +1,39 @@
 import { utils } from 'mylife-tools-common';
-import { setBusy } from '../../dialogs/store';
+import { Engine, ServiceAPI } from '.';
 
 const CALL_TIMEOUT = 5000;
 
-const timer = performance && typeof performance.now === 'function' ? performance : Date;
 const logger = import.meta.env.PROD ? () => {} : logCall;
+
+export interface ServiceCall {
+  timeout?: number;
+  service: string;
+  method: string;
+  params?: any;
+}
+
+interface CallRequest extends Omit<ServiceCall, 'timeout'> {
+  engine: 'call';
+  transaction: number;
+}
+
+interface CallResponse {
+  engine: 'call';
+  transaction: number;
+  error?: any;
+  result?: any;
+}
 
 class Pending {
   private readonly timeout: number;
-  private readonly begin: number;
-  private end: number;
 
   constructor(
-    private readonly engine,
-    private readonly request,
+    private readonly engine: CallEngine,
+    private readonly request: CallRequest,
     private readonly deferred,
     timeout: number
   ) {
     this.timeout = setTimeout(() => this.onTimeout(), timeout);
-    this.begin = timer.now();
   }
 
   get transaction() {
@@ -26,7 +41,6 @@ class Pending {
   }
 
   private finish(error, result?) {
-    this.end = timer.now();
     clearTimeout(this.timeout);
     this.engine.removePending(this);
 
@@ -39,7 +53,7 @@ class Pending {
     }
   }
 
-  reply(message) {
+  reply(message: CallResponse) {
     const { error, result } = message;
     this.finish(error, result);
   }
@@ -53,13 +67,13 @@ class Pending {
   }
 }
 
-class CallEngine {
-  private readonly pendings = new Map();
+class CallEngine implements Engine {
+  private readonly pendings = new Map<number, Pending>();
   private transactionCounter = 0;
 
   constructor(
-    private readonly emitter,
-    private readonly dispatch
+    private readonly emitter: (message: CallRequest) => void,
+    private readonly api: ServiceAPI
   ) {}
 
   onDisconnect() {
@@ -71,35 +85,35 @@ class CallEngine {
 
   onConnect() {}
 
-  onMessage(message) {
+  onMessage(message: CallResponse) {
     const { transaction } = message;
     const pending = this.pendings.get(transaction);
     if (!pending) {
-      console.log('Got response for unknown transaction, ignored'); // eslint-disable-line no-console
+      console.log(`Got response for unknown transaction '${transaction}', ignored`); // eslint-disable-line no-console
       return;
     }
 
     pending.reply(message);
   }
 
-  addPending(pending) {
+  addPending(pending: Pending) {
     this.pendings.set(pending.transaction, pending);
     if (this.pendings.size === 1) {
-      this.dispatch(setBusy(true));
+      this.api.setBusy(true);
     }
   }
 
-  removePending(pending) {
+  removePending(pending: Pending) {
     this.pendings.delete(pending.transaction);
     if (this.pendings.size === 0) {
-      this.dispatch(setBusy(false));
+      this.api.setBusy(false);
     }
   }
 
-  async executeCall(message) {
+  async executeCall(message: ServiceCall) {
     const transaction = ++this.transactionCounter;
     const { timeout = CALL_TIMEOUT, ...props } = message;
-    const request = { ...props, transaction, engine: 'call' };
+    const request: CallRequest = { ...props, transaction, engine: 'call' };
 
     this.emitter(request);
 
