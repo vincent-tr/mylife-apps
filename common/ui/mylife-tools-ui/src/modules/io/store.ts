@@ -85,7 +85,7 @@ export const { getOnline, getView } = ioSlice.selectors;
 
 export default ioSlice.reducer;
 
-export const middleware = (/*store*/) => (next) => {
+export const middleware = (_store) => (next) => {
   const serviceApi = {
     setOnline(online: boolean) {
       next(local.setOnline(online));
