@@ -1,6 +1,6 @@
 import io, { Socket } from 'socket.io-client';
 import * as serializer from '../serializer';
-import CallEngine from './call-engine';
+import CallEngine, { ServiceCall } from './call-engine';
 import NotifyEngine, { ViewChangeItem } from './notify-engine';
 
 export interface ViewChange {
@@ -66,7 +66,7 @@ export class Service {
     });
   }
 
-  async executeCall(message: any) {
+  async executeCall(message: ServiceCall) {
     return await this.engines.call.executeCall(message);
   }
 }

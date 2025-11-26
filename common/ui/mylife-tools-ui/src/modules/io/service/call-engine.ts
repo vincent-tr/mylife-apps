@@ -9,7 +9,7 @@ export interface ServiceCall {
   timeout?: number;
   service: string;
   method: string;
-  params?: any;
+  [paramKey: string]: any;
 }
 
 interface CallRequest extends Omit<ServiceCall, 'timeout'> {

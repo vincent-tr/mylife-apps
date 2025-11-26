@@ -1,8 +1,7 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Mutex } from 'async-mutex';
 import debounce from 'debounce';
 import { STATE_PREFIX } from '../../constants/defines';
-import { observeStore, getStore } from '../../services/store-factory';
+import { observeStore, getStore, createAsyncThunk } from '../../services/store-factory';
 import * as io from '../io';
 import { getViewId, getRefCount, setView, ref, unref } from './store';
 
@@ -26,22 +25,18 @@ export const createOrUpdateView = createAsyncThunk(
     const viewId = viewSelector(state);
 
     if (viewId) {
-      await api.dispatch(
-        io.call({
-          service: 'common',
-          method: 'renotifyWithCriteria',
-          viewId,
-          criteria,
-        })
-      );
+      await api.extra.call({
+        service: 'common',
+        method: 'renotifyWithCriteria',
+        viewId,
+        criteria,
+      });
     } else {
-      const newViewId = await api.dispatch(
-        io.call({
-          service,
-          method,
-          criteria,
-        })
-      );
+      const newViewId: number = await api.extra.call({
+        service,
+        method,
+        criteria,
+      });
 
       api.dispatch(setViewAction(newViewId));
     }
@@ -61,13 +56,11 @@ const createOrRenewView = createAsyncThunk(
     }
 
     const criteria = criteriaSelector(state, selectorProps);
-    const newViewId = await api.dispatch(
-      io.call({
-        service,
-        method,
-        ...criteria,
-      })
-    );
+    const newViewId: number = await api.extra.call({
+      service,
+      method,
+      ...criteria,
+    });
 
     api.dispatch(setViewAction(newViewId));
   }

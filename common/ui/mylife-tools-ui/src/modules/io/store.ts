@@ -1,10 +1,11 @@
-import { createAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
+import { createAsyncThunk } from '../../services/store-factory';
 import { setBusy } from '../dialogs/store';
 import { View } from '../views';
 import { Entity } from '../views/types';
-import { Service, ViewChange } from './service';
-import { CallPayload } from './types';
+import { ServiceCall } from './service/call-engine';
+import { Service, ServiceAPI, ViewChange } from './service';
 
 interface IOState {
   online: boolean;
@@ -12,8 +13,6 @@ interface IOState {
 }
 
 type ViewChangePayload = ViewChange;
-
-const ACTION_CALL = `${STATE_PREFIX}/io/call`;
 
 const initialState: IOState = {
   online: false,
@@ -66,16 +65,12 @@ const local = {
   viewClose: ioSlice.actions.viewClose,
 };
 
-export const call = createAction<CallPayload>(ACTION_CALL);
-
 export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
-  await api.dispatch(
-    call({
-      service: 'common',
-      method: 'unnotify',
-      viewId,
-    })
-  );
+  await api.extra.call({
+    service: 'common',
+    method: 'unnotify',
+    viewId,
+  });
 
   api.dispatch(local.viewClose(viewId));
 });
@@ -85,27 +80,45 @@ export const { getOnline, getView } = ioSlice.selectors;
 
 export default ioSlice.reducer;
 
-export const middleware = (_store) => (next) => {
-  const serviceApi = {
-    setOnline(online: boolean) {
-      next(local.setOnline(online));
-    },
-    setBusy(busy: boolean) {
-      next(setBusy(busy));
-    },
-    viewChange(changes: ViewChange) {
-      next(viewChange(changes));
-    },
-  };
+class ServiceApiImpl implements ServiceAPI {
+  private dispatch;
 
-  const service = new Service(serviceApi);
-
-  return (action) => {
-    if (action.type !== ACTION_CALL) {
-      return next(action);
+  setOnline(online: boolean): void {
+    if (this.dispatch) {
+      this.dispatch(local.setOnline(online));
+    } else {
+      console.error('ServiceApiImpl: dispatch not set, cannot set online status');
     }
+  }
 
-    next(action);
-    return service.executeCall(action.payload as CallPayload);
-  };
-};
+  setBusy(busy: boolean): void {
+    if (this.dispatch) {
+      this.dispatch(setBusy(busy));
+    } else {
+      console.error('ServiceApiImpl: dispatch not set, cannot set busy status');
+    }
+  }
+
+  viewChange(changes: ViewChange): void {
+    if (this.dispatch) {
+      this.dispatch(viewChange(changes));
+    } else {
+      console.error('ServiceApiImpl: dispatch not set, cannot dispatch view change');
+    }
+  }
+
+  connectStoreDispatcher(dispatch) {
+    this.dispatch = dispatch;
+  }
+}
+
+const serviceApi = new ServiceApiImpl();
+const service = new Service(serviceApi);
+
+export async function call(message: ServiceCall) {
+  return await service.executeCall(message);
+}
+
+export function connectStoreDispatcher(dispatch) {
+  serviceApi.connectStoreDispatcher(dispatch);
+}
