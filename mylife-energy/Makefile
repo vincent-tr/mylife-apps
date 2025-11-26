@@ -9,7 +9,7 @@ DOCKER_PACKAGE_VERSION ?= $(shell node -p "require('$(DIR_UI)/package.json').ver
 DOCKER_IMAGE_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):$(DOCKER_PACKAGE_VERSION)
 DOCKER_IMAGE_LATEST_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):latest
 
-.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint ui-lint-fix ui-format run-web run-collector
+.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint ui-lint-fix ui-format ui-typecheck run-web run-collector
 
 docker-publish: docker-build
 	docker push "$(DOCKER_IMAGE_TAG)"
@@ -53,6 +53,9 @@ ui-format:
 	cd $(DIR_UI) && npm run format
 	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run format
 	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run format
+
+ui-typecheck:
+	cd $(DIR_UI) && npm exec -- tsc --project public/tsconfig.json --noEmit
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web

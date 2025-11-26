@@ -54,5 +54,8 @@ ui-format:
 	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run format
 	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run format
 
+ui-typecheck:
+	cd $(DIR_UI) && npm exec -- tsc --project public/tsconfig.json --noEmit
+
 run-web:
 	cd $(DIR_SERVER) && go run main.go web
