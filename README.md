@@ -214,7 +214,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 # TODO
 
-- merge tools-common into tools-ui
 - make TS stricter
 - merge shared and public
 - review metadata vs typescript types
