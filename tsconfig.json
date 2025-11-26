@@ -1,17 +1,53 @@
 {
-    "compilerOptions": {
-        "noEmit": true,
-        "alwaysStrict": true,
-        "module": "es2022",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "target": "es2022",
-        "noImplicitAny": false,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "baseUrl": ".",
-        "jsx": "react",
-        "resolveJsonModule": true,
-        "types": ["vite/client"]
-    }
+  "compilerOptions": {
+    // Language and Environment
+    "target": "ES2022",
+    // "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    
+    // Modules
+    "module": "ESNext",
+    // "moduleResolution": "bundler",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    // "allowImportingTsExtensions": false,
+    
+    // Emit
+    "noEmit": true,
+    "sourceMap": true,
+    
+    // Interop Constraints
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    // "forceConsistentCasingInFileNames": true,
+    // "isolatedModules": true,
+    
+    // Type Checking - Strict Mode
+    // "strict": true,
+    "noImplicitAny": false,
+    // "strictNullChecks": true,
+    // "strictFunctionTypes": true,
+    // "strictBindCallApply": true,
+    // "strictPropertyInitialization": true,
+    // "noImplicitThis": true,
+    "alwaysStrict": true,
+    
+    // Type Checking - Additional Checks
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noImplicitReturns": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noUncheckedIndexedAccess": true,
+    // "noImplicitOverride": true,
+    // "noPropertyAccessFromIndexSignature": false,
+    
+    // Completeness
+    "skipLibCheck": true,
+    
+    // Path Mapping
+    "baseUrl": ".",
+    
+    // Types
+    "types": ["vite/client"]
+  }
 }
