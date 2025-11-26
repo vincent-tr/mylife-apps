@@ -1,7 +1,7 @@
 DIR_ROOT = $(shell realpath ..)
 DIR_UI = $(shell realpath ui)
 
-DIR_TOOLS_UI = $(DIR_UI)/mylife-tools-ui
+DIR_TOOLS_UI = $(DIR_UI)/tools
 
 .PHONY: ui-lint ui-lint-fix ui-format ui-format-check ui-typecheck
 

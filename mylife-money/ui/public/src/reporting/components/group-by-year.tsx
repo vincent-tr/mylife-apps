@@ -2,7 +2,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CriteriaField } from 'mylife-tools-ui';
+import { CriteriaField } from 'mylife-tools';
 import { getGroupByYear, exportGroupByYear } from '../store';
 import { findAmount, roundCurrency } from './group-by-period/tools';
 import GroupByPeriod from './group-by-period';

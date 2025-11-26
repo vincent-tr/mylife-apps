@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { dialogs, useAction, fireAsync } from 'mylife-tools-ui';
+import { dialogs, useAction, fireAsync } from 'mylife-tools';
 import { TeslaState } from '../../../../shared/metadata';
 import { setParameters } from '../actions';
 import { getState } from '../selectors';

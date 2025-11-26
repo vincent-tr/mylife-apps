@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import React, { useReducer, useEffect } from 'react';
-import { useActions, useLifecycle } from 'mylife-tools-ui';
+import { useActions, useLifecycle } from 'mylife-tools';
 import { enter, leave } from '../actions';
 import { fetchValues } from '../store';
 import { StatsType } from '../types';

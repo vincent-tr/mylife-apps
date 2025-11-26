@@ -27,7 +27,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { dialogs } from 'mylife-tools-ui';
+import { dialogs } from 'mylife-tools';
 import icons from '../../../common/icons';
 
 type FIXME_any = any;

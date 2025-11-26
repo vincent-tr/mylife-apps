@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ListContainer } from 'mylife-tools-ui';
+import { ListContainer } from 'mylife-tools';
 import GroupTree from '../../../common/components/group-tree';
 import { getSelectedGroupId, selectGroup } from '../../store';
 

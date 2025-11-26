@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import { DeviceType } from './device';
 
 export interface LiveDevice extends views.Entity {

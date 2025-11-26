@@ -46,9 +46,9 @@
         ],
         "pathGroups": [
           {
-            "pattern": "mylife-tools-ui",
-            "group": "internal",
-            "position": "before"
+            "pattern": "mylife-tools",
+            "group": "external",
+            "position": "after"
           },
           {
             "pattern": "./*/**",

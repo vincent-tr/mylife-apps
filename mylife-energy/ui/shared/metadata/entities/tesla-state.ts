@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 
 export enum TeslaMode {
   Off,

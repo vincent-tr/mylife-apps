@@ -9,7 +9,7 @@ import humanizeDuration from 'humanize-duration';
 import React, { PropsWithChildren } from 'react';
 import BatteryGauge from 'react-battery-gauge';
 import { useSelector } from 'react-redux';
-import { useLifecycle, useActions } from 'mylife-tools-ui';
+import { useLifecycle, useActions } from 'mylife-tools';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../../../shared/metadata';
 import icons from '../../common/icons';
 import { enter, leave, setMode } from '../actions';

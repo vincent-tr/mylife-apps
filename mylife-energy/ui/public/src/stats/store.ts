@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createAsyncThunk, views } from 'mylife-tools-ui';
+import { createAsyncThunk, views } from 'mylife-tools';
 import { Device, Measure, Sensor } from '../../../shared/metadata';
 import { SensorData, StatsType, TimestampData, UiSensor } from './types';
 import * as viewUids from './view-uids';

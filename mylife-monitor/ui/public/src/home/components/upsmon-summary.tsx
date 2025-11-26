@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import humanizeDuration from 'humanize-duration';
 import React from 'react';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import icons from '../../common/icons';
 import { SuccessCell, ErrorCell } from '../../common/table-status';

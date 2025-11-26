@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { dialogs } from 'mylife-tools-ui';
+import { dialogs } from 'mylife-tools';
 import GroupTree from './group-tree';
 
 type FIXME_any = any;

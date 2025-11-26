@@ -1,11 +1,11 @@
 {
-  "name": "mylife-tools-build",
+  "name": "mylife-build",
   "version": "1.0.0",
-  "description": "MyLife Tools Build",
+  "description": "MyLife Build",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vincent-tr/mylife-tools-build.git"
+    "url": "git+https://github.com/vincent-tr/mylife-build.git"
   },
   "author": "Vincent Trumpff",
   "license": "GPL-3.0+",

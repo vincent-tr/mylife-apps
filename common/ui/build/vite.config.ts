@@ -41,7 +41,7 @@ function fixReactVirtualized() {
   return {
     name: 'my:react-virtualized',
     configResolved() {
-      fix('../mylife-tools-ui/node_modules/react-virtualized');
+      fix('../tools/node_modules/react-virtualized');
       fix('node_modules/react-virtualized');
     },
   }

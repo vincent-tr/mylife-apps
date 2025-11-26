@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import * as viewUids from './view-uids';
 
 const nagiosViewRef = new views.ViewReference({

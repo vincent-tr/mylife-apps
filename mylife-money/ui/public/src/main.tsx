@@ -1,5 +1,5 @@
 import React from 'react';
-import { services } from 'mylife-tools-ui';
+import { services } from 'mylife-tools';
 import metadataDefintions from '../../shared/metadata';
 import Bots from './bots/components';
 import icons from './common/icons';

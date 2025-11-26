@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
-import { useChartColors } from 'mylife-tools-ui';
+import { useChartColors } from 'mylife-tools';
 import { getGroupStacks, getChildrenView } from '../../../reference/selectors';
 
 const useConnect = ({ display, groups }) => {

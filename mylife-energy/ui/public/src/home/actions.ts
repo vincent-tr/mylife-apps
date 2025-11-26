@@ -1,4 +1,4 @@
-import { createAsyncThunk, views } from 'mylife-tools-ui';
+import { createAsyncThunk, views } from 'mylife-tools';
 import * as viewUids from './view-uids';
 
 const viewRef = new views.ViewReference({

@@ -22,13 +22,13 @@ server-build:
 	cd $(DIR_SERVER) && go build -o ../dist/mylife-monitor-server main.go
 
 ui-build: ui-lint ui-format-check ui-typecheck
-	cd $(DIR_UI) && npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts build
+	cd $(DIR_UI) && npm exec -- vite --config ../../common/ui/build/vite.config.ts build
 
 ui-watch:
-	export VITE_WEB_PORT=8015; \
-	export VITE_WSTARGET_PORT=8115; \
+	export VITE_WEB_PORT=8021; \
+	export VITE_WSTARGET_PORT=8121; \
 	cd $(DIR_UI) && \
-	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts
+	npm exec -- vite --config ../../common/ui/build/vite.config.ts
 
 ui-watch-tsc:
 	cd $(DIR_UI) && \

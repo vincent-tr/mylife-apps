@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 
 const botsViewRef = new views.SharedViewReference({
   uid: 'bots-list',

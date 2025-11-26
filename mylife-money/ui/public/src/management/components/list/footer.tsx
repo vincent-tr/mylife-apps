@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { useScreenPhone } from 'mylife-tools-ui';
+import { useScreenPhone } from 'mylife-tools';
 import { COLOR_AMOUNT_CREDIT, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_TOTAL, useConnect } from './table-behaviors';
 
 function summaries(operations) {

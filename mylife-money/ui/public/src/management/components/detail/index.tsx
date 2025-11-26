@@ -5,7 +5,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { DebouncedTextField } from 'mylife-tools-ui';
+import { DebouncedTextField } from 'mylife-tools';
 import Markdown from '../../../common/components/markdown';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup, getOperationDetail } from '../../store';

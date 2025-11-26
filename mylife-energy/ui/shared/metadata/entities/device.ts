@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 
 export type DeviceType = 'node' | 'group' | 'main' | 'solar' | 'total';
 

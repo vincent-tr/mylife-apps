@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools-ui';
+import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools';
 import AccountSelector from '../../../common/components/account-selector';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';

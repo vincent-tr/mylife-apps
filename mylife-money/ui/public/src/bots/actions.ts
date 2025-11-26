@@ -1,4 +1,4 @@
-import { createAsyncThunk, dialogs } from 'mylife-tools-ui';
+import { createAsyncThunk, dialogs } from 'mylife-tools';
 
 export const startBot = createAsyncThunk('bots/startBot', async (id: string, api) => {
   await api.extra.call({

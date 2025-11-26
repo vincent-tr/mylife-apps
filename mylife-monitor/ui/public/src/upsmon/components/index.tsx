@@ -9,7 +9,7 @@ import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { views, useLifecycle, services } from 'mylife-tools-ui';
+import { views, useLifecycle, services } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { enter, leave } from '../actions';

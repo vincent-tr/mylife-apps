@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
 import React, { PropsWithChildren, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLifecycle, useActions, useInterval } from 'mylife-tools-ui';
+import { useLifecycle, useActions, useInterval } from 'mylife-tools';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
 import { enter, leave } from '../actions';

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import { resetCriteria } from './store';
 import * as viewUids from './view-uids';
 

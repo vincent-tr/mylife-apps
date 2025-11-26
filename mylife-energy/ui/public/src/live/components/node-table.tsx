@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import { Measure } from '../../../../shared/metadata';
 import { getMeasureView, getFirstDeviceByType, makeGetDevicesByType } from '../selectors';
 import { DeviceMeasure } from './common';

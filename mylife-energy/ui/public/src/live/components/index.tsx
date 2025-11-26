@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import React from 'react';
-import { useLifecycle, useActions } from 'mylife-tools-ui';
+import { useLifecycle, useActions } from 'mylife-tools';
 import { enter, leave } from '../actions';
 import MainAnimation from './main-animation';
 import NodeTable from './node-table';

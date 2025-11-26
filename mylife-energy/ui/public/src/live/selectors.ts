@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import { DeviceType, LiveDevice, Measure } from '../../../shared/metadata';
 import * as viewUids from './view-uids';
 

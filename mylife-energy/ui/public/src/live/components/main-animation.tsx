@@ -5,7 +5,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useScreenPhone, services } from 'mylife-tools-ui';
+import { useScreenPhone, services } from 'mylife-tools';
 import { LiveDevice } from '../../../../shared/metadata';
 import icons from '../../common/icons';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';

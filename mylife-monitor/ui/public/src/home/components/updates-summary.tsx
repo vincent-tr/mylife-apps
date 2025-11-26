@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React from 'react';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import icons from '../../common/icons';
 import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 

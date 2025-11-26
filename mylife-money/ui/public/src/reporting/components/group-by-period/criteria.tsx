@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools-ui';
+import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools';
 import AccountSelector from '../../../common/components/account-selector';
 import ExportButton from '../common/export-button';
 import GroupCriteriaField from '../common/group-field';

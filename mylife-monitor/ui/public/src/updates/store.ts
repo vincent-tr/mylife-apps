@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import * as viewUids from './view-uids';
 
 type FIXME_any = any;

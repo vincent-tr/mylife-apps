@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
-import { useChartColors } from 'mylife-tools-ui';
+import { useChartColors } from 'mylife-tools';
 import { getChartData, getSensors } from '../store';
 import { StatsType, TimestampData } from '../types';
 

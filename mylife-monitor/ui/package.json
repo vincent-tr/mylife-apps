@@ -22,7 +22,7 @@
     "@types/react": "^19.2.0",
     "date-fns": "^4.1.0",
     "humanize-duration": "^3.27.2",
-    "mylife-tools-ui": "*",
+    "mylife-tools": "*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-redux": "^9.2.0",

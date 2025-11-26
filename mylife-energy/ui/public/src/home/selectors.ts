@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import { HomeData } from '../../../shared/metadata';
 import * as viewUids from './view-uids';
 

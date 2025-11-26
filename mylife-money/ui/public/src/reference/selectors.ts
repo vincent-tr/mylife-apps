@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { views } from 'mylife-tools-ui';
+import { views } from 'mylife-tools';
 import { ACCOUNTS, GROUPS } from './view-ids';
 
 type FIXME_any = any;
