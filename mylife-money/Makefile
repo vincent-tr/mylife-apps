@@ -50,19 +50,19 @@ ui-typecheck: common-typecheck
 	cd $(DIR_UI) && npm exec -- tsc --project public/tsconfig.json --noEmit
 
 common-lint:
-	$(MAKE) -C $(DIR_COMMON) lint
+	$(MAKE) -C $(DIR_COMMON) ui-lint
 
 common-lint-fix:
-	$(MAKE) -C $(DIR_COMMON) lint-fix
+	$(MAKE) -C $(DIR_COMMON) ui-lint-fix
 
 common-format:
-	$(MAKE) -C $(DIR_COMMON) format
+	$(MAKE) -C $(DIR_COMMON) ui-format
 
 common-format-check:
-	$(MAKE) -C $(DIR_COMMON) format-check
+	$(MAKE) -C $(DIR_COMMON) ui-format-check
 
 common-typecheck:
-	$(MAKE) -C $(DIR_COMMON) typecheck
+	$(MAKE) -C $(DIR_COMMON) ui-typecheck
 
 common-format-check:
 	$(MAKE) -C $(DIR_COMMON) format-check

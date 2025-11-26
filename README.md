@@ -48,21 +48,14 @@ npm run ws:list
 
 All UI packages share common ESLint and Prettier configurations.
 
-**Per-package** (in each UI folder):
+**Available targets** (in app or common directory):
 ```bash
-cd common/ui/mylife-tools-ui  # or any UI package
-npm run lint              # Check for linting errors
-npm run lint:fix          # Auto-fix linting errors
-npm run format            # Format all files
-npm run format:check      # Check formatting without changes
-```
-
-**All packages at once** (from root):
-```bash
-npm run ws:lint           # Lint all UI packages
-npm run ws:lint:fix       # Fix all UI packages
-npm run ws:format         # Format all UI packages
-npm run ws:format:check   # Check all UI packages
+cd mylife-energy  # or mylife-money, mylife-monitor, or common
+make ui-lint              # Lint packages (app includes common)
+make ui-lint-fix          # Auto-fix linting errors
+make ui-format            # Format all files
+make ui-format-check      # Check formatting without changes
+make ui-typecheck         # TypeScript type checking
 ```
 
 **Configuration** (`.eslintrc.json`, `.prettierrc`):
@@ -70,6 +63,8 @@ npm run ws:format:check   # Check all UI packages
 - Prettier integration (no conflicts)
 - Single quotes, semicolons, 2-space indentation, 180-char line width
 - Allows `any` type, warns on unused vars (except `_` prefixed)
+- Import ordering: external → mylife-tools → parent → sibling
+- MUI direct imports enforced (no barrel imports)
 
 # Framework (tools)
 

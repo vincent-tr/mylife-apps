@@ -8,11 +8,7 @@
   "scripts": {
     "ws:list": "npm ls --workspaces --depth=0",
     "ws:info": "npm query '.workspace'",
-    "ws:outdated": "npm outdated --workspaces",
-    "ws:lint": "npm run lint --workspaces --if-present",
-    "ws:lint:fix": "npm run lint:fix --workspaces --if-present",
-    "ws:format": "npm run format --workspaces --if-present",
-    "ws:format:check": "npm run format:check --workspaces --if-present"
+    "ws:outdated": "npm outdated --workspaces"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.18.1",
