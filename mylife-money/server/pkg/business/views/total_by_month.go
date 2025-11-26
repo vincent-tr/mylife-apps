@@ -3,7 +3,7 @@ package views
 import (
 	"fmt"
 	"mylife-money/pkg/entities"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/store"
 	"time"
 )
 

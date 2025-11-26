@@ -2,7 +2,7 @@ package entities
 
 import (
 	"fmt"
-	"mylife-tools-server/services/io/serialization"
+	"mylife-tools/services/io/serialization"
 	"time"
 
 	"go.mongodb.org/mongo-driver/v2/bson"

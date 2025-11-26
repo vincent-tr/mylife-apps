@@ -3,9 +3,9 @@ package mailsender
 import (
 	"fmt"
 	"mylife-money/pkg/services/secrets"
-	"mylife-tools-server/config"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
+	"mylife-tools/config"
+	"mylife-tools/log"
+	"mylife-tools/services"
 )
 
 var logger = log.CreateLogger("mylife:money:mail-sender")

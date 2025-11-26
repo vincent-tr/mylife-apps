@@ -2,7 +2,7 @@ package api
 
 import (
 	"errors"
-	"mylife-tools-server/services/sessions"
+	"mylife-tools/services/sessions"
 	"testing"
 )
 

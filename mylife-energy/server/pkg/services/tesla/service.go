@@ -5,10 +5,10 @@ import (
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/api"
 	"mylife-energy/pkg/services/tesla/parameters"
-	"mylife-tools-server/config"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"mylife-tools-server/services/store"
+	"mylife-tools/config"
+	"mylife-tools/log"
+	"mylife-tools/services"
+	"mylife-tools/services/store"
 )
 
 /*

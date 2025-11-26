@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 	"net/http"
 	"time"
 )

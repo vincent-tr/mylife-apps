@@ -7,10 +7,10 @@ import (
 	"mylife-energy/pkg/services/tesla/api"
 	"mylife-energy/pkg/services/tesla/live_query"
 	"mylife-energy/pkg/services/tesla/parameters"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services/monitor"
-	"mylife-tools-server/services/tasks"
-	"mylife-tools-server/utils"
+	"mylife-tools/log"
+	"mylife-tools/services/monitor"
+	"mylife-tools/services/tasks"
+	"mylife-tools/utils"
 	"time"
 )
 

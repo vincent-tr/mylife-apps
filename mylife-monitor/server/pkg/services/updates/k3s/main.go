@@ -3,7 +3,7 @@ package k3s
 import (
 	"context"
 	"mylife-monitor/pkg/entities"
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 	"time"
 
 	"github.com/google/go-github/v65/github"

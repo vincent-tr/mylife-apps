@@ -8,7 +8,7 @@ import (
 	"sort"
 	"time"
 
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 )
 
 var logger = log.CreateLogger("mylife:monitor:updates:unifi")

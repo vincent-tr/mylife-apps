@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"maps"
 	"mylife-money/pkg/entities"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/store"
 	"slices"
 	"time"
 )

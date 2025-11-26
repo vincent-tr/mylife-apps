@@ -3,10 +3,10 @@ package stats
 import (
 	"mylife-energy/pkg/business/stats"
 	"mylife-energy/pkg/entities"
-	"mylife-tools-server/services/api"
-	"mylife-tools-server/services/notification"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/api"
+	"mylife-tools/services/notification"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/store"
 	"time"
 )
 

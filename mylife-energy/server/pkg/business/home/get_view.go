@@ -4,7 +4,7 @@ import (
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/live"
 	"mylife-energy/pkg/services/tesla"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/store"
 	"time"
 )
 

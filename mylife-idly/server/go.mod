@@ -2,7 +2,7 @@ module mylife-idly
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/server
+replace mylife-tools => ../../common/server
 
 require (
 	github.com/disintegration/imaging v1.6.2
@@ -10,7 +10,7 @@ require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/spf13/cobra v1.9.1
-	mylife-tools-server v0.0.0-00010101000000-000000000000
+	mylife-tools v0.0.0-00010101000000-000000000000
 )
 
 require (

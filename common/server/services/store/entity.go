@@ -1,6 +1,6 @@
 package store
 
-import "mylife-tools-server/services/io/serialization"
+import "mylife-tools/services/io/serialization"
 
 type Entity interface {
 	serialization.Marshaller

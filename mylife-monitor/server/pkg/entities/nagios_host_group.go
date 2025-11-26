@@ -1,6 +1,6 @@
 package entities
 
-import "mylife-tools-server/services/io/serialization"
+import "mylife-tools/services/io/serialization"
 
 // Groupe d'hôtes nagios
 type NagiosHostGroup struct {

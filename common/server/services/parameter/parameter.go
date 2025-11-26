@@ -2,7 +2,7 @@ package parameter
 
 import (
 	"fmt"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/store"
 
 	"github.com/gookit/goutil/errorx/panics"
 )

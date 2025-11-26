@@ -9,7 +9,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/go-git/go-git/v5/storage/memory"
 
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 )
 
 // github.com/containers/image => pacman -S btrfs-progs

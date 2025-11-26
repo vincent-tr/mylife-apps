@@ -4,7 +4,7 @@ import (
 	config "github.com/gookit/config/v2"
 	yaml "github.com/gookit/config/v2/yaml"
 
-	log "mylife-tools-server/log"
+	log "mylife-tools/log"
 )
 
 var logger = log.CreateLogger("mylife:server:config")

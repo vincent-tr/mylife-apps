@@ -3,7 +3,7 @@ package store
 import (
 	"fmt"
 
-	"mylife-tools-server/services/database"
+	"mylife-tools/services/database"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 )

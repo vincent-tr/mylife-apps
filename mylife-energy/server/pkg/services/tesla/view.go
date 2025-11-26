@@ -3,8 +3,8 @@ package tesla
 import (
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/parameters"
-	"mylife-tools-server/services/store"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/services/store"
+	"mylife-tools/services/tasks"
 	"time"
 
 	"github.com/gookit/goutil/errorx/panics"

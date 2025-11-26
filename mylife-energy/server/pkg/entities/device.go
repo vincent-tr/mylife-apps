@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"mylife-tools-server/services/io/serialization"
+	"mylife-tools/services/io/serialization"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 )

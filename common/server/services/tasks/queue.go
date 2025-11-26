@@ -2,8 +2,8 @@ package tasks
 
 import (
 	"fmt"
-	"mylife-tools-server/log"
-	"mylife-tools-server/utils"
+	"mylife-tools/log"
+	"mylife-tools/utils"
 	"sync"
 )
 

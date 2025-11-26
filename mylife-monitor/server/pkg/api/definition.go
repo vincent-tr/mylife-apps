@@ -5,7 +5,7 @@ import (
 	"mylife-monitor/pkg/api/nagios"
 	"mylife-monitor/pkg/api/updates"
 	"mylife-monitor/pkg/api/upsmon"
-	"mylife-tools-server/services/api"
+	"mylife-tools/services/api"
 )
 
 var Definitions = []api.ServiceDefinition{

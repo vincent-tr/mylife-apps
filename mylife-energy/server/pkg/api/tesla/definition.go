@@ -3,9 +3,9 @@ package tesla
 import (
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla"
-	"mylife-tools-server/services/api"
-	"mylife-tools-server/services/notification"
-	"mylife-tools-server/services/sessions"
+	"mylife-tools/services/api"
+	"mylife-tools/services/notification"
+	"mylife-tools/services/sessions"
 )
 
 var Definition = api.MakeDefinition("tesla", notifyState, setMode, setParameters)

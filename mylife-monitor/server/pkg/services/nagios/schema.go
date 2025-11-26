@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"mylife-monitor/pkg/entities"
 	"mylife-monitor/pkg/services/nagios/query"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/store"
 	"time"
 )
 

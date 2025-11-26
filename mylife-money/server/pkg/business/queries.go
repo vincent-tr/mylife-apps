@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
-	"mylife-tools-server/services/notification"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/notification"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/store"
 )
 
 func RenotifyWithCriteria(session *sessions.Session, viewId uint64, criteria views.CriteriaValues) error {

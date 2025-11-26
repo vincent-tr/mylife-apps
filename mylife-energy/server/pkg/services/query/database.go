@@ -3,8 +3,8 @@ package query
 import (
 	"context"
 	"mylife-energy/pkg/entities"
-	"mylife-tools-server/services/database"
-	"mylife-tools-server/utils"
+	"mylife-tools/services/database"
+	"mylife-tools/utils"
 	"time"
 
 	"go.mongodb.org/mongo-driver/v2/bson"

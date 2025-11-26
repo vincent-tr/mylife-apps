@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"mylife-tools-server/services/database"
-	"mylife-tools-server/services/mqtt"
-	"mylife-tools-server/utils"
+	"mylife-tools/log"
+	"mylife-tools/services"
+	"mylife-tools/services/database"
+	"mylife-tools/services/mqtt"
+	"mylife-tools/utils"
 )
 
 var logger = log.CreateLogger("mylife:energy:collector")

@@ -1,6 +1,6 @@
 package store
 
-import "mylife-tools-server/services/database"
+import "mylife-tools/services/database"
 
 type CollectionBuilder[TEntity Entity] struct {
 	colName     string

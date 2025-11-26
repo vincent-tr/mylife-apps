@@ -1,7 +1,7 @@
 package services
 
 import (
-	log "mylife-tools-server/log"
+	log "mylife-tools/log"
 	"os"
 	"os/signal"
 	"syscall"

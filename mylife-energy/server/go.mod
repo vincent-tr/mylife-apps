@@ -2,7 +2,7 @@ module mylife-energy
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/server
+replace mylife-tools => ../../common/server
 
 require (
 	github.com/bogosj/tesla v1.3.1
@@ -11,7 +11,7 @@ require (
 	github.com/thlib/go-timezone-local v0.0.6
 	go.mongodb.org/mongo-driver/v2 v2.2.0
 	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0
-	mylife-tools-server v0.0.0-00010101000000-000000000000
+	mylife-tools v0.0.0-00010101000000-000000000000
 )
 
 require dario.cat/mergo v1.0.1 // indirect

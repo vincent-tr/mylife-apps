@@ -2,11 +2,11 @@ package parameter
 
 import (
 	"fmt"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"mylife-tools-server/services/database"
-	"mylife-tools-server/services/parameter/entities"
-	"mylife-tools-server/services/store"
+	"mylife-tools/log"
+	"mylife-tools/services"
+	"mylife-tools/services/database"
+	"mylife-tools/services/parameter/entities"
+	"mylife-tools/services/store"
 	"reflect"
 	"sync"
 

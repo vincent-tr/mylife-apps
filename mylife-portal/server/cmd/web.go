@@ -4,7 +4,7 @@ import (
 	ui "mylife-portal-ui"
 	"mylife-portal/pkg/entities"
 	_ "mylife-portal/pkg/services/web"
-	"mylife-tools-server/services"
+	"mylife-tools/services"
 
 	"github.com/spf13/cobra"
 )

@@ -2,10 +2,10 @@ package notification
 
 import (
 	"fmt"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/store"
-	"mylife-tools-server/utils"
+	"mylife-tools/log"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/store"
+	"mylife-tools/utils"
 )
 
 type notificationSession struct {

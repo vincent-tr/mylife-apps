@@ -2,7 +2,7 @@ package api
 
 import (
 	"context"
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 )
 
 var logger = log.CreateLogger("mylife:energy:tesla:api")

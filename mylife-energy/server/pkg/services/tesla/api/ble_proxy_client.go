@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 )
 
 const wakeupTimeout = time.Minute

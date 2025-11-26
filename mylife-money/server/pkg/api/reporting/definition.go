@@ -3,8 +3,8 @@ package reporting
 import (
 	"mylife-money/pkg/business"
 	"mylife-money/pkg/business/views"
-	"mylife-tools-server/services/api"
-	"mylife-tools-server/services/sessions"
+	"mylife-tools/services/api"
+	"mylife-tools/services/sessions"
 )
 
 var Definition = api.MakeDefinition("reporting", notifyOperationStats, notifyTotalByMonth, notifyGroupByMonth, notifyGroupByYear, exportGroupByMonth, exportGroupByYear)

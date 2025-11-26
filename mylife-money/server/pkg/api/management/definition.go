@@ -3,9 +3,9 @@ package management
 import (
 	"mylife-money/pkg/business"
 	"mylife-money/pkg/business/views"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services/api"
-	"mylife-tools-server/services/sessions"
+	"mylife-tools/log"
+	"mylife-tools/services/api"
+	"mylife-tools/services/sessions"
 )
 
 var logger = log.CreateLogger("mylife:money:api:management")

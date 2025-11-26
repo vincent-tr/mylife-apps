@@ -2,7 +2,7 @@ module mylife-monitor
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/server
+replace mylife-tools => ../../common/server
 
 require (
 	github.com/compose-spec/compose-go/v2 v2.6.0
@@ -16,7 +16,7 @@ require (
 	github.com/unpoller/unifi v0.4.3
 	k8s.io/api v0.32.3
 	k8s.io/client-go v0.32.3
-	mylife-tools-server v0.0.0-00010101000000-000000000000
+	mylife-tools v0.0.0-00010101000000-000000000000
 )
 
 require (

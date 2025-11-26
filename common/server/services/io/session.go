@@ -2,11 +2,11 @@ package io
 
 import (
 	"fmt"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services/api"
-	"mylife-tools-server/services/io/serialization"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/log"
+	"mylife-tools/services/api"
+	"mylife-tools/services/io/serialization"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/tasks"
 	"reflect"
 
 	socketio "github.com/vchitai/go-socket.io/v4"

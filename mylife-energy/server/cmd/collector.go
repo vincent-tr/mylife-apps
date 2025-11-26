@@ -2,7 +2,7 @@ package cmd
 
 import (
 	_ "mylife-energy/pkg/services/collector"
-	"mylife-tools-server/services"
+	"mylife-tools/services"
 
 	"github.com/spf13/cobra"
 )

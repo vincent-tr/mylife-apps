@@ -2,10 +2,10 @@ package notification
 
 import (
 	"fmt"
-	"mylife-tools-server/services/io"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/store"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/services/io"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/store"
+	"mylife-tools/services/tasks"
 )
 
 type notifySetPayload struct {

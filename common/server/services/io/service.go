@@ -2,9 +2,9 @@ package io
 
 import (
 	"context"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"mylife-tools-server/services/sessions"
+	"mylife-tools/log"
+	"mylife-tools/services"
+	"mylife-tools/services/sessions"
 	"net/http"
 
 	socketio "github.com/vchitai/go-socket.io/v4"

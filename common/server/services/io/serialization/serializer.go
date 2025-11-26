@@ -3,7 +3,7 @@ package serialization
 import (
 	"errors"
 	"fmt"
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 	"reflect"
 )
 

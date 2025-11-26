@@ -3,10 +3,10 @@ package nagios
 import (
 	"mylife-monitor/pkg/entities"
 	"mylife-monitor/pkg/services/nagios"
-	"mylife-tools-server/services/api"
-	"mylife-tools-server/services/notification"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/api"
+	"mylife-tools/services/notification"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/store"
 )
 
 var Definition = api.MakeDefinition("nagios", notify, notifySummary)

@@ -1,4 +1,4 @@
-module mylife-tools-server
+module mylife-tools
 
 go 1.24.2
 

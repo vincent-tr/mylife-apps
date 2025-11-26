@@ -3,7 +3,7 @@ package business
 import (
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/store"
 )
 
 var StoreDef = []interface{}{

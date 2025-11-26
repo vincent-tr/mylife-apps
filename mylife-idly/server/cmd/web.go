@@ -3,7 +3,7 @@ package cmd
 import (
 	ui "mylife-idly-ui"
 	_ "mylife-idly/pkg/services/web"
-	"mylife-tools-server/services"
+	"mylife-tools/services"
 
 	"github.com/spf13/cobra"
 )

@@ -2,10 +2,10 @@ package notification
 
 import (
 	"fmt"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/store"
+	"mylife-tools/log"
+	"mylife-tools/services"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/store"
 )
 
 var logger = log.CreateLogger("mylife:server:notification")

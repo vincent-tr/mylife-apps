@@ -2,8 +2,8 @@ package api
 
 import (
 	"fmt"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
+	"mylife-tools/log"
+	"mylife-tools/services"
 )
 
 var logger = log.CreateLogger("mylife:server:api")

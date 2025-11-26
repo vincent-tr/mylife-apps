@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"mylife-monitor/pkg/entities"
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 	"strings"
 	"time"
 

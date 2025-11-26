@@ -7,10 +7,10 @@ import (
 	_ "mylife-energy/pkg/services/live"
 	_ "mylife-energy/pkg/services/tesla"
 	teslaCert "mylife-energy/tesla-cert"
-	"mylife-tools-server/services"
-	_ "mylife-tools-server/services/api"
-	_ "mylife-tools-server/services/monitor"
-	_ "mylife-tools-server/services/web"
+	"mylife-tools/services"
+	_ "mylife-tools/services/api"
+	_ "mylife-tools/services/monitor"
+	_ "mylife-tools/services/web"
 
 	"github.com/yalue/merged_fs"
 

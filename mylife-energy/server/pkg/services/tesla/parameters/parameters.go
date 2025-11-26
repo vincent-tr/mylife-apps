@@ -2,7 +2,7 @@ package parameters
 
 import (
 	"mylife-energy/pkg/entities"
-	"mylife-tools-server/services/parameter"
+	"mylife-tools/services/parameter"
 )
 
 type teslaModeConverter struct {

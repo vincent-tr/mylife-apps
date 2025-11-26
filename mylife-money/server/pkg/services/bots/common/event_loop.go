@@ -1,6 +1,6 @@
 package common
 
-import "mylife-tools-server/services/tasks"
+import "mylife-tools/services/tasks"
 
 func RunEventLoopWithError(taskName string, taskImpl func() error) error {
 

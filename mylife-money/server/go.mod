@@ -2,14 +2,14 @@ module mylife-money
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/server
+replace mylife-tools => ../../common/server
 
 require (
 	github.com/emersion/go-imap/v2 v2.0.0-beta.5
 	github.com/spf13/cobra v1.9.1
 	github.com/tealeg/xlsx/v3 v3.3.13
 	go.mongodb.org/mongo-driver/v2 v2.2.0
-	mylife-tools-server v0.0.0-00010101000000-000000000000
+	mylife-tools v0.0.0-00010101000000-000000000000
 )
 
 require (

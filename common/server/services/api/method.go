@@ -1,7 +1,7 @@
 package api
 
 import (
-	"mylife-tools-server/services/sessions"
+	"mylife-tools/services/sessions"
 	"reflect"
 )
 

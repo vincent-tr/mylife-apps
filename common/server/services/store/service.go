@@ -2,9 +2,9 @@ package store
 
 import (
 	"fmt"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/log"
+	"mylife-tools/services"
+	"mylife-tools/services/tasks"
 )
 
 const storeUpdateQueueId = "store-update"

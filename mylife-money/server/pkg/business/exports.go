@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
-	"mylife-tools-server/services/sessions"
-	"mylife-tools-server/services/store"
+	"mylife-tools/services/sessions"
+	"mylife-tools/services/store"
 	"slices"
 	"strings"
 

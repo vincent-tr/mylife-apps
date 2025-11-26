@@ -2,9 +2,9 @@ package live
 
 import (
 	"mylife-energy/pkg/entities"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
-	"mylife-tools-server/services/store"
+	"mylife-tools/log"
+	"mylife-tools/services"
+	"mylife-tools/services/store"
 )
 
 var logger = log.CreateLogger("mylife:energy:live")

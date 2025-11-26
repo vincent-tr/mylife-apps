@@ -1,5 +1,5 @@
 package views
 
-import "mylife-tools-server/log"
+import "mylife-tools/log"
 
 var logger = log.CreateLogger("mylife:money:business:views")

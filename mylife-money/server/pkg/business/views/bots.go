@@ -2,8 +2,8 @@ package views
 
 import (
 	"mylife-money/pkg/entities"
-	"mylife-tools-server/services/store"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/services/store"
+	"mylife-tools/services/tasks"
 	"time"
 )
 

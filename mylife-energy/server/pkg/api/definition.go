@@ -6,7 +6,7 @@ import (
 	"mylife-energy/pkg/api/live"
 	"mylife-energy/pkg/api/stats"
 	"mylife-energy/pkg/api/tesla"
-	"mylife-tools-server/services/api"
+	"mylife-tools/services/api"
 )
 
 var Definitions = []api.ServiceDefinition{

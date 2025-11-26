@@ -6,8 +6,8 @@ import (
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
 	"mylife-money/pkg/services/bots/common"
-	"mylife-tools-server/services/monitor"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/services/monitor"
+	"mylife-tools/services/tasks"
 	"sync"
 )
 

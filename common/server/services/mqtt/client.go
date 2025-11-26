@@ -5,9 +5,9 @@ import (
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 
-	"mylife-tools-server/config"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
+	"mylife-tools/config"
+	"mylife-tools/log"
+	"mylife-tools/services"
 )
 
 var logger = log.CreateLogger("mylife:server:mqtt")

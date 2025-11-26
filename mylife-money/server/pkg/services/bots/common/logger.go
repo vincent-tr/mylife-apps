@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"mylife-money/pkg/business/views"
 	"mylife-money/pkg/entities"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/log"
+	"mylife-tools/services/tasks"
 )
 
 var logger = log.CreateLogger("mylife:money:bots")

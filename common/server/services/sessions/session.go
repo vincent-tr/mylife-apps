@@ -1,7 +1,7 @@
 package sessions
 
 import (
-	"mylife-tools-server/log"
+	"mylife-tools/log"
 )
 
 type TerminateCallback func()

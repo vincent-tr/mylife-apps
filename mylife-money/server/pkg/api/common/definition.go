@@ -3,9 +3,9 @@ package common
 import (
 	"mylife-money/pkg/business"
 	"mylife-money/pkg/business/views"
-	"mylife-tools-server/services/api"
-	"mylife-tools-server/services/notification"
-	"mylife-tools-server/services/sessions"
+	"mylife-tools/services/api"
+	"mylife-tools/services/notification"
+	"mylife-tools/services/sessions"
 )
 
 var Definition = api.MakeDefinition("common", unnotify, renotifyWithCriteria, notifyAccounts, notifyGroups)

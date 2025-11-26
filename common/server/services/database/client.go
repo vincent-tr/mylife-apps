@@ -4,9 +4,9 @@ import (
 	"context"
 	"net/url"
 
-	"mylife-tools-server/config"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
+	"mylife-tools/config"
+	"mylife-tools/log"
+	"mylife-tools/services"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 	mongo "go.mongodb.org/mongo-driver/v2/mongo"

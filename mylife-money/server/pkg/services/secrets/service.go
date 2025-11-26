@@ -2,9 +2,9 @@ package secrets
 
 import (
 	"fmt"
-	"mylife-tools-server/config"
-	"mylife-tools-server/log"
-	"mylife-tools-server/services"
+	"mylife-tools/config"
+	"mylife-tools/log"
+	"mylife-tools/services"
 	"os"
 	"strings"
 )

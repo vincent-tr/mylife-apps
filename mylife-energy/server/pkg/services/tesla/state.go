@@ -5,8 +5,8 @@ import (
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/tesla/api"
 	"mylife-energy/pkg/services/tesla/wall_connector"
-	"mylife-tools-server/services/tasks"
-	"mylife-tools-server/utils"
+	"mylife-tools/services/tasks"
+	"mylife-tools/utils"
 	"strings"
 	"time"
 )

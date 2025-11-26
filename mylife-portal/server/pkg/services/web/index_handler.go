@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io/fs"
 	"mylife-portal/pkg/entities"
-	"mylife-tools-server/services/store"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/services/store"
+	"mylife-tools/services/tasks"
 	"net/http"
 	"sync"
 

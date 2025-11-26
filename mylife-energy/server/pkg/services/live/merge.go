@@ -3,8 +3,8 @@ package live
 import (
 	"fmt"
 	"mylife-energy/pkg/entities"
-	"mylife-tools-server/services/store"
-	"mylife-tools-server/services/tasks"
+	"mylife-tools/services/store"
+	"mylife-tools/services/tasks"
 	"strings"
 	"time"
 

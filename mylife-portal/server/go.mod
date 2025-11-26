@@ -2,7 +2,7 @@ module mylife-portal
 
 go 1.24.2
 
-replace mylife-tools-server => ../../common/server
+replace mylife-tools => ../../common/server
 
 require (
 	github.com/aymerick/raymond v2.0.2+incompatible
@@ -10,7 +10,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	go.mongodb.org/mongo-driver/v2 v2.2.0
 	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0
-	mylife-tools-server v0.0.0-00010101000000-000000000000
+	mylife-tools v0.0.0-00010101000000-000000000000
 )
 
 require (

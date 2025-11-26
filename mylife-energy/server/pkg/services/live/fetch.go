@@ -4,9 +4,9 @@ import (
 	"context"
 	"mylife-energy/pkg/entities"
 	"mylife-energy/pkg/services/query"
-	"mylife-tools-server/services/store"
-	"mylife-tools-server/services/tasks"
-	"mylife-tools-server/utils"
+	"mylife-tools/services/store"
+	"mylife-tools/services/tasks"
+	"mylife-tools/utils"
 	"sync"
 	"time"
 )
