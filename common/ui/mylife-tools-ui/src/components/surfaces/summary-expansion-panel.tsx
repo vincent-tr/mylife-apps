@@ -5,7 +5,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-
 const SummaryAccordion = ({ initialExpanded = true, expandedSummary, collapsedSummary, children, ...props }) => {
   const [expanded, setExpanded] = useState(initialExpanded);
   const toggleExpanded = () => setExpanded(!expanded);
