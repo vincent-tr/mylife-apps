@@ -25,6 +25,8 @@ ui-build:
 	cd $(DIR_UI) && npm run lint && npm run format:check
 	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm run lint && npm run format:check
 	cd $(DIR_COMMON_UI)/mylife-tools-common && npm run lint && npm run format:check
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- tsc --noEmit
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- tsc --noEmit
 	cd $(DIR_UI) && \
 	npm exec -- tsc --project public/tsconfig.json && \
 	npm exec -- vite --config ../../common/ui/mylife-tools-build/vite.config.ts build
@@ -56,6 +58,8 @@ ui-format:
 
 ui-typecheck:
 	cd $(DIR_UI) && npm exec -- tsc --project public/tsconfig.json --noEmit
+	cd $(DIR_COMMON_UI)/mylife-tools-ui && npm exec -- tsc --noEmit
+	cd $(DIR_COMMON_UI)/mylife-tools-common && npm exec -- tsc --noEmit
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web
