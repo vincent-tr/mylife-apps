@@ -14,7 +14,6 @@
     "@types/react": "^19.2.0",
     "cronstrue": "^3.9.0",
     "date-fns": "^4.1.0",
-    "mylife-tools-common": "*",
     "mylife-tools-ui": "*",
     "prop-types": "^15.8.1",
     "react": "^19.2.0",
