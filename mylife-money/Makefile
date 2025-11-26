@@ -9,7 +9,7 @@ DOCKER_PACKAGE_VERSION ?= $(shell node -p "require('$(DIR_UI)/package.json').ver
 DOCKER_IMAGE_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):$(DOCKER_PACKAGE_VERSION)
 DOCKER_IMAGE_LATEST_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):latest
 
-.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint ui-lint-fix ui-format ui-format-check ui-typecheck common-lint common-lint-fix common-format common-format-check common-typecheck
+.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint ui-lint-fix ui-format ui-format-check ui-typecheck ui-common-lint ui-common-lint-fix ui-common-format ui-common-format-check ui-common-typecheck
 
 docker-publish: docker-build
 	docker push "$(DOCKER_IMAGE_TAG)"
@@ -34,41 +34,35 @@ ui-watch-tsc:
 	cd $(DIR_UI) && \
 	npm exec -- tsc --project public/tsconfig.json --watch
 
-ui-lint: common-lint
+ui-lint: ui-common-lint
 	cd $(DIR_UI) && npm exec -- eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx
 
-ui-lint-fix: common-lint-fix
+ui-lint-fix: ui-common-lint-fix
 	cd $(DIR_UI) && npm exec -- eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx --fix
 
-ui-format: common-format
+ui-format: ui-common-format
 	cd $(DIR_UI) && npm exec -- prettier --write --config ../../.prettierrc --ignore-path ../../.prettierignore "**/*.{js,jsx,ts,tsx}"
 
-ui-format-check: common-format-check
+ui-format-check: ui-common-format-check
 	cd $(DIR_UI) && npm exec -- prettier --check --config ../../.prettierrc --ignore-path ../../.prettierignore "**/*.{js,jsx,ts,tsx}"
 
-ui-typecheck: common-typecheck
+ui-typecheck: ui-common-typecheck
 	cd $(DIR_UI) && npm exec -- tsc --project public/tsconfig.json --noEmit
 
-common-lint:
+ui-common-lint:
 	$(MAKE) -C $(DIR_COMMON) ui-lint
 
-common-lint-fix:
+ui-common-lint-fix:
 	$(MAKE) -C $(DIR_COMMON) ui-lint-fix
 
-common-format:
+ui-common-format:
 	$(MAKE) -C $(DIR_COMMON) ui-format
 
-common-format-check:
+ui-common-format-check:
 	$(MAKE) -C $(DIR_COMMON) ui-format-check
 
-common-typecheck:
+ui-common-typecheck:
 	$(MAKE) -C $(DIR_COMMON) ui-typecheck
-
-common-format-check:
-	$(MAKE) -C $(DIR_COMMON) format-check
-
-common-typecheck:
-	$(MAKE) -C $(DIR_COMMON) typecheck
 
 run-web:
 	cd $(DIR_SERVER) && go run main.go web
