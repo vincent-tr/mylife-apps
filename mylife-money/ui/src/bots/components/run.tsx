@@ -4,19 +4,8 @@ import { styled, darken } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { CriteriaField } from 'mylife-tools';
+import { BotRun, BotRunLogSeverity, BotRunLog } from '../../api';
 
-type FIXME_any = any;
-type BotRun = FIXME_any;
-
-// FIXME: should be in entities
-type BotRunLogSeverity = 'debug' | 'info' | 'warning' | 'error' | 'fatal';
-
-// FIXME: should be in entities
-interface BotRunLog {
-  date: Date;
-  severity: BotRunLogSeverity;
-  message: string;
-}
 
 const Container = styled('div')({
   display: 'flex',
