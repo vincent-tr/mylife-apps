@@ -219,7 +219,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 - review metadata vs typescript types
 - review isScreenPhone, etc for style: should not go through JS to go back to CSS
 - use mui charts, table, treeview
-- remove PropTypes use
 - FIXME_any
 - remove server socket errors
 
