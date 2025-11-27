@@ -1,28 +1,29 @@
 import { api } from 'mylife-tools';
 
 export enum TeslaMode {
-  Off,
-  Fast,
-  Smart,
+  Off = 0,
+  Fast = 1,
+  Smart = 2,
 }
 
 export enum TeslaDeviceStatus {
-  Unknown,
-  Online,
-  Offline,
-  Failure,
+  Unknown = 0,
+  Online = 1,
+  Offline = 2,
+  Failure = 3,
 }
 
 export enum TeslaChargingStatus {
-  Unknown,
-  Charging,
-  Complete,
-  NotPlugged,
-  NoPower, // mode smart only
-  Disabled, // mode off
+  Unknown = 0,
+  Charging = 1,
+  Complete = 2,
+  NotPlugged = 3,
+  NoPower = 4, // mode smart only
+  Disabled = 5, // mode off
 }
 
 export interface TeslaState extends api.Entity {
+  _entity: 'tesla-state';
   mode: TeslaMode; // Current charging mode
   fastLimit: number; // Fast mode charge limit (%)
   smartLimitLow: number; // Smart mode charge low limit (%)
