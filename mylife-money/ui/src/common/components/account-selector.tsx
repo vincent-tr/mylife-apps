@@ -20,7 +20,7 @@ function renderList(accounts, allowNull) {
   ));
 }
 
-interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'variant'> {
+export interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'variant'> {
   allowNull?: boolean;
   value?: string | null;
   onChange?: ((value: string | null) => void);

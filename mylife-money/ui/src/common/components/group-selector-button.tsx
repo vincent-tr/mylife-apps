@@ -18,7 +18,7 @@ const StyledDialog = styled(Dialog)({
   },
 });
 
-interface GroupSelectorDialogProps {
+export interface GroupSelectorDialogProps {
   show: boolean;
   proceed: (result: FIXME_any) => void;
   options: FIXME_any;
@@ -42,7 +42,7 @@ const GroupSelectorDialog: React.FC<GroupSelectorDialogProps> = ({ show, proceed
 
 const selectorDialog = dialogs.create(GroupSelectorDialog);
 
-interface GroupSelectorButtonProps extends Omit<IconButtonProps, 'onClick' | 'onSelect'> {
+export interface GroupSelectorButtonProps extends Omit<IconButtonProps, 'onClick' | 'onSelect'> {
   onSelect: (group: string) => void;
   options?: FIXME_any;
 }
