@@ -32,7 +32,7 @@ ui-watch:
 
 ui-watch-tsc:
 	cd $(DIR_UI) && \
-	npm exec -- tsc --project public/tsconfig.json --watch
+	npm exec -- tsc --project tsconfig.json --watch
 
 ui-lint: ui-common-lint
 	cd $(DIR_UI) && npm exec -- eslint --config ../../.eslintrc.json --ignore-path ../../.eslintignore . --ext .js,.jsx,.ts,.tsx
@@ -47,7 +47,7 @@ ui-format-check: ui-common-format-check
 	cd $(DIR_UI) && npm exec -- prettier --check --config ../../.prettierrc --ignore-path ../../.prettierignore "**/*.{js,jsx,ts,tsx}"
 
 ui-typecheck: ui-common-typecheck
-	cd $(DIR_UI) && npm exec -- tsc --project public/tsconfig.json --noEmit
+	cd $(DIR_UI) && npm exec -- tsc --project tsconfig.json --noEmit
 
 ui-common-lint:
 	$(MAKE) -C $(DIR_COMMON) ui-lint

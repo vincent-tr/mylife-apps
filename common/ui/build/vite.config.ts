@@ -5,8 +5,8 @@ export default defineConfig(({ command, mode }) => {
   const { VITE_WEB_PORT, VITE_WSTARGET_PORT } = loadEnv(mode, process.cwd(), '');
   
   const config: UserConfigExport = {
-    root: 'public',
-    publicDir: 'images',
+    root: '.',
+    publicDir: 'static',
     server: {
       host: true,
       port: parseInt(VITE_WEB_PORT),

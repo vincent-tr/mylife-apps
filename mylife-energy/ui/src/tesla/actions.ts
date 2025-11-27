@@ -1,5 +1,5 @@
 import { createAsyncThunk, views } from 'mylife-tools';
-import { TeslaMode } from '../../../shared/metadata';
+import { TeslaMode } from '../metadata';
 import * as viewUids from './view-uids';
 
 const stateViewRef = new views.ViewReference({

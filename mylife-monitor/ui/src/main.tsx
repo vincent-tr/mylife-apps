@@ -1,11 +1,11 @@
 import React from 'react';
 import { services } from 'mylife-tools';
-import metadataDefintions from '../../shared/metadata';
 import icons from './common/icons';
 import Home from './home/components';
 import Nagios from './nagios/components';
 import Updates from './updates/components';
 import Upsmon from './upsmon/components';
+import metadataDefintions from './metadata';
 import * as reducers from './reducers';
 
 services.initStore(reducers);

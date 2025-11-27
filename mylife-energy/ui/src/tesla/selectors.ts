@@ -1,5 +1,5 @@
 import { views } from 'mylife-tools';
-import { TeslaState } from '../../../shared/metadata';
+import { TeslaState } from '../metadata';
 import * as viewUids from './view-uids';
 
 const viewStateId = 'unique';

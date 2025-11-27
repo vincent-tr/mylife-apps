@@ -1,4 +1,4 @@
-import { Sensor } from '../../../shared/metadata';
+import { Sensor } from '../metadata';
 
 export enum StatsType {
   Day = 1,

@@ -1,5 +1,5 @@
 import { views } from 'mylife-tools';
-import { HomeData } from '../../../shared/metadata';
+import { HomeData } from '../metadata';
 import * as viewUids from './view-uids';
 
 // const getHome = state => state.home;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { services } from 'mylife-tools';
-import metadataDefintions from '../../shared/metadata';
 import Bots from './bots/components';
 import icons from './common/icons';
 import Home from './home/components';
@@ -10,6 +9,7 @@ import { referenceInit } from './reference/actions';
 import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
 import reportingReducer from './reporting/store';
+import metadataDefintions from './metadata';
 
 const reducers = {
   management: managementReducer,
