@@ -45,48 +45,44 @@ const LogTimestamp = styled('span')(({ theme }) => ({
   color: darken(theme.palette.background.paper, 0.5),
 }));
 
-const Run: React.FC<{ run: BotRun; className?: string }> = ({ run, className }) => {
-  const structure = services.getFieldDatatype('bot', 'lastRun');
-
-  return (
-    <Container className={className}>
-      <GridContainer>
-        <Grid container spacing={2}>
-          <Grid size={6}>
-            <CriteriaField label={services.getStructureFieldName(structure, 'start')}>
-              <Typography>{run.start.toLocaleString('fr-FR')}</Typography>
-            </CriteriaField>
-          </Grid>
-
-          <Grid size={6}>
-            <CriteriaField label={services.getStructureFieldName(structure, 'end')}>
-              <Typography>{run.end?.toLocaleString('fr-FR') || '-'}</Typography>
-            </CriteriaField>
-          </Grid>
-
-          <Grid size={12}>
-            <RunResult value={run.result} />
-          </Grid>
+const Run: React.FC<{ run: BotRun; className?: string }> = ({ run, className }) => (
+  <Container className={className}>
+    <GridContainer>
+      <Grid container spacing={2}>
+        <Grid size={6}>
+          <CriteriaField label={'Début'}>
+            <Typography>{run.start.toLocaleString('fr-FR')}</Typography>
+          </CriteriaField>
         </Grid>
-      </GridContainer>
 
-      <Divider />
+        <Grid size={6}>
+          <CriteriaField label={'Fin'}>
+            <Typography>{run.end?.toLocaleString('fr-FR') || '-'}</Typography>
+          </CriteriaField>
+        </Grid>
 
-      <LogsList>
-        {(run.logs as BotRunLog[]).map((log, index) => (
-          <LogRow key={index}>
-            <Timestamp value={log.date} />
-            <Space />
-            <Level value={log.severity} />
-            <Space />
-            <Message value={log.message} />
-            <LineEnd />
-          </LogRow>
-        ))}
-      </LogsList>
-    </Container>
-  );
-};
+        <Grid size={12}>
+          <RunResult value={run.result} />
+        </Grid>
+      </Grid>
+    </GridContainer>
+
+    <Divider />
+
+    <LogsList>
+      {(run.logs as BotRunLog[]).map((log, index) => (
+        <LogRow key={index}>
+          <Timestamp value={log.date} />
+          <Space />
+          <Level value={log.severity} />
+          <Space />
+          <Message value={log.message} />
+          <LineEnd />
+        </LogRow>
+      ))}
+    </LogsList>
+  </Container>
+);
 
 export default Run;
 

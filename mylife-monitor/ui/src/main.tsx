@@ -5,11 +5,11 @@ import Home from './home/components';
 import Nagios from './nagios/components';
 import Updates from './updates/components';
 import Upsmon from './upsmon/components';
-import metadataDefintions from './metadata';
+// import metadataDefintions from './metadata';
 import * as reducers from './reducers';
 
 services.initStore(reducers);
-services.initMetadata(metadataDefintions);
+// services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },

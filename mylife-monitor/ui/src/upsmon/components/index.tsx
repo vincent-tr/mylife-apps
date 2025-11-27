@@ -9,7 +9,8 @@ import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { api, useLifecycle, services } from 'mylife-tools';
+import { useLifecycle } from 'mylife-tools';
+import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { enter, leave } from '../actions';
@@ -41,7 +42,7 @@ const Upsmon = () => {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {Object.values(data).map((item: api.Entity) => (
+              {Object.values(data).map((item: api.UpsmonStatus) => (
                 <Ups key={item._id} data={item} />
               ))}
             </TableBody>
@@ -54,13 +55,51 @@ const Upsmon = () => {
 
 export default Upsmon;
 
-const EXCLUDED_FIELDS = ['_id', 'upsName'];
+const formatters = {
+  identity: (value) => value,
+  datetime: (value) => formatDate(value, 'dd/MM/yyyy HH:mm:ss'),
+  duration: (value) => humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true }),
+  percent: (value) => `${value.toFixed()} %`,
+  voltage: (value) => `${value.toFixed()} V`,
+  power: (value) => `${value.toFixed()} W`,
+  count: (value) => value.toFixed(),
+  status: formatStatusFlag,
+};
 
-const Ups = ({ data }) => {
+const fields: Partial<Record<keyof api.UpsmonStatus, [(value: FIXME_any) => string, string]>> = {
+  // _id, _entity
+  date: [formatters.datetime, "Date et heure auxquels les informations ont été obtenus de l'onduleur"],
+  // upsName
+  startTime: [formatters.datetime, "Date/heure de démarrage de l'onduleur"],
+  model: [formatters.identity, "Modèle de l'onduleur"],
+  status: [formatters.identity, "Statut de l'onduleur"],
+  statusFlag: [formatters.status, "Statut de l'onduleur (flags)"],
+  lineVoltage: [formatters.voltage, "Tension courante d'entrée"],
+  loadPercent: [formatters.percent, 'Pourcentage de puissance utilisée'],
+  batteryChargePercent: [formatters.percent, 'Pourcentage de charge des batteries'],
+  timeLeft: [formatters.duration, "Temps restant en secondes d'exécution sur batteries"],
+  batteryVoltage: [formatters.voltage, 'Tension des batteries'],
+  lastTransfer: [formatters.identity, 'Raison du dernier transfert vers les batteries'],
+  numberTransfers: [formatters.count, 'Nombre de transferts depuis le démarrage de upsmon'],
+  xOnBattery: [formatters.datetime, 'Date/heure du dernier transfert vers les batteries'],
+  timeOnBattery: [formatters.duration, 'Temps sur batterie (en secondes)'],
+  cumulativeTimeOnBattery: [formatters.duration, 'Temps cumulé sur batterie depuis le démarrage de upsmon (en secondes)'],
+  xOffBattery: [formatters.datetime, 'Date/heure du dernier transfert depuis les batteries'],
+  nominalInputVoltage: [formatters.voltage, "Tension d'entrée attendue par l'onduleur"],
+  nominalBatteryVoltage: [formatters.voltage, 'Tension nominale de batterie'],
+  nominalPower: [formatters.power, 'Puissance nominale'],
+  firmware: [formatters.identity, 'Version du firmware'],
+  outputVoltage: [formatters.voltage, 'Tension de sortie'],
+};
+
+interface UpsProps {
+  data: api.UpsmonStatus;
+}
+
+const Ups: React.FC<UpsProps> = ({ data }) => {
   const lastUpdate = useSince(data.date);
 
   const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
-  const entity = services.getEntity(data._entity);
   const RowComponent = isOk ? SuccessRow : ErrorRow;
 
   return (
@@ -70,21 +109,27 @@ const Ups = ({ data }) => {
         <TableCell />
         <TableCell />
       </RowComponent>
-      {entity.fields
-        .filter((field) => !EXCLUDED_FIELDS.includes(field.id))
-        .map((field) => (
-          <Item key={field.id} data={data} field={field} />
-        ))}
+      {Object.keys(fields).map((field: keyof api.UpsmonStatus) => (
+        <Item key={field} data={data} field={field} />
+      ))}
     </>
   );
 };
 
-const Item = ({ data, field }) => {
+interface ItemProps {
+  data: api.UpsmonStatus;
+  field: keyof api.UpsmonStatus;
+}
+
+const Item: React.FC<ItemProps> = ({ data, field }) => {
+  const [formatter, displayName] = fields[field];
+  const value = formatter(data[field]);
+
   return (
     <TableRow>
       <TableCell />
-      <TableCell>{field.name}</TableCell>
-      <TableCell>{formatValue(data, field)}</TableCell>
+      <TableCell>{displayName}</TableCell>
+      <TableCell>{value}</TableCell>
     </TableRow>
   );
 };
@@ -103,40 +148,6 @@ function useConnect() {
       [dispatch]
     ),
   };
-}
-
-function formatValue(data, field) {
-  const datatype = field.datatype;
-  const value = field.getValue(data);
-
-  if (value === null) {
-    return '';
-  }
-
-  switch (datatype.id) {
-    case 'name':
-    case 'text':
-      return value;
-
-    case 'datetime':
-      return formatDate(value, 'dd/MM/yyyy HH:mm:ss');
-    case 'duration':
-      return humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true });
-    case 'percent':
-      return `${value.toFixed()} %`;
-    case 'voltage':
-      return `${value.toFixed()} V`;
-    case 'power':
-      return `${value.toFixed()} W`;
-    case 'count':
-      return value.toFixed();
-
-    case 'upsmon-status-flag':
-      return formatStatusFlag(value);
-
-    default:
-      return `Unhandled type ${datatype.id} with value ${JSON.stringify(value)}`;
-  }
 }
 
 interface StatusFlagValue {
