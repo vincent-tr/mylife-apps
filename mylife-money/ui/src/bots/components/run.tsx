@@ -6,7 +6,6 @@ import React from 'react';
 import { CriteriaField } from 'mylife-tools';
 import { BotRun, BotRunLogSeverity, BotRunLog } from '../../api';
 
-
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
