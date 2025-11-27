@@ -25,7 +25,7 @@ export interface Step {
   render: (step: FIXME_any) => React.ReactNode;
 }
 
-export interface StepperControlProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StepperControlProps extends React.ComponentProps<'div'> {
   steps: Step[];
   onStepChanged?: (value: FIXME_any, step: Step, activeStep: number, setActiveStep: (step: number) => void) => boolean;
   onEnd: (value: 'finish' | 'cancel') => void;

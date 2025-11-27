@@ -8,7 +8,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export interface StepperActionsProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StepperActionsProps extends React.ComponentProps<'div'> {
   canPrev: boolean;
   canNext: boolean;
   canSkip: boolean;
