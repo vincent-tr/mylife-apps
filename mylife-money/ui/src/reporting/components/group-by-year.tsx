@@ -1,11 +1,12 @@
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { CriteriaField } from 'mylife-tools';
 import { getGroupByYear, exportGroupByYear } from '../store';
 import { findAmount, roundCurrency } from './group-by-period/tools';
 import GroupByPeriod from './group-by-period';
+
+type FIXME_any = any;
 
 const initialCriteria = {
   children: false,
@@ -21,7 +22,12 @@ const initialDisplay = {
   monthAverage: false,
 };
 
-const AdditionalCriteria = ({ display, onDisplayChanged }) => {
+interface AdditionalCriteriaProps {
+  display;
+  onDisplayChanged: (display) => void;
+}
+
+const AdditionalCriteria: React.FC<AdditionalCriteriaProps> = ({ display, onDisplayChanged }) => {
   const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
   const onMonthAverageChanged = (value) => setDisplay('monthAverage', value);
 
@@ -37,18 +43,13 @@ const AdditionalCriteria = ({ display, onDisplayChanged }) => {
   );
 };
 
-AdditionalCriteria.propTypes = {
-  display: PropTypes.object.isRequired,
-  onDisplayChanged: PropTypes.func.isRequired,
-};
-
 const GroupByYear = () => (
   <GroupByPeriod
     refreshAction={getGroupByYear}
     exportAction={exportGroupByYear}
     initialCriteria={initialCriteria}
     initialDisplay={initialDisplay}
-    additionalCriteriaFactory={AdditionalCriteria}
+    additionalCriteriaFactory={AdditionalCriteria as FIXME_any}
     amountSelectorFactory={amountSelectorFactory}
   />
 );

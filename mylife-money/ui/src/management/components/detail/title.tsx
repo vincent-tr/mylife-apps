@@ -2,7 +2,6 @@ import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 import React from 'react';
 import icons from '../../../common/icons';
 
@@ -15,7 +14,11 @@ const Label = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
-const Title = ({ onClose }) => {
+interface TitleProps {
+  onClose: () => void;
+}
+
+const Title: React.FC<TitleProps> = ({ onClose }) => {
   return (
     <Container>
       <Tooltip title="Retour">
@@ -29,10 +32,6 @@ const Title = ({ onClose }) => {
       <Label variant="h6">{"Detail de l'opération"}</Label>
     </Container>
   );
-};
-
-Title.propTypes = {
-  onClose: PropTypes.func.isRequired,
 };
 
 export default Title;

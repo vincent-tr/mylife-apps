@@ -25,7 +25,6 @@ import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { dialogs } from 'mylife-tools';
 import icons from '../../../common/icons';
@@ -62,7 +61,11 @@ const TextInputField = styled(TextField)(({ theme }) => ({
   marginLeft: theme.spacing(1),
 }));
 
-const ConditionEditor = ({ onAddCondition }) => {
+interface ConditionEditorProps {
+  onAddCondition: (condition: FIXME_any) => void;
+}
+
+const ConditionEditor: React.FC<ConditionEditorProps> = ({ onAddCondition }) => {
   const [field, setField] = useState(null);
   const [operator, setOperator] = useState(null);
   const [value, setValue] = useState(null);
@@ -109,11 +112,12 @@ const ConditionEditor = ({ onAddCondition }) => {
   );
 };
 
-ConditionEditor.propTypes = {
-  onAddCondition: PropTypes.func.isRequired,
-};
+interface ConditionsEditorProps {
+  conditions: FIXME_any[];
+  onConditionsChanged: (conditions: FIXME_any[]) => void;
+}
 
-const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
+const ConditionsEditor: React.FC<ConditionsEditorProps> = ({ conditions, onConditionsChanged }) => {
   const deleteCondition = (index) => onConditionsChanged(arrayDelete(conditions, index));
   const addCondition = (condition) => onConditionsChanged([...conditions, condition]);
 
@@ -144,12 +148,13 @@ const ConditionsEditor = ({ conditions, onConditionsChanged }) => {
   );
 };
 
-ConditionsEditor.propTypes = {
-  conditions: PropTypes.array.isRequired,
-  onConditionsChanged: PropTypes.func.isRequired,
-};
+interface RuleRowProps {
+  rule;
+  onRuleChanged: (rule) => void;
+  onDeleteRule: () => void;
+}
 
-const RuleRow = ({ rule, onRuleChanged, onDeleteRule }) => {
+const RuleRow: React.FC<RuleRowProps> = ({ rule, onRuleChanged, onDeleteRule }) => {
   const updateRule = (prop, value) => onRuleChanged({ ...rule, [prop]: value });
 
   return (
@@ -173,13 +178,12 @@ const RuleRow = ({ rule, onRuleChanged, onDeleteRule }) => {
   );
 };
 
-RuleRow.propTypes = {
-  rule: PropTypes.object.isRequired,
-  onRuleChanged: PropTypes.func.isRequired,
-  onDeleteRule: PropTypes.func.isRequired,
-};
+interface RulesEditorProps {
+  rules: FIXME_any[];
+  onRulesChanged: (rules: FIXME_any[]) => void;
+}
 
-const RulesEditor = ({ rules, onRulesChanged }) => {
+const RulesEditor: React.FC<RulesEditorProps> = ({ rules, onRulesChanged }) => {
   const addRule = () => {
     const rule = {
       conditions: [],
@@ -221,12 +225,13 @@ const RulesEditor = ({ rules, onRulesChanged }) => {
   );
 };
 
-RulesEditor.propTypes = {
-  rules: PropTypes.array.isRequired,
-  onRulesChanged: PropTypes.func.isRequired,
-};
+interface EditorDialogProps {
+  options: { group: FIXME_any };
+  show: boolean;
+  proceed: (result: FIXME_any) => void;
+}
 
-const EditorDialog = ({ options, show, proceed }) => {
+const EditorDialog: React.FC<EditorDialogProps> = ({ options, show, proceed }) => {
   const [group, setGroup] = useState(options.group);
   const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
 
@@ -248,12 +253,6 @@ const EditorDialog = ({ options, show, proceed }) => {
       </DialogActions>
     </Dialog>
   );
-};
-
-EditorDialog.propTypes = {
-  options: PropTypes.object.isRequired,
-  show: PropTypes.bool.isRequired,
-  proceed: PropTypes.func.isRequired,
 };
 
 const edit = dialogs.create(EditorDialog);

@@ -2,10 +2,11 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import PropTypes from 'prop-types';
 import React from 'react';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
+
+type FIXME_any = any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -19,7 +20,13 @@ const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
+interface GroupBreadcrumbsProps {
+  groupStack?: FIXME_any[];
+  onMove: (groupId: string) => void;
+  onOpenGroup: (groupId: string) => void;
+}
+
+const GroupBreadcrumbs: React.FC<GroupBreadcrumbsProps> = ({ groupStack, onMove, onOpenGroup }) => {
   return (
     <Container>
       <Tooltip title={"Déplacer l'opération"}>
@@ -46,12 +53,6 @@ const GroupBreadcrumbs = ({ groupStack, onMove, onOpenGroup }) => {
       </GroupPath>
     </Container>
   );
-};
-
-GroupBreadcrumbs.propTypes = {
-  groupStack: PropTypes.array,
-  onMove: PropTypes.func.isRequired,
-  onOpenGroup: PropTypes.func.isRequired,
 };
 
 export default GroupBreadcrumbs;

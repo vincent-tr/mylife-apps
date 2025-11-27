@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLifecycle } from 'mylife-tools';
@@ -35,7 +34,16 @@ const StyledChart = styled(Chart)({
   flex: '1 1 auto',
 });
 
-const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }) => {
+interface GroupByPeriodProps {
+  refreshAction;
+  exportAction;
+  initialCriteria;
+  initialDisplay;
+  additionalCriteriaFactory: (props) => React.ReactNode;
+  amountSelectorFactory: (props) => any;
+}
+
+const GroupByPeriod: React.FC<GroupByPeriodProps> = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }) => {
   const [criteria, setCriteria] = useState(initialCriteria);
   const [display, setDisplay] = useState(initialDisplay);
 
@@ -71,15 +79,6 @@ const GroupByPeriod = ({ refreshAction, exportAction, initialCriteria, initialDi
       <StyledChart data={data} groups={criteria.groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })} />
     </Container>
   );
-};
-
-GroupByPeriod.propTypes = {
-  refreshAction: PropTypes.func.isRequired,
-  exportAction: PropTypes.func.isRequired,
-  initialCriteria: PropTypes.object.isRequired,
-  initialDisplay: PropTypes.object.isRequired,
-  additionalCriteriaFactory: PropTypes.func.isRequired,
-  amountSelectorFactory: PropTypes.func.isRequired,
 };
 
 export default GroupByPeriod;

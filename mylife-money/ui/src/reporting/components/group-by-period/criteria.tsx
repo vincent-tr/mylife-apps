@@ -3,12 +3,13 @@ import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools';
 import AccountSelector from '../../../common/components/account-selector';
 import ExportButton from '../common/export-button';
 import GroupCriteriaField from '../common/group-field';
+
+type FIXME_any = any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -20,7 +21,16 @@ const Title = styled(Typography)(({ theme }) => ({
   marginRight: theme.spacing(4),
 }));
 
-const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }) => {
+interface CriteriaProps {
+  criteria: FIXME_any;
+  onCriteriaChanged: (criteria: FIXME_any) => void;
+  display: FIXME_any;
+  onDisplayChanged: (display: FIXME_any) => void;
+  onExport: () => void;
+  additionalComponents?: React.ReactNode;
+}
+
+const Criteria: React.FC<CriteriaProps> = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }) => {
   const isPhone = useScreenPhone();
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
@@ -128,18 +138,13 @@ const Criteria = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onEx
   );
 };
 
-Criteria.propTypes = {
-  criteria: PropTypes.object.isRequired,
-  onCriteriaChanged: PropTypes.func.isRequired,
-  display: PropTypes.object.isRequired,
-  onDisplayChanged: PropTypes.func.isRequired,
-  onExport: PropTypes.func.isRequired,
-  additionalComponents: PropTypes.node,
-};
-
 export default Criteria;
 
-const ExpandedSummary = ({ onExport }) => {
+interface ExpandedSummaryProps {
+  onExport: () => void;
+}
+
+const ExpandedSummary: React.FC<ExpandedSummaryProps> = ({ onExport }) => {
   return (
     <Container>
       <Title variant="h6">Critères de sélection</Title>
@@ -148,22 +153,18 @@ const ExpandedSummary = ({ onExport }) => {
   );
 };
 
-ExpandedSummary.propTypes = {
-  onExport: PropTypes.func.isRequired,
-};
+interface CollapsedSummaryProps {
+  criteria: FIXME_any;
+  onExport: () => void;
+}
 
-const CollapsedSummary = ({ criteria, onExport }) => {
+const CollapsedSummary: React.FC<CollapsedSummaryProps> = ({ criteria, onExport }) => {
   return (
     <Container>
       <Title>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</Title>
       <ExportButton onClick={onExport} />
     </Container>
   );
-};
-
-CollapsedSummary.propTypes = {
-  criteria: PropTypes.object.isRequired,
-  onExport: PropTypes.func.isRequired,
 };
 
 function format(date) {

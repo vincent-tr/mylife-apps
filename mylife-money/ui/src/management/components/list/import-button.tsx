@@ -4,13 +4,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 import React from 'react';
 import icons from '../../../common/icons';
 
+type FIXME_any = any;
+
 interface HeaderProps {
-  onImport;
-  accounts;
+  onImport: (accountId: string, file: File) => void;
+  accounts: FIXME_any[];
 }
 
 class Header extends React.Component<HeaderProps, { account?; anchorEl?; open }> {
@@ -81,11 +82,6 @@ class Header extends React.Component<HeaderProps, { account?; anchorEl?; open }>
       </div>
     );
   }
-
-  static propTypes = {
-    accounts: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-    onImport: PropTypes.func.isRequired,
-  };
 }
 
 export default Header;

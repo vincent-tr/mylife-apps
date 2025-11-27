@@ -2,10 +2,11 @@ import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 import React from 'react';
 import GroupSelector from '../../../common/components/group-selector';
 import icons from '../../../common/icons';
+
+type FIXME_any = any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -28,7 +29,14 @@ const Item = styled('div')({
   alignItems: 'center',
 });
 
-const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
+interface GroupFieldProps {
+  groups: FIXME_any;
+  onGroupAdd: () => void;
+  onGroupChanged: (index: number, value: FIXME_any) => void;
+  onGroupDelete: (index: number) => void;
+}
+
+const GroupField: React.FC<GroupFieldProps> = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
   return (
     <Container>
       <Header>
@@ -51,13 +59,6 @@ const GroupField = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
       ))}
     </Container>
   );
-};
-
-GroupField.propTypes = {
-  groups: PropTypes.object.isRequired,
-  onGroupAdd: PropTypes.func.isRequired,
-  onGroupChanged: PropTypes.func.isRequired,
-  onGroupDelete: PropTypes.func.isRequired,
 };
 
 export default GroupField;

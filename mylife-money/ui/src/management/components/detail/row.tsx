@@ -1,6 +1,5 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const Container = styled('div')(({ theme }) => ({
@@ -18,7 +17,12 @@ const Content = styled('div')({
   flex: '1 1 auto',
 });
 
-const Row = ({ label, children }) => {
+interface RowProps {
+  label?: string;
+  children?: React.ReactNode;
+}
+
+const Row: React.FC<RowProps> = ({ label, children }) => {
   return (
     <Container>
       <Label>{label}</Label>
@@ -26,11 +30,6 @@ const Row = ({ label, children }) => {
       <Content>{children}</Content>
     </Container>
   );
-};
-
-Row.propTypes = {
-  label: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 export default Row;
