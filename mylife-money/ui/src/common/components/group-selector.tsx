@@ -2,7 +2,6 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getGroup } from '../../reference/selectors';
@@ -29,7 +28,12 @@ const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-const GroupSelector = ({ onChange, value, ...props }) => {
+interface GroupSelectorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  onChange: (value: string | null) => void;
+  value: string | null;
+}
+
+const GroupSelector: React.FC<GroupSelectorProps> = ({ onChange, value, ...props }) => {
   const { stack } = useConnect({ value });
   return (
     <Container {...props}>
@@ -47,11 +51,6 @@ const GroupSelector = ({ onChange, value, ...props }) => {
       </GroupPath>
     </Container>
   );
-};
-
-GroupSelector.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default GroupSelector;

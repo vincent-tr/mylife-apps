@@ -3,9 +3,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import IconButton from '@mui/material/IconButton';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { dialogs } from 'mylife-tools';
 import GroupTree from './group-tree';
@@ -19,7 +18,13 @@ const StyledDialog = styled(Dialog)({
   },
 });
 
-const GroupSelectorDialog = ({ show, proceed, options }) => {
+interface GroupSelectorDialogProps {
+  show: boolean;
+  proceed: (result: FIXME_any) => void;
+  options: FIXME_any;
+}
+
+const GroupSelectorDialog: React.FC<GroupSelectorDialogProps> = ({ show, proceed, options }) => {
   return (
     <StyledDialog aria-labelledby="dialog-title" open={show} fullWidth={true} maxWidth="sm">
       <DialogTitle id="dialog-title">Sélectionnez un groupe</DialogTitle>
@@ -35,24 +40,14 @@ const GroupSelectorDialog = ({ show, proceed, options }) => {
   );
 };
 
-GroupSelectorDialog.propTypes = {
-  show: PropTypes.bool,
-  proceed: PropTypes.func,
-  options: PropTypes.object,
-};
-
 const selectorDialog = dialogs.create(GroupSelectorDialog);
 
-interface GroupSelectorButton {
-  disabled?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
-  children?: React.ReactNode;
+interface GroupSelectorButtonProps extends Omit<IconButtonProps, 'onClick' | 'onSelect'> {
   onSelect: (group: string) => void;
   options?: FIXME_any;
 }
 
-const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorButton>(({ onSelect, options, ...props }, ref) => {
+const GroupSelectorButton = React.forwardRef<HTMLButtonElement, GroupSelectorButtonProps>(({ onSelect, options, ...props }, ref) => {
   const clickHandler = async () => {
     const { result, group } = (await selectorDialog({ options })) as FIXME_any;
     if (result !== 'ok') {

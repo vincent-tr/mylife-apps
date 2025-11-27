@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools';
 import { getGroupStacks, getChildrenView } from '../../../reference/selectors';
+
+type FIXME_any = any;
 
 const useConnect = ({ display, groups }) => {
   return useSelector((state) => ({
@@ -13,7 +14,14 @@ const useConnect = ({ display, groups }) => {
   }));
 };
 
-const Chart = ({ data, groups, display, amountSelector, ...props }) => {
+interface ChartProps extends React.HTMLAttributes<HTMLDivElement> {
+  data: FIXME_any[];
+  groups?: FIXME_any[];
+  display: FIXME_any;
+  amountSelector: (item: FIXME_any, serie: FIXME_any) => number;
+}
+
+const Chart: React.FC<ChartProps> = ({ data, groups, display, amountSelector, ...props }) => {
   const { groupStacks, groupChildren } = useConnect({ display, groups });
   const colors = useChartColors();
 
@@ -41,13 +49,6 @@ const Chart = ({ data, groups, display, amountSelector, ...props }) => {
       </AutoSizer>
     </div>
   );
-};
-
-Chart.propTypes = {
-  data: PropTypes.array.isRequired,
-  groups: PropTypes.array,
-  display: PropTypes.object.isRequired,
-  amountSelector: PropTypes.func.isRequired,
 };
 
 export default Chart;

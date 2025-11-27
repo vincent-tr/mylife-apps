@@ -21,6 +21,10 @@ const Title = styled(Typography)(({ theme }) => ({
   marginRight: theme.spacing(4),
 }));
 
+const AccountField = styled(AccountSelector)({
+  minWidth: 200,
+});
+
 interface CriteriaProps {
   criteria: FIXME_any;
   onCriteriaChanged: (criteria: FIXME_any) => void;
@@ -69,7 +73,7 @@ const Criteria: React.FC<CriteriaProps> = ({ criteria, onCriteriaChanged, displa
       </Grid>
       <Grid size={6}>
         <CriteriaField label="Compte">
-          <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
+          <AccountField allowNull={true} value={criteria.account} onChange={onAccountChanged} />
         </CriteriaField>
       </Grid>
       <Grid size={6}>
@@ -106,7 +110,7 @@ const Criteria: React.FC<CriteriaProps> = ({ criteria, onCriteriaChanged, displa
       </Grid>
       <Grid size={4}>
         <CriteriaField label="Compte">
-          <AccountSelector allowNull={true} value={criteria.account} onChange={onAccountChanged} width={200} />
+          <AccountField allowNull={true} value={criteria.account} onChange={onAccountChanged} />
         </CriteriaField>
       </Grid>
       <Grid size={4}>

@@ -1,6 +1,5 @@
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import PropTypes from 'prop-types';
+import Select, { SelectProps } from '@mui/material/Select';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getAccounts } from '../../reference/selectors';
@@ -21,7 +20,13 @@ function renderList(accounts, allowNull) {
   ));
 }
 
-const AccountSelector = ({ allowNull = false, value, onChange = null, ...props }) => {
+interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'variant'> {
+  allowNull?: boolean;
+  value?: string | null;
+  onChange?: ((value: string | null) => void);
+}
+
+const AccountSelector: React.FC<AccountSelectorProps> = ({ allowNull = false, value, onChange, ...props }) => {
   const { accounts } = useConnect();
   const handleChange = (e) => {
     const { value } = e.target;
@@ -32,12 +37,6 @@ const AccountSelector = ({ allowNull = false, value, onChange = null, ...props }
       {renderList(accounts, allowNull)}
     </Select>
   );
-};
-
-AccountSelector.propTypes = {
-  allowNull: PropTypes.bool,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
 };
 
 export default AccountSelector;
