@@ -25,7 +25,7 @@ ui-build:
 	rm -rf dist/prod/static && \
 	install -d dist/prod/static/bootstrap/css && \
 	install -d dist/prod/static/bootstrap/fonts && \
-	install public/* dist/prod/static && \
+	install static/* dist/prod/static && \
 	install ../../node_modules/bootstrap/dist/css/bootstrap.min.css dist/prod/static/bootstrap/css && \
 	install ../../node_modules/bootstrap/dist/fonts/* dist/prod/static/bootstrap/fonts
 

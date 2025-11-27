@@ -24,7 +24,7 @@ ui-build:
 	cd $(DIR_UI) && \
 	rm -rf dist/prod/static && \
 	install -d dist/prod/static && \
-	install public/* dist/prod/static
+	install static/* dist/prod/static
 
 run-web:
 	export WEB_PORT=8080; \
