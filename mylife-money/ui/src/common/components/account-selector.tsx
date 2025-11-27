@@ -23,7 +23,7 @@ function renderList(accounts, allowNull) {
 export interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'variant'> {
   allowNull?: boolean;
   value?: string | null;
-  onChange?: ((value: string | null) => void);
+  onChange?: (value: string | null) => void;
 }
 
 const AccountSelector: React.FC<AccountSelectorProps> = ({ allowNull = false, value, onChange, ...props }) => {

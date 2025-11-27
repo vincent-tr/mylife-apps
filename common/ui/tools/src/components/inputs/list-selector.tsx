@@ -2,8 +2,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectProps } from '@mui/material/Select';
 import React from 'react';
 
-type FIXME_any = any;
-
 const NULL_ID = 'null-id';
 
 export interface ListSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'children' | 'variant'> {

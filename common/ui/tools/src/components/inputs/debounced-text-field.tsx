@@ -9,7 +9,7 @@ const ENTER_KEY = 13;
 export interface DebouncedTextFieldProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
   value: string | null;
   onChange: (value: string) => void;
-};
+}
 
 const DebouncedTextField: React.FC<DebouncedTextFieldProps> = ({ value, onChange, multiline, ...props }) => {
   const { componentValue, componentChange, flush } = useDebounced(value, onChange);

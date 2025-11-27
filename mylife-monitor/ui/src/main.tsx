@@ -11,14 +11,12 @@ import * as reducers from './reducers';
 services.initStore(reducers);
 services.initMetadata(metadataDefintions);
 
-/* eslint-disable react/display-name, react/prop-types */
 const routes = [
   { location: '/', renderer: () => <Home /> },
   { location: '/nagios', name: 'Nagios', icon: icons.menu.Nagios, renderer: () => <Nagios /> },
   { location: '/upsmon', name: 'UPS monitor', icon: icons.menu.Upsmon, renderer: () => <Upsmon /> },
   { location: '/updates', name: 'Updates', icon: icons.menu.Updates, renderer: () => <Updates /> },
 ];
-/* eslint-enable */
 
 const menu = [
   { id: 'nagios', text: 'Nagios', icon: icons.menu.Nagios, location: '/nagios' },
