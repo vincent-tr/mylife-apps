@@ -6,8 +6,8 @@ import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useScreenPhone, services } from 'mylife-tools';
+import { LiveDevice } from '../../api';
 import icons from '../../common/icons';
-import { LiveDevice } from '../../metadata';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { DeviceMeasure } from './common';
 

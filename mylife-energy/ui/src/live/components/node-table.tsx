@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { views } from 'mylife-tools';
-import { Measure } from '../../metadata';
+import { Measure } from '../../api';
 import { getMeasureView, getFirstDeviceByType, makeGetDevicesByType } from '../selectors';
 import { DeviceMeasure } from './common';
 

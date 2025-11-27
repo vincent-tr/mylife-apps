@@ -1,4 +1,4 @@
-import { Sensor } from '../metadata';
+import { Sensor } from '../api';
 
 export enum StatsType {
   Day = 1,
