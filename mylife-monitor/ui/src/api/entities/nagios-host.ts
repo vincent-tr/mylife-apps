@@ -1,5 +1,6 @@
 import { api } from 'mylife-tools';
-import type { NagiosHostStatus } from './datatypes';
+
+export type NagiosHostStatus = 'pending' | 'up' | 'down' | 'unreachable';
 
 /** Hôte nagios */
 export interface NagiosHost extends api.Entity {

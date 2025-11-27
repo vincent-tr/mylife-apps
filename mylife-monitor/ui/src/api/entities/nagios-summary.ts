@@ -1,5 +1,6 @@
 import { api } from 'mylife-tools';
-import type { NagiosObjectType } from './datatypes';
+
+export type NagiosObjectType = 'host' | 'service';
 
 /** Résumé Nagios */
 export interface NagiosSummary extends api.Entity {

@@ -1,4 +1,3 @@
-export * from './entities/datatypes';
 export * from './entities/nagios-host-group';
 export * from './entities/nagios-host';
 export * from './entities/nagios-service';

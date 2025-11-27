@@ -1,5 +1,6 @@
 import { api } from 'mylife-tools';
-import type { NagiosServiceStatus } from './datatypes';
+
+export type NagiosServiceStatus = 'pending' | 'ok' | 'warning' | 'unknown' | 'critical';
 
 /** Service nagios */
 export interface NagiosService extends api.Entity {

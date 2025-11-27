@@ -1,5 +1,6 @@
 import { api } from 'mylife-tools';
-import type { UpdatesStatus } from './datatypes';
+
+export type UpdatesStatus = 'uptodate' | 'outdated' | 'unknown';
 
 /** Version */
 export interface UpdatesVersion extends api.Entity {
