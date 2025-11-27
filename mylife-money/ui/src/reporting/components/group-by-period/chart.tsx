@@ -14,7 +14,7 @@ const useConnect = ({ display, groups }) => {
   }));
 };
 
-export interface ChartProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ChartProps extends React.ComponentProps<'div'> {
   data: FIXME_any[];
   groups?: FIXME_any[];
   display: FIXME_any;

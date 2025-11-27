@@ -28,7 +28,7 @@ const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-export interface GroupSelectorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface GroupSelectorProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   onChange: (value: string | null) => void;
   value: string | null;
 }
