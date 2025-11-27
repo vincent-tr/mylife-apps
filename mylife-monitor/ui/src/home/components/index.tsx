@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { views, useLifecycle } from 'mylife-tools';
+import { api, useLifecycle } from 'mylife-tools';
 import { enter, leave } from '../actions';
 import { getNagiosView, getUpsmonView, getUpdatesView } from '../selectors';
 import NagiosSummary from './nagios-summary';
@@ -42,7 +42,7 @@ const Home = () => {
   return (
     <Container>
       <Section>
-        {Object.values(nagios).map((summary: views.Entity) => (
+        {Object.values(nagios).map((summary: api.Entity) => (
           <NagiosSummary key={summary._id} data={summary} />
         ))}
       </Section>

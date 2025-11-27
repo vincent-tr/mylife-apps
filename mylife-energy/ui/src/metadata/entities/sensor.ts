@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools';
+import { api } from 'mylife-tools';
 
 export default {
   id: 'sensor',
@@ -14,7 +14,7 @@ export default {
   display: (obj) => `${obj.date} => ${obj.value}`,
 };
 
-export interface Sensor extends views.Entity {
+export interface Sensor extends api.Entity {
   sensorId: string;
   sensor: string;
   deviceClass: string;

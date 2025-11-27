@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React from 'react';
-import { views } from 'mylife-tools';
+import { api } from 'mylife-tools';
 import icons from '../../common/icons';
 import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 
@@ -45,7 +45,7 @@ const UpdatesSummary = ({ view }) => {
         </TableHead>
 
         <TableBody>
-          {Object.values(view).map((data: views.Entity) => (
+          {Object.values(view).map((data: api.Entity) => (
             <Row key={data._id} data={data} />
           ))}
         </TableBody>

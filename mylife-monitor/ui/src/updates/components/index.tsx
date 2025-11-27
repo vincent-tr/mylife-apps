@@ -11,7 +11,7 @@ import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import React, { useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { views, useLifecycle } from 'mylife-tools';
+import { api, useLifecycle } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { enter, leave } from '../actions';
@@ -49,7 +49,7 @@ const Updates = () => {
   const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
-  const dataSorted = useMemo(() => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as views.Entity[], [data]);
+  const dataSorted = useMemo(() => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as api.Entity[], [data]);
 
   return (
     <Container>

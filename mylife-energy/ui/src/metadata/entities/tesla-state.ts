@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools';
+import { api } from 'mylife-tools';
 
 export enum TeslaMode {
   Off,
@@ -22,7 +22,7 @@ export enum TeslaChargingStatus {
   Disabled, // mode off
 }
 
-export interface TeslaState extends views.Entity {
+export interface TeslaState extends api.Entity {
   mode: TeslaMode; // Current charging mode
   fastLimit: number; // Fast mode charge limit (%)
   smartLimitLow: number; // Smart mode charge low limit (%)

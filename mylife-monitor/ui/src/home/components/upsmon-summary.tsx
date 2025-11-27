@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import humanizeDuration from 'humanize-duration';
 import React from 'react';
-import { views } from 'mylife-tools';
+import { api } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import icons from '../../common/icons';
 import { SuccessCell, ErrorCell } from '../../common/table-status';
@@ -65,7 +65,7 @@ const UpsmonSummary = ({ view }) => {
         </TableHead>
 
         <TableBody>
-          {Object.values(view).map((data: views.Entity) => (
+          {Object.values(view).map((data: api.Entity) => (
             <Row key={data._id} data={data} />
           ))}
         </TableBody>

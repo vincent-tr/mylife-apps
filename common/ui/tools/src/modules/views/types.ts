@@ -1,8 +1,5 @@
-export interface Entity {
-  _id: string;
-  _entity: string;
-}
+import * as api from '../../api';
 
-export type View<TEntity extends Entity> = {
+export type View<TEntity extends api.Entity> = {
   [id: string]: TEntity;
 };

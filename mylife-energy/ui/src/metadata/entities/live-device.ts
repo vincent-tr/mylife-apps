@@ -1,7 +1,7 @@
-import { views } from 'mylife-tools';
+import { api } from 'mylife-tools';
 import { DeviceType } from './device';
 
-export interface LiveDevice extends views.Entity {
+export interface LiveDevice extends api.Entity {
   display: string;
   type: DeviceType;
   computed: boolean;

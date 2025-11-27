@@ -1,8 +1,8 @@
-import { views } from 'mylife-tools';
+import { api } from 'mylife-tools';
 
 export type DeviceType = 'node' | 'group' | 'main' | 'solar' | 'total';
 
-export interface Device extends views.Entity {
+export interface Device extends api.Entity {
   deviceId: string;
   display: string;
   type: DeviceType;

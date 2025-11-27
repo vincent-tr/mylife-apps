@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { views } from 'mylife-tools';
+import { api, views } from 'mylife-tools';
 import { ACCOUNTS, GROUPS } from './view-ids';
 
 type FIXME_any = any;
@@ -16,12 +16,12 @@ const defaultGroup = {
   display: 'Non triés',
 };
 
-const getGroupView = createSelector([(state) => views.getView(state, GROUPS)], (view) => ({ ...view, ['null']: defaultGroup }) as views.View<views.Entity>);
+const getGroupView = createSelector([(state) => views.getView(state, GROUPS)], (view) => ({ ...view, ['null']: defaultGroup }) as views.View<api.Entity>);
 
 export const getGroup = (state, groupId: string) => getGroupView(state)[groupId];
 
 export const getChildrenView = createSelector([getGroupView], (view) => {
-  const childrenView: { [groupId: string]: views.Entity[] } = {};
+  const childrenView: { [groupId: string]: api.Entity[] } = {};
 
   for (const id of Object.keys(view)) {
     const group = view[id] as FIXME_any;
@@ -49,7 +49,7 @@ export const makeGetSortedChildren = () =>
 // stack from root for each group
 export const getGroupStacks = createSelector([getGroupView], (view) => {
   // Entity => Group
-  const groupStacks: { [groupId: string]: views.Entity[] } = {};
+  const groupStacks: { [groupId: string]: api.Entity[] } = {};
 
   groupStacks['null'] = [view['null']];
 
@@ -59,7 +59,7 @@ export const getGroupStacks = createSelector([getGroupView], (view) => {
     }
 
     // Entity => Group
-    const stack: views.Entity[] = [];
+    const stack: api.Entity[] = [];
     let value = id;
     while (value) {
       const iterGroup = view[value];

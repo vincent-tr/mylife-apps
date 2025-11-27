@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { views } from 'mylife-tools';
+import { api, views } from 'mylife-tools';
 import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 import * as viewUids from './view-uids';
 
@@ -52,7 +52,7 @@ export const changeCriteria = createAsyncThunk('nagios/changeCriteria', async (c
 export const getCriteria = nagiosSlice.selectors.getCriteria;
 export const getView = (state) => views.getView(state, viewUids.NAGIOS_DATA);
 
-export const getDisplayView = createSelector([getView, getCriteria], (view: views.View<views.Entity>, criteria) => {
+export const getDisplayView = createSelector([getView, getCriteria], (view: views.View<api.Entity>, criteria) => {
   const groups = new Map();
   const hosts = new Map();
   const services = new Map();

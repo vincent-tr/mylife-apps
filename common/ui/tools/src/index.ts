@@ -10,3 +10,5 @@ export * from './modules';
 export * from './utils';
 
 export { createAsyncThunk } from './services/store-factory';
+
+export * as api from './api';

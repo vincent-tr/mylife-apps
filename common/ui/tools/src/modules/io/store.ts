@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import * as api from '../../api';
 import { STATE_PREFIX } from '../../constants/defines';
 import { createAsyncThunk } from '../../services/store-factory';
 import { setBusy } from '../dialogs/store';
 import { View } from '../views';
-import { Entity } from '../views/types';
 import { ServiceCall } from './service/call-engine';
 import { Service, ServiceAPI, ViewChange } from './service';
 
 interface IOState {
   online: boolean;
-  views: { [viewId: string]: View<Entity> };
+  views: { [viewId: string]: View<api.Entity> };
 }
 
 type ViewChangePayload = ViewChange;
@@ -19,7 +19,7 @@ const initialState: IOState = {
   views: {},
 };
 
-const emptyView: View<Entity> = {};
+const emptyView: View<api.Entity> = {};
 
 const ioSlice = createSlice({
   name: `${STATE_PREFIX}/io`,

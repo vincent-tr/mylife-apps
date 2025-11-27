@@ -1,4 +1,4 @@
-import { Entity } from '../../views/types';
+import * as api from '../../../api';
 import { Engine, ServiceAPI } from '.';
 
 interface NotifyMessage {
@@ -7,7 +7,7 @@ interface NotifyMessage {
   list: ViewChangeItem[];
 }
 
-export type ViewChangeItem = { type: 'set'; object: Entity } | { type: 'unset'; objectId: string };
+export type ViewChangeItem = { type: 'set'; object: api.Entity } | { type: 'unset'; objectId: string };
 
 class NotifyEngine implements Engine {
   constructor(private readonly api: ServiceAPI) {}

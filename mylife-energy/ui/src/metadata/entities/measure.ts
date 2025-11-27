@@ -1,4 +1,4 @@
-import { views } from 'mylife-tools';
+import { api } from 'mylife-tools';
 
 export default {
   id: 'measure',
@@ -12,7 +12,7 @@ export default {
   display: (obj) => `${obj.date} => ${obj.value}`,
 };
 
-export interface Measure extends views.Entity {
+export interface Measure extends api.Entity {
   timestamp: Date;
   sensor: string;
   value: number;

@@ -9,7 +9,7 @@ import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { views, useLifecycle, services } from 'mylife-tools';
+import { api, useLifecycle, services } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { enter, leave } from '../actions';
@@ -41,7 +41,7 @@ const Upsmon = () => {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {Object.values(data).map((item: views.Entity) => (
+              {Object.values(data).map((item: api.Entity) => (
                 <Ups key={item._id} data={item} />
               ))}
             </TableBody>
