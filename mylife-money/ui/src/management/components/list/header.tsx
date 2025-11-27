@@ -108,17 +108,17 @@ const Header = () => {
 
   const selectors = (
     <React.Fragment>
-      <ToolbarFieldTitle>Date début</ToolbarFieldTitle>
+      <ToolbarFieldTitle>{'Date début'}</ToolbarFieldTitle>
       {minDateSelector}
 
       <ToolbarSeparator />
 
-      <ToolbarFieldTitle>Date fin</ToolbarFieldTitle>
+      <ToolbarFieldTitle>{'Date fin'}</ToolbarFieldTitle>
       {maxDateSelector}
 
       <ToolbarSeparator />
 
-      <ToolbarFieldTitle>Compte</ToolbarFieldTitle>
+      <ToolbarFieldTitle>{'Compte'}</ToolbarFieldTitle>
       <AccountField allowNull={true} value={account} onChange={onAccountChanged} />
     </React.Fragment>
   );
@@ -127,7 +127,7 @@ const Header = () => {
     <React.Fragment>
       <ImportButton accounts={accounts} onImport={onOperationsImport} />
       {showExecuteRules && (
-        <Tooltip title="Executer les règles sur les opérations">
+        <Tooltip title={'Executer les règles sur les opérations'}>
           <IconButton onClick={onOperationsExecuteRules}>
             <icons.actions.Execute />
           </IconButton>
@@ -142,7 +142,7 @@ const Header = () => {
         </div>
       </Tooltip>
 
-      <Tooltip title="Editer la note des opérations sélectionnées">
+      <Tooltip title={'Editer la note des opérations sélectionnées'}>
         <div>
           <IconButton onClick={editNote} disabled={!canProcessOperations}>
             <icons.actions.Comment />
@@ -154,7 +154,7 @@ const Header = () => {
 
   const search = (
     <React.Fragment>
-      <ToolbarFieldTitle>Libellé ou note</ToolbarFieldTitle>
+      <ToolbarFieldTitle>{'Libellé ou note'}</ToolbarFieldTitle>
       <DebouncedTextField value={lookupText} onChange={onLookupTextChanged} type="search" />
     </React.Fragment>
   );
@@ -192,7 +192,7 @@ const Header = () => {
             {maxDateSelector}
           </Toolbar>
           <Toolbar variant="dense">
-            <ToolbarFieldTitle>Groupe</ToolbarFieldTitle>
+            <ToolbarFieldTitle>{'Groupe'}</ToolbarFieldTitle>
             <GroupDenseSelector />
           </Toolbar>
           <Toolbar variant="dense">{search}</Toolbar>
