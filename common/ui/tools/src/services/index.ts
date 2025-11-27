@@ -1,4 +1,3 @@
 export * from './store-factory';
 export * from './theme-factory';
 export * from './render';
-//export * from './metadata';
