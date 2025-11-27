@@ -1,11 +1,18 @@
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import PropTypes from 'prop-types';
+import Select, { SelectProps } from '@mui/material/Select';
 import React from 'react';
+
+type FIXME_any = any;
 
 const NULL_ID = 'null-id';
 
-const ListSelector = ({ list, value, onChange, ...props }) => {
+export interface ListSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'children' | 'variant'> {
+  list: { id?: string; text: string }[];
+  value?: string | null;
+  onChange: (value: string | null) => void;
+}
+
+const ListSelector: React.FC<ListSelectorProps> = ({ list, value, onChange, ...props }) => {
   const handleChange = (event) => onChange(nullFromEditor(event.target.value));
   return (
     <Select value={value || NULL_ID} onChange={handleChange} {...props}>
@@ -16,17 +23,6 @@ const ListSelector = ({ list, value, onChange, ...props }) => {
       ))}
     </Select>
   );
-};
-
-ListSelector.propTypes = {
-  list: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      text: PropTypes.string.isRequired,
-    }).isRequired
-  ),
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default ListSelector;

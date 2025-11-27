@@ -3,9 +3,10 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import React, { FunctionComponent, useState } from 'react';
 import StepperActions from './stepper-actions';
+
+type FIXME_any = any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -18,10 +19,15 @@ const Main = styled(Box)(({ theme }) => ({
   borderColor: theme.palette.divider,
 }));
 
-interface StepperControlProps {
-  className?: string;
-  steps: { label: string; actions?; render: (step) => React.ReactNode }[];
-  onStepChanged?: (value, step, activeStep, setActiveStep) => boolean;
+export interface Step {
+  label: string;
+  actions?: FIXME_any;
+  render: (step: FIXME_any) => React.ReactNode;
+}
+
+export interface StepperControlProps extends React.HTMLAttributes<HTMLDivElement> {
+  steps: Step[];
+  onStepChanged?: (value: FIXME_any, step: Step, activeStep: number, setActiveStep: (step: number) => void) => boolean;
   onEnd: (value: 'finish' | 'cancel') => void;
 }
 
@@ -85,19 +91,6 @@ const StepperControl: FunctionComponent<StepperControlProps> = ({ className, ste
       <StepperActions {...finalActions} onAction={handleAction} />
     </Container>
   );
-};
-
-StepperControl.propTypes = {
-  className: PropTypes.string,
-  steps: PropTypes.arrayOf(
-    PropTypes.exact({
-      label: PropTypes.string.isRequired,
-      actions: PropTypes.object,
-      render: PropTypes.func.isRequired,
-    }).isRequired
-  ),
-  onStepChanged: PropTypes.func,
-  onEnd: PropTypes.func.isRequired,
 };
 
 export default StepperControl;

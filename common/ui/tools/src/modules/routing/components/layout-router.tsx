@@ -1,10 +1,39 @@
 import PathToRegex from 'path-to-regex';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';
 
-const LayoutRouter = ({ routes, menu, appName, appIcon, ...props }) => {
+type FIXME_any = any;
+
+export interface Route {
+  location: string;
+  name?: string;
+  nameRenderer?: (params: FIXME_any) => React.ReactNode;
+  icon?: React.ElementType;
+  iconRenderer?: (params: FIXME_any) => React.ReactNode;
+  additionalHeader?: React.ReactNode;
+  additionalHeaderRenderer?: (params: FIXME_any) => React.ReactNode;
+  additionalBreadcrumb?: React.ReactNode;
+  additionalBreadcrumbRenderer?: (params: FIXME_any) => React.ReactNode;
+  renderer: (params: FIXME_any) => React.ReactNode;
+}
+
+export interface MenuItem {
+  id: string;
+  text: React.ReactNode;
+  icon?: React.ElementType;
+  location?: string;
+  onClick?: () => void;
+}
+
+export interface LayoutRouterProps {
+  routes: Route[];
+  menu?: MenuItem[];
+  appName: string;
+  appIcon: React.ElementType;
+}
+
+const LayoutRouter: React.FC<LayoutRouterProps> = ({ routes, menu, appName, appIcon, ...props }) => {
   const { location, navigate } = useRoutingConnect();
   const mappedMenu = mapMenu({ navigate, menu });
   const routesInfo = useMemo(() => new RoutesInfo(routes), [routes]);
@@ -25,33 +54,6 @@ const LayoutRouter = ({ routes, menu, appName, appIcon, ...props }) => {
       {routeMatch.render()}
     </Layout>
   );
-};
-
-LayoutRouter.propTypes = {
-  menu: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-      icon: PropTypes.elementType,
-      location: PropTypes.string,
-    }).isRequired
-  ),
-  routes: PropTypes.arrayOf(
-    PropTypes.shape({
-      location: PropTypes.string.isRequired,
-      name: Layout.propTypes.viewName,
-      nameRenderer: PropTypes.func,
-      icon: Layout.propTypes.viewIcon,
-      iconRenderer: PropTypes.func,
-      additionalHeader: Layout.propTypes.viewAdditionalHeader,
-      additionalHeaderRenderer: PropTypes.func,
-      additionalBreadcrumb: Layout.propTypes.viewAdditionalBreadcrumb,
-      additionalBreadcrumbRenderer: PropTypes.func,
-      renderer: PropTypes.func.isRequired,
-    }).isRequired
-  ).isRequired,
-  appName: Layout.propTypes.appName,
-  appIcon: Layout.propTypes.appIcon,
 };
 
 export default LayoutRouter;
