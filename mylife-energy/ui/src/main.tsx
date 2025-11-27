@@ -6,14 +6,12 @@ import Live from './live/components';
 import Stats from './stats/components';
 import statsReducer from './stats/store';
 import Tesla from './tesla/components';
-import metadataDefintions from './metadata';
 
 const reducers = {
   stats: statsReducer,
 };
 
 services.initStore(reducers);
-services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },

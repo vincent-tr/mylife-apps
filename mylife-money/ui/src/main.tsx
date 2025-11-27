@@ -9,7 +9,6 @@ import { referenceInit } from './reference/actions';
 import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
 import reportingReducer from './reporting/store';
-import metadataDefintions from './metadata';
 
 const reducers = {
   management: managementReducer,
@@ -17,7 +16,6 @@ const reducers = {
 };
 
 services.initStore(reducers);
-services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },

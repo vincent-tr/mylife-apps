@@ -3,13 +3,17 @@ import { services } from 'mylife-tools';
 import icons from './common/icons';
 import Home from './home/components';
 import Nagios from './nagios/components';
+import nagiosReducer from './nagios/store';
 import Updates from './updates/components';
+import updatesReducer from './updates/store';
 import Upsmon from './upsmon/components';
-// import metadataDefintions from './metadata';
-import * as reducers from './reducers';
+
+const reducers = {
+  nagios: nagiosReducer,
+  updates: updatesReducer,
+};
 
 services.initStore(reducers);
-// services.initMetadata(metadataDefintions);
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
