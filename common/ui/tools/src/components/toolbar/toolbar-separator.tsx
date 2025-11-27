@@ -9,7 +9,7 @@ const Separator = styled(Typography)(({ theme }) => ({
   borderRight: '0.1em solid currentColor',
 }));
 
-const ToolbarSeparator = () => {
+const ToolbarSeparator: React.FC = () => {
   return <Separator>&nbsp;</Separator>;
 };
 
