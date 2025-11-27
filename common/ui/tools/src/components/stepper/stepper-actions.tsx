@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const Root = styled('div')(({ theme }) => ({
@@ -9,7 +8,16 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-const StepperActions = ({ className, canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }) => {
+export interface StepperActionsProps extends React.HTMLAttributes<HTMLDivElement> {
+  canPrev: boolean;
+  canNext: boolean;
+  canSkip: boolean;
+  canFinish: boolean;
+  canCancel: boolean;
+  onAction: (action: string) => void;
+}
+
+const StepperActions: React.FC<StepperActionsProps> = ({ className, canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }) => {
   return (
     <Root className={className} {...props}>
       <Button disabled={!canPrev} onClick={() => onAction('prev')} variant="contained">
@@ -35,16 +43,6 @@ const StepperActions = ({ className, canPrev, canNext, canSkip, canFinish, canCa
       )}
     </Root>
   );
-};
-
-StepperActions.propTypes = {
-  className: PropTypes.string,
-  canPrev: PropTypes.bool.isRequired,
-  canNext: PropTypes.bool.isRequired,
-  canSkip: PropTypes.bool.isRequired,
-  canFinish: PropTypes.bool.isRequired,
-  canCancel: PropTypes.bool.isRequired,
-  onAction: PropTypes.func.isRequired,
 };
 
 export default StepperActions;

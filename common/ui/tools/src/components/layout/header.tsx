@@ -7,7 +7,6 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -43,7 +42,18 @@ const StyledTypography = styled(Typography)({
   justifyContent: 'center',
 });
 
-const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, onMenuButtonClick, ...props }) => {
+export interface HeaderProps extends React.ComponentProps<typeof AppBar> {
+  appName: string;
+  appIcon: React.ElementType;
+  onMainClick?: () => void;
+  viewName?: React.ReactNode;
+  viewIcon?: React.ElementType;
+  viewAdditionalHeader?: React.ReactNode;
+  viewAdditionalBreadcrumb?: React.ReactNode;
+  onMenuButtonClick?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, onMenuButtonClick, ...props }) => {
   const AppIcon = appIcon;
   const ViewIcon = viewIcon;
 
@@ -75,17 +85,6 @@ const Header = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
       </Toolbar>
     </AppBar>
   );
-};
-
-Header.propTypes = {
-  appName: PropTypes.string.isRequired,
-  appIcon: PropTypes.elementType.isRequired,
-  onMainClick: PropTypes.func,
-  viewName: PropTypes.node,
-  viewIcon: PropTypes.elementType,
-  viewAdditionalHeader: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-  viewAdditionalBreadcrumb: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-  onMenuButtonClick: PropTypes.func,
 };
 
 export default Header;

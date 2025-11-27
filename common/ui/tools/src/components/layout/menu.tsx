@@ -5,7 +5,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useScreen } from '../behaviors/responsive';
 
@@ -37,7 +36,24 @@ const DrawerHeader = styled(Box)(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const Menu = ({ items, open, onSelect }) => {
+export interface MenuItem {
+  id: string;
+  text: React.ReactNode;
+  icon?: React.ElementType;
+  onClick?: () => void;
+  responsive?: {
+    sizes?: ('phone' | 'tablet' | 'laptop' | 'wide')[];
+    orientations?: ('portrait' | 'landscape')[];
+  };
+}
+
+export interface MenuProps {
+  items: MenuItem[];
+  open: boolean;
+  onSelect: () => void;
+}
+
+const Menu: React.FC<MenuProps> = ({ items, open, onSelect }) => {
   const reponsiveItems = useResponsiveItems(items);
 
   return (
@@ -61,19 +77,6 @@ const Menu = ({ items, open, onSelect }) => {
       </List>
     </StyledDrawer>
   );
-};
-
-Menu.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      text: PropTypes.node.isRequired,
-      icon: PropTypes.elementType,
-      onClick: PropTypes.func,
-    }).isRequired
-  ),
-  open: PropTypes.bool.isRequired,
-  onSelect: PropTypes.func.isRequired,
 };
 
 export default Menu;

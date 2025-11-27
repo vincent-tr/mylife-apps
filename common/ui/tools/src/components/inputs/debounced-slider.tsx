@@ -1,9 +1,13 @@
-import Slider from '@mui/material/Slider';
-import PropTypes from 'prop-types';
+import Slider, { SliderProps } from '@mui/material/Slider';
 import React from 'react';
 import { useDebounced } from '../behaviors';
 
-const DebouncedSlider = ({ value, onChange, ...props }) => {
+export interface DebouncedSliderProps extends Omit<SliderProps, 'value' | 'onChange'> {
+  value: number;
+  onChange: (value: number) => void;
+}
+
+const DebouncedSlider: React.FC<DebouncedSliderProps> = ({ value, onChange, ...props }) => {
   const { componentValue, componentChange } = useDebounced(value, onChange);
 
   const handleChange = (e, value) => {
@@ -11,11 +15,6 @@ const DebouncedSlider = ({ value, onChange, ...props }) => {
   };
 
   return <Slider {...props} value={componentValue} onChange={handleChange} />;
-};
-
-DebouncedSlider.propTypes = {
-  value: PropTypes.number,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default DebouncedSlider;

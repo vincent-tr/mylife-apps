@@ -1,15 +1,17 @@
 import TextField from '@mui/material/TextField';
 import { TextFieldProps } from '@mui/material/TextField';
-import PropTypes from 'prop-types';
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { useDebounced } from '../behaviors';
 
 // https://gist.github.com/krambertech/76afec49d7508e89e028fce14894724c
 const ENTER_KEY = 13;
 
-export type DebouncedTextFieldProps = Omit<TextFieldProps, 'value' | 'onChange'> & { value: any; onChange: (value: any) => void };
+export interface DebouncedTextFieldProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
+  value: string | null;
+  onChange: (value: string) => void;
+};
 
-const DebouncedTextField: FunctionComponent<DebouncedTextFieldProps> = ({ value, onChange, multiline, ...props }) => {
+const DebouncedTextField: React.FC<DebouncedTextFieldProps> = ({ value, onChange, multiline, ...props }) => {
   const { componentValue, componentChange, flush } = useDebounced(value, onChange);
 
   const handleChange = (e) => {
@@ -25,11 +27,6 @@ const DebouncedTextField: FunctionComponent<DebouncedTextFieldProps> = ({ value,
       };
 
   return <TextField {...(props as TextFieldProps)} multiline={multiline} value={componentValue || ''} onChange={handleChange} onKeyDown={handleKeyDown} />;
-};
-
-DebouncedTextField.propTypes = {
-  value: PropTypes.any,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default DebouncedTextField;

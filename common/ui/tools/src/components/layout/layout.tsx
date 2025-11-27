@@ -1,10 +1,9 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useScreenSize } from '../behaviors';
 import Header from './header';
-import Menu from './menu';
+import Menu, { MenuItem } from './menu';
 
 const Root = styled(Box)({
   display: 'flex',
@@ -62,7 +61,19 @@ const hideValueMenuState = {
   wide: menuStates.REDUCED,
 };
 
-const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, menu, children }) => {
+export interface LayoutProps {
+  appName: string;
+  appIcon: React.ElementType;
+  onMainClick?: () => void;
+  viewName?: React.ReactNode;
+  viewIcon?: React.ElementType;
+  viewAdditionalHeader?: React.ReactNode;
+  viewAdditionalBreadcrumb?: React.ReactNode;
+  children?: React.ReactNode;
+  menu?: MenuItem[];
+}
+
+const Layout: React.FC<LayoutProps> = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, menu, children }) => {
   const screenSize = useScreenSize();
   const [menuState, setMenuState] = useState(initialMenuState[screenSize]);
   useEffect(() => setMenuState(initialMenuState[screenSize]), [screenSize]);
@@ -100,18 +111,6 @@ const Layout = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditio
       </Content>
     </Root>
   );
-};
-
-Layout.propTypes = {
-  appName: Header.propTypes.appName,
-  appIcon: Header.propTypes.appIcon,
-  onMainClick: PropTypes.func,
-  viewName: Header.propTypes.viewName,
-  viewIcon: Header.propTypes.viewIcon,
-  viewAdditionalHeader: Header.propTypes.viewAdditionalHeader,
-  viewAdditionalBreadcrumb: Header.propTypes.viewAdditionalBreadcrumb,
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-  menu: Menu.propTypes.items,
 };
 
 export default Layout;

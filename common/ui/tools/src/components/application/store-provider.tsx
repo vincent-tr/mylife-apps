@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { getStore } from '../../services/store-factory';
 
-const StoreProvider = ({ children }) => <Provider store={getStore()}>{children}</Provider>;
+export interface StoreProviderProps {
+  children?: React.ReactNode;
+}
 
-StoreProvider.propTypes = {
-  children: PropTypes.node,
-};
+const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => <Provider store={getStore()}>{children}</Provider>;
 
 export default StoreProvider;
