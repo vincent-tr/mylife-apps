@@ -27,7 +27,7 @@ interface AdditionalCriteriaProps {
   onDisplayChanged: (display) => void;
 }
 
-const AdditionalCriteria: React.FC<AdditionalCriteriaProps> = ({ display, onDisplayChanged }) => {
+function AdditionalCriteria({ display, onDisplayChanged }: AdditionalCriteriaProps) {
   const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
   const onMonthAverageChanged = (value) => setDisplay('monthAverage', value);
 
@@ -41,20 +41,20 @@ const AdditionalCriteria: React.FC<AdditionalCriteriaProps> = ({ display, onDisp
       <Grid size={8} />
     </React.Fragment>
   );
-};
+}
 
-const GroupByYear = () => (
-  <GroupByPeriod
-    refreshAction={getGroupByYear}
-    exportAction={exportGroupByYear}
-    initialCriteria={initialCriteria}
-    initialDisplay={initialDisplay}
-    additionalCriteriaFactory={AdditionalCriteria as FIXME_any}
-    amountSelectorFactory={amountSelectorFactory}
-  />
-);
-
-export default GroupByYear;
+export default function GroupByYear() {
+  return (
+    <GroupByPeriod
+      refreshAction={getGroupByYear}
+      exportAction={exportGroupByYear}
+      initialCriteria={initialCriteria}
+      initialDisplay={initialDisplay}
+      additionalCriteriaFactory={AdditionalCriteria as FIXME_any}
+      amountSelectorFactory={amountSelectorFactory}
+    />
+  );
+}
 
 function amountSelectorFactory({ display }) {
   return (periodItem, serie) => {
