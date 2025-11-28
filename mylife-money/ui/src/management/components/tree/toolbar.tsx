@@ -44,7 +44,7 @@ const styles = {
   },
 };
 
-const Toolbar = () => {
+export default function Toolbar() {
   const { group, onGroupCreate, onGroupEdit, onGroupDelete, canChange } = useConnect();
 
   const handleDelete = async () => {
@@ -102,6 +102,4 @@ const Toolbar = () => {
       </Tooltip>
     </MuiToolbar>
   );
-};
-
-export default Toolbar;
+}

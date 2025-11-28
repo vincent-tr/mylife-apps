@@ -25,7 +25,7 @@ const Container = styled('div')({
   overflowY: 'auto',
 });
 
-const Upsmon = () => {
+export default function Upsmon() {
   const { enter, leave, data } = useConnect();
   useLifecycle(enter, leave);
 
@@ -51,9 +51,7 @@ const Upsmon = () => {
       </TableContainer>
     </Container>
   );
-};
-
-export default Upsmon;
+}
 
 const formatters = {
   identity: (value) => value,
@@ -96,7 +94,7 @@ interface UpsProps {
   data: api.UpsmonStatus;
 }
 
-const Ups: React.FC<UpsProps> = ({ data }) => {
+function Ups({ data }: UpsProps) {
   const lastUpdate = useSince(data.date);
 
   const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
@@ -114,14 +112,14 @@ const Ups: React.FC<UpsProps> = ({ data }) => {
       ))}
     </>
   );
-};
+}
 
 interface ItemProps {
   data: api.UpsmonStatus;
   field: keyof api.UpsmonStatus;
 }
 
-const Item: React.FC<ItemProps> = ({ data, field }) => {
+function Item({ data, field }: ItemProps) {
   const [formatter, displayName] = fields[field];
   const value = formatter(data[field]);
 
@@ -132,7 +130,7 @@ const Item: React.FC<ItemProps> = ({ data, field }) => {
       <TableCell>{value}</TableCell>
     </TableRow>
   );
-};
+}
 
 function useConnect() {
   const dispatch = useDispatch<FIXME_any>();

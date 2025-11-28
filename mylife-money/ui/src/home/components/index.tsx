@@ -11,7 +11,7 @@ const Container = styled('div')({
   overflowY: 'auto',
 });
 
-const Home = () => {
+export default function Home() {
   return (
     <Container>
       <Stats />
@@ -19,6 +19,4 @@ const Home = () => {
       <ChartAmount />
     </Container>
   );
-};
-
-export default Home;
+}

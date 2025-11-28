@@ -71,7 +71,7 @@ const ExpansionPanelContainer = styled('div')({
   flexDirection: 'column',
 });
 
-const Header = () => {
+export default function Header() {
   const {
     showExecuteRules,
     canProcessOperations,
@@ -213,9 +213,7 @@ const Header = () => {
     case 'wide':
       return wideHeader;
   }
-};
-
-export default Header;
+}
 
 function format(date) {
   if (!date) {

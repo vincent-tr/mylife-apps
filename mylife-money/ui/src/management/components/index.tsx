@@ -37,7 +37,7 @@ const useConnect = () => {
   };
 };
 
-const Management = () => {
+export default function Management() {
   const screenSize = useScreenSize();
   const { enter, leave, detail } = useConnect();
   useLifecycle(enter, leave);
@@ -63,5 +63,3 @@ const Management = () => {
       return normalLayout;
   }
 };
-
-export default Management;

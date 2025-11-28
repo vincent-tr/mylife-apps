@@ -43,7 +43,11 @@ const Container = styled('div')({
   overflowY: 'auto',
 });
 
-const CommonState = ({ item }) => {
+interface CommonStateProps {
+  item: FIXME_any;
+}
+
+function CommonState({ item }: CommonStateProps) {
   const rawDuration = useSince(item.lastStateChange);
   const duration = rawDuration && humanizeDuration(rawDuration, { language: 'fr', largest: 1, round: true });
   return (
@@ -55,9 +59,15 @@ const CommonState = ({ item }) => {
       <TableCell>{item.statusText}</TableCell>
     </>
   );
-};
+}
 
-const Service = ({ criteria, service, hostDisplay }) => {
+interface ServiceProps {
+  criteria: FIXME_any;
+  service: FIXME_any;
+  hostDisplay: FIXME_any;
+}
+
+function Service({ criteria, service, hostDisplay }: ServiceProps) {
   const RowComponent = getServiceRowComponent(service.status);
   return (
     <RowComponent>
@@ -68,9 +78,14 @@ const Service = ({ criteria, service, hostDisplay }) => {
       <CommonState item={service} />
     </RowComponent>
   );
-};
+}
 
-const Host = ({ criteria, item }) => {
+interface HostProps {
+  criteria: FIXME_any;
+  item: FIXME_any;
+}
+
+function Host({ criteria, item }: HostProps) {
   const { host, services } = item;
   const RowComponent = getHostRowComponent(host.status);
   const displayRow = !criteria.onlyProblems || HOST_STATUS_PROBLEM[host.status];
@@ -90,11 +105,17 @@ const Host = ({ criteria, item }) => {
       ))}
     </>
   );
-};
+}
 
-const Group = ({ criteria, item }) => (
-  <>
-    <TableRow>
+interface GroupProps {
+  criteria: FIXME_any;
+  item: FIXME_any;
+}
+
+function Group({ criteria, item }: GroupProps) {
+  return (
+    <>
+      <TableRow>
       <TableCell>{item.group.display}</TableCell>
       <TableCell />
       <TableCell />
@@ -108,10 +129,11 @@ const Group = ({ criteria, item }) => (
     {item.hosts.map((child) => (
       <Host key={child.host._id} criteria={criteria} item={child} />
     ))}
-  </>
-);
+    </>
+  );
+}
 
-const Nagios = () => {
+export default function Nagios() {
   const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
@@ -148,9 +170,7 @@ const Nagios = () => {
       </TableContainer>
     </Container>
   );
-};
-
-export default Nagios;
+}
 
 function formatStatus(item) {
   let value = item.status.toUpperCase();

@@ -45,7 +45,7 @@ const formatDuration = humanizeDuration.humanizer({
   },
 });
 
-const Updates = () => {
+export default function Updates() {
   const { enter, leave, data, criteria, changeCriteria } = useConnect();
   useLifecycle(enter, leave);
 
@@ -79,9 +79,7 @@ const Updates = () => {
       </TableContainer>
     </Container>
   );
-};
-
-export default Updates;
+}
 
 const Version = ({ data }) => {
   const getRowComponent = useCallback((status) => {
@@ -128,7 +126,12 @@ function getStatusStr(status) {
   }
 }
 
-const VersionItem: React.FC<{ value: string; date: Date }> = ({ value, date }) => {
+interface VersionItemProps {
+  value: string;
+  date: Date;
+}
+
+function VersionItem({ value, date }: VersionItemProps) {
   const lastUpdate = useSince(date);
 
   if (!value) {
@@ -150,7 +153,7 @@ const VersionItem: React.FC<{ value: string; date: Date }> = ({ value, date }) =
   } else {
     return <Tooltip title={formatDate(date, 'dd/MM/yyyy HH:mm:ss')}>{content}</Tooltip>;
   }
-};
+}
 
 function useConnect() {
   const dispatch = useDispatch<FIXME_any>();

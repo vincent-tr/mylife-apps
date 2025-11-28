@@ -35,7 +35,7 @@ const Container = styled('div')({
 
 const Section = styled('div')({});
 
-const Home = () => {
+export default function Home() {
   const { enter, leave, nagios, upsmon, updates } = useConnect();
   useLifecycle(enter, leave);
 
@@ -57,5 +57,3 @@ const Home = () => {
     </Container>
   );
 };
-
-export default Home;
