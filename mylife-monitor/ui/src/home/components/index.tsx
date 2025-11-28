@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { api, useLifecycle } from 'mylife-tools';
 import { enter, leave } from '../actions';

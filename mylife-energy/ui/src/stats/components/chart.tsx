@@ -1,6 +1,6 @@
 import { format as formatDate } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';

@@ -2,7 +2,6 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import { styled, darken } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React from 'react';
 import { CriteriaField } from 'mylife-tools';
 import { BotRun, BotRunLogSeverity, BotRunLog } from '../../api';
 

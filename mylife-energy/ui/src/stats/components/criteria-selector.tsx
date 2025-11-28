@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import React from 'react';
 import { StatsType } from '../types';
 import DatePicker from './date-picker';
 import DeviceList from './device-list';

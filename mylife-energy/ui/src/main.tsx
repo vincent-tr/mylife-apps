@@ -1,4 +1,3 @@
-import React from 'react';
 import { services } from 'mylife-tools';
 import icons from './common/icons';
 import Home from './home/components';

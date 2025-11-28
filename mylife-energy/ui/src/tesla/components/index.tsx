@@ -6,7 +6,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import humanizeDuration from 'humanize-duration';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import BatteryGauge from 'react-battery-gauge';
 import { useSelector } from 'react-redux';
 import { useLifecycle, useActions } from 'mylife-tools';

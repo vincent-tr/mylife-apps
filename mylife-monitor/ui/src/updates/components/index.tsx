@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import React, { useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { api, useLifecycle } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';

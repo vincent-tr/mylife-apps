@@ -12,7 +12,6 @@ import SaveAlt from '@mui/icons-material/SaveAlt';
 import Settings from '@mui/icons-material/Settings';
 import ShowChart from '@mui/icons-material/ShowChart';
 import SvgIcon from '@mui/material/SvgIcon';
-import React from 'react';
 
 const Money = (props) => (
   <SvgIcon viewBox="0 0 490.996 490.996" {...props}>

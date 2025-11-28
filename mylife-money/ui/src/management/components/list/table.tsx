@@ -1,6 +1,5 @@
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
-import React from 'react';
 import { useScreenPhone, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools';
 import Markdown from '../../../common/components/markdown';
 import { useConnect, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_CREDIT, COLOR_FROM_CHILD } from './table-behaviors';

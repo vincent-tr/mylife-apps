@@ -1,7 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
-import React from 'react';
 import icons from '../../common/icons';
 import { StatsType } from '../types';
 

@@ -14,7 +14,6 @@ import NotInterested from '@mui/icons-material/NotInterested';
 import Settings from '@mui/icons-material/Settings';
 import Timer from '@mui/icons-material/Timer';
 import SvgIcon from '@mui/material/SvgIcon';
-import React from 'react';
 
 const Energy = (props) => (
   <SvgIcon viewBox="0 0 88.408 88.408" {...props}>

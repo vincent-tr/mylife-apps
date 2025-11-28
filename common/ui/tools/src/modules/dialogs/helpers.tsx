@@ -1,4 +1,3 @@
-import React from 'react';
 import { confirmable, createConfirmation } from 'react-confirm';
 import { ToolsProvider } from '../../components/application';
 import Confirm from './components/confirm';

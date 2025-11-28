@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import React, { useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
 import { useActions, useLifecycle } from 'mylife-tools';
 import { enter, leave } from '../actions';
 import { fetchValues } from '../store';

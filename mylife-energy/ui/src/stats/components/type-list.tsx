@@ -1,7 +1,7 @@
 import Input from '@mui/material/Input';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { StatsType } from '../types';
 
 export interface TypeListProps {

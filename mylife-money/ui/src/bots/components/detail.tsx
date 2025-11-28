@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { CriteriaField, useAction, fireAsync } from 'mylife-tools';
 import icons from '../../common/icons';
 import { startBot } from '../actions';

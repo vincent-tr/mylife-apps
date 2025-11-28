@@ -1,7 +1,6 @@
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import React from 'react';
 import Toolbar from './toolbar';
 import Tree from './tree';
 

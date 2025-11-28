@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Portal from '@mui/material/Portal';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { styled } from '@mui/material/styles';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getNotifications, dismissNotification } from '../store';
 import { NotificationType } from '../types';

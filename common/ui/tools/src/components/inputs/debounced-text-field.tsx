@@ -1,6 +1,5 @@
 import TextField from '@mui/material/TextField';
 import { TextFieldProps } from '@mui/material/TextField';
-import React from 'react';
 import { useDebounced } from '../behaviors';
 
 // https://gist.github.com/krambertech/76afec49d7508e89e028fce14894724c

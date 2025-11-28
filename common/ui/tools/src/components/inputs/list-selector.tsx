@@ -1,6 +1,5 @@
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectProps } from '@mui/material/Select';
-import React from 'react';
 
 const NULL_ID = 'null-id';
 

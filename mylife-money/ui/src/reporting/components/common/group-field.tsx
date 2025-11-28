@@ -2,7 +2,6 @@ import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import React from 'react';
 import GroupSelector from '../../../common/components/group-selector';
 import icons from '../../../common/icons';
 

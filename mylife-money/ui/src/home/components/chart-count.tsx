@@ -1,4 +1,3 @@
-import React from 'react';
 import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line } from 'recharts';
 import { useChartColors } from 'mylife-tools';
 import { useTotalByMonth } from '../views';

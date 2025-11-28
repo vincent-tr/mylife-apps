@@ -1,4 +1,3 @@
-import React from 'react';
 import { getGroupByMonth, exportGroupByMonth } from '../store';
 import { findAmount } from './group-by-period/tools';
 import GroupByPeriod from './group-by-period';

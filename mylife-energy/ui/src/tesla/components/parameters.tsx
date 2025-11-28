@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import React, { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { dialogs, useAction, fireAsync } from 'mylife-tools';
 import { TeslaState } from '../../api';

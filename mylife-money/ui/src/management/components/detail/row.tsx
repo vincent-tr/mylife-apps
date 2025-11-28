@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 const Container = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(2),

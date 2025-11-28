@@ -1,5 +1,4 @@
 import Slider, { SliderProps } from '@mui/material/Slider';
-import React from 'react';
 import { useDebounced } from '../behaviors';
 
 export interface DebouncedSliderProps extends Omit<SliderProps, 'value' | 'onChange'> {

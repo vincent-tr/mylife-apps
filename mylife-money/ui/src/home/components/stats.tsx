@@ -1,7 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
-import React from 'react';
 import { useOperationStats } from '../views';
 
 type FIXME_any = any;

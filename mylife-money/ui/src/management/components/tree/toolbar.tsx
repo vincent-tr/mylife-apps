@@ -1,7 +1,7 @@
 import IconButton from '@mui/material/IconButton';
 import { default as MuiToolbar } from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { dialogs } from 'mylife-tools';
 import GroupSelectorButton from '../../../common/components/group-selector-button';

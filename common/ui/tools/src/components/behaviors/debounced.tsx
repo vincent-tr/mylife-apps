@@ -16,7 +16,7 @@ class Debounce<T> {
     if (this.timer !== null) {
       clearTimeout(this.timer);
     }
-    
+
     this.timer = setTimeout(() => this.doCall(args), this.waitInterval);
   }
 
