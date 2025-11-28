@@ -8,7 +8,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export interface StepperActionsProps extends React.ComponentProps<'div'> {
+export interface StepperActionsProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   canPrev: boolean;
   canNext: boolean;
   canSkip: boolean;
@@ -17,9 +17,9 @@ export interface StepperActionsProps extends React.ComponentProps<'div'> {
   onAction: (action: string) => void;
 }
 
-export default function StepperActions({ className, canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }: StepperActionsProps) {
+export default function StepperActions({ canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }: StepperActionsProps) {
   return (
-    <Root className={className} {...props}>
+    <Root {...props}>
       <Button disabled={!canPrev} onClick={() => onAction('prev')} variant="contained">
         {'Précédent'}
       </Button>

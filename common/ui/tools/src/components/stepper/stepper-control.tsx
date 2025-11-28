@@ -25,13 +25,13 @@ export interface Step {
   render: (step: FIXME_any) => React.ReactNode;
 }
 
-export interface StepperControlProps extends React.ComponentProps<'div'> {
+export interface StepperControlProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   steps: Step[];
   onStepChanged?: (value: FIXME_any, step: Step, activeStep: number, setActiveStep: (step: number) => void) => boolean;
   onEnd: (value: 'finish' | 'cancel') => void;
 }
 
-export default function StepperControl({ className, steps, onStepChanged, onEnd, ...props }: StepperControlProps) {
+export default function StepperControl({ steps, onStepChanged, onEnd, ...props }: StepperControlProps) {
   const [activeStep, setActiveStep] = useState(0);
 
   const step = steps[activeStep];
@@ -75,7 +75,7 @@ export default function StepperControl({ className, steps, onStepChanged, onEnd,
   };
 
   return (
-    <Container className={className} {...props}>
+    <Container {...props}>
       <Stepper activeStep={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
