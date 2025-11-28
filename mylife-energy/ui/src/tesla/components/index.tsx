@@ -17,7 +17,7 @@ import { getState } from '../selectors';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
 
-const Tesla: React.FC = () => {
+export default function Tesla() {
   useViewLifecycle();
 
   const state = useSelector((state) => getState(state));
@@ -109,9 +109,7 @@ const Tesla: React.FC = () => {
       </Section>
     </div>
   );
-};
-
-export default Tesla;
+}
 
 function useViewLifecycle() {
   const actions = useActions({ enter, leave });
@@ -135,7 +133,11 @@ const SectionRoot = styled('div')(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-const Section: React.FC<PropsWithChildren<{ title: string }>> = ({ title, children }) => {
+interface SectionProps extends PropsWithChildren {
+  title: string;
+}
+
+function Section({ title, children }: SectionProps) {
   return (
     <SectionRoot>
       <SectionTitle variant="h1">{title}</SectionTitle>
@@ -143,7 +145,7 @@ const Section: React.FC<PropsWithChildren<{ title: string }>> = ({ title, childr
       {children}
     </SectionRoot>
   );
-};
+}
 
 const PartFooter = styled('div')({
   display: 'flex',
@@ -157,11 +159,15 @@ const PartContainer = styled('div')(({ theme }) => ({
   margin: theme.spacing(1),
 }));
 
-const Part: React.FC<PropsWithChildren<{ footer?: boolean }>> = ({ footer = false, children }) => {
+interface PartProps extends PropsWithChildren {
+  footer?: boolean;
+}
+
+function Part({ footer = false, children }: PartProps) {
   const content = footer ? <PartFooter>{children}</PartFooter> : children;
 
   return <PartContainer>{content}</PartContainer>;
-};
+}
 
 const Spacer = styled('div')(({ theme }) => ({
   height: 1,
@@ -172,43 +178,55 @@ const StatusUnknownIcon = styled(icons.deviceStatus.Unknown)(({ theme }) => ({
   color: theme.palette.warning.main,
 }));
 
-const StatusUnknown: React.FC = () => (
-  <Tooltip title={'Inconnu'}>
-    <StatusUnknownIcon />
-  </Tooltip>
-);
+function StatusUnknown() {
+  return (
+    <Tooltip title={'Inconnu'}>
+      <StatusUnknownIcon />
+    </Tooltip>
+  );
+}
 
 const StatusOnlineIcon = styled(icons.deviceStatus.Online)(({ theme }) => ({
   color: theme.palette.success.main,
 }));
 
-const StatusOnline: React.FC = () => (
-  <Tooltip title={'En ligne'}>
-    <StatusOnlineIcon />
-  </Tooltip>
-);
+function StatusOnline() {
+  return (
+    <Tooltip title={'En ligne'}>
+      <StatusOnlineIcon />
+    </Tooltip>
+  );
+}
 
 const StatusOfflineIcon = styled(icons.deviceStatus.Offline)(({ theme }) => ({
   color: theme.palette.success.main,
 }));
 
-const StatusOffline: React.FC = () => (
-  <Tooltip title={'Hors ligne'}>
-    <StatusOfflineIcon />
-  </Tooltip>
-);
+function StatusOffline() {
+  return (
+    <Tooltip title={'Hors ligne'}>
+      <StatusOfflineIcon />
+    </Tooltip>
+  );
+}
 
 const StatusFailureIcon = styled(icons.deviceStatus.Failure)(({ theme }) => ({
   color: theme.palette.error.main,
 }));
 
-const StatusFailure: React.FC = () => (
-  <Tooltip title={'Echec'}>
-    <StatusFailureIcon />
-  </Tooltip>
-);
+function StatusFailure() {
+  return (
+    <Tooltip title={'Echec'}>
+      <StatusFailureIcon />
+    </Tooltip>
+  );
+}
 
-const DeviceStatus: React.FC<{ value: TeslaDeviceStatus }> = ({ value }) => {
+interface DeviceStatusProps {
+  value: TeslaDeviceStatus;
+}
+
+function DeviceStatus({ value }: DeviceStatusProps) {
   switch (value) {
     case TeslaDeviceStatus.Unknown:
       return <StatusUnknown />;
@@ -221,9 +239,14 @@ const DeviceStatus: React.FC<{ value: TeslaDeviceStatus }> = ({ value }) => {
     default:
       throw new Error(`Unknown status '${value}'`);
   }
-};
+}
 
-const ChargeStatus: React.FC<{ current: number; power: number }> = ({ current, power }) => {
+interface ChargeStatusProps {
+  current: number;
+  power: number;
+}
+
+function ChargeStatus({ current, power }: ChargeStatusProps) {
   const MAX_CURRENT = 32; // Note: should be fetched from server
 
   if (current <= 0) {
@@ -231,9 +254,13 @@ const ChargeStatus: React.FC<{ current: number; power: number }> = ({ current, p
   }
 
   return <ChargingGauge height={100} width={100} min={0} max={MAX_CURRENT} value={current} minText="0A" maxText={`${MAX_CURRENT}A`} valueText={`${current}A / ${power}kW`} />;
-};
+}
 
-export const BatteryStatus: React.FC<{ level: number }> = ({ level }) => {
+export interface BatteryStatusProps {
+  level: number;
+}
+
+export function BatteryStatus({ level }: BatteryStatusProps) {
   // TODO: pick from theme
   const COLOR_PRIMARY = '#2196f3';
 
@@ -262,7 +289,7 @@ export const BatteryStatus: React.FC<{ level: number }> = ({ level }) => {
       }}
     />
   );
-};
+}
 
 function getChargingStatusString(status: TeslaChargingStatus) {
   switch (status) {

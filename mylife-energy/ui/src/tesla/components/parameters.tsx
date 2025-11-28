@@ -29,7 +29,13 @@ const ParameterTitle = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
-const ParametersDialog: React.FC<{ show: boolean; proceed: ProceedCallback; parameters: Parameters }> = ({ show, proceed, parameters }) => {
+interface ParametersDialogProps {
+  show: boolean;
+  proceed: ProceedCallback;
+  parameters: Parameters;
+}
+
+function ParametersDialog({ show, proceed, parameters }: ParametersDialogProps) {
   const [values, setValues] = useState(parameters);
   useEffect(() => setValues(parameters), [parameters]);
 
@@ -108,7 +114,7 @@ const ParametersDialog: React.FC<{ show: boolean; proceed: ProceedCallback; para
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 const parametersDialog = dialogs.create(ParametersDialog);
 

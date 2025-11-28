@@ -15,7 +15,7 @@ export interface DeviceListProps {
   onChange: (newValue: string[]) => void;
 }
 
-const DeviceList: React.FC<DeviceListProps> = ({ className, value, onChange }) => {
+export default function DeviceList({ className, value, onChange }: DeviceListProps) {
   const devices = useDevices();
   const handleChange = (event) => onChange(event.target.value);
   const renderSelectorValue = useCallback((selection: string[]) => selection.map((id) => devices[id]).join(', '), [devices]);
@@ -30,9 +30,7 @@ const DeviceList: React.FC<DeviceListProps> = ({ className, value, onChange }) =
       ))}
     </Select>
   );
-};
-
-export default DeviceList;
+}
 
 function useDevices() {
   const view = useSelector(getDevicesView);

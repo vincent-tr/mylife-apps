@@ -16,7 +16,7 @@ const TYPES = new Map([
   [StatsType.Year, 'Année'],
 ]);
 
-const TypeList: React.FC<TypeListProps> = ({ className, value, onChange }) => {
+export default function TypeList({ className, value, onChange }: TypeListProps) {
   const renderSelectorValue = useCallback((selection: unknown) => TYPES.get(selection as StatsType), []);
 
   return (
@@ -28,6 +28,4 @@ const TypeList: React.FC<TypeListProps> = ({ className, value, onChange }) => {
       ))}
     </Select>
   );
-};
-
-export default TypeList;
+}

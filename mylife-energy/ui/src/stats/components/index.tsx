@@ -18,7 +18,7 @@ const StyledChart = styled(Chart)({
   flex: '1 1 auto',
 });
 
-const Stats: React.FC = () => {
+export default function Stats() {
   useViewLifecycle();
   const { fetchValues: localFetchValues } = useActions({ fetchValues });
 
@@ -38,9 +38,7 @@ const Stats: React.FC = () => {
       <StyledChart type={criteria.type} />
     </Container>
   );
-};
-
-export default Stats;
+}
 
 function useViewLifecycle() {
   const actions = useActions({ enter, leave });

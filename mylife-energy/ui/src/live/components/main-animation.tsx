@@ -61,7 +61,7 @@ const ArrowsCell = styled('div')(() => ({
   justifySelf: 'center',
 }));
 
-const MainAnimation: React.FC = () => {
+export default function MainAnimation() {
   const isPhone = useScreenPhone();
 
   const main = useSelector((state) => getFirstDeviceByType(state, 'main'));
@@ -90,9 +90,7 @@ const MainAnimation: React.FC = () => {
       </StyledContainer>
     </StyledWrapper>
   );
-};
-
-export default MainAnimation;
+}
 
 const StyledDevicePaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -108,7 +106,13 @@ const StyledDeviceIcon = styled(SvgIcon)(() => ({
   width: 50,
 }));
 
-const DeviceView: React.FC<{ deviceId: string; as?: React.ElementType; sensorKeys: string[] }> = ({ deviceId, as: Component = 'div', sensorKeys }) => {
+interface DeviceViewProps {
+  deviceId: string;
+  as?: React.ElementType;
+  sensorKeys: string[];
+}
+
+function DeviceView({ deviceId, as: Component = 'div', sensorKeys }: DeviceViewProps) {
   const device = useSelector((state) => getDevice(state, deviceId));
 
   if (!device) {
@@ -126,7 +130,7 @@ const DeviceView: React.FC<{ deviceId: string; as?: React.ElementType; sensorKey
       </StyledDevicePaper>
     </Component>
   );
-};
+}
 
 function getIcon(device: LiveDevice): React.ComponentType<any> | null {
   switch (device.type) {
@@ -165,12 +169,17 @@ const StyledBottomArrow = styled('div')(() => ({
   height: 25,
 }));
 
-const ArrowsArea: React.FC<{ as?: React.ElementType; solarToMain: boolean; solarToTotal: boolean; mainToTotal: boolean }> = ({
+function ArrowsArea({
   as: Component = 'div',
   solarToMain,
   solarToTotal,
   mainToTotal,
-}) => {
+}: {
+  as?: React.ElementType;
+  solarToMain: boolean;
+  solarToTotal: boolean;
+  mainToTotal: boolean;
+}) {
   return (
     <Component>
       <StyledArrowsContainer>
@@ -184,11 +193,11 @@ const ArrowsArea: React.FC<{ as?: React.ElementType; solarToMain: boolean; solar
       </StyledArrowsContainer>
     </Component>
   );
-};
+}
 
 // Taken from https://enlighten.enphaseenergy.com/
 
-const ArrowTopToRight: React.FC = () => {
+function ArrowTopToRight() {
   const colors = useColors();
 
   return (
@@ -213,9 +222,9 @@ const ArrowTopToRight: React.FC = () => {
       </animateMotion>
     </svg>
   );
-};
+}
 
-const ArrowTopToLeft: React.FC = () => {
+function ArrowTopToLeft() {
   const colors = useColors();
 
   return (
@@ -248,9 +257,9 @@ const ArrowTopToLeft: React.FC = () => {
       </animateMotion>
     </svg>
   );
-};
+}
 
-const ArrowLeftToRight: React.FC = () => {
+function ArrowLeftToRight() {
   const colors = useColors();
 
   return (
@@ -276,7 +285,7 @@ const ArrowLeftToRight: React.FC = () => {
       </animateMotion>
     </svg>
   );
-};
+}
 
 function useColors() {
   const theme = services.useTheme();

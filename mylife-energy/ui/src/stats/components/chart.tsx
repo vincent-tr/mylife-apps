@@ -8,7 +8,12 @@ import { useChartColors } from 'mylife-tools';
 import { getChartData, getSensors } from '../store';
 import { StatsType, TimestampData } from '../types';
 
-const Chart: React.FC<{ className?: string; type: StatsType }> = ({ className, type }) => {
+export interface ChartProps {
+  className?: string;
+  type: StatsType;
+}
+
+export default function Chart({ className, type }: ChartProps) {
   const data = useSelector(getChartData);
   const sensors = useSelector(getSensors);
 
@@ -32,9 +37,7 @@ const Chart: React.FC<{ className?: string; type: StatsType }> = ({ className, t
       </AutoSizer>
     </div>
   );
-};
-
-export default Chart;
+}
 
 function useAxisDateFormatter(type: StatsType) {
   return useMemo(() => {

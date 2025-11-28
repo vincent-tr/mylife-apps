@@ -32,7 +32,13 @@ const DatePickerSelector = styled(DatePicker)(({ theme }) => ({
   marginLeft: theme.spacing(4),
 }));
 
-const CriteriaSelector: React.FC<{ className?: string; criteria: Criteria; onChange: (newCriteriaProps: Partial<Criteria>) => void }> = ({ className, criteria, onChange }) => {
+export interface CriteriaSelectorProps {
+  className?: string;
+  criteria: Criteria;
+  onChange: (newCriteriaProps: Partial<Criteria>) => void;
+}
+
+export default function CriteriaSelector({ className, criteria, onChange }: CriteriaSelectorProps) {
   return (
     <Container className={className}>
       <DeviceListSelector value={criteria.devices} onChange={(devices) => onChange({ devices })} />
@@ -40,6 +46,4 @@ const CriteriaSelector: React.FC<{ className?: string; criteria: Criteria; onCha
       <DatePickerSelector type={criteria.type} value={criteria.date} onChange={(date) => onChange({ date })} />
     </Container>
   );
-};
-
-export default CriteriaSelector;
+}

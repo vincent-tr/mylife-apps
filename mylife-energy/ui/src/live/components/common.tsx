@@ -38,7 +38,12 @@ const ComputedIcon = styled(icons.devices.Computed)<ComputedIconProps>(({ theme,
   color: flavorColor(theme, flavor),
 }));
 
-export const DeviceMeasure: React.FC<{ deviceId: string; sensorKeys: string[] }> = ({ deviceId, sensorKeys }) => {
+export interface DeviceMeasureProps {
+  deviceId: string;
+  sensorKeys: string[];
+}
+
+export function DeviceMeasure({ deviceId, sensorKeys }: DeviceMeasureProps) {
   const device = useSelector((state) => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
@@ -77,7 +82,7 @@ export const DeviceMeasure: React.FC<{ deviceId: string; sensorKeys: string[] }>
   const wrapped = device.computed ? <Badge badgeContent={<ComputedIcon flavor={flavor} />}>{value}</Badge> : value;
 
   return <Tooltip title={<DeviceMeasureTooltip deviceId={deviceId} />}>{wrapped}</Tooltip>;
-};
+}
 
 const TooltipContainer = styled('div')({
   display: 'flex',
@@ -88,7 +93,11 @@ const TooltipComputedLabel = styled(Typography)({
   fontStyle: 'italic',
 });
 
-const DeviceMeasureTooltip: React.FC<{ deviceId: string }> = ({ deviceId }) => {
+interface DeviceMeasureTooltipProps {
+  deviceId: string;
+}
+
+function DeviceMeasureTooltip({ deviceId }: DeviceMeasureTooltipProps) {
   const device = useSelector((state) => getDevice(state, deviceId));
   const measures = useSelector(getMeasureView);
 
@@ -101,7 +110,7 @@ const DeviceMeasureTooltip: React.FC<{ deviceId: string }> = ({ deviceId }) => {
       {device.computed && <TooltipComputedLabel variant="body2">{`(calculé)`}</TooltipComputedLabel>}
     </TooltipContainer>
   );
-};
+}
 
 function getSensorData(device, measures, sensorKeys: string[] = null) {
   const items: { display: string; measureValue: number; value: string }[] = [];

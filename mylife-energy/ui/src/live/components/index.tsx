@@ -12,7 +12,7 @@ const Container = styled('div')({
   flexDirection: 'column',
 });
 
-const Live: React.FC = () => {
+export default function Live() {
   useViewLifecycle();
 
   return (
@@ -21,9 +21,7 @@ const Live: React.FC = () => {
       <NodeTable />
     </Container>
   );
-};
-
-export default Live;
+}
 
 function useViewLifecycle() {
   const actions = useActions({ enter, leave });

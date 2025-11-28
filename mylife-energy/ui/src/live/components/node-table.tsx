@@ -18,7 +18,7 @@ const Container = styled('div')({
   overflowY: 'auto',
 });
 
-const NoteTable = () => {
+export default function NoteTable() {
   const getDevicesByType = useMemo(() => makeGetDevicesByType(), []);
   const nodes = useSelector((state) => getDevicesByType(state, 'node'));
   const measures = useSelector(getMeasureView);
@@ -47,9 +47,7 @@ const NoteTable = () => {
       </Table>
     </Container>
   );
-};
-
-export default NoteTable;
+}
 
 const RatioContainer = styled('div')({
   display: 'flex',
@@ -66,7 +64,11 @@ const RatioLabel = styled(Typography)({
   minWidth: 35,
 });
 
-const Ratio: React.FC<{ deviceId: string }> = ({ deviceId }) => {
+interface RatioProps {
+  deviceId: string;
+}
+
+function Ratio({ deviceId }: RatioProps) {
   const total = useSelector((state) => getFirstDeviceByType(state, 'total'));
   const measures = useSelector(getMeasureView);
   const totalPower = findPowerMeasure(total._id, measures);
@@ -79,7 +81,7 @@ const Ratio: React.FC<{ deviceId: string }> = ({ deviceId }) => {
       <RatioLabel variant="body2" color="textSecondary">{`${ratio}%`}</RatioLabel>
     </RatioContainer>
   );
-};
+}
 
 function findPowerMeasure(deviceId: string, measures: views.View<Measure>) {
   const measure = measures[`${deviceId}-real-power`];
