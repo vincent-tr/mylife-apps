@@ -7,10 +7,10 @@
     // Strict Mode
     // "strict": true,
     "noImplicitAny": false,
-    // "strictNullChecks": true,
-    // "strictFunctionTypes": true,
-    // "strictBindCallApply": true,
-    // "strictPropertyInitialization": true,
+    // "strictNullChecks": true, implied by "strict": true
+    // "strictFunctionTypes": true,  implied by "strict": true
+    // "strictBindCallApply": true,  implied by "strict": true
+    // "strictPropertyInitialization": true,  implied by "strict": true
     "noImplicitThis": true,
     "alwaysStrict": true,
     
@@ -36,7 +36,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    // "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": false,
     
     // Emit
     "noEmit": true,
