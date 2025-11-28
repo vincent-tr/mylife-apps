@@ -26,7 +26,7 @@ export interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onCha
   onChange?: (value: string | null) => void;
 }
 
-const AccountSelector: React.FC<AccountSelectorProps> = ({ allowNull = false, value, onChange, ...props }) => {
+export default function AccountSelector({ allowNull = false, value, onChange, ...props }: AccountSelectorProps) {
   const { accounts } = useConnect();
   const handleChange = (e) => {
     const { value } = e.target;
@@ -37,6 +37,4 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({ allowNull = false, va
       {renderList(accounts, allowNull)}
     </Select>
   );
-};
-
-export default AccountSelector;
+}

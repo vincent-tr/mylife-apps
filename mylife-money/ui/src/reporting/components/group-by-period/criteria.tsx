@@ -25,7 +25,7 @@ const AccountField = styled(AccountSelector)({
   minWidth: 200,
 });
 
-interface CriteriaProps {
+export interface CriteriaProps {
   criteria: FIXME_any;
   onCriteriaChanged: (criteria: FIXME_any) => void;
   display: FIXME_any;
@@ -34,7 +34,7 @@ interface CriteriaProps {
   additionalComponents?: React.ReactNode;
 }
 
-const Criteria: React.FC<CriteriaProps> = ({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }) => {
+export default function Criteria({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }: CriteriaProps) {
   const isPhone = useScreenPhone();
 
   const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
@@ -140,29 +140,27 @@ const Criteria: React.FC<CriteriaProps> = ({ criteria, onCriteriaChanged, displa
       {grid}
     </SummaryAccordion>
   );
-};
-
-export default Criteria;
+}
 
 interface ExpandedSummaryProps {
   onExport: () => void;
 }
 
-const ExpandedSummary: React.FC<ExpandedSummaryProps> = ({ onExport }) => {
+function ExpandedSummary({ onExport }: ExpandedSummaryProps) {
   return (
     <Container>
       <Title variant="h6">Critères de sélection</Title>
       <ExportButton onClick={onExport} />
     </Container>
   );
-};
+}
 
 interface CollapsedSummaryProps {
   criteria: FIXME_any;
   onExport: () => void;
 }
 
-const CollapsedSummary: React.FC<CollapsedSummaryProps> = ({ criteria, onExport }) => {
+function CollapsedSummary({ criteria, onExport }: CollapsedSummaryProps) {
   return (
     <Container>
       <Title>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</Title>

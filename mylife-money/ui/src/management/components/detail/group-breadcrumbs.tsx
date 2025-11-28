@@ -20,13 +20,13 @@ const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-interface GroupBreadcrumbsProps {
+export interface GroupBreadcrumbsProps {
   groupStack?: FIXME_any[];
   onMove: (groupId: string) => void;
   onOpenGroup: (groupId: string) => void;
 }
 
-const GroupBreadcrumbs: React.FC<GroupBreadcrumbsProps> = ({ groupStack, onMove, onOpenGroup }) => {
+export default function GroupBreadcrumbs({ groupStack, onMove, onOpenGroup }: GroupBreadcrumbsProps) {
   return (
     <Container>
       <Tooltip title={"Déplacer l'opération"}>
@@ -53,6 +53,4 @@ const GroupBreadcrumbs: React.FC<GroupBreadcrumbsProps> = ({ groupStack, onMove,
       </GroupPath>
     </Container>
   );
-};
-
-export default GroupBreadcrumbs;
+}

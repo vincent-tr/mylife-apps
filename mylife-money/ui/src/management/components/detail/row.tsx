@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 const Container = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(2),
@@ -17,12 +17,11 @@ const Content = styled('div')({
   flex: '1 1 auto',
 });
 
-interface RowProps {
+export interface RowProps extends PropsWithChildren {
   label?: string;
-  children?: React.ReactNode;
 }
 
-const Row: React.FC<RowProps> = ({ label, children }) => {
+export default function Row({ label, children }: RowProps) {
   return (
     <Container>
       <Label>{label}</Label>
@@ -30,6 +29,4 @@ const Row: React.FC<RowProps> = ({ label, children }) => {
       <Content>{children}</Content>
     </Container>
   );
-};
-
-export default Row;
+}

@@ -16,11 +16,11 @@ const StyledTree = styled(Tree)({
   flex: '1 1 auto',
 });
 
-interface TreeContainerProps {
+export interface TreeContainerProps {
   className?: string;
 }
 
-const TreeContainer: React.FC<TreeContainerProps> = ({ className }) => {
+export default function TreeContainer({ className }: TreeContainerProps) {
   return (
     <Container className={className}>
       <StyledTree />
@@ -28,6 +28,4 @@ const TreeContainer: React.FC<TreeContainerProps> = ({ className }) => {
       <Toolbar />
     </Container>
   );
-};
-
-export default TreeContainer;
+}

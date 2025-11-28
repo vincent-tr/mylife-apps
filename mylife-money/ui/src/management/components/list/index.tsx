@@ -15,11 +15,11 @@ const StyledTable = styled(Table)({
   flex: '1 1 auto',
 });
 
-interface ListContainerProps {
+export interface ListContainerProps {
   className?: string;
 }
 
-const ListContainer: React.FC<ListContainerProps> = ({ className }) => {
+export default function ListContainer({ className }: ListContainerProps) {
   return (
     <Container className={className}>
       <Header />
@@ -28,6 +28,4 @@ const ListContainer: React.FC<ListContainerProps> = ({ className }) => {
       <Footer />
     </Container>
   );
-};
-
-export default ListContainer;
+}

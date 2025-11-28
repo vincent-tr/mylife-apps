@@ -48,11 +48,11 @@ const Grid = styled('div')({
   flexDirection: 'column',
 });
 
-interface DetailContainerProps {
+export interface DetailContainerProps {
   className?: string;
 }
 
-const DetailContainer: React.FC<DetailContainerProps> = ({ className }) => {
+export default function DetailContainer({ className }: DetailContainerProps) {
   const { operation, account, groupStack, close, onOpenGroup, onSetNote, onMove } = useConnect();
 
   return (
@@ -86,9 +86,7 @@ const DetailContainer: React.FC<DetailContainerProps> = ({ className }) => {
       </Grid>
     </Container>
   );
-};
-
-export default DetailContainer;
+}
 
 const NoteContainer = styled(Paper)({
   height: 450, // must match min/maxRows of TextField
@@ -101,7 +99,12 @@ const NoteView = styled(Markdown)({
   overflowY: 'auto',
 });
 
-const NoteEditor: React.FC<{ value: string; onChange: (newValue: string) => void }> = ({ value, onChange }) => {
+interface NoteEditorProps {
+  value: string;
+  onChange: (newValue: string) => void;
+}
+
+function NoteEditor({ value, onChange }: NoteEditorProps) {
   type TabValues = 'view' | 'update';
 
   const [tabValue, setTabValue] = React.useState<TabValues>('view');

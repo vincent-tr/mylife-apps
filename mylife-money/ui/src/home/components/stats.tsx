@@ -13,7 +13,7 @@ const Container = styled('div')({
   marginBottom: 20,
 });
 
-const Stats: React.FC = () => {
+export default function Stats() {
   const { view } = useOperationStats();
   const count = statValue(view, 'count');
   const lastDate = statValue(view, 'lastDate');
@@ -26,9 +26,7 @@ const Stats: React.FC = () => {
       <Typography>{`Date de l'opération la plus récente : ${lastDate && formatDate(lastDate, 'dd/MM/yyyy')}`}</Typography>
     </Container>
   );
-};
-
-export default Stats;
+}
 
 function statValue(stats, code) {
   const stat = Object.values(stats).find((stat) => (stat as FIXME_any).code === code);

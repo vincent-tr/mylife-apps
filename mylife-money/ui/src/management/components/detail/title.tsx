@@ -14,11 +14,11 @@ const Label = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
-interface TitleProps {
+export interface TitleProps {
   onClose: () => void;
 }
 
-const Title: React.FC<TitleProps> = ({ onClose }) => {
+export default function Title({ onClose }: TitleProps) {
   return (
     <Container>
       <Tooltip title="Retour">
@@ -32,6 +32,4 @@ const Title: React.FC<TitleProps> = ({ onClose }) => {
       <Label variant="h6">{"Detail de l'opération"}</Label>
     </Container>
   );
-};
-
-export default Title;
+}

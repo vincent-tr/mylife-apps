@@ -65,7 +65,7 @@ interface ConditionEditorProps {
   onAddCondition: (condition: FIXME_any) => void;
 }
 
-const ConditionEditor: React.FC<ConditionEditorProps> = ({ onAddCondition }) => {
+function ConditionEditor({ onAddCondition }: ConditionEditorProps) {
   const [field, setField] = useState(null);
   const [operator, setOperator] = useState(null);
   const [value, setValue] = useState(null);
@@ -110,14 +110,14 @@ const ConditionEditor: React.FC<ConditionEditorProps> = ({ onAddCondition }) => 
       </Tooltip>
     </Container>
   );
-};
+}
 
 interface ConditionsEditorProps {
   conditions: FIXME_any[];
   onConditionsChanged: (conditions: FIXME_any[]) => void;
 }
 
-const ConditionsEditor: React.FC<ConditionsEditorProps> = ({ conditions, onConditionsChanged }) => {
+function ConditionsEditor({ conditions, onConditionsChanged }: ConditionsEditorProps) {
   const deleteCondition = (index) => onConditionsChanged(arrayDelete(conditions, index));
   const addCondition = (condition) => onConditionsChanged([...conditions, condition]);
 
@@ -146,7 +146,7 @@ const ConditionsEditor: React.FC<ConditionsEditorProps> = ({ conditions, onCondi
       </CardContent>
     </Card>
   );
-};
+}
 
 interface RuleRowProps {
   rule;
@@ -154,7 +154,7 @@ interface RuleRowProps {
   onDeleteRule: () => void;
 }
 
-const RuleRow: React.FC<RuleRowProps> = ({ rule, onRuleChanged, onDeleteRule }) => {
+function RuleRow({ rule, onRuleChanged, onDeleteRule }: RuleRowProps) {
   const updateRule = (prop, value) => onRuleChanged({ ...rule, [prop]: value });
 
   return (
@@ -176,14 +176,14 @@ const RuleRow: React.FC<RuleRowProps> = ({ rule, onRuleChanged, onDeleteRule }) 
       </TableCell>
     </TableRow>
   );
-};
+}
 
 interface RulesEditorProps {
   rules: FIXME_any[];
   onRulesChanged: (rules: FIXME_any[]) => void;
 }
 
-const RulesEditor: React.FC<RulesEditorProps> = ({ rules, onRulesChanged }) => {
+function RulesEditor({ rules, onRulesChanged }: RulesEditorProps) {
   const addRule = () => {
     const rule = {
       conditions: [],
@@ -223,7 +223,7 @@ const RulesEditor: React.FC<RulesEditorProps> = ({ rules, onRulesChanged }) => {
       </AccordionDetails>
     </Accordion>
   );
-};
+}
 
 interface EditorDialogProps {
   options: { group: FIXME_any };
@@ -231,7 +231,7 @@ interface EditorDialogProps {
   proceed: (result: FIXME_any) => void;
 }
 
-const EditorDialog: React.FC<EditorDialogProps> = ({ options, show, proceed }) => {
+function EditorDialog({ options, show, proceed }: EditorDialogProps) {
   const [group, setGroup] = useState(options.group);
   const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
 

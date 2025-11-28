@@ -18,13 +18,13 @@ const StyledDialog = styled(Dialog)({
   },
 });
 
-export interface GroupSelectorDialogProps {
+interface GroupSelectorDialogProps {
   show: boolean;
   proceed: (result: FIXME_any) => void;
   options: FIXME_any;
 }
 
-const GroupSelectorDialog: React.FC<GroupSelectorDialogProps> = ({ show, proceed, options }) => {
+function GroupSelectorDialog({ show, proceed, options }: GroupSelectorDialogProps) {
   return (
     <StyledDialog aria-labelledby="dialog-title" open={show} fullWidth={true} maxWidth="sm">
       <DialogTitle id="dialog-title">Sélectionnez un groupe</DialogTitle>
@@ -38,7 +38,7 @@ const GroupSelectorDialog: React.FC<GroupSelectorDialogProps> = ({ show, proceed
       </DialogActions>
     </StyledDialog>
   );
-};
+}
 
 const selectorDialog = dialogs.create(GroupSelectorDialog);
 

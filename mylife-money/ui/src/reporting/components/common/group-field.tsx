@@ -29,14 +29,14 @@ const Item = styled('div')({
   alignItems: 'center',
 });
 
-interface GroupFieldProps {
+export interface GroupFieldProps {
   groups: FIXME_any;
   onGroupAdd: () => void;
   onGroupChanged: (index: number, value: FIXME_any) => void;
   onGroupDelete: (index: number) => void;
 }
 
-const GroupField: React.FC<GroupFieldProps> = ({ groups, onGroupAdd, onGroupChanged, onGroupDelete }) => {
+export default function GroupField({ groups, onGroupAdd, onGroupChanged, onGroupDelete }: GroupFieldProps) {
   return (
     <Container>
       <Header>
@@ -59,6 +59,4 @@ const GroupField: React.FC<GroupFieldProps> = ({ groups, onGroupAdd, onGroupChan
       ))}
     </Container>
   );
-};
-
-export default GroupField;
+}

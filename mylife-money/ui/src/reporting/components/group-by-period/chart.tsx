@@ -14,14 +14,14 @@ const useConnect = ({ display, groups }) => {
   }));
 };
 
-export interface ChartProps extends React.ComponentProps<'div'> {
+export interface ChartProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   data: FIXME_any[];
   groups?: FIXME_any[];
   display: FIXME_any;
   amountSelector: (item: FIXME_any, serie: FIXME_any) => number;
 }
 
-const Chart: React.FC<ChartProps> = ({ data, groups, display, amountSelector, ...props }) => {
+export default function Chart({ data, groups, display, amountSelector, ...props }: ChartProps) {
   const { groupStacks, groupChildren } = useConnect({ display, groups });
   const colors = useChartColors();
 
@@ -49,9 +49,7 @@ const Chart: React.FC<ChartProps> = ({ data, groups, display, amountSelector, ..
       </AutoSizer>
     </div>
   );
-};
-
-export default Chart;
+}
 
 function getChildren(state, display, groups) {
   if (!display.children || !groups) {

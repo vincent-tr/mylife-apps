@@ -33,46 +33,51 @@ const LogTimestamp = styled('span')(({ theme }) => ({
   color: darken(theme.palette.background.paper, 0.5),
 }));
 
-const Run: React.FC<{ run: BotRun; className?: string }> = ({ run, className }) => (
-  <Container className={className}>
-    <GridContainer>
-      <Grid container spacing={2}>
-        <Grid size={6}>
-          <CriteriaField label={'Début'}>
-            <Typography>{run.start.toLocaleString('fr-FR')}</Typography>
-          </CriteriaField>
+export interface RunProps {
+  run: BotRun;
+  className?: string;
+}
+
+export default function Run({ run, className }: RunProps) {
+  return (
+    <Container className={className}>
+      <GridContainer>
+        <Grid container spacing={2}>
+          <Grid size={6}>
+            <CriteriaField label={'Début'}>
+              <Typography>{run.start.toLocaleString('fr-FR')}</Typography>
+            </CriteriaField>
+          </Grid>
+
+          <Grid size={6}>
+            <CriteriaField label={'Fin'}>
+              <Typography>{run.end?.toLocaleString('fr-FR') || '-'}</Typography>
+            </CriteriaField>
+          </Grid>
+
+          <Grid size={12}>
+            <RunResult value={run.result} />
+          </Grid>
         </Grid>
+      </GridContainer>
 
-        <Grid size={6}>
-          <CriteriaField label={'Fin'}>
-            <Typography>{run.end?.toLocaleString('fr-FR') || '-'}</Typography>
-          </CriteriaField>
-        </Grid>
+      <Divider />
 
-        <Grid size={12}>
-          <RunResult value={run.result} />
-        </Grid>
-      </Grid>
-    </GridContainer>
-
-    <Divider />
-
-    <LogsList>
-      {(run.logs as BotRunLog[]).map((log, index) => (
-        <LogRow key={index}>
-          <Timestamp value={log.date} />
-          <Space />
-          <Level value={log.severity} />
-          <Space />
-          <Message value={log.message} />
-          <LineEnd />
-        </LogRow>
-      ))}
-    </LogsList>
-  </Container>
-);
-
-export default Run;
+      <LogsList>
+        {(run.logs as BotRunLog[]).map((log, index) => (
+          <LogRow key={index}>
+            <Timestamp value={log.date} />
+            <Space />
+            <Level value={log.severity} />
+            <Space />
+            <Message value={log.message} />
+            <LineEnd />
+          </LogRow>
+        ))}
+      </LogsList>
+    </Container>
+  );
+}
 
 const ResultTypography = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'value',
@@ -87,17 +92,25 @@ const ResultTypography = styled(Typography, {
   }
 });
 
-const RunResult: React.FC<{ value: 'success' | 'warning' | 'error' }> = ({ value }) => {
+interface RunResultProps {
+  value: 'success' | 'warning' | 'error';
+}
+
+function RunResult({ value }: RunResultProps) {
   if (!value) {
     return <Typography>{'-'}</Typography>;
   }
 
   return <ResultTypography value={value}>{value.toUpperCase()}</ResultTypography>;
-};
+}
 
-const Timestamp: React.FC<{ value: Date }> = ({ value }) => {
+interface TimestampProps {
+  value: Date;
+}
+
+function Timestamp({ value }: TimestampProps) {
   return <LogTimestamp>{value.toLocaleString('fr-FR')}</LogTimestamp>;
-};
+}
 
 const LevelSpan = styled('span', {
   shouldForwardProp: (prop) => prop !== 'severity',
@@ -132,18 +145,26 @@ const LevelSpan = styled('span', {
   }
 });
 
-const Level: React.FC<{ value: BotRunLogSeverity }> = ({ value }) => {
+interface LevelProps {
+  value: BotRunLogSeverity;
+}
+
+function Level({ value }: LevelProps) {
   return <LevelSpan severity={value}>{value.toUpperCase()}</LevelSpan>;
-};
+}
 
-const Message: React.FC<{ value: string }> = ({ value }) => {
+interface MessageProps {
+  value: string;
+}
+
+function Message({ value }: MessageProps) {
   return <span>{value}</span>;
-};
+}
 
-const Space: React.FC = () => {
+function Space() {
   return <span> </span>;
-};
+}
 
-const LineEnd: React.FC = () => {
+function LineEnd() {
   return <span>{'\n'}</span>;
-};
+}

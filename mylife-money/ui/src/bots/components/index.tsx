@@ -54,7 +54,7 @@ const StyledRun = styled(Run)({
   flex: '1 1 auto',
 });
 
-const Bots: React.FC = () => {
+export default function Bots() {
   const { view } = useBots();
   const [selection, setSelection] = useState<string>(null);
   const bot = view[selection];
@@ -78,11 +78,13 @@ const Bots: React.FC = () => {
       {bot && <BotView bot={bot} />}
     </Container>
   );
-};
+}
 
-export default Bots;
+interface BotViewProps {
+  bot: Bot;
+}
 
-const BotView: React.FC<{ bot: Bot }> = ({ bot }) => {
+function BotView({ bot }: BotViewProps) {
   return (
     <View>
       <Title>

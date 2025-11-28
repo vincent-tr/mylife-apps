@@ -1,21 +1,21 @@
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import React from 'react';
 import icons from '../../../common/icons';
 
-interface ExportButtonProps extends IconButtonProps {
+export interface ExportButtonProps extends Omit<React.ComponentProps<typeof IconButton>, 'onClick'> {
   onClick?: (e: React.MouseEvent) => void;
 }
 
-const ExportButton: React.FC<ExportButtonProps> = ({ onClick, ...props }) => (
-  <Tooltip title="Exporter les données">
-    <IconButton {...props} onClick={wrapClick(onClick)}>
-      <icons.actions.Export />
-    </IconButton>
-  </Tooltip>
-);
-
-export default ExportButton;
+export default function ExportButton({ onClick, ...props }: ExportButtonProps) {
+  return (
+    <Tooltip title="Exporter les données">
+      <IconButton {...props} onClick={wrapClick(onClick)}>
+        <icons.actions.Export />
+      </IconButton>
+    </Tooltip>
+  );
+}
 
 function wrapClick(onClick) {
   if (!onClick) {

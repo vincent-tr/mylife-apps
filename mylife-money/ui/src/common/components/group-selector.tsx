@@ -28,12 +28,12 @@ const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-export interface GroupSelectorProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
+export interface GroupSelectorProps extends Omit<React.ComponentProps<'div'>, 'onChange' | 'children'> {
   onChange: (value: string | null) => void;
   value: string | null;
 }
 
-const GroupSelector: React.FC<GroupSelectorProps> = ({ onChange, value, ...props }) => {
+export default function GroupSelector({ onChange, value, ...props }: GroupSelectorProps) {
   const { stack } = useConnect({ value });
   return (
     <Container {...props}>
@@ -51,9 +51,7 @@ const GroupSelector: React.FC<GroupSelectorProps> = ({ onChange, value, ...props
       </GroupPath>
     </Container>
   );
-};
-
-export default GroupSelector;
+}
 
 function getStack(state, value) {
   if (!value) {

@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import React, { useMemo } from 'react';
+import React, { Component, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
@@ -37,15 +37,13 @@ const useConnect = () => {
   };
 };
 
-interface GroupDenseSelectorProps {
-  className?: string;
-}
+export type GroupDenseSelectorProps = Omit<React.ComponentProps<'div'>, 'children'>;
 
-const GroupDenseSelector: React.FC<GroupDenseSelectorProps> = ({ className, ...props }) => {
+export default function GroupDenseSelector(props: GroupDenseSelectorProps) {
   const { selectedGroup, onSelect } = useConnect();
 
   return (
-    <Container className={className} {...props}>
+    <Container {...props}>
       <Tooltip title={"Déplacer l'opération"}>
         <div>
           <GroupSelectorButton onSelect={onSelect}>
@@ -56,6 +54,4 @@ const GroupDenseSelector: React.FC<GroupDenseSelectorProps> = ({ className, ...p
       <Label>{(selectedGroup as FIXME_any).display}</Label>
     </Container>
   );
-};
-
-export default GroupDenseSelector;
+}

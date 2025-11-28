@@ -18,7 +18,12 @@ const Container = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
-const Detail: React.FC<{ bot: Bot; className?: string }> = ({ bot, className }) => {
+export interface DetailProps {
+  bot: Bot;
+  className?: string;
+}
+
+export default function Detail({ bot, className }: DetailProps) {
   const start = useStart(bot._id);
 
   return (
@@ -37,11 +42,13 @@ const Detail: React.FC<{ bot: Bot; className?: string }> = ({ bot, className }) 
       </Grid>
     </Container>
   );
-};
+}
 
-export default Detail;
+interface CronCriteriaFieldProps {
+  value: string;
+}
 
-const CronCriteriaField: React.FC<{ value: string }> = ({ value }) => {
+function CronCriteriaField({ value }: CronCriteriaFieldProps) {
   return (
     <CriteriaField
       label={
@@ -56,7 +63,7 @@ const CronCriteriaField: React.FC<{ value: string }> = ({ value }) => {
       {value ? <TextField InputProps={{ readOnly: true }} value={value} helperText={format(value)} /> : <TextField InputProps={{ readOnly: true }} value={'-'} helperText={' '} />}
     </CriteriaField>
   );
-};
+}
 
 function format(value: string) {
   try {

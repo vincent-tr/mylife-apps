@@ -34,7 +34,7 @@ const StyledChart = styled(Chart)({
   flex: '1 1 auto',
 });
 
-interface GroupByPeriodProps {
+export interface GroupByPeriodProps {
   refreshAction;
   exportAction;
   initialCriteria;
@@ -43,7 +43,7 @@ interface GroupByPeriodProps {
   amountSelectorFactory: (props) => any;
 }
 
-const GroupByPeriod: React.FC<GroupByPeriodProps> = ({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }) => {
+export default function GroupByPeriod({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }: GroupByPeriodProps) {
   const [criteria, setCriteria] = useState(initialCriteria);
   const [display, setDisplay] = useState(initialDisplay);
 
@@ -79,6 +79,4 @@ const GroupByPeriod: React.FC<GroupByPeriodProps> = ({ refreshAction, exportActi
       <StyledChart data={data} groups={criteria.groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })} />
     </Container>
   );
-};
-
-export default GroupByPeriod;
+}
