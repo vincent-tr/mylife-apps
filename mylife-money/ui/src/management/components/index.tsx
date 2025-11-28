@@ -62,4 +62,4 @@ export default function Management() {
     case 'wide':
       return normalLayout;
   }
-};
+}
