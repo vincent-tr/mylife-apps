@@ -116,19 +116,19 @@ function Group({ criteria, item }: GroupProps) {
   return (
     <>
       <TableRow>
-      <TableCell>{item.group.display}</TableCell>
-      <TableCell />
-      <TableCell />
-      <TableCell />
-      <TableCell />
-      <TableCell />
-      <TableCell />
-      <TableCell />
-      <TableCell />
-    </TableRow>
-    {item.hosts.map((child) => (
-      <Host key={child.host._id} criteria={criteria} item={child} />
-    ))}
+        <TableCell>{item.group.display}</TableCell>
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+      </TableRow>
+      {item.hosts.map((child) => (
+        <Host key={child.host._id} criteria={criteria} item={child} />
+      ))}
     </>
   );
 }

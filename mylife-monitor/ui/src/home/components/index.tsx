@@ -56,4 +56,4 @@ export default function Home() {
       </Section>
     </Container>
   );
-};
+}
