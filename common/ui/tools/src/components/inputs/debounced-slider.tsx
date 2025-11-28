@@ -9,7 +9,7 @@ export interface DebouncedSliderProps extends Omit<SliderProps, 'value' | 'onCha
 export default function DebouncedSlider({ value, onChange, ...props }: DebouncedSliderProps) {
   const { componentValue, componentChange } = useDebounced(value, onChange);
 
-  const handleChange = (e, value) => {
+  const handleChange = (_e, value) => {
     componentChange(value);
   };
 

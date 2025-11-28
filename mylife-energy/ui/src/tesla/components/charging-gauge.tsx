@@ -62,7 +62,7 @@ export default class ChargingGauge extends React.Component<ChargingGaugeProps> {
 
   private uniqueFilterId: string;
 
-  render() {
+  override render() {
     const { Cx, Ro, Ri, Xo, Cy, Xi } = this._getPathValues(this.props.max);
     if (!this.uniqueFilterId) this.uniqueFilterId = `filter_${uniqueId++}`;
     return (

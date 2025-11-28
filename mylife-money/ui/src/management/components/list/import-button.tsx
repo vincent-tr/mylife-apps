@@ -49,7 +49,7 @@ class Header extends React.Component<HeaderProps, { account?; anchorEl?; open }>
     this.fileInput.click();
   }
 
-  render() {
+  override render() {
     const { accounts } = this.props;
     const { anchorEl } = this.state;
     return (

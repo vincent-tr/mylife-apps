@@ -11,17 +11,17 @@
     // "strictFunctionTypes": true,
     // "strictBindCallApply": true,
     // "strictPropertyInitialization": true,
-    // "noImplicitThis": true,
+    "noImplicitThis": true,
     "alwaysStrict": true,
     
     // Additional Checks
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     // "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    // "noUncheckedIndexedAccess": true,
-    // "noImplicitOverride": true,
-    // "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
     
     // ============================================================================
     // Environment, Package, and Configuration Rules

@@ -11,4 +11,4 @@ export const getDevice = (state, deviceId: string) => getDeviceView(state)[devic
 export const getFirstDeviceByType = (state, deviceType: DeviceType) => Object.values(getDeviceView(state)).find((device) => device.type === deviceType);
 
 export const makeGetDevicesByType = () =>
-  createSelector([getDeviceView, (state, deviceType: DeviceType) => deviceType], (view, deviceType) => Object.values(view).filter((device) => device.type === deviceType));
+  createSelector([getDeviceView, (_state, deviceType: DeviceType) => deviceType], (view, deviceType) => Object.values(view).filter((device) => device.type === deviceType));

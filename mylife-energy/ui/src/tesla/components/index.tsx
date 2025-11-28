@@ -49,7 +49,7 @@ export default function Tesla() {
       <Section title={'Charge'}>
         <Part>
           <ButtonsContainer>
-            <StyledToggleButtonGroup exclusive value={state.mode} onChange={(event, mode) => actions.setMode(mode)}>
+            <StyledToggleButtonGroup exclusive value={state.mode} onChange={(_event, mode) => actions.setMode(mode)}>
               <ToggleButton value={TeslaMode.Off}>
                 <Tooltip title="Eteint">
                   <icons.actions.Off fontSize="large" />

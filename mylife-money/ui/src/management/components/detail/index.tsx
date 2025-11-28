@@ -109,7 +109,7 @@ function NoteEditor({ value, onChange }: NoteEditorProps) {
 
   const [tabValue, setTabValue] = React.useState<TabValues>('view');
 
-  const handleChange = (event: React.ChangeEvent, newValue: TabValues) => {
+  const handleChange = (_event: React.ChangeEvent, newValue: TabValues) => {
     setTabValue(newValue);
   };
 
