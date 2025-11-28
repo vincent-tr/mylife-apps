@@ -1,5 +1,5 @@
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { useTheme } from '../../services/theme-factory';
 
 export default function ThemeProvider({ children }: PropsWithChildren) {

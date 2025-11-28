@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 const WAIT_INTERVAL = 300;
 
 class Debounce<T> {
-  private timer: number;
+  private timer: number | null;
 
   constructor(
     private readonly callback: (args: T) => void,
@@ -13,7 +13,10 @@ class Debounce<T> {
   }
 
   call(args: T) {
-    clearTimeout(this.timer);
+    if (this.timer !== null) {
+      clearTimeout(this.timer);
+    }
+    
     this.timer = setTimeout(() => this.doCall(args), this.waitInterval);
   }
 
@@ -27,13 +30,16 @@ class Debounce<T> {
   }
 
   reset() {
-    clearTimeout(this.timer);
+    if (this.timer !== null) {
+      clearTimeout(this.timer);
+    }
+
     this.timer = null;
   }
 }
 
-export function useDebounced<T>(value: T, onChange, waitInterval = WAIT_INTERVAL) {
-  const debounceRef = useRef(new Debounce((value) => onChange(value), waitInterval));
+export function useDebounced<T>(value: T, onChange: (args: T) => void, waitInterval = WAIT_INTERVAL) {
+  const debounceRef = useRef(new Debounce(onChange, waitInterval));
   useEffect(() => () => debounceRef.current.reset(), []);
 
   const [stateValue, setStateValue] = useState(value);

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 // can be used with useDebounced when there are closure problems
-export function useRefProp(value) {
-  const ref = useRef(undefined);
+export function useRefProp<T>(value: T) {
+  const ref = useRef<T>(undefined);
 
   useEffect(() => {
     ref.current = value;

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import MuiDateProvider from './mui-date-provider';
 import StoreProvider from './store-provider';
 import ThemeProvider from './theme-provider';
