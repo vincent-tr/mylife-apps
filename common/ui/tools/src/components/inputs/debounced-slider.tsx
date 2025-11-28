@@ -7,7 +7,7 @@ export interface DebouncedSliderProps extends Omit<SliderProps, 'value' | 'onCha
   onChange: (value: number) => void;
 }
 
-const DebouncedSlider: React.FC<DebouncedSliderProps> = ({ value, onChange, ...props }) => {
+export default function DebouncedSlider({ value, onChange, ...props }: DebouncedSliderProps) {
   const { componentValue, componentChange } = useDebounced(value, onChange);
 
   const handleChange = (e, value) => {
@@ -15,6 +15,4 @@ const DebouncedSlider: React.FC<DebouncedSliderProps> = ({ value, onChange, ...p
   };
 
   return <Slider {...props} value={componentValue} onChange={handleChange} />;
-};
-
-export default DebouncedSlider;
+}

@@ -17,7 +17,7 @@ export interface StepperActionsProps extends React.ComponentProps<'div'> {
   onAction: (action: string) => void;
 }
 
-const StepperActions: React.FC<StepperActionsProps> = ({ className, canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }) => {
+export default function StepperActions({ className, canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }: StepperActionsProps) {
   return (
     <Root className={className} {...props}>
       <Button disabled={!canPrev} onClick={() => onAction('prev')} variant="contained">
@@ -43,6 +43,4 @@ const StepperActions: React.FC<StepperActionsProps> = ({ className, canPrev, can
       )}
     </Root>
   );
-};
-
-export default StepperActions;
+}

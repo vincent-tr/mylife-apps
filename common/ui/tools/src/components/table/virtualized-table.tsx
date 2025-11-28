@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import TableCell from '@mui/material/TableCell';
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 
 const identity = (x) => x;
@@ -47,7 +47,7 @@ export interface VirtualizedTableColumn {
   width?: number;
 }
 
-const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, columns, rowStyle, headerHeight = 48, rowHeight = 48, onRowClick, ...props }) => {
+export default function VirtualizedTable({ data, columns, rowStyle, headerHeight = 48, rowHeight = 48, onRowClick, ...props }: VirtualizedTableProps) {
   const rowIndexStyle = ({ index }) => {
     const style = {
       ...runPropGetter(rowStyle, data[index], index),
@@ -98,9 +98,7 @@ const VirtualizedTable: FunctionComponent<VirtualizedTableProps> = ({ data, colu
       </AutoSizer>
     </div>
   );
-};
-
-export default VirtualizedTable;
+}
 
 function computeColumnWidth(tableWidth, columns) {
   // compute space left

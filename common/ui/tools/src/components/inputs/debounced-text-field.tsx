@@ -11,7 +11,7 @@ export interface DebouncedTextFieldProps extends Omit<TextFieldProps, 'value' | 
   onChange: (value: string) => void;
 }
 
-const DebouncedTextField: React.FC<DebouncedTextFieldProps> = ({ value, onChange, multiline, ...props }) => {
+export default function DebouncedTextField({ value, onChange, multiline, ...props }: DebouncedTextFieldProps) {
   const { componentValue, componentChange, flush } = useDebounced(value, onChange);
 
   const handleChange = (e) => {
@@ -27,6 +27,4 @@ const DebouncedTextField: React.FC<DebouncedTextFieldProps> = ({ value, onChange
       };
 
   return <TextField {...(props as TextFieldProps)} multiline={multiline} value={componentValue || ''} onChange={handleChange} onKeyDown={handleKeyDown} />;
-};
-
-export default DebouncedTextField;
+}

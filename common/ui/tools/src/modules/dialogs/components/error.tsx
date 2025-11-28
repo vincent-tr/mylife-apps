@@ -21,7 +21,7 @@ const useConnect = () => {
   };
 };
 
-const Error: React.FC = () => {
+export default function Error() {
   const { error, clear } = useConnect();
   return (
     <Dialog open={!!error} onClose={clear} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" fullWidth maxWidth="sm">
@@ -40,6 +40,4 @@ const Error: React.FC = () => {
       </DialogActions>
     </Dialog>
   );
-};
-
-export default Error;
+}

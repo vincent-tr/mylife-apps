@@ -4,13 +4,13 @@ import Error from './error';
 import Notifications from './notifications';
 import Offline from './offline';
 
-const Dialogs: React.FC = () => (
-  <React.Fragment>
-    <Offline />
-    <Busy />
-    <Error />
-    <Notifications />
-  </React.Fragment>
-);
-
-export default Dialogs;
+export default function Dialogs() {
+  return (
+    <React.Fragment>
+      <Offline />
+      <Busy />
+      <Error />
+      <Notifications />
+    </React.Fragment>
+  );
+}

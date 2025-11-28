@@ -7,18 +7,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 
-interface InputProps {
-  show: boolean;
-  proceed: (value: { result: 'ok' | 'cancel'; text?: string }) => void;
-  options: {
-    title?: string;
-    message?: string;
-    label: string;
-    text?: string;
-  };
+export interface InputOptions {
+  title?: string;
+  message?: string;
+  label: string;
+  text?: string;
 }
 
-const Input: React.FC<InputProps> = ({ show, proceed, options }) => {
+export interface InputProps {
+  show: boolean;
+  proceed: (value: { result: 'ok' | 'cancel'; text?: string }) => void;
+  options: InputOptions;
+}
+
+export default function Input({ show, proceed, options }: InputProps) {
   const [text, setText] = useState(options.text);
   return (
     <Dialog aria-labelledby="dialog-title" open={show} scroll="paper" maxWidth="sm" fullWidth>
@@ -37,6 +39,4 @@ const Input: React.FC<InputProps> = ({ show, proceed, options }) => {
       </DialogActions>
     </Dialog>
   );
-};
-
-export default Input;
+}

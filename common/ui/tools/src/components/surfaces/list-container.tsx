@@ -9,13 +9,15 @@ const Wrapper = styled('div')({
   height: 0,
 });
 
+export interface ListContainerProps extends PropsWithChildren {
+  className?: string;
+}
+
 // Taken from AutoSizer. Why do we need that ?!
-const ListContainer: React.FC<PropsWithChildren<{ className?: string }>> = ({ className, children }) => {
+export default function ListContainer({ className, children }: ListContainerProps) {
   return (
     <Container className={className}>
       <Wrapper>{children}</Wrapper>
     </Container>
   );
-};
-
-export default ListContainer;
+}

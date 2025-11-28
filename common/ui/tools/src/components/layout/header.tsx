@@ -53,7 +53,7 @@ export interface HeaderProps extends React.ComponentProps<typeof AppBar> {
   onMenuButtonClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, onMenuButtonClick, ...props }) => {
+export default function Header({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, onMenuButtonClick, ...props }: HeaderProps) {
   const AppIcon = appIcon;
   const ViewIcon = viewIcon;
 
@@ -85,6 +85,4 @@ const Header: React.FC<HeaderProps> = ({ appName, appIcon, onMainClick, viewName
       </Toolbar>
     </AppBar>
   );
-};
-
-export default Header;
+}

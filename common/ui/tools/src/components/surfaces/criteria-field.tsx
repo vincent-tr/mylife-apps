@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 const Container = styled('div')({
   display: 'flex',
@@ -17,18 +17,15 @@ const Children = styled('div')({
   flex: '1 1 auto',
 });
 
-interface CriteriaFieldProps {
+interface CriteriaFieldProps extends PropsWithChildren {
   label: React.ReactNode;
-  children: React.ReactNode;
 }
 
-const CriteriaField: React.FC<CriteriaFieldProps> = ({ label, children }) => {
+export default function CriteriaField({ label, children }: CriteriaFieldProps) {
   return (
     <Container>
       <Label>{label}</Label>
       <Children>{children}</Children>
     </Container>
   );
-};
-
-export default CriteriaField;
+}

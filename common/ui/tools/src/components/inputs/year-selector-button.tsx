@@ -25,7 +25,7 @@ interface YearSelectorDialogProps {
   options: { value: Date };
 }
 
-const YearSelectorDialog: React.FC<YearSelectorDialogProps> = ({ show, proceed, options }) => {
+function YearSelectorDialog({ show, proceed, options }: YearSelectorDialogProps) {
   return (
     <Dialog open={show} onClose={() => proceed({ result: 'cancel' })}>
       <DialogContent dividers>
@@ -54,7 +54,7 @@ const YearSelectorDialog: React.FC<YearSelectorDialogProps> = ({ show, proceed, 
       </StyledDialogActions>
     </Dialog>
   );
-};
+}
 
 const selectorDialog = dialogs.create(YearSelectorDialog);
 

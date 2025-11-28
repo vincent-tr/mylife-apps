@@ -2,21 +2,12 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Application } from '../components/application';
 
-interface RenderOptions {
+export interface RenderOptions extends React.ComponentProps<typeof Application> {
   containerId?: string;
-  container?;
-  routes?;
-  menu?;
-  appName?;
-  appIcon?;
-  onMainClick?;
-  viewName?;
-  viewIcon?;
-  viewAdditionalHeader?;
-  viewAdditionalBreadcrumb?;
+  container?: HTMLElement;
 }
 
-export function render({ containerId = 'content', container = document.getElementById(containerId), ...props }: RenderOptions = {}) {
+export function render({ containerId = 'content', container = document.getElementById(containerId), ...props }: RenderOptions) {
   const root = createRoot(container);
   root.render(<Application {...props} />);
 }

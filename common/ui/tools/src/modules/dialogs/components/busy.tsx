@@ -19,7 +19,7 @@ const Progress = styled(CircularProgress)(({ theme }) => ({
   marginRight: theme.spacing(2),
 }));
 
-const Busy: React.FC = () => {
+export default function Busy() {
   const { busy } = useConnect();
   return (
     <Dialog open={busy} aria-labelledby="alert-dialog-title">
@@ -29,6 +29,4 @@ const Busy: React.FC = () => {
       </StyledDialogTitle>
     </Dialog>
   );
-};
-
-export default Busy;
+}

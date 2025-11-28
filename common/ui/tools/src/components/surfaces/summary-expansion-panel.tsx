@@ -2,16 +2,15 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Accordion, { AccordionProps } from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 
-export interface SummaryAccordionProps extends Omit<AccordionProps, 'expanded' | 'onChange' | 'children'> {
+export interface SummaryAccordionProps extends PropsWithChildren, Omit<AccordionProps, 'expanded' | 'onChange' | 'children'> {
   initialExpanded?: boolean;
   expandedSummary: React.ReactNode;
   collapsedSummary: React.ReactNode;
-  children?: React.ReactNode;
 }
 
-const SummaryAccordion: React.FC<SummaryAccordionProps> = ({ initialExpanded = true, expandedSummary, collapsedSummary, children, ...props }) => {
+export default function SummaryAccordion({ initialExpanded = true, expandedSummary, collapsedSummary, children, ...props }: SummaryAccordionProps) {
   const [expanded, setExpanded] = useState(initialExpanded);
   const toggleExpanded = () => setExpanded(!expanded);
 
@@ -21,6 +20,4 @@ const SummaryAccordion: React.FC<SummaryAccordionProps> = ({ initialExpanded = t
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
   );
-};
-
-export default SummaryAccordion;
+}

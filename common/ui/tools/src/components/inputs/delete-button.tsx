@@ -7,7 +7,7 @@ import Popper from '@mui/material/Popper';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState } from 'react';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(theme.palette.error.main),
@@ -43,7 +43,8 @@ interface DeleteButtonProps {
   disablePortal?: boolean;
 }
 
-const DeleteButton: FunctionComponent<DeleteButtonProps> = ({
+// FIXME: ...props typing
+export default function DeleteButton({
   icon = false,
   text = null,
   tooltip = null,
@@ -52,7 +53,7 @@ const DeleteButton: FunctionComponent<DeleteButtonProps> = ({
   className,
   disablePortal = false,
   ...props
-}) => {
+}: DeleteButtonProps) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -100,6 +101,4 @@ const DeleteButton: FunctionComponent<DeleteButtonProps> = ({
       </Popper>
     </>
   );
-};
-
-export default DeleteButton;
+}

@@ -10,7 +10,7 @@ export interface ListSelectorProps extends Omit<SelectProps, 'value' | 'onChange
   onChange: (value: string | null) => void;
 }
 
-const ListSelector: React.FC<ListSelectorProps> = ({ list, value, onChange, ...props }) => {
+export default function ListSelector({ list, value, onChange, ...props }: ListSelectorProps) {
   const handleChange = (event) => onChange(nullFromEditor(event.target.value));
   return (
     <Select value={value || NULL_ID} onChange={handleChange} {...props}>
@@ -21,9 +21,7 @@ const ListSelector: React.FC<ListSelectorProps> = ({ list, value, onChange, ...p
       ))}
     </Select>
   );
-};
-
-export default ListSelector;
+}
 
 function nullFromEditor(value) {
   if (value === NULL_ID) {

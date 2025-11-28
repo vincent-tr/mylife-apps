@@ -53,7 +53,7 @@ export interface MenuProps {
   onSelect: () => void;
 }
 
-const Menu: React.FC<MenuProps> = ({ items, open, onSelect }) => {
+export default function Menu({ items, open, onSelect }: MenuProps) {
   const reponsiveItems = useResponsiveItems(items);
 
   return (
@@ -77,9 +77,7 @@ const Menu: React.FC<MenuProps> = ({ items, open, onSelect }) => {
       </List>
     </StyledDrawer>
   );
-};
-
-export default Menu;
+}
 
 function useResponsiveItems(items) {
   const { size, orientation } = useScreen();

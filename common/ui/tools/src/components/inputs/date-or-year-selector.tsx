@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import YearSelectorButton from './year-selector-button';
 
 const Container = styled(Box)({
@@ -22,7 +22,7 @@ interface DateOrYearSelectorProps {
   selectLastDay?: boolean;
 }
 
-const DateOrYearSelector: FunctionComponent<DateOrYearSelectorProps> = ({ disabled = false, onChange, value, showYearSelector = false, selectLastDay = false }) => {
+export default function DateOrYearSelector({ disabled = false, onChange, value, showYearSelector = false, selectLastDay = false }: DateOrYearSelectorProps) {
   return (
     <Container>
       <StyledDatePicker
@@ -43,6 +43,4 @@ const DateOrYearSelector: FunctionComponent<DateOrYearSelectorProps> = ({ disabl
       {showYearSelector && <YearSelectorButton disabled={disabled} value={value} onChange={onChange} selectLastDay={selectLastDay} />}
     </Container>
   );
-};
-
-export default DateOrYearSelector;
+}

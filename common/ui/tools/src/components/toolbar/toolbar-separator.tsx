@@ -9,8 +9,6 @@ const Separator = styled(Typography)(({ theme }) => ({
   borderRight: '0.1em solid currentColor',
 }));
 
-const ToolbarSeparator: React.FC = () => {
+export default function ToolbarSeparator() {
   return <Separator>&nbsp;</Separator>;
-};
-
-export default ToolbarSeparator;
+}

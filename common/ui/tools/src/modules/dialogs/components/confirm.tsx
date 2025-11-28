@@ -6,37 +6,39 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React from 'react';
 
-interface ConfirmProps<TValue> {
-  show: boolean;
-  proceed: (value: TValue) => void;
-  options: {
-    title?: string;
-    message?: string;
-    actions: {
-      text: string;
-      value: TValue;
-    }[];
-  };
+export interface ConfirmOptions<TValue> {
+  title?: string;
+  message?: string;
+  actions: {
+    text: string;
+    value: TValue;
+  }[];
 }
 
-const Confirm = <TValue,>({ show, proceed, options }: ConfirmProps<TValue>) => (
-  <Dialog aria-labelledby="dialog-title" open={show} scroll="paper">
-    {options.title && <DialogTitle id="dialog-title">{options.title}</DialogTitle>}
+export interface ConfirmProps<TValue> {
+  show: boolean;
+  proceed: (value: TValue) => void;
+  options: ConfirmOptions<TValue>;
+}
 
-    {options.message && (
-      <DialogContent dividers>
-        <DialogContentText>{options.message}</DialogContentText>
-      </DialogContent>
-    )}
+export default function Confirm<TValue = unknown>({ show, proceed, options }: ConfirmProps<TValue>) {
+  return (
+    <Dialog aria-labelledby="dialog-title" open={show} scroll="paper">
+      {options.title && <DialogTitle id="dialog-title">{options.title}</DialogTitle>}
 
-    <DialogActions>
-      {options.actions.map(({ text, value }, index) => (
-        <Button key={index} color="primary" onClick={() => proceed(value)}>
-          {text}
-        </Button>
-      ))}
-    </DialogActions>
-  </Dialog>
-);
+      {options.message && (
+        <DialogContent dividers>
+          <DialogContentText>{options.message}</DialogContentText>
+        </DialogContent>
+      )}
 
-export default Confirm;
+      <DialogActions>
+        {options.actions.map(({ text, value }, index) => (
+          <Button key={index} color="primary" onClick={() => proceed(value)}>
+            {text}
+          </Button>
+        ))}
+      </DialogActions>
+    </Dialog>
+  );
+}

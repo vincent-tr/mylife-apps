@@ -26,14 +26,13 @@ export interface MenuItem {
   onClick?: () => void;
 }
 
-export interface LayoutRouterProps {
+export interface LayoutRouterProps
+  extends Omit<React.ComponentProps<typeof Layout>, 'onMainClick' | 'viewName' | 'viewIcon' | 'viewAdditionalHeader' | 'viewAdditionalBreadcrumb' | 'menu' | 'children'> {
   routes: Route[];
   menu?: MenuItem[];
-  appName: string;
-  appIcon: React.ElementType;
 }
 
-const LayoutRouter: React.FC<LayoutRouterProps> = ({ routes, menu, appName, appIcon, ...props }) => {
+function LayoutRouter({ routes, menu, ...props }: LayoutRouterProps) {
   const { location, navigate } = useRoutingConnect();
   const mappedMenu = mapMenu({ navigate, menu });
   const routesInfo = useMemo(() => new RoutesInfo(routes), [routes]);
@@ -47,14 +46,12 @@ const LayoutRouter: React.FC<LayoutRouterProps> = ({ routes, menu, appName, appI
       viewAdditionalHeader={routeMatch.renderAdditionalHeader()}
       viewAdditionalBreadcrumb={routeMatch.routerAdditionalBreadcrumb()}
       menu={mappedMenu}
-      appName={appName}
-      appIcon={appIcon}
       {...props}
     >
       {routeMatch.render()}
     </Layout>
   );
-};
+}
 
 export default LayoutRouter;
 

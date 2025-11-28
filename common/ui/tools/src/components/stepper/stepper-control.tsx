@@ -3,7 +3,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import { styled } from '@mui/material/styles';
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState } from 'react';
 import StepperActions from './stepper-actions';
 
 type FIXME_any = any;
@@ -31,7 +31,7 @@ export interface StepperControlProps extends React.ComponentProps<'div'> {
   onEnd: (value: 'finish' | 'cancel') => void;
 }
 
-const StepperControl: FunctionComponent<StepperControlProps> = ({ className, steps, onStepChanged, onEnd, ...props }) => {
+export default function StepperControl({ className, steps, onStepChanged, onEnd, ...props }: StepperControlProps) {
   const [activeStep, setActiveStep] = useState(0);
 
   const step = steps[activeStep];
@@ -91,9 +91,7 @@ const StepperControl: FunctionComponent<StepperControlProps> = ({ className, ste
       <StepperActions {...finalActions} onAction={handleAction} />
     </Container>
   );
-};
-
-export default StepperControl;
+}
 
 function buildActions(currentStep, stepsCount, provided) {
   const isFirst = currentStep === 0;

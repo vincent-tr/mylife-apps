@@ -76,7 +76,7 @@ interface NotificationProps {
   onCloseClick: () => void;
 }
 
-const Notification: React.FC<NotificationProps> = ({ message, type, onCloseClick }) => {
+function Notification({ message, type, onCloseClick }: NotificationProps) {
   const Icon = typeIcons[type];
   return (
     <Content
@@ -95,9 +95,9 @@ const Notification: React.FC<NotificationProps> = ({ message, type, onCloseClick
       ]}
     />
   );
-};
+}
 
-const Notifications: React.FC = () => {
+export default function Notifications() {
   const { dismiss, notifications } = useConnect();
   return (
     <Portal key="notificationsPortal">
@@ -108,6 +108,4 @@ const Notifications: React.FC = () => {
       </Overlay>
     </Portal>
   );
-};
-
-export default Notifications;
+}

@@ -7,8 +7,6 @@ const Container = styled('div')({
 
 export type StopPropagationContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
-const StopPropagationContainer: React.FC<StopPropagationContainerProps> = ({ className, ...props }) => {
-  return <Container onClick={(event) => event.stopPropagation()} onFocus={(event) => event.stopPropagation()} className={className} {...props} />;
-};
-
-export default StopPropagationContainer;
+export default function StopPropagationContainer(props: StopPropagationContainerProps) {
+  return <Container onClick={(event) => event.stopPropagation()} onFocus={(event) => event.stopPropagation()} {...props} />;
+}

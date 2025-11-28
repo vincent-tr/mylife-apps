@@ -1,11 +1,7 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Provider } from 'react-redux';
 import { getStore } from '../../services/store-factory';
 
-export interface StoreProviderProps {
-  children?: React.ReactNode;
+export default function StoreProvider({ children }: PropsWithChildren) {
+  return <Provider store={getStore()}>{children}</Provider>;
 }
-
-const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => <Provider store={getStore()}>{children}</Provider>;
-
-export default StoreProvider;

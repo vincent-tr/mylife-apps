@@ -73,7 +73,7 @@ export interface LayoutProps {
   menu?: MenuItem[];
 }
 
-const Layout: React.FC<LayoutProps> = ({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, menu, children }) => {
+export default function Layout({ appName, appIcon, onMainClick, viewName, viewIcon, viewAdditionalHeader, viewAdditionalBreadcrumb, menu, children }: LayoutProps) {
   const screenSize = useScreenSize();
   const [menuState, setMenuState] = useState(initialMenuState[screenSize]);
   useEffect(() => setMenuState(initialMenuState[screenSize]), [screenSize]);
@@ -111,6 +111,4 @@ const Layout: React.FC<LayoutProps> = ({ appName, appIcon, onMainClick, viewName
       </Content>
     </Root>
   );
-};
-
-export default Layout;
+}

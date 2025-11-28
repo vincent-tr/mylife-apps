@@ -1,7 +1,7 @@
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-const MuiDateProvider = (props) => <LocalizationProvider dateAdapter={AdapterDateFns} {...props} />;
-
-export default MuiDateProvider;
+export default function MuiDateProvider({ children }: PropsWithChildren) {
+  return <LocalizationProvider dateAdapter={AdapterDateFns}>{children}</LocalizationProvider>;
+}
