@@ -125,4 +125,4 @@ function NoteEditor({ value, onChange }: NoteEditorProps) {
       {tabValue === 'update' && <DebouncedTextField variant="outlined" value={value} onChange={onChange} fullWidth multiline minRows={19} maxRows={19} />}
     </NoteContainer>
   );
-};
+}

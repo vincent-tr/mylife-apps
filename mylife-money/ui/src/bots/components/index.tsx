@@ -114,4 +114,4 @@ function BotView({ bot }: BotViewProps) {
       )}
     </View>
   );
-};
+}

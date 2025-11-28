@@ -167,7 +167,7 @@ function CollapsedSummary({ criteria, onExport }: CollapsedSummaryProps) {
       <ExportButton onClick={onExport} />
     </Container>
   );
-};
+}
 
 function format(date) {
   if (!date) {

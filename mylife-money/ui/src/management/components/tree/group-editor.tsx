@@ -253,7 +253,7 @@ function EditorDialog({ options, show, proceed }: EditorDialogProps) {
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 const edit = dialogs.create(EditorDialog);
 
