@@ -15,7 +15,7 @@ import { api } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
-import { useUpdatesData } from '../views';
+import { useUpdatesDataView } from '../views';
 
 type FIXME_any = any;
 
@@ -46,7 +46,7 @@ const formatDuration = humanizeDuration.humanizer({
 });
 
 export default function Updates() {
-  useUpdatesData();
+  useUpdatesDataView();
   const { data, criteria, changeCriteria } = useConnect();
 
   const dataSorted = useMemo(() => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as api.Entity[], [data]);

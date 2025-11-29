@@ -15,7 +15,7 @@ import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { HOST_STATUS_PROBLEM } from '../problems';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
-import { useNagiosData } from '../views';
+import { useNagiosDataView } from '../views';
 
 type FIXME_any = any;
 
@@ -131,7 +131,7 @@ function Group({ criteria, item }: GroupProps) {
 }
 
 export default function Nagios() {
-  useNagiosData();
+  useNagiosDataView();
   const { data, criteria, changeCriteria } = useConnect();
 
   return (

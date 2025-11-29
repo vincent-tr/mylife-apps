@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { api } from 'mylife-tools';
-import { useNagiosSummary, useUpsmonSummary, useUpdatesSummary } from '../views';
+import { useNagiosSummaryView, useUpsmonSummaryView, useUpdatesSummaryView } from '../views';
 import NagiosSummary from './nagios-summary';
 import UpdatesSummary from './updates-summary';
 import UpsmonSummary from './upsmon-summary';
@@ -15,9 +15,9 @@ const Container = styled('div')({
 const Section = styled('div')({});
 
 export default function Home() {
-  const nagios = useNagiosSummary();
-  const upsmon = useUpsmonSummary();
-  const updates = useUpdatesSummary();
+  const nagios = useNagiosSummaryView();
+  const upsmon = useUpsmonSummaryView();
+  const updates = useUpdatesSummaryView();
 
   return (
     <Container>

@@ -10,7 +10,7 @@ import humanizeDuration from 'humanize-duration';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
-import { useUpsmonData } from '../views';
+import { useUpsmonDataView } from '../views';
 
 type FIXME_any = any;
 
@@ -22,7 +22,7 @@ const Container = styled('div')({
 });
 
 export default function Upsmon() {
-  const data = useUpsmonData();
+  const data = useUpsmonDataView();
 
   return (
     <Container>

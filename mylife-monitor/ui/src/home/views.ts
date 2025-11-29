@@ -4,7 +4,7 @@ const NAGIOS_SUMMARY = 'nagios-summary';
 const UPSMON_SUMMARY = 'upsmon-summary';
 const UPDATES_SUMMARY = 'updates-summary';
 
-export function useNagiosSummary() {
+export function useNagiosSummaryView() {
   return views.useView({
     slot: NAGIOS_SUMMARY,
     service: 'nagios',
@@ -12,7 +12,7 @@ export function useNagiosSummary() {
   });
 }
 
-export function useUpsmonSummary() {
+export function useUpsmonSummaryView() {
   return views.useView({
     slot: UPSMON_SUMMARY,
     service: 'upsmon',
@@ -20,7 +20,7 @@ export function useUpsmonSummary() {
   });
 }
 
-export function useUpdatesSummary() {
+export function useUpdatesSummaryView() {
   return views.useView({
     slot: UPDATES_SUMMARY,
     service: 'updates',

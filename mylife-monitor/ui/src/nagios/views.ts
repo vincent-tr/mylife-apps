@@ -4,7 +4,7 @@ const NAGIOS_DATA = 'nagios-data';
 
 export const getView = (state) => views.getViewBySlot(state, NAGIOS_DATA);
 
-export function useNagiosData() {
+export function useNagiosDataView() {
   return views.useView({
     slot: NAGIOS_DATA,
     service: 'nagios',
