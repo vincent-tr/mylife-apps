@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
-import { getViewByUid } from './store';
+import { getViewBySlot } from './store';
 
 type FIXME_any = any;
 
@@ -10,7 +10,7 @@ export function useSharedView(sharedViewRef, selectors: { [key: string]: (state)
   useLifecycle(enter, leave);
 
   return useSelector((state) => {
-    const view = getViewByUid(state, sharedViewRef.uid);
+    const view = getViewBySlot(state, sharedViewRef.uid);
     const result: FIXME_any = { view };
 
     for (const [key, selector] of Object.entries(selectors)) {

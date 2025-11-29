@@ -108,7 +108,7 @@ const local = {
   getViewById: viewsSlice.selectors.getViewById,
 };
 
-export const getViewByUid = (state, slot: string) => local.getViewById(state, local.getViewId(state, slot));
+export const getViewBySlot = (state, slot: string) => local.getViewById(state, local.getViewId(state, slot));
 
 export const { setView, ref, unref, viewChange, viewClose } = viewsSlice.actions;
 export const { getViewId, getRefCount, getViewById } = viewsSlice.selectors;
