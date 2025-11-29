@@ -8,13 +8,11 @@ interface ErrorAction extends Action {
 }
 
 interface DialogState {
-  busy: boolean;
   error: Error | null;
   notifications: Notification[];
 }
 
 const initialState: DialogState = {
-  busy: false,
   error: null,
   notifications: [],
 };
@@ -24,9 +22,6 @@ const dialogSlice = createSlice({
   initialState,
 
   reducers: {
-    setBusy(state, action: PayloadAction<boolean>) {
-      state.busy = action.payload;
-    },
     clearError(state) {
       state.error = null;
     },
@@ -54,7 +49,6 @@ const dialogSlice = createSlice({
   },
 
   selectors: {
-    getBusy: (state) => state.busy,
     getError: (state) => state.error,
     getNotifications: (state) => state.notifications,
   },
@@ -84,7 +78,7 @@ export const showNotification = createAsyncThunk(
   }
 );
 
-export const { setBusy, clearError, dismissNotification, clearNotifications } = dialogSlice.actions;
-export const { getBusy, getError, getNotifications } = dialogSlice.selectors;
+export const { clearError, dismissNotification, clearNotifications } = dialogSlice.actions;
+export const { getError, getNotifications } = dialogSlice.selectors;
 
 export default dialogSlice.reducer;

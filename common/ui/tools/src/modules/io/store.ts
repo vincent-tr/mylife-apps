@@ -1,17 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
 import { createAsyncThunk } from '../../services/store-factory';
-import { setBusy } from '../dialogs/store';
 import { viewChange, viewClose } from '../views/store';
 import { ServiceCall } from './service/call-engine';
 import { Service, ServiceAPI, ViewChange } from './service';
 
 interface IOState {
   online: boolean;
+  busy: boolean;
 }
 
 const initialState: IOState = {
   online: false,
+  busy: false,
 };
 
 const ioSlice = createSlice({
@@ -21,15 +22,20 @@ const ioSlice = createSlice({
     setOnline(state, action: PayloadAction<boolean>) {
       state.online = action.payload;
     },
+    setBusy(state, action: PayloadAction<boolean>) {
+      state.busy = action.payload;
+    },
   },
 
   selectors: {
     getOnline: (state) => state.online,
+    getBusy: (state) => state.busy,
   },
 });
 
 const local = {
   setOnline: ioSlice.actions.setOnline,
+  setBusy: ioSlice.actions.setBusy,
 };
 
 export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
@@ -43,7 +49,7 @@ export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (v
 });
 
 export const { setOnline } = ioSlice.actions; // setOnline can be used in extraReducers
-export const { getOnline } = ioSlice.selectors;
+export const { getOnline, getBusy } = ioSlice.selectors;
 
 export default ioSlice.reducer;
 
@@ -60,7 +66,7 @@ class ServiceApiImpl implements ServiceAPI {
 
   setBusy(busy: boolean): void {
     if (this.dispatch) {
-      this.dispatch(setBusy(busy));
+      this.dispatch(local.setBusy(busy));
     } else {
       console.error('ServiceApiImpl: dispatch not set, cannot set busy status');
     }
