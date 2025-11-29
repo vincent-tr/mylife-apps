@@ -4,11 +4,10 @@ import Typography from '@mui/material/Typography';
 import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
 import React, { PropsWithChildren, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLifecycle, useActions, useInterval } from 'mylife-tools';
+import { useInterval } from 'mylife-tools';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
-import { enter, leave } from '../actions';
-import { getDataView } from '../selectors';
+import { getHomeDataView, useHomeDataView } from '../views';
 
 const SectionRoot = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),
@@ -24,7 +23,7 @@ const LastUpdateText = styled(Typography)({
 });
 
 export default function Home() {
-  useViewLifecycle();
+  useHomeDataView();
   const totalPower = useValue('live', 'total-power');
   const batteryLevel = useValue('tesla', 'battery-level');
 
@@ -89,11 +88,6 @@ function LastUpdate({ section }: LastUpdateProps) {
   );
 }
 
-function useViewLifecycle() {
-  const actions = useActions({ enter, leave });
-  useLifecycle(actions.enter, actions.leave);
-}
-
 function useNow() {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
@@ -101,7 +95,7 @@ function useNow() {
 }
 
 function useValue(section: string, key: string) {
-  const data = useSelector(getDataView);
+  const data = useSelector(getHomeDataView);
   const item = data[`${section}/${key}`];
   return item?.value;
 }

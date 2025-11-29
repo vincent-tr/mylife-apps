@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { dialogs, useAction, fireAsync } from 'mylife-tools';
 import { TeslaState } from '../../api';
 import { setParameters } from '../actions';
-import { getState } from '../selectors';
+import { getTeslaState } from '../views';
 
 type FIXME_any = any;
 
@@ -119,7 +119,7 @@ function ParametersDialog({ show, proceed, parameters }: ParametersDialogProps) 
 const parametersDialog = dialogs.create(ParametersDialog);
 
 export function useParameters() {
-  const state = useSelector((state) => getState(state));
+  const state = useSelector(getTeslaState);
   const set = useAction(setParameters);
 
   // if 'bot = null' then create

@@ -1,20 +1,5 @@
-import { createAsyncThunk, views } from 'mylife-tools';
+import { createAsyncThunk } from 'mylife-tools';
 import { TeslaMode } from '../api';
-import * as viewSlots from './view-slots';
-
-const stateViewRef = new views.ViewReference({
-  slot: viewSlots.STATE,
-  service: 'tesla',
-  method: 'notifyState',
-});
-
-export const enter = createAsyncThunk('tesla/enter', async (_, _api) => {
-  await stateViewRef.attach();
-});
-
-export const leave = createAsyncThunk('tesla/leave', async (_, _api) => {
-  await stateViewRef.detach();
-});
 
 export const setMode = createAsyncThunk('tesla/setMode', async (mode: TeslaMode, api) => {
   await api.extra.call({

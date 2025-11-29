@@ -1,9 +1,9 @@
 import { styled } from '@mui/material/styles';
 import { useReducer, useEffect } from 'react';
-import { useActions, useLifecycle } from 'mylife-tools';
-import { enter, leave } from '../actions';
+import { useActions } from 'mylife-tools';
 import { fetchValues } from '../store';
 import { StatsType } from '../types';
+import { useDevicesView } from '../views';
 import Chart from './chart';
 import CriteriaSelector, { Criteria } from './criteria-selector';
 
@@ -19,7 +19,7 @@ const StyledChart = styled(Chart)({
 });
 
 export default function Stats() {
-  useViewLifecycle();
+  useDevicesView();
   const { fetchValues: localFetchValues } = useActions({ fetchValues });
 
   const [criteria, onCriteriaChange] = useReducer((criteria: Criteria, props: Partial<Criteria>) => ({ ...criteria, ...props }), {
@@ -38,9 +38,4 @@ export default function Stats() {
       <StyledChart type={criteria.type} />
     </Container>
   );
-}
-
-function useViewLifecycle() {
-  const actions = useActions({ enter, leave });
-  useLifecycle(actions.enter, actions.leave);
 }

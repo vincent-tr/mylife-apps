@@ -4,7 +4,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import icons from '../../common/icons';
-import { getMeasureView, getDevice } from '../selectors';
+import { getDevice } from '../selectors';
+import { getMeasuresView } from '../views';
 
 type Flavor = 'good' | 'bad' | null;
 
@@ -44,7 +45,7 @@ export interface DeviceMeasureProps {
 
 export function DeviceMeasure({ deviceId, sensorKeys }: DeviceMeasureProps) {
   const device = useSelector((state) => getDevice(state, deviceId));
-  const measures = useSelector(getMeasureView);
+  const measures = useSelector(getMeasuresView);
 
   const sensorData = getSensorData(device, measures, sensorKeys);
 
@@ -98,7 +99,7 @@ interface DeviceMeasureTooltipProps {
 
 function DeviceMeasureTooltip({ deviceId }: DeviceMeasureTooltipProps) {
   const device = useSelector((state) => getDevice(state, deviceId));
-  const measures = useSelector(getMeasureView);
+  const measures = useSelector(getMeasuresView);
 
   return (
     <TooltipContainer>

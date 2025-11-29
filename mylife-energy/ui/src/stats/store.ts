@@ -1,8 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createAsyncThunk, views } from 'mylife-tools';
-import { Device, Measure, Sensor } from '../api';
+import { createAsyncThunk } from 'mylife-tools';
+import { Measure, Sensor } from '../api';
 import { SensorData, StatsType, TimestampData, UiSensor } from './types';
-import * as viewSlots from './view-slots';
+import { getDevicesView } from './views';
 
 interface StatsState {
   sensors: { [id: string]: SensorData };
@@ -70,8 +70,6 @@ export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, 
 
   api.dispatch(local.setValues(values));
 });
-
-export const getDevicesView = (state) => views.getViewBySlot(state, viewSlots.DEVICES) as views.View<Device>;
 
 export const getChartData = createSelector([local.getStatsMeasures], (measures) => {
   // Note: time range with no value will be omitted

@@ -8,19 +8,16 @@ import Typography from '@mui/material/Typography';
 import humanizeDuration from 'humanize-duration';
 import { PropsWithChildren } from 'react';
 import BatteryGauge from 'react-battery-gauge';
-import { useSelector } from 'react-redux';
-import { useLifecycle, useActions } from 'mylife-tools';
+import { useActions } from 'mylife-tools';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../api';
 import icons from '../../common/icons';
-import { enter, leave, setMode } from '../actions';
-import { getState } from '../selectors';
+import { setMode } from '../actions';
+import { useTeslaState } from '../views';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
 
 export default function Tesla() {
-  useViewLifecycle();
-
-  const state = useSelector((state) => getState(state));
+  const state = useTeslaState();
   const actions = useActions({ setMode });
   const showParameters = useParameters();
 
@@ -109,11 +106,6 @@ export default function Tesla() {
       </Section>
     </div>
   );
-}
-
-function useViewLifecycle() {
-  const actions = useActions({ enter, leave });
-  useLifecycle(actions.enter, actions.leave);
 }
 
 const ButtonsContainer = styled('div')({

@@ -1,6 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { useLifecycle, useActions } from 'mylife-tools';
-import { enter, leave } from '../actions';
+import { useLiveDevicesView, useLiveMeasuresView } from '../views';
 import MainAnimation from './main-animation';
 import NodeTable from './node-table';
 
@@ -12,7 +11,8 @@ const Container = styled('div')({
 });
 
 export default function Live() {
-  useViewLifecycle();
+  useLiveDevicesView();
+  useLiveMeasuresView();
 
   return (
     <Container>
@@ -20,9 +20,4 @@ export default function Live() {
       <NodeTable />
     </Container>
   );
-}
-
-function useViewLifecycle() {
-  const actions = useActions({ enter, leave });
-  useLifecycle(actions.enter, actions.leave);
 }

@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getDevicesView } from '../store';
+import { getDevicesView } from '../views';
 
 type DeviceMap = { [deviceId: string]: string };
 
