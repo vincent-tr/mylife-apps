@@ -126,3 +126,22 @@ export function useSharedView(options: SharedViewOptions) {
 
   return useSelector((state) => getViewBySlot(state, options.slot));
 }
+
+interface StaticViewOptions {
+  slot: string;
+  service: string;
+  method: string;
+}
+
+/**
+ * Initialize a static view that is fetched once at startup and never released.
+ * Uses SharedViewReference with a permanent ref count.
+ * This should be called during application initialization, before rendering.
+ *
+ * @param options - View initialization options
+ */
+export function initStaticView(options: StaticViewOptions): void {
+  const viewRef = new SharedViewReference(options);
+  // Ref once and never unref
+  viewRef.ref();
+}
