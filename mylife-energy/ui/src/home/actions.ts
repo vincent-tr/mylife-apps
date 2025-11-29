@@ -1,8 +1,8 @@
 import { createAsyncThunk, views } from 'mylife-tools';
-import * as viewUids from './view-uids';
+import * as viewSlots from './view-slots';
 
 const viewRef = new views.ViewReference({
-  slot: viewUids.DATA,
+  slot: viewSlots.DATA,
   service: 'home',
   method: 'notifyHomeData',
 });

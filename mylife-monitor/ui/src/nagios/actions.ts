@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
 import { resetCriteria } from './store';
-import * as viewUids from './view-uids';
+import * as viewSlots from './view-slots';
 
 const viewRef = new views.ViewReference({
-  slot: viewUids.NAGIOS_DATA,
+  slot: viewSlots.NAGIOS_DATA,
   service: 'nagios',
   method: 'notify',
 });

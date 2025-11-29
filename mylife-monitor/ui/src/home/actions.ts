@@ -1,21 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
-import * as viewUids from './view-uids';
+import * as viewSlots from './view-slots';
 
 const nagiosViewRef = new views.ViewReference({
-  slot: viewUids.NAGIOS_SUMMARY,
+  slot: viewSlots.NAGIOS_SUMMARY,
   service: 'nagios',
   method: 'notifySummary',
 });
 
 const upsmonViewRef = new views.ViewReference({
-  slot: viewUids.UPSMON_SUMMARY,
+  slot: viewSlots.UPSMON_SUMMARY,
   service: 'upsmon',
   method: 'notifySummary',
 });
 
 const updatesViewRef = new views.ViewReference({
-  slot: viewUids.UPDATES_SUMMARY,
+  slot: viewSlots.UPDATES_SUMMARY,
   service: 'updates',
   method: 'notifySummary',
 });

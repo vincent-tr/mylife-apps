@@ -1,4 +1,4 @@
 import { views } from 'mylife-tools';
-import * as viewUids from './view-uids';
+import * as viewSlots from './view-slots';
 
-export const getView = (state) => views.getViewByUid(state, viewUids.UPSMON_DATA);
+export const getView = (state) => views.getViewByUid(state, viewSlots.UPSMON_DATA);

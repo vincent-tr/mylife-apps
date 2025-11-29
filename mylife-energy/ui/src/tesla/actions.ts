@@ -1,9 +1,9 @@
 import { createAsyncThunk, views } from 'mylife-tools';
 import { TeslaMode } from '../api';
-import * as viewUids from './view-uids';
+import * as viewSlots from './view-slots';
 
 const stateViewRef = new views.ViewReference({
-  slot: viewUids.STATE,
+  slot: viewSlots.STATE,
   service: 'tesla',
   method: 'notifyState',
 });

@@ -1,6 +1,6 @@
 import { views } from 'mylife-tools';
-import * as viewUids from './view-uids';
+import * as viewSlots from './view-slots';
 
-export const getNagiosView = (state) => views.getViewByUid(state, viewUids.NAGIOS_SUMMARY);
-export const getUpsmonView = (state) => views.getViewByUid(state, viewUids.UPSMON_SUMMARY);
-export const getUpdatesView = (state) => views.getViewByUid(state, viewUids.UPDATES_SUMMARY);
+export const getNagiosView = (state) => views.getViewByUid(state, viewSlots.NAGIOS_SUMMARY);
+export const getUpsmonView = (state) => views.getViewByUid(state, viewSlots.UPSMON_SUMMARY);
+export const getUpdatesView = (state) => views.getViewByUid(state, viewSlots.UPDATES_SUMMARY);
