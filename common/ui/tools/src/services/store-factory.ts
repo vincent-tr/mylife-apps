@@ -3,8 +3,8 @@ import { createLogger } from 'redux-logger';
 import { STATE_PREFIX } from '../constants/defines';
 import dialogs from '../modules/dialogs/store';
 import { middleware as downloadMiddleware } from '../modules/download/store';
-import { ServiceCall } from '../modules/io/service/call-engine';
-import io, { connectStoreDispatcher, call } from '../modules/io/store';
+import { connectStoreDispatcher, call, ServiceCall } from '../modules/io/api';
+import io from '../modules/io/store';
 import routing, { middleware as routingMiddlerware } from '../modules/routing/store';
 import views from '../modules/views/store';
 

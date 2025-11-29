@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
 import { createAsyncThunk } from '../../services/store-factory';
-import { viewChange, viewClose } from '../views/store';
-import { ServiceCall } from './service/call-engine';
-import { Service, ServiceAPI, ViewChange } from './service';
+import { viewClose } from '../views/store';
 
 interface IOState {
   online: boolean;
@@ -33,11 +31,6 @@ const ioSlice = createSlice({
   },
 });
 
-const local = {
-  setOnline: ioSlice.actions.setOnline,
-  setBusy: ioSlice.actions.setBusy,
-};
-
 export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
   await api.extra.call({
     service: 'common',
@@ -48,50 +41,7 @@ export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (v
   api.dispatch(viewClose(viewId));
 });
 
-export const { setOnline } = ioSlice.actions; // setOnline can be used in extraReducers
+export const { setOnline, setBusy } = ioSlice.actions;
 export const { getOnline, getBusy } = ioSlice.selectors;
 
 export default ioSlice.reducer;
-
-class ServiceApiImpl implements ServiceAPI {
-  private dispatch;
-
-  setOnline(online: boolean): void {
-    if (this.dispatch) {
-      this.dispatch(local.setOnline(online));
-    } else {
-      console.error('ServiceApiImpl: dispatch not set, cannot set online status');
-    }
-  }
-
-  setBusy(busy: boolean): void {
-    if (this.dispatch) {
-      this.dispatch(local.setBusy(busy));
-    } else {
-      console.error('ServiceApiImpl: dispatch not set, cannot set busy status');
-    }
-  }
-
-  viewChange(changes: ViewChange): void {
-    if (this.dispatch) {
-      this.dispatch(viewChange(changes));
-    } else {
-      console.error('ServiceApiImpl: dispatch not set, cannot dispatch view change');
-    }
-  }
-
-  connectStoreDispatcher(dispatch) {
-    this.dispatch = dispatch;
-  }
-}
-
-const serviceApi = new ServiceApiImpl();
-const service = new Service(serviceApi);
-
-export async function call(message: ServiceCall) {
-  return await service.executeCall(message);
-}
-
-export function connectStoreDispatcher(dispatch) {
-  serviceApi.connectStoreDispatcher(dispatch);
-}
