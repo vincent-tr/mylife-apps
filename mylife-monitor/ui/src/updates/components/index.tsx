@@ -9,13 +9,13 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { api, useLifecycle } from 'mylife-tools';
+import { api } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { enter, leave } from '../actions';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
+import { useUpdatesData } from '../views';
 
 type FIXME_any = any;
 
@@ -46,8 +46,8 @@ const formatDuration = humanizeDuration.humanizer({
 });
 
 export default function Updates() {
-  const { enter, leave, data, criteria, changeCriteria } = useConnect();
-  useLifecycle(enter, leave);
+  useUpdatesData();
+  const { data, criteria, changeCriteria } = useConnect();
 
   const dataSorted = useMemo(() => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as api.Entity[], [data]);
 
@@ -162,8 +162,6 @@ function useConnect() {
     data: useSelector(getDisplayView),
     ...useMemo(
       () => ({
-        enter: () => dispatch(enter()),
-        leave: () => dispatch(leave()),
         changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
       }),
       [dispatch]

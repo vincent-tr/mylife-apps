@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { api, views } from 'mylife-tools';
 import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
-import * as viewSlots from './view-slots';
+import { getView } from './views';
 
 type FIXME_any = any;
 
@@ -50,7 +50,6 @@ export const changeCriteria = createAsyncThunk('nagios/changeCriteria', async (c
 });
 
 export const getCriteria = nagiosSlice.selectors.getCriteria;
-export const getView = (state) => views.getViewBySlot(state, viewSlots.NAGIOS_DATA);
 
 export const getDisplayView = createSelector([getView, getCriteria], (view: views.View<api.Entity>, criteria) => {
   const groups = new Map();

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
-import * as viewSlots from './view-slots';
+import { getView } from './views';
 
 type FIXME_any = any;
 
@@ -49,7 +49,6 @@ export const changeCriteria = createAsyncThunk('updates/changeCriteria', async (
 });
 
 export const getCriteria = updatesSlice.selectors.getCriteria;
-export const getView = (state) => views.getViewBySlot(state, viewSlots.UPDATES_DATA);
 
 export const getDisplayView = createSelector([getView, getCriteria], (view, criteria) => {
   if (criteria.onlyProblems) {

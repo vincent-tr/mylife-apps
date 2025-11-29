@@ -11,12 +11,11 @@ import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { enter, leave } from '../actions';
 import { HOST_STATUS_PROBLEM } from '../problems';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
+import { useNagiosData } from '../views';
 
 type FIXME_any = any;
 
@@ -27,8 +26,6 @@ const useConnect = () => {
     data: useSelector(getDisplayView),
     ...useMemo(
       () => ({
-        enter: () => dispatch(enter()),
-        leave: () => dispatch(leave()),
         changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
       }),
       [dispatch]
@@ -134,8 +131,8 @@ function Group({ criteria, item }: GroupProps) {
 }
 
 export default function Nagios() {
-  const { enter, leave, data, criteria, changeCriteria } = useConnect();
-  useLifecycle(enter, leave);
+  useNagiosData();
+  const { data, criteria, changeCriteria } = useConnect();
 
   return (
     <Container>

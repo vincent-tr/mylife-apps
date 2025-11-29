@@ -7,14 +7,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
-import { enter, leave } from '../actions';
-import { getView } from '../selectors';
+import { useUpsmonData } from '../views';
 
 type FIXME_any = any;
 
@@ -26,8 +22,7 @@ const Container = styled('div')({
 });
 
 export default function Upsmon() {
-  const { enter, leave, data } = useConnect();
-  useLifecycle(enter, leave);
+  const data = useUpsmonData();
 
   return (
     <Container>
@@ -130,22 +125,6 @@ function Item({ data, field }: ItemProps) {
       <TableCell>{value}</TableCell>
     </TableRow>
   );
-}
-
-function useConnect() {
-  const dispatch = useDispatch<FIXME_any>();
-  return {
-    ...useSelector((state) => ({
-      data: getView(state),
-    })),
-    ...useMemo(
-      () => ({
-        enter: () => dispatch(enter()),
-        leave: () => dispatch(leave()),
-      }),
-      [dispatch]
-    ),
-  };
 }
 
 interface StatusFlagValue {
