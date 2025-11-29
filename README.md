@@ -214,6 +214,7 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 # TODO
 
+- improve view hooks impl + type them (with entities)
 - make TS stricter
 - enable disabled rules in eslint
 - review isScreenPhone, etc for style: should not go through JS to go back to CSS
