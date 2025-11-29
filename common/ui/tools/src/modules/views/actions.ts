@@ -90,12 +90,12 @@ interface ViewReferenceOptions {
 
 export class ViewReference {
   public readonly slot: string;
-  private readonly criteriaSelector;
+  public readonly criteriaSelector;
+  public readonly service: string;
+  public readonly method: string;
+  public readonly canUpdate: boolean;
   private readonly viewSelector;
   private readonly setViewAction;
-  private readonly service: string;
-  private readonly method: string;
-  private readonly canUpdate: boolean;
   private selectorProps;
   private registering = false;
   private unsubscribe: () => void;
