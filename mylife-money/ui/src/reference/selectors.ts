@@ -1,10 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { api, views } from 'mylife-tools';
-import { ACCOUNTS, GROUPS } from './view-ids';
+import { getAccountsView, getGroupsView } from './views';
 
 type FIXME_any = any;
 
-const getAccountView = (state) => views.getViewBySlot(state, ACCOUNTS);
+const getAccountView = getAccountsView;
 
 export const getAccounts = createSelector([getAccountView], (view) => Object.values(view));
 
@@ -16,7 +16,7 @@ const defaultGroup = {
   display: 'Non triés',
 };
 
-const getGroupView = createSelector([(state) => views.getViewBySlot(state, GROUPS)], (view) => ({ ...view, ['null']: defaultGroup }) as views.View<api.Entity>);
+const getGroupView = createSelector([getGroupsView], (view) => ({ ...view, ['null']: defaultGroup }) as views.View<api.Entity>);
 
 export const getGroup = (state, groupId: string) => getGroupView(state)[groupId];
 

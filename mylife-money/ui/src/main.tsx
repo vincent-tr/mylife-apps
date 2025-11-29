@@ -4,7 +4,7 @@ import icons from './common/icons';
 import Home from './home/components';
 import Management from './management/components';
 import managementReducer from './management/store';
-import { referenceInit } from './reference/actions';
+import { initReferenceViews } from './reference/views';
 import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
 import reportingReducer from './reporting/store';
@@ -38,5 +38,4 @@ services.render({
   menu,
 });
 
-const store = services.getStore();
-store.dispatch(referenceInit());
+initReferenceViews();

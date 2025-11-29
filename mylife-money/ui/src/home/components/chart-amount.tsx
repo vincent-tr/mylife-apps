@@ -1,10 +1,10 @@
 import * as muiColors from '@mui/material/colors';
 import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line } from 'recharts';
 import { useChartColors } from 'mylife-tools';
-import { useTotalByMonth } from '../views';
+import { useTotalByMonthView } from '../views';
 
 const ChartAmount = (props) => {
-  const data = useTotalByMonth();
+  const data = useTotalByMonthView();
   const chartColors = useChartColors();
 
   const colors = {

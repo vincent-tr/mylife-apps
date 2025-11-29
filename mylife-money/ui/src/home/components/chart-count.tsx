@@ -1,9 +1,9 @@
 import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line } from 'recharts';
 import { useChartColors } from 'mylife-tools';
-import { useTotalByMonth } from '../views';
+import { useTotalByMonthView } from '../views';
 
 const ChartCount = (props) => {
-  const data = useTotalByMonth();
+  const data = useTotalByMonthView();
   const [color] = useChartColors();
 
   return (

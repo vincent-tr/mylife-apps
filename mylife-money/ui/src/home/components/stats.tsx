@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
-import { useOperationStats } from '../views';
+import { useOperationStatsView } from '../views';
 
 type FIXME_any = any;
 
@@ -13,7 +13,7 @@ const Container = styled('div')({
 });
 
 export default function Stats() {
-  const { view } = useOperationStats();
+  const view = useOperationStatsView();
   const count = statValue(view, 'count');
   const lastDate = statValue(view, 'lastDate');
   const unsortedCount = statValue(view, 'unsortedCount');

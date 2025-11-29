@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { ListContainer as ToolsListContainer } from 'mylife-tools';
-import { useBots } from '../views';
+import { useBotsView } from '../views';
 import Detail from './detail';
 import Run from './run';
 
@@ -55,7 +55,7 @@ const StyledRun = styled(Run)({
 });
 
 export default function Bots() {
-  const { view } = useBots();
+  const { view } = useBotsView();
   const [selection, setSelection] = useState<string>(null);
   const bot = view[selection];
 

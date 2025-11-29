@@ -1,11 +1,11 @@
 import { views } from 'mylife-tools';
 
-const botsViewRef = new views.SharedViewReference({
-  slot: 'bots-list',
-  service: 'bots',
-  method: 'notifyBots',
-});
+const BOTS = 'bots-list';
 
-export function useBots() {
-  return views.useSharedView(botsViewRef);
+export function useBotsView() {
+  return views.useSharedView({
+    slot: BOTS,
+    service: 'bots',
+    method: 'notifyBots',
+  });
 }
