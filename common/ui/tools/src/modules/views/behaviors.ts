@@ -1,35 +1,34 @@
 import { useSelector } from 'react-redux';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
+import { ViewReference, SharedViewReference } from './actions';
 import { getViewBySlot } from './store';
 
-type FIXME_any = any;
+/**
+ * Hook to manage a view lifecycle with automatic attach/detach.
+ * Wraps the ViewReference class.
+ *
+ * @param viewRef - ViewReference instance
+ * @returns The current view data from the store
+ */
+export function useView(viewRef: ViewReference) {
+  const enter = async () => await viewRef.attach();
+  const leave = async () => await viewRef.detach();
+  useLifecycle(enter, leave);
 
-export function useSharedView(sharedViewRef, selectors: { [key: string]: (state) => FIXME_any } = {}) {
+  return useSelector((state) => getViewBySlot(state, viewRef.slot));
+}
+
+/**
+ * Hook to manage a shared view with ref counting.
+ * Wraps the SharedViewReference class.
+ *
+ * @param sharedViewRef - SharedViewReference instance
+ * @returns The current view data from the store
+ */
+export function useSharedView(sharedViewRef: SharedViewReference) {
   const enter = () => sharedViewRef.ref();
   const leave = () => sharedViewRef.unref();
   useLifecycle(enter, leave);
 
-  return useSelector((state) => {
-    const view = getViewBySlot(state, sharedViewRef.uid);
-    const result: FIXME_any = { view };
-
-    for (const [key, selector] of Object.entries(selectors)) {
-      result[key] = selector(view);
-    }
-
-    return result;
-  });
-}
-
-export function createViewSelector(selector) {
-  let cachedView = null;
-  let cachedOutput = null;
-
-  return (view) => {
-    if (view !== cachedView) {
-      cachedView = view;
-      cachedOutput = selector(view);
-    }
-    return cachedOutput;
-  };
+  return useSelector((state) => getViewBySlot(state, sharedViewRef.slot));
 }

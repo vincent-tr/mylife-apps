@@ -2,7 +2,7 @@ import * as api from '../../api';
 import { View } from './types';
 export { getViewBySlot, getViewById, viewChange, viewClose } from './store';
 export { ViewReference, SharedViewReference, createOrUpdateView, deleteView } from './actions';
-export { useSharedView, createViewSelector } from './behaviors';
+export { useView, useSharedView } from './behaviors';
 
 export type { View };
 

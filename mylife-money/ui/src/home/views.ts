@@ -1,3 +1,5 @@
+import { createSelector } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 import { views } from 'mylife-tools';
 
 type FIXME_any = any;
@@ -18,8 +20,11 @@ const totalByMonthViewRef = new views.SharedViewReference({
   method: 'notifyTotalByMonth',
 });
 
-const getSortedTotalByMonth = views.createViewSelector((view) => Object.values(view).sort((a: FIXME_any, b: FIXME_any) => a.month.localeCompare(b.month)));
+const getSortedTotalByMonth = createSelector([(state: FIXME_any) => views.getViewBySlot(state, totalByMonthViewRef.slot)], (view) =>
+  Object.values(view).sort((a: FIXME_any, b: FIXME_any) => a.month.localeCompare(b.month))
+);
 
 export function useTotalByMonth() {
-  return views.useSharedView(totalByMonthViewRef, { sorted: getSortedTotalByMonth });
+  views.useSharedView(totalByMonthViewRef);
+  return useSelector(getSortedTotalByMonth);
 }

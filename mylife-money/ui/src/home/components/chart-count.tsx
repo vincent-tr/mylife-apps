@@ -3,7 +3,7 @@ import { useChartColors } from 'mylife-tools';
 import { useTotalByMonth } from '../views';
 
 const ChartCount = (props) => {
-  const { sorted: data } = useTotalByMonth();
+  const data = useTotalByMonth();
   const [color] = useChartColors();
 
   return (
