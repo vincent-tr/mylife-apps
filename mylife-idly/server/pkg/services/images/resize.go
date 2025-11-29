@@ -9,7 +9,7 @@ import (
 
 func reduceImage(imgData *ImageData, maxSize int) error {
 	// Decode the image with automatic EXIF orientation correction
-	img, err := imaging.Decode(bytes.NewReader(imgData.Content))
+	img, err := imaging.Decode(bytes.NewReader(imgData.Content), imaging.AutoOrientation(true))
 	if err != nil {
 		return err
 	}
