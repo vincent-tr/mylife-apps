@@ -3,7 +3,7 @@ import { TeslaMode } from '../api';
 import * as viewUids from './view-uids';
 
 const stateViewRef = new views.ViewReference({
-  uid: viewUids.STATE,
+  slot: viewUids.STATE,
   service: 'tesla',
   method: 'notifyState',
 });

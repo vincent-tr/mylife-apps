@@ -4,7 +4,7 @@ import { resetCriteria } from './store';
 import * as viewUids from './view-uids';
 
 const viewRef = new views.ViewReference({
-  uid: viewUids.NAGIOS_DATA,
+  slot: viewUids.NAGIOS_DATA,
   service: 'nagios',
   method: 'notify',
 });

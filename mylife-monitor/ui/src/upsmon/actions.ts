@@ -2,7 +2,7 @@ import { views } from 'mylife-tools';
 import * as viewUids from './view-uids';
 
 const viewRef = new views.ViewReference({
-  uid: viewUids.UPSMON_DATA,
+  slot: viewUids.UPSMON_DATA,
   service: 'upsmon',
   method: 'notify',
 });

@@ -81,7 +81,7 @@ export const deleteView = createAsyncThunk(
 );
 
 interface ViewReferenceOptions {
-  uid: string;
+  slot: string;
   criteriaSelector?;
   service: string;
   method: string;
@@ -89,7 +89,7 @@ interface ViewReferenceOptions {
 }
 
 export class ViewReference {
-  public readonly uid: string;
+  public readonly slot: string;
   private readonly criteriaSelector;
   private readonly viewSelector;
   private readonly setViewAction;
@@ -100,15 +100,15 @@ export class ViewReference {
   private registering = false;
   private unsubscribe: () => void;
 
-  constructor({ uid, criteriaSelector = () => null, service, method, canUpdate = false }: ViewReferenceOptions) {
-    if (!uid) {
-      throw new Error('Cannot create ViewReference without uid');
+  constructor({ slot, criteriaSelector = () => null, service, method, canUpdate = false }: ViewReferenceOptions) {
+    if (!slot) {
+      throw new Error('Cannot create ViewReference without slot');
     }
-    this.uid = uid;
+    this.slot = slot;
 
     this.criteriaSelector = criteriaSelector;
-    this.viewSelector = (state) => getViewId(state, uid);
-    this.setViewAction = (viewId) => setView({ uid, viewId });
+    this.viewSelector = (state) => getViewId(state, slot);
+    this.setViewAction = (viewId) => setView({ slot, viewId });
     this.service = service;
     this.method = method;
 
@@ -182,18 +182,18 @@ export class SharedViewReference extends ViewReference {
   ref() {
     const store = getStore();
 
-    const prevRef = getRefCount(store.getState(), this.uid);
-    store.dispatch(ref(this.uid));
-    const currentRef = getRefCount(store.getState(), this.uid);
+    const prevRef = getRefCount(store.getState(), this.slot);
+    store.dispatch(ref(this.slot));
+    const currentRef = getRefCount(store.getState(), this.slot);
     this.refresh(prevRef, currentRef);
   }
 
   unref() {
     const store = getStore();
 
-    const prevRef = getRefCount(store.getState(), this.uid);
-    store.dispatch(unref(this.uid));
-    const currentRef = getRefCount(store.getState(), this.uid);
+    const prevRef = getRefCount(store.getState(), this.slot);
+    store.dispatch(unref(this.slot));
+    const currentRef = getRefCount(store.getState(), this.slot);
     this.refresh(prevRef, currentRef);
   }
 

@@ -2,7 +2,7 @@ import { createAsyncThunk, views } from 'mylife-tools';
 import * as viewUids from './view-uids';
 
 const devicesViewRef = new views.ViewReference({
-  uid: viewUids.DEVICES,
+  slot: viewUids.DEVICES,
   service: 'stats',
   method: 'notifyDevices',
 });

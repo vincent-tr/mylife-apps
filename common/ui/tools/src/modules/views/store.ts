@@ -7,14 +7,18 @@ import { View } from './index';
 
 interface SetViewPayload {
   viewId: string;
-  uid: string;
+  slot: string;
 }
 
 type ViewChangePayload = ViewChange;
 
 interface ViewsState {
-  viewReferences: { [uid: string]: string };
-  refCounts: { [uid: string]: number };
+  // Maps view slots (frontend logical identifiers) to backend view IDs
+  viewReferences: { [slot: string]: string };
+  // Reference counts for shared views - tracks how many components are using each slot
+  // Used exclusively by SharedViewReference to determine when to create/destroy views
+  refCounts: { [slot: string]: number };
+  // Actual view data from backend, indexed by backend view ID
   views: { [viewId: string]: View<api.Entity> };
 }
 
@@ -31,21 +35,21 @@ const viewsSlice = createSlice({
   initialState,
   reducers: {
     setView(state, action: PayloadAction<SetViewPayload>) {
-      const { viewId, uid } = action.payload;
+      const { viewId, slot } = action.payload;
 
       if (viewId === null) {
-        delete state.viewReferences[uid];
+        delete state.viewReferences[slot];
       } else {
-        state.viewReferences[uid] = viewId;
+        state.viewReferences[slot] = viewId;
       }
     },
     ref(state, action: PayloadAction<string>) {
-      const uid = action.payload;
-      addRef(state.refCounts, uid, 1);
+      const slot = action.payload;
+      addRef(state.refCounts, slot, 1);
     },
     unref(state, action: PayloadAction<string>) {
-      const uid = action.payload;
-      addRef(state.refCounts, uid, -1);
+      const slot = action.payload;
+      addRef(state.refCounts, slot, -1);
     },
     viewChange(state, action: PayloadAction<ViewChangePayload>) {
       const { viewId, list } = action.payload;
@@ -82,20 +86,20 @@ const viewsSlice = createSlice({
   },
 
   selectors: {
-    getViewId: (state, uid) => state.viewReferences[uid],
-    getRefCount: (state, uid) => state.refCounts[uid] || 0,
+    getViewId: (state, slot: string) => state.viewReferences[slot],
+    getRefCount: (state, slot: string) => state.refCounts[slot] || 0,
     getViewById: (state, viewId: string) => state.views[viewId] || emptyView,
   },
 });
 
-function addRef(refCounts: { [uid: string]: number }, uid: string, value: number) {
-  const currentValue = refCounts[uid] || 0;
+function addRef(refCounts: { [slot: string]: number }, slot: string, value: number) {
+  const currentValue = refCounts[slot] || 0;
   const newValue = currentValue + value;
 
   if (newValue > 0) {
-    refCounts[uid] = newValue;
+    refCounts[slot] = newValue;
   } else {
-    delete refCounts[uid];
+    delete refCounts[slot];
   }
 }
 
@@ -104,7 +108,7 @@ const local = {
   getViewById: viewsSlice.selectors.getViewById,
 };
 
-export const getViewByUid = (state, uid) => local.getViewById(state, local.getViewId(state, uid));
+export const getViewByUid = (state, slot: string) => local.getViewById(state, local.getViewId(state, slot));
 
 export const { setView, ref, unref, viewChange, viewClose } = viewsSlice.actions;
 export const { getViewId, getRefCount, getViewById } = viewsSlice.selectors;

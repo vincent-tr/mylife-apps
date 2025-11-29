@@ -4,7 +4,7 @@ import { resetCriteria } from './store';
 import * as viewUids from './view-uids';
 
 const viewRef = new views.ViewReference({
-  uid: viewUids.UPDATES_DATA,
+  slot: viewUids.UPDATES_DATA,
   service: 'updates',
   method: 'notify',
 });

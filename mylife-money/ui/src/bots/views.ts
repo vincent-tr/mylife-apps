@@ -1,7 +1,7 @@
 import { views } from 'mylife-tools';
 
 const botsViewRef = new views.SharedViewReference({
-  uid: 'bots-list',
+  slot: 'bots-list',
   service: 'bots',
   method: 'notifyBots',
 });

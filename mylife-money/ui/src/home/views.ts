@@ -3,7 +3,7 @@ import { views } from 'mylife-tools';
 type FIXME_any = any;
 
 const operationStatsViewRef = new views.SharedViewReference({
-  uid: 'home-operation-stats',
+  slot: 'home-operation-stats',
   service: 'reporting',
   method: 'notifyOperationStats',
 });
@@ -13,7 +13,7 @@ export function useOperationStats() {
 }
 
 const totalByMonthViewRef = new views.SharedViewReference({
-  uid: 'home-total-by-month',
+  slot: 'home-total-by-month',
   service: 'reporting',
   method: 'notifyTotalByMonth',
 });

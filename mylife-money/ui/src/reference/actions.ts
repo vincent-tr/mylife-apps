@@ -2,13 +2,13 @@ import { createAsyncThunk, views } from 'mylife-tools';
 import { ACCOUNTS, GROUPS } from './view-ids';
 
 const accountViewRef = new views.ViewReference({
-  uid: ACCOUNTS,
+  slot: ACCOUNTS,
   service: 'common',
   method: 'notifyAccounts',
 });
 
 const groupViewRef = new views.ViewReference({
-  uid: GROUPS,
+  slot: GROUPS,
   service: 'common',
   method: 'notifyGroups',
 });
