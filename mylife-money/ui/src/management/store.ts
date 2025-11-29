@@ -101,7 +101,7 @@ const local = {
   getSelected: managementSlice.selectors.getSelected,
 };
 
-const getOperationView = (state) => io.getView(state, local.getOperationViewId(state));
+const getOperationView = (state) => views.getViewById(state, local.getOperationViewId(state));
 export const getOperationDetail = (state) => getOperationView(state)[local.getOperationIdDetail(state)];
 
 export const getSelectedOperationIds = createSelector([local.getSelected, getOperationView], (selected, view) => selected.filter((id) => id in view));

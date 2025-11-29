@@ -49,7 +49,7 @@ export const changeCriteria = createAsyncThunk('updates/changeCriteria', async (
 });
 
 export const getCriteria = updatesSlice.selectors.getCriteria;
-export const getView = (state) => views.getView(state, viewUids.UPDATES_DATA);
+export const getView = (state) => views.getViewByUid(state, viewUids.UPDATES_DATA);
 
 export const getDisplayView = createSelector([getView, getCriteria], (view, criteria) => {
   if (criteria.onlyProblems) {

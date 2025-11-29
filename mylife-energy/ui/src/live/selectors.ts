@@ -3,8 +3,8 @@ import { views } from 'mylife-tools';
 import { DeviceType, LiveDevice, Measure } from '../api';
 import * as viewUids from './view-uids';
 
-export const getDeviceView = (state) => views.getView(state, viewUids.DEVICES) as views.View<LiveDevice>;
-export const getMeasureView = (state) => views.getView(state, viewUids.MEASURES) as views.View<Measure>;
+export const getDeviceView = (state) => views.getViewByUid(state, viewUids.DEVICES) as views.View<LiveDevice>;
+export const getMeasureView = (state) => views.getViewByUid(state, viewUids.MEASURES) as views.View<Measure>;
 
 export const getMeasure = (state, deviceId: string, sensorKey: string) => getMeasureView(state)[`${deviceId}-${sensorKey}`];
 export const getDevice = (state, deviceId: string) => getDeviceView(state)[deviceId];

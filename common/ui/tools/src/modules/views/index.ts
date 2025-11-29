@@ -1,6 +1,6 @@
 import * as api from '../../api';
 import { View } from './types';
-export { getView } from './store';
+export { getViewByUid, getViewById, viewChange, viewClose } from './store';
 export { ViewReference, SharedViewReference, createOrUpdateView, deleteView } from './actions';
 export { useSharedView, createViewSelector } from './behaviors';
 

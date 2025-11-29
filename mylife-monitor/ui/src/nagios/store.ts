@@ -50,7 +50,7 @@ export const changeCriteria = createAsyncThunk('nagios/changeCriteria', async (c
 });
 
 export const getCriteria = nagiosSlice.selectors.getCriteria;
-export const getView = (state) => views.getView(state, viewUids.NAGIOS_DATA);
+export const getView = (state) => views.getViewByUid(state, viewUids.NAGIOS_DATA);
 
 export const getDisplayView = createSelector([getView, getCriteria], (view: views.View<api.Entity>, criteria) => {
   const groups = new Map();

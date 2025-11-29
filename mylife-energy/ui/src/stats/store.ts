@@ -71,7 +71,7 @@ export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, 
   api.dispatch(local.setValues(values));
 });
 
-export const getDevicesView = (state) => views.getView(state, viewUids.DEVICES) as views.View<Device>;
+export const getDevicesView = (state) => views.getViewByUid(state, viewUids.DEVICES) as views.View<Device>;
 
 export const getChartData = createSelector([local.getStatsMeasures], (measures) => {
   // Note: time range with no value will be omitted

@@ -4,7 +4,7 @@ import { ACCOUNTS, GROUPS } from './view-ids';
 
 type FIXME_any = any;
 
-const getAccountView = (state) => views.getView(state, ACCOUNTS);
+const getAccountView = (state) => views.getViewByUid(state, ACCOUNTS);
 
 export const getAccounts = createSelector([getAccountView], (view) => Object.values(view));
 
@@ -16,7 +16,7 @@ const defaultGroup = {
   display: 'Non triés',
 };
 
-const getGroupView = createSelector([(state) => views.getView(state, GROUPS)], (view) => ({ ...view, ['null']: defaultGroup }) as views.View<api.Entity>);
+const getGroupView = createSelector([(state) => views.getViewByUid(state, GROUPS)], (view) => ({ ...view, ['null']: defaultGroup }) as views.View<api.Entity>);
 
 export const getGroup = (state, groupId: string) => getGroupView(state)[groupId];
 
