@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import { api } from 'mylife-tools';
 import { useNagiosSummaryView, useUpsmonSummaryView, useUpdatesSummaryView } from '../views';
 import NagiosSummary from './nagios-summary';
 import UpdatesSummary from './updates-summary';
@@ -22,7 +21,7 @@ export default function Home() {
   return (
     <Container>
       <Section>
-        {Object.values(nagios).map((summary: api.Entity) => (
+        {Object.values(nagios).map((summary) => (
           <NagiosSummary key={summary._id} data={summary} />
         ))}
       </Section>

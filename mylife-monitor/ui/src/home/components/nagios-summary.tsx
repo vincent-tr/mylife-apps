@@ -5,6 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import * as api from '../../api';
 import icons from '../../common/icons';
 import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 
@@ -26,7 +27,11 @@ const TYPE_DISPLAY = {
   service: 'Services',
 };
 
-const NagiosSummary = ({ data }) => {
+export interface NagiosSummaryProps {
+  data: api.NagiosSummary;
+}
+
+export default function NagiosSummary({ data }: NagiosSummaryProps) {
   return (
     <Container>
       <Table size="small">
@@ -56,6 +61,4 @@ const NagiosSummary = ({ data }) => {
       </Table>
     </Container>
   );
-};
-
-export default NagiosSummary;
+}

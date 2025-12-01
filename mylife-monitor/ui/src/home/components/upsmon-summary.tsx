@@ -6,7 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import humanizeDuration from 'humanize-duration';
-import { api } from 'mylife-tools';
+import { views } from 'mylife-tools';
+import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import icons from '../../common/icons';
 import { SuccessCell, ErrorCell } from '../../common/table-status';
@@ -43,7 +44,11 @@ const formatDuration = humanizeDuration.humanizer({
   },
 });
 
-const UpsmonSummary = ({ view }) => {
+export interface UpsmonSummaryProps {
+  view: views.View<api.UpsmonSummary>;
+}
+
+export default function UpsmonSummary({ view }: UpsmonSummaryProps) {
   return (
     <Container>
       <Table size="small">
@@ -64,18 +69,20 @@ const UpsmonSummary = ({ view }) => {
         </TableHead>
 
         <TableBody>
-          {Object.values(view).map((data: api.Entity) => (
+          {Object.values(view).map((data) => (
             <Row key={data._id} data={data} />
           ))}
         </TableBody>
       </Table>
     </Container>
   );
-};
+}
 
-export default UpsmonSummary;
+interface RowProps {
+  data: api.UpsmonSummary;
+}
 
-const Row = ({ data }) => {
+function Row({ data }: RowProps) {
   const statusOk = data.status == 'ONLINE';
   const lastUpdate = useSince(data.date);
   const lastUpdateOk = lastUpdate < 5 * 60 * 1000; // 5 mins
@@ -91,4 +98,4 @@ const Row = ({ data }) => {
       <UpdateCell>{lastUpdateStr}</UpdateCell>
     </TableRow>
   );
-};
+}

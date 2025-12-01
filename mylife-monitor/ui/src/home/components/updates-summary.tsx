@@ -5,7 +5,8 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { api } from 'mylife-tools';
+import { views } from 'mylife-tools';
+import * as api from '../../api';
 import icons from '../../common/icons';
 import { SuccessCell, WarningCell, ErrorCell } from '../../common/table-status';
 
@@ -22,7 +23,11 @@ const HeaderCell = styled('div')(({ theme }) => ({
   },
 }));
 
-const UpdatesSummary = ({ view }) => {
+export interface UpdatesSummaryProps {
+  view: views.View<api.UpdatesSummary>;
+}
+
+export default function UpdatesSummary({ view }: UpdatesSummaryProps) {
   return (
     <Container>
       <Table size="small">
@@ -44,18 +49,20 @@ const UpdatesSummary = ({ view }) => {
         </TableHead>
 
         <TableBody>
-          {Object.values(view).map((data: api.Entity) => (
+          {Object.values(view).map((data) => (
             <Row key={data._id} data={data} />
           ))}
         </TableBody>
       </Table>
     </Container>
   );
-};
+}
 
-export default UpdatesSummary;
+interface RowProps {
+  data: api.UpdatesSummary;
+}
 
-const Row = ({ data }) => {
+function Row({ data }: RowProps) {
   return (
     <TableRow>
       <TableCell>{data.category}</TableCell>
@@ -64,4 +71,4 @@ const Row = ({ data }) => {
       <ErrorCell>{data.unknown}</ErrorCell>
     </TableRow>
   );
-};
+}
