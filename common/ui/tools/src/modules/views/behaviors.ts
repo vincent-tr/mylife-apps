@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { api } from '../..';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
 import { ViewReference, SharedViewReference } from './actions';
 import { getViewBySlot } from './store';
@@ -55,14 +56,14 @@ function getOrCreateViewRef(options: ViewOptions): ViewReference {
  * @param options - ViewReference constructor options
  * @returns The current view data from the store
  */
-export function useView(options: ViewOptions) {
+export function useView<TEntity extends api.Entity>(options: ViewOptions) {
   const viewRef = getOrCreateViewRef(options);
 
   const enter = async () => await viewRef.attach();
   const leave = async () => await viewRef.detach();
   useLifecycle(enter, leave);
 
-  return useSelector((state) => getViewBySlot(state, options.slot));
+  return useSelector((state) => getViewBySlot<TEntity>(state, options.slot));
 }
 
 interface SharedViewOptions {
@@ -117,14 +118,14 @@ function getOrCreateSharedViewRef(options: SharedViewOptions): SharedViewReferen
  * @param options - SharedViewReference constructor options
  * @returns The current view data from the store
  */
-export function useSharedView(options: SharedViewOptions) {
+export function useSharedView<TEntity extends api.Entity>(options: SharedViewOptions) {
   const sharedViewRef = getOrCreateSharedViewRef(options);
 
   const enter = () => sharedViewRef.ref();
   const leave = () => sharedViewRef.unref();
   useLifecycle(enter, leave);
 
-  return useSelector((state) => getViewBySlot(state, options.slot));
+  return useSelector((state) => getViewBySlot<TEntity>(state, options.slot));
 }
 
 interface StaticViewOptions {

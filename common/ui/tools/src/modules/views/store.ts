@@ -108,9 +108,12 @@ const local = {
   getViewById: viewsSlice.selectors.getViewById,
 };
 
-export const getViewBySlot = (state, slot: string) => local.getViewById(state, local.getViewId(state, slot));
+export const getViewBySlot = <TEntity extends api.Entity>(state, slot: string) => local.getViewById(state, local.getViewId(state, slot)) as View<TEntity>;
+
+// wrap it to export with correct generics
+export const getViewById = <TEntity extends api.Entity>(state, viewId: string) => local.getViewById(state, viewId) as View<TEntity>;
 
 export const { setView, ref, unref, viewChange, viewClose } = viewsSlice.actions;
-export const { getViewId, getRefCount, getViewById } = viewsSlice.selectors;
+export const { getViewId, getRefCount } = viewsSlice.selectors;
 
 export default viewsSlice.reducer;
