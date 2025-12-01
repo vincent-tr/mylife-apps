@@ -7,6 +7,57 @@ import { getViewId, getRefCount, setView, ref, unref } from './store';
 
 type FIXME_any = any;
 
+export interface SharedViewOptions {
+  slot: string;
+  service: string;
+  method: string;
+}
+
+export const refSharedView = createAsyncThunk(`${STATE_PREFIX}/views/refSharedView`, async ({ slot, service, method }: SharedViewOptions, api) => {
+  const mutex = getSharedViewMutex(slot);
+
+  await mutex.runExclusive(async () => {
+    api.dispatch(ref(slot));
+
+    const state = api.getState() as FIXME_any;
+    const isAttach = getRefCount(state, slot) === 1;
+
+    if (isAttach) {
+      const viewId: string = await api.extra.call({ service, method });
+      api.dispatch(setView({ slot, viewId }));
+    }
+  });
+});
+
+export const unrefSharedView = createAsyncThunk(`${STATE_PREFIX}/views/unrefSharedView`, async (slot: string, api) => {
+  const mutex = getSharedViewMutex(slot);
+
+  await mutex.runExclusive(async () => {
+    api.dispatch(unref(slot));
+
+    const state = api.getState() as FIXME_any;
+    const isDetach = getRefCount(state, slot) === 0;
+
+    if (isDetach) {
+      const viewId = getViewId(state, slot);
+      if (viewId) {
+        api.dispatch(setView({ slot, viewId: null }));
+        await api.dispatch(io.unnotify(viewId));
+      }
+    }
+  });
+});
+
+// Mutex per slot for shared view operations
+const sharedViewMutexes = new Map<string, Mutex>();
+
+function getSharedViewMutex(slot: string): Mutex {
+  if (!sharedViewMutexes.has(slot)) {
+    sharedViewMutexes.set(slot, new Mutex());
+  }
+  return sharedViewMutexes.get(slot)!;
+}
+
 export interface StaticViewOptions {
   slot: string;
   service: string;

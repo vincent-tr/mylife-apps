@@ -1,8 +1,9 @@
+import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { api } from '../..';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
 import { getStore } from '../../services';
-import { SharedViewReference, StaticViewOptions, createStaticView } from './actions';
+import { StaticViewOptions, createStaticView, refSharedView, unrefSharedView } from './actions';
 import { getViewBySlot } from './store';
 import { View } from './types';
 
@@ -37,53 +38,23 @@ interface SharedViewOptions {
   method: string;
 }
 
-// Global map to store SharedViewReference instances by slot
-const sharedViewRefs = new Map<string, SharedViewReference>();
-
-function validateSharedViewOptions(slot: string, existingRef: SharedViewReference, newOptions: SharedViewOptions): void {
-  if (existingRef.service !== newOptions.service || existingRef.method !== newOptions.method) {
-    console.error(
-      `useSharedView called with different options for slot "${slot}".`,
-      '\nExisting:',
-      {
-        service: existingRef.service,
-        method: existingRef.method,
-        //canUpdate: existingRef.canUpdate,
-        //criteriaSelector: existingRef.criteriaSelector,
-      },
-      '\nNew:',
-      newOptions
-    );
-  }
-}
-
-function getOrCreateSharedViewRef(options: SharedViewOptions): SharedViewReference {
-  const { slot } = options;
-
-  if (!sharedViewRefs.has(slot)) {
-    sharedViewRefs.set(slot, new SharedViewReference(options));
-  } else {
-    validateSharedViewOptions(slot, sharedViewRefs.get(slot)!, options);
-  }
-
-  return sharedViewRefs.get(slot)!;
-}
-
 /**
  * Hook to manage a shared view with ref counting.
- * Creates or reuses a SharedViewReference instance based on the slot.
+ * Multiple components can use the same shared view simultaneously.
+ * The view is created when the first component mounts and destroyed when the last one unmounts.
  *
- * @param options - SharedViewReference constructor options
+ * @param options - Shared view options (slot, service, method), must be stable (constants)
  * @returns The current view data from the store
  */
 export function useSharedView<TEntity extends api.Entity>(options: SharedViewOptions) {
-  const sharedViewRef = getOrCreateSharedViewRef(options);
+  const { dispatch } = getStore();
+  const { slot, service, method } = options;
 
-  const enter = () => sharedViewRef.ref();
-  const leave = () => sharedViewRef.unref();
+  const enter = useCallback(() => dispatch(refSharedView({ slot, service, method })), [dispatch, slot, service, method]);
+  const leave = useCallback(() => dispatch(unrefSharedView(slot)), [dispatch, slot]);
   useLifecycle(enter, leave);
 
-  return useSelector((state) => getViewBySlot<TEntity>(state, options.slot));
+  return useSelector((state) => getViewBySlot<TEntity>(state, slot));
 }
 
 export type { StaticViewOptions };
