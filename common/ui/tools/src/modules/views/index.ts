@@ -83,7 +83,7 @@ import * as api from '../../api';
 import { View } from './types';
 export { getViewBySlot, getViewById, viewChange, viewClose } from './store';
 export { createOrUpdateView, deleteView } from './actions';
-export { initStaticView, useView, useSharedView } from './behaviors';
+export { initStaticView, useCriteriaView, useSharedView } from './behaviors';
 
 export type { View };
 

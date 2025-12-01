@@ -7,7 +7,7 @@ import { StaticViewOptions, createStaticView, refSharedView, unrefSharedView } f
 import { getViewBySlot } from './store';
 import { View } from './types';
 
-interface ViewOptions {
+interface CriteriaViewOptions {
   criteriaSelector;
   service: string;
   method: string;
@@ -21,7 +21,7 @@ interface ViewOptions {
  * @param options - ViewReference constructor options
  * @returns The current view data from the store
  */
-export function useView<TEntity extends api.Entity>(options: ViewOptions): View<TEntity> {
+export function useCriteriaView<TEntity extends api.Entity>(options: CriteriaViewOptions): View<TEntity> {
   void options;
   throw new Error('Not implemented');
 
