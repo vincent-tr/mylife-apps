@@ -1,11 +1,12 @@
 import { views } from 'mylife-tools';
+import * as api from '../api';
 
 const NAGIOS_DATA = 'nagios-data';
 
-export const getView = (state) => views.getViewBySlot(state, NAGIOS_DATA);
+export const getView = (state) => views.getViewBySlot<api.NagiosData>(state, NAGIOS_DATA);
 
 export function useNagiosDataView() {
-  return views.useView({
+  return views.useSharedView<api.NagiosData>({
     slot: NAGIOS_DATA,
     service: 'nagios',
     method: 'notify',

@@ -1,52 +1,16 @@
 import { useSelector } from 'react-redux';
 import { api } from '../..';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
-import { ViewReference, SharedViewReference } from './actions';
+import { getStore } from '../../services';
+import { SharedViewReference, StaticViewOptions, createStaticView } from './actions';
 import { getViewBySlot } from './store';
+import { View } from './types';
 
 interface ViewOptions {
-  slot: string;
-  criteriaSelector?;
+  criteriaSelector;
   service: string;
   method: string;
   canUpdate?: boolean;
-}
-
-// Global map to store ViewReference instances by slot
-const viewRefs = new Map<string, ViewReference>();
-
-function validateViewOptions(slot: string, existingRef: ViewReference, newOptions: ViewOptions): void {
-  if (
-    existingRef.service !== newOptions.service ||
-    existingRef.method !== newOptions.method ||
-    existingRef.canUpdate !== newOptions.canUpdate ||
-    existingRef.criteriaSelector !== newOptions.criteriaSelector
-  ) {
-    console.error(
-      `useView called with different options for slot "${slot}".`,
-      '\nExisting:',
-      {
-        service: existingRef.service,
-        method: existingRef.method,
-        canUpdate: existingRef.canUpdate,
-        criteriaSelector: existingRef.criteriaSelector,
-      },
-      '\nNew:',
-      newOptions
-    );
-  }
-}
-
-function getOrCreateViewRef(options: ViewOptions): ViewReference {
-  const { slot } = options;
-
-  if (!viewRefs.has(slot)) {
-    viewRefs.set(slot, new ViewReference(options));
-  } else {
-    validateViewOptions(slot, viewRefs.get(slot)!, options);
-  }
-
-  return viewRefs.get(slot)!;
 }
 
 /**
@@ -56,42 +20,36 @@ function getOrCreateViewRef(options: ViewOptions): ViewReference {
  * @param options - ViewReference constructor options
  * @returns The current view data from the store
  */
-export function useView<TEntity extends api.Entity>(options: ViewOptions) {
-  const viewRef = getOrCreateViewRef(options);
+export function useView<TEntity extends api.Entity>(options: ViewOptions): View<TEntity> {
+  void options;
+  throw new Error('Not implemented');
 
-  const enter = async () => await viewRef.attach();
-  const leave = async () => await viewRef.detach();
-  useLifecycle(enter, leave);
+  // const enter = async () => await viewRef.attach();
+  // const leave = async () => await viewRef.detach();
+  // useLifecycle(enter, leave);
 
-  return useSelector((state) => getViewBySlot<TEntity>(state, options.slot));
+  // return useSelector((state) => getViewBySlot<TEntity>(state, options.slot));
 }
 
 interface SharedViewOptions {
   slot: string;
-  criteriaSelector?;
   service: string;
   method: string;
-  canUpdate?: boolean;
 }
 
 // Global map to store SharedViewReference instances by slot
 const sharedViewRefs = new Map<string, SharedViewReference>();
 
 function validateSharedViewOptions(slot: string, existingRef: SharedViewReference, newOptions: SharedViewOptions): void {
-  if (
-    existingRef.service !== newOptions.service ||
-    existingRef.method !== newOptions.method ||
-    existingRef.canUpdate !== newOptions.canUpdate ||
-    existingRef.criteriaSelector !== newOptions.criteriaSelector
-  ) {
+  if (existingRef.service !== newOptions.service || existingRef.method !== newOptions.method) {
     console.error(
       `useSharedView called with different options for slot "${slot}".`,
       '\nExisting:',
       {
         service: existingRef.service,
         method: existingRef.method,
-        canUpdate: existingRef.canUpdate,
-        criteriaSelector: existingRef.criteriaSelector,
+        //canUpdate: existingRef.canUpdate,
+        //criteriaSelector: existingRef.criteriaSelector,
       },
       '\nNew:',
       newOptions

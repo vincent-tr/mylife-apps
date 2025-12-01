@@ -1,12 +1,12 @@
 import { views } from 'mylife-tools';
-import { Device } from '../api';
+import * as api from '../api';
 
 const DEVICES = 'devices';
 
-export const getDevicesView = (state) => views.getViewBySlot(state, DEVICES) as views.View<Device>;
+export const getDevicesView = (state) => views.getViewBySlot<api.Device>(state, DEVICES);
 
 export function useDevicesView() {
-  return views.useView({
+  return views.useSharedView<api.Device>({
     slot: DEVICES,
     service: 'stats',
     method: 'notifyDevices',

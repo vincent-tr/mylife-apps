@@ -6,7 +6,7 @@ const UPSMON_SUMMARY = 'upsmon-summary';
 const UPDATES_SUMMARY = 'updates-summary';
 
 export function useNagiosSummaryView() {
-  return views.useView<api.NagiosSummary>({
+  return views.useSharedView<api.NagiosSummary>({
     slot: NAGIOS_SUMMARY,
     service: 'nagios',
     method: 'notifySummary',
@@ -14,7 +14,7 @@ export function useNagiosSummaryView() {
 }
 
 export function useUpsmonSummaryView() {
-  return views.useView<api.UpsmonSummary>({
+  return views.useSharedView<api.UpsmonSummary>({
     slot: UPSMON_SUMMARY,
     service: 'upsmon',
     method: 'notifySummary',
@@ -22,7 +22,7 @@ export function useUpsmonSummaryView() {
 }
 
 export function useUpdatesSummaryView() {
-  return views.useView<api.UpdatesSummary>({
+  return views.useSharedView<api.UpdatesSummary>({
     slot: UPDATES_SUMMARY,
     service: 'updates',
     method: 'notifySummary',
