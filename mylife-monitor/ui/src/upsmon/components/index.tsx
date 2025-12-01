@@ -12,8 +12,6 @@ import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { useUpsmonDataView } from '../views';
 
-type FIXME_any = any;
-
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
@@ -37,7 +35,7 @@ export default function Upsmon() {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {Object.values(data).map((item: api.UpsmonStatus) => (
+              {Object.values(data).map((item) => (
                 <Ups key={item._id} data={item} />
               ))}
             </TableBody>
@@ -49,30 +47,30 @@ export default function Upsmon() {
 }
 
 const formatters = {
-  identity: (value) => value,
-  datetime: (value) => formatDate(value, 'dd/MM/yyyy HH:mm:ss'),
-  duration: (value) => humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true }),
-  percent: (value) => `${value.toFixed()} %`,
-  voltage: (value) => `${value.toFixed()} V`,
-  power: (value) => `${value.toFixed()} W`,
-  count: (value) => value.toFixed(),
+  string: (value: string) => value,
+  datetime: (value: Date) => formatDate(value, 'dd/MM/yyyy HH:mm:ss'),
+  duration: (value: number) => humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true }),
+  percent: (value: number) => `${value.toFixed()} %`,
+  voltage: (value: number) => `${value.toFixed()} V`,
+  power: (value: number) => `${value.toFixed()} W`,
+  count: (value: number) => value.toFixed(),
   status: formatStatusFlag,
 };
 
-const fields: Partial<Record<keyof api.UpsmonStatus, [(value: FIXME_any) => string, string]>> = {
+const fields: Partial<Record<keyof api.UpsmonStatus, [(value: unknown) => string, string]>> = {
   // _id, _entity
   date: [formatters.datetime, "Date et heure auxquels les informations ont été obtenus de l'onduleur"],
   // upsName
   startTime: [formatters.datetime, "Date/heure de démarrage de l'onduleur"],
-  model: [formatters.identity, "Modèle de l'onduleur"],
-  status: [formatters.identity, "Statut de l'onduleur"],
+  model: [formatters.string, "Modèle de l'onduleur"],
+  status: [formatters.string, "Statut de l'onduleur"],
   statusFlag: [formatters.status, "Statut de l'onduleur (flags)"],
   lineVoltage: [formatters.voltage, "Tension courante d'entrée"],
   loadPercent: [formatters.percent, 'Pourcentage de puissance utilisée'],
   batteryChargePercent: [formatters.percent, 'Pourcentage de charge des batteries'],
   timeLeft: [formatters.duration, "Temps restant en secondes d'exécution sur batteries"],
   batteryVoltage: [formatters.voltage, 'Tension des batteries'],
-  lastTransfer: [formatters.identity, 'Raison du dernier transfert vers les batteries'],
+  lastTransfer: [formatters.string, 'Raison du dernier transfert vers les batteries'],
   numberTransfers: [formatters.count, 'Nombre de transferts depuis le démarrage de upsmon'],
   xOnBattery: [formatters.datetime, 'Date/heure du dernier transfert vers les batteries'],
   timeOnBattery: [formatters.duration, 'Temps sur batterie (en secondes)'],
@@ -81,7 +79,7 @@ const fields: Partial<Record<keyof api.UpsmonStatus, [(value: FIXME_any) => stri
   nominalInputVoltage: [formatters.voltage, "Tension d'entrée attendue par l'onduleur"],
   nominalBatteryVoltage: [formatters.voltage, 'Tension nominale de batterie'],
   nominalPower: [formatters.power, 'Puissance nominale'],
-  firmware: [formatters.identity, 'Version du firmware'],
+  firmware: [formatters.string, 'Version du firmware'],
   outputVoltage: [formatters.voltage, 'Tension de sortie'],
 };
 
