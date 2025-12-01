@@ -11,10 +11,10 @@ import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { api } from 'mylife-tools';
+import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { changeCriteria, getCriteria, getDisplayView } from '../store';
+import { changeCriteria, Criteria, getCriteria, getDisplayView } from '../store';
 import { useUpdatesDataView } from '../views';
 
 type FIXME_any = any;
@@ -49,7 +49,7 @@ export default function Updates() {
   useUpdatesDataView();
   const { data, criteria, changeCriteria } = useConnect();
 
-  const dataSorted = useMemo(() => Object.values(data).sort((a, b) => (a as FIXME_any).path.join('/').localeCompare((b as FIXME_any).path.join('/'))) as api.Entity[], [data]);
+  const dataSorted = useMemo(() => Object.values(data).sort((a, b) => a.path.join('/').localeCompare(b.path.join('/'))), [data]);
 
   return (
     <Container>
@@ -81,7 +81,11 @@ export default function Updates() {
   );
 }
 
-const Version = ({ data }) => {
+interface VersionProps {
+  data: api.UpdatesVersion;
+}
+
+function Version({ data }: VersionProps) {
   const getRowComponent = useCallback((status) => {
     switch (status) {
       case 'uptodate':
@@ -111,9 +115,9 @@ const Version = ({ data }) => {
       </RowComponent>
     </>
   );
-};
+}
 
-function getStatusStr(status) {
+function getStatusStr(status: api.UpdatesStatus) {
   switch (status) {
     case 'uptodate':
       return 'A jour';
@@ -162,7 +166,7 @@ function useConnect() {
     data: useSelector(getDisplayView),
     ...useMemo(
       () => ({
-        changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
+        changeCriteria: (criteria: Partial<Criteria>) => dispatch(changeCriteria(criteria)),
       }),
       [dispatch]
     ),

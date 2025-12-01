@@ -8,7 +8,7 @@ interface UpdatesState {
   criteria: Criteria;
 }
 
-interface Criteria {
+export interface Criteria {
   onlyProblems: boolean;
 }
 
@@ -52,7 +52,7 @@ export const getCriteria = updatesSlice.selectors.getCriteria;
 
 export const getDisplayView = createSelector([getView, getCriteria], (view, criteria) => {
   if (criteria.onlyProblems) {
-    return views.filter(view, (item) => (item as FIXME_any).status !== 'uptodate');
+    return views.filter(view, (item) => item.status !== 'uptodate');
   } else {
     return view;
   }
