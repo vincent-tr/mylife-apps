@@ -7,6 +7,21 @@ import { getViewId, getRefCount, setView, ref, unref } from './store';
 
 type FIXME_any = any;
 
+export interface StaticViewOptions {
+  slot: string;
+  service: string;
+  method: string;
+}
+
+export const createStaticView = createAsyncThunk(`${STATE_PREFIX}/views/create`, async ({ service, method, slot }: StaticViewOptions, api) => {
+  const viewId: string = await api.extra.call({
+    service,
+    method,
+  });
+
+  api.dispatch(setView({ slot, viewId }));
+});
+
 interface CreateOrUpdateViewOptions {
   criteriaSelector;
   selectorProps?;
