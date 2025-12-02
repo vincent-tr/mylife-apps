@@ -47,35 +47,6 @@ export const getView = (state) => views.getViewById(state, local.getViewId(state
 
 // sort on id, should be usefull with report's custom keys
 export const getSortedViewList = createSelector([getView], (view) => Object.values(view).sort((item1, item2) => (item1._id < item2._id ? -1 : 1)));
-/*
-export const getGroupByMonth = (criteria) =>
-  views.createOrUpdateView({
-    criteriaSelector: () => criteria,
-    viewSelector: local.getViewId,
-    setViewAction: local.setView,
-    service: 'reporting',
-    method: 'notifyGroupByMonth',
-  });
-
-export const getGroupByYear = (criteria) =>
-  views.createOrUpdateView({
-    criteriaSelector: () => criteria,
-    viewSelector: local.getViewId,
-    setViewAction: local.setView,
-    service: 'reporting',
-    method: 'notifyGroupByYear',
-  });
-
-const clearReportingView = () =>
-  views.deleteView({
-    viewSelector: local.getViewId,
-    setViewAction: local.setView,
-  });
-
-export const reportingLeave = createAsyncThunk('reporting/reportingLeave', async (_, api) => {
-  await api.dispatch(clearReportingView());
-});
-*/
 
 export interface DownloadExportParams {
   criteria: FIXME_any;
@@ -96,28 +67,3 @@ export const downloadExport = createAsyncThunk('reporting/downloadExport', async
 
   api.dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
 });
-
-export const exportGroupByMonth = createExportAction({
-  service: 'reporting',
-  method: 'exportGroupByMonth',
-  fileName: 'groupes-par-mois.xlsx',
-});
-
-export const exportGroupByYear = createExportAction({
-  service: 'reporting',
-  method: 'exportGroupByYear',
-  fileName: 'groupes-par-an.xlsx',
-});
-
-function createExportAction({ service, method, fileName }) {
-  return createAsyncThunk('reporting/' + method, async ({ criteria, display }: { criteria: FIXME_any; display: FIXME_any }, api) => {
-    const content: string = await api.extra.call({
-      service,
-      method,
-      criteria,
-      display,
-    });
-
-    api.dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
-  });
-}
