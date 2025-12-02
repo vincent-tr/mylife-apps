@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { useReducer, useEffect } from 'react';
-import { useActions } from 'mylife-tools';
-import { fetchValues } from '../store';
+import { useAction } from 'mylife-tools';
+import { fetchValues as fetchValuesAction } from '../store';
 import { StatsType } from '../types';
 import { useDevicesView } from '../views';
 import Chart from './chart';
@@ -20,7 +20,7 @@ const StyledChart = styled(Chart)({
 
 export default function Stats() {
   useDevicesView();
-  const { fetchValues: localFetchValues } = useActions({ fetchValues });
+  const fetchValues = useAction(fetchValuesAction);
 
   const [criteria, onCriteriaChange] = useReducer((criteria: Criteria, props: Partial<Criteria>) => ({ ...criteria, ...props }), {
     type: StatsType.Day,
@@ -29,8 +29,8 @@ export default function Stats() {
   } as Criteria);
 
   useEffect(() => {
-    localFetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices });
-  }, [criteria, localFetchValues]);
+    fetchValues({ type: criteria.type, timestamp: criteria.date, sensors: criteria.devices });
+  }, [criteria, fetchValues]);
 
   return (
     <Container>

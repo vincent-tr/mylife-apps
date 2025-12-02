@@ -8,17 +8,17 @@ import Typography from '@mui/material/Typography';
 import humanizeDuration from 'humanize-duration';
 import { PropsWithChildren } from 'react';
 import BatteryGauge from 'react-battery-gauge';
-import { useActions } from 'mylife-tools';
+import { useAction } from 'mylife-tools';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../api';
 import icons from '../../common/icons';
-import { setMode } from '../actions';
+import { setMode as setModeAction } from '../actions';
 import { useTeslaState } from '../views';
 import ChargingGauge from './charging-gauge';
 import { useParameters } from './parameters';
 
 export default function Tesla() {
   const state = useTeslaState();
-  const actions = useActions({ setMode });
+  const setMode = useAction(setModeAction);
   const showParameters = useParameters();
 
   if (!state) {
@@ -46,7 +46,7 @@ export default function Tesla() {
       <Section title={'Charge'}>
         <Part>
           <ButtonsContainer>
-            <StyledToggleButtonGroup exclusive value={state.mode} onChange={(_event, mode) => actions.setMode(mode)}>
+            <StyledToggleButtonGroup exclusive value={state.mode} onChange={(_event, mode) => setMode(mode)}>
               <ToggleButton value={TeslaMode.Off}>
                 <Tooltip title="Eteint">
                   <icons.actions.Off fontSize="large" />
