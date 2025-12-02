@@ -214,13 +214,14 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 # TODO
 
-- improve view hooks impl + type them (with entities)
+- design API typed services
 - make TS stricter
 - enable disabled rules in eslint
 - review isScreenPhone, etc for style: should not go through JS to go back to CSS
 - use mui charts, table, treeview
 - FIXME_any
 - remove server socket errors
+- shared view: handle short deletion/recreation
 
 ## Tools UI
 
