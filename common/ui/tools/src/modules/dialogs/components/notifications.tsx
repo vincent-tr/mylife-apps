@@ -8,7 +8,7 @@ import Portal from '@mui/material/Portal';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useToolsDispatch, useToolsSelector } from '../../../services';
 import { getNotifications, dismissNotification } from '../store';
 import { NotificationType } from '../types';
 
@@ -20,9 +20,9 @@ const typeIcons = {
 };
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useToolsDispatch();
   return {
-    notifications: useSelector(getNotifications),
+    notifications: useToolsSelector(getNotifications),
     ...useMemo(
       () => ({
         dismiss: (id: number) => dispatch(dismissNotification(id)),

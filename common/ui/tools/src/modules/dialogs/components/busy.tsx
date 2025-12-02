@@ -2,11 +2,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
+import { useToolsSelector } from '../../../services';
 import { getBusy } from '../../io/store';
 
 const useConnect = () => ({
-  busy: useSelector(getBusy),
+  busy: useToolsSelector(getBusy),
 });
 
 const StyledDialogTitle = styled(DialogTitle)({

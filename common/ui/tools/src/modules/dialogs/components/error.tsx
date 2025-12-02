@@ -5,13 +5,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useToolsDispatch, useToolsSelector } from '../../../services';
 import { clearError, getError } from '../store';
 
 const useConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useToolsDispatch();
   return {
-    error: useSelector(getError),
+    error: useToolsSelector(getError),
     ...useMemo(
       () => ({
         clear: () => dispatch(clearError()),

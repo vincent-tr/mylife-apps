@@ -15,7 +15,7 @@
  * await initStaticView({ slot: 'accounts', service: 'money', method: 'notifyAccounts' });
  *
  * // Component usage
- * const accounts = useSelector(state => views.getViewBySlot(state, 'accounts'));
+ * const accounts = useAppSelector(state => views.getViewBySlot(state, 'accounts'));
  * ```
  *
  * - ✓ No criteria (fixed data)
@@ -52,13 +52,12 @@
  *
  * ```typescript
  * export function useStatsView() {
- *   const type = useSelector(getType);
- *   const criteria = useSelector(getCriteria);
+ *   const criteria = useAppSelector(getCriteria);
  *
  *   return useCriteriaView({
  *     service: 'energy',
  *     method: 'notifyStats',
- *     criteria: { type, criteria },
+ *     criteria,
  *   });
  * }
  * ```

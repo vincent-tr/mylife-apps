@@ -1,9 +1,8 @@
 import { Action } from '@reduxjs/toolkit/react';
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import { api } from '../..';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
-import { getStore } from '../../services';
+import { getStore, useToolsDispatch, useToolsSelector } from '../../services';
 import { SharedViewOptions, StaticViewOptions, createOrUpdateCriteriaView, createStaticView, deleteCriteriaView, refSharedView, unrefSharedView } from './actions';
 import { getViewBySlot } from './store';
 import { View } from './types';
@@ -26,7 +25,7 @@ export interface CriteriaViewOptions<TCriteria> {
  * @returns The current view data from the store
  */
 export function useCriteriaView<TEntity extends api.Entity, TCriteria>(options: CriteriaViewOptions<TCriteria>): View<TEntity> {
-  const { dispatch } = getStore();
+  const dispatch = useToolsDispatch();
   const { service, method, criteria, setViewIdAction, clearViewIdAction, viewIdSelector } = options;
 
   const enterOrUpdate = useCallback(() => {
@@ -53,8 +52,8 @@ export function useCriteriaView<TEntity extends api.Entity, TCriteria>(options: 
 
   useLifecycle(enterOrUpdate, leave, [criteria]);
 
-  const viewId = useSelector(viewIdSelector);
-  return useSelector((state) => getViewBySlot<TEntity>(state, viewId));
+  const viewId = useToolsSelector(viewIdSelector);
+  return useToolsSelector((state) => getViewBySlot<TEntity>(state, viewId));
 }
 
 export type { SharedViewOptions };
@@ -68,14 +67,14 @@ export type { SharedViewOptions };
  * @returns The current view data from the store
  */
 export function useSharedView<TEntity extends api.Entity>(options: SharedViewOptions) {
-  const { dispatch } = getStore();
+  const dispatch = useToolsDispatch();
   const { slot, service, method } = options;
 
   const enter = useCallback(() => dispatch(refSharedView({ slot, service, method })), [dispatch, slot, service, method]);
   const leave = useCallback(() => dispatch(unrefSharedView(slot)), [dispatch, slot]);
   useLifecycle(enter, leave);
 
-  return useSelector((state) => getViewBySlot<TEntity>(state, slot));
+  return useToolsSelector((state) => getViewBySlot<TEntity>(state, slot));
 }
 
 export type { StaticViewOptions };

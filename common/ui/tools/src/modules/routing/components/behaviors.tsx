@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useToolsDispatch, useToolsSelector } from '../../../services';
 import { navigate, getLocation } from '../store';
 
 export const useRoutingConnect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useToolsDispatch();
   return {
-    location: useSelector(getLocation),
+    location: useToolsSelector(getLocation),
     ...useMemo(
       () => ({
         navigate: (location) => dispatch(navigate(location)),

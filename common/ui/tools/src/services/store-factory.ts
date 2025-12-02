@@ -1,4 +1,5 @@
 import { configureStore, combineReducers, isPlain, createAsyncThunk as rtkCreateAsyncThunk, AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import { createLogger } from 'redux-logger';
 import { STATE_PREFIX } from '../constants/defines';
 import dialogs from '../modules/dialogs/store';
@@ -23,9 +24,23 @@ if (!import.meta.env.PROD) {
   middlewares.push(createLogger({ duration: true, collapsed: () => true }));
 }
 
+// Store instance
+
 let store;
 
-export function initStore(reducers) {
+export function initStore<M>(reducers: M) {
+  store = buildStore(reducers);
+
+  connectStoreDispatcher(store.dispatch);
+}
+
+export function getStore() {
+  return store;
+}
+
+// Build store
+
+function buildStore<M>(reducers: M) {
   const reducer = combineReducers({
     ...reducers,
     [`${STATE_PREFIX}/dialogs`]: dialogs,
@@ -34,7 +49,7 @@ export function initStore(reducers) {
     [`${STATE_PREFIX}/views`]: views,
   });
 
-  store = configureStore({
+  return configureStore({
     reducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -47,27 +62,16 @@ export function initStore(reducers) {
         },
       }).concat(...middlewares),
   });
-
-  connectStoreDispatcher(store.dispatch);
 }
 
-export function getStore() {
-  return store;
-}
+// Helpers to build app-store types
+type GetStore<M> = ReturnType<typeof buildStore<M>>;
+export type GetRootState<M> = ReturnType<GetStore<M>['getState']>;
+export type GetAppDispatch<M> = GetStore<M>['dispatch'];
 
-// https://github.com/reduxjs/redux/issues/303#issuecomment-125184409
-export function observeStore(select, onChange) {
-  let currentState;
+// Types for tools store
+export type ToolsState = GetRootState<unknown>;
+export type ToolsDispatch = GetAppDispatch<unknown>;
 
-  function handleChange() {
-    const nextState = select(store.getState());
-    if (nextState !== currentState) {
-      currentState = nextState;
-      onChange(currentState);
-    }
-  }
-
-  const unsubscribe = store.subscribe(handleChange);
-  handleChange();
-  return unsubscribe;
-}
+export const useToolsDispatch = useDispatch.withTypes<ToolsDispatch>();
+export const useToolsSelector = useSelector.withTypes<ToolsState>();
