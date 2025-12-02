@@ -4,10 +4,10 @@ import { styled } from '@mui/material/styles';
 import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useScreenPhone, services } from 'mylife-tools';
 import { LiveDevice } from '../../api';
 import icons from '../../common/icons';
+import { useAppSelector } from '../../store';
 import { getDevice, getFirstDeviceByType, getMeasure } from '../selectors';
 import { DeviceMeasure } from './common';
 
@@ -64,13 +64,13 @@ const ArrowsCell = styled('div')(() => ({
 export default function MainAnimation() {
   const isPhone = useScreenPhone();
 
-  const main = useSelector((state) => getFirstDeviceByType(state, 'main'));
-  const solar = useSelector((state) => getFirstDeviceByType(state, 'solar'));
-  const total = useSelector((state) => getFirstDeviceByType(state, 'total'));
+  const main = useAppSelector((state) => getFirstDeviceByType(state, 'main'));
+  const solar = useAppSelector((state) => getFirstDeviceByType(state, 'solar'));
+  const total = useAppSelector((state) => getFirstDeviceByType(state, 'total'));
 
-  const mainCurrent = useSelector((state) => getMeasure(state, main?._id, 'current'))?.value;
-  const solarCurrent = useSelector((state) => getMeasure(state, solar?._id, 'current'))?.value;
-  const totalCurrent = useSelector((state) => getMeasure(state, total?._id, 'current'))?.value;
+  const mainCurrent = useAppSelector((state) => getMeasure(state, main?._id, 'current'))?.value;
+  const solarCurrent = useAppSelector((state) => getMeasure(state, solar?._id, 'current'))?.value;
+  const totalCurrent = useAppSelector((state) => getMeasure(state, total?._id, 'current'))?.value;
 
   if (!main || !solar || !total) {
     return null;
@@ -113,7 +113,7 @@ interface DeviceViewProps {
 }
 
 function DeviceView({ deviceId, as: Component = 'div', sensorKeys }: DeviceViewProps) {
-  const device = useSelector((state) => getDevice(state, deviceId));
+  const device = useAppSelector((state) => getDevice(state, deviceId));
 
   if (!device) {
     return null;

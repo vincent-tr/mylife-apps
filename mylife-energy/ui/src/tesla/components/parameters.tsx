@@ -8,9 +8,9 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useCallback, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { dialogs, useAction, fireAsync } from 'mylife-tools';
 import { TeslaState } from '../../api';
+import { useAppSelector } from '../../store';
 import { setParameters } from '../actions';
 import { getTeslaState } from '../views';
 
@@ -119,7 +119,7 @@ function ParametersDialog({ show, proceed, parameters }: ParametersDialogProps) 
 const parametersDialog = dialogs.create(ParametersDialog);
 
 export function useParameters() {
-  const state = useSelector(getTeslaState);
+  const state = useAppSelector(getTeslaState);
   const set = useAction(setParameters);
 
   // if 'bot = null' then create

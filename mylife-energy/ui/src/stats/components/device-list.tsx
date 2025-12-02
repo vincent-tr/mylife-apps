@@ -4,7 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../store';
 import { getDevicesView } from '../views';
 
 type DeviceMap = { [deviceId: string]: string };
@@ -33,7 +33,7 @@ export default function DeviceList({ className, value, onChange }: DeviceListPro
 }
 
 function useDevices() {
-  const view = useSelector(getDevicesView);
+  const view = useAppSelector(getDevicesView);
 
   return useMemo(() => {
     const devices: DeviceMap = {};

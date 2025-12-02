@@ -1,10 +1,10 @@
 import { format as formatDate } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools';
+import { useAppSelector } from '../../store';
 import { getChartData, getSensors } from '../store';
 import { StatsType, TimestampData } from '../types';
 
@@ -14,8 +14,8 @@ export interface ChartProps {
 }
 
 export default function Chart({ className, type }: ChartProps) {
-  const data = useSelector(getChartData);
-  const sensors = useSelector(getSensors);
+  const data = useAppSelector(getChartData);
+  const sensors = useAppSelector(getSensors);
 
   const dateFormatter = useAxisDateFormatter(type);
   const colors = useChartColors();

@@ -3,10 +3,10 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
 import React, { PropsWithChildren, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useInterval } from 'mylife-tools';
 import icons from '../../common/icons';
 import { BatteryStatus } from '../../tesla/components';
+import { useAppSelector } from '../../store';
 import { getHomeDataView, useHomeDataView } from '../views';
 
 const SectionRoot = styled(Paper)(({ theme }) => ({
@@ -95,7 +95,7 @@ function useNow() {
 }
 
 function useValue(section: string, key: string) {
-  const data = useSelector(getHomeDataView);
+  const data = useAppSelector(getHomeDataView);
   const item = data[`${section}/${key}`];
   return item?.value;
 }

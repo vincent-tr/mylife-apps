@@ -3,14 +3,8 @@ import icons from './common/icons';
 import Home from './home/components';
 import Live from './live/components';
 import Stats from './stats/components';
-import statsReducer from './stats/store';
 import Tesla from './tesla/components';
-
-const reducers = {
-  stats: statsReducer,
-};
-
-services.initStore(reducers);
+import './store';
 
 const routes = [
   { location: '/', renderer: () => <Home /> },

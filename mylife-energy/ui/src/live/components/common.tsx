@@ -2,8 +2,8 @@ import Badge from '@mui/material/Badge';
 import { styled, Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { useSelector } from 'react-redux';
 import icons from '../../common/icons';
+import { useAppSelector } from '../../store';
 import { getDevice } from '../selectors';
 import { getMeasuresView } from '../views';
 
@@ -44,8 +44,8 @@ export interface DeviceMeasureProps {
 }
 
 export function DeviceMeasure({ deviceId, sensorKeys }: DeviceMeasureProps) {
-  const device = useSelector((state) => getDevice(state, deviceId));
-  const measures = useSelector(getMeasuresView);
+  const device = useAppSelector((state) => getDevice(state, deviceId));
+  const measures = useAppSelector(getMeasuresView);
 
   const sensorData = getSensorData(device, measures, sensorKeys);
 
@@ -98,8 +98,8 @@ interface DeviceMeasureTooltipProps {
 }
 
 function DeviceMeasureTooltip({ deviceId }: DeviceMeasureTooltipProps) {
-  const device = useSelector((state) => getDevice(state, deviceId));
-  const measures = useSelector(getMeasuresView);
+  const device = useAppSelector((state) => getDevice(state, deviceId));
+  const measures = useAppSelector(getMeasuresView);
 
   return (
     <TooltipContainer>

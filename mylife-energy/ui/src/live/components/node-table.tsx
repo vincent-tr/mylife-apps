@@ -6,9 +6,9 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { views } from 'mylife-tools';
 import { Measure } from '../../api';
+import { useAppSelector } from '../../store';
 import { getFirstDeviceByType, makeGetDevicesByType } from '../selectors';
 import { getMeasuresView } from '../views';
 import { DeviceMeasure } from './common';
@@ -21,8 +21,8 @@ const Container = styled('div')({
 
 export default function NoteTable() {
   const getDevicesByType = useMemo(() => makeGetDevicesByType(), []);
-  const nodes = useSelector((state) => getDevicesByType(state, 'node'));
-  const measures = useSelector(getMeasuresView);
+  const nodes = useAppSelector((state) => getDevicesByType(state, 'node'));
+  const measures = useAppSelector(getMeasuresView);
 
   return (
     <Container>
@@ -70,8 +70,8 @@ interface RatioProps {
 }
 
 function Ratio({ deviceId }: RatioProps) {
-  const total = useSelector((state) => getFirstDeviceByType(state, 'total'));
-  const measures = useSelector(getMeasuresView);
+  const total = useAppSelector((state) => getFirstDeviceByType(state, 'total'));
+  const measures = useAppSelector(getMeasuresView);
   const totalPower = findPowerMeasure(total._id, measures);
   const power = findPowerMeasure(deviceId, measures);
   const ratio = Math.round((power / totalPower) * 100);
