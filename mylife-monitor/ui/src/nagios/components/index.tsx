@@ -10,9 +10,9 @@ import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { HOST_STATUS_PROBLEM } from '../problems';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
 import { useNagiosDataView } from '../views';
@@ -20,10 +20,10 @@ import { useNagiosDataView } from '../views';
 type FIXME_any = any;
 
 const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    criteria: useSelector(getCriteria),
-    data: useSelector(getDisplayView),
+    criteria: useAppSelector(getCriteria),
+    data: useAppSelector(getDisplayView),
     ...useMemo(
       () => ({
         changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),

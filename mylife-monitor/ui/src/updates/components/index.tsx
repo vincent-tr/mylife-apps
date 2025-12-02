@@ -10,14 +10,12 @@ import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { changeCriteria, Criteria, getCriteria, getDisplayView } from '../store';
 import { useUpdatesDataView } from '../views';
-
-type FIXME_any = any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -160,10 +158,10 @@ function VersionItem({ value, date }: VersionItemProps) {
 }
 
 function useConnect() {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    criteria: useSelector(getCriteria),
-    data: useSelector(getDisplayView),
+    criteria: useAppSelector(getCriteria),
+    data: useAppSelector(getDisplayView),
     ...useMemo(
       () => ({
         changeCriteria: (criteria: Partial<Criteria>) => dispatch(changeCriteria(criteria)),
