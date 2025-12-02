@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLifecycle, useScreenSize } from 'mylife-tools';
-import { managementEnter, managementLeave, isOperationDetail } from '../store';
+import { noop, useLifecycle, useScreenSize, views } from 'mylife-tools';
+import { isOperationDetail, getCriteria, setOperationViewId, clearOperationViewId, getOperationViewId, closeDetail } from '../store';
 import Detail from './detail';
 import List from './list';
 import Tree from './tree';
@@ -29,8 +29,7 @@ const useConnect = () => {
     detail: useSelector(isOperationDetail),
     ...useMemo(
       () => ({
-        enter: () => dispatch(managementEnter()),
-        leave: () => dispatch(managementLeave()),
+        closeDetail: () => dispatch(closeDetail()),
       }),
       [dispatch]
     ),
@@ -39,8 +38,18 @@ const useConnect = () => {
 
 export default function Management() {
   const screenSize = useScreenSize();
-  const { enter, leave, detail } = useConnect();
-  useLifecycle(enter, leave);
+  const { detail, closeDetail } = useConnect();
+  useLifecycle(noop, closeDetail);
+
+  const criteria = useSelector(getCriteria);
+  views.useCriteriaView({
+    service: 'management',
+    method: 'notifyOperations',
+    criteria,
+    setViewIdAction: setOperationViewId,
+    clearViewIdAction: clearOperationViewId,
+    viewIdSelector: getOperationViewId,
+  });
 
   const main = detail ? <StyledDetail /> : <StyledList />;
 

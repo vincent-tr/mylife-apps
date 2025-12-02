@@ -1,17 +1,21 @@
+import { Action } from '@reduxjs/toolkit/react';
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { api } from '../..';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
 import { getStore } from '../../services';
-import { StaticViewOptions, createStaticView, refSharedView, unrefSharedView } from './actions';
+import { SharedViewOptions, StaticViewOptions, createOrUpdateCriteriaView, createStaticView, deleteCriteriaView, refSharedView, unrefSharedView } from './actions';
 import { getViewBySlot } from './store';
 import { View } from './types';
 
-interface CriteriaViewOptions {
-  criteriaSelector;
+export interface CriteriaViewOptions<TCriteria> {
   service: string;
   method: string;
-  canUpdate?: boolean;
+  criteria: TCriteria;
+
+  setViewIdAction: (viewId: string) => Action;
+  clearViewIdAction: () => Action;
+  viewIdSelector: (state) => string;
 }
 
 /**
@@ -21,22 +25,39 @@ interface CriteriaViewOptions {
  * @param options - ViewReference constructor options
  * @returns The current view data from the store
  */
-export function useCriteriaView<TEntity extends api.Entity>(options: CriteriaViewOptions): View<TEntity> {
-  void options;
-  throw new Error('Not implemented');
+export function useCriteriaView<TEntity extends api.Entity, TCriteria>(options: CriteriaViewOptions<TCriteria>): View<TEntity> {
+  const { dispatch } = getStore();
+  const { service, method, criteria, setViewIdAction, clearViewIdAction, viewIdSelector } = options;
 
-  // const enter = async () => await viewRef.attach();
-  // const leave = async () => await viewRef.detach();
-  // useLifecycle(enter, leave);
+  const enterOrUpdate = useCallback(() => {
+    dispatch(
+      createOrUpdateCriteriaView({
+        service,
+        method,
+        criteria,
+        viewIdSelector,
+        setViewIdAction,
+        clearViewIdAction,
+      })
+    );
+  }, [dispatch, service, method, criteria, viewIdSelector, setViewIdAction, clearViewIdAction]);
 
-  // return useSelector((state) => getViewBySlot<TEntity>(state, options.slot));
+  const leave = useCallback(() => {
+    dispatch(
+      deleteCriteriaView({
+        viewIdSelector,
+        clearViewIdAction,
+      })
+    );
+  }, [dispatch, viewIdSelector, clearViewIdAction]);
+
+  useLifecycle(enterOrUpdate, leave, [criteria]);
+
+  const viewId = useSelector(viewIdSelector);
+  return useSelector((state) => getViewBySlot<TEntity>(state, viewId));
 }
 
-interface SharedViewOptions {
-  slot: string;
-  service: string;
-  method: string;
-}
+export type { SharedViewOptions };
 
 /**
  * Hook to manage a shared view with ref counting.

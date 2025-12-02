@@ -15,8 +15,11 @@ const reportingSlice = createSlice({
   name: 'reporting',
   initialState,
   reducers: {
-    setCriteria(state, action: PayloadAction<string | null>) {
+    setViewId(state, action: PayloadAction<string>) {
       state.view = action.payload;
+    },
+    clearViewId(state) {
+      state.view = null;
     },
   },
   extraReducers: (builder) => {
@@ -33,8 +36,10 @@ const reportingSlice = createSlice({
 
 export default reportingSlice.reducer;
 
+export const { setViewId, clearViewId } = reportingSlice.actions;
+export const { getViewId } = reportingSlice.selectors;
+
 const local = {
-  setView: reportingSlice.actions.setCriteria,
   getViewId: reportingSlice.selectors.getViewId,
 };
 
@@ -42,7 +47,7 @@ export const getView = (state) => views.getViewById(state, local.getViewId(state
 
 // sort on id, should be usefull with report's custom keys
 export const getSortedViewList = createSelector([getView], (view) => Object.values(view).sort((item1, item2) => (item1._id < item2._id ? -1 : 1)));
-
+/*
 export const getGroupByMonth = (criteria) =>
   views.createOrUpdateView({
     criteriaSelector: () => criteria,
@@ -70,6 +75,27 @@ const clearReportingView = () =>
 export const reportingLeave = createAsyncThunk('reporting/reportingLeave', async (_, api) => {
   await api.dispatch(clearReportingView());
 });
+*/
+
+export interface DownloadExportParams {
+  criteria: FIXME_any;
+  display: FIXME_any;
+  method: 'exportGroupByMonth' | 'exportGroupByYear';
+  fileName: string;
+}
+
+const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+export const downloadExport = createAsyncThunk('reporting/downloadExport', async ({ criteria, display, method, fileName }: DownloadExportParams, api) => {
+  const content: string = await api.extra.call({
+    service: 'reporting',
+    method,
+    criteria,
+    display,
+  });
+
+  api.dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
+});
 
 export const exportGroupByMonth = createExportAction({
   service: 'reporting',
@@ -82,8 +108,6 @@ export const exportGroupByYear = createExportAction({
   method: 'exportGroupByYear',
   fileName: 'groupes-par-an.xlsx',
 });
-
-const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 function createExportAction({ service, method, fileName }) {
   return createAsyncThunk('reporting/' + method, async ({ criteria, display }: { criteria: FIXME_any; display: FIXME_any }, api) => {

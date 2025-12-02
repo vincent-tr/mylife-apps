@@ -1,4 +1,3 @@
-import { getGroupByMonth, exportGroupByMonth } from '../store';
 import { findAmount } from './group-by-period/tools';
 import GroupByPeriod from './group-by-period';
 
@@ -17,8 +16,9 @@ const initialDisplay = {
 
 const GroupByMonth = () => (
   <GroupByPeriod
-    refreshAction={getGroupByMonth}
-    exportAction={exportGroupByMonth}
+    viewMethod="notifyGroupByMonth"
+    exportMethod="exportGroupByMonth"
+    exportFilename="group-by-month"
     initialCriteria={initialCriteria}
     initialDisplay={initialDisplay}
     additionalCriteriaFactory={additionalCriteriaFactory}

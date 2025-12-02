@@ -2,9 +2,9 @@ import { DependencyList, useEffect } from 'react';
 
 type Callback = () => void;
 
-export function useLifecycle(onMount: Callback, onUnmout: Callback = () => {}, deps: DependencyList = []) {
+export function useLifecycle(enterOrUpdate: Callback, leave: Callback = () => {}, deps: DependencyList = []) {
   useEffect(() => {
-    onMount();
-    return onUnmout;
+    enterOrUpdate();
+    return leave;
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 }

@@ -2,7 +2,6 @@ import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import React from 'react';
 import { CriteriaField } from 'mylife-tools';
-import { getGroupByYear, exportGroupByYear } from '../store';
 import { findAmount, roundCurrency } from './group-by-period/tools';
 import GroupByPeriod from './group-by-period';
 
@@ -46,8 +45,9 @@ function AdditionalCriteria({ display, onDisplayChanged }: AdditionalCriteriaPro
 export default function GroupByYear() {
   return (
     <GroupByPeriod
-      refreshAction={getGroupByYear}
-      exportAction={exportGroupByYear}
+      viewMethod="notifyGroupByYear"
+      exportMethod="exportGroupByYear"
+      exportFilename="group-by-year"
       initialCriteria={initialCriteria}
       initialDisplay={initialDisplay}
       additionalCriteriaFactory={AdditionalCriteria as FIXME_any}

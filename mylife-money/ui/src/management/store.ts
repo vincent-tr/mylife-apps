@@ -46,8 +46,13 @@ const managementSlice = createSlice({
       state.operations.selected = [];
     },
 
-    setOperationView(state, action: PayloadAction<string | null>) {
+    setOperationViewId(state, action: PayloadAction<string>) {
       state.operations.view = action.payload;
+      state.operations.selected = [];
+    },
+
+    clearOperationViewId(state) {
+      state.operations.view = null;
       state.operations.selected = [];
     },
 
@@ -61,8 +66,12 @@ const managementSlice = createSlice({
       }
     },
 
-    setDetail(state, action: PayloadAction<string | null>) {
+    showDetail(state, action: PayloadAction<string>) {
       state.operations.detail = action.payload;
+    },
+
+    closeDetail(state) {
+      state.operations.detail = null;
     },
   },
 
@@ -85,16 +94,15 @@ const managementSlice = createSlice({
   },
 });
 
-export const { getCriteria, isOperationDetail } = managementSlice.selectors;
+export const { getCriteria, getOperationViewId, isOperationDetail } = managementSlice.selectors;
+export const { setOperationViewId, clearOperationViewId, showDetail, closeDetail } = managementSlice.actions;
 
 export default managementSlice.reducer;
 
 const local = {
   showSuccess: (message) => dialogs.showNotification({ message, type: 'success' }),
-  setOperationView: managementSlice.actions.setOperationView,
   setCriteria: managementSlice.actions.setCriteria,
   selectOperations: managementSlice.actions.selectOperations,
-  setDetail: managementSlice.actions.setDetail,
   getCriteria: managementSlice.selectors.getCriteria,
   getOperationViewId: managementSlice.selectors.getOperationViewId,
   getOperationIdDetail: managementSlice.selectors.getOperationIdDetail,
@@ -124,30 +132,6 @@ export const getSortedOperations = createSelector([getOperationView], (operation
   return ret;
 });
 
-export const getOperations = () =>
-  views.createOrUpdateView({
-    criteriaSelector: local.getCriteria,
-    viewSelector: local.getOperationViewId,
-    setViewAction: local.setOperationView,
-    service: 'management',
-    method: 'notifyOperations',
-  });
-
-const clearOperations = () =>
-  views.deleteView({
-    viewSelector: local.getOperationViewId,
-    setViewAction: local.setOperationView,
-  });
-
-export const showDetail = (operationId) => local.setDetail(operationId);
-export const closeDetail = () => local.setDetail(null);
-
-export const managementEnter = getOperations;
-export const managementLeave = createAsyncThunk('management/managementLeave', async (_, api) => {
-  await api.dispatch(clearOperations());
-  api.dispatch(closeDetail());
-});
-
 export const setMinDate = (value) => setCriteriaValue('minDate', value);
 export const setMaxDate = (value) => setCriteriaValue('maxDate', value);
 export const setAccount = (value) => setCriteriaValue('account', value);
@@ -167,7 +151,6 @@ function setCriteriaValue(name, value) {
     }
 
     dispatch(local.setCriteria({ [name]: value }));
-    dispatch(getOperations());
   };
 }
 

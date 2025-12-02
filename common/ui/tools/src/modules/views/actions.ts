@@ -1,7 +1,8 @@
+import { Action } from '@reduxjs/toolkit';
 import { Mutex } from 'async-mutex';
-import debounce from 'debounce';
+//import debounce from 'debounce';
 import { STATE_PREFIX } from '../../constants/defines';
-import { observeStore, getStore, createAsyncThunk } from '../../services/store-factory';
+import { createAsyncThunk } from '../../services/store-factory';
 import * as io from '../io';
 import { getViewId, getRefCount, setView, ref, unref } from './store';
 
@@ -73,22 +74,20 @@ export const createStaticView = createAsyncThunk(`${STATE_PREFIX}/views/create`,
   api.dispatch(setView({ slot, viewId }));
 });
 
-interface CreateOrUpdateViewOptions {
-  criteriaSelector;
-  selectorProps?;
-  viewSelector;
-  setViewAction;
-  service;
-  method;
+interface CreateOrUpdateCriteriaView {
+  service: string;
+  method: string;
+  criteria: unknown;
+  viewIdSelector: (state) => string;
+  setViewIdAction: (viewId: string) => Action;
+  clearViewIdAction: () => Action;
 }
 
-export const createOrUpdateView = createAsyncThunk(
-  `${STATE_PREFIX}/views/createOrUpdateView`,
-  async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
+export const createOrUpdateCriteriaView = createAsyncThunk(
+  `${STATE_PREFIX}/views/createOrUpdateCriteriaView`,
+  async ({ service, method, criteria, viewIdSelector, setViewIdAction }: CreateOrUpdateCriteriaView, api) => {
     const state = api.getState();
-
-    const criteria = criteriaSelector(state, selectorProps);
-    const viewId = viewSelector(state);
+    const viewId = viewIdSelector(state);
 
     if (viewId) {
       await api.extra.call({
@@ -98,54 +97,33 @@ export const createOrUpdateView = createAsyncThunk(
         criteria,
       });
     } else {
-      const newViewId: number = await api.extra.call({
+      const newViewId: string = await api.extra.call({
         service,
         method,
         criteria,
       });
 
-      api.dispatch(setViewAction(newViewId));
+      api.dispatch(setViewIdAction(newViewId));
     }
   }
 );
 
-// call on views that cannot be updated
-const createOrRenewView = createAsyncThunk(
-  `${STATE_PREFIX}/views/createOrRenewView`,
-  async ({ criteriaSelector, selectorProps, viewSelector, setViewAction, service, method }: CreateOrUpdateViewOptions, api) => {
-    const state = api.getState();
+interface DeleteCriteriaView {
+  viewIdSelector: (state) => string;
+  clearViewIdAction: () => Action;
+}
 
-    const oldViewId = viewSelector(state);
-    if (oldViewId) {
-      api.dispatch(setViewAction(null));
-      await api.dispatch(io.unnotify(oldViewId));
-    }
-
-    const criteria = criteriaSelector(state, selectorProps);
-    const newViewId: number = await api.extra.call({
-      service,
-      method,
-      ...criteria,
-    });
-
-    api.dispatch(setViewAction(newViewId));
+export const deleteCriteriaView = createAsyncThunk(`${STATE_PREFIX}/views/deleteCriteriaView`, async ({ viewIdSelector, clearViewIdAction }: DeleteCriteriaView, api) => {
+  const state = api.getState();
+  const oldViewId = viewIdSelector(state);
+  if (!oldViewId) {
+    return;
   }
-);
 
-export const deleteView = createAsyncThunk(
-  `${STATE_PREFIX}/views/deleteView`,
-  async ({ viewSelector, setViewAction }: { viewSelector: FIXME_any; setViewAction: FIXME_any }, api) => {
-    const state = api.getState();
-    const oldViewId = viewSelector(state);
-    if (!oldViewId) {
-      return;
-    }
-
-    api.dispatch(setViewAction(null));
-    await api.dispatch(io.unnotify(oldViewId));
-  }
-);
-
+  api.dispatch(clearViewIdAction());
+  await api.dispatch(io.unnotify(oldViewId));
+});
+/*
 interface ViewReferenceOptions {
   slot: string;
   criteriaSelector?;
@@ -304,3 +282,4 @@ export function createDebouncedRefresh(refresh, timeout = 10) {
     debounced();
   };
 }
+*/

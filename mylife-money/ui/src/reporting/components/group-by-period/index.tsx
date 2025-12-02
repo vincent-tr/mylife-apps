@@ -1,25 +1,24 @@
 import { styled } from '@mui/material/styles';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLifecycle } from 'mylife-tools';
-import { reportingLeave, getSortedViewList } from '../../store';
+import { views } from 'mylife-tools';
+import { getSortedViewList, setViewId, clearViewId, getViewId, downloadExport } from '../../store';
 import Chart from './chart';
 import Criteria from './criteria';
 import { formatCriteria } from './tools';
 
 type FIXME_any = any;
 
-const useConnect = ({ refreshAction, exportAction }) => {
+const useConnect = ({ exportMethod, exportFilename }) => {
   const dispatch = useDispatch<FIXME_any>();
   return {
     data: useSelector(getSortedViewList),
     ...useMemo(
       () => ({
-        refresh: (criteria) => dispatch(refreshAction(criteria)),
-        exportReport: (criteria, display) => dispatch(exportAction({ criteria, display })),
-        leave: () => dispatch(reportingLeave()),
+        exportReport: ({ criteria, display }: { criteria: FIXME_any; display: FIXME_any }) =>
+          dispatch(downloadExport({ criteria, display, method: exportMethod, fileName: exportFilename })),
       }),
-      [dispatch, refreshAction, exportAction]
+      [dispatch, exportMethod, exportFilename]
     ),
   };
 };
@@ -35,47 +34,53 @@ const StyledChart = styled(Chart)({
 });
 
 export interface GroupByPeriodProps {
-  refreshAction;
-  exportAction;
+  viewMethod: string;
+  exportMethod: 'exportGroupByMonth' | 'exportGroupByYear';
+  exportFilename: string;
   initialCriteria;
   initialDisplay;
   additionalCriteriaFactory: (props) => React.ReactNode;
   amountSelectorFactory: (props) => any;
 }
 
-export default function GroupByPeriod({ refreshAction, exportAction, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }: GroupByPeriodProps) {
+export default function GroupByPeriod({
+  viewMethod,
+  exportMethod,
+  exportFilename,
+  initialCriteria,
+  initialDisplay,
+  additionalCriteriaFactory,
+  amountSelectorFactory,
+}: GroupByPeriodProps) {
   const [criteria, setCriteria] = useState(initialCriteria);
   const [display, setDisplay] = useState(initialDisplay);
 
-  const { exportReport, refresh, leave, data } = useConnect({ refreshAction, exportAction });
+  const formattedCriteria = useMemo(() => formatCriteria(criteria), [criteria]);
 
-  // on mount run query, on leave clean
-  useLifecycle(() => refresh(formatCriteria(criteria)), leave);
+  views.useCriteriaView({
+    service: 'reporting',
+    method: viewMethod,
+    criteria: formattedCriteria,
 
-  const changeCriteria = (criteria) => {
-    setCriteria(criteria);
-    refresh(formatCriteria(criteria));
-  };
+    setViewIdAction: setViewId,
+    clearViewIdAction: clearViewId,
+    viewIdSelector: getViewId,
+  });
 
-  const doExport = () => exportReport(formatCriteria(criteria), display);
+  const { exportReport, data } = useConnect({ exportMethod, exportFilename });
+
+  const doExport = useCallback(() => exportReport({ criteria: formattedCriteria, display }), [exportReport, formattedCriteria, display]);
 
   const chartDisplay = {
     ...display,
     children: criteria.children,
   };
 
-  const additionalCriteria = additionalCriteriaFactory({ display, onDisplayChanged: setDisplay, criteria, onCriteriaChanged: changeCriteria });
+  const additionalCriteria = additionalCriteriaFactory({ display, onDisplayChanged: setDisplay, criteria, onCriteriaChanged: setCriteria });
 
   return (
     <Container>
-      <Criteria
-        criteria={criteria}
-        onCriteriaChanged={changeCriteria}
-        display={display}
-        onDisplayChanged={setDisplay}
-        onExport={doExport}
-        additionalComponents={additionalCriteria}
-      />
+      <Criteria criteria={criteria} onCriteriaChanged={setCriteria} display={display} onDisplayChanged={setDisplay} onExport={doExport} additionalComponents={additionalCriteria} />
       <StyledChart data={data} groups={criteria.groups} display={chartDisplay} amountSelector={amountSelectorFactory({ display, criteria })} />
     </Container>
   );
