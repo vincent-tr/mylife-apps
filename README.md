@@ -215,6 +215,7 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 # TODO
 
 - design API typed services
+- useApp/ToolsDispatcher => useAction?
 - make TS stricter
 - enable disabled rules in eslint
 - review isScreenPhone, etc for style: should not go through JS to go back to CSS
