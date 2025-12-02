@@ -3,15 +3,15 @@ import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { getGroup } from '../../reference/selectors';
+import { useAppSelector } from '../../store';
 import icons from '../icons';
 import GroupSelectorButton from './group-selector-button';
 
 type FIXME_any = any;
 
 const useConnect = ({ value }) => {
-  return useSelector((state) => ({
+  return useAppSelector((state) => ({
     stack: getStack(state, value),
   }));
 };

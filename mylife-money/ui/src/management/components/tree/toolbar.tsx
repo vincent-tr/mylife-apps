@@ -2,20 +2,20 @@ import IconButton from '@mui/material/IconButton';
 import { default as MuiToolbar } from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { dialogs } from 'mylife-tools';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getGroup } from '../../../reference/selectors';
+import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSelectedGroupId, createGroup, updateGroup, deleteGroup } from '../../store';
 import groupEditor from './group-editor';
 
 type FIXME_any = any;
 
 const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    ...useSelector((state) => {
+    ...useAppSelector((state) => {
       const selected = getSelectedGroupId(state);
       return {
         group: selected && (getGroup(state, selected) as FIXME_any),

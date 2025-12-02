@@ -2,10 +2,10 @@ import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getGroup } from '../../../reference/selectors';
+import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSelectedGroupId, selectGroup } from '../../store';
 
 type FIXME_any = any;
@@ -23,9 +23,9 @@ const Label = styled(Typography)(({ theme }) => ({
 }));
 
 const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    ...useSelector((state) => ({
+    ...useAppSelector((state) => ({
       selectedGroup: getGroup(state, getSelectedGroupId(state)),
     })),
     ...useMemo(

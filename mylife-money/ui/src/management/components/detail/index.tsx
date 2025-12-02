@@ -4,10 +4,10 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { DebouncedTextField } from 'mylife-tools';
 import Markdown from '../../../common/components/markdown';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
+import { useAppSelector, useAppDispatch } from '../../../store';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup, getOperationDetail } from '../../store';
 import AmountValue from './amount-value';
 import GroupBreadcrumbs from './group-breadcrumbs';
@@ -17,9 +17,9 @@ import Title from './title';
 type FIXME_any = any;
 
 const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    ...useSelector((state) => {
+    ...useAppSelector((state) => {
       const operation = getOperationDetail(state) as FIXME_any;
       return {
         operation,

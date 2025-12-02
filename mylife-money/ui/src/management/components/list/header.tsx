@@ -5,12 +5,12 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
 import React, { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools';
 import AccountSelector from '../../../common/components/account-selector';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getAccounts, getGroup } from '../../../reference/selectors';
+import { useAppSelector, useAppDispatch } from '../../../store';
 import {
   setMinDate,
   setMaxDate,
@@ -29,9 +29,9 @@ import ImportButton from './import-button';
 type FIXME_any = any;
 
 const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    ...useSelector((state: FIXME_any) => {
+    ...useAppSelector((state) => {
       const selectedOperations = getSelectedOperations(state);
       const criteria = getCriteria(state);
       return {

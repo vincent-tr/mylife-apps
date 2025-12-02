@@ -1,10 +1,10 @@
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectProps } from '@mui/material/Select';
-import { useSelector } from 'react-redux';
 import { getAccounts } from '../../reference/selectors';
+import { useAppSelector } from '../../store';
 
 const useConnect = () =>
-  useSelector((state) => ({
+  useAppSelector((state) => ({
     accounts: getAccounts(state),
   }));
 

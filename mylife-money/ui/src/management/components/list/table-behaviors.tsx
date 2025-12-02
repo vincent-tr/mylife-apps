@@ -1,15 +1,15 @@
 import * as colors from '@mui/material/colors';
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { getAccount } from '../../../reference/selectors';
+import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 
 type FIXME_any = any;
 
 export const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    ...useSelector((state: FIXME_any) => {
+    ...useAppSelector((state) => {
       const selectedGroup = getSelectedGroupId(state) || null;
       const selectedOperationIds = getSelectedOperationIds(state);
       return {

@@ -1,13 +1,11 @@
 import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { noop, useLifecycle, useScreenSize, views } from 'mylife-tools';
+import { useAppSelector, useAppDispatch } from '../../store';
 import { isOperationDetail, getCriteria, setOperationViewId, clearOperationViewId, getOperationViewId, closeDetail } from '../store';
 import Detail from './detail';
 import List from './list';
 import Tree from './tree';
-
-type FIXME_any = any;
 
 const Container = styled('div')({
   flex: '1 1 auto',
@@ -24,9 +22,9 @@ const StyledDetail = styled(Detail)({
 });
 
 const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    detail: useSelector(isOperationDetail),
+    detail: useAppSelector(isOperationDetail),
     ...useMemo(
       () => ({
         closeDetail: () => dispatch(closeDetail()),
@@ -41,7 +39,7 @@ export default function Management() {
   const { detail, closeDetail } = useConnect();
   useLifecycle(noop, closeDetail);
 
-  const criteria = useSelector(getCriteria);
+  const criteria = useAppSelector(getCriteria);
   views.useCriteriaView({
     service: 'management',
     method: 'notifyOperations',

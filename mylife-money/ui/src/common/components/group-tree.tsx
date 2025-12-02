@@ -1,7 +1,7 @@
 import List from '@mui/material/List';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { makeGetSortedChildren } from '../../reference/selectors';
+import { useAppSelector } from '../../store';
 import GroupNode from './group-node';
 
 type FIXME_any = any;
@@ -28,7 +28,7 @@ export default GroupTree;
 
 function useConnect() {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
-  return useSelector((state: FIXME_any) => ({
+  return useAppSelector((state: FIXME_any) => ({
     groups: getSortedChildren(state, 'root'),
   }));
 }

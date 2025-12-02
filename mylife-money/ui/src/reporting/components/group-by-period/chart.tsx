@@ -1,14 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools';
 import { getGroupStacks, getChildrenView } from '../../../reference/selectors';
+import { useAppSelector } from '../../../store';
 
 type FIXME_any = any;
 
 const useConnect = ({ display, groups }) => {
-  return useSelector((state) => ({
+  return useAppSelector((state) => ({
     groupStacks: getGroupStacks(state),
     groupChildren: getChildren(state, display, groups),
   }));

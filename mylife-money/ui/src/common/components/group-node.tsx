@@ -9,8 +9,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
 import React, { useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { makeGetSortedChildren } from '../../reference/selectors';
+import { useAppSelector } from '../../store';
 import icons from '../icons';
 
 type FIXME_any = any;
@@ -18,7 +18,7 @@ type FIXME_any = any;
 const useConnect = (groupId: string) => {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
   return {
-    children: useSelector((state: FIXME_any) => getSortedChildren(state, groupId)),
+    children: useAppSelector((state) => getSortedChildren(state, groupId)),
   };
 };
 

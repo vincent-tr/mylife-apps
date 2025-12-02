@@ -1,15 +1,13 @@
 import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { ListContainer } from 'mylife-tools';
 import GroupTree from '../../../common/components/group-tree';
+import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSelectedGroupId, selectGroup } from '../../store';
 
-type FIXME_any = any;
-
 const useConnect = () => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    ...useSelector((state) => ({
+    ...useAppSelector((state) => ({
       selectedGroupId: getSelectedGroupId(state),
     })),
     ...useMemo(

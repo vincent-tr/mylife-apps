@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { views } from 'mylife-tools';
 import * as api from '../api';
+import { useAppSelector } from '../store';
 
 const OPERATION_STATS = 'home-operation-stats';
 const TOTAL_BY_MONTH = 'home-total-by-month';
@@ -25,5 +25,5 @@ export function useTotalByMonthView() {
     service: 'reporting',
     method: 'notifyTotalByMonth',
   });
-  return useSelector(getSortedTotalByMonth);
+  return useAppSelector(getSortedTotalByMonth);
 }

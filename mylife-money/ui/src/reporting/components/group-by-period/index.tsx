@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import React, { useState, useMemo, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { views } from 'mylife-tools';
+import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSortedViewList, setViewId, clearViewId, getViewId, downloadExport } from '../../store';
 import Chart from './chart';
 import Criteria from './criteria';
@@ -10,9 +10,9 @@ import { formatCriteria } from './tools';
 type FIXME_any = any;
 
 const useConnect = ({ exportMethod, exportFilename }) => {
-  const dispatch = useDispatch<FIXME_any>();
+  const dispatch = useAppDispatch();
   return {
-    data: useSelector(getSortedViewList),
+    data: useAppSelector(getSortedViewList),
     ...useMemo(
       () => ({
         exportReport: ({ criteria, display }: { criteria: FIXME_any; display: FIXME_any }) =>
