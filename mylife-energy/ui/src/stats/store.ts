@@ -59,14 +59,14 @@ const local = {
 };
 
 export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, timestamp, sensors }: { type: StatsType; timestamp: Date; sensors: string[] }, api) => {
-  const values: SetValues = await api.extra.call({
+  const values = (await api.extra.call({
     service: 'stats',
     method: 'getValues',
     type,
     timestamp,
     sensors,
     timeout: 60000, // can be slower for now as we request long db queries
-  });
+  })) as SetValues;
 
   api.dispatch(local.setValues(values));
 });

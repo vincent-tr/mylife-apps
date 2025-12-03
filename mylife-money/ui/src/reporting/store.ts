@@ -58,12 +58,12 @@ export interface DownloadExportParams {
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 export const downloadExport = createAsyncThunk('reporting/downloadExport', async ({ criteria, display, method, fileName }: DownloadExportParams, api) => {
-  const content: string = await api.extra.call({
+  const content = (await api.extra.call({
     service: 'reporting',
     method,
     criteria,
     display,
-  });
+  })) as string;
 
   api.dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
 });

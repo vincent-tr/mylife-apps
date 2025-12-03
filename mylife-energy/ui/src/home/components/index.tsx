@@ -5,8 +5,8 @@ import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration
 import React, { PropsWithChildren, useState } from 'react';
 import { useInterval } from 'mylife-tools';
 import icons from '../../common/icons';
-import { BatteryStatus } from '../../tesla/components';
 import { useAppSelector } from '../../store';
+import { BatteryStatus } from '../../tesla/components';
 import { getHomeDataView, useHomeDataView } from '../views';
 
 const SectionRoot = styled(Paper)(({ theme }) => ({

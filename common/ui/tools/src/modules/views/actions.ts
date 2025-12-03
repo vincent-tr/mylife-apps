@@ -28,11 +28,11 @@ export const createOrUpdateCriteriaView = createToolsAsyncThunk(
         criteria,
       });
     } else {
-      const newViewId: string = await api.extra.call({
+      const newViewId = (await api.extra.call({
         service,
         method,
         criteria,
-      });
+      })) as string;
 
       api.dispatch(setViewIdAction(newViewId));
     }
@@ -71,7 +71,7 @@ export const refSharedView = createToolsAsyncThunk(`${STATE_PREFIX}/views/refSha
     const isAttach = getRefCount(state, slot) === 1;
 
     if (isAttach) {
-      const viewId: string = await api.extra.call({ service, method });
+      const viewId = (await api.extra.call({ service, method })) as string;
       api.dispatch(setView({ slot, viewId }));
     }
   });
@@ -113,10 +113,10 @@ export interface StaticViewOptions {
 }
 
 export const createStaticView = createToolsAsyncThunk(`${STATE_PREFIX}/views/create`, async ({ service, method, slot }: StaticViewOptions, api) => {
-  const viewId: string = await api.extra.call({
+  const viewId = (await api.extra.call({
     service,
     method,
-  });
+  })) as string;
 
   api.dispatch(setView({ slot, viewId }));
 });

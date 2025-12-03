@@ -167,11 +167,11 @@ export const createGroup = createAsyncThunk('management/createGroup', async (_, 
     parent: parentGroup,
   };
 
-  const id = await api.extra.call({
+  const id = (await api.extra.call({
     service: 'management',
     method: 'createGroup',
     object: newGroup,
-  });
+  })) as string;
 
   api.dispatch(selectGroup(id));
 });
