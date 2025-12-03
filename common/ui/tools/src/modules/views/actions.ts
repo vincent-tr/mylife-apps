@@ -1,11 +1,9 @@
 import { Action } from '@reduxjs/toolkit';
 import { Mutex } from 'async-mutex';
 import { STATE_PREFIX } from '../../constants/defines';
-import { createAsyncThunk } from '../../services/store-factory';
+import { createToolsAsyncThunk } from '../../services/store-factory';
 import * as io from '../io';
 import { getViewId, getRefCount, setView, ref, unref } from './store';
-
-type FIXME_any = any;
 
 interface CreateOrUpdateCriteriaView {
   service: string;
@@ -16,7 +14,7 @@ interface CreateOrUpdateCriteriaView {
   clearViewIdAction: () => Action;
 }
 
-export const createOrUpdateCriteriaView = createAsyncThunk(
+export const createOrUpdateCriteriaView = createToolsAsyncThunk(
   `${STATE_PREFIX}/views/createOrUpdateCriteriaView`,
   async ({ service, method, criteria, viewIdSelector, setViewIdAction }: CreateOrUpdateCriteriaView, api) => {
     const state = api.getState();
@@ -46,7 +44,7 @@ interface DeleteCriteriaView {
   clearViewIdAction: () => Action;
 }
 
-export const deleteCriteriaView = createAsyncThunk(`${STATE_PREFIX}/views/deleteCriteriaView`, async ({ viewIdSelector, clearViewIdAction }: DeleteCriteriaView, api) => {
+export const deleteCriteriaView = createToolsAsyncThunk(`${STATE_PREFIX}/views/deleteCriteriaView`, async ({ viewIdSelector, clearViewIdAction }: DeleteCriteriaView, api) => {
   const state = api.getState();
   const oldViewId = viewIdSelector(state);
   if (!oldViewId) {
@@ -63,13 +61,13 @@ export interface SharedViewOptions {
   method: string;
 }
 
-export const refSharedView = createAsyncThunk(`${STATE_PREFIX}/views/refSharedView`, async ({ slot, service, method }: SharedViewOptions, api) => {
+export const refSharedView = createToolsAsyncThunk(`${STATE_PREFIX}/views/refSharedView`, async ({ slot, service, method }: SharedViewOptions, api) => {
   const mutex = getSharedViewMutex(slot);
 
   await mutex.runExclusive(async () => {
     api.dispatch(ref(slot));
 
-    const state = api.getState() as FIXME_any;
+    const state = api.getState();
     const isAttach = getRefCount(state, slot) === 1;
 
     if (isAttach) {
@@ -79,13 +77,13 @@ export const refSharedView = createAsyncThunk(`${STATE_PREFIX}/views/refSharedVi
   });
 });
 
-export const unrefSharedView = createAsyncThunk(`${STATE_PREFIX}/views/unrefSharedView`, async (slot: string, api) => {
+export const unrefSharedView = createToolsAsyncThunk(`${STATE_PREFIX}/views/unrefSharedView`, async (slot: string, api) => {
   const mutex = getSharedViewMutex(slot);
 
   await mutex.runExclusive(async () => {
     api.dispatch(unref(slot));
 
-    const state = api.getState() as FIXME_any;
+    const state = api.getState();
     const isDetach = getRefCount(state, slot) === 0;
 
     if (isDetach) {
@@ -114,7 +112,7 @@ export interface StaticViewOptions {
   method: string;
 }
 
-export const createStaticView = createAsyncThunk(`${STATE_PREFIX}/views/create`, async ({ service, method, slot }: StaticViewOptions, api) => {
+export const createStaticView = createToolsAsyncThunk(`${STATE_PREFIX}/views/create`, async ({ service, method, slot }: StaticViewOptions, api) => {
   const viewId: string = await api.extra.call({
     service,
     method,

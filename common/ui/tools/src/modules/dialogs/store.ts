@@ -1,5 +1,6 @@
-import { Action, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
+import { createToolsAsyncThunk } from '../../services/store-factory';
 import { abortableDelay } from '../../utils';
 import { Notification, NotificationType } from './types';
 
@@ -62,7 +63,7 @@ const local = {
 // https://gist.github.com/markerikson/7621fca0e9704e99db5598bed0db861d
 let notificationIdGenerator = 0;
 
-export const showNotification = createAsyncThunk(
+export const showNotification = createToolsAsyncThunk(
   `${STATE_PREFIX}/dialogs/showNotification`,
   async ({ message, type = 'info', dismissAfter = 5000 }: { message: string; type?: NotificationType; dismissAfter?: number }, api) => {
     const id = ++notificationIdGenerator;

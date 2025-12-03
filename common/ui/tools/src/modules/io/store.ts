@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
-import { createAsyncThunk } from '../../services/store-factory';
+import { createToolsAsyncThunk } from '../../services/store-factory';
 import { viewClose } from '../views/store';
 
 interface IOState {
@@ -31,7 +31,7 @@ const ioSlice = createSlice({
   },
 });
 
-export const unnotify = createAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
+export const unnotify = createToolsAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
   await api.extra.call({
     service: 'common',
     method: 'unnotify',

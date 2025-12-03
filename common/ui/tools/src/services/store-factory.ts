@@ -1,4 +1,4 @@
-import { configureStore, combineReducers, isPlain, createAsyncThunk as rtkCreateAsyncThunk, AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
+import { configureStore, combineReducers, isPlain, createAsyncThunk } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { createLogger } from 'redux-logger';
 import { STATE_PREFIX } from '../constants/defines';
@@ -11,11 +11,6 @@ import views from '../modules/views/store';
 
 export interface ThunkExtraArgument {
   call: (message: ServiceCall) => Promise<any>;
-}
-
-// Re-export createAsyncThunk with proper typing for extra argument
-export function createAsyncThunk<Returned, ThunkArg = void>(typePrefix: string, payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, { extra: ThunkExtraArgument }>) {
-  return rtkCreateAsyncThunk<Returned, ThunkArg, { extra: ThunkExtraArgument }>(typePrefix, payloadCreator);
 }
 
 const middlewares = [downloadMiddleware, routingMiddlerware];
@@ -75,3 +70,9 @@ export type ToolsDispatch = GetAppDispatch<unknown>;
 
 export const useToolsDispatch = useDispatch.withTypes<ToolsDispatch>();
 export const useToolsSelector = useSelector.withTypes<ToolsState>();
+
+export const createToolsAsyncThunk = createAsyncThunk.withTypes<{
+  state: ToolsState;
+  dispatch: ToolsDispatch;
+  extra: ThunkExtraArgument;
+}>();
