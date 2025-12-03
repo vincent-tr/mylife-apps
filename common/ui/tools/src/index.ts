@@ -9,6 +9,7 @@ export * as services from './services';
 export * from './modules';
 export * from './utils';
 
-export { createAsyncThunk } from './services/store-factory';
+// FIXME
+export { createToolsAsyncThunk as createAsyncThunk } from './services/store-factory';
 
 export * as api from './api';
