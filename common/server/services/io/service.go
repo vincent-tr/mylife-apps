@@ -6,11 +6,16 @@ import (
 	"mylife-tools/services"
 	"mylife-tools/services/sessions"
 	"net/http"
+	"strings"
 
 	socketio "github.com/vchitai/go-socket.io/v4"
 )
 
 var logger = log.CreateLogger("mylife:server:io")
+
+type contextKey string
+
+const ioSessionKey contextKey = "ioSession"
 
 func init() {
 	services.Register(&ioService{})
@@ -27,7 +32,7 @@ func (service *ioService) Init(arg interface{}) error {
 		session := sessions.NewSession()
 		ioSession := newIoSession(session, socket)
 		session.RegisterStateObject("io", ioSession)
-		socket.SetContext(context.WithValue(context.TODO(), "ioSession", ioSession))
+		socket.SetContext(context.WithValue(context.TODO(), ioSessionKey, ioSession))
 
 		logger.WithFields(log.Fields{"sessionId": ioSession.session.Id(), "socketId": socket.ID()}).Debug("New IO session")
 
@@ -55,6 +60,18 @@ func (service *ioService) Init(arg interface{}) error {
 
 		if ioSession != nil {
 			fields["sessionId"] = ioSession.session.Id()
+		}
+
+		// Special case for normal socketio disconnection (browser going away from page)
+		if strings.Contains(err.Error(), "1001") {
+			logger.WithError(err).WithFields(fields).Debug("Got error 1001 (going away) on socket")
+			return
+		}
+
+		// Special case when we try to send data after socket is closed
+		if strings.Contains(err.Error(), "close sent") {
+			logger.WithError(err).WithFields(fields).Debug("Got error on socket (trying to send data after close)")
+			return
 		}
 
 		logger.WithError(err).WithFields(fields).Error("Got error on socket")
@@ -99,7 +116,7 @@ func getIoSession(socket socketio.Conn) *ioSession {
 		return nil
 	}
 
-	ios, ok := socket.Context().Value("ioSession").(*ioSession)
+	ios, ok := socket.Context().Value(ioSessionKey).(*ioSession)
 	if ok {
 		return ios
 	} else {
