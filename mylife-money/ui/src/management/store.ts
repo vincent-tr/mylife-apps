@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, dialogs, io, views } from 'mylife-tools';
+import { Operation } from '../api';
 import { Criteria } from './types';
 
 type FIXME_any = any;
@@ -109,7 +110,7 @@ const local = {
   getSelected: managementSlice.selectors.getSelected,
 };
 
-const getOperationView = (state) => views.getViewById(state, local.getOperationViewId(state));
+const getOperationView = (state) => views.getViewById<Operation>(state, local.getOperationViewId(state));
 export const getOperationDetail = (state) => getOperationView(state)[local.getOperationIdDetail(state)];
 
 export const getSelectedOperationIds = createSelector([local.getSelected, getOperationView], (selected, view) => selected.filter((id) => id in view));
@@ -123,7 +124,7 @@ export const getSelectedGroupId = (state) => local.getCriteria(state).group;
 export const getSortedOperations = createSelector([getOperationView], (operations) => {
   const ret = Object.values(operations);
   ret.sort((op1, op2) => {
-    const comp = (op1 as FIXME_any).date - (op2 as FIXME_any).date;
+    const comp = op1.date.getTime() - op2.date.getTime();
     if (comp) {
       return comp;
     }
@@ -132,27 +133,30 @@ export const getSortedOperations = createSelector([getOperationView], (operation
   return ret;
 });
 
-export const setMinDate = (value) => setCriteriaValue('minDate', value);
-export const setMaxDate = (value) => setCriteriaValue('maxDate', value);
-export const setAccount = (value) => setCriteriaValue('account', value);
-export const setLookupText = (value) => setCriteriaValue('lookupText', value);
+export const setMinDate = (value: Date | null) => setCriteriaValue({ name: 'minDate', value });
+export const setMaxDate = (value: Date | null) => setCriteriaValue({ name: 'maxDate', value });
+export const setAccount = (value: string | null) => setCriteriaValue({ name: 'account', value });
+export const setLookupText = (value: string | null) => setCriteriaValue({ name: 'lookupText', value });
 
-export const selectGroup = (value) => (dispatch) => {
-  dispatch(setCriteriaValue('group', value));
-  dispatch(closeDetail());
-};
+export const selectGroup = createAsyncThunk('management/selectGroup', async (value: string | null, api) => {
+  api.dispatch(setCriteriaValue({ name: 'group', value }));
+  api.dispatch(closeDetail());
+});
 
-function setCriteriaValue(name, value) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const criteria = local.getCriteria(state);
-    if (criteria[name] === value) {
-      return;
-    }
-
-    dispatch(local.setCriteria({ [name]: value }));
-  };
+interface SetCriteriaValuePayload {
+  name: keyof Criteria;
+  value: unknown;
 }
+
+export const setCriteriaValue = createAsyncThunk('management/setCriteriaValue', async ({ name, value }: SetCriteriaValuePayload, api) => {
+  const state = api.getState();
+  const criteria = local.getCriteria(state as FIXME_any);
+  if (criteria[name] === value) {
+    return;
+  }
+
+  api.dispatch(local.setCriteria({ [name]: value }));
+});
 
 let groupIdCount = 0;
 

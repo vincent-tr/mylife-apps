@@ -4,8 +4,6 @@ import { getAccount } from '../../../reference/selectors';
 import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 
-type FIXME_any = any;
-
 export const useConnect = () => {
   const dispatch = useAppDispatch();
   return {
@@ -13,7 +11,7 @@ export const useConnect = () => {
       const selectedGroup = getSelectedGroupId(state) || null;
       const selectedOperationIds = getSelectedOperationIds(state);
       return {
-        operations: getSortedOperations(state).map((operation: FIXME_any) => ({
+        operations: getSortedOperations(state).map((operation) => ({
           operation,
           account: getAccount(state, operation.account),
           fromChildGroup: (operation.group || null) !== selectedGroup,
