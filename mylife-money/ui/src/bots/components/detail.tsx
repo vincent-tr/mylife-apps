@@ -7,11 +7,9 @@ import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
 import { useCallback } from 'react';
 import { CriteriaField, useAction, fireAsync } from 'mylife-tools';
+import { Bot } from '../../api';
 import icons from '../../common/icons';
 import { startBot } from '../actions';
-
-type FIXME_any = any;
-type Bot = FIXME_any;
 
 const Container = styled('div')(({ theme }) => ({
   overflowY: 'auto',

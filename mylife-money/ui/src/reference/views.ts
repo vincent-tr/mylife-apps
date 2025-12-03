@@ -1,10 +1,11 @@
 import { views } from 'mylife-tools';
+import { Account, Group } from '../api';
 
 const ACCOUNTS = 'reference-accounts';
 const GROUPS = 'reference-groups';
 
-export const getAccountsView = (state) => views.getViewBySlot(state, ACCOUNTS);
-export const getGroupsView = (state) => views.getViewBySlot(state, GROUPS);
+export const getAccountsView = (state) => views.getViewBySlot<Account>(state, ACCOUNTS);
+export const getGroupsView = (state) => views.getViewBySlot<Group>(state, GROUPS);
 
 export function initReferenceViews() {
   views.initStaticView({

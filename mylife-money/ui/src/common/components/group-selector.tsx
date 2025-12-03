@@ -8,8 +8,6 @@ import { useAppSelector } from '../../store';
 import icons from '../icons';
 import GroupSelectorButton from './group-selector-button';
 
-type FIXME_any = any;
-
 const useConnect = ({ value }) => {
   return useAppSelector((state) => ({
     stack: getStack(state, value),
@@ -66,7 +64,7 @@ function getStack(state, value) {
   while (value) {
     const group = getGroup(state, value);
     ret.push(group);
-    value = (group as FIXME_any).parent;
+    value = group.parent;
   }
 
   ret.reverse();

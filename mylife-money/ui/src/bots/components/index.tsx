@@ -7,12 +7,10 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { ListContainer as ToolsListContainer } from 'mylife-tools';
+import { Bot } from '../../api';
 import { useBotsView } from '../views';
 import Detail from './detail';
 import Run from './run';
-
-type FIXME_any = any;
-type Bot = FIXME_any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -55,7 +53,7 @@ const StyledRun = styled(Run)({
 });
 
 export default function Bots() {
-  const { view } = useBotsView();
+  const view = useBotsView();
   const [selection, setSelection] = useState<string>(null);
   const bot = view[selection];
 
@@ -63,7 +61,7 @@ export default function Bots() {
     <Container>
       <ToolsListContainer>
         <StyledList>
-          {Object.values(view).map((bot: FIXME_any) => (
+          {Object.values(view).map((bot) => (
             <ListItem key={bot._id} disablePadding>
               <ListItemButton selected={selection === bot._id} onClick={() => setSelection(bot._id)}>
                 <ListItemText primary={bot.type} />
