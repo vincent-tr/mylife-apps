@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { api, services } from 'mylife-tools';
-import { Home, Stats } from './api/services';
+import { Home, Stats, Tesla } from './api/services';
 import stats from './stats/store';
 
 function buildAppServices(call: api.services.Call) {
@@ -9,6 +9,7 @@ function buildAppServices(call: api.services.Call) {
     ...services.buildToolsServices(call),
     home: new Home(call),
     stats: new Stats(call),
+    tesla: new Tesla(call),
   };
 }
 

@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { useReducer, useEffect } from 'react';
 import { useAction } from 'mylife-tools';
+import { StatsType } from '../../api';
 import { fetchValues as fetchValuesAction } from '../store';
-import { StatsType } from '../types';
 import { useDevicesView } from '../views';
 import Chart from './chart';
 import CriteriaSelector, { Criteria } from './criteria-selector';

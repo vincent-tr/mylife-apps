@@ -1,6 +1,5 @@
 import { api } from 'mylife-tools';
-import { StatsType } from '../../stats/types';
-import { StatValue } from '../entities/stats';
+import { StatsType, StatValue } from '..';
 
 export class Stats extends api.services.Service {
   async getValues({ type, timestamp, sensors }: { type: StatsType; timestamp: Date; sensors: string[] }) {

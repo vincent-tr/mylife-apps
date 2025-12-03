@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { StatsType } from '../types';
+import { StatsType } from '../../api';
 import DatePicker from './date-picker';
 import DeviceList from './device-list';
 import TypeList from './type-list';

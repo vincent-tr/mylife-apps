@@ -4,9 +4,10 @@ import { useMemo } from 'react';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools';
+import { StatsType } from '../../api';
 import { useAppSelector } from '../../store';
 import { getChartData, getSensors } from '../store';
-import { StatsType, TimestampData } from '../types';
+import { TimestampData } from '../types';
 
 export interface ChartProps {
   className?: string;

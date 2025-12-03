@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Measure, StatValue } from '../api';
+import { Measure, StatValue, StatsType } from '../api';
 import { createAppAsyncThunk } from '../store';
-import { SensorData, StatsType, TimestampData, UiSensor } from './types';
+import { SensorData, TimestampData, UiSensor } from './types';
 import { getDevicesView } from './views';
 
 interface StatsState {
