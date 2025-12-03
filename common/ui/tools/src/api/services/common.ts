@@ -9,7 +9,7 @@ export class Common extends Service {
     });
   }
 
-  async renotifyWithCriteria(viewId: string, criteria: Record<string, unknown>) {
+  async renotifyWithCriteria(viewId: string, criteria: unknown) {
     await this.call({
       service: 'common',
       method: 'renotifyWithCriteria',

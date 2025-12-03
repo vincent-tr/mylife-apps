@@ -32,12 +32,7 @@ const ioSlice = createSlice({
 });
 
 export const unnotify = createToolsAsyncThunk(`${STATE_PREFIX}/io/unnotify`, async (viewId: string, api) => {
-  await api.extra.call({
-    service: 'common',
-    method: 'unnotify',
-    viewId,
-  });
-
+  await api.extra.common.unnotify(viewId);
   api.dispatch(viewClose(viewId));
 });
 

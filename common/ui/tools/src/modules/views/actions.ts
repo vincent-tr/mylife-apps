@@ -21,12 +21,7 @@ export const createOrUpdateCriteriaView = createToolsAsyncThunk(
     const viewId = viewIdSelector(state);
 
     if (viewId) {
-      await api.extra.call({
-        service: 'common',
-        method: 'renotifyWithCriteria',
-        viewId,
-        criteria,
-      });
+      await api.extra.common.renotifyWithCriteria(viewId, criteria);
     } else {
       const newViewId = (await api.extra.call({
         service,
