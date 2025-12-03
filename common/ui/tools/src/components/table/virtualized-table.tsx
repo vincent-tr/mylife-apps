@@ -3,8 +3,6 @@ import TableCell from '@mui/material/TableCell';
 import React from 'react';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 
-const identity = (x) => x;
-
 const StyledTableCell = styled(TableCell)({
   display: 'flex',
   alignItems: 'center',
@@ -22,10 +20,8 @@ const StyledTable = styled(Table)(({ theme }) => ({
   },
 }));
 
-type FIXME_any = any;
-
-export interface VirtualizedTableProps {
-  data: FIXME_any[];
+export interface VirtualizedTableProps<TData> {
+  data: TData[];
   rowClassName?: string | ((row, index: number) => string);
   rowStyle?: React.CSSProperties | ((row, index: number) => React.CSSProperties);
 
@@ -39,15 +35,15 @@ export interface VirtualizedTableProps {
 export interface VirtualizedTableColumn {
   dataKey: string;
   cellDataGetter?;
-  cellRenderer?: string | React.ReactNode | ((cellData, dataKey) => string) | ((cellData, dataKey) => React.ReactNode);
-  cellStyle?: React.CSSProperties | ((cellData, dataKey) => React.CSSProperties);
-  headerRenderer: string | React.ReactNode | ((dataKey) => string) | ((dataKey) => React.ReactNode);
+  cellRenderer?: string | React.ReactNode | ((cellData: unknown, dataKey: string) => string) | ((cellData: unknown, dataKey: string) => React.ReactNode);
+  cellStyle?: React.CSSProperties | ((cellData: unknown, dataKey: string) => React.CSSProperties);
+  headerRenderer: string | React.ReactNode | ((dataKey: string) => string) | ((dataKey: string) => React.ReactNode);
   cellProps?;
   headerProps?;
   width?: number;
 }
 
-export default function VirtualizedTable({ data, columns, rowStyle, headerHeight = 48, rowHeight = 48, onRowClick, ...props }: VirtualizedTableProps) {
+export default function VirtualizedTable<TData>({ data, columns, rowStyle, headerHeight = 48, rowHeight = 48, onRowClick, ...props }: VirtualizedTableProps<TData>) {
   const rowIndexStyle = ({ index }) => {
     const style = {
       ...runPropGetter(rowStyle, data[index], index),
@@ -133,4 +129,8 @@ function runPropGetter(value, ...args) {
     value = value(...args);
   }
   return value;
+}
+
+function identity<T>(x: T): T {
+  return x;
 }
