@@ -226,13 +226,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 ## Tools UI
 
-- editors :
-  - editor : edition basique, avec des proprietes pour gerer le specificites du contenu
-  - field avec :
-    - datatype (ex: count qui est un entier positif)
-    - rules (ex: required, upperBound(10) ) qui est implémenté en validators mais qui peut être géré sur la UI de l éditeur aussi
-    - nom du field
-- globalization
 - charts : http://recharts.org/
 
 ## Money
