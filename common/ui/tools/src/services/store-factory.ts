@@ -10,13 +10,6 @@ import io from '../modules/io/store';
 import routing, { middleware as routingMiddlerware } from '../modules/routing/store';
 import views from '../modules/views/store';
 
-export function buildToolsService(call: api.services.Call) {
-  return {
-    call,
-    common: new api.services.Common(call),
-  };
-}
-
 const middlewares = [downloadMiddleware, routingMiddlerware];
 
 if (!import.meta.env.PROD) {
@@ -27,8 +20,8 @@ if (!import.meta.env.PROD) {
 
 let store;
 
-export function initStore<M>(reducers: M) {
-  store = buildStore(reducers);
+export function initStore<Reducers, Services extends BaseServices>(reducers: Reducers, servicesBuilder: (call: api.services.Call) => Services) {
+  store = buildStore(reducers, servicesBuilder);
 
   connectStoreDispatcher(store.dispatch);
 }
@@ -39,7 +32,15 @@ export function getStore() {
 
 // Build store
 
-function buildStore<M>(reducers: M) {
+export function buildToolsServices(call: api.services.Call) {
+  return {
+    call,
+    common: new api.services.Common(call),
+  };
+}
+
+function buildStore<Reducers, Services>(reducers: Reducers, servicesBuilder: (call: api.services.Call) => Services) {
+  void servicesBuilder;
   const reducer = combineReducers({
     ...reducers,
     [`${STATE_PREFIX}/dialogs`]: dialogs,
@@ -48,6 +49,8 @@ function buildStore<M>(reducers: M) {
     [`${STATE_PREFIX}/views`]: views,
   });
 
+  const services = servicesBuilder(call);
+
   return configureStore({
     reducer,
     middleware: (getDefaultMiddleware) =>
@@ -55,23 +58,24 @@ function buildStore<M>(reducers: M) {
         // Allow dates for now
         serializableCheck: { isSerializable: (value: any) => isPlain(value) || value instanceof Date },
         thunk: {
-          extraArgument: {
-            call,
-          },
+          extraArgument: services,
         },
       }).concat(...middlewares),
   });
 }
 
 // Helpers to build app-store types
-type GetStore<M> = ReturnType<typeof buildStore<M>>;
-export type GetRootState<M> = ReturnType<GetStore<M>['getState']>;
-export type GetAppDispatch<M> = GetStore<M>['dispatch'];
-export type GetThunkExtraArgument<F extends (call: api.services.Call) => any> = ReturnType<F>;
+type BaseServices = { call: api.services.Call };
+
+export type GetThunkExtraArgument<ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<ServiceBuilder>;
+type GetStore<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<typeof buildStore<Reducers, GetThunkExtraArgument<ServiceBuilder>>>;
+export type GetRootState<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<GetStore<Reducers, ServiceBuilder>['getState']>;
+export type GetAppDispatch<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = GetStore<Reducers, ServiceBuilder>['dispatch'];
 
 // Types for tools store
-export type ToolsState = GetRootState<unknown>;
-export type ToolsDispatch = GetAppDispatch<unknown>;
+export type ToolsState = GetRootState<unknown, typeof buildToolsServices>;
+export type ToolsDispatch = GetAppDispatch<unknown, typeof buildToolsServices>;
+type ToolsThunkExtraArgument = GetThunkExtraArgument<typeof buildToolsServices>;
 
 export const useToolsDispatch = useDispatch.withTypes<ToolsDispatch>();
 export const useToolsSelector = useSelector.withTypes<ToolsState>();
@@ -79,5 +83,5 @@ export const useToolsSelector = useSelector.withTypes<ToolsState>();
 export const createToolsAsyncThunk = createAsyncThunk.withTypes<{
   state: ToolsState;
   dispatch: ToolsDispatch;
-  extra: GetThunkExtraArgument<typeof buildToolsService>;
+  extra: ToolsThunkExtraArgument;
 }>();
