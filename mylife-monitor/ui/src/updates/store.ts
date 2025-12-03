@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
+import { createAppAsyncThunk } from '../store';
 import { getView } from './views';
-
-type FIXME_any = any;
 
 interface UpdatesState {
   criteria: Criteria;
@@ -41,9 +40,9 @@ const local = {
 
 export const resetCriteria = updatesSlice.actions.resetCriteria;
 
-export const changeCriteria = createAsyncThunk('updates/changeCriteria', async (changes: Partial<Criteria>, api) => {
+export const changeCriteria = createAppAsyncThunk('updates/changeCriteria', async (changes: Partial<Criteria>, api) => {
   const state = api.getState();
-  const criteria = local.getCriteria(state as FIXME_any);
+  const criteria = local.getCriteria(state);
   const newCriteria = { ...criteria, ...changes };
   api.dispatch(local.setCriteria(newCriteria));
 });

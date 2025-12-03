@@ -1,9 +1,8 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { api, views } from 'mylife-tools';
+import { createAppAsyncThunk } from '../store';
 import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 import { getView } from './views';
-
-type FIXME_any = any;
 
 interface NagiosState {
   criteria: Criteria;
@@ -42,9 +41,9 @@ const local = {
 
 export const resetCriteria = nagiosSlice.actions.resetCriteria;
 
-export const changeCriteria = createAsyncThunk('nagios/changeCriteria', async (changes: Partial<Criteria>, api) => {
+export const changeCriteria = createAppAsyncThunk('nagios/changeCriteria', async (changes: Partial<Criteria>, api) => {
   const state = api.getState();
-  const criteria = local.getCriteria(state as FIXME_any);
+  const criteria = local.getCriteria(state);
   const newCriteria = { ...criteria, ...changes };
   api.dispatch(local.setCriteria(newCriteria));
 });
