@@ -1,9 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createAsyncThunk, dialogs, io, views } from 'mylife-tools';
+import { dialogs, io, views } from 'mylife-tools';
 import { Operation } from '../api';
+import { createAppAsyncThunk } from '../store';
 import { Criteria } from './types';
-
-type FIXME_any = any;
 
 interface ManagementState {
   criteria: Criteria;
@@ -138,7 +137,7 @@ export const setMaxDate = (value: Date | null) => setCriteriaValue({ name: 'maxD
 export const setAccount = (value: string | null) => setCriteriaValue({ name: 'account', value });
 export const setLookupText = (value: string | null) => setCriteriaValue({ name: 'lookupText', value });
 
-export const selectGroup = createAsyncThunk('management/selectGroup', async (value: string | null, api) => {
+export const selectGroup = createAppAsyncThunk('management/selectGroup', async (value: string | null, api) => {
   api.dispatch(setCriteriaValue({ name: 'group', value }));
   api.dispatch(closeDetail());
 });
@@ -148,9 +147,9 @@ interface SetCriteriaValuePayload {
   value: unknown;
 }
 
-export const setCriteriaValue = createAsyncThunk('management/setCriteriaValue', async ({ name, value }: SetCriteriaValuePayload, api) => {
+export const setCriteriaValue = createAppAsyncThunk('management/setCriteriaValue', async ({ name, value }: SetCriteriaValuePayload, api) => {
   const state = api.getState();
-  const criteria = local.getCriteria(state as FIXME_any);
+  const criteria = local.getCriteria(state);
   if (criteria[name] === value) {
     return;
   }
@@ -160,8 +159,9 @@ export const setCriteriaValue = createAsyncThunk('management/setCriteriaValue', 
 
 let groupIdCount = 0;
 
-export const createGroup = createAsyncThunk('management/createGroup', async (_, api) => {
-  const parentGroup = getSelectedGroupId(api.getState());
+export const createGroup = createAppAsyncThunk('management/createGroup', async (_, api) => {
+  const state = api.getState();
+  const parentGroup = getSelectedGroupId(state);
   const newGroup = {
     display: `group${++groupIdCount}`,
     parent: parentGroup,
@@ -176,8 +176,9 @@ export const createGroup = createAsyncThunk('management/createGroup', async (_, 
   api.dispatch(selectGroup(id));
 });
 
-export const deleteGroup = createAsyncThunk('management/deleteGroup', async (_, api) => {
-  const id = getSelectedGroupId(api.getState());
+export const deleteGroup = createAppAsyncThunk('management/deleteGroup', async (_, api) => {
+  const state = api.getState();
+  const id = getSelectedGroupId(state);
 
   await api.extra.call({
     service: 'management',
@@ -188,7 +189,7 @@ export const deleteGroup = createAsyncThunk('management/deleteGroup', async (_, 
   api.dispatch(selectGroup(null));
 });
 
-export const updateGroup = createAsyncThunk('management/updateGroup', async (group, api) => {
+export const updateGroup = createAppAsyncThunk('management/updateGroup', async (group, api) => {
   await api.extra.call({
     service: 'management',
     method: 'updateGroup',
@@ -196,8 +197,9 @@ export const updateGroup = createAsyncThunk('management/updateGroup', async (gro
   });
 });
 
-export const moveOperations = createAsyncThunk('management/moveOperations', async (group: string, api) => {
-  const operations = getSelectedOperations(api.getState()).map((op) => op._id);
+export const moveOperations = createAppAsyncThunk('management/moveOperations', async (group: string, api) => {
+  const state = api.getState();
+  const operations = getSelectedOperations(state).map((op) => op._id);
 
   await api.extra.call({
     service: 'management',
@@ -207,8 +209,9 @@ export const moveOperations = createAsyncThunk('management/moveOperations', asyn
   });
 });
 
-export const operationMoveDetail = createAsyncThunk('management/operationMoveDetail', async (group: string, api) => {
-  const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
+export const operationMoveDetail = createAppAsyncThunk('management/operationMoveDetail', async (group: string, api) => {
+  const state = api.getState();
+  const operations = [local.getOperationIdDetail(state)];
 
   api.dispatch(closeDetail());
   await api.extra.call({
@@ -219,8 +222,9 @@ export const operationMoveDetail = createAsyncThunk('management/operationMoveDet
   });
 });
 
-export const operationsSetNote = createAsyncThunk('management/operationsSetNote', async (note: string, api) => {
-  const operations = getSelectedOperations(api.getState()).map((op) => op._id);
+export const operationsSetNote = createAppAsyncThunk('management/operationsSetNote', async (note: string, api) => {
+  const state = api.getState();
+  const operations = getSelectedOperations(state).map((op) => op._id);
 
   await api.extra.call({
     service: 'management',
@@ -230,8 +234,9 @@ export const operationsSetNote = createAsyncThunk('management/operationsSetNote'
   });
 });
 
-export const operationSetNoteDetail = createAsyncThunk('management/operationSetNoteDetail', async (note: string, api) => {
-  const operations = [local.getOperationIdDetail(api.getState() as FIXME_any)];
+export const operationSetNoteDetail = createAppAsyncThunk('management/operationSetNoteDetail', async (note: string, api) => {
+  const state = api.getState();
+  const operations = [local.getOperationIdDetail(state)];
 
   await api.extra.call({
     service: 'management',
@@ -255,7 +260,7 @@ export const selectOperation = ({ id, selected }) => {
   };
 };
 
-export const importOperations = createAsyncThunk('management/importOperations', async ({ account, file }: { account: string; file: File }, api) => {
+export const importOperations = createAppAsyncThunk('management/importOperations', async ({ account, file }: { account: string; file: File }, api) => {
   const content = await readFile(file);
 
   const count = await api.extra.call({
@@ -268,7 +273,7 @@ export const importOperations = createAsyncThunk('management/importOperations', 
   api.dispatch(local.showSuccess(`${count} operation(s) importée(s)`));
 });
 
-export const operationsExecuteRules = createAsyncThunk('management/operationsExecuteRules', async (_, api) => {
+export const operationsExecuteRules = createAppAsyncThunk('management/operationsExecuteRules', async (_, api) => {
   const count = await api.extra.call({
     service: 'management',
     method: 'operationsExecuteRules',

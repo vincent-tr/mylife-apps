@@ -1,6 +1,7 @@
-import { createAsyncThunk, dialogs } from 'mylife-tools';
+import { dialogs } from 'mylife-tools';
+import { createAppAsyncThunk } from '../store';
 
-export const startBot = createAsyncThunk('bots/startBot', async (id: string, api) => {
+export const startBot = createAppAsyncThunk('bots/startBot', async (id: string, api) => {
   await api.extra.call({
     service: 'bots',
     method: 'startBot',

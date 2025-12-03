@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createAsyncThunk, download, io, views } from 'mylife-tools';
+import { download, io, views } from 'mylife-tools';
+import { createAppAsyncThunk } from '../store';
 
 type FIXME_any = any;
 
@@ -57,7 +58,7 @@ export interface DownloadExportParams {
 
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-export const downloadExport = createAsyncThunk('reporting/downloadExport', async ({ criteria, display, method, fileName }: DownloadExportParams, api) => {
+export const downloadExport = createAppAsyncThunk('reporting/downloadExport', async ({ criteria, display, method, fileName }: DownloadExportParams, api) => {
   const content = (await api.extra.call({
     service: 'reporting',
     method,
