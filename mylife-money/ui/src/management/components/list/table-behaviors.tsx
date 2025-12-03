@@ -1,8 +1,16 @@
 import * as colors from '@mui/material/colors';
 import { useMemo } from 'react';
+import { Account, Operation } from '../../../api';
 import { getAccount } from '../../../reference/selectors';
 import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
+
+export interface ControlledOperation {
+  operation: Operation;
+  account: Account;
+  fromChildGroup: boolean;
+  selected: boolean;
+}
 
 export const useConnect = () => {
   const dispatch = useAppDispatch();

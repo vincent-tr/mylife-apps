@@ -47,7 +47,7 @@ const Table = (props) => {
       width: 80,
       headerRenderer: 'Montant',
       cellDataGetter: ({ rowData }) => rowData.operation.amount,
-      cellStyle: (value) => ({ backgroundColor: value < 0 ? COLOR_AMOUNT_DEBIT : COLOR_AMOUNT_CREDIT }),
+      cellStyle: (value: number) => ({ backgroundColor: value < 0 ? COLOR_AMOUNT_DEBIT : COLOR_AMOUNT_CREDIT }),
     },
     { dataKey: 'date', width: 100, headerRenderer: 'Date', cellDataGetter: ({ rowData }) => new Date(rowData.operation.date).toLocaleDateString('fr-FR') }, // TODO: formatter
     { dataKey: 'label', headerRenderer: 'Libellé', cellDataGetter: ({ rowData }) => rowData.operation.label },
