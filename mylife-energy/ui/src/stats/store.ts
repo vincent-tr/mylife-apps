@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createAsyncThunk } from 'mylife-tools';
-import { Measure, Sensor } from '../api';
+import { Measure, StatValue } from '../api';
+import { createAppAsyncThunk } from '../store';
 import { SensorData, StatsType, TimestampData, UiSensor } from './types';
 import { getDevicesView } from './views';
 
@@ -8,11 +8,6 @@ interface StatsState {
   sensors: { [id: string]: SensorData };
   measures: { [id: string]: Measure };
 }
-
-type SetValues = {
-  sensor: Sensor;
-  measures: Measure[];
-}[];
 
 const initialState: StatsState = {
   sensors: {},
@@ -23,7 +18,7 @@ const statsSlice = createSlice({
   name: 'stats',
   initialState,
   reducers: {
-    setValues(state, action: PayloadAction<SetValues>) {
+    setValues(state, action: PayloadAction<StatValue[]>) {
       const sensors: { [id: string]: SensorData } = {};
       const measures: { [id: string]: Measure } = {};
 
@@ -58,15 +53,12 @@ const local = {
   getStatsMeasures: statsSlice.selectors.getStatsMeasures,
 };
 
-export const fetchValues = createAsyncThunk('stats/fetchValues', async ({ type, timestamp, sensors }: { type: StatsType; timestamp: Date; sensors: string[] }, api) => {
-  const values = (await api.extra.call({
-    service: 'stats',
-    method: 'getValues',
+export const fetchValues = createAppAsyncThunk('stats/fetchValues', async ({ type, timestamp, sensors }: { type: StatsType; timestamp: Date; sensors: string[] }, api) => {
+  const values = await api.extra.stats.getValues({
     type,
     timestamp,
     sensors,
-    timeout: 60000, // can be slower for now as we request long db queries
-  })) as SetValues;
+  });
 
   api.dispatch(local.setValues(values));
 });
