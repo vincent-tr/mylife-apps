@@ -10,7 +10,7 @@ import (
 
 // https://nagios-plugins.org/doc/guidelines.html
 
-var logger = log.CreateLogger("mylife:money:monitor")
+var logger = log.CreateLogger("mylife:server:monitor")
 
 type ProbeStatus string
 
