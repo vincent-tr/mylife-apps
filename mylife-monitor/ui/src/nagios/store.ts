@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { api, views } from 'mylife-tools';
-import { createAppAsyncThunk } from '../store';
+import { createAppAsyncThunk } from '../store-api';
 import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 import { getView } from './views';
 

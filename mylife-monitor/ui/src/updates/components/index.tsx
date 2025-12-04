@@ -13,7 +13,7 @@ import { useCallback, useMemo } from 'react';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store-api';
 import { changeCriteria, Criteria, getCriteria, getDisplayView } from '../store';
 import { useUpdatesDataView } from '../views';
 

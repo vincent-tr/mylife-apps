@@ -12,7 +12,7 @@ import humanizeDuration from 'humanize-duration';
 import { useMemo } from 'react';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store-api';
 import { HOST_STATUS_PROBLEM } from '../problems';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
 import { useNagiosDataView } from '../views';

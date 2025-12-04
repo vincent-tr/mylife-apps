@@ -4,7 +4,7 @@ import Home from './home/components';
 import Nagios from './nagios/components';
 import Updates from './updates/components';
 import Upsmon from './upsmon/components';
-import './store';
+import './store-factory';
 
 const routes = [
   { location: '/', renderer: () => <Home /> },
