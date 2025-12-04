@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { useCallback, useState, useEffect } from 'react';
 import { dialogs, useAction, fireAsync } from 'mylife-tools';
 import { TeslaState } from '../../api';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 import { setParameters } from '../actions';
 import { getTeslaState } from '../views';
 

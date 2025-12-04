@@ -1,5 +1,5 @@
 import { TeslaMode } from '../api';
-import { createAppAsyncThunk } from '../store';
+import { createAppAsyncThunk } from '../store-api';
 
 export const setMode = createAppAsyncThunk('tesla/setMode', async (mode: TeslaMode, api) => {
   await api.extra.tesla.setMode(mode);

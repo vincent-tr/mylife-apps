@@ -3,7 +3,7 @@ import { styled, Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import icons from '../../common/icons';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 import { getDevice } from '../selectors';
 import { getMeasuresView } from '../views';
 

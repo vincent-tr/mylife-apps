@@ -4,7 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useCallback, useMemo } from 'react';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 import { getDevicesView } from '../views';
 
 type DeviceMap = { [deviceId: string]: string };

@@ -4,7 +4,7 @@ import Home from './home/components';
 import Live from './live/components';
 import Stats from './stats/components';
 import Tesla from './tesla/components';
-import './store';
+import './store-factory';
 
 const routes = [
   { location: '/', renderer: () => <Home /> },

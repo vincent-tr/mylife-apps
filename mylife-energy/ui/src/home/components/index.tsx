@@ -5,7 +5,7 @@ import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration
 import React, { PropsWithChildren, useState } from 'react';
 import { useInterval } from 'mylife-tools';
 import icons from '../../common/icons';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 import { BatteryStatus } from '../../tesla/components';
 import { getHomeDataView, useHomeDataView } from '../views';
 
