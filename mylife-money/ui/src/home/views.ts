@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
 import * as api from '../api';
-import { useAppSelector } from '../store';
+import { useAppSelector } from '../store-api';
 
 const OPERATION_STATS = 'home-operation-stats';
 const TOTAL_BY_MONTH = 'home-total-by-month';

@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import React, { useState, useMemo, useCallback } from 'react';
 import { views } from 'mylife-tools';
 import { ReportingCriteria, ReportingDisplay } from '../../../api';
-import { useAppSelector, useAppDispatch } from '../../../store';
+import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSortedViewList, setViewId, clearViewId, getViewId, downloadExport } from '../../store';
 import Chart from './chart';
 import Criteria from './criteria';

@@ -5,7 +5,7 @@ import Home from './home/components';
 import Management from './management/components';
 import GroupByMonth from './reporting/components/group-by-month';
 import GroupByYear from './reporting/components/group-by-year';
-import './store';
+import './store-factory';
 
 const routes = [
   { location: '/', renderer: () => <Home /> },

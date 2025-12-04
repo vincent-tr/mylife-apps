@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getGroup } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store';
+import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSelectedGroupId, selectGroup } from '../../store';
 
 type FIXME_any = any;

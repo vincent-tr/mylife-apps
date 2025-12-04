@@ -7,7 +7,7 @@ import React, { useMemo } from 'react';
 import { DebouncedTextField } from 'mylife-tools';
 import Markdown from '../../../common/components/markdown';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store';
+import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup, getOperationDetail } from '../../store';
 import AmountValue from './amount-value';
 import GroupBreadcrumbs from './group-breadcrumbs';

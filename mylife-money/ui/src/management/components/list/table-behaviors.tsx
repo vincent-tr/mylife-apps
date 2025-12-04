@@ -2,7 +2,7 @@ import * as colors from '@mui/material/colors';
 import { useMemo } from 'react';
 import { Account, Operation } from '../../../api';
 import { getAccount } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store';
+import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSelectedGroupId, getSortedOperations, getSelectedOperationIds, selectOperation, showDetail } from '../../store';
 
 export interface ControlledOperation {

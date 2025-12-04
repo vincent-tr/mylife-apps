@@ -1,7 +1,7 @@
 import List from '@mui/material/List';
 import { useMemo } from 'react';
 import { makeGetSortedChildren } from '../../reference/selectors';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 import GroupNode from './group-node';
 
 type FIXME_any = any;

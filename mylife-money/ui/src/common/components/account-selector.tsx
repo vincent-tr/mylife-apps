@@ -1,7 +1,7 @@
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectProps } from '@mui/material/Select';
 import { getAccounts } from '../../reference/selectors';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 
 const useConnect = () =>
   useAppSelector((state) => ({

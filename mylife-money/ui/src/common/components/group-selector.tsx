@@ -4,7 +4,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { getGroup } from '../../reference/selectors';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 import icons from '../icons';
 import GroupSelectorButton from './group-selector-button';
 

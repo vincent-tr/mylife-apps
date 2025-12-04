@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { noop, useLifecycle, useScreenSize, views } from 'mylife-tools';
-import { useAppSelector, useAppDispatch } from '../../store';
+import { useAppSelector, useAppDispatch } from '../../store-api';
 import { isOperationDetail, getCriteria, setOperationViewId, clearOperationViewId, getOperationViewId, closeDetail } from '../store';
 import Detail from './detail';
 import List from './list';

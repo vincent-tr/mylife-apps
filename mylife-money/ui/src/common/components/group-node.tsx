@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
 import React, { useState, useMemo } from 'react';
 import { makeGetSortedChildren } from '../../reference/selectors';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../store-api';
 import icons from '../icons';
 
 type FIXME_any = any;

@@ -10,7 +10,7 @@ import AccountSelector from '../../../common/components/account-selector';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getAccounts, getGroup } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store';
+import { useAppSelector, useAppDispatch } from '../../../store-api';
 import {
   setMinDate,
   setMaxDate,

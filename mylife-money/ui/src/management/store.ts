@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { dialogs, io, views } from 'mylife-tools';
 import { Group, Operation } from '../api';
-import { createAppAsyncThunk } from '../store';
+import { createAppAsyncThunk } from '../store-api';
 import { Criteria } from './types';
 
 interface ManagementState {

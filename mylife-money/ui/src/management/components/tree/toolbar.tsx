@@ -6,7 +6,7 @@ import { dialogs } from 'mylife-tools';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getGroup } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store';
+import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSelectedGroupId, createGroup, updateGroup, deleteGroup } from '../../store';
 import groupEditor from './group-editor';
 

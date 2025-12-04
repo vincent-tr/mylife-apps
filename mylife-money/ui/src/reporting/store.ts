@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { download, io, views } from 'mylife-tools';
 import { ReportingCriteria, ReportingDisplay } from '../api';
-import { createAppAsyncThunk } from '../store';
+import { createAppAsyncThunk } from '../store-api';
 
 interface ReportingState {
   view: string | null;

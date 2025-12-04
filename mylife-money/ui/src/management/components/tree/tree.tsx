@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { ListContainer } from 'mylife-tools';
 import GroupTree from '../../../common/components/group-tree';
-import { useAppSelector, useAppDispatch } from '../../../store';
+import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSelectedGroupId, selectGroup } from '../../store';
 
 const useConnect = () => {
