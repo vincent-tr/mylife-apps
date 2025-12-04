@@ -1,7 +1,7 @@
 import { Action } from '@reduxjs/toolkit';
 import { Mutex } from 'async-mutex';
 import { STATE_PREFIX } from '../../constants/defines';
-import { createToolsAsyncThunk } from '../../services/store-factory';
+import { createToolsAsyncThunk } from '../../services/store-api';
 import * as io from '../io';
 import { getViewId, getRefCount, setView, ref, unref } from './store';
 

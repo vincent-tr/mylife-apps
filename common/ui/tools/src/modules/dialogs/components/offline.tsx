@@ -2,7 +2,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/material/styles';
-import { useToolsSelector } from '../../../services';
+import { useToolsSelector } from '../../../services/store-api';
 import { getOnline } from '../../io';
 
 const useConnect = () => ({

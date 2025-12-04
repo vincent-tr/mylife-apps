@@ -8,7 +8,7 @@ import Portal from '@mui/material/Portal';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
-import { useToolsDispatch, useToolsSelector } from '../../../services';
+import { useToolsDispatch, useToolsSelector } from '../../../services/store-api';
 import { getNotifications, dismissNotification } from '../store';
 import { NotificationType } from '../types';
 

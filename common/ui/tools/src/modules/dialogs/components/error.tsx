@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useMemo } from 'react';
-import { useToolsDispatch, useToolsSelector } from '../../../services';
+import { useToolsDispatch, useToolsSelector } from '../../../services/store-api';
 import { clearError, getError } from '../store';
 
 const useConnect = () => {

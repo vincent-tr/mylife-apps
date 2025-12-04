@@ -1,6 +1,6 @@
 import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_PREFIX } from '../../constants/defines';
-import { createToolsAsyncThunk } from '../../services/store-factory';
+import { createToolsAsyncThunk } from '../../services/store-api';
 import { abortableDelay } from '../../utils';
 import { Notification, NotificationType } from './types';
 

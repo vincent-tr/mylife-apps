@@ -1,5 +1,4 @@
-import { configureStore, combineReducers, isPlain, createAsyncThunk } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
+import { configureStore, combineReducers, isPlain } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import * as api from '../api';
 import { STATE_PREFIX } from '../constants/defines';
@@ -71,17 +70,3 @@ export type GetThunkExtraArgument<ServiceBuilder extends (call: api.services.Cal
 type GetStore<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<typeof buildStore<Reducers, GetThunkExtraArgument<ServiceBuilder>>>;
 export type GetRootState<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<GetStore<Reducers, ServiceBuilder>['getState']>;
 export type GetAppDispatch<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = GetStore<Reducers, ServiceBuilder>['dispatch'];
-
-// Types for tools store
-export type ToolsState = GetRootState<unknown, typeof buildToolsServices>;
-export type ToolsDispatch = GetAppDispatch<unknown, typeof buildToolsServices>;
-type ToolsThunkExtraArgument = GetThunkExtraArgument<typeof buildToolsServices>;
-
-export const useToolsDispatch = useDispatch.withTypes<ToolsDispatch>();
-export const useToolsSelector = useSelector.withTypes<ToolsState>();
-
-export const createToolsAsyncThunk = createAsyncThunk.withTypes<{
-  state: ToolsState;
-  dispatch: ToolsDispatch;
-  extra: ToolsThunkExtraArgument;
-}>();
