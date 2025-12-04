@@ -214,7 +214,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 # TODO
 
-- remove api.extra.call and keep only clean services
 - Fix useView to work with api services
 - useApp/ToolsDispatcher => useAction?
 - make TS stricter
