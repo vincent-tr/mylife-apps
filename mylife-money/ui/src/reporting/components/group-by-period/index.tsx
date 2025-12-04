@@ -1,24 +1,23 @@
 import { styled } from '@mui/material/styles';
 import React, { useState, useMemo, useCallback } from 'react';
 import { views } from 'mylife-tools';
+import { ReportingCriteria, ReportingDisplay } from '../../../api';
 import { useAppSelector, useAppDispatch } from '../../../store';
 import { getSortedViewList, setViewId, clearViewId, getViewId, downloadExport } from '../../store';
 import Chart from './chart';
 import Criteria from './criteria';
 import { formatCriteria } from './tools';
 
-type FIXME_any = any;
-
-const useConnect = ({ exportMethod, exportFilename }) => {
+const useConnect = ({ exportType, exportFilename }) => {
   const dispatch = useAppDispatch();
   return {
     data: useAppSelector(getSortedViewList),
     ...useMemo(
       () => ({
-        exportReport: ({ criteria, display }: { criteria: FIXME_any; display: FIXME_any }) =>
-          dispatch(downloadExport({ criteria, display, method: exportMethod, fileName: exportFilename })),
+        exportReport: ({ criteria, display }: { criteria: ReportingCriteria; display: ReportingDisplay }) =>
+          dispatch(downloadExport({ criteria, display, type: exportType, fileName: exportFilename })),
       }),
-      [dispatch, exportMethod, exportFilename]
+      [dispatch, exportType, exportFilename]
     ),
   };
 };
@@ -34,8 +33,7 @@ const StyledChart = styled(Chart)({
 });
 
 export interface GroupByPeriodProps {
-  viewMethod: string;
-  exportMethod: 'exportGroupByMonth' | 'exportGroupByYear';
+  exportType: 'month' | 'year';
   exportFilename: string;
   initialCriteria;
   initialDisplay;
@@ -43,23 +41,27 @@ export interface GroupByPeriodProps {
   amountSelectorFactory: (props) => any;
 }
 
-export default function GroupByPeriod({
-  viewMethod,
-  exportMethod,
-  exportFilename,
-  initialCriteria,
-  initialDisplay,
-  additionalCriteriaFactory,
-  amountSelectorFactory,
-}: GroupByPeriodProps) {
+export default function GroupByPeriod({ exportType, exportFilename, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }: GroupByPeriodProps) {
   const [criteria, setCriteria] = useState(initialCriteria);
   const [display, setDisplay] = useState(initialDisplay);
 
   const formattedCriteria = useMemo(() => formatCriteria(criteria), [criteria]);
 
+  let method: string;
+  switch (exportType) {
+    case 'month':
+      method = 'notifyGroupByMonth';
+      break;
+    case 'year':
+      method = 'notifyGroupByYear';
+      break;
+    default:
+      throw new Error(`Unsupported export type: ${exportType}`);
+  }
+
   views.useCriteriaView({
     service: 'reporting',
-    method: viewMethod,
+    method,
     criteria: formattedCriteria,
 
     setViewIdAction: setViewId,
@@ -67,7 +69,7 @@ export default function GroupByPeriod({
     viewIdSelector: getViewId,
   });
 
-  const { exportReport, data } = useConnect({ exportMethod, exportFilename });
+  const { exportReport, data } = useConnect({ exportType, exportFilename });
 
   const doExport = useCallback(() => exportReport({ criteria: formattedCriteria, display }), [exportReport, formattedCriteria, display]);
 

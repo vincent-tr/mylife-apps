@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { api, services } from 'mylife-tools';
+import { Bots, Management, Reporting } from './api/services';
 import management from './management/store';
 import { initReferenceViews } from './reference/views';
 import reporting from './reporting/store';
@@ -8,6 +9,9 @@ import reporting from './reporting/store';
 function buildAppServices(call: api.services.Call) {
   return {
     ...services.buildToolsServices(call),
+    bots: new Bots(call),
+    management: new Management(call),
+    reporting: new Reporting(call),
   };
 }
 

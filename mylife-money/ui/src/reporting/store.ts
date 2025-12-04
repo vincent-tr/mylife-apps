@@ -1,8 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { download, io, views } from 'mylife-tools';
+import { ReportingCriteria, ReportingDisplay } from '../api';
 import { createAppAsyncThunk } from '../store';
-
-type FIXME_any = any;
 
 interface ReportingState {
   view: string | null;
@@ -50,21 +49,26 @@ export const getView = (state) => views.getViewById(state, local.getViewId(state
 export const getSortedViewList = createSelector([getView], (view) => Object.values(view).sort((item1, item2) => (item1._id < item2._id ? -1 : 1)));
 
 export interface DownloadExportParams {
-  criteria: FIXME_any;
-  display: FIXME_any;
-  method: 'exportGroupByMonth' | 'exportGroupByYear';
+  criteria: ReportingCriteria;
+  display: ReportingDisplay;
+  type: 'month' | 'year';
   fileName: string;
 }
 
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-export const downloadExport = createAppAsyncThunk('reporting/downloadExport', async ({ criteria, display, method, fileName }: DownloadExportParams, api) => {
-  const content = (await api.extra.call({
-    service: 'reporting',
-    method,
-    criteria,
-    display,
-  })) as string;
+export const downloadExport = createAppAsyncThunk('reporting/downloadExport', async ({ criteria, display, type, fileName }: DownloadExportParams, api) => {
+  let content: string;
+  switch (type) {
+    case 'month':
+      content = await api.extra.reporting.exportGroupByMonth(criteria, display);
+      break;
+    case 'year':
+      content = await api.extra.reporting.exportGroupByYear(criteria, display);
+      break;
+    default:
+      throw new Error(`Unknown export type: ${type}`);
+  }
 
   api.dispatch(download.file({ name: fileName, mime: XLSX_MIME, content }));
 });

@@ -45,8 +45,7 @@ function AdditionalCriteria({ display, onDisplayChanged }: AdditionalCriteriaPro
 export default function GroupByYear() {
   return (
     <GroupByPeriod
-      viewMethod="notifyGroupByYear"
-      exportMethod="exportGroupByYear"
+      exportType="year"
       exportFilename="group-by-year"
       initialCriteria={initialCriteria}
       initialDisplay={initialDisplay}

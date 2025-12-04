@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { dialogs, io, views } from 'mylife-tools';
-import { Operation } from '../api';
+import { Group, Operation } from '../api';
 import { createAppAsyncThunk } from '../store';
 import { Criteria } from './types';
 
@@ -167,12 +167,7 @@ export const createGroup = createAppAsyncThunk('management/createGroup', async (
     parent: parentGroup,
   };
 
-  const id = (await api.extra.call({
-    service: 'management',
-    method: 'createGroup',
-    object: newGroup,
-  })) as string;
-
+  const id = await api.extra.management.createGroup(newGroup);
   api.dispatch(selectGroup(id));
 });
 
@@ -180,33 +175,19 @@ export const deleteGroup = createAppAsyncThunk('management/deleteGroup', async (
   const state = api.getState();
   const id = getSelectedGroupId(state);
 
-  await api.extra.call({
-    service: 'management',
-    method: 'deleteGroup',
-    id,
-  });
-
+  await api.extra.management.deleteGroup(id);
   api.dispatch(selectGroup(null));
 });
 
-export const updateGroup = createAppAsyncThunk('management/updateGroup', async (group, api) => {
-  await api.extra.call({
-    service: 'management',
-    method: 'updateGroup',
-    object: group,
-  });
+export const updateGroup = createAppAsyncThunk('management/updateGroup', async (group: Group, api) => {
+  await api.extra.management.updateGroup(group);
 });
 
 export const moveOperations = createAppAsyncThunk('management/moveOperations', async (group: string, api) => {
   const state = api.getState();
   const operations = getSelectedOperations(state).map((op) => op._id);
 
-  await api.extra.call({
-    service: 'management',
-    method: 'moveOperations',
-    group,
-    operations,
-  });
+  await api.extra.management.moveOperations({ group, operations });
 });
 
 export const operationMoveDetail = createAppAsyncThunk('management/operationMoveDetail', async (group: string, api) => {
@@ -214,36 +195,21 @@ export const operationMoveDetail = createAppAsyncThunk('management/operationMove
   const operations = [local.getOperationIdDetail(state)];
 
   api.dispatch(closeDetail());
-  await api.extra.call({
-    service: 'management',
-    method: 'moveOperations',
-    group,
-    operations,
-  });
+  await api.extra.management.moveOperations({ group, operations });
 });
 
 export const operationsSetNote = createAppAsyncThunk('management/operationsSetNote', async (note: string, api) => {
   const state = api.getState();
   const operations = getSelectedOperations(state).map((op) => op._id);
 
-  await api.extra.call({
-    service: 'management',
-    method: 'operationsSetNote',
-    note,
-    operations,
-  });
+  await api.extra.management.operationsSetNote({ note, operations });
 });
 
 export const operationSetNoteDetail = createAppAsyncThunk('management/operationSetNoteDetail', async (note: string, api) => {
   const state = api.getState();
   const operations = [local.getOperationIdDetail(state)];
 
-  await api.extra.call({
-    service: 'management',
-    method: 'operationsSetNote',
-    note,
-    operations,
-  });
+  await api.extra.management.operationsSetNote({ note, operations });
 });
 
 export const selectOperation = ({ id, selected }) => {
@@ -262,28 +228,17 @@ export const selectOperation = ({ id, selected }) => {
 
 export const importOperations = createAppAsyncThunk('management/importOperations', async ({ account, file }: { account: string; file: File }, api) => {
   const content = await readFile(file);
-
-  const count = await api.extra.call({
-    service: 'management',
-    method: 'operationsImport',
-    account,
-    content,
-  });
-
+  const count = await api.extra.management.operationsImport({ account, content });
   api.dispatch(local.showSuccess(`${count} operation(s) importée(s)`));
 });
 
 export const operationsExecuteRules = createAppAsyncThunk('management/operationsExecuteRules', async (_, api) => {
-  const count = await api.extra.call({
-    service: 'management',
-    method: 'operationsExecuteRules',
-  });
-
+  const count = await api.extra.management.operationsExecuteRules();
   api.dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
 });
 
 async function readFile(file) {
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
@@ -291,7 +246,7 @@ async function readFile(file) {
       if (err) {
         return reject(err);
       }
-      resolve(reader.result);
+      resolve(reader.result as string);
     };
 
     reader.readAsText(file);

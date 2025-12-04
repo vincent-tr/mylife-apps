@@ -16,8 +16,7 @@ const initialDisplay = {
 
 const GroupByMonth = () => (
   <GroupByPeriod
-    viewMethod="notifyGroupByMonth"
-    exportMethod="exportGroupByMonth"
+    exportType="month"
     exportFilename="group-by-month"
     initialCriteria={initialCriteria}
     initialDisplay={initialDisplay}
