@@ -9,6 +9,6 @@ export const getView = (state) => views.getViewBySlot<api.UpdatesVersion>(state,
 export function useUpdatesDataView() {
   return useSharedView<api.UpdatesVersion>({
     slot: UPDATES_DATA,
-    viewCreatorApi: async (api) => api.updates.notify(),
+    viewCreatorApi: async (api) => await api.updates.notify(),
   });
 }

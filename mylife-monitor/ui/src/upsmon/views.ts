@@ -6,6 +6,6 @@ const UPSMON_DATA = 'upsmon-data';
 export function useUpsmonDataView() {
   return useSharedView<api.UpsmonStatus>({
     slot: UPSMON_DATA,
-    viewCreatorApi: async (api) => api.upsmon.notify(),
+    viewCreatorApi: async (api) => await api.upsmon.notify(),
   });
 }

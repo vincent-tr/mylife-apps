@@ -1,8 +1,8 @@
 import { api, views } from 'mylife-tools';
-import { AppApi } from './store-api';
+import { AppApi, AppState } from './store-api';
 
-export function useCriteriaView<TEntity extends api.Entity, TCriteria>(options: views.CriteriaViewOptions<TCriteria, AppApi>) {
-  return views.useCriteriaView<AppApi, TEntity, TCriteria>(options);
+export function useCriteriaView<TEntity extends api.Entity, TCriteria>(options: views.CriteriaViewOptions<TCriteria, AppApi, AppState>) {
+  return views.useCriteriaView<AppApi, TEntity, TCriteria, AppState>(options);
 }
 
 export function useSharedView<TEntity extends api.Entity>(options: views.SharedViewOptions<AppApi>) {

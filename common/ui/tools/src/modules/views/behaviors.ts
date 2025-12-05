@@ -17,7 +17,7 @@ import {
 import { getViewBySlot } from './store';
 import { View } from './types';
 
-export interface CriteriaViewOptions<TCriteria, Api extends ToolsApi> {
+export interface CriteriaViewOptions<TCriteria, Api extends ToolsApi, RootState extends ToolsState> {
   viewCreatorApi: CriteriaViewCreatorApi<Api>;
   service: string;
   method: string;
@@ -25,7 +25,7 @@ export interface CriteriaViewOptions<TCriteria, Api extends ToolsApi> {
 
   setViewIdAction: (viewId: string) => Action;
   clearViewIdAction: () => Action;
-  viewIdSelector: (state: ToolsState) => string;
+  viewIdSelector: (state: RootState) => string;
 }
 
 /**
@@ -35,7 +35,9 @@ export interface CriteriaViewOptions<TCriteria, Api extends ToolsApi> {
  * @param options - ViewReference constructor options
  * @returns The current view data from the store
  */
-export function useCriteriaView<Api extends ToolsApi, TEntity extends api.Entity, TCriteria>(options: CriteriaViewOptions<TCriteria, Api>): View<TEntity> {
+export function useCriteriaView<Api extends ToolsApi, TEntity extends api.Entity, TCriteria, RootState extends ToolsState>(
+  options: CriteriaViewOptions<TCriteria, Api, RootState>
+): View<TEntity> {
   const dispatch = useToolsDispatch();
   const { viewCreatorApi, criteria, setViewIdAction, clearViewIdAction, viewIdSelector } = options;
 

@@ -9,6 +9,6 @@ export const getView = (state) => views.getViewBySlot<api.NagiosData>(state, NAG
 export function useNagiosDataView() {
   return useSharedView<api.NagiosData>({
     slot: NAGIOS_DATA,
-    viewCreatorApi: async (api) => api.nagios.notify(),
+    viewCreatorApi: async (api) => await api.nagios.notify(),
   });
 }

@@ -8,20 +8,20 @@ const UPDATES_SUMMARY = 'updates-summary';
 export function useNagiosSummaryView() {
   return useSharedView<api.NagiosSummary>({
     slot: NAGIOS_SUMMARY,
-    viewCreatorApi: async (api) => api.nagios.notifySummary(),
+    viewCreatorApi: async (api) => await api.nagios.notifySummary(),
   });
 }
 
 export function useUpsmonSummaryView() {
   return useSharedView<api.UpsmonSummary>({
     slot: UPSMON_SUMMARY,
-    viewCreatorApi: async (api) => api.upsmon.notifySummary(),
+    viewCreatorApi: async (api) => await api.upsmon.notifySummary(),
   });
 }
 
 export function useUpdatesSummaryView() {
   return useSharedView<api.UpdatesSummary>({
     slot: UPDATES_SUMMARY,
-    viewCreatorApi: async (api) => api.updates.notifySummary(),
+    viewCreatorApi: async (api) => await api.updates.notifySummary(),
   });
 }
