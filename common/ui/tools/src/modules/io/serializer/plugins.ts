@@ -9,33 +9,37 @@ class RemoteError extends Error {
   }
 }
 
+interface ErrorWithStacktrace extends Error {
+  stacktrace: string;
+}
+
 addPlugin({
   name: 'error',
-  is: (payload) => payload instanceof Error,
-  serialize: (payload) => ({
+  is: (payload: unknown) => payload instanceof Error,
+  serialize: (payload: ErrorWithStacktrace) => ({
     message: payload.message,
     stacktrace: payload.stacktrace,
   }),
-  deserialize: (raw) => {
+  deserialize: (raw: { message: string; stacktrace: string }) => {
     return new RemoteError(raw.message, raw.stacktrace);
   },
 });
 
 addPlugin({
   name: 'date',
-  is: (payload) => payload instanceof Date,
-  serialize: (payload) => payload.valueOf(),
-  deserialize: (raw) => new Date(raw),
+  is: (payload: unknown) => payload instanceof Date,
+  serialize: (payload: Date) => payload.valueOf(),
+  deserialize: (raw: number) => new Date(raw),
 });
 
 addPlugin({
   name: 'buffer',
-  is: (payload) => payload instanceof Uint8Array,
+  is: (payload: unknown) => payload instanceof Uint8Array,
   serialize: serializeBuffer,
   deserialize: deserializeBuffer,
 });
 
-function serializeBuffer(buffer) {
+function serializeBuffer(buffer: Uint8Array) {
   // https://github.com/github-tools/github/issues/137
   const chunksize = 0xffff;
   const strings = [];
@@ -50,7 +54,7 @@ function serializeBuffer(buffer) {
   return btoa(strings.join(''));
 }
 
-function deserializeBuffer(buffer) {
+function deserializeBuffer(buffer: string) {
   // https://gist.github.com/borismus/1032746
   const raw = atob(buffer);
   const rawLength = raw.length;

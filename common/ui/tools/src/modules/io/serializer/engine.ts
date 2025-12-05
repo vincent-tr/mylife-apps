@@ -1,31 +1,45 @@
-const plugins = [];
-const pluginByNames = new Map();
+interface Plugin {
+  name: string;
+  is: (payload: unknown) => boolean;
+  serialize: (payload: any) => unknown;
+  deserialize: (raw: any) => any;
+}
 
-export function addPlugin(plugin) {
+const plugins: Plugin[] = [];
+const pluginByNames = new Map<string, Plugin>();
+
+export function addPlugin(plugin: Plugin) {
   plugins.push(plugin);
   pluginByNames.set(plugin.name, plugin);
 }
 
-export function serialize(payload) {
+interface RawValue {
+  __type: string;
+  value: unknown;
+}
+
+export function serialize(payload: unknown): unknown {
   if (typeof payload !== 'object' || payload === null) {
     return payload;
   }
 
   if (Array.isArray(payload)) {
-    return payload.map((item) => serialize(item));
+    return payload.map((item: unknown) => serialize(item));
   }
 
   for (const plugin of plugins) {
     if (plugin.is(payload)) {
-      return {
+      const raw: RawValue = {
         __type: plugin.name,
         value: plugin.serialize(payload),
       };
+
+      return raw;
     }
   }
 
   if (payload.constructor === {}.constructor) {
-    const raw = {};
+    const raw: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(payload)) {
       raw[key] = serialize(value);
     }
@@ -35,7 +49,7 @@ export function serialize(payload) {
   throw new Error(`Cannot serialize value : ${payload}`);
 }
 
-export function deserialize(raw) {
+export function deserialize(raw: unknown): unknown {
   if (typeof raw !== 'object' || raw === null) {
     return raw;
   }
@@ -44,15 +58,16 @@ export function deserialize(raw) {
     return raw.map((item) => deserialize(item));
   }
 
-  if (raw.__type) {
-    const plugin = pluginByNames.get(raw.__type);
+  if ('__type' in raw) {
+    const rawValue = raw as RawValue;
+    const plugin = pluginByNames.get(rawValue.__type);
     if (!plugin) {
-      throw new Error(`Cannot deserialize value : plugin ${raw.__type} not found`);
+      throw new Error(`Cannot deserialize value : plugin ${rawValue.__type} not found`);
     }
-    return plugin.deserialize(raw.value);
+    return plugin.deserialize(rawValue.value);
   }
 
-  const payload = {};
+  const payload: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(raw)) {
     payload[key] = deserialize(value);
   }

@@ -18,8 +18,8 @@ export async function abortableDelay(delay: number, signal: AbortSignal) {
   });
 }
 
-export function fireAsync(target) {
-  target().catch((err) => console.error('Unhandled promise rejection', err)); // eslint-disable-line no-console
+export function fireAsync(target: () => Promise<void>) {
+  target().catch((err: Error) => console.error('Unhandled promise rejection', err)); // eslint-disable-line no-console
 }
 
 export interface Deferred<T> {
