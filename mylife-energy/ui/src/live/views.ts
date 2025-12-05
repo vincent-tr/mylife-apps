@@ -1,5 +1,6 @@
 import { views } from 'mylife-tools';
 import * as api from '../api';
+import { useSharedView } from '../views-api';
 
 const DEVICES = 'live-devices';
 const MEASURES = 'live-measures';
@@ -8,17 +9,15 @@ export const getDevicesView = (state) => views.getViewBySlot<api.LiveDevice>(sta
 export const getMeasuresView = (state) => views.getViewBySlot<api.Measure>(state, MEASURES);
 
 export function useLiveDevicesView() {
-  return views.useSharedView<api.LiveDevice>({
+  return useSharedView<api.LiveDevice>({
     slot: DEVICES,
-    service: 'live',
-    method: 'notifyDevices',
+    viewCreatorApi: async (api) => await api.live.notifyDevices(),
   });
 }
 
 export function useLiveMeasuresView() {
-  return views.useSharedView<api.Measure>({
+  return useSharedView<api.Measure>({
     slot: MEASURES,
-    service: 'live',
-    method: 'notifyMeasures',
+    viewCreatorApi: async (api) => await api.live.notifyMeasures(),
   });
 }

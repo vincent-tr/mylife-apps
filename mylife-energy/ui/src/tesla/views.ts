@@ -1,5 +1,6 @@
 import { views } from 'mylife-tools';
 import * as api from '../api';
+import { useSharedView } from '../views-api';
 
 const STATE = 'tesla-state';
 const VIEW_STATE_ID = 'unique';
@@ -8,10 +9,9 @@ const getTeslaStateView = (state) => views.getViewBySlot<api.TeslaState>(state, 
 export const getTeslaState = (state) => getTeslaStateView(state)?.[VIEW_STATE_ID];
 
 export function useTeslaState() {
-  const view = views.useSharedView<api.TeslaState>({
+  const view = useSharedView<api.TeslaState>({
     slot: STATE,
-    service: 'tesla',
-    method: 'notifyState',
+    viewCreatorApi: async (api) => await api.tesla.notifyState(),
   });
 
   return view?.[VIEW_STATE_ID];

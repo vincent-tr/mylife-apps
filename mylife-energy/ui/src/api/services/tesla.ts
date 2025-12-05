@@ -2,6 +2,13 @@ import { api } from 'mylife-tools';
 import { TeslaMode } from '..';
 
 export class Tesla extends api.services.Service {
+  async notifyState() {
+    return (await this.call({
+      service: 'tesla',
+      method: 'notifyState',
+    })) as string;
+  }
+
   async setMode(mode: TeslaMode) {
     await this.call({
       service: 'tesla',

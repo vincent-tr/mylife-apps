@@ -1,14 +1,14 @@
 import { views } from 'mylife-tools';
 import * as api from '../api';
+import { useSharedView } from '../views-api';
 
 const DATA = 'home-data';
 
 export const getHomeDataView = (state) => views.getViewBySlot<api.HomeData>(state, DATA);
 
 export function useHomeDataView() {
-  return views.useSharedView<api.HomeData>({
+  return useSharedView<api.HomeData>({
     slot: DATA,
-    service: 'home',
-    method: 'notifyHomeData',
+    viewCreatorApi: async (api) => await api.home.notifyHomeData(),
   });
 }

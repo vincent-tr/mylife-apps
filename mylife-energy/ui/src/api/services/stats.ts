@@ -12,4 +12,11 @@ export class Stats extends api.services.Service {
       timeout: 60000, // can be slower for now as we request long db queries
     })) as StatValue[];
   }
+
+  async notifyDevices() {
+    return (await this.call({
+      service: 'stats',
+      method: 'notifyDevices',
+    })) as string;
+  }
 }
