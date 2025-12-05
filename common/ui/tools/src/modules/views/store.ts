@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as api from '../../api';
-import { STATE_PREFIX } from '../../services/store-api';
+import { STATE_PREFIX, ToolsState } from '../../services/store-api';
 import * as io from '../io';
 import { ViewChange } from '../io/service';
 import { View } from './index';
@@ -108,10 +108,10 @@ const local = {
   getViewById: viewsSlice.selectors.getViewById,
 };
 
-export const getViewBySlot = <TEntity extends api.Entity>(state, slot: string) => local.getViewById(state, local.getViewId(state, slot)) as View<TEntity>;
+export const getViewBySlot = <TEntity extends api.Entity>(state: ToolsState, slot: string) => local.getViewById(state, local.getViewId(state, slot)) as View<TEntity>;
 
 // wrap it to export with correct generics
-export const getViewById = <TEntity extends api.Entity>(state, viewId: string) => local.getViewById(state, viewId) as View<TEntity>;
+export const getViewById = <TEntity extends api.Entity>(state: ToolsState, viewId: string) => local.getViewById(state, viewId) as View<TEntity>;
 
 export const { setView, ref, unref, viewChange, viewClose } = viewsSlice.actions;
 export const { getViewId, getRefCount } = viewsSlice.selectors;

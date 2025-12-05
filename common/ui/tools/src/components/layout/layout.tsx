@@ -34,31 +34,34 @@ const AppBarSpacer = styled(Box)(({ theme }) => ({
   flex: '0 0 auto',
 }));
 
-const menuStates = {
-  HIDE: 0,
-  REDUCED: 1,
-  VISIBLE: 2,
+type MenuStates = 'hide' | 'reduced' | 'visible' | null;
+
+interface DeviceMenuState {
+  phone: MenuStates;
+  tablet: MenuStates;
+  laptop: MenuStates;
+  wide: MenuStates;
+}
+
+const initialMenuState: DeviceMenuState = {
+  phone: 'hide',
+  tablet: 'hide',
+  laptop: 'reduced',
+  wide: 'visible',
 };
 
-const initialMenuState = {
-  phone: menuStates.HIDE,
-  tablet: menuStates.HIDE,
-  laptop: menuStates.REDUCED,
-  wide: menuStates.VISIBLE,
-};
-
-const afterSelectMenuState = {
-  phone: menuStates.HIDE,
-  tablet: menuStates.HIDE,
-  laptop: menuStates.REDUCED,
+const afterSelectMenuState: DeviceMenuState = {
+  phone: 'hide',
+  tablet: 'hide',
+  laptop: 'reduced',
   wide: null, // = unchanged
 };
 
-const hideValueMenuState = {
-  phone: menuStates.HIDE,
-  tablet: menuStates.HIDE,
-  laptop: menuStates.REDUCED,
-  wide: menuStates.REDUCED,
+const hideValueMenuState: DeviceMenuState = {
+  phone: 'hide',
+  tablet: 'hide',
+  laptop: 'reduced',
+  wide: 'reduced',
 };
 
 export interface LayoutProps {
@@ -87,7 +90,7 @@ export default function Layout({ appName, appIcon, onMainClick, viewName, viewIc
 
   const menuButtonClick = () => {
     const hideValue = hideValueMenuState[screenSize];
-    setMenuState(menuState === menuStates.VISIBLE ? hideValue : menuStates.VISIBLE);
+    setMenuState(menuState === 'visible' ? hideValue : 'visible');
   };
 
   return (
@@ -103,7 +106,7 @@ export default function Layout({ appName, appIcon, onMainClick, viewName, viewIc
         viewIcon={viewIcon}
       />
 
-      {menu && menuState !== menuStates.HIDE && <Menu items={menu} open={menuState === menuStates.VISIBLE} onSelect={menuSelect} />}
+      {menu && menuState !== 'hide' && <Menu items={menu} open={menuState === 'visible'} onSelect={menuSelect} />}
 
       <Content>
         <AppBarSpacer />

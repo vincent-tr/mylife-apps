@@ -1,4 +1,4 @@
-import { configureStore, combineReducers, isPlain } from '@reduxjs/toolkit';
+import { configureStore, combineReducers, isPlain, Middleware } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import * as api from '../api';
 import { STATE_PREFIX } from './store-api';
@@ -9,18 +9,20 @@ import io from '../modules/io/store';
 import routing, { middleware as routingMiddlerware } from '../modules/routing/store';
 import views from '../modules/views/store';
 
-const middlewares = [downloadMiddleware, routingMiddlerware];
+const middlewares: Middleware[] = [downloadMiddleware, routingMiddlerware];
 
 if (!import.meta.env.PROD) {
   middlewares.push(createLogger({ duration: true, collapsed: () => true }));
 }
 
-// Store instance
+type ToolsStore = GetStore<unknown, typeof buildToolsServices>;
 
-let store;
+// Store instance
+let store: ToolsStore;
 
 export function initStore<Reducers, Services extends BaseServices>(reducers: Reducers, servicesBuilder: (call: api.services.Call) => Services) {
-  store = buildStore(reducers, servicesBuilder);
+  // We only keep the ToolsStore type so that we can have a global instance
+  store = buildStore(reducers, servicesBuilder) as ToolsStore;
 
   connectStoreDispatcher(store.dispatch);
 }

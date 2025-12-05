@@ -1,4 +1,4 @@
-import PathToRegex from 'path-to-regex';
+import PathToRegex from 'path-to-regex'; // TODO: migrate to path-to-regexp
 import React, { useMemo } from 'react';
 import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';

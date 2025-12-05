@@ -8,7 +8,7 @@ export const useRoutingConnect = () => {
     location: useToolsSelector(getLocation),
     ...useMemo(
       () => ({
-        navigate: (location) => dispatch(navigate(location)),
+        navigate: (location: string) => dispatch(navigate(location)),
       }),
       [dispatch]
     ),
