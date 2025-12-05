@@ -2,20 +2,30 @@ import { Action } from '@reduxjs/toolkit/react';
 import { useCallback } from 'react';
 import { api } from '../..';
 import { useLifecycle } from '../../components/behaviors/lifecycle';
-import { useToolsDispatch, useToolsSelector } from '../../services/store-api';
+import { useToolsDispatch, useToolsSelector, ToolsState, ToolsApi } from '../../services/store-api';
 import { getStore } from '../../services/store-factory';
-import { SharedViewOptions, StaticViewOptions, createOrUpdateCriteriaView, createStaticView, deleteCriteriaView, refSharedView, unrefSharedView } from './actions';
+import {
+  CriteriaViewCreatorApi,
+  SharedViewOptions,
+  StaticViewOptions,
+  createOrUpdateCriteriaView,
+  createStaticView,
+  deleteCriteriaView,
+  refSharedView,
+  unrefSharedView,
+} from './actions';
 import { getViewBySlot } from './store';
 import { View } from './types';
 
-export interface CriteriaViewOptions<TCriteria> {
+export interface CriteriaViewOptions<TCriteria, Api extends ToolsApi> {
+  viewCreatorApi: CriteriaViewCreatorApi<Api>;
   service: string;
   method: string;
   criteria: TCriteria;
 
   setViewIdAction: (viewId: string) => Action;
   clearViewIdAction: () => Action;
-  viewIdSelector: (state) => string;
+  viewIdSelector: (state: ToolsState) => string;
 }
 
 /**
@@ -25,22 +35,21 @@ export interface CriteriaViewOptions<TCriteria> {
  * @param options - ViewReference constructor options
  * @returns The current view data from the store
  */
-export function useCriteriaView<TEntity extends api.Entity, TCriteria>(options: CriteriaViewOptions<TCriteria>): View<TEntity> {
+export function useCriteriaView<Api extends ToolsApi, TEntity extends api.Entity, TCriteria>(options: CriteriaViewOptions<TCriteria, Api>): View<TEntity> {
   const dispatch = useToolsDispatch();
-  const { service, method, criteria, setViewIdAction, clearViewIdAction, viewIdSelector } = options;
+  const { viewCreatorApi, criteria, setViewIdAction, clearViewIdAction, viewIdSelector } = options;
 
   const enterOrUpdate = useCallback(() => {
     dispatch(
       createOrUpdateCriteriaView({
-        service,
-        method,
+        viewCreatorApi,
         criteria,
         viewIdSelector,
         setViewIdAction,
         clearViewIdAction,
       })
     );
-  }, [dispatch, service, method, criteria, viewIdSelector, setViewIdAction, clearViewIdAction]);
+  }, [dispatch, viewCreatorApi, criteria, viewIdSelector, setViewIdAction, clearViewIdAction]);
 
   const leave = useCallback(() => {
     dispatch(
@@ -67,11 +76,11 @@ export type { SharedViewOptions };
  * @param options - Shared view options (slot, service, method), must be stable (constants)
  * @returns The current view data from the store
  */
-export function useSharedView<TEntity extends api.Entity>(options: SharedViewOptions) {
+export function useSharedView<Api extends ToolsApi, TEntity extends api.Entity>(options: SharedViewOptions<Api>) {
   const dispatch = useToolsDispatch();
-  const { slot, service, method } = options;
+  const { slot, viewCreatorApi } = options;
 
-  const enter = useCallback(() => dispatch(refSharedView({ slot, service, method })), [dispatch, slot, service, method]);
+  const enter = useCallback(() => dispatch(refSharedView({ slot, viewCreatorApi })), [dispatch, slot, viewCreatorApi]);
   const leave = useCallback(() => dispatch(unrefSharedView(slot)), [dispatch, slot]);
   useLifecycle(enter, leave);
 
@@ -87,7 +96,7 @@ export type { StaticViewOptions };
  *
  * @param options - View initialization options
  */
-export function initStaticView(options: StaticViewOptions) {
+export function initStaticView<Api extends ToolsApi>(options: StaticViewOptions<Api>) {
   const { dispatch } = getStore();
   dispatch(createStaticView(options));
 }

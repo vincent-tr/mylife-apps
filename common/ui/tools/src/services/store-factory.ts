@@ -66,7 +66,7 @@ function buildStore<Reducers, Services>(reducers: Reducers, servicesBuilder: (ca
 // Helpers to build app-store types
 type BaseServices = { call: api.services.Call };
 
-export type GetThunkExtraArgument<ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<ServiceBuilder>;
-type GetStore<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<typeof buildStore<Reducers, GetThunkExtraArgument<ServiceBuilder>>>;
+export type GetApi<ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<ServiceBuilder>;
+type GetStore<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<typeof buildStore<Reducers, GetApi<ServiceBuilder>>>;
 export type GetRootState<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = ReturnType<GetStore<Reducers, ServiceBuilder>['getState']>;
 export type GetAppDispatch<Reducers, ServiceBuilder extends (call: api.services.Call) => any> = GetStore<Reducers, ServiceBuilder>['dispatch'];

@@ -1,34 +1,30 @@
 import { Action } from '@reduxjs/toolkit';
 import { Mutex } from 'async-mutex';
 import { STATE_PREFIX } from '../../constants/defines';
-import { createToolsAsyncThunk } from '../../services/store-api';
+import { createToolsAsyncThunk, ToolsState, ToolsApi } from '../../services/store-api';
 import * as io from '../io';
 import { getViewId, getRefCount, setView, ref, unref } from './store';
 
-interface CreateOrUpdateCriteriaView {
-  service: string;
-  method: string;
+export type CriteriaViewCreatorApi<Api extends ToolsApi> = (api: Api, criteria: unknown) => Promise<string>;
+
+interface CreateOrUpdateCriteriaView<Api extends ToolsApi> {
+  viewCreatorApi: CriteriaViewCreatorApi<Api>;
   criteria: unknown;
-  viewIdSelector: (state) => string;
+  viewIdSelector: (state: ToolsState) => string;
   setViewIdAction: (viewId: string) => Action;
   clearViewIdAction: () => Action;
 }
 
 export const createOrUpdateCriteriaView = createToolsAsyncThunk(
   `${STATE_PREFIX}/views/createOrUpdateCriteriaView`,
-  async ({ service, method, criteria, viewIdSelector, setViewIdAction }: CreateOrUpdateCriteriaView, api) => {
+  async ({ viewCreatorApi, criteria, viewIdSelector, setViewIdAction }: CreateOrUpdateCriteriaView<ToolsApi>, api) => {
     const state = api.getState();
     const viewId = viewIdSelector(state);
 
     if (viewId) {
       await api.extra.common.renotifyWithCriteria(viewId, criteria);
     } else {
-      const newViewId = (await api.extra.call({
-        service,
-        method,
-        criteria,
-      })) as string;
-
+      const newViewId = await viewCreatorApi(api.extra, criteria);
       api.dispatch(setViewIdAction(newViewId));
     }
   }
@@ -50,13 +46,14 @@ export const deleteCriteriaView = createToolsAsyncThunk(`${STATE_PREFIX}/views/d
   await api.dispatch(io.unnotify(oldViewId));
 });
 
-export interface SharedViewOptions {
+export type ViewCreatorApi<Api extends ToolsApi> = (api: Api) => Promise<string>;
+
+export interface SharedViewOptions<Api extends ToolsApi> {
   slot: string;
-  service: string;
-  method: string;
+  viewCreatorApi: ViewCreatorApi<Api>;
 }
 
-export const refSharedView = createToolsAsyncThunk(`${STATE_PREFIX}/views/refSharedView`, async ({ slot, service, method }: SharedViewOptions, api) => {
+export const refSharedView = createToolsAsyncThunk(`${STATE_PREFIX}/views/refSharedView`, async ({ slot, viewCreatorApi }: SharedViewOptions<ToolsApi>, api) => {
   const mutex = getSharedViewMutex(slot);
 
   await mutex.runExclusive(async () => {
@@ -66,7 +63,7 @@ export const refSharedView = createToolsAsyncThunk(`${STATE_PREFIX}/views/refSha
     const isAttach = getRefCount(state, slot) === 1;
 
     if (isAttach) {
-      const viewId = (await api.extra.call({ service, method })) as string;
+      const viewId = await viewCreatorApi(api.extra);
       api.dispatch(setView({ slot, viewId }));
     }
   });
@@ -101,17 +98,12 @@ function getSharedViewMutex(slot: string): Mutex {
   return sharedViewMutexes.get(slot)!;
 }
 
-export interface StaticViewOptions {
+export interface StaticViewOptions<Api extends ToolsApi> {
   slot: string;
-  service: string;
-  method: string;
+  viewCreatorApi: ViewCreatorApi<Api>;
 }
 
-export const createStaticView = createToolsAsyncThunk(`${STATE_PREFIX}/views/create`, async ({ service, method, slot }: StaticViewOptions, api) => {
-  const viewId = (await api.extra.call({
-    service,
-    method,
-  })) as string;
-
+export const createStaticView = createToolsAsyncThunk(`${STATE_PREFIX}/views/create`, async ({ viewCreatorApi, slot }: StaticViewOptions<ToolsApi>, api) => {
+  const viewId = await viewCreatorApi(api.extra);
   api.dispatch(setView({ slot, viewId }));
 });
