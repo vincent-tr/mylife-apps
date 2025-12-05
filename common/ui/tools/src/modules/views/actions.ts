@@ -5,10 +5,10 @@ import { createToolsAsyncThunk, ToolsState, ToolsApi } from '../../services/stor
 import * as io from '../io';
 import { getViewId, getRefCount, setView, ref, unref } from './store';
 
-export type CriteriaViewCreatorApi<Api extends ToolsApi> = (api: Api, criteria: unknown) => Promise<string>;
+export type CriteriaViewCreatorApi<Api extends ToolsApi, TCriteria> = (api: Api, criteria: TCriteria) => Promise<string>;
 
 interface CreateOrUpdateCriteriaView<Api extends ToolsApi> {
-  viewCreatorApi: CriteriaViewCreatorApi<Api>;
+  viewCreatorApi: CriteriaViewCreatorApi<Api, unknown>;
   criteria: unknown;
   viewIdSelector: (state: ToolsState) => string;
   setViewIdAction: (viewId: string) => Action;

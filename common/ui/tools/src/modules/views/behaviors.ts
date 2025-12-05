@@ -18,9 +18,7 @@ import { getViewBySlot } from './store';
 import { View } from './types';
 
 export interface CriteriaViewOptions<TCriteria, Api extends ToolsApi, RootState extends ToolsState> {
-  viewCreatorApi: CriteriaViewCreatorApi<Api>;
-  service: string;
-  method: string;
+  viewCreatorApi: CriteriaViewCreatorApi<Api, TCriteria>;
   criteria: TCriteria;
 
   setViewIdAction: (viewId: string) => Action;
