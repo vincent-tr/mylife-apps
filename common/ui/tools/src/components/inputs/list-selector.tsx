@@ -1,5 +1,6 @@
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectProps } from '@mui/material/Select';
+import { useCallback } from 'react';
 
 const NULL_ID = 'null-id';
 
@@ -10,7 +11,7 @@ export interface ListSelectorProps extends Omit<SelectProps, 'value' | 'onChange
 }
 
 export default function ListSelector({ list, value, onChange, ...props }: ListSelectorProps) {
-  const handleChange = (event) => onChange(nullFromEditor(event.target.value));
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => onChange(nullFromEditor(event.target.value)), [onChange]);
   return (
     <Select value={value || NULL_ID} onChange={handleChange} {...props}>
       {list.map((field) => (
@@ -22,7 +23,7 @@ export default function ListSelector({ list, value, onChange, ...props }: ListSe
   );
 }
 
-function nullFromEditor(value) {
+function nullFromEditor(value: string) {
   if (value === NULL_ID) {
     return null;
   }

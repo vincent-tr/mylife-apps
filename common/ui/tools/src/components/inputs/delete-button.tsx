@@ -7,7 +7,7 @@ import Popper from '@mui/material/Popper';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(theme.palette.error.main),
@@ -57,15 +57,15 @@ export default function DeleteButton({
   const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  const handleButtonClick = (e) => setAnchorEl(e.target);
-  const handleClose = () => setAnchorEl(null);
-  const handleConfirm = () => {
+  const handleButtonClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(e.currentTarget), [setAnchorEl]);
+  const handleClose = useCallback(() => setAnchorEl(null), [setAnchorEl]);
+  const handleConfirm = useCallback(() => {
     handleClose();
     onConfirmed?.();
-  };
+  }, [handleClose, onConfirmed]);
 
-  const handleTooltipOpen = () => setTooltipOpen(true);
-  const handleTooltipClose = () => setTooltipOpen(false);
+  const handleTooltipOpen = useCallback(() => setTooltipOpen(true), [setTooltipOpen]);
+  const handleTooltipClose = useCallback(() => setTooltipOpen(false), [setTooltipOpen]);
   const isTooltipOpen = tooltipOpen && !anchorEl; // do not show tooltip when popup is shown
 
   let button = text ? (

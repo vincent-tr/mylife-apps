@@ -7,7 +7,7 @@ export const useChartColors = () => chartColors;
 // https://materialuicolors.co/
 function createChartColors() {
   const shade = 200;
-  const hues = [
+  const hues: (keyof typeof colors)[] = [
     // easier to distinguish
     'red',
     'blue',

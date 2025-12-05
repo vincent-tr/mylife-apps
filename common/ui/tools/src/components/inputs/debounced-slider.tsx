@@ -1,5 +1,6 @@
 import Slider, { SliderProps } from '@mui/material/Slider';
 import { useDebounced } from '../behaviors';
+import { useCallback } from 'react';
 
 export interface DebouncedSliderProps extends Omit<SliderProps, 'value' | 'onChange'> {
   value: number;
@@ -9,9 +10,12 @@ export interface DebouncedSliderProps extends Omit<SliderProps, 'value' | 'onCha
 export default function DebouncedSlider({ value, onChange, ...props }: DebouncedSliderProps) {
   const { componentValue, componentChange } = useDebounced(value, onChange);
 
-  const handleChange = (_e, value) => {
-    componentChange(value);
-  };
+  const handleChange = useCallback(
+    (_e: Event, value: number) => {
+      componentChange(value);
+    },
+    [componentChange]
+  );
 
   return <Slider {...props} value={componentValue} onChange={handleChange} />;
 }
