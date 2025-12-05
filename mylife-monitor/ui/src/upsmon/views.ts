@@ -1,12 +1,11 @@
-import { views } from 'mylife-tools';
 import * as api from '../api';
+import { useSharedView } from '../views-api';
 
 const UPSMON_DATA = 'upsmon-data';
 
 export function useUpsmonDataView() {
-  return views.useSharedView<api.UpsmonStatus>({
+  return useSharedView<api.UpsmonStatus>({
     slot: UPSMON_DATA,
-    service: 'upsmon',
-    method: 'notify',
+    viewCreatorApi: async (api) => api.upsmon.notify(),
   });
 }
