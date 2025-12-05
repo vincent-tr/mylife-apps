@@ -1,5 +1,5 @@
 export interface FileData {
   name: string;
   mime: string;
-  content: string;
+  content: Uint8Array;
 }

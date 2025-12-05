@@ -1,6 +1,6 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice, Middleware, PayloadAction } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
-import { STATE_PREFIX } from '../../services/store-api';
+import { STATE_PREFIX, ToolsState, ToolsDispatch } from '../../services/store-api';
 
 interface RoutingState {
   location: string;
@@ -35,7 +35,7 @@ export const navigate = createAction<string>(ACTION_NAVIGATE);
 
 export default routingSlice.reducer;
 
-export const middleware = (/*store*/) => (next) => {
+export const middleware: Middleware<{}, ToolsState, ToolsDispatch> = (_store) => (next) => {
   const history = createBrowserHistory();
 
   const sendHistory = () => {
@@ -46,9 +46,9 @@ export const middleware = (/*store*/) => (next) => {
   history.listen(sendHistory);
   sendHistory();
 
-  return (action) => {
+  return (action: PayloadAction<unknown>) => {
     if (action.type === ACTION_NAVIGATE) {
-      const location: string = action.payload;
+      const location = action.payload as string;
       history.push(location);
     }
 

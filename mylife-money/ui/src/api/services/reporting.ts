@@ -38,7 +38,7 @@ export class Reporting extends api.services.Service {
       method: 'exportGroupByMonth',
       criteria,
       display,
-    })) as string;
+    })) as Uint8Array;
   }
 
   async exportGroupByYear(criteria: ReportingCriteria, display: ReportingDisplay) {
@@ -47,6 +47,6 @@ export class Reporting extends api.services.Service {
       method: 'exportGroupByYear',
       criteria,
       display,
-    })) as string;
+    })) as Uint8Array;
   }
 }
