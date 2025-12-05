@@ -16,3 +16,11 @@ export interface Operation extends api.Entity {
   /** Note */
   note: string;
 }
+
+export interface OperationViewCriteria {
+  minDate: Date;
+  maxDate: Date | null;
+  account: string | null;
+  group: string | null;
+  lookupText: string | null;
+}

@@ -1,29 +1,28 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
 import * as api from '../api';
-import { useAppSelector } from '../store-api';
+import { AppState, useAppSelector } from '../store-api';
+import { useSharedView } from '../views-api';
 
 const OPERATION_STATS = 'home-operation-stats';
 const TOTAL_BY_MONTH = 'home-total-by-month';
 
-export const getOperationStatsView = (state) => views.getViewBySlot<api.ReportOperationStat>(state, OPERATION_STATS);
-export const getTotalByMonthView = (state) => views.getViewBySlot<api.ReportTotalByMonth>(state, TOTAL_BY_MONTH);
+export const getOperationStatsView = (state: AppState) => views.getViewBySlot<api.ReportOperationStat>(state, OPERATION_STATS);
+export const getTotalByMonthView = (state: AppState) => views.getViewBySlot<api.ReportTotalByMonth>(state, TOTAL_BY_MONTH);
 
 export function useOperationStatsView() {
-  return views.useSharedView<api.ReportOperationStat>({
+  return useSharedView<api.ReportOperationStat>({
     slot: OPERATION_STATS,
-    service: 'reporting',
-    method: 'notifyOperationStats',
+    viewCreatorApi: async (api) => await api.reporting.notifyOperationStats(),
   });
 }
 
 const getSortedTotalByMonth = createSelector([getTotalByMonthView], (view) => Object.values(view).sort((a, b) => a.month.localeCompare(b.month)));
 
 export function useTotalByMonthView() {
-  views.useSharedView<api.ReportTotalByMonth>({
+  useSharedView<api.ReportTotalByMonth>({
     slot: TOTAL_BY_MONTH,
-    service: 'reporting',
-    method: 'notifyTotalByMonth',
+    viewCreatorApi: async (api) => await api.reporting.notifyTotalByMonth(),
   });
   return useAppSelector(getSortedTotalByMonth);
 }

@@ -1,12 +1,11 @@
-import { views } from 'mylife-tools';
 import * as api from '../api';
+import { useSharedView } from '../views-api';
 
 const BOTS = 'bots-list';
 
 export function useBotsView() {
-  return views.useSharedView<api.Bot>({
+  return useSharedView<api.Bot>({
     slot: BOTS,
-    service: 'bots',
-    method: 'notifyBots',
+    viewCreatorApi: async (api) => await api.bots.notifyBots(),
   });
 }

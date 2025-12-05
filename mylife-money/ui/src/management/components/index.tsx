@@ -1,8 +1,9 @@
 import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
-import { noop, useLifecycle, useScreenSize, views } from 'mylife-tools';
+import { noop, useLifecycle, useScreenSize } from 'mylife-tools';
 import { useAppSelector, useAppDispatch } from '../../store-api';
-import { isOperationDetail, getCriteria, setOperationViewId, clearOperationViewId, getOperationViewId, closeDetail } from '../store';
+import { isOperationDetail, closeDetail } from '../store';
+import { useOperationView } from '../views';
 import Detail from './detail';
 import List from './list';
 import Tree from './tree';
@@ -38,16 +39,7 @@ export default function Management() {
   const screenSize = useScreenSize();
   const { detail, closeDetail } = useConnect();
   useLifecycle(noop, closeDetail);
-
-  const criteria = useAppSelector(getCriteria);
-  views.useCriteriaView({
-    service: 'management',
-    method: 'notifyOperations',
-    criteria,
-    setViewIdAction: setOperationViewId,
-    clearViewIdAction: clearOperationViewId,
-    viewIdSelector: getOperationViewId,
-  });
+  useOperationView();
 
   const main = detail ? <StyledDetail /> : <StyledList />;
 

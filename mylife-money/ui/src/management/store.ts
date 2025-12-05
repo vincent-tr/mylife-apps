@@ -1,11 +1,10 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { dialogs, io, views } from 'mylife-tools';
-import { Group, Operation } from '../api';
+import { Group, Operation, OperationViewCriteria } from '../api';
 import { createAppAsyncThunk } from '../store-api';
-import { Criteria } from './types';
 
 interface ManagementState {
-  criteria: Criteria;
+  criteria: OperationViewCriteria;
   operations: OperationState;
 }
 
@@ -39,7 +38,7 @@ const managementSlice = createSlice({
   name: 'management',
   initialState,
   reducers: {
-    setCriteria(state, action: PayloadAction<Partial<Criteria>>) {
+    setCriteria(state, action: PayloadAction<Partial<OperationViewCriteria>>) {
       Object.assign(state.criteria, action.payload);
 
       // clear selection when criteria changes
@@ -143,7 +142,7 @@ export const selectGroup = createAppAsyncThunk('management/selectGroup', async (
 });
 
 interface SetCriteriaValuePayload {
-  name: keyof Criteria;
+  name: keyof OperationViewCriteria;
   value: unknown;
 }
 

@@ -1,7 +1,15 @@
 import { api } from 'mylife-tools';
-import { Group } from '..';
+import { Group, OperationViewCriteria } from '..';
 
 export class Management extends api.services.Service {
+  async notifyOperations(criteria: OperationViewCriteria) {
+    return (await this.call({
+      service: 'management',
+      method: 'notifyOperations',
+      criteria,
+    })) as string;
+  }
+
   async createGroup(newGroup: Partial<Group>) {
     return (await this.call({
       service: 'management',

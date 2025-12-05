@@ -1,5 +1,6 @@
 import { views } from 'mylife-tools';
 import { Account, Group } from '../api';
+import { initStaticView } from '../views-api';
 
 const ACCOUNTS = 'reference-accounts';
 const GROUPS = 'reference-groups';
@@ -8,15 +9,13 @@ export const getAccountsView = (state) => views.getViewBySlot<Account>(state, AC
 export const getGroupsView = (state) => views.getViewBySlot<Group>(state, GROUPS);
 
 export function initReferenceViews() {
-  views.initStaticView({
+  initStaticView({
     slot: ACCOUNTS,
-    service: 'common',
-    method: 'notifyAccounts',
+    viewCreatorApi: async (api) => await api.common.notifyAccounts(),
   });
 
-  views.initStaticView({
+  initStaticView({
     slot: GROUPS,
-    service: 'common',
-    method: 'notifyGroups',
+    viewCreatorApi: async (api) => await api.common.notifyGroups(),
   });
 }
