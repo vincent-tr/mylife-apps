@@ -16,7 +16,8 @@ class NotifyEngine implements Engine {
 
   onConnect() {}
 
-  onMessage(message: NotifyMessage) {
+  onMessage(untypedMessage: unknown) {
+    const message = untypedMessage as NotifyMessage;
     const { view: viewId, list } = message;
     this.api.viewChange({ viewId, list });
   }

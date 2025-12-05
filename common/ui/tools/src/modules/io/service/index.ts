@@ -17,7 +17,11 @@ export interface ServiceAPI {
 export interface Engine {
   onConnect(): void;
   onDisconnect(): void;
-  onMessage(message: any): void;
+  onMessage(message: unknown): void;
+}
+
+interface ReceivedMessage {
+  engine: 'call' | 'notify';
 }
 
 export class Service {
@@ -26,7 +30,7 @@ export class Service {
 
   constructor(private readonly api: ServiceAPI) {
     this.socket = io({ transports: ['websocket', 'polling'] });
-    const emitter = (message: any) => this.socket.emit('message', serializer.serialize(message));
+    const emitter = (message: unknown) => this.socket.emit('message', serializer.serialize(message));
 
     this.engines = {
       call: new CallEngine(emitter, api),
@@ -54,8 +58,8 @@ export class Service {
       }
     });
 
-    this.socket.on('message', (payload) => {
-      const message = serializer.deserialize(payload);
+    this.socket.on('message', (payload: unknown) => {
+      const message = serializer.deserialize(payload) as ReceivedMessage;
       const engine = this.engines[message.engine];
       if (!engine) {
         console.log(`Message with unknown engine '${message.engine}', ignored`);
