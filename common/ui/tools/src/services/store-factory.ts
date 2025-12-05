@@ -1,7 +1,7 @@
 import { configureStore, combineReducers, isPlain } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import * as api from '../api';
-import { STATE_PREFIX } from '../constants/defines';
+import { STATE_PREFIX } from './store-api';
 import dialogs from '../modules/dialogs/store';
 import { middleware as downloadMiddleware } from '../modules/download/store';
 import { connectStoreDispatcher, call } from '../modules/io/api';

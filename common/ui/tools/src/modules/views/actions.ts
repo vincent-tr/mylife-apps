@@ -1,7 +1,6 @@
 import { Action } from '@reduxjs/toolkit';
 import { Mutex } from 'async-mutex';
-import { STATE_PREFIX } from '../../constants/defines';
-import { createToolsAsyncThunk, ToolsState, ToolsApi } from '../../services/store-api';
+import { createToolsAsyncThunk, ToolsState, ToolsApi, STATE_PREFIX } from '../../services/store-api';
 import * as io from '../io';
 import { getViewId, getRefCount, setView, ref, unref } from './store';
 
@@ -31,7 +30,7 @@ export const createOrUpdateCriteriaView = createToolsAsyncThunk(
 );
 
 interface DeleteCriteriaView {
-  viewIdSelector: (state) => string;
+  viewIdSelector: (state: ToolsState) => string;
   clearViewIdAction: () => Action;
 }
 

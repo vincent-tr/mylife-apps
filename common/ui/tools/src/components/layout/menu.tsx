@@ -5,7 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useScreen } from '../behaviors/responsive';
 
 const drawerWidth = 240;
@@ -60,18 +60,9 @@ export default function Menu({ items, open, onSelect }: MenuProps) {
     <StyledDrawer variant="permanent" open={open}>
       <DrawerHeader />
       <List>
-        {reponsiveItems.map(({ id, text, icon: Icon, onClick }) => {
-          const handler = () => {
-            onSelect();
-            onClick();
-          };
+        {reponsiveItems.map((item) => {
           return (
-            <ListItem key={id} onClick={handler} sx={{ cursor: 'pointer' }}>
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+            <MenuItem key={item.id} item={item} onSelect={onSelect} />
           );
         })}
       </List>
@@ -79,7 +70,30 @@ export default function Menu({ items, open, onSelect }: MenuProps) {
   );
 }
 
-function useResponsiveItems(items) {
+interface MenuItemProps {
+  item: MenuItem;
+  onSelect: () => void;
+}
+
+function MenuItem({ item, onSelect }: MenuItemProps) {
+  const { text, icon: Icon, onClick } = item;
+
+  const handler = useCallback(() => {
+    onSelect();
+    onClick();
+  }, [onSelect, onClick]);
+
+  return (
+    <ListItem onClick={handler} sx={{ cursor: 'pointer' }}>
+      <ListItemIcon>
+        <Icon />
+      </ListItemIcon>
+      <ListItemText primary={text} />
+    </ListItem>
+  );
+}
+
+function useResponsiveItems(items: MenuItem[]) {
   const { size, orientation } = useScreen();
 
   return items.filter((item) => {
@@ -88,7 +102,7 @@ function useResponsiveItems(items) {
   });
 }
 
-function isIn(values, current) {
+function isIn(values: string[] | undefined, current: string) {
   if (!values) {
     return true; // no filter if not provided
   }

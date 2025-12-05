@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { STATE_PREFIX } from '../../constants/defines';
+import { STATE_PREFIX } from '../../services/store-api';
 import { FileData } from './types';
 
 const ACTION_DOWNLOAD_FILE = `${STATE_PREFIX}/download/file`;

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { STATE_PREFIX } from '../../constants/defines';
+import { STATE_PREFIX } from '../../services/store-api';
 import { createToolsAsyncThunk } from '../../services/store-api';
 import { viewClose } from '../views/store';
 

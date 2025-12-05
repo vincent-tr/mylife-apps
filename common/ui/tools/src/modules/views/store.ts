@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as api from '../../api';
-import { STATE_PREFIX } from '../../constants/defines';
+import { STATE_PREFIX } from '../../services/store-api';
 import * as io from '../io';
 import { ViewChange } from '../io/service';
 import { View } from './index';
