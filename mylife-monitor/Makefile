@@ -25,8 +25,8 @@ ui-build: ui-lint ui-format-check ui-typecheck
 	cd $(DIR_UI) && npm exec -- vite --config ../../common/ui/build/vite.config.ts build
 
 ui-watch:
-	export VITE_WEB_PORT=8021; \
-	export VITE_WSTARGET_PORT=8121; \
+	export VITE_WEB_PORT=8015; \
+	export VITE_WSTARGET_PORT=8115; \
 	cd $(DIR_UI) && \
 	npm exec -- vite --config ../../common/ui/build/vite.config.ts
 
@@ -65,4 +65,5 @@ ui-common-typecheck:
 	$(MAKE) -C $(DIR_COMMON) ui-typecheck
 
 run-web:
+	export WEB_PORT=8115; \
 	cd $(DIR_SERVER) && go run main.go web

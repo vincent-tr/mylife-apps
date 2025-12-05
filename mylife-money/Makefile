@@ -65,4 +65,5 @@ ui-common-typecheck:
 	$(MAKE) -C $(DIR_COMMON) ui-typecheck
 
 run-web:
+	export WEB_PORT=8103; \
 	cd $(DIR_SERVER) && go run main.go web
