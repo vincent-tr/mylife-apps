@@ -5,13 +5,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
+import { Account } from '../../../api';
 import icons from '../../../common/icons';
-
-type FIXME_any = any;
 
 interface HeaderProps {
   onImport: (accountId: string, file: File) => void;
-  accounts: FIXME_any[];
+  accounts: Account[];
 }
 
 class Header extends React.Component<HeaderProps, { account?; anchorEl?; open }> {

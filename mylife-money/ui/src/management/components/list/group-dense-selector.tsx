@@ -8,8 +8,6 @@ import { getGroup } from '../../../reference/selectors';
 import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSelectedGroupId, selectGroup } from '../../store';
 
-type FIXME_any = any;
-
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'row',
@@ -51,7 +49,7 @@ export default function GroupDenseSelector(props: GroupDenseSelectorProps) {
           </GroupSelectorButton>
         </div>
       </Tooltip>
-      <Label>{(selectedGroup as FIXME_any).display}</Label>
+      <Label>{selectedGroup.display}</Label>
     </Container>
   );
 }

@@ -4,8 +4,6 @@ import { makeGetSortedChildren } from '../../reference/selectors';
 import { useAppSelector } from '../../store-api';
 import GroupNode from './group-node';
 
-type FIXME_any = any;
-
 interface GroupTreeProps {
   height?: number;
   onSelect: (id: string) => void;
@@ -28,7 +26,7 @@ export default GroupTree;
 
 function useConnect() {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
-  return useAppSelector((state: FIXME_any) => ({
+  return useAppSelector((state) => ({
     groups: getSortedChildren(state, 'root'),
   }));
 }

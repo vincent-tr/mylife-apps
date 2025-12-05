@@ -5,8 +5,6 @@ import Typography from '@mui/material/Typography';
 import GroupSelector from '../../../common/components/group-selector';
 import icons from '../../../common/icons';
 
-type FIXME_any = any;
-
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
@@ -29,9 +27,9 @@ const Item = styled('div')({
 });
 
 export interface GroupFieldProps {
-  groups: FIXME_any;
+  groups: string[];
   onGroupAdd: () => void;
-  onGroupChanged: (index: number, value: FIXME_any) => void;
+  onGroupChanged: (index: number, value: string) => void;
   onGroupDelete: (index: number) => void;
 }
 

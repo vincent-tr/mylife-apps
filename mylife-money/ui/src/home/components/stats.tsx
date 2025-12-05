@@ -1,9 +1,9 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
+import { views } from 'mylife-tools';
+import { ReportOperationStat } from '../../api';
 import { useOperationStatsView } from '../views';
-
-type FIXME_any = any;
 
 const Container = styled('div')({
   marginTop: 20,
@@ -27,10 +27,10 @@ export default function Stats() {
   );
 }
 
-function statValue(stats, code) {
-  const stat = Object.values(stats).find((stat) => (stat as FIXME_any).code === code);
+function statValue(stats: views.View<ReportOperationStat>, code) {
+  const stat = Object.values(stats).find((stat) => stat.code === code);
   if (!stat) {
     return null;
   }
-  return (stat as FIXME_any).value;
+  return stat.value;
 }

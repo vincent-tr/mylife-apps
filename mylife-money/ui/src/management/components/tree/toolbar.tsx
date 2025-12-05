@@ -10,15 +10,13 @@ import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSelectedGroupId, createGroup, updateGroup, deleteGroup } from '../../store';
 import groupEditor from './group-editor';
 
-type FIXME_any = any;
-
 const useConnect = () => {
   const dispatch = useAppDispatch();
   return {
     ...useAppSelector((state) => {
       const selected = getSelectedGroupId(state);
       return {
-        group: selected && (getGroup(state, selected) as FIXME_any),
+        group: selected && getGroup(state, selected),
         canChange: !!selected,
       };
     }),

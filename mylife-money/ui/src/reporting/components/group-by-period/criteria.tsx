@@ -5,11 +5,10 @@ import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
 import React from 'react';
 import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools';
+import { ReportingCriteria, ReportingDisplay } from '../../../api';
 import AccountSelector from '../../../common/components/account-selector';
 import ExportButton from '../common/export-button';
 import GroupCriteriaField from '../common/group-field';
-
-type FIXME_any = any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -26,10 +25,10 @@ const AccountField = styled(AccountSelector)({
 });
 
 export interface CriteriaProps {
-  criteria: FIXME_any;
-  onCriteriaChanged: (criteria: FIXME_any) => void;
-  display: FIXME_any;
-  onDisplayChanged: (display: FIXME_any) => void;
+  criteria: ReportingCriteria;
+  onCriteriaChanged: (criteria: ReportingCriteria) => void;
+  display: ReportingDisplay;
+  onDisplayChanged: (display: ReportingDisplay) => void;
   onExport: () => void;
   additionalComponents?: React.ReactNode;
 }
@@ -156,14 +155,14 @@ function ExpandedSummary({ onExport }: ExpandedSummaryProps) {
 }
 
 interface CollapsedSummaryProps {
-  criteria: FIXME_any;
+  criteria: ReportingCriteria;
   onExport: () => void;
 }
 
 function CollapsedSummary({ criteria, onExport }: CollapsedSummaryProps) {
   return (
     <Container>
-      <Title>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.size} groupe(s) sélectionné(s)`}</Title>
+      <Title>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${criteria.groups.length} groupe(s) sélectionné(s)`}</Title>
       <ExportButton onClick={onExport} />
     </Container>
   );
