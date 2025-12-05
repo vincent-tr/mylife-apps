@@ -3,8 +3,6 @@ import { Engine, ServiceAPI } from '.';
 
 const CALL_TIMEOUT = 5000;
 
-const logger = import.meta.env.PROD ? () => {} : logCall;
-
 const styles = {
   default: 'color: inherit; font-weight: bold',
   lighter: 'color: gray; font-weight: lighter',

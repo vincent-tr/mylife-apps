@@ -3,9 +3,10 @@ import { ServiceCall } from './service/call-engine';
 import { Service, ServiceAPI, ViewChange } from './service';
 import { setOnline, setBusy } from './store';
 export type { ServiceCall } from './service/call-engine';
+import type { ToolsDispatch } from '../../services/store-api';
 
 class ServiceApiImpl implements ServiceAPI {
-  private dispatch;
+  private dispatch: ToolsDispatch | null = null;
 
   setOnline(online: boolean): void {
     if (this.dispatch) {
@@ -31,7 +32,7 @@ class ServiceApiImpl implements ServiceAPI {
     }
   }
 
-  connectStoreDispatcher(dispatch) {
+  connectStoreDispatcher(dispatch: ToolsDispatch) {
     this.dispatch = dispatch;
   }
 }
@@ -43,6 +44,6 @@ export async function call(message: ServiceCall) {
   return await service.executeCall(message);
 }
 
-export function connectStoreDispatcher(dispatch) {
+export function connectStoreDispatcher(dispatch: ToolsDispatch) {
   serviceApi.connectStoreDispatcher(dispatch);
 }
