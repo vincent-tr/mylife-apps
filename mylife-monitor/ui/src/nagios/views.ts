@@ -1,7 +1,7 @@
 import { views } from 'mylife-tools';
 import * as api from '../api';
-import { useSharedView } from '../views-api';
 import { AppState } from '../store-api';
+import { useSharedView } from '../views-api';
 
 const NAGIOS_DATA = 'nagios-data';
 

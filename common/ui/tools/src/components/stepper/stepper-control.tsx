@@ -82,7 +82,7 @@ export default function StepperControl({ steps, onStepChanged, onEnd, ...props }
         }
       }
     },
-    [activeStep, onEnd, onStepChanged, step, steps.length]
+    [activeStep, onEnd, onStepChanged, step]
   );
 
   return (

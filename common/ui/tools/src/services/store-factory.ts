@@ -1,13 +1,13 @@
 import { configureStore, combineReducers, isPlain, Middleware } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import * as api from '../api';
-import { STATE_PREFIX } from './store-api';
 import dialogs from '../modules/dialogs/store';
 import { middleware as downloadMiddleware } from '../modules/download/store';
 import { connectStoreDispatcher, call } from '../modules/io/api';
 import io from '../modules/io/store';
 import routing, { middleware as routingMiddlerware } from '../modules/routing/store';
 import views from '../modules/views/store';
+import { STATE_PREFIX } from './store-api';
 
 const middlewares: Middleware[] = [downloadMiddleware, routingMiddlerware];
 

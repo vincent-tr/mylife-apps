@@ -6,7 +6,7 @@ const ACTION_DOWNLOAD_FILE = `${STATE_PREFIX}/download/file`;
 
 export const file = createAction<FileData>(ACTION_DOWNLOAD_FILE);
 
-export const middleware: Middleware<{}, ToolsState, ToolsDispatch> = (_store) => (next) => (action: PayloadAction<unknown>) => {
+export const middleware: Middleware<unknown, ToolsState, ToolsDispatch> = (_store) => (next) => (action: PayloadAction<unknown>) => {
   if (action.type === ACTION_DOWNLOAD_FILE) {
     const { name, mime, content } = action.payload as FileData;
     download(name, `data:${mime};base64,${toBase64(content)}`);

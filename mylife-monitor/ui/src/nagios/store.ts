@@ -1,9 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { api, views } from 'mylife-tools';
+import { NagiosHostGroup, NagiosHost, NagiosService } from '../api';
 import { createAppAsyncThunk } from '../store-api';
 import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 import { getView } from './views';
-import { NagiosHostGroup, NagiosHost, NagiosService } from '../api';
 
 interface NagiosState {
   criteria: Criteria;

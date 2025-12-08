@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import { TextFieldProps } from '@mui/material/TextField';
-import { useDebounced } from '../behaviors';
 import { useCallback, useMemo } from 'react';
+import { useDebounced } from '../behaviors';
 
 // https://gist.github.com/krambertech/76afec49d7508e89e028fce14894724c
 const ENTER_KEY = 13;

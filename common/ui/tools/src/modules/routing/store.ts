@@ -35,7 +35,7 @@ export const navigate = createAction<string>(ACTION_NAVIGATE);
 
 export default routingSlice.reducer;
 
-export const middleware: Middleware<{}, ToolsState, ToolsDispatch> = (_store) => (next) => {
+export const middleware: Middleware<unknown, ToolsState, ToolsDispatch> = (_store) => (next) => {
   const history = createBrowserHistory();
 
   const sendHistory = () => {
