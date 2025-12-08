@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import React from 'react';
+import type { ActionsConfig, ActionType } from './stepper-control';
 
 const Root = styled('div')(({ theme }) => ({
   '& > *': {
@@ -8,13 +9,8 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export interface StepperActionsProps extends Omit<React.ComponentProps<'div'>, 'children'> {
-  canPrev: boolean;
-  canNext: boolean;
-  canSkip: boolean;
-  canFinish: boolean;
-  canCancel: boolean;
-  onAction: (action: string) => void;
+export interface StepperActionsProps extends ActionsConfig, Omit<React.ComponentProps<'div'>, 'children'> {
+  onAction: (value: ActionType) => void;
 }
 
 export default function StepperActions({ canPrev, canNext, canSkip, canFinish, canCancel, onAction, ...props }: StepperActionsProps) {

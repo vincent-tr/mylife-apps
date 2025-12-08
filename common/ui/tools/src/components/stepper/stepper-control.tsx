@@ -3,10 +3,8 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import { styled } from '@mui/material/styles';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import StepperActions from './stepper-actions';
-
-type FIXME_any = any;
 
 const Container = styled('div')({
   display: 'flex',
@@ -19,15 +17,25 @@ const Main = styled(Box)(({ theme }) => ({
   borderColor: theme.palette.divider,
 }));
 
+export interface ActionsConfig {
+  canPrev?: boolean;
+  canNext?: boolean;
+  canSkip?: boolean;
+  canFinish?: boolean;
+  canCancel?: boolean;
+}
+
+export type ActionType = 'prev' | 'next' | 'skip' | 'finish' | 'cancel';
+
 export interface Step {
   label: string;
-  actions?: FIXME_any;
-  render: (step: FIXME_any) => React.ReactNode;
+  actions?: ActionsConfig;
+  render: (step: Step) => React.ReactNode;
 }
 
 export interface StepperControlProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   steps: Step[];
-  onStepChanged?: (value: FIXME_any, step: Step, activeStep: number, setActiveStep: (step: number) => void) => boolean;
+  onStepChanged?: (value: ActionType, step: Step, activeStep: number, setActiveStep: (step: number) => void) => boolean;
   onEnd: (value: 'finish' | 'cancel') => void;
 }
 
@@ -38,41 +46,44 @@ export default function StepperControl({ steps, onStepChanged, onEnd, ...props }
   const { render, actions } = step;
   const finalActions = buildActions(activeStep, steps.length, actions);
 
-  const handleAction = (value) => {
-    if (onStepChanged) {
-      if (onStepChanged(value, step, activeStep, setActiveStep)) {
-        // if true => handled
-        return;
-      }
-    }
-
-    switch (value) {
-      case 'prev': {
-        setActiveStep(activeStep - 1);
-        break;
+  const handleAction = useCallback(
+    (value: ActionType) => {
+      if (onStepChanged) {
+        if (onStepChanged(value, step, activeStep, setActiveStep)) {
+          // if true => handled
+          return;
+        }
       }
 
-      case 'next': {
-        setActiveStep(activeStep + 1);
-        break;
-      }
+      switch (value) {
+        case 'prev': {
+          setActiveStep(activeStep - 1);
+          break;
+        }
 
-      case 'skip': {
-        setActiveStep(activeStep + 1);
-        break;
-      }
+        case 'next': {
+          setActiveStep(activeStep + 1);
+          break;
+        }
 
-      case 'finish': {
-        onEnd('finish');
-        break;
-      }
+        case 'skip': {
+          setActiveStep(activeStep + 1);
+          break;
+        }
 
-      case 'cancel': {
-        onEnd('cancel');
-        break;
+        case 'finish': {
+          onEnd('finish');
+          break;
+        }
+
+        case 'cancel': {
+          onEnd('cancel');
+          break;
+        }
       }
-    }
-  };
+    },
+    [activeStep, onEnd, onStepChanged, step, steps.length]
+  );
 
   return (
     <Container {...props}>
@@ -93,7 +104,7 @@ export default function StepperControl({ steps, onStepChanged, onEnd, ...props }
   );
 }
 
-function buildActions(currentStep, stepsCount, provided) {
+function buildActions(currentStep: number, stepsCount: number, provided?: ActionsConfig): ActionsConfig {
   const isFirst = currentStep === 0;
   const isLast = currentStep === stepsCount - 1;
 
