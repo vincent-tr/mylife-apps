@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import TableCell from '@mui/material/TableCell';
-import React from 'react';
-import { AutoSizer, Column, Table } from 'react-virtualized';
+import React, { useCallback } from 'react';
+import { AutoSizer, Column, Index, Table } from 'react-virtualized';
 
 const StyledTableCell = styled(TableCell)({
   display: 'flex',
@@ -22,36 +22,37 @@ const StyledTable = styled(Table)(({ theme }) => ({
 
 export interface VirtualizedTableProps<TData> {
   data: TData[];
-  rowStyle?: React.CSSProperties | ((row, index: number) => React.CSSProperties);
+  rowStyle?: React.CSSProperties | ((row: TData, index: number) => React.CSSProperties);
 
   columns: VirtualizedTableColumn[];
 
   rowHeight?: number;
   headerHeight?: number;
-  onRowClick?: (rowData, rowIndex: number) => void;
+  onRowClick?: (rowData: TData, rowIndex: number) => void;
 }
 
+type AdditionalCellProps = Partial<React.ComponentProps<typeof TableCell>>;
 export interface VirtualizedTableColumn {
   dataKey: string;
-  cellDataGetter?;
   cellRenderer?: string | React.ReactNode | ((cellData: unknown, dataKey: string) => string) | ((cellData: unknown, dataKey: string) => React.ReactNode);
   cellStyle?: React.CSSProperties | ((cellData: unknown, dataKey: string) => React.CSSProperties);
   headerRenderer: string | React.ReactNode | ((dataKey: string) => string) | ((dataKey: string) => React.ReactNode);
-  cellProps?;
-  headerProps?;
+  cellProps?: AdditionalCellProps | ((cellData: unknown, dataKey: string) => AdditionalCellProps);
+  headerProps?: AdditionalCellProps | ((dataKey: string) => AdditionalCellProps);
   width?: number;
 }
 
 export default function VirtualizedTable<TData>({ data, columns, rowStyle, headerHeight = 48, rowHeight = 48, onRowClick, ...props }: VirtualizedTableProps<TData>) {
-  const rowIndexStyle = ({ index }) => {
+  const rowIndexStyle = useCallback(({ index }: Index) => {
     const style = {
       ...runPropGetter(rowStyle, data[index], index),
       display: 'flex',
     };
 
     return style;
-  };
-  const rowGetter = ({ index }) => data[index];
+  }, [rowStyle, data]);
+
+  const rowGetter = useCallback(({ index }: Index) => data[index], [data]);
 
   return (
     <div {...props}>
@@ -111,7 +112,7 @@ function computeColumnWidth(tableWidth: number, columns: VirtualizedTableColumn[
   return Math.max(0, colWidth);
 }
 
-function runRenderer(value, ...args) {
+function runRenderer(value: React.ReactNode | ((...args: any[]) => React.ReactNode), ...args: any[]) {
   value = runPropGetter(value, ...args);
 
   if (typeof value !== 'string') {
