@@ -14,7 +14,7 @@ import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useAppDispatch, useAppSelector } from '../../store-api';
 import { HOST_STATUS_PROBLEM } from '../problems';
-import { changeCriteria, getCriteria, getDisplayView } from '../store';
+import { changeCriteria, Criteria, getCriteria, getDisplayView } from '../store';
 import { useNagiosDataView } from '../views';
 
 type FIXME_any = any;
@@ -26,7 +26,7 @@ const useConnect = () => {
     data: useAppSelector(getDisplayView),
     ...useMemo(
       () => ({
-        changeCriteria: (criteria) => dispatch(changeCriteria(criteria)),
+        changeCriteria: (criteria: Criteria) => dispatch(changeCriteria(criteria)),
       }),
       [dispatch]
     ),
@@ -59,7 +59,7 @@ function CommonState({ item }: CommonStateProps) {
 }
 
 interface ServiceProps {
-  criteria: FIXME_any;
+  criteria: Criteria;
   service: FIXME_any;
   hostDisplay: FIXME_any;
 }
@@ -78,7 +78,7 @@ function Service({ criteria, service, hostDisplay }: ServiceProps) {
 }
 
 interface HostProps {
-  criteria: FIXME_any;
+  criteria: Criteria;
   item: FIXME_any;
 }
 

@@ -8,7 +8,7 @@ interface NagiosState {
   criteria: Criteria;
 }
 
-interface Criteria {
+export interface Criteria {
   onlyProblems: boolean;
 }
 
