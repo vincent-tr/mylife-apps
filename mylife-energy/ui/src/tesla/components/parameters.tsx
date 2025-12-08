@@ -14,8 +14,6 @@ import { useAppSelector } from '../../store-api';
 import { setParameters } from '../actions';
 import { getTeslaState } from '../views';
 
-type FIXME_any = any;
-
 interface Parameters {
   fastLimit: number; // Fast mode charge limit (%)
   smartLimitLow: number; // Smart mode charge low limit (%)
@@ -23,7 +21,10 @@ interface Parameters {
   smartFastCurrent: number; // Smart mode fast charge current (A)
 }
 
-type ProceedCallback = (arg: { result: 'ok' | 'cancel'; parameters?: Parameters }) => void;
+interface ParametersResult {
+  result: 'ok' | 'cancel';
+  parameters?: Parameters;
+}
 
 const ParameterTitle = styled(Typography)(({ theme }) => ({
   marginLeft: theme.spacing(2),
@@ -31,7 +32,7 @@ const ParameterTitle = styled(Typography)(({ theme }) => ({
 
 interface ParametersDialogProps {
   show: boolean;
-  proceed: ProceedCallback;
+  proceed: (value: ParametersResult) => void;
   parameters: Parameters;
 }
 
@@ -118,6 +119,10 @@ function ParametersDialog({ show, proceed, parameters }: ParametersDialogProps) 
 
 const parametersDialog = dialogs.create(ParametersDialog);
 
+async function showParameters(parameters: Parameters) {
+  return (await parametersDialog({ parameters })) as ParametersResult;
+}
+
 export function useParameters() {
   const state = useAppSelector(getTeslaState);
   const set = useAction(setParameters);
@@ -126,7 +131,7 @@ export function useParameters() {
   return useCallback(
     () =>
       fireAsync(async () => {
-        const { result, parameters } = (await parametersDialog({ parameters: buildParameters(state) })) as FIXME_any;
+        const { result, parameters } = await showParameters(buildParameters(state));
         if (result !== 'ok') {
           return;
         }
