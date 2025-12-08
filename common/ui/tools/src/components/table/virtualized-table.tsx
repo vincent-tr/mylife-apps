@@ -22,7 +22,6 @@ const StyledTable = styled(Table)(({ theme }) => ({
 
 export interface VirtualizedTableProps<TData> {
   data: TData[];
-  rowClassName?: string | ((row, index: number) => string);
   rowStyle?: React.CSSProperties | ((row, index: number) => React.CSSProperties);
 
   columns: VirtualizedTableColumn[];
@@ -96,7 +95,7 @@ export default function VirtualizedTable<TData>({ data, columns, rowStyle, heade
   );
 }
 
-function computeColumnWidth(tableWidth, columns) {
+function computeColumnWidth(tableWidth: number, columns: VirtualizedTableColumn[]) {
   // compute space left
   let unsetCount = columns.length;
   let specLeft = tableWidth;
@@ -121,7 +120,7 @@ function runRenderer(value, ...args) {
   return <React.Fragment>{value}</React.Fragment>;
 }
 
-function runPropGetter(value, ...args) {
+function runPropGetter<T>(value: T | ((...args: any[]) => T), ...args: any[]) {
   if (!value) {
     return;
   }
