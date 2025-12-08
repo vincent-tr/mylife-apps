@@ -26,4 +26,4 @@ function download(name: string, link: string) {
   pom.setAttribute('download', name);
   pom.click();
   pom.remove();
-};
+}

@@ -19,7 +19,7 @@ interface ColorShades {
   A200: string;
   A400: string;
   A700: string;
-};
+}
 
 // https://materialuicolors.co/
 function createChartColors() {

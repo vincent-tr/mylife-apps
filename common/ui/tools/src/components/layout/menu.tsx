@@ -61,9 +61,7 @@ export default function Menu({ items, open, onSelect }: MenuProps) {
       <DrawerHeader />
       <List>
         {reponsiveItems.map((item) => {
-          return (
-            <MenuItem key={item.id} item={item} onSelect={onSelect} />
-          );
+          return <MenuItem key={item.id} item={item} onSelect={onSelect} />;
         })}
       </List>
     </StyledDrawer>
