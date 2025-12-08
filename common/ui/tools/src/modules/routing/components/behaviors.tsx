@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useToolsDispatch, useToolsSelector } from '../../../services/store-api';
 import { navigate, getLocation } from '../store';
 
-export const useRoutingConnect = () => {
+export function useRoutingConnect() {
   const dispatch = useToolsDispatch();
   return {
     location: useToolsSelector(getLocation),
@@ -13,4 +13,4 @@ export const useRoutingConnect = () => {
       [dispatch]
     ),
   };
-};
+}

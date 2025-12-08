@@ -1,21 +1,22 @@
-import { match as pathMatch } from 'path-to-regexp';
+import { match } from 'path-to-regexp';
 import React, { useMemo } from 'react';
 import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';
 
-type FIXME_any = any;
+type RouteParameters = Record<string, string | string[]>;
+type RouteRenderer = (params: RouteParameters) => React.ReactNode;
 
 export interface Route {
   location: string;
   name?: string;
-  nameRenderer?: (params: FIXME_any) => React.ReactNode;
+  nameRenderer?: RouteRenderer;
   icon?: React.ElementType;
-  iconRenderer?: (params: FIXME_any) => React.ReactNode;
+  iconRenderer?: (params: RouteParameters) => React.ElementType
   additionalHeader?: React.ReactNode;
-  additionalHeaderRenderer?: (params: FIXME_any) => React.ReactNode;
+  additionalHeaderRenderer?: RouteRenderer;
   additionalBreadcrumb?: React.ReactNode;
-  additionalBreadcrumbRenderer?: (params: FIXME_any) => React.ReactNode;
-  renderer: (params: FIXME_any) => React.ReactNode;
+  additionalBreadcrumbRenderer?: RouteRenderer;
+  renderer: RouteRenderer;
 }
 
 export interface MenuItem {
@@ -34,7 +35,7 @@ export interface LayoutRouterProps
 
 function LayoutRouter({ routes, menu, ...props }: LayoutRouterProps) {
   const { location, navigate } = useRoutingConnect();
-  const mappedMenu = mapMenu({ navigate, menu });
+  const mappedMenu = mapMenu(navigate, menu);
   const routesInfo = useMemo(() => new RoutesInfo(routes), [routes]);
   const routeMatch = routesInfo.findMatch(location);
 
@@ -44,7 +45,7 @@ function LayoutRouter({ routes, menu, ...props }: LayoutRouterProps) {
       viewName={routeMatch.renderName()}
       viewIcon={routeMatch.renderIcon()}
       viewAdditionalHeader={routeMatch.renderAdditionalHeader()}
-      viewAdditionalBreadcrumb={routeMatch.routerAdditionalBreadcrumb()}
+      viewAdditionalBreadcrumb={routeMatch.renderAdditionalBreadcrumb()}
       menu={mappedMenu}
       {...props}
     >
@@ -55,7 +56,7 @@ function LayoutRouter({ routes, menu, ...props }: LayoutRouterProps) {
 
 export default LayoutRouter;
 
-function mapMenu({ navigate, menu }) {
+function mapMenu(navigate: (location: string) => void, menu?: MenuItem[]) {
   return (
     menu &&
     menu.map(({ location, ...item }) => {
@@ -71,17 +72,24 @@ function mapMenu({ navigate, menu }) {
   );
 }
 
-const nullRenderer = () => null;
-const defaultRouteMatch = { renderName: nullRenderer, renderIcon: nullRenderer, render: nullRenderer };
+const nullRenderer = <T,>() => null as T;
+
+const defaultRouteMatch: RouteMatch = { 
+  renderName: nullRenderer, 
+  renderIcon: nullRenderer, 
+  renderAdditionalHeader: nullRenderer,
+  renderAdditionalBreadcrumb: nullRenderer,
+  render: nullRenderer,
+};
 
 class RoutesInfo {
   private readonly routesInfo;
 
-  constructor(routes) {
+  constructor(routes: Route[]) {
     this.routesInfo = routes.map((route) => new RouteInfo(route));
   }
 
-  findMatch(location) {
+  findMatch(location: string): RouteMatch {
     for (const routeInfo of this.routesInfo) {
       const match = routeInfo.match(location);
       if (match) {
@@ -96,55 +104,63 @@ class RoutesInfo {
 class RouteInfo {
   private readonly parser;
 
-  constructor(private readonly route) {
-    this.parser = pathMatch(route.location);
+  constructor(private readonly route: Route) {
+    this.parser = match(route.location);
   }
 
-  match(location) {
+  match(location: string) {
     const result = this.parser(location);
     if (!result) {
       return null;
     }
 
-    return new RouteMatch(this.route, result.params);
+    return new RouteMatchImpl(this.route, result.params);
   }
 }
 
-class RouteMatch {
+interface RouteMatch {
+  renderName(): React.ReactNode;
+  renderIcon(): React.ElementType;
+  renderAdditionalHeader(): React.ReactNode;
+  renderAdditionalBreadcrumb(): React.ReactNode;
+  render(): React.ReactNode;
+}
+
+class RouteMatchImpl implements RouteMatch {
   constructor(
-    private readonly route,
-    private readonly parameters
+    private readonly route: Route,
+    private readonly parameters: RouteParameters,
   ) {}
 
-  renderName() {
+  renderName(): React.ReactNode {
     if (this.route.nameRenderer) {
       return this.route.nameRenderer(this.parameters);
     }
     return this.route.name;
   }
 
-  renderIcon() {
+  renderIcon(): React.ElementType {
     if (this.route.iconRenderer) {
       return this.route.iconRenderer(this.parameters);
     }
     return this.route.icon;
   }
 
-  renderAdditionalHeader() {
+  renderAdditionalHeader(): React.ReactNode {
     if (this.route.additionalHeaderRenderer) {
       return this.route.additionalHeaderRenderer(this.parameters);
     }
     return this.route.additionalHeader;
   }
 
-  routerAdditionalBreadcrumb() {
+  renderAdditionalBreadcrumb(): React.ReactNode {
     if (this.route.additionalBreadcrumbRenderer) {
       return this.route.additionalBreadcrumbRenderer(this.parameters);
     }
     return this.route.additionalBreadcrumb;
   }
 
-  render() {
+  render(): React.ReactNode {
     return this.route.renderer(this.parameters);
   }
 }
