@@ -2,6 +2,8 @@ import Badge from '@mui/material/Badge';
 import { styled, Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { views } from 'mylife-tools';
+import { LiveDevice, Measure } from '../../api';
 import icons from '../../common/icons';
 import { useAppSelector } from '../../store-api';
 import { getDevice } from '../selectors';
@@ -112,7 +114,7 @@ function DeviceMeasureTooltip({ deviceId }: DeviceMeasureTooltipProps) {
   );
 }
 
-function getSensorData(device, measures, sensorKeys: string[] = null) {
+function getSensorData(device: LiveDevice, measures: views.View<Measure>, sensorKeys: string[] = null) {
   const items: { display: string; measureValue: number; value: string }[] = [];
 
   for (const sensor of device.sensors) {
@@ -131,7 +133,7 @@ function getSensorData(device, measures, sensorKeys: string[] = null) {
   return items;
 }
 
-function getLastUpdate(device, measures) {
+function getLastUpdate(device: LiveDevice, measures: views.View<Measure>) {
   let date = new Date();
   for (const sensor of device.sensors) {
     const measure = measures[`${device._id}-${sensor.key}`];
