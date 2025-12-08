@@ -1,4 +1,4 @@
-import PathToRegex from 'path-to-regex'; // TODO: migrate to path-to-regexp
+import { match as pathMatch } from 'path-to-regexp';
 import React, { useMemo } from 'react';
 import { Layout } from '../../../components/layout';
 import { useRoutingConnect } from './behaviors';
@@ -97,16 +97,16 @@ class RouteInfo {
   private readonly parser;
 
   constructor(private readonly route) {
-    this.parser = new PathToRegex(route.location);
+    this.parser = pathMatch(route.location);
   }
 
   match(location) {
-    const result = this.parser.match(location);
+    const result = this.parser(location);
     if (!result) {
       return null;
     }
 
-    return new RouteMatch(this.route, result);
+    return new RouteMatch(this.route, result.params);
   }
 }
 
