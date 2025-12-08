@@ -16,8 +16,13 @@ export interface InputOptions {
 
 export interface InputProps {
   show: boolean;
-  proceed: (value: { result: 'ok' | 'cancel'; text?: string }) => void;
+  proceed: (value: InputResult) => void;
   options: InputOptions;
+}
+
+export interface InputResult {
+  result: 'ok' | 'cancel';
+  text?: string;
 }
 
 export default function Input({ show, proceed, options }: InputProps) {

@@ -1,12 +1,13 @@
 import { confirmable, createConfirmation } from 'react-confirm';
 import { ToolsProvider } from '../../components/application';
-import Confirm from './components/confirm';
-import Input from './components/input';
+import Confirm, { ConfirmOptions } from './components/confirm';
+import Input, { InputOptions, InputResult } from './components/input';
 
-export function create(Dialog) {
-  const DialogWrapper = (props) => (
+export function create<TProps>(Dialog: React.ComponentType<TProps>) {
+  // We omit 'show' and 'proceed' from the props as they will be provided by the confirmable HOC
+  const DialogWrapper = (props: Omit<TProps, 'show' | 'proceed'>) => (
     <ToolsProvider>
-      <Dialog {...props} />
+      <Dialog {...(props as TProps)} />
     </ToolsProvider>
   );
 
@@ -20,13 +21,17 @@ const defaultConfirmActions = [
   { text: 'Non', value: false },
 ];
 
-export async function confirm(options) {
-  options.actions = options.actions || defaultConfirmActions;
-  return confirmDialog({ options });
+export async function confirm<TValue = boolean>(options: ConfirmOptions<TValue>) {
+  if (!options.actions) {
+    // Note: wrong if TValue is not boolean but actions are not provided
+    options = { ...options, actions: defaultConfirmActions as ConfirmOptions<TValue>['actions'] };
+  }
+
+  return (await confirmDialog({ options })) as TValue;
 }
 
 const inputDialog = create(Input);
 
-export async function input(options) {
-  return inputDialog({ options });
+export async function input(options: InputOptions) {
+  return (await inputDialog({ options })) as InputResult;
 }
