@@ -2,7 +2,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Input from '@mui/material/Input';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useCallback, useMemo } from 'react';
 import { useAppSelector } from '../../store-api';
 import { getDevicesView } from '../views';
@@ -17,11 +17,11 @@ export interface DeviceListProps {
 
 export default function DeviceList({ className, value, onChange }: DeviceListProps) {
   const devices = useDevices();
-  const handleChange = (event) => onChange(event.target.value);
+  const handleChange = useCallback((event: SelectChangeEvent<string[]>) => onChange(event.target.value as string[]), [onChange]);
   const renderSelectorValue = useCallback((selection: string[]) => selection.map((id) => devices[id]).join(', '), [devices]);
 
   return (
-    <Select multiple value={value} onChange={handleChange} input={<Input fullWidth />} renderValue={renderSelectorValue} className={className}>
+    <Select<string[]> multiple value={value} onChange={handleChange} input={<Input fullWidth />} renderValue={renderSelectorValue} className={className}>
       {Object.entries(devices).map(([id, display]) => (
         <MenuItem key={id} value={id}>
           <Checkbox checked={value.includes(id)} />

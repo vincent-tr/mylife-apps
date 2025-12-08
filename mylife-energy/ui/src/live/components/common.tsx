@@ -17,7 +17,7 @@ const flavorColor = (theme: Theme, flavor: Flavor) => {
   const colors = {
     good: theme.palette.success.main,
     bad: theme.palette.error.main,
-    null: null,
+    null: null as string,
   };
 
   return colors[flavor];

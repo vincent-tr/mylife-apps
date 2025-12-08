@@ -1,7 +1,7 @@
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import humanizeDurationImpl, { HumanizeDurationOptions } from 'humanize-duration';
+import humanizeDurationImpl, { Options as HumanizeDurationOptions } from 'humanize-duration';
 import React, { PropsWithChildren, useState } from 'react';
 import { useInterval } from 'mylife-tools';
 import icons from '../../common/icons';
