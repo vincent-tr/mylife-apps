@@ -84,7 +84,7 @@ interface VersionProps {
 }
 
 function Version({ data }: VersionProps) {
-  const getRowComponent = useCallback((status) => {
+  const getRowComponent = useCallback((status: api.UpdatesStatus) => {
     switch (status) {
       case 'uptodate':
         return SuccessRow;

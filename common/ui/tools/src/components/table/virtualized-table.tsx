@@ -43,14 +43,17 @@ export interface VirtualizedTableColumn {
 }
 
 export default function VirtualizedTable<TData>({ data, columns, rowStyle, headerHeight = 48, rowHeight = 48, onRowClick, ...props }: VirtualizedTableProps<TData>) {
-  const rowIndexStyle = useCallback(({ index }: Index) => {
-    const style = {
-      ...runPropGetter(rowStyle, data[index], index),
-      display: 'flex',
-    };
+  const rowIndexStyle = useCallback(
+    ({ index }: Index) => {
+      const style = {
+        ...runPropGetter(rowStyle, data[index], index),
+        display: 'flex',
+      };
 
-    return style;
-  }, [rowStyle, data]);
+      return style;
+    },
+    [rowStyle, data]
+  );
 
   const rowGetter = useCallback(({ index }: Index) => data[index], [data]);
 

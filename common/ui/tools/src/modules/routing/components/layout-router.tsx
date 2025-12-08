@@ -11,7 +11,7 @@ export interface Route {
   name?: string;
   nameRenderer?: RouteRenderer;
   icon?: React.ElementType;
-  iconRenderer?: (params: RouteParameters) => React.ElementType
+  iconRenderer?: (params: RouteParameters) => React.ElementType;
   additionalHeader?: React.ReactNode;
   additionalHeaderRenderer?: RouteRenderer;
   additionalBreadcrumb?: React.ReactNode;
@@ -74,9 +74,9 @@ function mapMenu(navigate: (location: string) => void, menu?: MenuItem[]) {
 
 const nullRenderer = <T,>() => null as T;
 
-const defaultRouteMatch: RouteMatch = { 
-  renderName: nullRenderer, 
-  renderIcon: nullRenderer, 
+const defaultRouteMatch: RouteMatch = {
+  renderName: nullRenderer,
+  renderIcon: nullRenderer,
   renderAdditionalHeader: nullRenderer,
   renderAdditionalBreadcrumb: nullRenderer,
   render: nullRenderer,
@@ -129,7 +129,7 @@ interface RouteMatch {
 class RouteMatchImpl implements RouteMatch {
   constructor(
     private readonly route: Route,
-    private readonly parameters: RouteParameters,
+    private readonly parameters: RouteParameters
   ) {}
 
   renderName(): React.ReactNode {

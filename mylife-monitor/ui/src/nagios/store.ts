@@ -3,6 +3,7 @@ import { api, views } from 'mylife-tools';
 import { createAppAsyncThunk } from '../store-api';
 import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 import { getView } from './views';
+import { NagiosHostGroup, NagiosHost, NagiosService } from '../api';
 
 interface NagiosState {
   criteria: Criteria;
@@ -50,23 +51,33 @@ export const changeCriteria = createAppAsyncThunk('nagios/changeCriteria', async
 
 export const getCriteria = nagiosSlice.selectors.getCriteria;
 
+export interface GroupWithHosts {
+  group: NagiosHostGroup;
+  hosts: HostWithServices[];
+}
+
+export interface HostWithServices {
+  host: NagiosHost;
+  services: NagiosService[];
+}
+
 export const getDisplayView = createSelector([getView, getCriteria], (view: views.View<api.Entity>, criteria) => {
-  const groups = new Map();
-  const hosts = new Map();
-  const services = new Map();
+  const groups = new Map<string, GroupWithHosts>();
+  const hosts = new Map<string, HostWithServices>();
+  const services = new Map<string, NagiosService>();
 
   for (const item of Object.values(view)) {
     switch (item._entity) {
       case 'nagios-host-group':
-        groups.set(item._id, { group: item, hosts: [] });
+        groups.set(item._id, { group: item as NagiosHostGroup, hosts: [] });
         break;
 
       case 'nagios-host':
-        hosts.set(item._id, { host: item, services: [] });
+        hosts.set(item._id, { host: item as NagiosHost, services: [] });
         break;
 
       case 'nagios-service':
-        services.set(item._id, item);
+        services.set(item._id, item as NagiosService);
         break;
     }
   }
@@ -83,13 +94,13 @@ export const getDisplayView = createSelector([getView, getCriteria], (view: view
   }
 
   const data = Array.from(groups.values());
-  data.sort(createDisplayComparer('group'));
+  data.sort(sortBy((group) => group.group.display));
 
   for (const group of data) {
-    group.hosts.sort(createDisplayComparer('host'));
+    group.hosts.sort(sortBy((host) => host.host.display));
 
     for (const host of group.hosts) {
-      host.services.sort(createDisplayComparer(null));
+      host.services.sort(sortBy((service) => service.display));
     }
   }
 
@@ -109,14 +120,11 @@ export const getDisplayView = createSelector([getView, getCriteria], (view: view
   return filtered;
 });
 
-function createDisplayComparer(propName) {
-  if (propName) {
-    return (obj1, obj2) => (obj1[propName].display < obj2[propName].display ? -1 : 1);
-  }
-  return (obj1, obj2) => (obj1.display < obj2.display ? -1 : 1);
+function sortBy<T>(accessor: (item: T) => unknown) {
+  return (obj1: T, obj2: T) => (accessor(obj1) < accessor(obj2) ? -1 : 1);
 }
 
-function groupHasProblem(item) {
+function groupHasProblem(item: GroupWithHosts) {
   for (const host of item.hosts) {
     if (hostHasProblem(host)) {
       return true;
@@ -126,7 +134,7 @@ function groupHasProblem(item) {
   return false;
 }
 
-function hostHasProblem(item) {
+function hostHasProblem(item: HostWithServices) {
   if (HOST_STATUS_PROBLEM[item.host.status]) {
     return true;
   }
@@ -140,7 +148,7 @@ function hostHasProblem(item) {
   return false;
 }
 
-function serviceHasProblem(service) {
+function serviceHasProblem(service: NagiosService) {
   return SERVICE_STATUS_PROBLEM[service.status];
 }
 

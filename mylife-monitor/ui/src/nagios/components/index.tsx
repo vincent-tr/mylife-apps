@@ -10,14 +10,13 @@ import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import { useMemo } from 'react';
+import { NagiosHost, NagiosHostStatus, NagiosService, NagiosServiceStatus } from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useAppDispatch, useAppSelector } from '../../store-api';
 import { HOST_STATUS_PROBLEM } from '../problems';
-import { changeCriteria, Criteria, getCriteria, getDisplayView } from '../store';
+import { changeCriteria, Criteria, getCriteria, getDisplayView, GroupWithHosts, HostWithServices } from '../store';
 import { useNagiosDataView } from '../views';
-
-type FIXME_any = any;
 
 const useConnect = () => {
   const dispatch = useAppDispatch();
@@ -41,7 +40,7 @@ const Container = styled('div')({
 });
 
 interface CommonStateProps {
-  item: FIXME_any;
+  item: NagiosHost | NagiosService;
 }
 
 function CommonState({ item }: CommonStateProps) {
@@ -60,8 +59,8 @@ function CommonState({ item }: CommonStateProps) {
 
 interface ServiceProps {
   criteria: Criteria;
-  service: FIXME_any;
-  hostDisplay: FIXME_any;
+  service: NagiosService;
+  hostDisplay: string;
 }
 
 function Service({ criteria, service, hostDisplay }: ServiceProps) {
@@ -79,7 +78,7 @@ function Service({ criteria, service, hostDisplay }: ServiceProps) {
 
 interface HostProps {
   criteria: Criteria;
-  item: FIXME_any;
+  item: HostWithServices;
 }
 
 function Host({ criteria, item }: HostProps) {
@@ -105,8 +104,8 @@ function Host({ criteria, item }: HostProps) {
 }
 
 interface GroupProps {
-  criteria: FIXME_any;
-  item: FIXME_any;
+  criteria: Criteria;
+  item: GroupWithHosts;
 }
 
 function Group({ criteria, item }: GroupProps) {
@@ -169,7 +168,7 @@ export default function Nagios() {
   );
 }
 
-function formatStatus(item) {
+function formatStatus(item: NagiosHost | NagiosService) {
   let value = item.status.toUpperCase();
   if (item.isFlapping) {
     value += ' (instable)';
@@ -177,7 +176,7 @@ function formatStatus(item) {
   return value;
 }
 
-function formatTimestamp(date) {
+function formatTimestamp(date: Date) {
   const today = new Date();
   const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
 
@@ -199,10 +198,10 @@ const SERVICE_STATUS_COMPONENTS = {
   critical: ErrorRow,
 };
 
-function getHostRowComponent(status) {
+function getHostRowComponent(status: NagiosHostStatus) {
   return HOST_STATUS_COMPONENTS[status] || TableRow;
 }
 
-function getServiceRowComponent(status) {
+function getServiceRowComponent(status: NagiosServiceStatus) {
   return SERVICE_STATUS_COMPONENTS[status] || TableRow;
 }
