@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { dialogs, io, views } from 'mylife-tools';
 import { Group, Operation, OperationViewCriteria } from '../api';
-import { createAppAsyncThunk } from '../store-api';
+import { AppState, createAppAsyncThunk } from '../store-api';
 
 interface ManagementState {
   criteria: OperationViewCriteria;
@@ -108,8 +108,8 @@ const local = {
   getSelected: managementSlice.selectors.getSelected,
 };
 
-const getOperationView = (state) => views.getViewById<Operation>(state, local.getOperationViewId(state));
-export const getOperationDetail = (state) => getOperationView(state)[local.getOperationIdDetail(state)];
+const getOperationView = (state: AppState) => views.getViewById<Operation>(state, local.getOperationViewId(state));
+export const getOperationDetail = (state: AppState) => getOperationView(state)[local.getOperationIdDetail(state)];
 
 export const getSelectedOperationIds = createSelector([local.getSelected, getOperationView], (selected, view) => selected.filter((id) => id in view));
 
@@ -117,7 +117,7 @@ const getOperationIds = createSelector([getOperationView], (view) => Object.keys
 
 export const getSelectedOperations = createSelector([getSelectedOperationIds, getOperationView], (selectedIds, view) => selectedIds.map((id) => view[id]));
 
-export const getSelectedGroupId = (state) => local.getCriteria(state).group;
+export const getSelectedGroupId = (state: AppState) => local.getCriteria(state).group;
 
 export const getSortedOperations = createSelector([getOperationView], (operations) => {
   const ret = Object.values(operations);

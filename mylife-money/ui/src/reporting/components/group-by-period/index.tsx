@@ -8,14 +8,14 @@ import Chart from './chart';
 import Criteria from './criteria';
 import { formatCriteria } from './tools';
 
-const useConnect = ({ type, exportFilename }) => {
+const useConnect = (type: 'month' | 'year', exportFilename: string) => {
   const dispatch = useAppDispatch();
   return {
     data: useAppSelector(getSortedViewList),
     ...useMemo(
       () => ({
         exportReport: ({ criteria, display }: { criteria: ReportingCriteria; display: ReportingDisplay }) =>
-          dispatch(downloadExport({ criteria, display, type: type, fileName: exportFilename })),
+          dispatch(downloadExport({ criteria, display, type, fileName: exportFilename })),
       }),
       [dispatch, type, exportFilename]
     ),
@@ -32,13 +32,25 @@ const StyledChart = styled(Chart)({
   flex: '1 1 auto',
 });
 
+export interface AdditionalCriteriaFactoryProps {
+  criteria: ReportingCriteria;
+  onCriteriaChanged: (criteria: ReportingCriteria) => void;
+  display: ReportingDisplay;
+  onDisplayChanged: (display: ReportingDisplay) => void;
+}
+
+export interface AmountSelectorFactoryProps {
+  criteria: ReportingCriteria;
+  display: ReportingDisplay;
+}
+
 export interface GroupByPeriodProps {
   type: 'month' | 'year';
   exportFilename: string;
   initialCriteria: ReportingCriteria;
   initialDisplay: ReportingDisplay;
-  additionalCriteriaFactory: (props) => React.ReactNode;
-  amountSelectorFactory: (props) => any;
+  additionalCriteriaFactory: (props: AdditionalCriteriaFactoryProps) => React.ReactNode;
+  amountSelectorFactory: (props: AmountSelectorFactoryProps) => any;
 }
 
 export default function GroupByPeriod({ type, exportFilename, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }: GroupByPeriodProps) {
@@ -49,7 +61,7 @@ export default function GroupByPeriod({ type, exportFilename, initialCriteria, i
 
   useReportingView(type, formattedCriteria);
 
-  const { exportReport, data } = useConnect({ type, exportFilename });
+  const { exportReport, data } = useConnect(type, exportFilename);
 
   const doExport = useCallback(() => exportReport({ criteria: formattedCriteria, display }), [exportReport, formattedCriteria, display]);
 

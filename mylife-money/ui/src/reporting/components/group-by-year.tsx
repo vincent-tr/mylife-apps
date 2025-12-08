@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import React from 'react';
 import { CriteriaField } from 'mylife-tools';
 import { findAmount, roundCurrency } from './group-by-period/tools';
-import GroupByPeriod from './group-by-period';
+import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
 
 type FIXME_any = any;
 
@@ -55,7 +55,7 @@ export default function GroupByYear() {
   );
 }
 
-function amountSelectorFactory({ display }) {
+function amountSelectorFactory({ display }: AmountSelectorFactoryProps) {
   return (periodItem, serie) => {
     let value = findAmount(periodItem, serie);
     if (display.invert) {

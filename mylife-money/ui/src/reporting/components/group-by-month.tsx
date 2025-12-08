@@ -1,5 +1,5 @@
 import { findAmount } from './group-by-period/tools';
-import GroupByPeriod from './group-by-period';
+import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
 
 const initialCriteria = {
   children: false,
@@ -31,7 +31,7 @@ function additionalCriteriaFactory() {
   return null;
 }
 
-function amountSelectorFactory({ display }) {
+function amountSelectorFactory({ display }: AmountSelectorFactoryProps) {
   return (periodItem, serie) => {
     const value = findAmount(periodItem, serie);
     return display.invert ? -value : value;
