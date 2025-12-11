@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SummaryAccordion, DateOrYearSelector, CriteriaField, useScreenPhone } from 'mylife-tools';
 import { ReportingCriteria, ReportingDisplay } from '../../../api';
 import AccountSelector from '../../../common/components/account-selector';
@@ -36,27 +36,45 @@ export interface CriteriaProps {
 export default function Criteria({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }: CriteriaProps) {
   const isPhone = useScreenPhone();
 
-  const setCriteria = (name, value) => onCriteriaChanged({ ...criteria, [name]: value });
-  const onChildrenChanged = (value) => setCriteria('children', value);
-  const onMinDateChanged = (value) => setCriteria('minDate', value);
-  const onMaxDateChanged = (value) => setCriteria('maxDate', value);
-  const onAccountChanged = (value) => setCriteria('account', value);
+  const onMinDateChanged = useCallback((value: Date) => {
+    onCriteriaChanged({ ...criteria, minDate: value });
+  }, [onCriteriaChanged, criteria]);
 
-  const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
-  const onInvertChanged = (value) => setDisplay('invert', value);
-  const onFullnamesChanged = (value) => setDisplay('fullnames', value);
+  const onMaxDateChanged = useCallback((value: Date) => {
+    onCriteriaChanged({ ...criteria, maxDate: value });
+  }, [onCriteriaChanged, criteria]);
 
-  const onGroupAdd = () => setCriteria('groups', [...criteria.groups, null]);
-  const onGroupChanged = (index, value) =>
-    setCriteria(
-      'groups',
-      criteria.groups.map((group, i) => (i === index ? value : group))
-    );
-  const onGroupDelete = (index) =>
-    setCriteria(
-      'groups',
-      criteria.groups.filter((_, i) => i !== index)
-    );
+  const onAccountChanged = useCallback((value: string | null) => {
+    onCriteriaChanged({ ...criteria, account: value });
+  }, [onCriteriaChanged, criteria]);
+
+  const onChildrenChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onCriteriaChanged({ ...criteria, children: e.target.checked });
+  }, [onCriteriaChanged, criteria]);
+
+  const onInvertChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onDisplayChanged({ ...display, invert: e.target.checked });
+  }, [onDisplayChanged, display]);
+
+  const onFullnamesChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onDisplayChanged({ ...display, fullnames: e.target.checked });
+  }, [onDisplayChanged, display]);
+
+  const onGroupAdd = useCallback(() => {
+    onCriteriaChanged({ ...criteria, groups: [...criteria.groups, null] });
+  }, [onCriteriaChanged, criteria]);
+
+  const onGroupChanged = useCallback((index: number, groupId: string) => {
+    const newGroups = [...criteria.groups];
+    newGroups[index] = groupId;
+    onCriteriaChanged({ ...criteria, groups: newGroups });
+  }, [onCriteriaChanged, criteria]);
+
+  const onGroupDelete = useCallback((index: number) => {
+    const newGroups = [...criteria.groups];
+    newGroups.splice(index, 1);
+    onCriteriaChanged({ ...criteria, groups: newGroups });
+  }, [onCriteriaChanged, criteria]);
 
   const grid = isPhone ? (
     <Grid container spacing={2}>
@@ -77,17 +95,17 @@ export default function Criteria({ criteria, onCriteriaChanged, display, onDispl
       </Grid>
       <Grid size={6}>
         <CriteriaField label="Inverser montant">
-          <Checkbox color="primary" checked={display.invert} onChange={(e) => onInvertChanged(e.target.checked)} />
+          <Checkbox color="primary" checked={display.invert} onChange={onInvertChanged} />
         </CriteriaField>
       </Grid>
       <Grid size={6}>
         <CriteriaField label="Afficher les groupes enfants">
-          <Checkbox color="primary" checked={criteria.children} onChange={(e) => onChildrenChanged(e.target.checked)} />
+          <Checkbox color="primary" checked={criteria.children} onChange={onChildrenChanged} />
         </CriteriaField>
       </Grid>
       <Grid size={6}>
         <CriteriaField label="Afficher les noms complets">
-          <Checkbox color="primary" checked={display.fullnames} onChange={(e) => onFullnamesChanged(e.target.checked)} />
+          <Checkbox color="primary" checked={display.fullnames} onChange={onFullnamesChanged} />
         </CriteriaField>
       </Grid>
       {additionalComponents}
@@ -114,17 +132,17 @@ export default function Criteria({ criteria, onCriteriaChanged, display, onDispl
       </Grid>
       <Grid size={4}>
         <CriteriaField label="Inverser montant">
-          <Checkbox color="primary" checked={display.invert} onChange={(e) => onInvertChanged(e.target.checked)} />
+          <Checkbox color="primary" checked={display.invert} onChange={onInvertChanged} />
         </CriteriaField>
       </Grid>
       <Grid size={4}>
         <CriteriaField label="Afficher les groupes enfants">
-          <Checkbox color="primary" checked={criteria.children} onChange={(e) => onChildrenChanged(e.target.checked)} />
+          <Checkbox color="primary" checked={criteria.children} onChange={onChildrenChanged} />
         </CriteriaField>
       </Grid>
       <Grid size={4}>
         <CriteriaField label="Afficher les noms complets">
-          <Checkbox color="primary" checked={display.fullnames} onChange={(e) => onFullnamesChanged(e.target.checked)} />
+          <Checkbox color="primary" checked={display.fullnames} onChange={onFullnamesChanged} />
         </CriteriaField>
       </Grid>
       {additionalComponents}
@@ -168,7 +186,7 @@ function CollapsedSummary({ criteria, onExport }: CollapsedSummaryProps) {
   );
 }
 
-function format(date) {
+function format(date: Date | null) {
   if (!date) {
     return '<indéfini>';
   }

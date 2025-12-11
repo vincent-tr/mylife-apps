@@ -2,9 +2,9 @@ import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useScreenPhone } from 'mylife-tools';
-import { COLOR_AMOUNT_CREDIT, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_TOTAL, useConnect } from './table-behaviors';
+import { COLOR_AMOUNT_CREDIT, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_TOTAL, ControlledOperation, useConnect } from './table-behaviors';
 
-function summaries(operations) {
+function summaries(operations: ControlledOperation[]) {
   let totalDebit = 0;
   let totalCredit = 0;
   let total = 0;
@@ -83,7 +83,9 @@ const TotalOps = styled(Typography, {
       };
 });
 
-const Footer = (props) => {
+export type FooterProps = Omit<React.ComponentProps<typeof Toolbar>, 'children'>;
+
+export default function Footer(props: FooterProps) {
   const isPhone = useScreenPhone();
   const { operations } = useConnect();
   const { totalDebit, totalCredit, total } = summaries(operations);
@@ -103,6 +105,4 @@ const Footer = (props) => {
       <TotalOps dense={isPhone}>{operations.length} opérations</TotalOps>
     </Toolbar>
   );
-};
-
-export default Footer;
+}

@@ -28,7 +28,7 @@ const useConnect = () => {
     })),
     ...useMemo(
       () => ({
-        onSelect: (id) => dispatch(selectGroup(id)),
+        onSelect: (groupId: string) => dispatch(selectGroup(groupId)),
       }),
       [dispatch]
     ),

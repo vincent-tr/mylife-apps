@@ -7,25 +7,23 @@ import { getSelectedGroupId, selectGroup } from '../../store';
 const useConnect = () => {
   const dispatch = useAppDispatch();
   return {
-    ...useAppSelector((state) => ({
-      selectedGroupId: getSelectedGroupId(state),
-    })),
+    selectedGroupId: useAppSelector(getSelectedGroupId),
     ...useMemo(
       () => ({
-        onSelect: (id) => dispatch(selectGroup(id)),
+        onSelect: (groupId: string) => dispatch(selectGroup(groupId)),
       }),
       [dispatch]
     ),
   };
 };
 
-const Tree = (props) => {
+export type TreeProps = Omit<React.ComponentProps<typeof ListContainer>, 'children'>;
+
+export default function Tree(props: TreeProps) {
   const { selectedGroupId, onSelect } = useConnect();
   return (
     <ListContainer {...props}>
       <GroupTree onSelect={onSelect} selectedGroupId={selectedGroupId} />
     </ListContainer>
   );
-};
-
-export default Tree;
+}

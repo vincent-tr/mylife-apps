@@ -1,13 +1,12 @@
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { CriteriaField } from 'mylife-tools';
+import { ReportingCriteria, ReportingDisplay } from '../../api';
 import { findAmount, roundCurrency } from './group-by-period/tools';
 import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
 
-type FIXME_any = any;
-
-const initialCriteria = {
+const initialCriteria: ReportingCriteria = {
   children: false,
   minDate: null,
   maxDate: null,
@@ -15,20 +14,19 @@ const initialCriteria = {
   groups: [null],
 };
 
-const initialDisplay = {
+const initialDisplay: ReportingDisplay = {
   invert: true,
   fullnames: false,
   monthAverage: false,
 };
 
 interface AdditionalCriteriaProps {
-  display;
-  onDisplayChanged: (display) => void;
+  display: ReportingDisplay;
+  onDisplayChanged: (display: ReportingDisplay) => void;
 }
 
 function AdditionalCriteria({ display, onDisplayChanged }: AdditionalCriteriaProps) {
-  const setDisplay = (name, value) => onDisplayChanged({ ...display, [name]: value });
-  const onMonthAverageChanged = (value) => setDisplay('monthAverage', value);
+  const onMonthAverageChanged = useCallback((value: boolean) => onDisplayChanged({ ...display, monthAverage: value }), [display, onDisplayChanged]);
 
   return (
     <React.Fragment>
@@ -49,7 +47,7 @@ export default function GroupByYear() {
       exportFilename="group-by-year"
       initialCriteria={initialCriteria}
       initialDisplay={initialDisplay}
-      additionalCriteriaFactory={AdditionalCriteria as FIXME_any}
+      additionalCriteriaFactory={AdditionalCriteria}
       amountSelectorFactory={amountSelectorFactory}
     />
   );

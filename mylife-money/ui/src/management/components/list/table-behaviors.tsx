@@ -30,7 +30,7 @@ export const useConnect = () => {
     ...useMemo(
       () => ({
         onSelect: (val) => dispatch(selectOperation(val)),
-        onDetail: (val) => dispatch(showDetail(val)),
+        onDetail: (operation: string) => dispatch(showDetail(operation)),
       }),
       [dispatch]
     ),

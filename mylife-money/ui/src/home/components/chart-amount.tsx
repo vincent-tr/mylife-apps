@@ -3,7 +3,9 @@ import { LineChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Line } from 'r
 import { useChartColors } from 'mylife-tools';
 import { useTotalByMonthView } from '../views';
 
-const ChartAmount = (props) => {
+export type ChartAmountProps = Omit<React.ComponentProps<'div'>, 'children'>;
+
+export default function ChartAmount(props: ChartAmountProps) {
   const data = useTotalByMonthView();
   const chartColors = useChartColors();
 
@@ -27,6 +29,4 @@ const ChartAmount = (props) => {
       </LineChart>
     </div>
   );
-};
-
-export default ChartAmount;
+}

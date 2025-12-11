@@ -21,9 +21,9 @@ export function formatCriteria(criteria) {
   return props;
 }
 
-export function roundCurrency(number) {
-  if (!isFinite(number)) {
-    return number;
+export function roundCurrency(value: number) {
+  if (!isFinite(value)) {
+    return value;
   }
-  return Math.round(number * 100) / 100;
+  return Math.round(value * 100) / 100;
 }

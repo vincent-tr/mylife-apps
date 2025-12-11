@@ -27,7 +27,7 @@ export default function Stats() {
   );
 }
 
-function statValue(stats: views.View<ReportOperationStat>, code) {
+function statValue(stats: views.View<ReportOperationStat>, code: string) {
   const stat = Object.values(stats).find((stat) => stat.code === code);
   if (!stat) {
     return null;

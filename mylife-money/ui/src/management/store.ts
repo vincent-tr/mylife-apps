@@ -99,7 +99,7 @@ export const { setOperationViewId, clearOperationViewId, showDetail, closeDetail
 export default managementSlice.reducer;
 
 const local = {
-  showSuccess: (message) => dialogs.showNotification({ message, type: 'success' }),
+  showSuccess: (message: string) => dialogs.showNotification({ message, type: 'success' }),
   setCriteria: managementSlice.actions.setCriteria,
   selectOperations: managementSlice.actions.selectOperations,
   getCriteria: managementSlice.selectors.getCriteria,
@@ -211,19 +211,16 @@ export const operationSetNoteDetail = createAppAsyncThunk('management/operationS
   await api.extra.management.operationsSetNote({ note, operations });
 });
 
-export const selectOperation = ({ id, selected }) => {
-  return (dispatch, getState) => {
-    if (id) {
-      dispatch(local.selectOperations({ ids: [id], selected }));
-      return;
-    }
-
+export const selectOperation = createAppAsyncThunk('management/selectOperation', async ({ id, selected }: { id: string | null; selected: boolean }, api) => {
+  if (id) {
+    api.dispatch(local.selectOperations({ ids: [id], selected }));
+  } else {
     // we are selecting/unselecting all
-    const state = getState();
+    const state = api.getState();
     const ids = getOperationIds(state);
-    dispatch(local.selectOperations({ ids, selected }));
-  };
-};
+    api.dispatch(local.selectOperations({ ids, selected }));
+  }
+});
 
 export const importOperations = createAppAsyncThunk('management/importOperations', async ({ account, file }: { account: string; file: File }, api) => {
   const content = await readFile(file);
@@ -236,7 +233,7 @@ export const operationsExecuteRules = createAppAsyncThunk('management/operations
   api.dispatch(local.showSuccess(`${count} operation(s) déplacée(s)`));
 });
 
-async function readFile(file) {
+async function readFile(file: File) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
 

@@ -48,14 +48,14 @@ const useConnect = () => {
     }),
     ...useMemo(
       () => ({
-        onMinDateChanged: (value) => dispatch(setMinDate(value)),
-        onMaxDateChanged: (value) => dispatch(setMaxDate(value)),
-        onAccountChanged: (value) => dispatch(setAccount(value)),
-        onLookupTextChanged: (value) => dispatch(setLookupText(value)),
-        onOperationsImport: (account, file) => dispatch(importOperations({ account, file })),
+        onMinDateChanged: (value: Date) => dispatch(setMinDate(value)),
+        onMaxDateChanged: (value: Date) => dispatch(setMaxDate(value)),
+        onAccountChanged: (value: string) => dispatch(setAccount(value)),
+        onLookupTextChanged: (value: string) => dispatch(setLookupText(value)),
+        onOperationsImport: (account: string, file: File) => dispatch(importOperations({ account, file })),
         onOperationsExecuteRules: () => dispatch(operationsExecuteRules()),
-        onOperationsSetNote: (note) => dispatch(operationsSetNote(note)),
-        onOperationsMove: (group) => dispatch(moveOperations(group)),
+        onOperationsSetNote: (note: string) => dispatch(operationsSetNote(note)),
+        onOperationsMove: (group: string) => dispatch(moveOperations(group)),
       }),
       [dispatch]
     ),
@@ -215,7 +215,7 @@ export default function Header() {
   }
 }
 
-function format(date) {
+function format(date: Date | null) {
   if (!date) {
     return '<indéfini>';
   }
