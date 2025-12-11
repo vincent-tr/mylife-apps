@@ -9,18 +9,15 @@ export interface ExportButtonProps extends Omit<React.ComponentProps<typeof Icon
 
 export default function ExportButton({ onClick, ...props }: ExportButtonProps) {
   const handleClick = useMemo(() => {
-    
-      if (!onClick) {
-        return null;
-      }
+    if (!onClick) {
+      return null;
+    }
 
-      return (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onClick(e);
-      };
-    },
-    [onClick]
-  );
+    return (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onClick(e);
+    };
+  }, [onClick]);
 
   return (
     <Tooltip title="Exporter les données">

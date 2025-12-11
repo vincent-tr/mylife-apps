@@ -13,74 +13,58 @@ interface HeaderProps {
   accounts: Account[];
 }
 
-class Header extends React.Component<HeaderProps, { account?; anchorEl?; open }> {
-  private fileInput;
+export default function Header({ onImport, accounts }: HeaderProps) {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const [selectedAccount, setSelectedAccount] = React.useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  constructor(props, context) {
-    super(props, context);
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
 
-    this.state = {
-      open: false,
-    };
-  }
+  const handleClose = React.useCallback(() => {
+    setAnchorEl(null);
+  }, []);
 
-  fileSelect(e) {
-    const { onImport } = this.props;
-    e.stopPropagation();
-    const file = e.target.files[0];
-    e.target.value = '';
-    if (!file) {
-      return;
-    }
-    onImport(this.state.account, file);
-  }
+  const handleMenuClick = React.useCallback((accountId: string) => {
+    setSelectedAccount(accountId);
+    setAnchorEl(null);
+    fileInputRef.current?.click();
+  }, []);
 
-  handleClick = (event) => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+  const handleFileSelect = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.stopPropagation();
+      const file = e.target.files?.[0];
+      e.target.value = '';
+      if (!file || !selectedAccount) {
+        return;
+      }
+      onImport(selectedAccount, file);
+    },
+    [onImport, selectedAccount]
+  );
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
+  return (
+    <div>
+      <Tooltip title="Importer des opérations">
+        <IconButton aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={handleClick}>
+          <icons.actions.Import />
+        </IconButton>
+      </Tooltip>
 
-  handleMenuClick(value) {
-    this.setState({ account: value, anchorEl: null });
-    this.fileInput.click();
-  }
+      <Menu id="simple-menu" anchorEl={anchorEl} open={!!anchorEl} onClose={handleClose}>
+        {accounts.map((account) => (
+          <MenuItem key={account._id} onClick={() => handleMenuClick(account._id)}>
+            <ListItemIcon>
+              <icons.Account />
+            </ListItemIcon>
+            <Typography variant="inherit">{account.display}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
 
-  override render() {
-    const { accounts } = this.props;
-    const { anchorEl } = this.state;
-    return (
-      <div>
-        <Tooltip title="Importer des opérations">
-          <IconButton aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick}>
-            <icons.actions.Import />
-          </IconButton>
-        </Tooltip>
-
-        <Menu id="simple-menu" anchorEl={anchorEl} open={!!anchorEl} onClose={this.handleClose}>
-          {accounts.map((account) => (
-            <MenuItem key={account._id} onClick={() => this.handleMenuClick(account._id)}>
-              <ListItemIcon>
-                <icons.Account />
-              </ListItemIcon>
-              <Typography variant="inherit">{account.display}</Typography>
-            </MenuItem>
-          ))}
-        </Menu>
-
-        <input
-          ref={(input) => {
-            this.fileInput = input;
-          }}
-          type="file"
-          style={{ display: 'none' }}
-          onChange={(e) => this.fileSelect(e)}
-        />
-      </div>
-    );
-  }
+      <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleFileSelect} />
+    </div>
+  );
 }
-
-export default Header;

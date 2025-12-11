@@ -36,45 +36,69 @@ export interface CriteriaProps {
 export default function Criteria({ criteria, onCriteriaChanged, display, onDisplayChanged, onExport, additionalComponents }: CriteriaProps) {
   const isPhone = useScreenPhone();
 
-  const onMinDateChanged = useCallback((value: Date) => {
-    onCriteriaChanged({ ...criteria, minDate: value });
-  }, [onCriteriaChanged, criteria]);
+  const onMinDateChanged = useCallback(
+    (value: Date) => {
+      onCriteriaChanged({ ...criteria, minDate: value });
+    },
+    [onCriteriaChanged, criteria]
+  );
 
-  const onMaxDateChanged = useCallback((value: Date) => {
-    onCriteriaChanged({ ...criteria, maxDate: value });
-  }, [onCriteriaChanged, criteria]);
+  const onMaxDateChanged = useCallback(
+    (value: Date) => {
+      onCriteriaChanged({ ...criteria, maxDate: value });
+    },
+    [onCriteriaChanged, criteria]
+  );
 
-  const onAccountChanged = useCallback((value: string | null) => {
-    onCriteriaChanged({ ...criteria, account: value });
-  }, [onCriteriaChanged, criteria]);
+  const onAccountChanged = useCallback(
+    (value: string | null) => {
+      onCriteriaChanged({ ...criteria, account: value });
+    },
+    [onCriteriaChanged, criteria]
+  );
 
-  const onChildrenChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onCriteriaChanged({ ...criteria, children: e.target.checked });
-  }, [onCriteriaChanged, criteria]);
+  const onChildrenChanged = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onCriteriaChanged({ ...criteria, children: e.target.checked });
+    },
+    [onCriteriaChanged, criteria]
+  );
 
-  const onInvertChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onDisplayChanged({ ...display, invert: e.target.checked });
-  }, [onDisplayChanged, display]);
+  const onInvertChanged = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onDisplayChanged({ ...display, invert: e.target.checked });
+    },
+    [onDisplayChanged, display]
+  );
 
-  const onFullnamesChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onDisplayChanged({ ...display, fullnames: e.target.checked });
-  }, [onDisplayChanged, display]);
+  const onFullnamesChanged = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onDisplayChanged({ ...display, fullnames: e.target.checked });
+    },
+    [onDisplayChanged, display]
+  );
 
   const onGroupAdd = useCallback(() => {
     onCriteriaChanged({ ...criteria, groups: [...criteria.groups, null] });
   }, [onCriteriaChanged, criteria]);
 
-  const onGroupChanged = useCallback((index: number, groupId: string) => {
-    const newGroups = [...criteria.groups];
-    newGroups[index] = groupId;
-    onCriteriaChanged({ ...criteria, groups: newGroups });
-  }, [onCriteriaChanged, criteria]);
+  const onGroupChanged = useCallback(
+    (index: number, groupId: string) => {
+      const newGroups = [...criteria.groups];
+      newGroups[index] = groupId;
+      onCriteriaChanged({ ...criteria, groups: newGroups });
+    },
+    [onCriteriaChanged, criteria]
+  );
 
-  const onGroupDelete = useCallback((index: number) => {
-    const newGroups = [...criteria.groups];
-    newGroups.splice(index, 1);
-    onCriteriaChanged({ ...criteria, groups: newGroups });
-  }, [onCriteriaChanged, criteria]);
+  const onGroupDelete = useCallback(
+    (index: number) => {
+      const newGroups = [...criteria.groups];
+      newGroups.splice(index, 1);
+      onCriteriaChanged({ ...criteria, groups: newGroups });
+    },
+    [onCriteriaChanged, criteria]
+  );
 
   const grid = isPhone ? (
     <Grid container spacing={2}>
