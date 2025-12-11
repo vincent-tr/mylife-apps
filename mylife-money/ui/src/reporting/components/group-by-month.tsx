@@ -1,7 +1,10 @@
+import { ReportingCriteria, ReportingDisplay } from '../../api';
 import { findAmount } from './group-by-period/tools';
 import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
 
-const initialCriteria = {
+type FIXME_any = any;
+
+const initialCriteria: ReportingCriteria = {
   children: false,
   minDate: null,
   maxDate: null,
@@ -9,7 +12,7 @@ const initialCriteria = {
   groups: [null],
 };
 
-const initialDisplay = {
+const initialDisplay: ReportingDisplay = {
   invert: true,
   fullnames: false,
 };
@@ -27,12 +30,12 @@ const GroupByMonth = () => (
 
 export default GroupByMonth;
 
-function additionalCriteriaFactory() {
+function additionalCriteriaFactory(): React.ReactNode {
   return null;
 }
 
 function amountSelectorFactory({ display }: AmountSelectorFactoryProps) {
-  return (periodItem, serie) => {
+  return (periodItem: FIXME_any, serie: FIXME_any) => {
     const value = findAmount(periodItem, serie);
     return display.invert ? -value : value;
   };

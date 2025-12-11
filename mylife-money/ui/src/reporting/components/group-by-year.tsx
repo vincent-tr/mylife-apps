@@ -6,6 +6,8 @@ import { ReportingCriteria, ReportingDisplay } from '../../api';
 import { findAmount, roundCurrency } from './group-by-period/tools';
 import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
 
+type FIXME_any = any;
+
 const initialCriteria: ReportingCriteria = {
   children: false,
   minDate: null,
@@ -54,7 +56,7 @@ export default function GroupByYear() {
 }
 
 function amountSelectorFactory({ display }: AmountSelectorFactoryProps) {
-  return (periodItem, serie) => {
+  return (periodItem: FIXME_any, serie: FIXME_any) => {
     let value = findAmount(periodItem, serie);
     if (display.invert) {
       value = -value;

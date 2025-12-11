@@ -14,11 +14,13 @@ const useConnect = ({ display, groups }) => {
   }));
 };
 
+export type AmoutSelector = (item: FIXME_any, serie: FIXME_any) => number;
+
 export interface ChartProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   data: FIXME_any[];
   groups?: FIXME_any[];
   display: FIXME_any;
-  amountSelector: (item: FIXME_any, serie: FIXME_any) => number;
+  amountSelector: AmoutSelector;
 }
 
 export default function Chart({ data, groups, display, amountSelector, ...props }: ChartProps) {

@@ -4,7 +4,7 @@ import { ReportingCriteria, ReportingDisplay } from '../../../api';
 import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSortedViewList, downloadExport } from '../../store';
 import { useReportingView } from '../../views';
-import Chart from './chart';
+import Chart, { AmoutSelector } from './chart';
 import Criteria from './criteria';
 import { formatCriteria } from './tools';
 
@@ -50,7 +50,7 @@ export interface GroupByPeriodProps {
   initialCriteria: ReportingCriteria;
   initialDisplay: ReportingDisplay;
   additionalCriteriaFactory: (props: AdditionalCriteriaFactoryProps) => React.ReactNode;
-  amountSelectorFactory: (props: AmountSelectorFactoryProps) => any;
+  amountSelectorFactory: (props: AmountSelectorFactoryProps) => AmoutSelector;
 }
 
 export default function GroupByPeriod({ type, exportFilename, initialCriteria, initialDisplay, additionalCriteriaFactory, amountSelectorFactory }: GroupByPeriodProps) {

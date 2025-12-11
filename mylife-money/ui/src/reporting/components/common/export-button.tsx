@@ -1,6 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import React from 'react';
+import React, { useMemo } from 'react';
 import icons from '../../../common/icons';
 
 export interface ExportButtonProps extends Omit<React.ComponentProps<typeof IconButton>, 'onClick'> {
@@ -8,22 +8,25 @@ export interface ExportButtonProps extends Omit<React.ComponentProps<typeof Icon
 }
 
 export default function ExportButton({ onClick, ...props }: ExportButtonProps) {
+  const handleClick = useMemo(() => {
+    
+      if (!onClick) {
+        return null;
+      }
+
+      return (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onClick(e);
+      };
+    },
+    [onClick]
+  );
+
   return (
     <Tooltip title="Exporter les données">
-      <IconButton {...props} onClick={wrapClick(onClick)}>
+      <IconButton {...props} onClick={handleClick}>
         <icons.actions.Export />
       </IconButton>
     </Tooltip>
   );
-}
-
-function wrapClick(onClick) {
-  if (!onClick) {
-    return onClick;
-  }
-
-  return (e) => {
-    e.stopPropagation();
-    onClick(e);
-  };
 }

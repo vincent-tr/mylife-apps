@@ -1,4 +1,6 @@
-export function findAmount(periodItem, serie) {
+type FIXME_any = any;
+
+export function findAmount(periodItem: FIXME_any, serie: FIXME_any) {
   const item = periodItem.groups[serie.stackId];
   if (!item) {
     return 0;
