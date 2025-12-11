@@ -2,10 +2,10 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
+import { Group } from '../../../api';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
-
-type FIXME_any = any;
+import { useCallback } from 'react';
 
 const Container = styled('div')({
   display: 'flex',
@@ -20,7 +20,7 @@ const GroupPath = styled(Breadcrumbs)(({ theme }) => ({
 }));
 
 export interface GroupBreadcrumbsProps {
-  groupStack?: FIXME_any[];
+  groupStack?: Group[];
   onMove: (groupId: string) => void;
   onOpenGroup: (groupId: string) => void;
 }
@@ -37,19 +37,31 @@ export default function GroupBreadcrumbs({ groupStack, onMove, onOpenGroup }: Gr
       </Tooltip>
 
       <GroupPath aria-label="breadcrumb">
-        {groupStack.map((group) => {
-          const handleClick = (e) => {
-            e.preventDefault();
-            onOpenGroup(group._id);
-          };
-
-          return (
-            <Link key={group._id} color="textPrimary" href="#" onClick={handleClick}>
-              {group.display}
-            </Link>
-          );
-        })}
+        {groupStack.map((group) => (
+          <GroupNode key={group._id} group={group} onOpenGroup={onOpenGroup} />
+        ))}
       </GroupPath>
     </Container>
+  );
+}
+
+interface GroupNodeProps {
+  group: Group;
+  onOpenGroup: (groupId: string) => void;
+}
+
+function GroupNode({ group, onOpenGroup }: GroupNodeProps) {
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      onOpenGroup(group._id);
+    },
+    [group._id, onOpenGroup]
+  );
+
+  return (
+    <Link color="textPrimary" href="#" onClick={handleClick}>
+      {group.display}
+    </Link>
   );
 }

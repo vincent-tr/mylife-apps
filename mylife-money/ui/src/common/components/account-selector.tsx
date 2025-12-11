@@ -2,22 +2,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectProps } from '@mui/material/Select';
 import { getAccounts } from '../../reference/selectors';
 import { useAppSelector } from '../../store-api';
-
-const useConnect = () =>
-  useAppSelector((state) => ({
-    accounts: getAccounts(state),
-  }));
-
-function renderList(accounts, allowNull) {
-  if (allowNull) {
-    accounts = [{ _id: '', display: 'Tous' }, ...accounts];
-  }
-  return accounts.map((account) => (
-    <MenuItem key={account._id} value={account._id}>
-      {account.display}
-    </MenuItem>
-  ));
-}
+import { useCallback, useMemo } from 'react';
 
 export interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'variant'> {
   allowNull?: boolean;
@@ -26,14 +11,31 @@ export interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onCha
 }
 
 export default function AccountSelector({ allowNull = false, value, onChange, ...props }: AccountSelectorProps) {
-  const { accounts } = useConnect();
-  const handleChange = (e) => {
-    const { value } = e.target;
-    onChange(value === '' ? null : value);
-  };
+  const accounts = useAppSelector(getAccounts);
+
+  const list = useMemo(() => {
+    if (allowNull) {
+      return [{ _id: '', _entity: 'account', code: 'all', display: 'Tous' }, ...accounts];
+    } else {
+      return accounts;
+    }
+  }, [accounts, allowNull]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      onChange(value === '' ? null : value);
+    },
+    [onChange]
+  );
+
   return (
     <Select displayEmpty value={value || ''} onChange={handleChange} inputProps={{ readOnly: !onChange }} {...props}>
-      {renderList(accounts, allowNull)}
+      {list.map((account) => (
+        <MenuItem key={account._id} value={account._id}>
+          {account.display}
+        </MenuItem>
+      ))}
     </Select>
   );
 }

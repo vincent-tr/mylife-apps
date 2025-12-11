@@ -77,5 +77,11 @@ function format(value: string) {
 
 function useStart(id: string) {
   const start = useAction(startBot);
-  return useCallback(() => fireAsync(async () => start(id)), [id, start]);
+  return useCallback(
+    () =>
+      fireAsync(async () => {
+        await start(id);
+      }),
+    [id, start]
+  );
 }

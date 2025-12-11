@@ -3,16 +3,10 @@ import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { getGroup } from '../../reference/selectors';
+import { getGroupStack } from '../../reference/selectors';
 import { useAppSelector } from '../../store-api';
 import icons from '../icons';
 import GroupSelectorButton from './group-selector-button';
-
-const useConnect = ({ value }) => {
-  return useAppSelector((state) => ({
-    stack: getStack(state, value),
-  }));
-};
 
 const Container = styled('div')({
   display: 'flex',
@@ -32,7 +26,7 @@ export interface GroupSelectorProps extends Omit<React.ComponentProps<'div'>, 'o
 }
 
 export default function GroupSelector({ onChange, value, ...props }: GroupSelectorProps) {
-  const { stack } = useConnect({ value });
+  const stack = useAppSelector((state) => getGroupStack(state, value));
   return (
     <Container {...props}>
       <Tooltip title="Sélectionner">
@@ -49,24 +43,4 @@ export default function GroupSelector({ onChange, value, ...props }: GroupSelect
       </GroupPath>
     </Container>
   );
-}
-
-function getStack(state, value) {
-  if (!value) {
-    const group = getGroup(state, value);
-    if (!group) {
-      return []; // not loaded
-    }
-    return [group]; // non tries
-  }
-
-  const ret = [];
-  while (value) {
-    const group = getGroup(state, value);
-    ret.push(group);
-    value = group.parent;
-  }
-
-  ret.reverse();
-  return ret;
 }

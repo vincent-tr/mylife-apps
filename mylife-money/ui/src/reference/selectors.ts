@@ -1,13 +1,14 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
 import { Group } from '../api';
+import { AppState } from '../store-api';
 import { getAccountsView, getGroupsView } from './views';
 
 const getAccountView = getAccountsView;
 
 export const getAccounts = createSelector([getAccountView], (view) => Object.values(view));
 
-export const getAccount = (state, accountId: string) => getAccountView(state)[accountId];
+export const getAccount = (state: AppState, accountId: string) => getAccountView(state)[accountId];
 
 const defaultGroup: Group = {
   _id: null,
@@ -19,7 +20,7 @@ const defaultGroup: Group = {
 
 const getGroupView = createSelector([getGroupsView], (view) => ({ ...view, ['null']: defaultGroup }) as views.View<Group>);
 
-export const getGroup = (state, groupId: string) => getGroupView(state)[groupId];
+export const getGroup = (state: AppState, groupId: string) => getGroupView(state)[groupId];
 
 export const getChildrenView = createSelector([getGroupView], (view) => {
   const childrenView: { [groupId: string]: Group[] } = {};
@@ -78,4 +79,4 @@ export const getGroupStacks = createSelector([getGroupView], (view) => {
   return groupStacks;
 });
 
-export const getGroupStack = (state, groupId: string) => getGroupStacks(state)[groupId];
+export const getGroupStack = (state: AppState, groupId: string) => getGroupStacks(state)[groupId];
