@@ -211,7 +211,7 @@ export const operationSetNoteDetail = createAppAsyncThunk('management/operationS
   await api.extra.management.operationsSetNote({ note, operations });
 });
 
-export const selectOperation = createAppAsyncThunk('management/selectOperation', async ({ id, selected }: { id: string | null; selected: boolean }, api) => {
+export const selectOperation = createAppAsyncThunk('management/selectOperation', async ({ id, selected }: { id?: string | null; selected: boolean }, api) => {
   if (id) {
     api.dispatch(local.selectOperations({ ids: [id], selected }));
   } else {

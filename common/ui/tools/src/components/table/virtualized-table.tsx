@@ -32,7 +32,8 @@ export interface VirtualizedTableProps<TData> {
 }
 
 type AdditionalCellProps = Partial<React.ComponentProps<typeof TableCell>>;
-export interface VirtualizedTableColumn {
+
+export interface VirtualizedTableColumn extends Omit<React.ComponentProps<typeof Column>, 'dataKey' | 'headerRenderer' | 'cellRenderer' | 'width'> {
   dataKey: string;
   cellRenderer?: string | React.ReactNode | ((cellData: unknown, dataKey: string) => string) | ((cellData: unknown, dataKey: string) => React.ReactNode);
   cellStyle?: React.CSSProperties | ((cellData: unknown, dataKey: string) => React.CSSProperties);

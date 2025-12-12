@@ -1,13 +1,16 @@
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
+import { useCallback } from 'react';
 import { useScreenPhone, VirtualizedTable, VirtualizedTableColumn } from 'mylife-tools';
 import Markdown from '../../../common/components/markdown';
-import { useConnect, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_CREDIT, COLOR_FROM_CHILD } from './table-behaviors';
+import { useConnect, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_CREDIT, COLOR_FROM_CHILD, ControlledOperation } from './table-behaviors';
 
-const Table = (props) => {
+export type TableProps = Omit<React.ComponentProps<typeof VirtualizedTable>, 'data' | 'columns' | 'rowStyle' | 'onRowClick'>;
+
+export default function Table(props: TableProps) {
   const { onSelect, onDetail, operations } = useConnect();
   const isPhone = useScreenPhone();
-  const rowStyle = (row) => (row && row.fromChildGroup ? { backgroundColor: COLOR_FROM_CHILD } : null);
+  const rowStyle = useCallback((row: ControlledOperation) => (row && row.fromChildGroup ? { backgroundColor: COLOR_FROM_CHILD } : null), []);
   const selectedCount = operations.reduce((acc, op) => (op.selected ? acc + 1 : acc), 0);
 
   const headerCheckbox = (
@@ -19,9 +22,9 @@ const Table = (props) => {
     />
   );
 
-  const cellCheckbox = (row) => (
-    <Checkbox color="primary" checked={row.selected} onChange={(e) => onSelect({ id: row.operation._id, selected: e.target.checked })} onClick={(e) => e.stopPropagation()} />
-  );
+  const cellCheckbox = useCallback((row: ControlledOperation) => (
+    <RowCheckbox row={row} onSelect={onSelect} />
+  ), [onSelect]);
 
   const noteRenderer = (value: any) => {
     const safeValue = (value as string) || '';
@@ -57,6 +60,23 @@ const Table = (props) => {
   }
 
   return <VirtualizedTable data={operations} columns={columns} {...props} rowStyle={rowStyle} onRowClick={(row) => onDetail(row.operation._id)} />;
-};
+}
 
-export default Table;
+interface RowCheckboxProps {
+  row: ControlledOperation;
+  onSelect: (selection: { id?: string | null; selected: boolean }) => void;
+}
+
+function RowCheckbox({ row, onSelect }: RowCheckboxProps) {
+  const handleSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onSelect({ id: row.operation._id, selected: e.target.checked });
+  }, [onSelect, row.operation._id]);
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
+
+  return (
+    <Checkbox color="primary" checked={row.selected} onChange={handleSelect} onClick={handleClick} />
+  );
+}
