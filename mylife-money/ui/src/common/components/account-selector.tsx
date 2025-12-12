@@ -1,8 +1,8 @@
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectProps } from '@mui/material/Select';
+import { useCallback, useMemo } from 'react';
 import { getAccounts } from '../../reference/selectors';
 import { useAppSelector } from '../../store-api';
-import { useCallback, useMemo } from 'react';
 
 export interface AccountSelectorProps extends Omit<SelectProps, 'value' | 'onChange' | 'variant'> {
   allowNull?: boolean;

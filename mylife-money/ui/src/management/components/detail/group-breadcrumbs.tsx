@@ -2,10 +2,10 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
+import { useCallback } from 'react';
 import { Group } from '../../../api';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
-import { useCallback } from 'react';
 
 const Container = styled('div')({
   display: 'flex',

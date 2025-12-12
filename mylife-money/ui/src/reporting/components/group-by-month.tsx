@@ -1,7 +1,7 @@
 import { ReportGroupByPeriod, ReportingCriteria, ReportingDisplay } from '../../api';
+import { Serie } from './group-by-period/chart';
 import { findAmount } from './group-by-period/tools';
 import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
-import { Serie } from './group-by-period/chart';
 
 const initialCriteria: ReportingCriteria = {
   children: false,
