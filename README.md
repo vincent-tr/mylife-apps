@@ -210,8 +210,6 @@ go run . -o ~/tesla.token
 
 https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creation-registration-and-third-party-da24aba1bddd
 
-
-
 # TODO
 
 - react StrictMode
