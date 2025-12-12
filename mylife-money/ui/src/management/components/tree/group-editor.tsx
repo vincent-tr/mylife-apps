@@ -12,7 +12,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -27,11 +26,16 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useCallback, useState } from 'react';
 import { dialogs } from 'mylife-tools';
+import { Condition, Group, Rule } from '../../../api';
 import icons from '../../../common/icons';
 
 type FIXME_any = any;
 
-const operators = {
+interface Operator {
+  display: string;
+}
+
+const operators: Record<string, Operator> = {
   $eq: { display: 'Egal à' },
   $gt: { display: 'Inférieur à' },
   $gte: { display: 'Inférieur ou égal à' },
@@ -41,10 +45,15 @@ const operators = {
   $contains: { display: 'Contient' },
 };
 
-const fields = {
-  amount: { display: 'Montant', format: (val) => parseInt(val, 10) },
-  label: { display: 'Description', format: (val) => val },
-  note: { display: 'Note', format: (val) => val },
+interface Field {
+  display: string;
+  parse: (val: string) => unknown;
+}
+
+const fields: Record<string, Field> = {
+  amount: { display: 'Montant', parse: (val: string) => parseInt(val, 10) },
+  label: { display: 'Description', parse: (val: string) => val },
+  note: { display: 'Note', parse: (val: string) => val },
 };
 
 const Container = styled('div')({
@@ -74,7 +83,7 @@ function ConditionEditor({ onAddCondition }: ConditionEditorProps) {
     const condition = {
       field: field,
       operator: operator,
-      value: fields[field].format(value),
+      value: fields[field].parse(value),
     };
 
     onAddCondition(condition);
@@ -118,8 +127,8 @@ interface ConditionsEditorProps {
 }
 
 function ConditionsEditor({ conditions, onConditionsChanged }: ConditionsEditorProps) {
-  const deleteCondition = (index) => onConditionsChanged(arrayDelete(conditions, index));
-  const addCondition = (condition) => onConditionsChanged([...conditions, condition]);
+  const deleteCondition = (index: number) => onConditionsChanged(arrayDelete(conditions, index));
+  const addCondition = (condition: Condition) => onConditionsChanged([...conditions, condition]);
 
   return (
     <Card>
@@ -130,14 +139,13 @@ function ConditionsEditor({ conditions, onConditionsChanged }: ConditionsEditorP
         <List>
           {conditions.map((condition, index) => (
             <ListItem key={index}>
-              <ListItemText primary={displayCondition(condition)} />
-              <ListItemSecondaryAction>
+              <ListItemText primary={displayCondition(condition)} secondary={
                 <Tooltip title="Supprimer la condition">
                   <IconButton onClick={() => deleteCondition(index)}>
                     <icons.actions.Delete />
                   </IconButton>
                 </Tooltip>
-              </ListItemSecondaryAction>
+              }/>
             </ListItem>
           ))}
         </List>
@@ -149,13 +157,13 @@ function ConditionsEditor({ conditions, onConditionsChanged }: ConditionsEditorP
 }
 
 interface RuleRowProps {
-  rule;
-  onRuleChanged: (rule) => void;
+  rule: Rule;
+  onRuleChanged: (rule: Rule) => void;
   onDeleteRule: () => void;
 }
 
 function RuleRow({ rule, onRuleChanged, onDeleteRule }: RuleRowProps) {
-  const updateRule = (prop, value) => onRuleChanged({ ...rule, [prop]: value });
+  const updateRule = (prop: keyof Rule, value: Rule[keyof Rule]) => onRuleChanged({ ...rule, [prop]: value });
 
   return (
     <TableRow>
@@ -185,7 +193,7 @@ interface RulesEditorProps {
 
 function RulesEditor({ rules, onRulesChanged }: RulesEditorProps) {
   const addRule = () => {
-    const rule = {
+    const rule: Rule = {
       conditions: [],
       name: 'Nouvelle règle',
     };
@@ -214,7 +222,7 @@ function RulesEditor({ rules, onRulesChanged }: RulesEditorProps) {
           <TableBody>
             {rules.map((rule, index) => {
               const deleteRule = () => onRulesChanged(arrayDelete(rules, index));
-              const changeRule = (rule) => onRulesChanged(arrayUpdate(rules, index, rule));
+              const changeRule = (rule: Rule) => onRulesChanged(arrayUpdate(rules, index, rule));
 
               return <RuleRow key={index} rule={rule} onRuleChanged={changeRule} onDeleteRule={deleteRule} />;
             })}
@@ -233,7 +241,7 @@ interface EditorDialogProps {
 
 function EditorDialog({ options, show, proceed }: EditorDialogProps) {
   const [group, setGroup] = useState(options.group);
-  const updateGroup = (name, value) => setGroup({ ...group, [name]: value });
+  const updateGroup = (name: keyof Group, value: Group[keyof Group]) => setGroup({ ...group, [name]: value });
 
   return (
     <Dialog aria-labelledby="dialog-title" open={show} maxWidth="lg" fullWidth>
@@ -257,7 +265,7 @@ function EditorDialog({ options, show, proceed }: EditorDialogProps) {
 
 const edit = dialogs.create(EditorDialog);
 
-export default async (group) => {
+export default async function editGroup(group: Group) {
   group = clone(group);
   const res = (await edit({ options: { group } })) as FIXME_any;
   if (res.result !== 'ok') {
@@ -265,27 +273,27 @@ export default async (group) => {
   }
 
   return cleanGroup(res.group);
-};
+}
 
-function clone(value) {
+function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value));
 }
 
-function arrayUpdate(array, index, newItem) {
+function arrayUpdate<T>(array: T[], index: number, newItem: T): T[] {
   return [...array.slice(0, index), newItem, ...array.slice(index + 1)];
 }
 
-function arrayDelete(array, index) {
+function arrayDelete<T>(array: T[], index: number): T[] {
   return [...array.slice(0, index), ...array.slice(index + 1)];
 }
 
-function displayCondition(condition) {
+function displayCondition(condition: Condition) {
   const field = fields[condition.field].display;
   const operator = operators[condition.operator].display;
 
   return `${field} ${operator} ${condition.value}`;
 }
 
-function cleanGroup(group) {
+function cleanGroup(group: Group): Group {
   return { ...group, rules: group.rules.filter((rule) => rule.conditions.length) };
 }

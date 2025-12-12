@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 export interface ConfirmOptions<TValue> {
   title?: string;
   message?: string;
-  actions: {
+  actions?: {
     text: string;
     value: TValue;
   }[];

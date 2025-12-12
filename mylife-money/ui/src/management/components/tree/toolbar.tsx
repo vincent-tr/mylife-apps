@@ -1,8 +1,9 @@
 import IconButton from '@mui/material/IconButton';
 import { default as MuiToolbar } from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { dialogs } from 'mylife-tools';
+import { Group } from '../../../api';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getGroup } from '../../../reference/selectors';
@@ -23,7 +24,7 @@ const useConnect = () => {
     ...useMemo(
       () => ({
         onGroupCreate: () => dispatch(createGroup()),
-        onGroupEdit: (group) => dispatch(updateGroup(group)),
+        onGroupEdit: (group: Group) => dispatch(updateGroup(group)),
         onGroupDelete: () => dispatch(deleteGroup()),
       }),
       [dispatch]
@@ -45,27 +46,27 @@ const styles = {
 export default function Toolbar() {
   const { group, onGroupCreate, onGroupEdit, onGroupDelete, canChange } = useConnect();
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     if (await dialogs.confirm({ title: 'Supprimer le groupe ?' })) {
       onGroupDelete();
     }
-  };
-
-  const handleEdit = async () => {
+  }, [onGroupDelete]);
+  
+  const handleEdit = useCallback(async () => {
     const res = await groupEditor(group);
     if (res) {
       onGroupEdit(res);
     }
-  };
+  }, [group, onGroupEdit]);
 
-  const handleMove = (parent) => {
+  const handleMove = useCallback((parent: string) => {
     onGroupEdit({ ...group, parent });
-  };
+  }, [group, onGroupEdit]);
 
-  const moveOptions = group && {
+  const moveOptions = useMemo(() => group && {
     selectedGroupId: group.parent,
     disabledGroupIds: [group._id],
-  };
+  }, [group]);
 
   return (
     <MuiToolbar>

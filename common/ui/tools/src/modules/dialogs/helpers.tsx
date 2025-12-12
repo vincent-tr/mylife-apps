@@ -24,7 +24,7 @@ const defaultConfirmActions = [
 export async function confirm<TValue = boolean>(options: ConfirmOptions<TValue>) {
   if (!options.actions) {
     // Note: wrong if TValue is not boolean but actions are not provided
-    options = { ...options, actions: defaultConfirmActions as ConfirmOptions<TValue>['actions'] };
+    options = { actions: defaultConfirmActions as ConfirmOptions<TValue>['actions'], ...options };
   }
 
   return (await confirmDialog({ options })) as TValue;
