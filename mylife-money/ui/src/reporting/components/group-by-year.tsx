@@ -2,11 +2,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import React, { useCallback } from 'react';
 import { CriteriaField } from 'mylife-tools';
-import { ReportingCriteria, ReportingDisplay } from '../../api';
+import { ReportGroupByPeriod, ReportingCriteria, ReportingDisplay } from '../../api';
+import { Serie } from './group-by-period/chart';
 import { findAmount, roundCurrency } from './group-by-period/tools';
 import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
-
-type FIXME_any = any;
 
 const initialCriteria: ReportingCriteria = {
   children: false,
@@ -56,7 +55,7 @@ export default function GroupByYear() {
 }
 
 function amountSelectorFactory({ display }: AmountSelectorFactoryProps) {
-  return (periodItem: FIXME_any, serie: FIXME_any) => {
+  return (periodItem: ReportGroupByPeriod, serie: Serie) => {
     let value = findAmount(periodItem, serie);
     if (display.invert) {
       value = -value;

@@ -29,8 +29,6 @@ import { dialogs } from 'mylife-tools';
 import { Condition, Group, Rule } from '../../../api';
 import icons from '../../../common/icons';
 
-type FIXME_any = any;
-
 interface Operator {
   display: string;
 }
@@ -71,7 +69,7 @@ const TextInputField = styled(TextField)(({ theme }) => ({
 }));
 
 interface ConditionEditorProps {
-  onAddCondition: (condition: FIXME_any) => void;
+  onAddCondition: (condition: Condition) => void;
 }
 
 function ConditionEditor({ onAddCondition }: ConditionEditorProps) {
@@ -122,8 +120,8 @@ function ConditionEditor({ onAddCondition }: ConditionEditorProps) {
 }
 
 interface ConditionsEditorProps {
-  conditions: FIXME_any[];
-  onConditionsChanged: (conditions: FIXME_any[]) => void;
+  conditions: Condition[];
+  onConditionsChanged: (conditions: Condition[]) => void;
 }
 
 function ConditionsEditor({ conditions, onConditionsChanged }: ConditionsEditorProps) {
@@ -190,8 +188,8 @@ function RuleRow({ rule, onRuleChanged, onDeleteRule }: RuleRowProps) {
 }
 
 interface RulesEditorProps {
-  rules: FIXME_any[];
-  onRulesChanged: (rules: FIXME_any[]) => void;
+  rules: Rule[];
+  onRulesChanged: (rules: Rule[]) => void;
 }
 
 function RulesEditor({ rules, onRulesChanged }: RulesEditorProps) {
@@ -236,10 +234,15 @@ function RulesEditor({ rules, onRulesChanged }: RulesEditorProps) {
   );
 }
 
+interface DialogResult {
+  result: 'ok' | 'cancel';
+  group?: Group;
+}
+
 interface EditorDialogProps {
-  options: { group: FIXME_any };
+  options: { group: Group };
   show: boolean;
-  proceed: (result: FIXME_any) => void;
+  proceed: (result: DialogResult) => void;
 }
 
 function EditorDialog({ options, show, proceed }: EditorDialogProps) {
@@ -270,7 +273,7 @@ const edit = dialogs.create(EditorDialog);
 
 export default async function editGroup(group: Group) {
   group = clone(group);
-  const res = (await edit({ options: { group } })) as FIXME_any;
+  const res = (await edit({ options: { group } })) as DialogResult;
   if (res.result !== 'ok') {
     return;
   }

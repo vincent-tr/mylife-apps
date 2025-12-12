@@ -14,16 +14,14 @@ import GroupBreadcrumbs from './group-breadcrumbs';
 import Row from './row';
 import Title from './title';
 
-type FIXME_any = any;
-
 const useConnect = () => {
   const dispatch = useAppDispatch();
   return {
     ...useAppSelector((state) => {
-      const operation = getOperationDetail(state) as FIXME_any;
+      const operation = getOperationDetail(state);
       return {
         operation,
-        account: getAccount(state, operation.account) as FIXME_any,
+        account: getAccount(state, operation.account),
         groupStack: getGroupStack(state, operation.group),
       };
     }),

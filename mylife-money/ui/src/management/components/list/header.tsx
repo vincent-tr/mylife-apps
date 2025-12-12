@@ -26,8 +26,6 @@ import {
 import GroupDenseSelector from './group-dense-selector';
 import ImportButton from './import-button';
 
-type FIXME_any = any;
-
 const useConnect = () => {
   const dispatch = useAppDispatch();
   return {
@@ -95,7 +93,7 @@ export default function Header() {
   const screenSize = useScreenSize();
 
   const editNote = async () => {
-    const { result, text } = (await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText })) as FIXME_any;
+    const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
     if (result !== 'ok') {
       return;
     }

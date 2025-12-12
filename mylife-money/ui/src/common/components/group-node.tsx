@@ -10,10 +10,9 @@ import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
 import React, { useState, useMemo } from 'react';
 import { makeGetSortedChildren } from '../../reference/selectors';
+import { Group } from '../../api';
 import { useAppSelector } from '../../store-api';
 import icons from '../icons';
-
-type FIXME_any = any;
 
 const useConnect = (groupId: string) => {
   const getSortedChildren = useMemo(makeGetSortedChildren, []);
@@ -30,7 +29,7 @@ const LevelListItem = styled(ListItem, {
 
 interface GroupNodeProps {
   level: number;
-  group: FIXME_any; // Group object
+  group: Group; // Group object
   onSelect: (id: string) => void;
   selectedGroupId: string | null;
   disabledGroupIds?: string[];
