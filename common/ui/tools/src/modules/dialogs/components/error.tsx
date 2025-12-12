@@ -4,27 +4,19 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useMemo } from 'react';
-import { useToolsDispatch, useToolsSelector } from '../../../services/store-api';
+import { useToolsAction, useToolsSelector } from '../../../services/store-api';
 import { clearError, getError } from '../store';
-
-const useConnect = () => {
-  const dispatch = useToolsDispatch();
-  return {
-    error: useToolsSelector(getError),
-    ...useMemo(
-      () => ({
-        clear: () => dispatch(clearError()),
-      }),
-      [dispatch]
-    ),
-  };
-};
+import { useCallback } from 'react';
 
 export default function Error() {
-  const { error, clear } = useConnect();
+  const error = useToolsSelector(getError);
+  const clear = useToolsAction(clearError);
+  const onClose = useCallback(() => {
+    clear();
+  }, [clear]);
+
   return (
-    <Dialog open={!!error} onClose={clear} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" fullWidth maxWidth="sm">
+    <Dialog open={!!error} onClose={onClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" fullWidth maxWidth="sm">
       <DialogTitle id="alert-dialog-title" variant="h6" color="error">
         {'Erreur'}
       </DialogTitle>

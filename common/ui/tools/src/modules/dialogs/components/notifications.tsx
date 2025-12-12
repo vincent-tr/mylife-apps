@@ -7,8 +7,8 @@ import IconButton from '@mui/material/IconButton';
 import Portal from '@mui/material/Portal';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { styled } from '@mui/material/styles';
-import { useMemo } from 'react';
-import { useToolsDispatch, useToolsSelector } from '../../../services/store-api';
+import { useCallback, useMemo } from 'react';
+import { useToolsAction, useToolsDispatch, useToolsSelector } from '../../../services/store-api';
 import { getNotifications, dismissNotification } from '../store';
 import { NotificationType } from '../types';
 
@@ -17,19 +17,6 @@ const typeIcons = {
   info: Info,
   warning: Warning,
   error: Error,
-};
-
-const useConnect = () => {
-  const dispatch = useToolsDispatch();
-  return {
-    notifications: useToolsSelector(getNotifications),
-    ...useMemo(
-      () => ({
-        dismiss: (id: number) => dispatch(dismissNotification(id)),
-      }),
-      [dispatch]
-    ),
-  };
 };
 
 const Content = styled(SnackbarContent)(({ theme }) => ({
@@ -71,13 +58,19 @@ const Overlay = styled('div')({
 });
 
 interface NotificationProps {
+  id: number;
   message: string;
   type: NotificationType;
-  onCloseClick: () => void;
+  dismiss: (id: number) => void;
 }
 
-function Notification({ message, type, onCloseClick }: NotificationProps) {
+function Notification({ id, message, type, dismiss }: NotificationProps) {
+  const onClick = useCallback(() => {
+    dismiss(id);
+  }, [id, dismiss]);
+
   const Icon = typeIcons[type];
+  
   return (
     <Content
       aria-describedby="message-id"
@@ -89,7 +82,7 @@ function Notification({ message, type, onCloseClick }: NotificationProps) {
         </Message>
       }
       action={[
-        <IconButton key="close" aria-label="Fermer" color="inherit" onClick={onCloseClick}>
+        <IconButton key="close" aria-label="Fermer" color="inherit" onClick={onClick}>
           <CloseIcon />
         </IconButton>,
       ]}
@@ -98,12 +91,14 @@ function Notification({ message, type, onCloseClick }: NotificationProps) {
 }
 
 export default function Notifications() {
-  const { dismiss, notifications } = useConnect();
+  const notifications = useToolsSelector(getNotifications);
+  const dismiss = useToolsAction(dismissNotification);
+
   return (
     <Portal key="notificationsPortal">
       <Overlay>
         {notifications.map((notification) => (
-          <Notification key={notification.id} onCloseClick={() => dismiss(notification.id)} {...notification} />
+          <Notification key={notification.id} dismiss={dismiss} {...notification} />
         ))}
       </Overlay>
     </Portal>

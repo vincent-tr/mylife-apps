@@ -5,10 +5,6 @@ import { styled } from '@mui/material/styles';
 import { useToolsSelector } from '../../../services/store-api';
 import { getOnline } from '../../io';
 
-const useConnect = () => ({
-  online: useToolsSelector(getOnline),
-});
-
 const StyledDialogTitle = styled(DialogTitle)({
   display: 'flex',
   alignItems: 'center',
@@ -19,7 +15,7 @@ const Progress = styled(CircularProgress)(({ theme }) => ({
 }));
 
 export default function Busy() {
-  const { online } = useConnect();
+  const online = useToolsSelector(getOnline);
   return (
     <Dialog open={!online} aria-labelledby="alert-dialog-title">
       <StyledDialogTitle id="alert-dialog-title" variant="h6">

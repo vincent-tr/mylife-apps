@@ -1,8 +1,19 @@
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { ActionCreator, bindActionCreators } from 'redux';
+import { ActionCreator, Dispatch, UnknownAction } from 'redux';
 
-export function useAction<A, C extends ActionCreator<A>>(action: C): C {
-  const dispatch = useDispatch();
-  return useMemo(() => bindActionCreators(action, dispatch), [dispatch, action]);
+export const useAction = {
+  withTypes: <OverrideDispatchType extends Dispatch<UnknownAction>>() => {
+    const useTypedDispatch = useDispatch.withTypes<OverrideDispatchType>();
+
+    return function useAction<A extends UnknownAction, P extends any[] = any[]>(
+      action: ActionCreator<A, P>
+    ) {
+      const dispatch = useTypedDispatch();
+      return useCallback((...args: P) => {
+        // Do not return result to avoid misuse in components
+        dispatch(action(...args));
+      }, [dispatch, action]);
+    };
+  }
 }
