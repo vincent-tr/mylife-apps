@@ -1,16 +1,9 @@
-import { useMemo } from 'react';
-import { useToolsDispatch, useToolsSelector } from '../../../services/store-api';
+import { useToolsAction, useToolsSelector } from '../../../services/store-api';
 import { navigate, getLocation } from '../store';
 
 export function useRoutingConnect() {
-  const dispatch = useToolsDispatch();
   return {
     location: useToolsSelector(getLocation),
-    ...useMemo(
-      () => ({
-        navigate: (location: string) => dispatch(navigate(location)),
-      }),
-      [dispatch]
-    ),
+    navigate: useToolsAction(navigate),
   };
 }

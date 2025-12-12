@@ -7,8 +7,8 @@ import IconButton from '@mui/material/IconButton';
 import Portal from '@mui/material/Portal';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { styled } from '@mui/material/styles';
-import { useCallback, useMemo } from 'react';
-import { useToolsAction, useToolsDispatch, useToolsSelector } from '../../../services/store-api';
+import { useCallback } from 'react';
+import { useToolsAction, useToolsSelector } from '../../../services/store-api';
 import { getNotifications, dismissNotification } from '../store';
 import { NotificationType } from '../types';
 
