@@ -220,10 +220,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 - use mui charts, table, treeview
 - shared view: handle short deletion/recreation
 
-## Tools UI
-
-- charts : http://recharts.org/
-
 ## Money
 
 - Gestion des regles
