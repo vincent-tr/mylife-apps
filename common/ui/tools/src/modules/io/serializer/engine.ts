@@ -2,7 +2,7 @@ interface Plugin {
   name: string;
   is: (payload: unknown) => boolean;
   serialize: (payload: any) => unknown;
-  deserialize: (raw: any) => any;
+  deserialize: (raw: unknown) => any;
 }
 
 const plugins: Plugin[] = [];
