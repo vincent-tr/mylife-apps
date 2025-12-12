@@ -6,14 +6,15 @@ export const useAction = {
   withTypes: <OverrideDispatchType extends Dispatch<UnknownAction>>() => {
     const useTypedDispatch = useDispatch.withTypes<OverrideDispatchType>();
 
-    return function useAction<A extends UnknownAction, P extends any[] = any[]>(
-      action: ActionCreator<A, P>
-    ) {
+    return function useAction<A extends UnknownAction, P extends any[] = any[]>(action: ActionCreator<A, P>) {
       const dispatch = useTypedDispatch();
-      return useCallback((...args: P) => {
-        // Do not return result to avoid misuse in components
-        dispatch(action(...args));
-      }, [dispatch, action]);
+      return useCallback(
+        (...args: P) => {
+          // Do not return result to avoid misuse in components
+          dispatch(action(...args));
+        },
+        [dispatch, action]
+      );
     };
-  }
-}
+  },
+};

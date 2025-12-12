@@ -70,7 +70,7 @@ function Notification({ id, message, type, dismiss }: NotificationProps) {
   }, [id, dismiss]);
 
   const Icon = typeIcons[type];
-  
+
   return (
     <Content
       aria-describedby="message-id"
