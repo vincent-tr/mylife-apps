@@ -139,13 +139,16 @@ function ConditionsEditor({ conditions, onConditionsChanged }: ConditionsEditorP
         <List>
           {conditions.map((condition, index) => (
             <ListItem key={index}>
-              <ListItemText primary={displayCondition(condition)} secondary={
-                <Tooltip title="Supprimer la condition">
-                  <IconButton onClick={() => deleteCondition(index)}>
-                    <icons.actions.Delete />
-                  </IconButton>
-                </Tooltip>
-              }/>
+              <ListItemText
+                primary={displayCondition(condition)}
+                secondary={
+                  <Tooltip title="Supprimer la condition">
+                    <IconButton onClick={() => deleteCondition(index)}>
+                      <icons.actions.Delete />
+                    </IconButton>
+                  </Tooltip>
+                }
+              />
             </ListItem>
           ))}
         </List>

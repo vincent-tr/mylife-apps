@@ -1,6 +1,7 @@
-type FIXME_any = any;
+import { ReportGroupByPeriod } from '../../../api';
+import { Serie } from './chart';
 
-export function findAmount(periodItem: FIXME_any, serie: FIXME_any) {
+export function findAmount(periodItem: ReportGroupByPeriod, serie: Serie) {
   const item = periodItem.groups[serie.stackId];
   if (!item) {
     return 0;
@@ -15,12 +16,6 @@ export function findAmount(periodItem: FIXME_any, serie: FIXME_any) {
     return 0;
   }
   return childItem.amount;
-}
-
-export function formatCriteria(criteria) {
-  const { fullnames, ...props } = criteria;
-  void fullnames;
-  return props;
 }
 
 export function roundCurrency(value: number) {

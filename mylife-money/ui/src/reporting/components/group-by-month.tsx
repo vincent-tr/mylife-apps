@@ -1,8 +1,7 @@
-import { ReportingCriteria, ReportingDisplay } from '../../api';
+import { ReportGroupByPeriod, ReportingCriteria, ReportingDisplay } from '../../api';
 import { findAmount } from './group-by-period/tools';
 import GroupByPeriod, { AmountSelectorFactoryProps } from './group-by-period';
-
-type FIXME_any = any;
+import { Serie } from './group-by-period/chart';
 
 const initialCriteria: ReportingCriteria = {
   children: false,
@@ -35,7 +34,7 @@ function additionalCriteriaFactory(): React.ReactNode {
 }
 
 function amountSelectorFactory({ display }: AmountSelectorFactoryProps) {
-  return (periodItem: FIXME_any, serie: FIXME_any) => {
+  return (periodItem: ReportGroupByPeriod, serie: Serie) => {
     const value = findAmount(periodItem, serie);
     return display.invert ? -value : value;
   };

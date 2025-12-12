@@ -22,9 +22,7 @@ export default function Table(props: TableProps) {
     />
   );
 
-  const cellCheckbox = useCallback((row: ControlledOperation) => (
-    <RowCheckbox row={row} onSelect={onSelect} />
-  ), [onSelect]);
+  const cellCheckbox = useCallback((row: ControlledOperation) => <RowCheckbox row={row} onSelect={onSelect} />, [onSelect]);
 
   const noteRenderer = (value: any) => {
     const safeValue = (value as string) || '';
@@ -68,15 +66,16 @@ interface RowCheckboxProps {
 }
 
 function RowCheckbox({ row, onSelect }: RowCheckboxProps) {
-  const handleSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onSelect({ id: row.operation._id, selected: e.target.checked });
-  }, [onSelect, row.operation._id]);
+  const handleSelect = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onSelect({ id: row.operation._id, selected: e.target.checked });
+    },
+    [onSelect, row.operation._id]
+  );
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
   }, []);
 
-  return (
-    <Checkbox color="primary" checked={row.selected} onChange={handleSelect} onClick={handleClick} />
-  );
+  return <Checkbox color="primary" checked={row.selected} onChange={handleSelect} onClick={handleClick} />;
 }

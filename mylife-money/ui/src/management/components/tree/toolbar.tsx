@@ -51,7 +51,7 @@ export default function Toolbar() {
       onGroupDelete();
     }
   }, [onGroupDelete]);
-  
+
   const handleEdit = useCallback(async () => {
     const res = await groupEditor(group);
     if (res) {
@@ -59,14 +59,21 @@ export default function Toolbar() {
     }
   }, [group, onGroupEdit]);
 
-  const handleMove = useCallback((parent: string) => {
-    onGroupEdit({ ...group, parent });
-  }, [group, onGroupEdit]);
+  const handleMove = useCallback(
+    (parent: string) => {
+      onGroupEdit({ ...group, parent });
+    },
+    [group, onGroupEdit]
+  );
 
-  const moveOptions = useMemo(() => group && {
-    selectedGroupId: group.parent,
-    disabledGroupIds: [group._id],
-  }, [group]);
+  const moveOptions = useMemo(
+    () =>
+      group && {
+        selectedGroupId: group.parent,
+        disabledGroupIds: [group._id],
+      },
+    [group]
+  );
 
   return (
     <MuiToolbar>

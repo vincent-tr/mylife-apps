@@ -4,9 +4,8 @@ import { ReportingCriteria, ReportingDisplay } from '../../../api';
 import { useAppSelector, useAppDispatch } from '../../../store-api';
 import { getSortedViewList, downloadExport } from '../../store';
 import { useReportingView } from '../../views';
-import Chart, { AmoutSelector } from './chart';
+import Chart, { AmoutSelector, ChartDisplay } from './chart';
 import Criteria from './criteria';
-import { formatCriteria } from './tools';
 
 const useConnect = (type: 'month' | 'year', exportFilename: string) => {
   const dispatch = useAppDispatch();
@@ -57,15 +56,13 @@ export default function GroupByPeriod({ type, exportFilename, initialCriteria, i
   const [criteria, setCriteria] = useState(initialCriteria);
   const [display, setDisplay] = useState(initialDisplay);
 
-  const formattedCriteria = useMemo(() => formatCriteria(criteria), [criteria]);
-
-  useReportingView(type, formattedCriteria);
+  useReportingView(type, criteria);
 
   const { exportReport, data } = useConnect(type, exportFilename);
 
-  const doExport = useCallback(() => exportReport({ criteria: formattedCriteria, display }), [exportReport, formattedCriteria, display]);
+  const doExport = useCallback(() => exportReport({ criteria, display }), [exportReport, criteria, display]);
 
-  const chartDisplay = {
+  const chartDisplay: ChartDisplay = {
     ...display,
     children: criteria.children,
   };

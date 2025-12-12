@@ -2,24 +2,36 @@ import React from 'react';
 import { AutoSizer } from 'react-virtualized';
 import { BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
 import { useChartColors } from 'mylife-tools';
+import { Group, ReportGroupByPeriod, ReportingDisplay } from '../../../api';
 import { getGroupStacks, getChildrenView } from '../../../reference/selectors';
-import { useAppSelector } from '../../../store-api';
+import { AppState, useAppSelector } from '../../../store-api';
 
-type FIXME_any = any;
+export interface Serie {
+  index: number;
+  stackId: string;
+  group: string;
+  name: string;
+  fill: string;
+  root: boolean;
+}
 
-const useConnect = ({ display, groups }) => {
+export interface ChartDisplay extends ReportingDisplay {
+  children?: boolean;
+}
+
+const useConnect = ({ display, groups }: { display: ChartDisplay; groups: string[] }) => {
   return useAppSelector((state) => ({
     groupStacks: getGroupStacks(state),
     groupChildren: getChildren(state, display, groups),
   }));
 };
 
-export type AmoutSelector = (item: FIXME_any, serie: FIXME_any) => number;
+export type AmoutSelector = (item: ReportGroupByPeriod, serie: Serie) => number;
 
 export interface ChartProps extends Omit<React.ComponentProps<'div'>, 'children'> {
-  data: FIXME_any[];
-  groups?: FIXME_any[];
-  display: FIXME_any;
+  data: ReportGroupByPeriod[];
+  groups?: string[];
+  display: ChartDisplay;
   amountSelector: AmoutSelector;
 }
 
@@ -53,14 +65,14 @@ export default function Chart({ data, groups, display, amountSelector, ...props 
   );
 }
 
-function getChildren(state, display, groups) {
+function getChildren(state: AppState, display: ChartDisplay, groups: string[]) {
   if (!display.children || !groups) {
     return {};
   }
 
   const childrenView = getChildrenView(state);
 
-  const result = {};
+  const result: Record<string, string[]> = {};
   for (const groupId of groups) {
     if (!groupId) {
       continue;
@@ -70,7 +82,7 @@ function getChildren(state, display, groups) {
   return result;
 }
 
-function createBars(groups, display, groupStacks, groupChildren, colors) {
+function createBars(groups: string[], display: ChartDisplay, groupStacks: Record<string, Group[]>, groupChildren: Record<string, string[]>, colors: string[]): Serie[] {
   const bars = [];
   let index = 0;
   for (const groupId of groups) {
@@ -84,7 +96,7 @@ function createBars(groups, display, groupStacks, groupChildren, colors) {
   return bars;
 }
 
-function createBar(colors, display, groupStacks, stackId, groupId, index, root) {
+function createBar(colors: string[], display: ChartDisplay, groupStacks: Record<string, Group[]>, stackId: string, groupId: string, index: number, root: boolean): Serie {
   const path = groupStacks[groupId].map((group) => group.display);
   const name = display.fullnames ? path.join('/') : path[path.length - 1];
   return {
