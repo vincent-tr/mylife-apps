@@ -6,7 +6,7 @@
     
     // Strict Mode
     // "strict": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     // "strictNullChecks": true, implied by "strict": true
     // "strictFunctionTypes": true,  implied by "strict": true
     // "strictBindCallApply": true,  implied by "strict": true
