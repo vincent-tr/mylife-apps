@@ -9,8 +9,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
 import React, { useState, useMemo } from 'react';
-import { makeGetSortedChildren } from '../../reference/selectors';
 import { Group } from '../../api';
+import { makeGetSortedChildren } from '../../reference/selectors';
 import { useAppSelector } from '../../store-api';
 import icons from '../icons';
 
