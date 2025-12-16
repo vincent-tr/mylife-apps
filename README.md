@@ -216,7 +216,7 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 - useApp/ToolsDispatcher => useAction?
 - use mui charts, table, treeview
 - make TS stricter
-- review isScreenPhone, etc for style: should not go through JS to go back to CSS
+- review useScreenSize, etc for style: should not go through JS to go back to CSS
 - shared view: handle short deletion/recreation
 
 ## Money
