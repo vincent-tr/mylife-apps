@@ -4,9 +4,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useCallback } from 'react';
 import { useToolsAction, useToolsSelector } from '../../../services/store-api';
 import { clearError, getError } from '../store';
-import { useCallback } from 'react';
 
 export default function Error() {
   const error = useToolsSelector(getError);
@@ -26,7 +26,7 @@ export default function Error() {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={clear} color="primary">
+        <Button onClick={onClose} color="primary">
           Ok
         </Button>
       </DialogActions>
