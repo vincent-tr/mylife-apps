@@ -3,39 +3,16 @@ import { styled } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { DebouncedTextField } from 'mylife-tools';
 import Markdown from '../../../common/components/markdown';
 import { getAccount, getGroupStack } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store-api';
+import { useAppSelector, useAppAction } from '../../../store-api';
 import { closeDetail, operationSetNoteDetail, operationMoveDetail, selectGroup, getOperationDetail } from '../../store';
 import AmountValue from './amount-value';
 import GroupBreadcrumbs from './group-breadcrumbs';
 import Row from './row';
 import Title from './title';
-
-const useConnect = () => {
-  const dispatch = useAppDispatch();
-  return {
-    ...useAppSelector((state) => {
-      const operation = getOperationDetail(state);
-      return {
-        operation,
-        account: getAccount(state, operation.account),
-        groupStack: getGroupStack(state, operation.group),
-      };
-    }),
-    ...useMemo(
-      () => ({
-        close: () => dispatch(closeDetail()),
-        onOpenGroup: (id: string) => dispatch(selectGroup(id)),
-        onSetNote: (note: string) => dispatch(operationSetNoteDetail(note)),
-        onMove: (id: string) => dispatch(operationMoveDetail(id)),
-      }),
-      [dispatch]
-    ),
-  };
-};
 
 const Container = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -51,7 +28,13 @@ export interface DetailContainerProps {
 }
 
 export default function DetailContainer({ className }: DetailContainerProps) {
-  const { operation, account, groupStack, close, onOpenGroup, onSetNote, onMove } = useConnect();
+  const operation = useAppSelector(getOperationDetail);
+  const account = useAppSelector((state) => getAccount(state, operation.account));
+  const groupStack = useAppSelector((state) => getGroupStack(state, operation.group));
+  const close = useAppAction(closeDetail);
+  const onOpenGroup = useAppAction(selectGroup);
+  const onSetNote = useAppAction(operationSetNoteDetail);
+  const onMove = useAppAction(operationMoveDetail);
 
   return (
     <Container className={className}>

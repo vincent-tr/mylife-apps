@@ -9,7 +9,7 @@ import { Account } from '../../../api';
 import icons from '../../../common/icons';
 
 interface HeaderProps {
-  onImport: (accountId: string, file: File) => void;
+  onImport: ({ account, file }: { account: string; file: File }) => void;
   accounts: Account[];
 }
 
@@ -40,7 +40,7 @@ export default function Header({ onImport, accounts }: HeaderProps) {
       if (!file || !selectedAccount) {
         return;
       }
-      onImport(selectedAccount, file);
+      onImport({ account: selectedAccount, file });
     },
     [onImport, selectedAccount]
   );

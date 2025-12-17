@@ -1,25 +1,11 @@
 import { styled } from '@mui/material/styles';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ReportingCriteria, ReportingDisplay } from '../../../api';
-import { useAppSelector, useAppDispatch } from '../../../store-api';
+import { useAppSelector, useAppAction } from '../../../store-api';
 import { getSortedViewList, downloadExport } from '../../store';
 import { useReportingView } from '../../views';
 import Chart, { AmoutSelector, ChartDisplay } from './chart';
 import Criteria from './criteria';
-
-const useConnect = (type: 'month' | 'year', exportFilename: string) => {
-  const dispatch = useAppDispatch();
-  return {
-    data: useAppSelector(getSortedViewList),
-    ...useMemo(
-      () => ({
-        exportReport: ({ criteria, display }: { criteria: ReportingCriteria; display: ReportingDisplay }) =>
-          dispatch(downloadExport({ criteria, display, type, fileName: exportFilename })),
-      }),
-      [dispatch, type, exportFilename]
-    ),
-  };
-};
 
 const Container = styled('div')({
   display: 'flex',
@@ -58,9 +44,10 @@ export default function GroupByPeriod({ type, exportFilename, initialCriteria, i
 
   useReportingView(type, criteria);
 
-  const { exportReport, data } = useConnect(type, exportFilename);
+  const data = useAppSelector(getSortedViewList);
+  const download = useAppAction(downloadExport);
 
-  const doExport = useCallback(() => exportReport({ criteria, display }), [exportReport, criteria, display]);
+  const doExport = useCallback(() => download({ criteria, display, type, fileName: exportFilename }), [download, criteria, display, type, exportFilename]);
 
   const chartDisplay: ChartDisplay = {
     ...display,

@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { dialogs, io, views } from 'mylife-tools';
 import { Group, Operation, OperationViewCriteria } from '../api';
+import { getGroup } from '../reference/selectors';
 import { AppState, createAppAsyncThunk } from '../store-api';
 
 interface ManagementState {
@@ -118,6 +119,7 @@ const getOperationIds = createSelector([getOperationView], (view) => Object.keys
 export const getSelectedOperations = createSelector([getSelectedOperationIds, getOperationView], (selectedIds, view) => selectedIds.map((id) => view[id]));
 
 export const getSelectedGroupId = (state: AppState) => local.getCriteria(state).group;
+export const getSelectedGroup = (state: AppState) => getGroup(state, getSelectedGroupId(state));
 
 export const getSortedOperations = createSelector([getOperationView], (operations) => {
   const ret = Object.values(operations);
@@ -131,7 +133,7 @@ export const getSortedOperations = createSelector([getOperationView], (operation
   return ret;
 });
 
-export const setMinDate = (value: Date | null) => setCriteriaValue({ name: 'minDate', value });
+export const setMinDate = (value: Date) => setCriteriaValue({ name: 'minDate', value });
 export const setMaxDate = (value: Date | null) => setCriteriaValue({ name: 'maxDate', value });
 export const setAccount = (value: string | null) => setCriteriaValue({ name: 'account', value });
 export const setLookupText = (value: string | null) => setCriteriaValue({ name: 'lookupText', value });

@@ -14,13 +14,6 @@ import { makeGetSortedChildren } from '../../reference/selectors';
 import { useAppSelector } from '../../store-api';
 import icons from '../icons';
 
-const useConnect = (groupId: string) => {
-  const getSortedChildren = useMemo(makeGetSortedChildren, []);
-  return {
-    children: useAppSelector((state) => getSortedChildren(state, groupId)),
-  };
-};
-
 const LevelListItem = styled(ListItem, {
   shouldForwardProp: (prop) => prop !== 'level',
 })<{ level: number }>(({ theme, level }) => ({
@@ -37,11 +30,13 @@ interface GroupNodeProps {
 }
 
 const GroupNode = ({ level, group, selectedGroupId, onSelect, disabledGroupIds, parentDisabled }: GroupNodeProps) => {
+  const getSortedChildren = useMemo(makeGetSortedChildren, []);
   const [open, setOpen] = useState(true);
-  const { children } = useConnect(group._id);
+  const children = useAppSelector((state) => getSortedChildren(state, group._id));
   const selected = selectedGroupId === group._id;
   const disabled = parentDisabled || !!disabledGroupIds?.includes(group._id);
   const hasChildren = children.length > 0;
+
   return (
     <React.Fragment>
       <LevelListItem level={level}>

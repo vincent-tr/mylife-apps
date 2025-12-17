@@ -12,7 +12,9 @@ interface GroupTreeProps {
 }
 
 const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }: GroupTreeProps) => {
-  const { groups } = useConnect();
+  const getSortedChildren = useMemo(makeGetSortedChildren, []);
+  const groups = useAppSelector((state) => getSortedChildren(state, 'root'));
+
   return (
     <List component="div" {...props}>
       {groups.map((group) => (
@@ -23,10 +25,3 @@ const GroupTree = ({ onSelect, selectedGroupId, disabledGroupIds, ...props }: Gr
 };
 
 export default GroupTree;
-
-function useConnect() {
-  const getSortedChildren = useMemo(makeGetSortedChildren, []);
-  return useAppSelector((state) => ({
-    groups: getSortedChildren(state, 'root'),
-  }));
-}

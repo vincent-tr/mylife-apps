@@ -19,13 +19,6 @@ export interface ChartDisplay extends ReportingDisplay {
   children?: boolean;
 }
 
-const useConnect = ({ display, groups }: { display: ChartDisplay; groups: string[] }) => {
-  return useAppSelector((state) => ({
-    groupStacks: getGroupStacks(state),
-    groupChildren: getChildren(state, display, groups),
-  }));
-};
-
 export type AmoutSelector = (item: ReportGroupByPeriod, serie: Serie) => number;
 
 export interface ChartProps extends Omit<React.ComponentProps<'div'>, 'children'> {
@@ -36,7 +29,8 @@ export interface ChartProps extends Omit<React.ComponentProps<'div'>, 'children'
 }
 
 export default function Chart({ data, groups, display, amountSelector, ...props }: ChartProps) {
-  const { groupStacks, groupChildren } = useConnect({ display, groups });
+  const groupStacks = useAppSelector(getGroupStacks);
+  const groupChildren = useAppSelector((state) => getChildren(state, display, groups));
   const colors = useChartColors();
 
   if (!data.length || !groups) {

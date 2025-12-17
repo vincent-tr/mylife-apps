@@ -1,7 +1,6 @@
 import { styled } from '@mui/material/styles';
-import { useMemo } from 'react';
 import { noop, useLifecycle, useScreenSize } from 'mylife-tools';
-import { useAppSelector, useAppDispatch } from '../../store-api';
+import { useAppSelector, useAppAction } from '../../store-api';
 import { isOperationDetail, closeDetail } from '../store';
 import { useOperationView } from '../views';
 import Detail from './detail';
@@ -22,23 +21,11 @@ const StyledDetail = styled(Detail)({
   flex: 5,
 });
 
-const useConnect = () => {
-  const dispatch = useAppDispatch();
-  return {
-    detail: useAppSelector(isOperationDetail),
-    ...useMemo(
-      () => ({
-        closeDetail: () => dispatch(closeDetail()),
-      }),
-      [dispatch]
-    ),
-  };
-};
-
 export default function Management() {
   const screenSize = useScreenSize();
-  const { detail, closeDetail } = useConnect();
-  useLifecycle(noop, closeDetail);
+  const detail = useAppSelector(isOperationDetail);
+  const close = useAppAction(closeDetail);
+  useLifecycle(noop, close);
   useOperationView();
 
   const main = detail ? <StyledDetail /> : <StyledList />;
