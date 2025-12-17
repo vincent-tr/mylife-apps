@@ -79,8 +79,5 @@ function format(value: string) {
 function useStart(id: string) {
   const start = useAppAction(startBot);
 
-  return useCallback(
-    () => start(id),
-    [id, start]
-  );
+  return useCallback(() => start(id), [id, start]);
 }
