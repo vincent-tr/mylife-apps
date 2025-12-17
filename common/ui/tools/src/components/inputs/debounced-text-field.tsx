@@ -3,8 +3,7 @@ import { TextFieldProps } from '@mui/material/TextField';
 import { useCallback, useMemo } from 'react';
 import { useDebounced } from '../behaviors';
 
-// https://gist.github.com/krambertech/76afec49d7508e89e028fce14894724c
-const ENTER_KEY = 13;
+const ENTER_KEY = 'Enter';
 
 export interface DebouncedTextFieldProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
   value: string | null;
@@ -26,7 +25,7 @@ export default function DebouncedTextField({ value, onChange, multiline, ...prop
       multiline
         ? null
         : (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.keyCode === ENTER_KEY) {
+            if (e.key === ENTER_KEY) {
               flush();
             }
           },

@@ -59,7 +59,11 @@ function CronCriteriaField({ value }: CronCriteriaFieldProps) {
         </>
       }
     >
-      {value ? <TextField InputProps={{ readOnly: true }} value={value} helperText={format(value)} /> : <TextField InputProps={{ readOnly: true }} value={'-'} helperText={' '} />}
+      {value ? (
+        <TextField slotProps={{ input: { readOnly: true } }} value={value} helperText={format(value)} />
+      ) : (
+        <TextField slotProps={{ input: { readOnly: true } }} value={'-'} helperText={' '} />
+      )}
     </CriteriaField>
   );
 }
