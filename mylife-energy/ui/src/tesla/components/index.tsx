@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 import humanizeDuration from 'humanize-duration';
 import { PropsWithChildren } from 'react';
 import BatteryGauge from 'react-battery-gauge';
-import { useAction } from 'mylife-tools';
 import { TeslaChargingStatus, TeslaDeviceStatus, TeslaMode } from '../../api';
 import icons from '../../common/icons';
+import { useAppAction } from '../../store-api';
 import { setMode as setModeAction } from '../actions';
 import { useTeslaState } from '../views';
 import ChargingGauge from './charging-gauge';
@@ -18,7 +18,7 @@ import { useParameters } from './parameters';
 
 export default function Tesla() {
   const state = useTeslaState();
-  const setMode = useAction(setModeAction);
+  const setMode = useAppAction(setModeAction);
   const showParameters = useParameters();
 
   if (!state) {

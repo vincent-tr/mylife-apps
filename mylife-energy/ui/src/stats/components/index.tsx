@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { useReducer, useEffect } from 'react';
-import { useAction } from 'mylife-tools';
 import { StatsType } from '../../api';
+import { useAppAction } from '../../store-api';
 import { fetchValues as fetchValuesAction } from '../store';
 import { useDevicesView } from '../views';
 import Chart from './chart';
@@ -20,7 +20,7 @@ const StyledChart = styled(Chart)({
 
 export default function Stats() {
   useDevicesView();
-  const fetchValues = useAction(fetchValuesAction);
+  const fetchValues = useAppAction(fetchValuesAction);
 
   const [criteria, onCriteriaChange] = useReducer((criteria: Criteria, props: Partial<Criteria>) => ({ ...criteria, ...props }), {
     type: StatsType.Day,

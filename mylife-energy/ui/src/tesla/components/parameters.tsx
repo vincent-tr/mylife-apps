@@ -8,9 +8,9 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useCallback, useState, useEffect } from 'react';
-import { dialogs, useAction, fireAsync } from 'mylife-tools';
+import { dialogs, fireAsync } from 'mylife-tools';
 import { TeslaState } from '../../api';
-import { useAppSelector } from '../../store-api';
+import { useAppSelector, useAppAction } from '../../store-api';
 import { setParameters } from '../actions';
 import { getTeslaState } from '../views';
 
@@ -125,7 +125,7 @@ async function showParameters(parameters: Parameters) {
 
 export function useParameters() {
   const state = useAppSelector(getTeslaState);
-  const set = useAction(setParameters);
+  const set = useAppAction(setParameters);
 
   // if 'bot = null' then create
   return useCallback(
