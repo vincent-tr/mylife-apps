@@ -4,56 +4,26 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools';
 import AccountSelector from '../../../common/components/account-selector';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
-import { getAccounts, getGroup } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store-api';
-import {
-  setMinDate,
-  setMaxDate,
-  setAccount,
-  setLookupText,
-  importOperations,
-  operationsExecuteRules,
-  operationsSetNote,
-  moveOperations,
-  getSelectedOperations,
-  getCriteria,
-} from '../../store';
+import { getGroup } from '../../../reference/selectors';
+import { useAppSelector, useAppDispatch, useAppAction } from '../../../store-api';
+import { setMinDate, setMaxDate, setAccount, setLookupText, operationsExecuteRules, operationsSetNote, moveOperations, getSelectedOperations, getCriteria } from '../../store';
 import GroupDenseSelector from './group-dense-selector';
 import ImportButton from './import-button';
 
 const useConnect = () => {
   const dispatch = useAppDispatch();
   return {
-    ...useAppSelector((state) => {
-      const selectedOperations = getSelectedOperations(state);
-      const criteria = getCriteria(state);
-      return {
-        showExecuteRules: !criteria.group,
-        canProcessOperations: !!selectedOperations.length,
-        accounts: getAccounts(state),
-        minDate: criteria.minDate,
-        maxDate: criteria.maxDate,
-        selectedGroup: getGroup(state, criteria.group),
-        account: criteria.account,
-        lookupText: criteria.lookupText,
-        noteText: selectedOperations.length === 1 ? selectedOperations[0].note : '',
-      };
-    }),
     ...useMemo(
       () => ({
         onMinDateChanged: (value: Date) => dispatch(setMinDate(value)),
         onMaxDateChanged: (value: Date) => dispatch(setMaxDate(value)),
         onAccountChanged: (value: string) => dispatch(setAccount(value)),
         onLookupTextChanged: (value: string) => dispatch(setLookupText(value)),
-        onOperationsImport: ({ account, file }: { account: string; file: File }) => dispatch(importOperations({ account, file })),
-        onOperationsExecuteRules: () => dispatch(operationsExecuteRules()),
-        onOperationsSetNote: (note: string) => dispatch(operationsSetNote(note)),
-        onOperationsMove: (group: string) => dispatch(moveOperations(group)),
       }),
       [dispatch]
     ),
@@ -70,39 +40,36 @@ const ExpansionPanelContainer = styled('div')({
 });
 
 export default function Header() {
-  const {
-    showExecuteRules,
-    canProcessOperations,
-    accounts,
-    minDate,
-    maxDate,
-    selectedGroup,
-    account,
-    lookupText,
-    noteText,
-    onMinDateChanged,
-    onMaxDateChanged,
-    onAccountChanged,
-    onLookupTextChanged,
-    onOperationsImport,
-    onOperationsExecuteRules,
-    onOperationsSetNote,
-    onOperationsMove,
-  } = useConnect();
+  const selectedOperations = useAppSelector(getSelectedOperations);
+  const criteria = useAppSelector(getCriteria);
+  const selectedGroup = useAppSelector((state) => getGroup(state, criteria.group));
+  const showExecuteRules = !criteria.group;
+  const canProcessOperations = selectedOperations.length > 0;
+  const noteText = selectedOperations.length === 1 ? selectedOperations[0].note : '';
+
+  const executeRules = useAppAction(operationsExecuteRules);
+  const onOperationsSetNote = useAppAction(operationsSetNote);
+  const onOperationsMove = useAppAction(moveOperations);
+
+  const onOperationsExecuteRules = useCallback(() => {
+    executeRules();
+  }, [executeRules]);
+
+  const { onMinDateChanged, onMaxDateChanged, onAccountChanged, onLookupTextChanged } = useConnect();
 
   const screenSize = useScreenSize();
 
-  const editNote = async () => {
+  const editNote = useCallback(async () => {
     const { result, text } = await dialogs.input({ title: 'Note des opérations', label: 'Note', text: noteText });
     if (result !== 'ok') {
       return;
     }
     onOperationsSetNote(text);
-  };
+  }, [onOperationsSetNote, noteText]);
 
-  const minDateSelector = <DateOrYearSelector value={minDate} onChange={onMinDateChanged} showYearSelector />;
+  const minDateSelector = <DateOrYearSelector value={criteria.minDate} onChange={onMinDateChanged} showYearSelector />;
 
-  const maxDateSelector = <DateOrYearSelector value={maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />;
+  const maxDateSelector = <DateOrYearSelector value={criteria.maxDate} onChange={onMaxDateChanged} showYearSelector selectLastDay />;
 
   const selectors = (
     <React.Fragment>
@@ -117,13 +84,13 @@ export default function Header() {
       <ToolbarSeparator />
 
       <ToolbarFieldTitle>{'Compte'}</ToolbarFieldTitle>
-      <AccountField allowNull={true} value={account} onChange={onAccountChanged} />
+      <AccountField allowNull={true} value={criteria.account} onChange={onAccountChanged} />
     </React.Fragment>
   );
 
   const toolbar = (
     <React.Fragment>
-      <ImportButton accounts={accounts} onImport={onOperationsImport} />
+      <ImportButton />
       {showExecuteRules && (
         <Tooltip title={'Executer les règles sur les opérations'}>
           <IconButton onClick={onOperationsExecuteRules}>
@@ -153,7 +120,7 @@ export default function Header() {
   const search = (
     <React.Fragment>
       <ToolbarFieldTitle>{'Libellé ou note'}</ToolbarFieldTitle>
-      <DebouncedTextField value={lookupText} onChange={onLookupTextChanged} type="search" />
+      <DebouncedTextField value={criteria.lookupText} onChange={onLookupTextChanged} type="search" />
     </React.Fragment>
   );
 
@@ -181,7 +148,7 @@ export default function Header() {
   const denseHeader = (
     <React.Fragment>
       <SummaryAccordion
-        collapsedSummary={<Typography>{`Du ${format(minDate)} au ${format(maxDate)}, ${selectedGroup && selectedGroup.display}`}</Typography>}
+        collapsedSummary={<Typography>{`Du ${format(criteria.minDate)} au ${format(criteria.maxDate)}, ${selectedGroup && selectedGroup.display}`}</Typography>}
         expandedSummary={<Typography>{"Critères d'affichage"}</Typography>}
       >
         <ExpansionPanelContainer>

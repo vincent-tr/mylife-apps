@@ -5,15 +5,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { Account } from '../../../api';
 import icons from '../../../common/icons';
+import { getAccounts } from '../../../reference/selectors';
+import { useAppAction, useAppSelector } from '../../../store-api';
+import { importOperations } from '../../store';
 
-interface HeaderProps {
-  onImport: ({ account, file }: { account: string; file: File }) => void;
-  accounts: Account[];
-}
-
-export default function Header({ onImport, accounts }: HeaderProps) {
+export default function ImportButton() {
+  const accounts = useAppSelector(getAccounts);
+  const onImport = useAppAction(importOperations);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const [selectedAccount, setSelectedAccount] = React.useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
