@@ -166,11 +166,6 @@ export const getSortedOperations = createSelector([getOperationView], (operation
   return ret;
 });
 
-export const setMinDate = (value: Date | null) => setCriteriaValue({ name: 'minDate', value });
-export const setMaxDate = (value: Date | null) => setCriteriaValue({ name: 'maxDate', value });
-export const setAccount = (value: string | null) => setCriteriaValue({ name: 'account', value });
-export const setLookupText = (value: string | null) => setCriteriaValue({ name: 'lookupText', value });
-
 export const selectGroup = createAppAsyncThunk('management/selectGroup', async (value: string | null, api) => {
   api.dispatch(setCriteriaValue({ name: 'group', value }));
   api.dispatch(closeDetail());
@@ -181,7 +176,7 @@ interface SetCriteriaValuePayload {
   value: unknown;
 }
 
-const setCriteriaValue = createAppAsyncThunk('management/setCriteriaValue', async ({ name, value }: SetCriteriaValuePayload, api) => {
+export const setCriteriaValue = createAppAsyncThunk('management/setCriteriaValue', async ({ name, value }: SetCriteriaValuePayload, api) => {
   const state = api.getState();
   const criteria = local.getCriteria(state);
   if (criteria[name] === value) {

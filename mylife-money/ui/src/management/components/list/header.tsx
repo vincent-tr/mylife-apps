@@ -4,31 +4,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { format as formatDate } from 'date-fns';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { ToolbarFieldTitle, ToolbarSeparator, DebouncedTextField, SummaryAccordion, DateOrYearSelector, dialogs, useScreenSize } from 'mylife-tools';
 import AccountSelector from '../../../common/components/account-selector';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getGroup } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch, useAppAction } from '../../../store-api';
-import { setMinDate, setMaxDate, setAccount, setLookupText, operationsExecuteRules, operationsSetNote, moveOperations, getSelectedOperations, getCriteria } from '../../store';
+import { useAppSelector, useAppAction } from '../../../store-api';
+import { operationsExecuteRules, operationsSetNote, moveOperations, getSelectedOperations, getCriteria, setCriteriaValue } from '../../store';
 import GroupDenseSelector from './group-dense-selector';
 import ImportButton from './import-button';
-
-const useConnect = () => {
-  const dispatch = useAppDispatch();
-  return {
-    ...useMemo(
-      () => ({
-        onMinDateChanged: (value: Date) => dispatch(setMinDate(value)),
-        onMaxDateChanged: (value: Date) => dispatch(setMaxDate(value)),
-        onAccountChanged: (value: string) => dispatch(setAccount(value)),
-        onLookupTextChanged: (value: string) => dispatch(setLookupText(value)),
-      }),
-      [dispatch]
-    ),
-  };
-};
 
 const AccountField = styled(AccountSelector)({
   minWidth: 200,
@@ -46,16 +31,42 @@ export default function Header() {
   const showExecuteRules = !criteria.group;
   const canProcessOperations = selectedOperations.length > 0;
   const noteText = selectedOperations.length === 1 ? selectedOperations[0].note : '';
-
+  const updateCriteria = useAppAction(setCriteriaValue);
   const executeRules = useAppAction(operationsExecuteRules);
   const onOperationsSetNote = useAppAction(operationsSetNote);
   const onOperationsMove = useAppAction(moveOperations);
 
+  const onMinDateChanged = useCallback(
+    (value: Date | null) => {
+      updateCriteria({ name: 'minDate', value });
+    },
+    [updateCriteria]
+  );
+
+  const onMaxDateChanged = useCallback(
+    (value: Date | null) => {
+      updateCriteria({ name: 'maxDate', value });
+    },
+    [updateCriteria]
+  );
+
+  const onAccountChanged = useCallback(
+    (value: string | null) => {
+      updateCriteria({ name: 'account', value });
+    },
+    [updateCriteria]
+  );
+
+  const onLookupTextChanged = useCallback(
+    (value: string | null) => {
+      updateCriteria({ name: 'lookupText', value });
+    },
+    [updateCriteria]
+  );
+
   const onOperationsExecuteRules = useCallback(() => {
     executeRules();
   }, [executeRules]);
-
-  const { onMinDateChanged, onMaxDateChanged, onAccountChanged, onLookupTextChanged } = useConnect();
 
   const screenSize = useScreenSize();
 
