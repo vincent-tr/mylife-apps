@@ -212,8 +212,8 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 # TODO
 
+- deprecated API like "InputProps"
 - react StrictMode
-- useApp/ToolsDispatcher => useAction?
 - use mui charts, table, treeview
 - make TS stricter
 - review useScreenSize, etc for style: should not go through JS to go back to CSS
