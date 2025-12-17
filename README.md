@@ -212,7 +212,6 @@ https://shankar-k.medium.com/tesla-developer-api-guide-account-setup-app-creatio
 
 # TODO
 
-- deprecated API like "InputProps"
 - react StrictMode
 - use mui charts, table, treeview
 - make TS stricter
