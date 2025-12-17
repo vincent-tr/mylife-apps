@@ -9,28 +9,14 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import { NagiosHost, NagiosHostStatus, NagiosService, NagiosServiceStatus } from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { useAppDispatch, useAppSelector } from '../../store-api';
+import { useAppAction, useAppSelector } from '../../store-api';
 import { HOST_STATUS_PROBLEM } from '../problems';
 import { changeCriteria, Criteria, getCriteria, getDisplayView, GroupWithHosts, HostWithServices } from '../store';
 import { useNagiosDataView } from '../views';
-
-const useConnect = () => {
-  const dispatch = useAppDispatch();
-  return {
-    criteria: useAppSelector(getCriteria),
-    data: useAppSelector(getDisplayView),
-    ...useMemo(
-      () => ({
-        changeCriteria: (criteria: Criteria) => dispatch(changeCriteria(criteria)),
-      }),
-      [dispatch]
-    ),
-  };
-};
 
 const Container = styled('div')({
   display: 'flex',
@@ -131,7 +117,17 @@ function Group({ criteria, item }: GroupProps) {
 
 export default function Nagios() {
   useNagiosDataView();
-  const { data, criteria, changeCriteria } = useConnect();
+
+  const criteria = useAppSelector(getCriteria);
+  const data = useAppSelector(getDisplayView);
+  const updateCriteria = useAppAction(changeCriteria);
+
+  const onChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      updateCriteria({ onlyProblems: e.target.checked });
+    },
+    [updateCriteria]
+  );
 
   return (
     <Container>
@@ -145,7 +141,7 @@ export default function Nagios() {
               <TableCell>
                 {'Statut'}
                 <Tooltip title={"N'afficher que les problèmes"}>
-                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={(e) => changeCriteria({ onlyProblems: e.target.checked })} />
+                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={onChange} />
                 </Tooltip>
               </TableCell>
               <TableCell>{'Dernier check'}</TableCell>

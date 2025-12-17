@@ -13,8 +13,8 @@ import { useCallback, useMemo } from 'react';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { useAppDispatch, useAppSelector } from '../../store-api';
-import { changeCriteria, Criteria, getCriteria, getDisplayView } from '../store';
+import { useAppAction, useAppSelector } from '../../store-api';
+import { changeCriteria, getCriteria, getDisplayView } from '../store';
 import { useUpdatesDataView } from '../views';
 
 const Container = styled('div')({
@@ -45,7 +45,17 @@ const formatDuration = humanizeDuration.humanizer({
 
 export default function Updates() {
   useUpdatesDataView();
-  const { data, criteria, changeCriteria } = useConnect();
+
+  const criteria = useAppSelector(getCriteria);
+  const data = useAppSelector(getDisplayView);
+  const updateCriteria = useAppAction(changeCriteria);
+
+  const onChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      updateCriteria({ onlyProblems: e.target.checked });
+    },
+    [updateCriteria]
+  );
 
   const dataSorted = useMemo(() => Object.values(data).sort((a, b) => a.path.join('/').localeCompare(b.path.join('/'))), [data]);
 
@@ -59,7 +69,7 @@ export default function Updates() {
               <TableCell>
                 {'Etat'}
                 <Tooltip title={"N'afficher que les dépassés/problèmes"}>
-                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={(e) => changeCriteria({ onlyProblems: e.target.checked })} />
+                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={onChange} />
                 </Tooltip>
               </TableCell>
               <TableCell>{'Version courante'}</TableCell>
@@ -155,18 +165,4 @@ function VersionItem({ value, date }: VersionItemProps) {
   } else {
     return <Tooltip title={formatDate(date, 'dd/MM/yyyy HH:mm:ss')}>{content}</Tooltip>;
   }
-}
-
-function useConnect() {
-  const dispatch = useAppDispatch();
-  return {
-    criteria: useAppSelector(getCriteria),
-    data: useAppSelector(getDisplayView),
-    ...useMemo(
-      () => ({
-        changeCriteria: (criteria: Partial<Criteria>) => dispatch(changeCriteria(criteria)),
-      }),
-      [dispatch]
-    ),
-  };
 }
