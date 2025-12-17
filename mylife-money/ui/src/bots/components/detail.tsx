@@ -6,10 +6,10 @@ import TextField from '@mui/material/TextField';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
 import { useCallback } from 'react';
-import { CriteriaField, fireAsync } from 'mylife-tools';
+import { CriteriaField } from 'mylife-tools';
 import { Bot } from '../../api';
-import { useAppAction } from '../../store-api';
 import icons from '../../common/icons';
+import { useAppAction } from '../../store-api';
 import { startBot } from '../actions';
 
 const Container = styled('div')(({ theme }) => ({
