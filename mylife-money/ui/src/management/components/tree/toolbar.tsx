@@ -3,34 +3,12 @@ import { default as MuiToolbar } from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { useCallback, useMemo } from 'react';
 import { dialogs } from 'mylife-tools';
-import { Group } from '../../../api';
 import GroupSelectorButton from '../../../common/components/group-selector-button';
 import icons from '../../../common/icons';
 import { getGroup } from '../../../reference/selectors';
-import { useAppSelector, useAppDispatch } from '../../../store-api';
+import { useAppSelector, useAppAction } from '../../../store-api';
 import { getSelectedGroupId, createGroup, updateGroup, deleteGroup } from '../../store';
 import groupEditor from './group-editor';
-
-const useConnect = () => {
-  const dispatch = useAppDispatch();
-  return {
-    ...useAppSelector((state) => {
-      const selected = getSelectedGroupId(state);
-      return {
-        group: selected && getGroup(state, selected),
-        canChange: !!selected,
-      };
-    }),
-    ...useMemo(
-      () => ({
-        onGroupCreate: () => dispatch(createGroup()),
-        onGroupEdit: (group: Group) => dispatch(updateGroup(group)),
-        onGroupDelete: () => dispatch(deleteGroup()),
-      }),
-      [dispatch]
-    ),
-  };
-};
 
 const styles = {
   icon: {
@@ -44,13 +22,22 @@ const styles = {
 };
 
 export default function Toolbar() {
-  const { group, onGroupCreate, onGroupEdit, onGroupDelete, canChange } = useConnect();
+  const selected = useAppSelector(getSelectedGroupId);
+  const group = useAppSelector((state) => selected && getGroup(state, selected));
+  const canChange = !!selected;
+  const onGroupCreate = useAppAction(createGroup);
+  const onGroupEdit = useAppAction(updateGroup);
+  const onGroupDelete = useAppAction(deleteGroup);
 
   const handleDelete = useCallback(async () => {
     if (await dialogs.confirm({ title: 'Supprimer le groupe ?' })) {
       onGroupDelete();
     }
   }, [onGroupDelete]);
+
+  const handleCreate = useCallback(() => {
+    onGroupCreate();
+  }, [onGroupCreate]);
 
   const handleEdit = useCallback(async () => {
     const res = await groupEditor(group);
@@ -78,7 +65,7 @@ export default function Toolbar() {
   return (
     <MuiToolbar>
       <Tooltip title="Créer un groupe enfant">
-        <IconButton onClick={onGroupCreate} style={styles.button}>
+        <IconButton onClick={handleCreate} style={styles.button}>
           <icons.actions.New />
         </IconButton>
       </Tooltip>

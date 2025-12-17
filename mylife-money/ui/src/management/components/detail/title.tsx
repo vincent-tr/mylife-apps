@@ -2,8 +2,8 @@ import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import icons from '../../../common/icons';
 import { useCallback } from 'react';
+import icons from '../../../common/icons';
 
 const Container = styled('div')({
   display: 'flex',
