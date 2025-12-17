@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import icons from '../../../common/icons';
+import { useCallback } from 'react';
 
 const Container = styled('div')({
   display: 'flex',
@@ -18,11 +19,16 @@ export interface TitleProps {
 }
 
 export default function Title({ onClose }: TitleProps) {
+  const onClick = useCallback(() => {
+    // Do not transmit the event to the action
+    onClose();
+  }, [onClose]);
+
   return (
     <Container>
       <Tooltip title="Retour">
         <div>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClick}>
             <icons.actions.Back />
           </IconButton>
         </div>

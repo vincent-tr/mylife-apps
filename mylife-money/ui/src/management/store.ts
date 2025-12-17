@@ -112,11 +112,44 @@ const local = {
 const getOperationView = (state: AppState) => views.getViewById<Operation>(state, local.getOperationViewId(state));
 export const getOperationDetail = (state: AppState) => getOperationView(state)[local.getOperationIdDetail(state)];
 
-export const getSelectedOperationIds = createSelector([local.getSelected, getOperationView], (selected, view) => selected.filter((id) => id in view));
+export const getOperationSummaries = createSelector([getOperationView], (view) => {
+  let totalDebit = 0;
+  let totalCredit = 0;
+  let total = 0;
+  let count = 0;
+
+  for (const op of Object.values(view)) {
+    const amount = op.amount;
+    if (amount < 0) {
+      totalDebit += -amount;
+    } else {
+      totalCredit += amount;
+    }
+    total += amount;
+    count += 1;
+  }
+
+  totalDebit = Math.round(totalDebit * 100) / 100;
+  totalCredit = Math.round(totalCredit * 100) / 100;
+  total = Math.round(total * 100) / 100;
+
+  return { count, totalDebit, totalCredit, total };
+});
+
+export const getSelectedOperationIds = createSelector([local.getSelected, getOperationView], (selected, view) => {
+  const array = selected.filter((id) => id in view);
+  const set: Record<string, boolean> = {};
+
+  for (const id of array) {
+    set[id] = true;
+  }
+
+  return set;
+});
 
 const getOperationIds = createSelector([getOperationView], (view) => Object.keys(view));
 
-export const getSelectedOperations = createSelector([getSelectedOperationIds, getOperationView], (selectedIds, view) => selectedIds.map((id) => view[id]));
+export const getSelectedOperations = createSelector([getSelectedOperationIds, getOperationView], (selectedIds, view) => Object.keys(selectedIds).map((id) => view[id]));
 
 export const getSelectedGroupId = (state: AppState) => local.getCriteria(state).group;
 export const getSelectedGroup = (state: AppState) => getGroup(state, getSelectedGroupId(state));

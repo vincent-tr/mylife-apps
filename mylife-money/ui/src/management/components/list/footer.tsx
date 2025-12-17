@@ -2,38 +2,14 @@ import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useScreenPhone } from 'mylife-tools';
-import { COLOR_AMOUNT_CREDIT, COLOR_AMOUNT_DEBIT, COLOR_AMOUNT_TOTAL, ControlledOperation, useConnect } from './table-behaviors';
-
-function summaries(operations: ControlledOperation[]) {
-  let totalDebit = 0;
-  let totalCredit = 0;
-  let total = 0;
-  for (const op of operations) {
-    const amount = op.operation.amount;
-    if (amount < 0) {
-      totalDebit += -amount;
-    } else {
-      totalCredit += amount;
-    }
-    total += amount;
-  }
-  totalDebit = Math.round(totalDebit * 100) / 100;
-  totalCredit = Math.round(totalCredit * 100) / 100;
-  total = Math.round(total * 100) / 100;
-
-  return { totalDebit, totalCredit, total };
-}
+import { useAppSelector } from '../../../store-api';
+import { getOperationSummaries } from '../../store';
+import * as colors from './colors';
 
 interface TotalProps {
   dense: boolean;
   type: 'debit' | 'credit' | 'total';
 }
-
-const colors = {
-  debit: COLOR_AMOUNT_DEBIT,
-  credit: COLOR_AMOUNT_CREDIT,
-  total: COLOR_AMOUNT_TOTAL,
-};
 
 const Total = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'dense' && prop !== 'type',
@@ -87,8 +63,7 @@ export type FooterProps = Omit<React.ComponentProps<typeof Toolbar>, 'children'>
 
 export default function Footer(props: FooterProps) {
   const isPhone = useScreenPhone();
-  const { operations } = useConnect();
-  const { totalDebit, totalCredit, total } = summaries(operations);
+  const { count, totalDebit, totalCredit, total } = useAppSelector(getOperationSummaries);
 
   return (
     <Toolbar {...props}>
@@ -102,7 +77,7 @@ export default function Footer(props: FooterProps) {
       <Total dense={isPhone} type="total">
         {total}
       </Total>
-      <TotalOps dense={isPhone}>{operations.length} opérations</TotalOps>
+      <TotalOps dense={isPhone}>{count} opérations</TotalOps>
     </Toolbar>
   );
 }

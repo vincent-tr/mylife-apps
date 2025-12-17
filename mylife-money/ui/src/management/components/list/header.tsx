@@ -50,7 +50,7 @@ const useConnect = () => {
         onMaxDateChanged: (value: Date) => dispatch(setMaxDate(value)),
         onAccountChanged: (value: string) => dispatch(setAccount(value)),
         onLookupTextChanged: (value: string) => dispatch(setLookupText(value)),
-        onOperationsImport: (account: string, file: File) => dispatch(importOperations({ account, file })),
+        onOperationsImport: ({ account, file }: { account: string; file: File }) => dispatch(importOperations({ account, file })),
         onOperationsExecuteRules: () => dispatch(operationsExecuteRules()),
         onOperationsSetNote: (note: string) => dispatch(operationsSetNote(note)),
         onOperationsMove: (group: string) => dispatch(moveOperations(group)),
