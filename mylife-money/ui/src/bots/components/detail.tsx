@@ -6,8 +6,9 @@ import TextField from '@mui/material/TextField';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/fr';
 import { useCallback } from 'react';
-import { CriteriaField, useAction, fireAsync } from 'mylife-tools';
+import { CriteriaField, fireAsync } from 'mylife-tools';
 import { Bot } from '../../api';
+import { useAppAction } from '../../store-api';
 import icons from '../../common/icons';
 import { startBot } from '../actions';
 
@@ -76,12 +77,10 @@ function format(value: string) {
 }
 
 function useStart(id: string) {
-  const start = useAction(startBot);
+  const start = useAppAction(startBot);
+
   return useCallback(
-    () =>
-      fireAsync(async () => {
-        await start(id);
-      }),
+    () => start(id),
     [id, start]
   );
 }
