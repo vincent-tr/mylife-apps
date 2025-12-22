@@ -1,4 +1,3 @@
-import Checkbox from '@mui/material/Checkbox';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,49 +8,18 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useCallback, useMemo, useState } from 'react';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { useAppAction, useAppSelector } from '../../store-api';
-import { changeCriteria, getCriteria, getDisplayView } from '../store';
+import { useAppSelector } from '../../store-api';
+import { getDisplayView } from '../store';
 
-const Container = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  flex: '1 1 auto',
-  overflowY: 'auto',
-});
+export interface UpdatesProps {
+  summary?: boolean;
+}
 
-const formatDuration = humanizeDuration.humanizer({
-  language: 'shortFr',
-  largest: 1,
-  round: true,
-
-  languages: {
-    shortFr: {
-      y: () => 'ans',
-      mo: () => 'mois',
-      w: () => 'semaines',
-      d: () => 'jours',
-      h: () => 'heures',
-      m: () => 'min',
-      s: () => 'sec',
-      ms: () => 'ms',
-    },
-  },
-});
-
-export default function Updates() {
-  const [onlyProblems, setOnlyProblems] = useState(true);
-  const data = useAppSelector(state => getDisplayView(state, onlyProblems));
-
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setOnlyProblems(e.target.checked);
-    },
-    [setOnlyProblems]
-  );
+export default function Updates({ summary = false }: UpdatesProps) {
+  const data = useAppSelector(state => getDisplayView(state, summary));
 
   return (
     <Container>
@@ -60,12 +28,7 @@ export default function Updates() {
           <TableHead>
             <TableRow>
               <TableCell>{'Nom'}</TableCell>
-              <TableCell>
-                {'Etat'}
-                <Tooltip title={"N'afficher que les dépassés/problèmes"}>
-                  <Checkbox color="primary" checked={onlyProblems} onChange={onChange} />
-                </Tooltip>
-              </TableCell>
+              <TableCell>{'Etat'}</TableCell>
               <TableCell>{'Version courante'}</TableCell>
               <TableCell>{'Dernière version'}</TableCell>
             </TableRow>
@@ -83,12 +46,19 @@ export default function Updates() {
   );
 }
 
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto',
+  overflowY: 'auto',
+});
+
 interface VersionProps {
   data: api.UpdatesVersion;
 }
 
 function Version({ data }: VersionProps) {
-  const getRowComponent = useCallback((status: api.UpdatesStatus) => {
+  const getRowComponent = (status: api.UpdatesStatus) => {
     switch (status) {
       case 'uptodate':
         return SuccessRow;
@@ -99,7 +69,7 @@ function Version({ data }: VersionProps) {
       default:
         throw new Error(`Unsupported status: '${status}'`);
     }
-  }, []);
+  };
 
   const RowComponent = getRowComponent(data.status);
 
@@ -117,19 +87,6 @@ function Version({ data }: VersionProps) {
       </RowComponent>
     </>
   );
-}
-
-function getStatusStr(status: api.UpdatesStatus) {
-  switch (status) {
-    case 'uptodate':
-      return 'A jour';
-    case 'outdated':
-      return 'Dépassé';
-    case 'unknown':
-      return 'Inconnu';
-    default:
-      throw new Error(`Unsupported status: '${status}'`);
-  }
 }
 
 interface VersionItemProps {
@@ -158,5 +115,38 @@ function VersionItem({ value, date }: VersionItemProps) {
     return content;
   } else {
     return <Tooltip title={formatDate(date, 'dd/MM/yyyy HH:mm:ss')}>{content}</Tooltip>;
+  }
+}
+
+const formatDuration = humanizeDuration.humanizer({
+  language: 'shortFr',
+  largest: 1,
+  round: true,
+
+  languages: {
+    shortFr: {
+      y: () => 'ans',
+      mo: () => 'mois',
+      w: () => 'semaines',
+      d: () => 'jours',
+      h: () => 'heures',
+      m: () => 'min',
+      s: () => 'sec',
+      ms: () => 'ms',
+    },
+  },
+});
+
+
+function getStatusStr(status: api.UpdatesStatus) {
+  switch (status) {
+    case 'uptodate':
+      return 'A jour';
+    case 'outdated':
+      return 'Dépassé';
+    case 'unknown':
+      return 'Inconnu';
+    default:
+      throw new Error(`Unsupported status: '${status}'`);
   }
 }

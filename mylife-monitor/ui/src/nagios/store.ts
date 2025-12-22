@@ -30,8 +30,8 @@ export const SERVICE_STATUS_PROBLEM = {
 
 export const getDisplayView = createSelector([
   getView, 
-  (_state, onlyProblems: boolean) => onlyProblems,
-], (view: views.View<api.Entity>, onlyProblems) => {
+  (_state, summary: boolean) => summary,
+], (view: views.View<api.Entity>, summary) => {
   const groups = new Map<string, GroupWithHosts>();
   const hosts = new Map<string, HostWithServices>();
   const services = new Map<string, NagiosService>();
@@ -74,7 +74,7 @@ export const getDisplayView = createSelector([
     }
   }
 
-  if (!onlyProblems) {
+  if (!summary) {
     return data;
   }
 

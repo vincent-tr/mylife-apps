@@ -13,14 +13,11 @@ import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { getView } from '../views';
 import { useAppSelector } from '../../store-api';
 
-const Container = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  flex: '1 1 auto',
-  overflowY: 'auto',
-});
+export interface UpsmonProps {
+  summary?: boolean;
+}
 
-export default function Upsmon() {
+export default function Upsmon({ summary = false }: UpsmonProps) {
   const data = useAppSelector(getView);
 
   return (
@@ -37,13 +34,68 @@ export default function Upsmon() {
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
               {Object.values(data).map((item) => (
-                <Ups key={item._id} data={item} />
+                <Ups key={item._id} summary={summary} data={item} />
               ))}
             </TableBody>
           </ThemeProvider>
         </Table>
       </TableContainer>
     </Container>
+  );
+}
+
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto',
+  overflowY: 'auto',
+});
+
+interface UpsProps {
+  summary: boolean;
+  data: api.UpsmonStatus;
+}
+
+function Ups({ summary, data }: UpsProps) {
+  const lastUpdate = useSince(data.date);
+
+  const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
+  const RowComponent = isOk ? SuccessRow : ErrorRow;
+
+  return (
+    <>
+      <RowComponent>
+        <TableCell>{data.upsName}</TableCell>
+        <TableCell />
+        <TableCell />
+      </RowComponent>
+      {Object.keys(fields).map((field: keyof api.UpsmonStatus) => (
+        <Item key={field} summary={summary} data={data} field={field} />
+      ))}
+    </>
+  );
+}
+
+interface ItemProps {
+  summary: boolean;
+  data: api.UpsmonStatus;
+  field: keyof api.UpsmonStatus;
+}
+
+function Item({ summary, data, field }: ItemProps) {
+  const [formatter, displayName, summaryShow] = fields[field];
+  const value = formatter(data[field]);
+
+  if (summary && !summaryShow) {
+    return null;
+  }
+
+  return (
+    <TableRow>
+      <TableCell />
+      <TableCell>{displayName}</TableCell>
+      <TableCell>{value}</TableCell>
+    </TableRow>
   );
 }
 
@@ -58,73 +110,31 @@ const formatters = {
   status: formatStatusFlag,
 };
 
-const fields: Partial<Record<keyof api.UpsmonStatus, [(value: unknown) => string, string]>> = {
+const fields: Partial<Record<keyof api.UpsmonStatus, [(value: unknown) => string, string, boolean]>> = {
   // _id, _entity
-  date: [formatters.datetime, "Date et heure auxquels les informations ont été obtenus de l'onduleur"],
+  date: [formatters.datetime, "Date et heure auxquels les informations ont été obtenus de l'onduleur", true],
   // upsName
-  startTime: [formatters.datetime, "Date/heure de démarrage de l'onduleur"],
-  model: [formatters.string, "Modèle de l'onduleur"],
-  status: [formatters.string, "Statut de l'onduleur"],
-  statusFlag: [formatters.status, "Statut de l'onduleur (flags)"],
-  lineVoltage: [formatters.voltage, "Tension courante d'entrée"],
-  loadPercent: [formatters.percent, 'Pourcentage de puissance utilisée'],
-  batteryChargePercent: [formatters.percent, 'Pourcentage de charge des batteries'],
-  timeLeft: [formatters.duration, "Temps restant en secondes d'exécution sur batteries"],
-  batteryVoltage: [formatters.voltage, 'Tension des batteries'],
-  lastTransfer: [formatters.string, 'Raison du dernier transfert vers les batteries'],
-  numberTransfers: [formatters.count, 'Nombre de transferts depuis le démarrage de upsmon'],
-  xOnBattery: [formatters.datetime, 'Date/heure du dernier transfert vers les batteries'],
-  timeOnBattery: [formatters.duration, 'Temps sur batterie (en secondes)'],
-  cumulativeTimeOnBattery: [formatters.duration, 'Temps cumulé sur batterie depuis le démarrage de upsmon (en secondes)'],
-  xOffBattery: [formatters.datetime, 'Date/heure du dernier transfert depuis les batteries'],
-  nominalInputVoltage: [formatters.voltage, "Tension d'entrée attendue par l'onduleur"],
-  nominalBatteryVoltage: [formatters.voltage, 'Tension nominale de batterie'],
-  nominalPower: [formatters.power, 'Puissance nominale'],
-  firmware: [formatters.string, 'Version du firmware'],
-  outputVoltage: [formatters.voltage, 'Tension de sortie'],
+  startTime: [formatters.datetime, "Date/heure de démarrage de l'onduleur", false],
+  model: [formatters.string, "Modèle de l'onduleur", true],
+  status: [formatters.string, "Statut de l'onduleur", false],
+  statusFlag: [formatters.status, "Statut de l'onduleur (flags)", true],
+  lineVoltage: [formatters.voltage, "Tension courante d'entrée", false],
+  loadPercent: [formatters.percent, 'Pourcentage de puissance utilisée', true],
+  batteryChargePercent: [formatters.percent, 'Pourcentage de charge des batteries', true],
+  timeLeft: [formatters.duration, "Temps restant en secondes d'exécution sur batteries", true],
+  batteryVoltage: [formatters.voltage, 'Tension des batteries', false],
+  lastTransfer: [formatters.string, 'Raison du dernier transfert vers les batteries', false],
+  numberTransfers: [formatters.count, 'Nombre de transferts depuis le démarrage de upsmon', false],
+  xOnBattery: [formatters.datetime, 'Date/heure du dernier transfert vers les batteries', false],
+  timeOnBattery: [formatters.duration, 'Temps sur batterie (en secondes)', false],
+  cumulativeTimeOnBattery: [formatters.duration, 'Temps cumulé sur batterie depuis le démarrage de upsmon (en secondes)', false],
+  xOffBattery: [formatters.datetime, 'Date/heure du dernier transfert depuis les batteries', false],
+  nominalInputVoltage: [formatters.voltage, "Tension d'entrée attendue par l'onduleur", false],
+  nominalBatteryVoltage: [formatters.voltage, 'Tension nominale de batterie', false],
+  nominalPower: [formatters.power, 'Puissance nominale', false],
+  firmware: [formatters.string, 'Version du firmware', false],
+  outputVoltage: [formatters.voltage, 'Tension de sortie', false],
 };
-
-interface UpsProps {
-  data: api.UpsmonStatus;
-}
-
-function Ups({ data }: UpsProps) {
-  const lastUpdate = useSince(data.date);
-
-  const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
-  const RowComponent = isOk ? SuccessRow : ErrorRow;
-
-  return (
-    <>
-      <RowComponent>
-        <TableCell>{data.upsName}</TableCell>
-        <TableCell />
-        <TableCell />
-      </RowComponent>
-      {Object.keys(fields).map((field: keyof api.UpsmonStatus) => (
-        <Item key={field} data={data} field={field} />
-      ))}
-    </>
-  );
-}
-
-interface ItemProps {
-  data: api.UpsmonStatus;
-  field: keyof api.UpsmonStatus;
-}
-
-function Item({ data, field }: ItemProps) {
-  const [formatter, displayName] = fields[field];
-  const value = formatter(data[field]);
-
-  return (
-    <TableRow>
-      <TableCell />
-      <TableCell>{displayName}</TableCell>
-      <TableCell>{value}</TableCell>
-    </TableRow>
-  );
-}
 
 interface StatusFlagValue {
   value: number;

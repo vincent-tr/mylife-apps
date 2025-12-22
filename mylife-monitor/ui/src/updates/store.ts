@@ -4,9 +4,9 @@ import { getView } from './views';
 
 export const getDisplayView = createSelector([
   getView,
-  (_state, onlyProblems: boolean) => onlyProblems,
-], (view, onlyProblems) => {
-  if (onlyProblems) {
+  (_state, summary: boolean) => summary,
+], (view, summary) => {
+  if (summary) {
     view = views.filter(view, (item) => item.status !== 'uptodate');
   }
 

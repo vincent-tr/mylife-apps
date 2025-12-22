@@ -1,4 +1,3 @@
-import Checkbox from '@mui/material/Checkbox';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,10 +5,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useCallback, useState } from 'react';
 import { NagiosHost, NagiosHostStatus, NagiosService, NagiosServiceStatus } from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
@@ -17,12 +14,121 @@ import { useAppSelector } from '../../store-api';
 import { HOST_STATUS_PROBLEM } from '../store';
 import { getDisplayView, GroupWithHosts, HostWithServices } from '../store';
 
+export interface NagiosProps {
+  summary: boolean;
+}
+
+export default function Nagios({ summary = false }: NagiosProps) {
+  const data = useAppSelector(state => getDisplayView(state, summary));
+
+  return (
+    <Container>
+      <TableContainer>
+        <Table size="small" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>{'Groupe'}</TableCell>
+              <TableCell>{'Hôte'}</TableCell>
+              <TableCell>{'Service'}</TableCell>
+              <TableCell>{'Statut'}</TableCell>
+              <TableCell>{'Dernier check'}</TableCell>
+              <TableCell>{'Prochain check'}</TableCell>
+              <TableCell>{'Essai'}</TableCell>
+              <TableCell>{'Durée'}</TableCell>
+              <TableCell>{'Texte'}</TableCell>
+            </TableRow>
+          </TableHead>
+          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
+            <TableBody>
+              {data.map((item) => (
+                <Group key={item.group._id} summary={summary} item={item} />
+              ))}
+            </TableBody>
+          </ThemeProvider>
+        </Table>
+      </TableContainer>
+    </Container>
+  );
+}
+
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   flex: '1 1 auto',
   overflowY: 'auto',
 });
+
+interface GroupProps {
+  summary: boolean;
+  item: GroupWithHosts;
+}
+
+function Group({ summary, item }: GroupProps) {
+  return (
+    <>
+      <TableRow>
+        <TableCell>{item.group.display}</TableCell>
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+      </TableRow>
+      {item.hosts.map((child) => (
+        <Host key={child.host._id} summary={summary} item={child} />
+      ))}
+    </>
+  );
+}
+
+interface HostProps {
+  summary: boolean;
+  item: HostWithServices;
+}
+
+function Host({ summary, item }: HostProps) {
+  const { host, services } = item;
+  const RowComponent = getHostRowComponent(host.status);
+  const displayRow = !summary || HOST_STATUS_PROBLEM[host.status];
+  return (
+    <>
+      {displayRow && (
+        <RowComponent>
+          <TableCell />
+          <TableCell>{host.display}</TableCell>
+          <TableCell />
+          <TableCell>{formatStatus(host)}</TableCell>
+          <CommonState item={host} />
+        </RowComponent>
+      )}
+      {services.map((service) => (
+        <Service key={service._id} summary={summary} service={service} hostDisplay={host.display} />
+      ))}
+    </>
+  );
+}
+
+interface ServiceProps {
+  summary: boolean;
+  service: NagiosService;
+  hostDisplay: string;
+}
+
+function Service({ summary, service, hostDisplay }: ServiceProps) {
+  const RowComponent = getServiceRowComponent(service.status);
+  return (
+    <RowComponent>
+      <TableCell />
+      <TableCell>{summary && hostDisplay}</TableCell>
+      <TableCell>{service.display}</TableCell>
+      <TableCell>{formatStatus(service)}</TableCell>
+      <CommonState item={service} />
+    </RowComponent>
+  );
+}
 
 interface CommonStateProps {
   item: NagiosHost | NagiosService;
@@ -39,124 +145,6 @@ function CommonState({ item }: CommonStateProps) {
       <TableCell>{duration}</TableCell>
       <TableCell>{item.statusText}</TableCell>
     </>
-  );
-}
-
-interface ServiceProps {
-  onlyProblems: boolean;
-  service: NagiosService;
-  hostDisplay: string;
-}
-
-function Service({ onlyProblems, service, hostDisplay }: ServiceProps) {
-  const RowComponent = getServiceRowComponent(service.status);
-  return (
-    <RowComponent>
-      <TableCell />
-      <TableCell>{onlyProblems && hostDisplay}</TableCell>
-      <TableCell>{service.display}</TableCell>
-      <TableCell>{formatStatus(service)}</TableCell>
-      <CommonState item={service} />
-    </RowComponent>
-  );
-}
-
-interface HostProps {
-  onlyProblems: boolean;
-  item: HostWithServices;
-}
-
-function Host({ onlyProblems, item }: HostProps) {
-  const { host, services } = item;
-  const RowComponent = getHostRowComponent(host.status);
-  const displayRow = !onlyProblems || HOST_STATUS_PROBLEM[host.status];
-  return (
-    <>
-      {displayRow && (
-        <RowComponent>
-          <TableCell />
-          <TableCell>{host.display}</TableCell>
-          <TableCell />
-          <TableCell>{formatStatus(host)}</TableCell>
-          <CommonState item={host} />
-        </RowComponent>
-      )}
-      {services.map((service) => (
-        <Service key={service._id} onlyProblems={onlyProblems} service={service} hostDisplay={host.display} />
-      ))}
-    </>
-  );
-}
-
-interface GroupProps {
-  onlyProblems: boolean;
-  item: GroupWithHosts;
-}
-
-function Group({ onlyProblems, item }: GroupProps) {
-  return (
-    <>
-      <TableRow>
-        <TableCell>{item.group.display}</TableCell>
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-      </TableRow>
-      {item.hosts.map((child) => (
-        <Host key={child.host._id} onlyProblems={onlyProblems} item={child} />
-      ))}
-    </>
-  );
-}
-
-export default function Nagios() {
-  const [onlyProblems, setOnlyProblems] = useState(true);
-  const data = useAppSelector(state => getDisplayView(state, onlyProblems));
-
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setOnlyProblems(e.target.checked);
-    },
-    [setOnlyProblems]
-  );
-
-  return (
-    <Container>
-      <TableContainer>
-        <Table size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>{'Groupe'}</TableCell>
-              <TableCell>{'Hôte'}</TableCell>
-              <TableCell>{'Service'}</TableCell>
-              <TableCell>
-                {'Statut'}
-                <Tooltip title={"N'afficher que les problèmes"}>
-                  <Checkbox color="primary" checked={onlyProblems} onChange={onChange} />
-                </Tooltip>
-              </TableCell>
-              <TableCell>{'Dernier check'}</TableCell>
-              <TableCell>{'Prochain check'}</TableCell>
-              <TableCell>{'Essai'}</TableCell>
-              <TableCell>{'Durée'}</TableCell>
-              <TableCell>{'Texte'}</TableCell>
-            </TableRow>
-          </TableHead>
-          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
-            <TableBody>
-              {data.map((item) => (
-                <Group key={item.group._id} onlyProblems={onlyProblems} item={item} />
-              ))}
-            </TableBody>
-          </ThemeProvider>
-        </Table>
-      </TableContainer>
-    </Container>
   );
 }
 
