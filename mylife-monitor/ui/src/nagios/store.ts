@@ -28,10 +28,7 @@ export const SERVICE_STATUS_PROBLEM = {
   critical: true,
 };
 
-export const getDisplayView = createSelector([
-  getView, 
-  (_state, summary: boolean) => summary,
-], (view: views.View<api.Entity>, summary) => {
+export const getDisplayView = createSelector([getView, (_state, summary: boolean) => summary], (view: views.View<api.Entity>, summary) => {
   const groups = new Map<string, GroupWithHosts>();
   const hosts = new Map<string, HostWithServices>();
   const services = new Map<string, NagiosService>();
@@ -117,7 +114,6 @@ function hostHasProblem(item: HostWithServices) {
 
   return false;
 }
-
 
 function serviceHasProblem(service: NagiosService) {
   return SERVICE_STATUS_PROBLEM[service.status];

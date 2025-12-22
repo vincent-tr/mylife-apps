@@ -19,7 +19,7 @@ export interface UpdatesProps {
 }
 
 export default function Updates({ summary = false }: UpdatesProps) {
-  const data = useAppSelector(state => getDisplayView(state, summary));
+  const data = useAppSelector((state) => getDisplayView(state, summary));
 
   return (
     <Container>
@@ -136,7 +136,6 @@ const formatDuration = humanizeDuration.humanizer({
     },
   },
 });
-
 
 function getStatusStr(status: api.UpdatesStatus) {
   switch (status) {

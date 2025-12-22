@@ -10,8 +10,8 @@ import humanizeDuration from 'humanize-duration';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
-import { getView } from '../views';
 import { useAppSelector } from '../../store-api';
+import { getView } from '../views';
 
 export interface UpsmonProps {
   summary?: boolean;
@@ -24,20 +24,9 @@ export default function Upsmon({ summary = false }: UpsmonProps) {
     <Container>
       <TableContainer>
         <Table size="small" stickyHeader>
-          <TableHead>
-            { summary ? (
-              <HeadersSummary />
-            ) : (
-              <Headers />
-            )}
-          </TableHead>
+          <TableHead>{summary ? <HeadersSummary /> : <Headers />}</TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
-            <TableBody>
-              {Object.values(data).map((item) => (
-                summary ? <UpsSummary key={item._id} data={item} /> :
-                <Ups key={item._id} data={item} />
-              ))}
-            </TableBody>
+            <TableBody>{Object.values(data).map((item) => (summary ? <UpsSummary key={item._id} data={item} /> : <Ups key={item._id} data={item} />))}</TableBody>
           </ThemeProvider>
         </Table>
       </TableContainer>
@@ -67,9 +56,11 @@ function HeadersSummary() {
     <TableRow>
       <TableCell>{'Onduleur'}</TableCell>
       <TableCell>{'Depuis'}</TableCell>
-      {Object.values(fields).filter(([, , show]) => show).map(([, displayName]) => (
-        <TableCell key={displayName}>{displayName}</TableCell>
-      ))}
+      {Object.values(fields)
+        .filter(([, , show]) => show)
+        .map(([, displayName]) => (
+          <TableCell key={displayName}>{displayName}</TableCell>
+        ))}
     </TableRow>
   );
 }
@@ -101,7 +92,7 @@ interface ItemProps {
 }
 
 function Item({ data, field }: ItemProps) {
-  const [formatter, displayName, _summary] = fields[field];
+  const [formatter, displayName] = fields[field];
   const value = formatter(data[field]);
 
   return (
@@ -132,17 +123,14 @@ function UpsSummary({ data }: UpsProps) {
 }
 
 function ItemSummary({ data, field }: ItemProps) {
-  const [formatter, _displayName, summary] = fields[field];
+  const [formatter, , summary] = fields[field];
   if (!summary) {
     return null;
   }
 
-
   const value = formatter(data[field]);
 
-  return (
-    <TableCell>{value}</TableCell>
-  );
+  return <TableCell>{value}</TableCell>;
 }
 
 function useRowComponent(data: api.UpsmonStatus) {

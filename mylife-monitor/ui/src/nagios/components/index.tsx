@@ -15,11 +15,11 @@ import { HOST_STATUS_PROBLEM } from '../store';
 import { getDisplayView, GroupWithHosts, HostWithServices } from '../store';
 
 export interface NagiosProps {
-  summary: boolean;
+  summary?: boolean;
 }
 
 export default function Nagios({ summary = false }: NagiosProps) {
-  const data = useAppSelector(state => getDisplayView(state, summary));
+  const data = useAppSelector((state) => getDisplayView(state, summary));
 
   return (
     <Container>
