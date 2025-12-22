@@ -7,11 +7,4 @@ export class Updates extends api.services.Service {
       method: 'notify',
     })) as string;
   }
-
-  async notifySummary() {
-    return (await this.call({
-      service: 'updates',
-      method: 'notifySummary',
-    })) as string;
-  }
 }

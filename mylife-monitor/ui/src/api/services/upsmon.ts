@@ -7,11 +7,4 @@ export class UpsMon extends api.services.Service {
       method: 'notify',
     })) as string;
   }
-
-  async notifySummary() {
-    return (await this.call({
-      service: 'upsmon',
-      method: 'notifySummary',
-    })) as string;
-  }
 }
