@@ -10,7 +10,29 @@ import humanizeDuration from 'humanize-duration';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
-import { useUpsmonDataView } from '../views';
+import { useAppSelector } from '../../store-api';
+import { getView } from '../views';
+
+export interface UpsmonProps {
+  summary?: boolean;
+}
+
+export default function Upsmon({ summary = false }: UpsmonProps) {
+  const data = useAppSelector(getView);
+
+  return (
+    <Container>
+      <TableContainer>
+        <Table size="small" stickyHeader>
+          <TableHead>{summary ? <HeadersSummary /> : <Headers />}</TableHead>
+          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
+            <TableBody>{Object.values(data).map((item) => (summary ? <UpsSummary key={item._id} data={item} /> : <Ups key={item._id} data={item} />))}</TableBody>
+          </ThemeProvider>
+        </Table>
+      </TableContainer>
+    </Container>
+  );
+}
 
 const Container = styled('div')({
   display: 'flex',
@@ -19,79 +41,36 @@ const Container = styled('div')({
   overflowY: 'auto',
 });
 
-export default function Upsmon() {
-  const data = useUpsmonDataView();
-
+function Headers() {
   return (
-    <Container>
-      <TableContainer>
-        <Table size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>{'Onduleur'}</TableCell>
-              <TableCell>{'Nom'}</TableCell>
-              <TableCell>{'Valeur'}</TableCell>
-            </TableRow>
-          </TableHead>
-          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
-            <TableBody>
-              {Object.values(data).map((item) => (
-                <Ups key={item._id} data={item} />
-              ))}
-            </TableBody>
-          </ThemeProvider>
-        </Table>
-      </TableContainer>
-    </Container>
+    <TableRow>
+      <TableCell>{'Onduleur'}</TableCell>
+      <TableCell>{'Nom'}</TableCell>
+      <TableCell>{'Valeur'}</TableCell>
+    </TableRow>
   );
 }
 
-const formatters = {
-  string: (value: string) => value,
-  datetime: (value: Date) => formatDate(value, 'dd/MM/yyyy HH:mm:ss'),
-  duration: (value: number) => humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true }),
-  percent: (value: number) => `${value.toFixed()} %`,
-  voltage: (value: number) => `${value.toFixed()} V`,
-  power: (value: number) => `${value.toFixed()} W`,
-  count: (value: number) => value.toFixed(),
-  status: formatStatusFlag,
-};
-
-const fields: Partial<Record<keyof api.UpsmonStatus, [(value: unknown) => string, string]>> = {
-  // _id, _entity
-  date: [formatters.datetime, "Date et heure auxquels les informations ont été obtenus de l'onduleur"],
-  // upsName
-  startTime: [formatters.datetime, "Date/heure de démarrage de l'onduleur"],
-  model: [formatters.string, "Modèle de l'onduleur"],
-  status: [formatters.string, "Statut de l'onduleur"],
-  statusFlag: [formatters.status, "Statut de l'onduleur (flags)"],
-  lineVoltage: [formatters.voltage, "Tension courante d'entrée"],
-  loadPercent: [formatters.percent, 'Pourcentage de puissance utilisée'],
-  batteryChargePercent: [formatters.percent, 'Pourcentage de charge des batteries'],
-  timeLeft: [formatters.duration, "Temps restant en secondes d'exécution sur batteries"],
-  batteryVoltage: [formatters.voltage, 'Tension des batteries'],
-  lastTransfer: [formatters.string, 'Raison du dernier transfert vers les batteries'],
-  numberTransfers: [formatters.count, 'Nombre de transferts depuis le démarrage de upsmon'],
-  xOnBattery: [formatters.datetime, 'Date/heure du dernier transfert vers les batteries'],
-  timeOnBattery: [formatters.duration, 'Temps sur batterie (en secondes)'],
-  cumulativeTimeOnBattery: [formatters.duration, 'Temps cumulé sur batterie depuis le démarrage de upsmon (en secondes)'],
-  xOffBattery: [formatters.datetime, 'Date/heure du dernier transfert depuis les batteries'],
-  nominalInputVoltage: [formatters.voltage, "Tension d'entrée attendue par l'onduleur"],
-  nominalBatteryVoltage: [formatters.voltage, 'Tension nominale de batterie'],
-  nominalPower: [formatters.power, 'Puissance nominale'],
-  firmware: [formatters.string, 'Version du firmware'],
-  outputVoltage: [formatters.voltage, 'Tension de sortie'],
-};
+function HeadersSummary() {
+  return (
+    <TableRow>
+      <TableCell>{'Onduleur'}</TableCell>
+      <TableCell>{'Depuis'}</TableCell>
+      {Object.values(fields)
+        .filter(([, , show]) => show)
+        .map(([, displayName]) => (
+          <TableCell key={displayName}>{displayName}</TableCell>
+        ))}
+    </TableRow>
+  );
+}
 
 interface UpsProps {
   data: api.UpsmonStatus;
 }
 
 function Ups({ data }: UpsProps) {
-  const lastUpdate = useSince(data.date);
-
-  const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
-  const RowComponent = isOk ? SuccessRow : ErrorRow;
+  const RowComponent = useRowComponent(data);
 
   return (
     <>
@@ -124,6 +103,78 @@ function Item({ data, field }: ItemProps) {
     </TableRow>
   );
 }
+
+function UpsSummary({ data }: UpsProps) {
+  const RowComponent = useRowComponent(data);
+  const lastUpdate = useSince(data.date);
+  const lastUpdateDuration = humanizeDuration(lastUpdate, { language: 'fr', largest: 1, round: true });
+
+  return (
+    <>
+      <RowComponent>
+        <TableCell>{data.upsName}</TableCell>
+        <TableCell>{lastUpdateDuration}</TableCell>
+        {Object.keys(fields).map((field: keyof api.UpsmonStatus) => (
+          <ItemSummary key={field} data={data} field={field} />
+        ))}
+      </RowComponent>
+    </>
+  );
+}
+
+function ItemSummary({ data, field }: ItemProps) {
+  const [formatter, , summary] = fields[field];
+  if (!summary) {
+    return null;
+  }
+
+  const value = formatter(data[field]);
+
+  return <TableCell>{value}</TableCell>;
+}
+
+function useRowComponent(data: api.UpsmonStatus) {
+  const lastUpdate = useSince(data.date);
+  const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
+  return isOk ? SuccessRow : ErrorRow;
+}
+
+const formatters = {
+  string: (value: string) => value,
+  datetime: (value: Date) => formatDate(value, 'dd/MM/yyyy HH:mm:ss'),
+  duration: (value: number) => humanizeDuration(value * 1000, { language: 'fr', largest: 1, round: true }),
+  percent: (value: number) => `${value.toFixed()} %`,
+  voltage: (value: number) => `${value.toFixed()} V`,
+  power: (value: number) => `${value.toFixed()} W`,
+  count: (value: number) => value.toFixed(),
+  status: formatStatusFlag,
+};
+
+const fields: Partial<Record<keyof api.UpsmonStatus, [(value: unknown) => string, string, boolean]>> = {
+  // _id, _entity
+  date: [formatters.datetime, "Date et heure auxquels les informations ont été obtenus de l'onduleur", false],
+  // upsName
+  startTime: [formatters.datetime, "Date/heure de démarrage de l'onduleur", false],
+  model: [formatters.string, "Modèle de l'onduleur", false],
+  status: [formatters.string, "Statut de l'onduleur", false],
+  statusFlag: [formatters.status, "Statut de l'onduleur (flags)", true],
+  lineVoltage: [formatters.voltage, "Tension courante d'entrée", false],
+  loadPercent: [formatters.percent, 'Pourcentage de puissance utilisée', true],
+  batteryChargePercent: [formatters.percent, 'Pourcentage de charge des batteries', true],
+  timeLeft: [formatters.duration, "Temps restant en secondes d'exécution sur batteries", true],
+  batteryVoltage: [formatters.voltage, 'Tension des batteries', false],
+  lastTransfer: [formatters.string, 'Raison du dernier transfert vers les batteries', false],
+  numberTransfers: [formatters.count, 'Nombre de transferts depuis le démarrage de upsmon', false],
+  xOnBattery: [formatters.datetime, 'Date/heure du dernier transfert vers les batteries', false],
+  timeOnBattery: [formatters.duration, 'Temps sur batterie (en secondes)', false],
+  cumulativeTimeOnBattery: [formatters.duration, 'Temps cumulé sur batterie depuis le démarrage de upsmon (en secondes)', false],
+  xOffBattery: [formatters.datetime, 'Date/heure du dernier transfert depuis les batteries', false],
+  nominalInputVoltage: [formatters.voltage, "Tension d'entrée attendue par l'onduleur", false],
+  nominalBatteryVoltage: [formatters.voltage, 'Tension nominale de batterie', false],
+  nominalPower: [formatters.power, 'Puissance nominale', false],
+  firmware: [formatters.string, 'Version du firmware', false],
+  outputVoltage: [formatters.voltage, 'Tension de sortie', false],
+};
 
 interface StatusFlagValue {
   value: number;

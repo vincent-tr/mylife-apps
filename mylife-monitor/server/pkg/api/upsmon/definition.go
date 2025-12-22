@@ -8,16 +8,10 @@ import (
 	"mylife-tools/services/sessions"
 )
 
-var Definition = api.MakeDefinition("upsmon", notify, notifySummary)
+var Definition = api.MakeDefinition("upsmon", notify)
 
 func notify(session *sessions.Session, arg struct{}) (uint64, error) {
 	view := upsmon.GetDataView()
 	viewId := notification.NotifyView[*entities.UpsmonStatus](session, view)
-	return viewId, nil
-}
-
-func notifySummary(session *sessions.Session, arg struct{}) (uint64, error) {
-	view := upsmon.GetSummaryView()
-	viewId := notification.NotifyView[*entities.UpsmonSummary](session, view)
 	return viewId, nil
 }

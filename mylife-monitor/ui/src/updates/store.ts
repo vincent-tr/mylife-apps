@@ -1,60 +1,11 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector } from '@reduxjs/toolkit';
 import { views } from 'mylife-tools';
-import { createAppAsyncThunk } from '../store-api';
 import { getView } from './views';
 
-interface UpdatesState {
-  criteria: Criteria;
-}
-
-export interface Criteria {
-  onlyProblems: boolean;
-}
-
-const initialState: UpdatesState = {
-  criteria: {
-    onlyProblems: true,
-  },
-};
-
-const updatesSlice = createSlice({
-  name: 'updates',
-  initialState,
-  reducers: {
-    setCriteria(state, action: PayloadAction<Criteria>) {
-      state.criteria = action.payload;
-    },
-    resetCriteria(state, _action) {
-      state.criteria = initialState.criteria;
-    },
-  },
-  selectors: {
-    getCriteria: (state) => state.criteria,
-  },
-});
-
-const local = {
-  getCriteria: updatesSlice.selectors.getCriteria,
-  setCriteria: updatesSlice.actions.setCriteria,
-};
-
-export const resetCriteria = updatesSlice.actions.resetCriteria;
-
-export const changeCriteria = createAppAsyncThunk('updates/changeCriteria', async (changes: Partial<Criteria>, api) => {
-  const state = api.getState();
-  const criteria = local.getCriteria(state);
-  const newCriteria = { ...criteria, ...changes };
-  api.dispatch(local.setCriteria(newCriteria));
-});
-
-export const getCriteria = updatesSlice.selectors.getCriteria;
-
-export const getDisplayView = createSelector([getView, getCriteria], (view, criteria) => {
-  if (criteria.onlyProblems) {
-    return views.filter(view, (item) => item.status !== 'uptodate');
-  } else {
-    return view;
+export const getDisplayView = createSelector([getView, (_state, summary: boolean) => summary], (view, summary) => {
+  if (summary) {
+    view = views.filter(view, (item) => item.status !== 'uptodate');
   }
-});
 
-export default updatesSlice.reducer;
+  return Object.values(view).sort((a, b) => a.path.join('/').localeCompare(b.path.join('/')));
+});

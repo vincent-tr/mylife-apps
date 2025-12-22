@@ -1,55 +1,7 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector } from '@reduxjs/toolkit';
 import { api, views } from 'mylife-tools';
 import { NagiosHostGroup, NagiosHost, NagiosService } from '../api';
-import { createAppAsyncThunk } from '../store-api';
-import { HOST_STATUS_PROBLEM, SERVICE_STATUS_PROBLEM } from './problems';
 import { getView } from './views';
-
-interface NagiosState {
-  criteria: Criteria;
-}
-
-export interface Criteria {
-  onlyProblems: boolean;
-}
-
-const initialState: NagiosState = {
-  criteria: {
-    onlyProblems: true,
-  },
-};
-
-const nagiosSlice = createSlice({
-  name: 'nagios',
-  initialState,
-  reducers: {
-    setCriteria(state, action: PayloadAction<Criteria>) {
-      state.criteria = action.payload;
-    },
-    resetCriteria(state, _action) {
-      state.criteria = initialState.criteria;
-    },
-  },
-  selectors: {
-    getCriteria: (state) => state.criteria,
-  },
-});
-
-const local = {
-  getCriteria: nagiosSlice.selectors.getCriteria,
-  setCriteria: nagiosSlice.actions.setCriteria,
-};
-
-export const resetCriteria = nagiosSlice.actions.resetCriteria;
-
-export const changeCriteria = createAppAsyncThunk('nagios/changeCriteria', async (changes: Partial<Criteria>, api) => {
-  const state = api.getState();
-  const criteria = local.getCriteria(state);
-  const newCriteria = { ...criteria, ...changes };
-  api.dispatch(local.setCriteria(newCriteria));
-});
-
-export const getCriteria = nagiosSlice.selectors.getCriteria;
 
 export interface GroupWithHosts {
   group: NagiosHostGroup;
@@ -61,7 +13,22 @@ export interface HostWithServices {
   services: NagiosService[];
 }
 
-export const getDisplayView = createSelector([getView, getCriteria], (view: views.View<api.Entity>, criteria) => {
+export const HOST_STATUS_PROBLEM = {
+  pending: false,
+  up: false,
+  down: true,
+  unreachable: true,
+};
+
+export const SERVICE_STATUS_PROBLEM = {
+  pending: false,
+  ok: false,
+  warning: true,
+  unknown: true,
+  critical: true,
+};
+
+export const getDisplayView = createSelector([getView, (_state, summary: boolean) => summary], (view: views.View<api.Entity>, summary) => {
   const groups = new Map<string, GroupWithHosts>();
   const hosts = new Map<string, HostWithServices>();
   const services = new Map<string, NagiosService>();
@@ -104,7 +71,7 @@ export const getDisplayView = createSelector([getView, getCriteria], (view: view
     }
   }
 
-  if (!criteria.onlyProblems) {
+  if (!summary) {
     return data;
   }
 
@@ -151,5 +118,3 @@ function hostHasProblem(item: HostWithServices) {
 function serviceHasProblem(service: NagiosService) {
   return SERVICE_STATUS_PROBLEM[service.status];
 }
-
-export default nagiosSlice.reducer;

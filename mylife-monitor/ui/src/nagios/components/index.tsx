@@ -1,4 +1,3 @@
-import Checkbox from '@mui/material/Checkbox';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,17 +5,51 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useCallback } from 'react';
 import { NagiosHost, NagiosHostStatus, NagiosService, NagiosServiceStatus } from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { useAppAction, useAppSelector } from '../../store-api';
-import { HOST_STATUS_PROBLEM } from '../problems';
-import { changeCriteria, Criteria, getCriteria, getDisplayView, GroupWithHosts, HostWithServices } from '../store';
-import { useNagiosDataView } from '../views';
+import { useAppSelector } from '../../store-api';
+import { HOST_STATUS_PROBLEM } from '../store';
+import { getDisplayView, GroupWithHosts, HostWithServices } from '../store';
+
+export interface NagiosProps {
+  summary?: boolean;
+}
+
+export default function Nagios({ summary = false }: NagiosProps) {
+  const data = useAppSelector((state) => getDisplayView(state, summary));
+
+  return (
+    <Container>
+      <TableContainer>
+        <Table size="small" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>{'Groupe'}</TableCell>
+              <TableCell>{'Hôte'}</TableCell>
+              <TableCell>{'Service'}</TableCell>
+              <TableCell>{'Statut'}</TableCell>
+              <TableCell>{'Dernier check'}</TableCell>
+              <TableCell>{'Prochain check'}</TableCell>
+              <TableCell>{'Essai'}</TableCell>
+              <TableCell>{'Durée'}</TableCell>
+              <TableCell>{'Texte'}</TableCell>
+            </TableRow>
+          </TableHead>
+          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
+            <TableBody>
+              {data.map((item) => (
+                <Group key={item.group._id} summary={summary} item={item} />
+              ))}
+            </TableBody>
+          </ThemeProvider>
+        </Table>
+      </TableContainer>
+    </Container>
+  );
+}
 
 const Container = styled('div')({
   display: 'flex',
@@ -24,6 +57,78 @@ const Container = styled('div')({
   flex: '1 1 auto',
   overflowY: 'auto',
 });
+
+interface GroupProps {
+  summary: boolean;
+  item: GroupWithHosts;
+}
+
+function Group({ summary, item }: GroupProps) {
+  return (
+    <>
+      <TableRow>
+        <TableCell>{item.group.display}</TableCell>
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+        <TableCell />
+      </TableRow>
+      {item.hosts.map((child) => (
+        <Host key={child.host._id} summary={summary} item={child} />
+      ))}
+    </>
+  );
+}
+
+interface HostProps {
+  summary: boolean;
+  item: HostWithServices;
+}
+
+function Host({ summary, item }: HostProps) {
+  const { host, services } = item;
+  const RowComponent = getHostRowComponent(host.status);
+  const displayRow = !summary || HOST_STATUS_PROBLEM[host.status];
+  return (
+    <>
+      {displayRow && (
+        <RowComponent>
+          <TableCell />
+          <TableCell>{host.display}</TableCell>
+          <TableCell />
+          <TableCell>{formatStatus(host)}</TableCell>
+          <CommonState item={host} />
+        </RowComponent>
+      )}
+      {services.map((service) => (
+        <Service key={service._id} summary={summary} service={service} hostDisplay={host.display} />
+      ))}
+    </>
+  );
+}
+
+interface ServiceProps {
+  summary: boolean;
+  service: NagiosService;
+  hostDisplay: string;
+}
+
+function Service({ summary, service, hostDisplay }: ServiceProps) {
+  const RowComponent = getServiceRowComponent(service.status);
+  return (
+    <RowComponent>
+      <TableCell />
+      <TableCell>{summary && hostDisplay}</TableCell>
+      <TableCell>{service.display}</TableCell>
+      <TableCell>{formatStatus(service)}</TableCell>
+      <CommonState item={service} />
+    </RowComponent>
+  );
+}
 
 interface CommonStateProps {
   item: NagiosHost | NagiosService;
@@ -40,127 +145,6 @@ function CommonState({ item }: CommonStateProps) {
       <TableCell>{duration}</TableCell>
       <TableCell>{item.statusText}</TableCell>
     </>
-  );
-}
-
-interface ServiceProps {
-  criteria: Criteria;
-  service: NagiosService;
-  hostDisplay: string;
-}
-
-function Service({ criteria, service, hostDisplay }: ServiceProps) {
-  const RowComponent = getServiceRowComponent(service.status);
-  return (
-    <RowComponent>
-      <TableCell />
-      <TableCell>{criteria.onlyProblems && hostDisplay}</TableCell>
-      <TableCell>{service.display}</TableCell>
-      <TableCell>{formatStatus(service)}</TableCell>
-      <CommonState item={service} />
-    </RowComponent>
-  );
-}
-
-interface HostProps {
-  criteria: Criteria;
-  item: HostWithServices;
-}
-
-function Host({ criteria, item }: HostProps) {
-  const { host, services } = item;
-  const RowComponent = getHostRowComponent(host.status);
-  const displayRow = !criteria.onlyProblems || HOST_STATUS_PROBLEM[host.status];
-  return (
-    <>
-      {displayRow && (
-        <RowComponent>
-          <TableCell />
-          <TableCell>{host.display}</TableCell>
-          <TableCell />
-          <TableCell>{formatStatus(host)}</TableCell>
-          <CommonState item={host} />
-        </RowComponent>
-      )}
-      {services.map((service) => (
-        <Service key={service._id} criteria={criteria} service={service} hostDisplay={host.display} />
-      ))}
-    </>
-  );
-}
-
-interface GroupProps {
-  criteria: Criteria;
-  item: GroupWithHosts;
-}
-
-function Group({ criteria, item }: GroupProps) {
-  return (
-    <>
-      <TableRow>
-        <TableCell>{item.group.display}</TableCell>
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-        <TableCell />
-      </TableRow>
-      {item.hosts.map((child) => (
-        <Host key={child.host._id} criteria={criteria} item={child} />
-      ))}
-    </>
-  );
-}
-
-export default function Nagios() {
-  useNagiosDataView();
-
-  const criteria = useAppSelector(getCriteria);
-  const data = useAppSelector(getDisplayView);
-  const updateCriteria = useAppAction(changeCriteria);
-
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      updateCriteria({ onlyProblems: e.target.checked });
-    },
-    [updateCriteria]
-  );
-
-  return (
-    <Container>
-      <TableContainer>
-        <Table size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>{'Groupe'}</TableCell>
-              <TableCell>{'Hôte'}</TableCell>
-              <TableCell>{'Service'}</TableCell>
-              <TableCell>
-                {'Statut'}
-                <Tooltip title={"N'afficher que les problèmes"}>
-                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={onChange} />
-                </Tooltip>
-              </TableCell>
-              <TableCell>{'Dernier check'}</TableCell>
-              <TableCell>{'Prochain check'}</TableCell>
-              <TableCell>{'Essai'}</TableCell>
-              <TableCell>{'Durée'}</TableCell>
-              <TableCell>{'Texte'}</TableCell>
-            </TableRow>
-          </TableHead>
-          <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
-            <TableBody>
-              {data.map((item) => (
-                <Group key={item.group._id} criteria={criteria} item={item} />
-              ))}
-            </TableBody>
-          </ThemeProvider>
-        </Table>
-      </TableContainer>
-    </Container>
   );
 }
 

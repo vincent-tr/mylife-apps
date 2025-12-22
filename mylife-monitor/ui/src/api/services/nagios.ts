@@ -7,11 +7,4 @@ export class Nagios extends api.services.Service {
       method: 'notify',
     })) as string;
   }
-
-  async notifySummary() {
-    return (await this.call({
-      service: 'nagios',
-      method: 'notifySummary',
-    })) as string;
-  }
 }

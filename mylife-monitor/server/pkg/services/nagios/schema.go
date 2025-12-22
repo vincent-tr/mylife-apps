@@ -137,46 +137,6 @@ func (this *schema) buildDataObjects() []store.Entity {
 	return objects
 }
 
-func (this *schema) buildSummaryObjects() []*entities.NagiosSummary {
-	hosts := &entities.NagiosSummaryValues{
-		Id:   "hosts",
-		Type: entities.Host,
-	}
-
-	for _, host := range this.hosts {
-		switch host.Status {
-		case entities.NagiosHostPending, entities.NagiosHostUp:
-			hosts.Ok += 1
-
-		case entities.NagiosHostDown, entities.NagiosHostUnreachable:
-			hosts.Errors += 1
-		}
-	}
-
-	services := &entities.NagiosSummaryValues{
-		Id:   "services",
-		Type: entities.Service,
-	}
-
-	for _, service := range this.services {
-		switch service.Status {
-		case entities.NagiosServicePending, entities.NagiosServiceOk:
-			services.Ok += 1
-
-		case entities.NagiosServiceWarning:
-			services.Warnings += 1
-
-		case entities.NagiosServiceUnknown, entities.NagiosServiceCritical:
-			services.Errors += 1
-		}
-	}
-
-	return []*entities.NagiosSummary{
-		entities.NewNagiosSummary(hosts),
-		entities.NewNagiosSummary(services),
-	}
-}
-
 var hostStatusMap = map[int]entities.NagiosHostStatus{
 	1: entities.NagiosHostPending,
 	2: entities.NagiosHostUp,
