@@ -10,7 +10,8 @@ import humanizeDuration from 'humanize-duration';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, ErrorRow } from '../../common/table-status';
-import { useUpsmonDataView } from '../views';
+import { getView } from '../views';
+import { useAppSelector } from '../../store-api';
 
 const Container = styled('div')({
   display: 'flex',
@@ -20,7 +21,7 @@ const Container = styled('div')({
 });
 
 export default function Upsmon() {
-  const data = useUpsmonDataView();
+  const data = useAppSelector(getView);
 
   return (
     <Container>

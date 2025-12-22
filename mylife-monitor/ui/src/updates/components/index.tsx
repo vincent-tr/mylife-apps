@@ -15,7 +15,6 @@ import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useAppAction, useAppSelector } from '../../store-api';
 import { changeCriteria, getCriteria, getDisplayView } from '../store';
-import { useUpdatesDataView } from '../views';
 
 const Container = styled('div')({
   display: 'flex',
@@ -44,8 +43,6 @@ const formatDuration = humanizeDuration.humanizer({
 });
 
 export default function Updates() {
-  useUpdatesDataView();
-
   const criteria = useAppSelector(getCriteria);
   const data = useAppSelector(getDisplayView);
   const updateCriteria = useAppAction(changeCriteria);

@@ -9,14 +9,14 @@ import './store-factory';
 const routes = [
   { location: '/', renderer: () => <Home /> },
   { location: '/nagios', name: 'Nagios', icon: icons.menu.Nagios, renderer: () => <Nagios /> },
-  { location: '/upsmon', name: 'UPS monitor', icon: icons.menu.Upsmon, renderer: () => <Upsmon /> },
   { location: '/updates', name: 'Updates', icon: icons.menu.Updates, renderer: () => <Updates /> },
+  { location: '/upsmon', name: 'UPS monitor', icon: icons.menu.Upsmon, renderer: () => <Upsmon /> },
 ];
 
 const menu = [
   { id: 'nagios', text: 'Nagios', icon: icons.menu.Nagios, location: '/nagios' },
-  { id: 'upsmon', text: 'UPS monitor', icon: icons.menu.Upsmon, location: '/upsmon' },
   { id: 'updates', text: 'Updates', icon: icons.menu.Updates, location: '/updates' },
+  { id: 'upsmon', text: 'UPS monitor', icon: icons.menu.Upsmon, location: '/upsmon' },
 ];
 
 services.render({

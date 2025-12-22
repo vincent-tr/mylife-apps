@@ -16,7 +16,6 @@ import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useAppAction, useAppSelector } from '../../store-api';
 import { HOST_STATUS_PROBLEM } from '../problems';
 import { changeCriteria, Criteria, getCriteria, getDisplayView, GroupWithHosts, HostWithServices } from '../store';
-import { useNagiosDataView } from '../views';
 
 const Container = styled('div')({
   display: 'flex',
@@ -116,8 +115,6 @@ function Group({ criteria, item }: GroupProps) {
 }
 
 export default function Nagios() {
-  useNagiosDataView();
-
   const criteria = useAppSelector(getCriteria);
   const data = useAppSelector(getDisplayView);
   const updateCriteria = useAppAction(changeCriteria);
