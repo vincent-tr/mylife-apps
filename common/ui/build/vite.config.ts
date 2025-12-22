@@ -20,7 +20,7 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     build: {
-      outDir: '../dist/prod/static',
+      outDir: 'dist/prod/static',
       emptyOutDir: true,
       rollupOptions: {
         // Seems side effects are dropped else
