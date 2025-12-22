@@ -29,7 +29,6 @@ type upsmonService struct {
 	refreshWorker    *utils.Worker
 	addresses        []string
 	dataView         *store.Container[*entities.UpsmonStatus]
-	summaryView      *store.Container[*entities.UpsmonSummary]
 }
 
 func (service *upsmonService) Init(arg interface{}) error {
@@ -42,7 +41,6 @@ func (service *upsmonService) Init(arg interface{}) error {
 	logger.WithFields(log.Fields{"addresses": conf.Addresses, "refreshInterval": conf.Interval}).Info("upsmon client configured")
 
 	service.dataView = store.NewContainer[*entities.UpsmonStatus]("upsmon-data")
-	service.summaryView = store.NewContainer[*entities.UpsmonSummary]("upsmon-summary")
 
 	service.refreshWorker = utils.NewInterval(time.Duration(conf.Interval)*time.Second, service.refresh)
 
@@ -77,7 +75,7 @@ func (service *upsmonService) refresh() {
 		statuses = append(statuses, status)
 	}
 
-	data, summary, err := buildEntities(statuses)
+	data, err := buildEntities(statuses)
 	if err != nil {
 		logger.WithError(err).Error("Error building entities")
 		return
@@ -85,7 +83,6 @@ func (service *upsmonService) refresh() {
 
 	tasks.SubmitEventLoop("upsmon/state-update", func() {
 		service.dataView.ReplaceAll(data, entities.UpsmonStatusesEqual)
-		service.summaryView.ReplaceAll(summary, entities.UpsmonSummariesEqual)
 	})
 }
 
@@ -104,14 +101,13 @@ func readStatus(ctx context.Context, address string) (*apcupsd.Status, error) {
 	return client.Status()
 }
 
-func buildEntities(statuses []*apcupsd.Status) ([]*entities.UpsmonStatus, []*entities.UpsmonSummary, error) {
+func buildEntities(statuses []*apcupsd.Status) ([]*entities.UpsmonStatus, error) {
 	data := make([]*entities.UpsmonStatus, 0)
-	summary := make([]*entities.UpsmonSummary, 0)
 
 	for _, status := range statuses {
 		statusFlag, err := parseStatusFlag(status.StatusFlags)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 
 		statusValues := &entities.UpsmonStatusValues{
@@ -140,18 +136,10 @@ func buildEntities(statuses []*apcupsd.Status) ([]*entities.UpsmonStatus, []*ent
 			OutputVoltage:           status.OutputVoltage,
 		}
 
-		summaryValues := &entities.UpsmonSummaryValues{
-			Id:      status.UPSName,
-			Date:    status.Date,
-			UPSName: status.UPSName,
-			Status:  status.Status,
-		}
-
 		data = append(data, entities.NewUpsmonStatus(statusValues))
-		summary = append(summary, entities.NewUpsmonSummary(summaryValues))
 	}
 
-	return data, summary, nil
+	return data, nil
 }
 
 func parseStatusFlag(value string) (entities.UpsmonStatusFlag, error) {
@@ -173,8 +161,4 @@ func getService() *upsmonService {
 
 func GetDataView() store.IContainer[*entities.UpsmonStatus] {
 	return getService().dataView
-}
-
-func GetSummaryView() store.IContainer[*entities.UpsmonSummary] {
-	return getService().summaryView
 }

@@ -33,7 +33,6 @@ type nagiosService struct {
 	baseUrl          string
 	// Note: contains 3 different types: NagiosHost, NagiosService, NagiosHostGroup
 	dataView    *store.Container[store.Entity]
-	summaryView *store.Container[*entities.NagiosSummary]
 }
 
 func (service *nagiosService) Init(arg interface{}) error {
@@ -54,7 +53,6 @@ func (service *nagiosService) Init(arg interface{}) error {
 	logger.WithFields(log.Fields{"url": conf.Url, "refreshInterval": conf.Interval}).Info("Nagios API configured")
 
 	service.dataView = store.NewContainer[store.Entity]("nagios-data")
-	service.summaryView = store.NewContainer[*entities.NagiosSummary]("nagios-summary")
 
 	service.refreshWorker = utils.NewInterval(time.Duration(conf.Interval)*time.Second, service.refresh)
 
@@ -102,11 +100,9 @@ func (service *nagiosService) refresh() {
 	schema.addStatusServiceList(services)
 
 	objects := schema.buildDataObjects()
-	summary := schema.buildSummaryObjects()
 
 	tasks.SubmitEventLoop("nagios/state-update", func() {
 		service.dataView.ReplaceAll(objects, nagiosObjectsEqual)
-		service.summaryView.ReplaceAll(summary, entities.NagiosSummariesEqual)
 	})
 }
 
@@ -141,8 +137,4 @@ func getService() *nagiosService {
 
 func GetDataView() store.IContainer[store.Entity] {
 	return getService().dataView
-}
-
-func GetSummaryView() store.IContainer[*entities.NagiosSummary] {
-	return getService().summaryView
 }
