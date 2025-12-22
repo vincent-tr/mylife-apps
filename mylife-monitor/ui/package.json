@@ -1,6 +1,6 @@
 {
   "name": "mylife-monitor",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "MyLife Monitor",
   "main": "index.js",
   "repository": {
