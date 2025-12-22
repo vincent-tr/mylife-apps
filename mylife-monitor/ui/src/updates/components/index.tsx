@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import * as api from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
@@ -43,18 +43,15 @@ const formatDuration = humanizeDuration.humanizer({
 });
 
 export default function Updates() {
-  const criteria = useAppSelector(getCriteria);
-  const data = useAppSelector(getDisplayView);
-  const updateCriteria = useAppAction(changeCriteria);
+  const [onlyProblems, setOnlyProblems] = useState(true);
+  const data = useAppSelector(state => getDisplayView(state, onlyProblems));
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      updateCriteria({ onlyProblems: e.target.checked });
+      setOnlyProblems(e.target.checked);
     },
-    [updateCriteria]
+    [setOnlyProblems]
   );
-
-  const dataSorted = useMemo(() => Object.values(data).sort((a, b) => a.path.join('/').localeCompare(b.path.join('/'))), [data]);
 
   return (
     <Container>
@@ -66,7 +63,7 @@ export default function Updates() {
               <TableCell>
                 {'Etat'}
                 <Tooltip title={"N'afficher que les dépassés/problèmes"}>
-                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={onChange} />
+                  <Checkbox color="primary" checked={onlyProblems} onChange={onChange} />
                 </Tooltip>
               </TableCell>
               <TableCell>{'Version courante'}</TableCell>
@@ -75,7 +72,7 @@ export default function Updates() {
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
-              {dataSorted.map((version) => (
+              {data.map((version) => (
                 <Version key={version._id} data={version} />
               ))}
             </TableBody>

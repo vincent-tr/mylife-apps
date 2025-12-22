@@ -1,6 +1,5 @@
 import { api, services } from 'mylife-tools';
 import { Nagios, Updates, UpsMon } from './api/services';
-import updates from './updates/store';
 import { initNagiosView } from './nagios/views';
 import { initUpdatesView } from './updates/views';
 import { initUpsmonView } from './upsmon/views';
@@ -14,9 +13,7 @@ export function buildAppServices(call: api.services.Call) {
   };
 }
 
-export const reducers = {
-  updates,
-};
+export const reducers = {};
 
 services.initStore(reducers, buildAppServices);
 
