@@ -13,11 +13,7 @@ import { SuccessRow, ErrorRow } from '../../common/table-status';
 import { getView } from '../views';
 import { useAppSelector } from '../../store-api';
 
-export interface UpsmonProps {
-  summary?: boolean;
-}
-
-export default function Upsmon({ summary = false }: UpsmonProps) {
+export default function UpsmonSummary() {
   const data = useAppSelector(getView);
 
   return (
@@ -25,17 +21,14 @@ export default function Upsmon({ summary = false }: UpsmonProps) {
       <TableContainer>
         <Table size="small" stickyHeader>
           <TableHead>
-            { summary ? (
-              <HeadersSummary />
-            ) : (
-              <Headers />
-            )}
+            <TableRow>
+              <TableCell>{'Onduleur'}</TableCell>
+            </TableRow>
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
               {Object.values(data).map((item) => (
-                summary ? <UpsSummary key={item._id} data={item} /> :
-                <Ups key={item._id} data={item} />
+                <Ups key={item._id} summary={summary} data={item} />
               ))}
             </TableBody>
           </ThemeProvider>
@@ -52,57 +45,54 @@ const Container = styled('div')({
   overflowY: 'auto',
 });
 
-function Headers() {
-  return (
-    <TableRow>
-      <TableCell>{'Onduleur'}</TableCell>
-      <TableCell>{'Nom'}</TableCell>
-      <TableCell>{'Valeur'}</TableCell>
-    </TableRow>
-  );
-}
-
-function HeadersSummary() {
-  return (
-    <TableRow>
-      <TableCell>{'Onduleur'}</TableCell>
-      <TableCell>{'Depuis'}</TableCell>
-      {Object.values(fields).filter(([, , show]) => show).map(([, displayName]) => (
-        <TableCell key={displayName}>{displayName}</TableCell>
-      ))}
-    </TableRow>
-  );
-}
-
 interface UpsProps {
+  summary: boolean;
   data: api.UpsmonStatus;
 }
 
-function Ups({ data }: UpsProps) {
-  const RowComponent = useRowComponent(data);
+function Ups({ summary, data }: UpsProps) {
+  const lastUpdate = useSince(data.date);
+  const lastUpdateDuration = humanizeDuration(lastUpdate, { language: 'fr', largest: 1, round: true });
+
+  const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
+  const RowComponent = isOk ? SuccessRow : ErrorRow;
+
+  const name = summary ? (
+    <>{data.upsName}<Space/>(il y a {lastUpdateDuration})</>
+  ) : (data.upsName);
 
   return (
     <>
       <RowComponent>
-        <TableCell>{data.upsName}</TableCell>
+        <TableCell>{name}</TableCell>
         <TableCell />
         <TableCell />
       </RowComponent>
       {Object.keys(fields).map((field: keyof api.UpsmonStatus) => (
-        <Item key={field} data={data} field={field} />
+        <Item key={field} summary={summary} data={data} field={field} />
       ))}
     </>
   );
 }
 
+const Space = styled('span')(({ theme }) => ({
+  display: 'inline-block',
+  width: theme.spacing(2),
+}));
+
 interface ItemProps {
+  summary: boolean;
   data: api.UpsmonStatus;
   field: keyof api.UpsmonStatus;
 }
 
-function Item({ data, field }: ItemProps) {
-  const [formatter, displayName, _summary] = fields[field];
+function Item({ summary, data, field }: ItemProps) {
+  const [formatter, displayName, summaryShow] = fields[field];
   const value = formatter(data[field]);
+
+  if (summary && !summaryShow) {
+    return null;
+  }
 
   return (
     <TableRow>
@@ -111,44 +101,6 @@ function Item({ data, field }: ItemProps) {
       <TableCell>{value}</TableCell>
     </TableRow>
   );
-}
-
-function UpsSummary({ data }: UpsProps) {
-  const RowComponent = useRowComponent(data);
-  const lastUpdate = useSince(data.date);
-  const lastUpdateDuration = humanizeDuration(lastUpdate, { language: 'fr', largest: 1, round: true });
-
-  return (
-    <>
-      <RowComponent>
-        <TableCell>{data.upsName}</TableCell>
-        <TableCell>{lastUpdateDuration}</TableCell>
-        {Object.keys(fields).map((field: keyof api.UpsmonStatus) => (
-          <ItemSummary key={field} data={data} field={field} />
-        ))}
-      </RowComponent>
-    </>
-  );
-}
-
-function ItemSummary({ data, field }: ItemProps) {
-  const [formatter, _displayName, summary] = fields[field];
-  if (!summary) {
-    return null;
-  }
-
-
-  const value = formatter(data[field]);
-
-  return (
-    <TableCell>{value}</TableCell>
-  );
-}
-
-function useRowComponent(data: api.UpsmonStatus) {
-  const lastUpdate = useSince(data.date);
-  const isOk = data.status === 'ONLINE' && lastUpdate < 5 * 60 * 1000; // 5 mins
-  return isOk ? SuccessRow : ErrorRow;
 }
 
 const formatters = {
