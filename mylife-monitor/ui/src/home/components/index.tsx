@@ -1,8 +1,32 @@
 import { styled } from '@mui/material/styles';
-import { useNagiosSummaryView, useUpsmonSummaryView, useUpdatesSummaryView } from '../views';
-import NagiosSummary from './nagios-summary';
-import UpdatesSummary from './updates-summary';
-import UpsmonSummary from './upsmon-summary';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { PropsWithChildren } from 'react';
+import Nagios from '../../nagios/components';
+import Updates from '../../updates/components';
+import Upsmon from '../../upsmon/components';
+import icons from '../../common/icons';
+
+export default function Home() {
+  return (
+    <Container>
+      <Section name='Nagios' icon={icons.menu.Nagios}>
+        <Nagios summary={true} />
+      </Section>
+
+      <Section name='Updates' icon={icons.menu.Updates}>
+        <Updates summary={true} />
+      </Section>
+
+      <Section name='Ups monitor' icon={icons.menu.Upsmon}>
+        <Upsmon summary={true} />
+      </Section>
+    </Container>
+  );
+}
 
 const Container = styled('div')({
   flex: '1 1 auto',
@@ -11,28 +35,33 @@ const Container = styled('div')({
   flexDirection: 'column',
 });
 
-const Section = styled('div')({});
+interface SectionProps extends PropsWithChildren {
+  name: string;
+  icon: React.ElementType;
+}
 
-export default function Home() {
-  const nagios = useNagiosSummaryView();
-  const upsmon = useUpsmonSummaryView();
-  const updates = useUpdatesSummaryView();
-
+function Section({ name, icon, children }: SectionProps) {
+  const Icon = icon;
   return (
-    <Container>
-      <Section>
-        {Object.values(nagios).map((summary) => (
-          <NagiosSummary key={summary._id} data={summary} />
-        ))}
-      </Section>
-
-      <Section>
-        <UpsmonSummary view={upsmon} />
-      </Section>
-
-      <Section>
-        <UpdatesSummary view={updates} />
-      </Section>
-    </Container>
+    <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <TitleContainer>
+            <Icon />
+            <Typography>{name}</Typography>
+          </TitleContainer>
+        </AccordionSummary>
+        <AccordionDetails>
+          {children}
+        </AccordionDetails>
+      </Accordion>
   );
 }
+
+const TitleContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  flex: '1 1 auto',
+  overflowY: 'auto',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+}));
