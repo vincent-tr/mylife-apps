@@ -9,13 +9,13 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { NagiosHost, NagiosHostStatus, NagiosService, NagiosServiceStatus } from '../../api';
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
-import { useAppAction, useAppSelector } from '../../store-api';
+import { useAppSelector } from '../../store-api';
 import { HOST_STATUS_PROBLEM } from '../problems';
-import { changeCriteria, Criteria, getCriteria, getDisplayView, GroupWithHosts, HostWithServices } from '../store';
+import { getDisplayView, GroupWithHosts, HostWithServices } from '../store';
 
 const Container = styled('div')({
   display: 'flex',
@@ -43,17 +43,17 @@ function CommonState({ item }: CommonStateProps) {
 }
 
 interface ServiceProps {
-  criteria: Criteria;
+  onlyProblems: boolean;
   service: NagiosService;
   hostDisplay: string;
 }
 
-function Service({ criteria, service, hostDisplay }: ServiceProps) {
+function Service({ onlyProblems, service, hostDisplay }: ServiceProps) {
   const RowComponent = getServiceRowComponent(service.status);
   return (
     <RowComponent>
       <TableCell />
-      <TableCell>{criteria.onlyProblems && hostDisplay}</TableCell>
+      <TableCell>{onlyProblems && hostDisplay}</TableCell>
       <TableCell>{service.display}</TableCell>
       <TableCell>{formatStatus(service)}</TableCell>
       <CommonState item={service} />
@@ -62,14 +62,14 @@ function Service({ criteria, service, hostDisplay }: ServiceProps) {
 }
 
 interface HostProps {
-  criteria: Criteria;
+  onlyProblems: boolean;
   item: HostWithServices;
 }
 
-function Host({ criteria, item }: HostProps) {
+function Host({ onlyProblems, item }: HostProps) {
   const { host, services } = item;
   const RowComponent = getHostRowComponent(host.status);
-  const displayRow = !criteria.onlyProblems || HOST_STATUS_PROBLEM[host.status];
+  const displayRow = !onlyProblems || HOST_STATUS_PROBLEM[host.status];
   return (
     <>
       {displayRow && (
@@ -82,18 +82,18 @@ function Host({ criteria, item }: HostProps) {
         </RowComponent>
       )}
       {services.map((service) => (
-        <Service key={service._id} criteria={criteria} service={service} hostDisplay={host.display} />
+        <Service key={service._id} onlyProblems={onlyProblems} service={service} hostDisplay={host.display} />
       ))}
     </>
   );
 }
 
 interface GroupProps {
-  criteria: Criteria;
+  onlyProblems: boolean;
   item: GroupWithHosts;
 }
 
-function Group({ criteria, item }: GroupProps) {
+function Group({ onlyProblems, item }: GroupProps) {
   return (
     <>
       <TableRow>
@@ -108,22 +108,21 @@ function Group({ criteria, item }: GroupProps) {
         <TableCell />
       </TableRow>
       {item.hosts.map((child) => (
-        <Host key={child.host._id} criteria={criteria} item={child} />
+        <Host key={child.host._id} onlyProblems={onlyProblems} item={child} />
       ))}
     </>
   );
 }
 
 export default function Nagios() {
-  const criteria = useAppSelector(getCriteria);
-  const data = useAppSelector(getDisplayView);
-  const updateCriteria = useAppAction(changeCriteria);
+  const [onlyProblems, setOnlyProblems] = useState(true);
+  const data = useAppSelector(state => getDisplayView(state, onlyProblems));
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      updateCriteria({ onlyProblems: e.target.checked });
+      setOnlyProblems(e.target.checked);
     },
-    [updateCriteria]
+    [setOnlyProblems]
   );
 
   return (
@@ -138,7 +137,7 @@ export default function Nagios() {
               <TableCell>
                 {'Statut'}
                 <Tooltip title={"N'afficher que les problèmes"}>
-                  <Checkbox color="primary" checked={criteria.onlyProblems} onChange={onChange} />
+                  <Checkbox color="primary" checked={onlyProblems} onChange={onChange} />
                 </Tooltip>
               </TableCell>
               <TableCell>{'Dernier check'}</TableCell>
@@ -151,7 +150,7 @@ export default function Nagios() {
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
             <TableBody>
               {data.map((item) => (
-                <Group key={item.group._id} criteria={criteria} item={item} />
+                <Group key={item.group._id} onlyProblems={onlyProblems} item={item} />
               ))}
             </TableBody>
           </ThemeProvider>
