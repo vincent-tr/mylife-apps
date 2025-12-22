@@ -19,7 +19,7 @@ docker-build: ui-build
 	docker build --pull -t "$(DOCKER_IMAGE_TAG)" -t "$(DOCKER_IMAGE_LATEST_TAG)" -f docker/Dockerfile $(DIR_ROOT)
 
 server-build:
-	cd $(DIR_SERVER) && go build -o ../dist/mylife-money-server main.go
+	cd $(DIR_SERVER) && go build -o ../bin/mylife-money-server main.go
 
 ui-build: ui-lint ui-format-check ui-typecheck
 	cd $(DIR_UI) && npm exec -- vite --config ../../common/ui/build/vite.config.ts build

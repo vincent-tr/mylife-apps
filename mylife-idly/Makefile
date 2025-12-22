@@ -18,7 +18,7 @@ docker-build: ui-build
 	docker build --pull -t "$(DOCKER_IMAGE_TAG)" -t "$(DOCKER_IMAGE_LATEST_TAG)" -f docker/Dockerfile $(DIR_ROOT)
 
 server-build:
-	cd $(DIR_SERVER) && go build -o ../dist/mylife-idly-server main.go
+	cd $(DIR_SERVER) && go build -o ../bin/mylife-idly-server main.go
 
 ui-build:
 	cd $(DIR_UI) && \
