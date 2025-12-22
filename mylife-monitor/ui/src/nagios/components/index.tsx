@@ -14,7 +14,7 @@ import { NagiosHost, NagiosHostStatus, NagiosService, NagiosServiceStatus } from
 import { useSince } from '../../common/behaviors';
 import { SuccessRow, WarningRow, ErrorRow } from '../../common/table-status';
 import { useAppSelector } from '../../store-api';
-import { HOST_STATUS_PROBLEM } from '../problems';
+import { HOST_STATUS_PROBLEM } from '../store';
 import { getDisplayView, GroupWithHosts, HostWithServices } from '../store';
 
 const Container = styled('div')({

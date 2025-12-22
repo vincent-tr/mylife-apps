@@ -13,6 +13,21 @@ export interface HostWithServices {
   services: NagiosService[];
 }
 
+export const HOST_STATUS_PROBLEM = {
+  pending: false,
+  up: false,
+  down: true,
+  unreachable: true,
+};
+
+export const SERVICE_STATUS_PROBLEM = {
+  pending: false,
+  ok: false,
+  warning: true,
+  unknown: true,
+  critical: true,
+};
+
 export const getDisplayView = createSelector([
   getView, 
   (_state, onlyProblems: boolean) => onlyProblems,
@@ -89,13 +104,6 @@ function groupHasProblem(item: GroupWithHosts) {
   return false;
 }
 
-const HOST_STATUS_PROBLEM = {
-  pending: false,
-  up: false,
-  down: true,
-  unreachable: true,
-};
-
 function hostHasProblem(item: HostWithServices) {
   if (HOST_STATUS_PROBLEM[item.host.status]) {
     return true;
@@ -110,13 +118,6 @@ function hostHasProblem(item: HostWithServices) {
   return false;
 }
 
-const SERVICE_STATUS_PROBLEM = {
-  pending: false,
-  ok: false,
-  warning: true,
-  unknown: true,
-  critical: true,
-};
 
 function serviceHasProblem(service: NagiosService) {
   return SERVICE_STATUS_PROBLEM[service.status];
