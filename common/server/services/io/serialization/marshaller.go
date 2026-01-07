@@ -272,7 +272,8 @@ func unmarshalValue(raw interface{}, value reflect.Value) error {
 		return unmarshaller.Unmarshal(raw)
 	}
 
-	if valueType.AssignableTo(reflect.TypeOf(raw)) {
+	rawType := reflect.TypeOf(raw)
+	if rawType != nil && valueType.AssignableTo(rawType) {
 		value.Set(reflect.ValueOf(raw))
 		return nil
 	}
