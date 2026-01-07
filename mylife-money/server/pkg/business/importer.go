@@ -253,13 +253,12 @@ func buildRulesExecutor(groups []*entities.Group) (*rulesExecutor, error) {
 		}
 
 		for _, rule := range group.Rules() {
-			for _, condition := range rule.Conditions {
-				rule, err := makeRule(group, &condition)
-				if err != nil {
-					return nil, fmt.Errorf("error creating rule: %w", err)
-				}
-				rules = append(rules, rule)
+			rule, err := makeRule(group, rule.Conditions)
+			if err != nil {
+				return nil, fmt.Errorf("error creating rule: %w", err)
 			}
+
+			rules = append(rules, rule)
 		}
 	}
 
@@ -282,44 +281,62 @@ func (re *rulesExecutor) Execute(operation *entities.Operation) (*entities.Group
 }
 
 type rule struct {
+	group *entities.Group
+	items []ruleItem
+}
+
+type ruleItem struct {
 	getter fieldGetter
 	value  any
 	op     operator
-	group  *entities.Group
 }
 
-func makeRule(group *entities.Group, condition *entities.Condition) (*rule, error) {
-	getter, ok := fieldGetters[condition.Field]
-	if !ok {
-		return nil, fmt.Errorf("unknown field: %s", condition.Field)
-	}
+func makeRule(group *entities.Group, conditions []entities.Condition) (*rule, error) {
+	items := make([]ruleItem, 0, len(conditions))
 
-	op, ok := operators[condition.Operator]
-	if !ok {
-		return nil, fmt.Errorf("unknown operator: %s", condition.Operator)
+	for _, condition := range conditions {
+		getter, ok := fieldGetters[condition.Field]
+		if !ok {
+			return nil, fmt.Errorf("unknown field: %s", condition.Field)
+		}
+
+		op, ok := operators[condition.Operator]
+		if !ok {
+			return nil, fmt.Errorf("unknown operator: %s", condition.Operator)
+		}
+
+		items = append(items, ruleItem{
+			getter: getter,
+			value:  condition.Value,
+			op:     op,
+		})
 	}
 
 	return &rule{
-		getter: getter,
-		value:  condition.Value,
-		op:     op,
-		group:  group,
+		group,
+		items,
 	}, nil
 }
 
 func (r *rule) Execute(operation *entities.Operation) (*entities.Group, error) {
-	field := r.getter(operation)
-
-	result, err := r.op(field, r.value)
-	if err != nil {
-		return nil, fmt.Errorf("error executing operator: %w", err)
-	}
-
-	if result {
-		return r.group, nil
-	} else {
+	// No items means never match
+	if r.items == nil || len(r.items) == 0 {
 		return nil, nil
 	}
+
+	for _, item := range r.items {
+		field := item.getter(operation)
+		result, err := item.op(field, item.value)
+		if err != nil {
+			return nil, fmt.Errorf("error executing operator for rule of group '%s': %w", r.group.Display(), err)
+		}
+
+		if !result {
+			return nil, nil
+		}
+	}
+
+	return r.group, nil
 }
 
 type fieldGetter = func(operation *entities.Operation) any
