@@ -5,9 +5,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ListContainer as ToolsListContainer } from 'mylife-tools';
-import { Bot } from '../../api';
+import { Bot, BotType } from '../../api';
 import { useBotsView } from '../views';
 import Detail from './detail';
 import Run from './run';
@@ -52,16 +52,20 @@ const StyledRun = styled(Run)({
   flex: '1 1 auto',
 });
 
+const BOTS_ORDER: BotType[] = ['cic-scraper', 'amazon-scraper', 'paypal-scraper'];
+
 export default function Bots() {
   const view = useBotsView();
   const [selection, setSelection] = useState<string>(null);
   const bot = view[selection];
 
+  const list = useMemo(() => BOTS_ORDER.map((type) => Object.values(view).find((bot) => bot.type === type)).filter((bot) => !!bot), [view]);
+
   return (
     <Container>
       <ToolsListContainer>
         <StyledList>
-          {Object.values(view).map((bot) => (
+          {list.map((bot) => (
             <ListItem key={bot._id} disablePadding>
               <ListItemButton selected={selection === bot._id} onClick={() => setSelection(bot._id)}>
                 <ListItemText primary={bot.type} />
