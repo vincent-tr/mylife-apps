@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"mylife-money/pkg/services/bots/common"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -89,6 +90,8 @@ func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
 		return nil, fmt.Errorf("failed to download HTML part for message %d: %s", msg.UID(), err)
 	}
 
+	// fmt.Println(string(htmlContent))
+
 	receipt := &receipt{}
 	receipt.Date = msg.Date()
 	receipt.MailSubject = msg.Subject()
@@ -128,25 +131,15 @@ func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
 	}
 
 	receipt.Id, err = b.findTransactionId(doc)
-	if err != nil {
-		return fmt.Errorf("failed to find transaction ID: %w", err)
+	if err == nil {
+		receipt.Url = "https://www.paypal.com/myaccount/activities/details/" + receipt.Id
 	}
 
-	// It looks like the receipt URL is broken for now
-	//
-	// url, found := doc.Find("a:contains(\"Afficher l'état du paiement\")").First().Attr("href")
-	// if !found {
-	// 	return fmt.Errorf("failed to find receipt url")
-	// }
-	//
-	// // Pick only before ?
-	// receipt.Url = strings.Split(url, "?")[0]
 	receipt.Url = "https://www.paypal.com/myaccount/activities/details/" + receipt.Id
 
 	// first cartDetails table is transaction info
 	// if any, cartDetails table here is items info
 	// last is total info
-
 	nodes := doc.Find("table[id='cartDetails']").Nodes
 
 	var transNode, detailNode, totalNode *html.Node
@@ -185,7 +178,8 @@ func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
 	return nil
 }
 
-func (b *bot) findTransactionId(doc *goquery.Document) (string, error) {
+// Old way (before 2026-01)
+func (b *bot) findTransactionIdOld(doc *goquery.Document) (string, error) {
 	// Parse transaction ID:
 	// Find <tr> with data-testid="transaction-id"
 	node := doc.Find("tr[data-testid='transaction-id'] > td")
@@ -203,6 +197,36 @@ func (b *bot) findTransactionId(doc *goquery.Document) (string, error) {
 		return "", fmt.Errorf("unexpected transaction ID format: '%s'", rawId)
 	}
 	return strings.TrimSpace(parts[1]), nil
+}
+
+// New way (after 2026-01)
+func (b *bot) findTransactionIdNew(doc *goquery.Document) (string, error) {
+	url, found := doc.Find("a:contains(\"Afficher les détails du paiement\")").First().Attr("href")
+	if !found {
+		return "", fmt.Errorf("failed to find receipt url")
+	}
+
+	// Expect format: ".../activities/details/XXXXXXXXXXXX?..."
+	re := regexp.MustCompile(`/activities/details/([^/?]+)`)
+	matches := re.FindStringSubmatch(url)
+	if len(matches) < 2 {
+		return "", fmt.Errorf("failed to extract transaction ID from URL: %s", url)
+	}
+
+	return matches[1], nil
+}
+
+func (b *bot) findTransactionId(doc *goquery.Document) (string, error) {
+	// Try new way first
+	id, err := b.findTransactionIdNew(doc)
+	if err == nil {
+		return id, nil
+	}
+
+	b.logger.Warningf("Got error trying to find transaction id with new way, falling back to old way: %s", err)
+
+	// Fallback to old way
+	return b.findTransactionIdOld(doc)
 }
 
 func (b *bot) parseTransactionTable(table *html.Node) ([]transactionItem, error) {
