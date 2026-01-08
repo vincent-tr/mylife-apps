@@ -35,10 +35,10 @@ interface Operator {
 
 const operators: Record<string, Operator> = {
   $eq: { display: 'Egal à' },
-  $gt: { display: 'Inférieur à' },
-  $gte: { display: 'Inférieur ou égal à' },
-  $lt: { display: 'Supérieur à' },
-  $lte: { display: 'Supérieur ou égal à' },
+  $gt: { display: 'Supérieur à' },
+  $gte: { display: 'Supérieur ou égal à' },
+  $lt: { display: 'Inférieur à' },
+  $lte: { display: 'Inférieur ou égal à' },
   $regex: { display: '(Expression régulière)' },
   $contains: { display: 'Contient' },
 };
