@@ -320,7 +320,7 @@ func makeRule(group *entities.Group, conditions []entities.Condition) (*rule, er
 
 func (r *rule) Execute(operation *entities.Operation) (*entities.Group, error) {
 	// No items means never match
-	if r.items == nil || len(r.items) == 0 {
+	if len(r.items) == 0 {
 		return nil, nil
 	}
 
@@ -357,24 +357,21 @@ type operator = func(field any, value any) (bool, error)
 
 var operators = map[entities.RuleOperator]operator{
 	"$eq": func(field any, value any) (bool, error) {
-		switch typedField := field.(type) {
-		case float64:
-			typedValue, ok := value.(float64)
-			if !ok {
-				return false, fmt.Errorf("value is not a float64")
-			}
-			return typedField == typedValue, nil
-
-		case string:
-			typedValue, ok := value.(string)
-			if !ok {
-				return false, fmt.Errorf("value is not a string")
-			}
-			return typedField == typedValue, nil
-
-		default:
-			return false, fmt.Errorf("field is not a string or float64")
+		// Try numeric comparison first
+		fieldNum, fieldIsNum := toFloat64(field)
+		valueNum, valueIsNum := toFloat64(value)
+		if fieldIsNum && valueIsNum {
+			return fieldNum == valueNum, nil
 		}
+
+		// Fall back to string comparison
+		fieldStr, fieldIsStr := field.(string)
+		valueStr, valueIsStr := value.(string)
+		if fieldIsStr && valueIsStr {
+			return fieldStr == valueStr, nil
+		}
+
+		return false, fmt.Errorf("field and value types don't match or are unsupported (field type: %T, value type: %T)", field, value)
 	},
 	"$lt": makeNumberOperator(func(field float64, value float64) (bool, error) {
 		return field < value, nil
@@ -400,16 +397,47 @@ var operators = map[entities.RuleOperator]operator{
 	}),
 }
 
+func toFloat64(v any) (float64, bool) {
+	switch val := v.(type) {
+	case float64:
+		return val, true
+	case float32:
+		return float64(val), true
+	case int:
+		return float64(val), true
+	case int8:
+		return float64(val), true
+	case int16:
+		return float64(val), true
+	case int32:
+		return float64(val), true
+	case int64:
+		return float64(val), true
+	case uint:
+		return float64(val), true
+	case uint8:
+		return float64(val), true
+	case uint16:
+		return float64(val), true
+	case uint32:
+		return float64(val), true
+	case uint64:
+		return float64(val), true
+	default:
+		return 0, false
+	}
+}
+
 func makeNumberOperator(impl func(field float64, value float64) (bool, error)) operator {
 	return func(field any, value any) (bool, error) {
-		typedField, ok := field.(float64)
+		typedField, ok := toFloat64(field)
 		if !ok {
-			return false, fmt.Errorf("field is not a float64")
+			return false, fmt.Errorf("field is not a number (type: %T, value: %v)", field, field)
 		}
 
-		typedValue, ok := value.(float64)
+		typedValue, ok := toFloat64(value)
 		if !ok {
-			return false, fmt.Errorf("value is not a float64")
+			return false, fmt.Errorf("value is not a number (type: %T, value: %v)", value, value)
 		}
 
 		return impl(typedField, typedValue)
@@ -420,12 +448,12 @@ func makeStringOperator(impl func(field string, value string) (bool, error)) ope
 	return func(field any, value any) (bool, error) {
 		typedField, ok := field.(string)
 		if !ok {
-			return false, fmt.Errorf("field is not a string")
+			return false, fmt.Errorf("field is not a string (type: %T, value: %v)", field, field)
 		}
 
 		typedValue, ok := value.(string)
 		if !ok {
-			return false, fmt.Errorf("value is not a string")
+			return false, fmt.Errorf("value is not a string (type: %T, value: %v)", value, value)
 		}
 
 		return impl(typedField, typedValue)
