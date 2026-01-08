@@ -75,8 +75,8 @@ func (b *bot) readOrder(msg *common.MailMessage) (*order, error) {
 		return nil, fmt.Errorf("failed to download HTML part: %w", err)
 	}
 
-	// fmt.Println(textContent)
-	// fmt.Println(htmlContent)
+	// fmt.Println(string(textContent))
+	// fmt.Println(string(htmlContent))
 
 	order := &order{}
 	order.Date = msg.Date()
@@ -159,7 +159,7 @@ func (b *bot) processHtmlMessage(order *order, htmlContent []byte) error {
 		return fmt.Errorf("failed to parse HTML content: %w", err)
 	}
 
-	nodes := doc.Find("div[class='rootContent'] td[class='productImageTd'] > a").Nodes
+	nodes := doc.Find("div.rootContent td.productImageTd > a").Nodes
 
 	if len(nodes) != len(order.Items) {
 		return fmt.Errorf("expected %d 'a' nodes, got %d", len(order.Items), len(nodes))
