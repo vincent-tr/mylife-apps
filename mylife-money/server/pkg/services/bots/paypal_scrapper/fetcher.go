@@ -223,7 +223,7 @@ func (b *bot) findTransactionId(doc *goquery.Document) (string, error) {
 		return id, nil
 	}
 
-	b.logger.Warningf("Got error trying to find transaction id with new way, falling back to old way: %s", err)
+	b.logger.Infof("Got error trying to find transaction id with new way, falling back to old way: %s", err)
 
 	// Fallback to old way
 	return b.findTransactionIdOld(doc)
