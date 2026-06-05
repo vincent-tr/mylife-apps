@@ -17,6 +17,7 @@ import (
 
 const wakeupTimeout = time.Minute
 const commandTimeout = time.Minute
+const statusTimeout = time.Minute
 
 type bleProxyClient struct {
 	vin        string
@@ -39,11 +40,55 @@ func makeBleProxyClient(config *Config) (*bleProxyClient, error) {
 	}, nil
 }
 
+func (client *bleProxyClient) FetchChargeData() (*ChargeData, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), statusTimeout)
+	defer cancel()
+
+	status, err := client.runRequest(ctx, "GET", "/charging-state", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if status == nil {
+		return nil, fmt.Errorf("unexpected nil status")
+	}
+
+	var cs ChargingState
+	if err = json.Unmarshal(status, &cs); err != nil {
+		return nil, err
+	}
+
+	res := &ChargeData{
+		Timestamp: time.Now(),
+		Status:    ChargeStatus(cs.Status),
+		Charger: Charger{
+			MaxCurrent: cs.ChargerMaxCurrent,
+			Current:    cs.ChargerCurrent,
+			Power:      cs.ChargerPower,
+			Voltage:    cs.ChargerVoltage,
+		},
+		Battery: Battery{
+			Level:       cs.BatteryLevel,
+			TargetLevel: cs.BatteryTargetLevel,
+		},
+		Charge: Charge{
+			MinCurrent:     5, // No data, always 0: cs.ChargeMinCurrent,
+			MaxCurrent:     cs.ChargeMaxCurrent,
+			RequestCurrent: cs.ChargeRequestCurrent,
+			Current:        cs.ChargeCurrent,
+			TimeLeft:       cs.ChargeTimeLeft,
+		},
+	}
+
+	return res, nil
+}
+
 func (client *bleProxyClient) Wakeup() error {
 	ctx, cancel := context.WithTimeout(context.Background(), wakeupTimeout)
 	defer cancel()
 
-	return client.runCommand(ctx, "/wakeup", nil)
+	_, err := client.runRequest(ctx, "POST", "/wakeup", nil)
+	return err
 }
 
 func (client *bleProxyClient) SetupCharge(current int, limit int) error {
@@ -83,55 +128,64 @@ func (client *bleProxyClient) SetupCharge(current int, limit int) error {
 }
 
 func (client *bleProxyClient) ChargeStart(ctx context.Context) error {
-	return client.runCommand(ctx, "/charge-start", nil)
+	_, err := client.runRequest(ctx, "POST", "/charge-start", nil)
+	return err
 }
 
 func (client *bleProxyClient) ChargeStop(ctx context.Context) error {
-	return client.runCommand(ctx, "/charge-stop", nil)
+	_, err := client.runRequest(ctx, "POST", "/charge-stop", nil)
+	return err
 }
 
 func (client *bleProxyClient) SetChargingAmps(ctx context.Context, amps int32) error {
-	return client.runCommand(ctx, "/set-charging-amps", &SetChargingAmpsRequest{Amps: amps})
+	_, err := client.runRequest(ctx, "POST", "/set-charging-amps", &SetChargingAmpsRequest{Amps: amps})
+	return err
 }
 
 func (client *bleProxyClient) ChangeChargeLimit(ctx context.Context, chargeLimitPercent int32) error {
-	return client.runCommand(ctx, "/change-charge-limit", &ChangeChargeLimitRequest{ChargeLimitPercent: chargeLimitPercent})
+	_, err := client.runRequest(ctx, "POST", "/change-charge-limit", &ChangeChargeLimitRequest{ChargeLimitPercent: chargeLimitPercent})
+	return err
 }
 
-func (client *bleProxyClient) runCommand(ctx context.Context, path string, reqObj any) error {
-	rs, err := client.doPost(ctx, path, reqObj)
+func (client *bleProxyClient) runRequest(ctx context.Context, method string, path string, reqObj any) (json.RawMessage, error) {
+	rs, err := client.doRequest(ctx, method, path, reqObj)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if client.authNeeded(rs) {
 		if err := client.doAuth(ctx); err != nil {
-			return err
+			return nil, err
 		}
 
-		rs, err = client.doPost(ctx, path, reqObj)
+		rs, err = client.doRequest(ctx, method, path, reqObj)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	return client.responseToErr(rs)
+	return client.processResponse(rs)
 }
 
 func (client *bleProxyClient) authNeeded(rs *responseData) bool {
 	return rs.status == http.StatusUnauthorized && rs.data != nil && rs.data.Code == ResponseCredentialsNeeded
 }
 
-func (client *bleProxyClient) responseToErr(rs *responseData) error {
+func (client *bleProxyClient) processResponse(rs *responseData) (json.RawMessage, error) {
 	if rs.status == http.StatusOK {
-		return nil
+		var status json.RawMessage
+		if rs.data != nil {
+			status = rs.data.Status
+		}
+
+		return status, nil
 	}
 
 	if rs.data == nil {
-		return fmt.Errorf("unknown error (http status=%d)", rs.status)
+		return nil, fmt.Errorf("unknown error (http status=%d)", rs.status)
 	}
 
-	return fmt.Errorf("%s (code=%s, http status=%d)", rs.data.Message, rs.data.Code, rs.status)
+	return nil, fmt.Errorf("%s (code=%s, http status=%d)", rs.data.Message, rs.data.Code, rs.status)
 }
 
 func (client *bleProxyClient) doAuth(ctx context.Context) error {
@@ -140,15 +194,16 @@ func (client *bleProxyClient) doAuth(ctx context.Context) error {
 		VIN:        client.vin,
 	}
 
-	rs, err := client.doPost(ctx, "/car-credentials", &creds)
+	rs, err := client.doRequest(ctx, "POST", "/car-credentials", &creds)
 	if err != nil {
 		return err
 	}
 
-	return client.responseToErr(rs)
+	_, err = client.processResponse(rs)
+	return err
 }
 
-func (client *bleProxyClient) doPost(ctx context.Context, path string, reqObj any) (*responseData, error) {
+func (client *bleProxyClient) doRequest(ctx context.Context, method string, path string, reqObj any) (*responseData, error) {
 	var data []byte
 
 	if reqObj != nil {
@@ -164,7 +219,7 @@ func (client *bleProxyClient) doPost(ctx context.Context, path string, reqObj an
 
 	logger.WithFields(log.Fields{"url": url, "reqObj": reqObj}).Debug("running request")
 
-	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(data))
+	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
 	}
@@ -220,6 +275,21 @@ type ChangeChargeLimitRequest struct {
 	ChargeLimitPercent int32 `json:"chargeLimitPercent"`
 }
 
+type ChargingState struct {
+	Status               string `json:"status"`               // One of: Charging, Stopped, Complete, Disconnected,
+	ChargerMaxCurrent    int    `json:"chargerMaxCurrent"`    // Max charger current (A)
+	ChargerCurrent       int    `json:"chargerCurrent"`       // Actual charger current (A)
+	ChargerPower         int    `json:"chargerPower"`         // Actual charger power (kW)
+	ChargerVoltage       int    `json:"chargerVoltage"`       // Actual charger voltage (V)
+	BatteryLevel         int    `json:"batteryLevel"`         // Actual battery level (%)
+	BatteryTargetLevel   int    `json:"batteryTargetLevel"`   // Target battery level (%)
+	ChargeMinCurrent     int    `json:"chargeMinCurrent"`     // Min possible current request (A)
+	ChargeMaxCurrent     int    `json:"chargeMaxCurrent"`     // Max possible current request (A)
+	ChargeRequestCurrent int    `json:"chargeRequestCurrent"` // Requested current (A)
+	ChargeCurrent        int    `json:"chargeCurrent"`        // Actual current (A)
+	ChargeTimeLeft       int    `json:"chargeTimeLeft"`       // Time until full charge (Minutes)
+}
+
 type ResponseCode string
 
 const ResponseCredentialsNeeded ResponseCode = "credentials-needed"
@@ -227,6 +297,7 @@ const ResponseError ResponseCode = "error"
 const ResponseOK ResponseCode = "success"
 
 type Response struct {
-	Code    ResponseCode `json:"code"`
-	Message string       `json:"message"`
+	Code    ResponseCode    `json:"code"`
+	Message string          `json:"message"`
+	Status  json.RawMessage `json:"status"`
 }

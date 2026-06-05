@@ -7,11 +7,7 @@ import (
 
 var logger = log.CreateLogger("mylife:energy:tesla:api")
 
-// TODO:
-// - gerer quand sleeping/injoignable => http 408
-// - Status trouver les autres
-// - Tester vehicle.Wakeup()
-// - Tester set charge current
+// TODO: No Wakeup using BLE
 
 type Config struct {
 	// Must contain (fleet-api.token), owner-api.token, vehicle-private-key.pem
@@ -23,18 +19,12 @@ type Config struct {
 }
 
 type Client struct {
-	owner    *ownerClient
 	bleProxy *bleProxyClient
 }
 
 func MakeClient(ctx context.Context, config *Config) (*Client, error) {
 	client := &Client{}
 	var err error
-
-	client.owner, err = makeOwnerClient(ctx, config)
-	if err != nil {
-		return nil, err
-	}
 
 	client.bleProxy, err = makeBleProxyClient(config)
 	if err != nil {
@@ -45,7 +35,7 @@ func MakeClient(ctx context.Context, config *Config) (*Client, error) {
 }
 
 func (client *Client) FetchChargeData() (*ChargeData, error) {
-	return client.owner.FetchChargeData()
+	return client.bleProxy.FetchChargeData()
 }
 
 func (client *Client) Wakeup() error {
