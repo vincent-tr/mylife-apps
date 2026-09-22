@@ -9,7 +9,7 @@ DOCKER_PACKAGE_VERSION ?= $(shell node -p "require('$(DIR_UI)/package.json').ver
 DOCKER_IMAGE_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):$(DOCKER_PACKAGE_VERSION)
 DOCKER_IMAGE_LATEST_TAG ?= $(DOCKER_REPOSITORY)/$(DOCKER_PACKAGE_NAME):latest
 
-.PHONY: docker-publish docker-build server-build ui-build ui-watch ui-watch-tsc ui-lint ui-lint-fix ui-format ui-format-check ui-typecheck ui-common-lint ui-common-lint-fix ui-common-format ui-common-format-check ui-common-typecheck
+.PHONY: docker-publish docker-build server-build server-test ui-build ui-watch ui-watch-tsc ui-lint ui-lint-fix ui-format ui-format-check ui-typecheck ui-common-lint ui-common-lint-fix ui-common-format ui-common-format-check ui-common-typecheck
 
 docker-publish: docker-build
 	docker push "$(DOCKER_IMAGE_TAG)"
@@ -20,6 +20,23 @@ docker-build: ui-build
 
 server-build:
 	cd $(DIR_SERVER) && go build -o ../bin/mylife-money-server main.go
+
+# mylife-tools/config loads config.yaml from the working directory in its init
+# and panics if it is missing, and go test runs each package in its own
+# directory. So drop a throwaway config next to every package that has tests,
+# for the duration of the run only. Existing config.yaml files are left alone.
+server-test:
+	@cd $(DIR_SERVER) && \
+	dirs=$$(go list -f '{{if .TestGoFiles}}{{.Dir}}{{end}}' ./...) && \
+	created= && \
+	trap 'for d in $$created; do rm -f "$$d/config.yaml"; done' EXIT INT TERM && \
+	for d in $$dirs; do \
+		if [ ! -e "$$d/config.yaml" ]; then \
+			printf 'test: true\n' > "$$d/config.yaml"; \
+			created="$$created $$d"; \
+		fi; \
+	done && \
+	go test ./...
 
 ui-build: ui-lint ui-format-check ui-typecheck
 	cd $(DIR_UI) && npm exec -- vite --config ../../common/ui/build/vite.config.ts build
