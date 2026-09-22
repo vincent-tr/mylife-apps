@@ -108,6 +108,21 @@ func (b *bot) formatNote(receipt *receipt) string {
 		lines = append(lines, fmt.Sprintf("- %s : %s", total.Name, total.Amount.String()))
 	}
 
+	// Sources: this is what actually left the account, and the only place the
+	// amount appears in EUR when the merchant is billed in another currency
+	if len(receipt.Sources) > 0 {
+		lines = append(
+			lines,
+			"",
+			"Moyens de paiement",
+			"",
+		)
+
+		for _, source := range receipt.Sources {
+			lines = append(lines, fmt.Sprintf("- %s : %s", source.Name, source.Amount.String()))
+		}
+	}
+
 	return strings.Join(lines, "\n")
 }
 

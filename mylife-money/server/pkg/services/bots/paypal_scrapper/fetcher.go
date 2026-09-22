@@ -3,6 +3,7 @@ package paypalscraper
 import (
 	"bytes"
 	"fmt"
+	"math"
 	"mylife-money/pkg/services/bots/common"
 	"regexp"
 	"slices"
@@ -49,7 +50,7 @@ type receipt struct {
 	Transaction []transactionItem
 	Items       []item
 	Totals      []summaryItem
-	// Sources     []summaryItem
+	Sources     []summaryItem
 }
 
 func (b *bot) fetchReceipts() ([]*receipt, error) {
@@ -100,9 +101,25 @@ func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
 		return nil, fmt.Errorf("failed to process HTML message content for message %d: %s", msg.UID(), err)
 	}
 
-	// Find total in EUR
+	receipt.Amount, err = receiptAmount(receipt)
+	if err != nil {
+		return nil, err
+	}
+
+	return receipt, nil
+}
+
+func isEur(currency string) bool {
+	return strings.Contains(currency, "EUR") || strings.Contains(currency, "€")
+}
+
+// The amount we record is what actually left the bank account, in EUR.
+// Usually that is the receipt total, but when the merchant is billed in
+// another currency the total is in that currency and the EUR amount is only
+// in the payment sources panel.
+func receiptAmount(r *receipt) (float64, error) {
 	var totalItem *summaryItem
-	for _, total := range receipt.Totals {
+	for _, total := range r.Totals {
 		if total.Name == "Total" {
 			totalItem = &total
 			break
@@ -110,17 +127,39 @@ func (b *bot) readReceipt(msg *common.MailMessage) (*receipt, error) {
 	}
 
 	if totalItem == nil {
-		return nil, fmt.Errorf("no total found in receipt totals")
+		return 0, fmt.Errorf("no total found in receipt totals")
 	}
 
-	// Check if total amount is in EUR
-	if !strings.Contains(totalItem.Amount.Currency, "EUR") && !strings.Contains(totalItem.Amount.Currency, "€") {
-		return nil, fmt.Errorf("total amount is not in EUR: '%s'", totalItem.Amount.Currency)
+	if isEur(totalItem.Amount.Currency) {
+		return totalItem.Amount.Value, nil
 	}
 
-	receipt.Amount = totalItem.Amount.Value
+	amount, err := sourcesAmount(r.Sources)
+	if err != nil {
+		return 0, fmt.Errorf("total amount is not in EUR ('%s') and could not use payment sources: %w", totalItem.Amount.Currency, err)
+	}
 
-	return receipt, nil
+	return amount, nil
+}
+
+func sourcesAmount(sources []summaryItem) (float64, error) {
+	if len(sources) == 0 {
+		return 0, fmt.Errorf("no payment source found")
+	}
+
+	total := 0.0
+
+	for _, source := range sources {
+		// Never record a partial amount: if one source is in another currency
+		// the sum would be wrong, and a wrong amount is worse than an error.
+		if !isEur(source.Amount.Currency) {
+			return 0, fmt.Errorf("payment source '%s' is not in EUR: '%s'", source.Name, source.Amount.Currency)
+		}
+
+		total += source.Amount.Value
+	}
+
+	return math.Round(total*100) / 100, nil
 }
 
 func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
@@ -175,7 +214,105 @@ func (b *bot) processHtmlMessage(receipt *receipt, htmlContent []byte) error {
 		return fmt.Errorf("failed to parse total Node: %w", err)
 	}
 
+	receipt.Sources, err = b.parseSourcesTable(doc)
+	if err != nil {
+		return fmt.Errorf("failed to parse sources Node: %w", err)
+	}
+
 	return nil
+}
+
+// The payment sources panel ("Vous avez payé X avec") is not a 'cartDetails'
+// table and carries no id of its own, but it is the table holding the
+// transaction id and exchange rate rows. Each source is a nested table with
+// the funding instrument on the left and the amount charged on the right.
+func (b *bot) parseSourcesTable(doc *goquery.Document) ([]summaryItem, error) {
+	anchor := doc.Find("tr[data-testid='transaction-id'], tr[data-testid='exchange-rate']").First()
+	if anchor.Length() == 0 {
+		return nil, nil
+	}
+
+	table := anchor.Closest("table")
+	if table.Length() == 0 {
+		return nil, nil
+	}
+
+	rows, err := b.listTableRows(table.Nodes[0])
+	if err != nil {
+		return nil, fmt.Errorf("failed to list table rows: %w", err)
+	}
+
+	items := make([]summaryItem, 0)
+
+	for _, row := range rows {
+		// only skip what we know is not a source: skipping every tagged row
+		// would silently drop a source if paypal ever tags them
+		switch nodeAttr(row, "data-testid") {
+		case "exchange-rate", "transaction-id":
+			continue
+		}
+
+		cells := b.childNodes(row)
+		if len(cells) != 1 {
+			// not a source row, the panel title for instance
+			continue
+		}
+
+		inner := goquery.NewDocumentFromNode(cells[0]).Find("table").First()
+		if inner.Length() == 0 {
+			continue
+		}
+
+		// several sources may be several rows here, or a row each in the panel
+		sourceRows := inner.Find("tr")
+
+		for index := range sourceRows.Nodes {
+			sourceCells := sourceRows.Eq(index).Children()
+			if sourceCells.Length() != 2 {
+				continue
+			}
+
+			value, err := b.parseAmountString(strings.TrimSpace(sourceCells.Eq(1).Text()))
+			if err != nil {
+				return nil, fmt.Errorf("failed to parse payment source amount: %w", err)
+			}
+
+			items = append(items, summaryItem{
+				Name:   sourceName(sourceCells.Eq(0)),
+				Amount: value,
+			})
+		}
+	}
+
+	return items, nil
+}
+
+// the funding instrument is spread over several <p>, which Text() would
+// concatenate without any separator
+func sourceName(cell *goquery.Selection) string {
+	parts := make([]string, 0)
+
+	cell.Find("p").Each(func(_ int, p *goquery.Selection) {
+		if text := strings.TrimSpace(p.Text()); text != "" {
+			parts = append(parts, text)
+		}
+	})
+
+	if len(parts) == 0 {
+		return strings.TrimSpace(cell.Text())
+	}
+
+	return strings.Join(parts, " - ")
+}
+
+func nodeAttr(node *html.Node, name string) string {
+	for _, attr := range node.Attr {
+		if attr.Key == name {
+			return attr.Val
+		}
+	}
+
+	return ""
 }
 
 // Old way (before 2026-01)
@@ -394,6 +531,11 @@ func (b *bot) parseAmountCell(cell *html.Node) (amount, error) {
 		return amount{}, fmt.Errorf("failed to read name from cell: %w", err)
 	}
 
+	return b.parseAmountString(strval)
+}
+
+func (b *bot) parseAmountString(strval string) (amount, error) {
+	// note: the separators are non breaking spaces, which Fields splits on too
 	parts := strings.Fields(strval)
 	if len(parts) < 2 {
 		return amount{}, fmt.Errorf("expected amount to have 2 parts (value and currency), got %d: '%s'", len(parts), strval)
