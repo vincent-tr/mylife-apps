@@ -1,4 +1,5 @@
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { format as formatDate } from 'date-fns';
 import humanizeDuration from 'humanize-duration';
 import * as api from '../../api';
@@ -31,6 +33,7 @@ export default function Updates({ summary = false }: UpdatesProps) {
               <TableCell>{'Etat'}</TableCell>
               <TableCell>{'Version courante'}</TableCell>
               <TableCell>{'Dernière version'}</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
@@ -84,8 +87,45 @@ function Version({ data }: VersionProps) {
         <TableCell>
           <VersionItem value={data.latestVersion} date={data.latestCreated} />
         </TableCell>
+        <TableCell>
+          <CopyUpdateCommand data={data} />
+        </TableCell>
       </RowComponent>
     </>
+  );
+}
+
+function getUpdateCommand(data: api.UpdatesVersion) {
+  if (data.status !== 'outdated') {
+    return null;
+  }
+
+  const prefix = data.path[0];
+  if (prefix !== 'docker-compose' && prefix !== 'k8s') {
+    return null;
+  }
+
+  const separatorIndex = data.latestVersion.lastIndexOf(':');
+  const version = separatorIndex < 0 ? '' : data.latestVersion.substring(separatorIndex + 1);
+  if (!version || version === 'latest') {
+    return null;
+  }
+
+  return `./bump-version.py ${data.path.join('/')} ${version}`;
+}
+
+function CopyUpdateCommand({ data }: VersionProps) {
+  const command = getUpdateCommand(data);
+  if (!command) {
+    return null;
+  }
+
+  return (
+    <Tooltip title={command}>
+      <IconButton size="small" onClick={() => navigator.clipboard.writeText(command)}>
+        <ContentCopyIcon fontSize="inherit" />
+      </IconButton>
+    </Tooltip>
   );
 }
 
