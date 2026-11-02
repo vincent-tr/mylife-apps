@@ -122,8 +122,8 @@ function CopyUpdateCommand({ data }: VersionProps) {
 
   return (
     <Tooltip title={command}>
-      <IconButton size="small" onClick={() => navigator.clipboard.writeText(command)}>
-        <ContentCopyIcon fontSize="inherit" />
+      <IconButton size="small" sx={{ p: 0 }} onClick={() => navigator.clipboard.writeText(command)}>
+        <ContentCopyIcon sx={{ fontSize: 12, display: 'block' }} />
       </IconButton>
     </Tooltip>
   );
