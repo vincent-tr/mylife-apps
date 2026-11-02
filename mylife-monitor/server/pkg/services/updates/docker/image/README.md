@@ -31,7 +31,18 @@ https://hub.docker.com/v2/namespaces/library/repositories/debian/tags?page_size=
 The response provides a direct list of tags with their corresponding digests, ordered by update time.  
 This avoids iterating over all available tags via the generic OCI API.
 
+## Optimized Path for Quay.io
+
+For `quay.io`, the package uses the Quay API (`/api/v1/repository/<ns>/<repo>/tag/`) which returns tags with digests.
+If the repository has no `latest` tag (eg: jetstack/cert-manager), the highest stable semver tag is used.
+
+## Generic Path
+
+For every other registry (ghcr.io, ...), `latest` is resolved to a real version by listing tags (anonymous OCI API),
+keeping dotted versions, and comparing the digests of the 15 most recent ones with the digest of `latest`.
+
 ## Behavior Summary
 
-- **Non–Docker Hub registries**: use `containers/image` to resolve digests.  
-- **Docker Hub repositories**: use the Docker Hub API to fetch the most recent tags with their digests.
+- **Docker Hub**: Docker Hub API.
+- **Quay.io**: Quay API.
+- **Others**: OCI distribution API through `containers/image`.
