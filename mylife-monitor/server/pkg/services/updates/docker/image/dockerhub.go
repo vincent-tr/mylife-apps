@@ -279,7 +279,8 @@ func pickMostCompleteVersion(tags []string) string {
 
 	for _, tag := range tags {
 		// Split tag into parts by dot or dash
-		parts := strings.FieldsFunc(tag, func(r rune) bool { return r == '.' || r == '-' })
+		// Allow a leading "v" (eg: v1.21.2)
+		parts := strings.FieldsFunc(strings.TrimPrefix(tag, "v"), func(r rune) bool { return r == '.' || r == '-' })
 		valid := true
 		for _, p := range parts {
 			if !isValidPart(p) {

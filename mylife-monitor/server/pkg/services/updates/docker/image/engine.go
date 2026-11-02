@@ -121,6 +121,8 @@ func fetchRepo(ctx context.Context, repo *repository) error {
 	case "docker.io":
 		// Improved case with docker hub api
 		return fetchRepoDockerHub(ctx, repo)
+	case "quay.io":
+		return fetchRepoQuay(ctx, repo)
 	default:
 		return fetchRepoGeneric(ctx, repo)
 	}
