@@ -43,6 +43,22 @@ func TestDockerHubFindTagsMatchingImages(t *testing.T) {
 	}
 }
 
+func TestPickMostCompleteVersionAcceptsStableSuffix(t *testing.T) {
+	tags := []string{"latest", "2.0-stable", "2.0.2-stable", "2.1.4-beta"}
+
+	if got, want := pickMostCompleteVersion(tags), "2.0.2-stable"; got != want {
+		t.Fatalf("pickMostCompleteVersion(%v) = %q, want %q", tags, got, want)
+	}
+}
+
+func TestPickMostCompleteVersionRejectsInvalidStableSuffix(t *testing.T) {
+	for _, tag := range []string{"stable", "stable-2.0.2", "2.0-stable.2"} {
+		if got := pickMostCompleteVersion([]string{tag}); got != "" {
+			t.Errorf("pickMostCompleteVersion(%q) = %q, want empty", tag, got)
+		}
+	}
+}
+
 func stringPointer(value string) *string {
 	return &value
 }

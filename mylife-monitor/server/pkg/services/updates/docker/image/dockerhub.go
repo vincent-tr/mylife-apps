@@ -313,6 +313,7 @@ Exmaple output:
 //
 // 5. Discarding Invalid Tags
 //   - Tags with any invalid part (like "latest", "apache", or tags with flavor suffixes) are ignored.
+//   - A trailing "-stable" is accepted only after numeric version parts.
 //   - This ensures that only semantically valid version numbers are selected.
 //
 // 6. Usage
@@ -339,8 +340,9 @@ func pickMostCompleteVersion(tags []string) string {
 		// Allow a leading "v" (eg: v1.21.2)
 		parts := strings.FieldsFunc(strings.TrimPrefix(tag, "v"), func(r rune) bool { return r == '.' || r == '-' })
 		valid := true
-		for _, p := range parts {
-			if !isValidPart(p) {
+		for i, part := range parts {
+			isSuffix := len(parts) > 1 && i == len(parts)-1
+			if !isValidPart(part, isSuffix) {
 				valid = false
 				break
 			}
@@ -365,7 +367,10 @@ func pickMostCompleteVersion(tags []string) string {
 	return candidates[0].original
 }
 
-func isValidPart(part string) bool {
+func isValidPart(part string, isSuffix bool) bool {
+	if isSuffix && part == "stable" {
+		return true
+	}
 	if _, err := strconv.ParseInt(part, 10, 64); err == nil {
 		return true
 	}
