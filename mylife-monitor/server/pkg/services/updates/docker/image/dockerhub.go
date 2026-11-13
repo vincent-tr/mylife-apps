@@ -52,7 +52,7 @@ func fetchRepoDockerHub(ctx context.Context, repo *repository) error {
 	// Find latest
 	latestTag := tags.FindTagByName("latest")
 	if latestTag != nil {
-		candidates := tags.FindTagsByDigest(latestTag.Digest)
+		candidates := tags.FindTagsMatchingImages(latestTag)
 		tags := make([]string, 0, len(candidates))
 		for _, t := range candidates {
 			tags = append(tags, t.Name)
@@ -96,14 +96,71 @@ func (result *DockerHubTagsResponse) FindTagByName(name string) *DockerTag {
 	return nil
 }
 
-func (result *DockerHubTagsResponse) FindTagsByDigest(digest string) []*DockerTag {
+// Docker Hub's top-level digest can differ when a manifest list gains platforms or attestations,
+// even though its runnable platform images are unchanged. Compare those per-platform digests too.
+func (result *DockerHubTagsResponse) FindTagsMatchingImages(reference *DockerTag) []*DockerTag {
 	tags := make([]*DockerTag, 0)
-	for _, tag := range result.Results {
-		if tag.Digest == digest {
-			tags = append(tags, &tag)
+	for i := range result.Results {
+		tag := &result.Results[i]
+		if tag.Digest == reference.Digest || sameRunnableImageDigests(reference, tag) {
+			tags = append(tags, tag)
 		}
 	}
 	return tags
+}
+
+type dockerPlatform struct {
+	os           string
+	architecture string
+	variant      string
+	osVersion    string
+	osFeatures   string
+	features     string
+}
+
+func runnableImageDigests(tag *DockerTag) map[dockerPlatform]string {
+	imageDigests := make(map[dockerPlatform]string)
+	for _, image := range tag.Images {
+		if image.OS == "" || image.Architecture == "" || image.OS == "unknown" || image.Architecture == "unknown" || image.Digest == "" {
+			continue
+		}
+
+		key := dockerPlatform{
+			os:           image.OS,
+			architecture: image.Architecture,
+			variant:      dereference(image.Variant),
+			osVersion:    dereference(image.OSVersion),
+			osFeatures:   image.OSFeatures,
+			features:     image.Features,
+		}
+		imageDigests[key] = image.Digest
+	}
+	return imageDigests
+}
+
+func sameRunnableImageDigests(a, b *DockerTag) bool {
+	imageDigests := runnableImageDigests(a)
+	if len(imageDigests) == 0 {
+		return false
+	}
+
+	matched := 0
+	for platform, digest := range runnableImageDigests(b) {
+		referenceDigest, exists := imageDigests[platform]
+		if !exists || digest != referenceDigest {
+			return false
+		}
+		matched++
+	}
+
+	return matched > 0
+}
+
+func dereference(value *string) string {
+	if value == nil {
+		return ""
+	}
+	return *value
 }
 
 // Single tag entry
